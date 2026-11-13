@@ -10,6 +10,7 @@ import { archiveQueryKeys } from "@/hooks/queries/archive/archive-query-keys";
 import { intakeQueryKeys } from "@/hooks/queries/intake/intake-query-keys";
 import { moduleQueryKeys } from "@/hooks/queries/module/module-query-keys";
 import { pageQueryKeys } from "@/hooks/queries/page/page-query-keys";
+import { projectUpdateKeys } from "@/hooks/queries/project-update/use-project-updates";
 import { descriptionVersionKeys } from "@/hooks/queries/task-description-version/keys";
 import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
 import { authClient } from "@/lib/auth-client";
@@ -54,6 +55,8 @@ const ARCHIVE_HINTS = new Set([
   "PROJECT_UPDATED",
   "CYCLE_UPDATED",
   "MODULE_UPDATED",
+  // Deleting a column moves its archived tasks to another one.
+  "COLUMNS_UPDATED",
 ]);
 
 /** Messages that change a trash list (C7). */
@@ -91,6 +94,7 @@ function catchUpProject(
     moduleQueryKeys.taskMap(projectId),
     pageQueryKeys.list(projectId),
     pageQueryKeys.taskReferences(),
+    projectUpdateKeys.project(projectId),
   ]) {
     queryClient.invalidateQueries({ queryKey });
   }
@@ -260,11 +264,41 @@ export function useProjectWebSocket(projectId: string) {
             }
             return;
           }
-          // Settings, automations, or the archive state: favorites hide
-          // archived projects.
+          // Settings, automations, or the archive state: favorites and
+          // recents hide archived projects, and board cards show the
+          // project's key.
+          // A project status update, its comments or reactions changed.
+          if (message.type === "PROJECT_UPDATES_CHANGED") {
+            queryClient.invalidateQueries({
+              queryKey: projectUpdateKeys.project(message.projectId),
+            });
+            queryClient.invalidateQueries({
+              queryKey: ["project-updates", "latest"],
+            });
+            return;
+          }
           if (message.type === "PROJECT_UPDATED") {
             queryClient.invalidateQueries({ queryKey: ["projects"] });
             queryClient.invalidateQueries({ queryKey: ["favorites"] });
+            queryClient.invalidateQueries({ queryKey: ["recent-visits"] });
+            refreshBoard(message.projectId);
+            return;
+          }
+          // Someone set a task's custom field value: board cards and
+          // backlog rows read the project's values in one query, and the
+          // filter offers the values in use. The task's own panel follows
+          // the TASK_UPDATED sent with it.
+          if (message.type === "CUSTOM_FIELD_VALUES_UPDATED") {
+            refreshes.schedule(`custom-field-values:${message.projectId}`, () =>
+              Promise.all([
+                queryClient.invalidateQueries({
+                  queryKey: ["custom-field-values", message.projectId],
+                }),
+                queryClient.invalidateQueries({
+                  queryKey: ["custom-field-filter-values", message.projectId],
+                }),
+              ]),
+            );
             return;
           }
           // The automation job archived or closed many tasks at once: one
@@ -278,6 +312,7 @@ export function useProjectWebSocket(projectId: string) {
               ["task-relations"],
               ["projects"],
               ["custom-field-values"],
+              ["custom-field-filter-values", message.projectId],
             ]) {
               queryClient.invalidateQueries({ queryKey });
             }

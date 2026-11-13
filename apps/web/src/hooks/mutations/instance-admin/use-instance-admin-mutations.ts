@@ -27,11 +27,17 @@ export function useUpdateInstanceSettings() {
       queryClient.setQueryData(instanceAdminKeys.settings(), settings);
       // The sign-in screen, workspace creation and public boards read /config.
       void queryClient.invalidateQueries({ queryKey: ["config"] });
+      // Send feedback and the survey follow the feedback settings.
+      void queryClient.invalidateQueries({ queryKey: ["feedback", "config"] });
       void queryClient.invalidateQueries({
         queryKey: instanceAdminKeys.overview(),
       });
       void queryClient.invalidateQueries({
         queryKey: instanceAdminKeys.auditLog(),
+      });
+      // general.updateCheck turns the update notice on or off.
+      void queryClient.invalidateQueries({
+        queryKey: instanceAdminKeys.updateStatus(),
       });
     },
   });

@@ -41,6 +41,12 @@ const READ_ONLY = new Set([
   "list_task_templates",
   "get_task_recurrence",
   "list_automation_rules",
+  "list_project_updates",
+  "get_project_update",
+  // Computes a draft; saves nothing.
+  "draft_project_update",
+  "list_agents",
+  "get_agent_run",
 ]);
 
 // Deletes, replacements of whole lists or contents, bulk moves, triage
@@ -72,7 +78,7 @@ export function mcpToolAnnotations(name: string): McpToolAnnotations {
   const known =
     READ_ONLY.has(name) ||
     DESTRUCTIVE.has(name) ||
-    /^(create|update|set|move|attach|detach|restore|submit)_/.test(name);
+    /^(create|update|set|move|attach|detach|restore|submit|run)_/.test(name);
   const readOnly = READ_ONLY.has(name);
   return {
     readOnlyHint: readOnly,

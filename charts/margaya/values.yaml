@@ -163,6 +163,19 @@ margaya:
         existingSecret:
           name: ""
           key: embeddings-api-key
+    # Operator settings (all off by default).
+    observability:
+      # One JSON line per request on stdout (MARGAYA_ACCESS_LOG): request ID,
+      # method, route template, status and duration. Never paths or queries.
+      accessLog: false
+      # "json" writes every log line as JSON (MARGAYA_LOG_FORMAT); "text"
+      # keeps plain lines. Lines written for a request name its request ID.
+      logFormat: text
+      # "true" turns on the daily check for a newer release and locks the
+      # switch in Instance → Health; "false" locks it off; empty lets instance
+      # admins decide (off until they turn it on). Sends nothing about the
+      # instance (MARGAYA_UPDATE_CHECK).
+      updateCheck: ""
     # Built-in file store, used for attachments and description/comment
     # images while s3.endpoint is empty. Files are written under `path` and
     # served only through the API's authorized download route. A local disk
@@ -199,6 +212,14 @@ margaya:
         secretAccessKeyKey: secret-access-key
     # Database configuration
     database:
+      # Connections each pod keeps open (DATABASE_POOL_MAX). Pods times this
+      # must stay below the server's max_connections (100 by default), with
+      # room for one migration connection per pod at startup.
+      poolMax: 10
+      # Longest a single query may run, in milliseconds
+      # (DATABASE_STATEMENT_TIMEOUT_MS); 0 leaves the server's setting.
+      # Startup migrations run without a limit.
+      statementTimeoutMs: 300000
       # Use external PostgreSQL (set postgresql.enabled to false)
       # Important: when using external postgres, make sure you have set up the db user correctly:
       #   CREATE DATABASE margaya;
@@ -247,6 +268,19 @@ margaya:
   #     valueFrom:
   #       secretKeyRef:
   #         name: margaya-smtp
+  #         key: password
+  #   # Email intake: mail to requests+<token>@example.com becomes Intake
+  #   # requests (docs: core/installation/email-intake).
+  #   - name: INTAKE_EMAIL_ADDRESS
+  #     value: "requests@example.com"
+  #   - name: INTAKE_IMAP_HOST
+  #     value: "imap.example.com"
+  #   - name: INTAKE_IMAP_USER
+  #     value: "requests@example.com"
+  #   - name: INTAKE_IMAP_PASSWORD
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: margaya-intake-mail
   #         key: password
   #   # Requests per minute for each API key (default 600; 0 disables it),
   #   # counted per replica.
@@ -316,6 +350,10 @@ margaya:
   #   # (default true; false sends them to sign-in). Locks it in the panel.
   #   - name: MARGAYA_PUBLIC_LANDING
   #     value: "false"
+  #   # In-app feedback, kept on this server for its admins (default true;
+  #   # false turns it off). Locks it in the panel.
+  #   - name: MARGAYA_FEEDBACK_ENABLED
+  #     value: "false"
   #   # Ignore settings saved in the instance admin panel and make it
   #   # read-only. Any variable set here always locks its own setting.
   #   - name: MARGAYA_LOCK_INSTANCE_SETTINGS
@@ -370,3 +408,33 @@ gateway:
       backendRefs:
         - service: margaya
           port: 5173
+
+# Prometheus metrics (off by default). When enabled, the container serves
+# GET /metrics on its own port (MARGAYA_METRICS_PORT), which only the cluster
+# should reach: the Service gets a "metrics" port, and nothing routes it
+# through the ingress or gateway.
+metrics:
+  enabled: false
+  port: 9464
+  # Optional bearer token for the metrics port. It also enables
+  # GET /api/metrics on the public port, so keep it long and secret.
+  token:
+    existingSecret:
+      name: ""
+      key: metrics-token
+  # A ServiceMonitor for the Prometheus Operator (needs its CRDs).
+  serviceMonitor:
+    enabled: false
+    interval: 30s
+    scrapeTimeout: 10s
+    # Extra labels, e.g. the release label your Prometheus selects on.
+    labels: {}
+
+# A PodDisruptionBudget keeps pods running through voluntary disruptions such
+# as node drains. Off by default. With a single replica, minAvailable: 1
+# blocks a drain until you scale up; maxUnavailable: 1 never does.
+podDisruptionBudget:
+  enabled: false
+  # maxUnavailable wins when set; otherwise minAvailable applies.
+  minAvailable: 1
+  maxUnavailable: null

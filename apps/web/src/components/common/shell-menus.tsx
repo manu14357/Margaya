@@ -7,6 +7,7 @@ import {
   FolderPlus,
   Keyboard,
   LogOut,
+  MessageSquareHeart,
   MonitorDown,
   PanelsLeftRight,
   ServerCog,
@@ -23,6 +24,9 @@ import {
   requestCreate,
 } from "@/components/command-palette/palette-store";
 import { useCustomizeSidebarDialog } from "@/components/common/customize-sidebar-dialog";
+import { openFeedbackDialog } from "@/components/feedback/feedback-dialog-store";
+import { useFeedbackAvailable } from "@/components/feedback/feedback-host";
+import { FocusSubmenu } from "@/components/notification/focus-mode";
 import { useAuth } from "@/components/providers/auth-provider/hooks/use-auth";
 import { ThemeToggleDropdown } from "@/components/theme-toggle-dropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -87,7 +91,7 @@ export function CreateMenu({ trigger, side = "right" }: ShellMenuProps) {
         side={side}
         align="end"
         sideOffset={8}
-        className="w-52"
+        className="w-max min-w-52 max-w-80"
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel>{t("navigation:shell.create")}</DropdownMenuLabel>
@@ -144,6 +148,7 @@ export function HelpMenu({ trigger, side = "right" }: ShellMenuProps) {
   const { t } = useTranslation();
   const { data: config } = useGetConfig();
   const sourceUrl = config?.sourceCodeUrl ?? GITHUB_REPOSITORY_URL;
+  const feedbackAvailable = useFeedbackAvailable();
 
   return (
     <DropdownMenu>
@@ -152,7 +157,7 @@ export function HelpMenu({ trigger, side = "right" }: ShellMenuProps) {
         side={side}
         align="end"
         sideOffset={8}
-        className="w-60"
+        className="w-max min-w-60 max-w-80"
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel>{t("navigation:shell.help")}</DropdownMenuLabel>
@@ -199,6 +204,15 @@ export function HelpMenu({ trigger, side = "right" }: ShellMenuProps) {
             <Code />
             {t("navigation:shell.sourceCode")}
           </DropdownMenuItem>
+          {feedbackAvailable && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={openFeedbackDialog}>
+                <MessageSquareHeart />
+                {t("settings:feedback.send.menuItem")}
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -318,6 +332,8 @@ export function UserMenu({ trigger, side = "right" }: ShellMenuProps) {
             {t("navigation:userMenu.instanceSettings")}
           </DropdownMenuItem>
         )}
+        <DropdownMenuSeparator />
+        <FocusSubmenu />
         <DropdownMenuSeparator />
         <ThemeToggleDropdown />
         <DropdownMenuSeparator />

@@ -16,7 +16,9 @@ import {
   userTable,
   workspaceTable,
 } from "../database/schema";
-import { desktopSound, validTimeZone } from "../notification/desktop-sound";
+import { desktopSound } from "../notification/desktop-sound";
+import { loadQuietDecision } from "../notification/load-quiet-decision";
+import { NOT_QUIET, type QuietChannel } from "../notification/quiet";
 import { canReceiveResourceNotification } from "../notification/resource-access";
 import { getEmailBatchWindowSeconds } from "../notification-email/batch-window";
 import { enqueueNotificationEmail } from "../notification-email/queue";
@@ -32,6 +34,7 @@ import {
   renderNotificationText,
 } from "./notification-text";
 import { sendPushToUser } from "./push";
+import { holdNotificationDeliveries } from "./quiet-hold";
 import { decryptSecret } from "./secrets";
 
 const MAX_PUSH_TITLE_LENGTH = 120;
@@ -422,6 +425,44 @@ async function resolveNotificationContext(notification: {
     };
   }
 
+  // Project status updates (project-update/): open the project's Updates.
+  if (notification.resourceType === "project") {
+    const [project] = await db
+      .select({
+        projectId: projectTable.id,
+        projectName: projectTable.name,
+        workspaceId: workspaceTable.id,
+        workspaceName: workspaceTable.name,
+      })
+      .from(projectTable)
+      .innerJoin(
+        workspaceTable,
+        eq(projectTable.workspaceId, workspaceTable.id),
+      )
+      .where(
+        and(
+          eq(projectTable.id, notification.resourceId),
+          isNull(projectTable.deletedAt),
+        ),
+      )
+      .limit(1);
+
+    if (!project) {
+      return null;
+    }
+
+    return {
+      workspaceId: project.workspaceId,
+      workspaceName: project.workspaceName,
+      projectId: project.projectId,
+      projectName: project.projectName,
+      taskId: null,
+      taskTitle: null,
+      taskUrl: null,
+      path: `/dashboard/workspace/${project.workspaceId}/project/${project.projectId}/updates`,
+    };
+  }
+
   if (notification.resourceType === "page") {
     const [page] = await db
       .select({
@@ -550,11 +591,20 @@ export async function buildDesktopNotification(
     // Notifications without a resource still show in every inbox.
     context?.path ?? "/dashboard",
   );
+  const now = new Date();
+  const decision = user
+    ? await loadQuietDecision(notification, {
+        user,
+        now,
+        fallbackTimeZone: deviceTimeZone,
+      })
+    : null;
   const sound = desktopSound({
     preference: cleanPreferences(user?.preferences).notificationSound,
     notification,
-    now: new Date(),
-    timeZone: validTimeZone(user?.timezone) ?? validTimeZone(deviceTimeZone),
+    now,
+    timeZone: null,
+    quiet: decision?.quiet ?? false,
   });
   return {
     id: notification.id,
@@ -566,10 +616,12 @@ export async function buildDesktopNotification(
     sound: sound.soundName !== null,
     soundName: sound.soundName,
     volume: sound.volume,
+    // Quiet hours or focus mode hold the desktop channel: no native alert.
+    held: decision?.held.has("desktop") ?? false,
   };
 }
 
-async function sendNtfyNotification(input: {
+export async function sendNtfyNotification(input: {
   serverUrl: string;
   topic: string;
   token?: string | null;
@@ -591,7 +643,7 @@ async function sendNtfyNotification(input: {
   );
 }
 
-async function sendGotifyNotification(input: {
+export async function sendGotifyNotification(input: {
   serverUrl: string;
   token: string;
   title: string;
@@ -629,7 +681,7 @@ async function sendGotifyNotification(input: {
   );
 }
 
-async function sendWebhookNotification(input: {
+export async function sendWebhookNotification(input: {
   webhookUrl: string;
   secret?: string | null;
   payload: Record<string, unknown>;
@@ -654,6 +706,13 @@ async function sendWebhookNotification(input: {
 
 export async function deliverNotification(
   notificationId: string,
+  options: {
+    /**
+     * Sends only these channels and ignores quiet time: the release of
+     * deliveries quiet time held back.
+     */
+    only?: readonly QuietChannel[];
+  } = {},
 ): Promise<void> {
   const notification = await db.query.notificationTable.findFirst({
     where: eq(notificationTable.id, notificationId),
@@ -690,6 +749,8 @@ export async function deliverNotification(
       locale: userTable.locale,
       banned: userTable.banned,
       banExpires: userTable.banExpires,
+      preferences: userTable.preferences,
+      timezone: userTable.timezone,
     })
     .from(userTable)
     .where(eq(userTable.id, notification.userId))
@@ -727,11 +788,32 @@ export async function deliverNotification(
   };
   const deliveries: Array<Promise<void>> = [];
 
+  // Quiet hours and focus mode hold the user's chosen channels; the release
+  // job (quiet-hold.ts) sends one summary each when quiet time ends.
+  const { only } = options;
+  const decision = only
+    ? NOT_QUIET
+    : await loadQuietDecision(notification, { user });
+  const heldChannels = new Set<QuietChannel>();
+  const sendsNow = (channel: QuietChannel) => {
+    if (only) return only.includes(channel);
+    if (!decision.held.has(channel)) return true;
+    heldChannels.add(channel);
+    return false;
+  };
+  // Margaya Desktop asks for each alert itself and hears "held" there;
+  // the row only counts it for the desktop summary.
+  if (decision.held.has("desktop")) heldChannels.add("desktop");
+
   // Turning push on for a device is the opt-in: it needs no preference row or
   // workspace rule, and a rule only narrows it. A ban ends push like any access.
   const isBanned =
     user.banned === true && (!user.banExpires || user.banExpires > new Date());
-  if (!isBanned && (!rule || (ruleCoversResource && rule.pushEnabled))) {
+  if (
+    !isBanned &&
+    (!rule || (ruleCoversResource && rule.pushEnabled)) &&
+    sendsNow("push")
+  ) {
     deliveries.push(
       sendPushToUser(
         notification.userId,
@@ -758,9 +840,18 @@ export async function deliverNotification(
           preference,
           rule,
           source,
+          sendsNow,
         }),
       );
     }
+  }
+
+  if (heldChannels.size > 0) {
+    deliveries.push(
+      holdNotificationDeliveries(notification.id, notification.userId, [
+        ...heldChannels,
+      ]),
+    );
   }
 
   const results = await Promise.allSettled(deliveries);
@@ -782,6 +873,7 @@ function configuredChannelDeliveries({
   preference,
   rule,
   source,
+  sendsNow = () => true,
 }: {
   notification: typeof notificationTable.$inferSelect;
   context: ResolvedNotificationContext;
@@ -789,6 +881,8 @@ function configuredChannelDeliveries({
   preference: typeof userNotificationPreferenceTable.$inferSelect;
   rule: typeof userNotificationWorkspaceRuleTable.$inferSelect;
   source: Parameters<typeof buildDeliveryContent>[0];
+  /** False when quiet time holds the channel (and records that). */
+  sendsNow?: (channel: QuietChannel) => boolean;
 }): Array<Promise<void>> {
   const decryptedPreference = {
     ...preference,
@@ -839,7 +933,12 @@ function configuredChannelDeliveries({
 
   const deliveries: Array<Promise<void>> = [];
 
-  if (decryptedPreference.emailEnabled && rule.emailEnabled && user.email) {
+  if (
+    decryptedPreference.emailEnabled &&
+    rule.emailEnabled &&
+    user.email &&
+    sendsNow("email")
+  ) {
     // With a batch window the scheduler sends it later, grouped with the
     // user's other notifications; the other channels stay immediate.
     deliveries.push(
@@ -858,7 +957,8 @@ function configuredChannelDeliveries({
     decryptedPreference.ntfyEnabled &&
     decryptedPreference.ntfyServerUrl &&
     decryptedPreference.ntfyTopic &&
-    rule.ntfyEnabled
+    rule.ntfyEnabled &&
+    sendsNow("ntfy")
   ) {
     deliveries.push(
       sendNtfyNotification({
@@ -876,7 +976,8 @@ function configuredChannelDeliveries({
     decryptedPreference.gotifyEnabled &&
     decryptedPreference.gotifyServerUrl &&
     decryptedPreference.gotifyToken &&
-    rule.gotifyEnabled
+    rule.gotifyEnabled &&
+    sendsNow("gotify")
   ) {
     deliveries.push(
       sendGotifyNotification({
@@ -892,7 +993,8 @@ function configuredChannelDeliveries({
   if (
     decryptedPreference.webhookEnabled &&
     decryptedPreference.webhookUrl &&
-    rule.webhookEnabled
+    rule.webhookEnabled &&
+    sendsNow("webhook")
   ) {
     deliveries.push(
       sendWebhookNotification({

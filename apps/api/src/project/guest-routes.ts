@@ -11,6 +11,7 @@ const GUEST_WORKSPACE_ROUTES: readonly RegExp[] = [
   /^GET \/api\/search$/,
   /^GET \/api\/notification\/(inbox|counts)$/,
   /^GET \/api\/activity\/mine$/,
+  /^GET \/api\/project-update\/workspace\/[^/]+\/latest$/,
   /^GET \/api\/time-entry\/running$/,
   // Answers 404 for a task in a hidden project.
   /^GET \/api\/task\/by-key\/[^/]+\/[^/]+$/,
@@ -20,6 +21,9 @@ const GUEST_WORKSPACE_ROUTES: readonly RegExp[] = [
   /^(GET|POST) \/api\/favorite$/,
   /^PUT \/api\/favorite\/reorder$/,
   /^DELETE \/api\/favorite\/.+$/,
+  // The caller's own calendar feeds; each fetch leaves out hidden projects
+  // (calendar-feed/access.ts).
+  /^(GET|POST) \/api\/calendar-feed\/workspace\/[^/]+$/,
   // The caller's own project roles (cappingProjectRoles).
   /^GET \/api\/project\/access\/mine$/,
   // No workspace data: view definitions, the time zone, AI on or off.

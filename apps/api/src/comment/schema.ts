@@ -1,6 +1,20 @@
+import { aiAssistInput } from "../ai/provenance";
 import { z } from "../openapi";
 
 export const taskIdParam = z.object({ taskId: z.string() });
+
+export const commentPageQuery = z.object({
+  limit: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(100)
+    .optional()
+    .openapi({ description: "Page size, 1-100 (default 50)." }),
+  cursor: z.string().max(512).optional().openapi({
+    description: "The nextCursor of the previous page.",
+  }),
+});
 
 export const commentParam = z.object({ id: z.string() });
 
@@ -27,6 +41,11 @@ export const createCommentBody = z.object({
     description:
       "Reply in a thread: the id of a comment on the same task. A reply to a reply joins the top-level comment's thread (threads are one level deep). 404 when the comment is not on this task.",
   }),
+
+  aiAssist: aiAssistInput,
 });
 
-export const updateCommentBody = z.object({ content: z.string().min(1) });
+export const updateCommentBody = z.object({
+  content: z.string().min(1),
+  aiAssist: aiAssistInput,
+});

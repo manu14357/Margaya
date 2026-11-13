@@ -18,6 +18,8 @@ export const INSTANCE_PAGES = [
   "users",
   "admins",
   "ai",
+  "feedback",
+  "health",
 ] as const;
 export type InstancePage = (typeof INSTANCE_PAGES)[number];
 
@@ -30,6 +32,8 @@ export const INSTANCE_PAGE_PATHS = {
   users: "/dashboard/settings/instance/users",
   admins: "/dashboard/settings/instance/admins",
   ai: "/dashboard/settings/instance/ai",
+  feedback: "/dashboard/settings/instance/feedback",
+  health: "/dashboard/settings/instance/health",
 } as const satisfies Record<InstancePage, string>;
 
 /** The catalog groups each page manages. */
@@ -49,6 +53,9 @@ export const PAGE_GROUPS: Record<InstancePage, readonly string[]> = {
   users: [],
   admins: [],
   ai: ["ai"],
+  feedback: ["feedback"],
+  // Only general.updateCheck, which the General page doesn't show.
+  health: [],
 };
 
 export function settingsForPage(

@@ -10,6 +10,11 @@ import {
 import { type McpToolAnnotations, mcpToolAnnotations } from "./annotations";
 import { mcpToolOutputSchema, structuredOf } from "./output";
 import { registerPlanningTools } from "./planning-tools";
+import {
+  type AgentRunJson,
+  clientSupportsTasks,
+  createTaskResult,
+} from "./tasks";
 
 type McpToolResult = {
   content: Array<{ type: "text"; text: string }>;
@@ -25,7 +30,9 @@ export type McpToolRegistrar = {
       description: string;
       inputSchema: z.ZodObject;
     },
-    callback: (args: unknown) => Promise<McpToolResult>,
+    // `extra` is the SDK's per-call context (the modern server's carries the
+    // client's declared capabilities); tools may ignore it.
+    callback: (args: unknown, extra?: unknown) => Promise<McpToolResult>,
   ): unknown;
 };
 
@@ -38,7 +45,9 @@ type ShapeToolServer = {
       outputSchema?: z.ZodObject;
       annotations: McpToolAnnotations;
     },
-    callback: (args: unknown) => Promise<McpToolResult>,
+    // `extra` is the SDK's per-call context (the modern server's carries the
+    // client's declared capabilities); tools may ignore it.
+    callback: (args: unknown, extra?: unknown) => Promise<McpToolResult>,
   ): unknown;
 };
 
@@ -57,7 +66,7 @@ export function toMcpToolRegistrar(server: ShapeToolServer): McpToolRegistrar {
           // readOnlyHint / destructiveHint, like Margaya's own agents use.
           annotations: mcpToolAnnotations(name),
         },
-        (args) => callback(args),
+        (args, extra) => callback(args, extra),
       ),
   };
 }
@@ -264,14 +273,17 @@ export function registerMcpTools(
   const registerTool = <InputSchema extends z.ZodObject>(
     name: string,
     config: { description: string; inputSchema: InputSchema },
-    callback: (args: z.output<InputSchema>) => Promise<McpToolResult>,
+    callback: (
+      args: z.output<InputSchema>,
+      extra?: unknown,
+    ) => Promise<McpToolResult>,
   ) =>
-    server.registerTool(name, config, async (args) => {
+    server.registerTool(name, config, async (args, extra) => {
       const parsed = config.inputSchema.safeParse(args);
       if (!parsed.success) {
         return errorResult(z.prettifyError(parsed.error));
       }
-      return callback(parsed.data);
+      return callback(parsed.data, extra);
     });
 
   registerTool(
@@ -1207,6 +1219,97 @@ export function registerMcpTools(
       inputSchema: z.object({}),
     },
     async () => run(() => client.json("/api/notification")),
+  );
+
+  // Margaya agents. Same names, inputs and API calls as the stdio package;
+  // only here, run_agent can answer with a Tasks-extension task handle.
+  registerTool(
+    "list_agents",
+    {
+      description:
+        "List a workspace's Margaya agents (AI teammates) with their id, name, role and whether they are on. Needs AI to be on for the workspace.",
+      inputSchema: z.object({ workspaceId: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          `/api/ai/agents?workspaceId=${encodeURIComponent(args.workspaceId)}`,
+        ),
+      ),
+  );
+
+  registerTool(
+    "run_agent",
+    {
+      description:
+        "Start a Margaya agent on a task with instructions. The run works with at most your rights; risky changes wait for your approval. Returns the run (id, status): follow it with get_agent_run. On the HTTP endpoint (/api/mcp), a client that supports the MCP Tasks extension gets a task handle instead, and answers approvals and questions through tasks/update.",
+      inputSchema: z.object({
+        workspaceId: nonEmptyString,
+        agentId: nonEmptyString,
+        taskId: nonEmptyString.describe("The task the agent works on"),
+        prompt: z.string().trim().min(1).max(4_000),
+      }),
+    },
+    async (args, extra) => {
+      if (!clientSupportsTasks(extra)) {
+        return run(() =>
+          client.json(
+            `/api/ai/agents/${encodeURIComponent(args.agentId)}/runs`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                workspaceId: args.workspaceId,
+                taskId: args.taskId,
+                prompt: args.prompt,
+              }),
+            },
+          ),
+        );
+      }
+      try {
+        const started = await client.json<{ id: string }>(
+          `/api/ai/agents/${encodeURIComponent(args.agentId)}/runs`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              workspaceId: args.workspaceId,
+              taskId: args.taskId,
+              prompt: args.prompt,
+            }),
+          },
+        );
+        // The run row exists before the handle is returned (durable task).
+        const detail = await client.json<AgentRunJson>(
+          `/api/ai/agents/runs/${encodeURIComponent(started.id)}?workspaceId=${encodeURIComponent(args.workspaceId)}`,
+        );
+        // A CreateTaskResult, not a CallToolResult: the SDK passes a
+        // tools/call resultType other than "complete" through unchanged.
+        return createTaskResult(
+          args.workspaceId,
+          detail,
+        ) as unknown as McpToolResult;
+      } catch (e) {
+        return errorResult(e instanceof Error ? e.message : String(e));
+      }
+    },
+  );
+
+  registerTool(
+    "get_agent_run",
+    {
+      description:
+        "Get an agent run: status (queued, running, awaiting_approval, needs_input, succeeded, failed, cancelled), the agent's question while it needs input, its summary, and every step with its change and approval state.",
+      inputSchema: z.object({
+        workspaceId: nonEmptyString,
+        runId: nonEmptyString,
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          `/api/ai/agents/runs/${encodeURIComponent(args.runId)}?workspaceId=${encodeURIComponent(args.workspaceId)}`,
+        ),
+      ),
   );
 
   // Cycles, modules and intake (B13 K27): the same file as the package's.

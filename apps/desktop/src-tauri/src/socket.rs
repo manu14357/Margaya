@@ -1,6 +1,8 @@
 //! One background user socket per signed-in server (`/api/ws/user` with the
 //! keychain bearer token). Hints carry ids only; the core fetches the text of
-//! a new notification and shows it natively, and refreshes the badge.
+//! a new notification and shows it natively, and refreshes the badge. While
+//! quiet hours or focus mode hold desktop alerts the server leaves the id
+//! out, and one summary alert follows when they end.
 
 use std::time::Duration;
 
@@ -16,7 +18,7 @@ use crate::api;
 use crate::error::ErrorKind;
 use crate::servers::Server;
 use crate::state::{lock, AppState};
-use crate::{badge_view, notify, tokens, urls};
+use crate::{badge_view, i18n, notify, tokens, urls};
 
 const KEEPALIVE: Duration = Duration::from_secs(25);
 const PING: &str = r#"{"type":"ping"}"#;
@@ -48,6 +50,8 @@ pub fn socket_url(api: &Url) -> Option<Url> {
 pub enum Hint {
     NotificationCreated(Option<String>),
     NotificationsUpdated,
+    /// Quiet hours or focus mode ended; this many alerts were held back.
+    NotificationsReleased(u64),
     Other,
 }
 
@@ -63,6 +67,9 @@ pub fn read_hint(text: &str) -> Hint {
                 .map(str::to_string),
         ),
         Some("NOTIFICATIONS_UPDATED") => Hint::NotificationsUpdated,
+        Some("NOTIFICATIONS_RELEASED") => Hint::NotificationsReleased(
+            value.get("count").and_then(Value::as_u64).unwrap_or(0),
+        ),
         _ => Hint::Other,
     }
 }
@@ -160,6 +167,12 @@ async fn connect(app: &AppHandle, server: &Server, token: &str, attempt: &mut u3
                         refresh_unread(app, server, token).await;
                     }
                     Hint::NotificationsUpdated => refresh_unread(app, server, token).await,
+                    Hint::NotificationsReleased(count) => {
+                        if count > 0 {
+                            show_release_summary(app, server, count);
+                        }
+                        refresh_unread(app, server, token).await;
+                    }
                     Hint::Other => {}
                 },
                 Some(Ok(Message::Close(_))) | None => return Ended::Closed,
@@ -200,6 +213,10 @@ async fn show_notification(app: &AppHandle, server: &Server, token: &str, id: &s
             return;
         }
     };
+    if notification.held {
+        log::info!("notification held by quiet time");
+        return;
+    }
     // Only a page on this server may be opened from a click.
     let url = notification
         .url
@@ -227,6 +244,25 @@ async fn show_notification(app: &AppHandle, server: &Server, token: &str, id: &s
         url,
         tag: notification.tag.unwrap_or_else(|| id.to_string()),
         sound: tone,
+    };
+    notify::show(app, &server, alert);
+}
+
+/// One silent alert when the user's quiet hours or focus mode end, for the
+/// alerts the server held back meanwhile (it sends no id for those). A
+/// click opens the server's window.
+fn show_release_summary(app: &AppHandle, server: &Server, count: u64) {
+    let state = app.state::<AppState>();
+    let server = state.server(&server.id).unwrap_or_else(|_| server.clone());
+    log::info!("showing the quiet-time summary");
+    let alert = notify::Alert {
+        server_id: server.id.clone(),
+        server_label: server.label.clone(),
+        title: i18n::t("notifications.releasedTitle"),
+        body: i18n::tv("notifications.releasedBody", &[("count", &count.to_string())]),
+        url: None,
+        tag: "margaya-quiet-summary".to_string(),
+        sound: None,
     };
     notify::show(app, &server, alert);
 }
@@ -297,6 +333,14 @@ mod tests {
         assert_eq!(
             read_hint(r#"{"type":"NOTIFICATIONS_UPDATED","workspaceId":null}"#),
             Hint::NotificationsUpdated
+        );
+        assert_eq!(
+            read_hint(r#"{"type":"NOTIFICATIONS_RELEASED","count":3}"#),
+            Hint::NotificationsReleased(3)
+        );
+        assert_eq!(
+            read_hint(r#"{"type":"NOTIFICATIONS_RELEASED"}"#),
+            Hint::NotificationsReleased(0)
         );
         assert_eq!(read_hint(r#"{"type":"TASK_UPDATED"}"#), Hint::Other);
         assert_eq!(read_hint("pong"), Hint::Other);

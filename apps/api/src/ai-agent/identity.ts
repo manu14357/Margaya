@@ -497,6 +497,10 @@ export async function updateAgent(input: {
     metadata: { fields: Object.keys(patch) },
   });
   await publishEvent("agent.changed", { workspaceId: input.workspaceId });
+  // The agent's name shows on its tasks, comments and activity.
+  if (name !== undefined && name !== current.name) {
+    await publishEvent("user.profile_changed", { userId: current.userId });
+  }
   return serializeAgent(agent, await agentMonthSpendMicros(agent.id), true);
 }
 

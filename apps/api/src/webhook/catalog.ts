@@ -1005,10 +1005,28 @@ export const WEBHOOK_EXCLUDED_EVENTS: Readonly<Record<string, string>> = {
   "page.comment_created": "page comments stay inside the workspace",
   "page.comment_updated": "page comments stay inside the workspace",
   "page.comment_deleted": "page comments stay inside the workspace",
+  "project_update.created":
+    "project status updates reach followers in the inbox; not yet a public event",
+  "project_update.updated":
+    "project status updates reach followers in the inbox; not yet a public event",
+  "project_update.deleted":
+    "project status updates reach followers in the inbox; not yet a public event",
+  "project_update.comment_created":
+    "comments on project updates stay inside the workspace",
+  "project_update.comment_deleted":
+    "comments on project updates stay inside the workspace",
+  "project_update.reaction_changed":
+    "reactions on project updates stay inside the workspace",
   "custom_field.created": "custom fields stay inside the workspace",
   "custom_field.updated": "custom fields stay inside the workspace",
   "custom_field.deleted": "custom fields stay inside the workspace",
   "custom_field.values_changed": "custom fields stay inside the workspace",
+  "custom_field.reordered": "ordering only",
+  "project.reordered": "ordering only",
+  "label.changed": "UI refresh hint; label edits stay inside the workspace",
+  "user.profile_changed": "personal data",
+  "workspace.updated": "workspace configuration",
+  "entity_reference.removed": "UI refresh hint for favorites and recent visits",
   "task.custom_field_changed": "custom fields stay inside the workspace",
   "favorite.changed": "personal data",
   "sticky.changed": "personal data",
@@ -1017,6 +1035,8 @@ export const WEBHOOK_EXCLUDED_EVENTS: Readonly<Record<string, string>> = {
   "task_draft.changed": "private drafts",
   "notification.created": "personal inbox state",
   "notification.updated": "personal inbox state",
+  "notification.deliveries_released": "personal inbox state",
+  "user.preferences_changed": "personal data",
   "task.subscription_changed": "personal inbox state",
   "mcp.authorization_code_issued": "internal",
   "workspace.created": "before any webhook can exist",

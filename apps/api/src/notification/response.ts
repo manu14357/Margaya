@@ -12,11 +12,11 @@ export const notificationSchema = z
     }),
     type: z.string().openapi({
       description:
-        "One of: info, task_created, workspace_created, task_status_changed, task_assignee_changed, time_entry_created, due_date_reminder, task_overdue, task_mention, task_comment, task_updated, intake_accepted, intake_declined, intake_duplicate, page_mention, page_comment, page_updated, automation_notice (an automation rule's notify action; eventData.ruleName, eventData.message).",
+        "One of: info, task_created, workspace_created, task_status_changed, task_assignee_changed, time_entry_created, due_date_reminder, task_overdue, task_mention, task_comment, task_updated, intake_accepted, intake_declined, intake_duplicate, page_mention, page_comment, page_updated, project_update_posted, project_update_comment, project_update_reminder (resourceType project), automation_notice (an automation rule's notify action; eventData.ruleName, eventData.message).",
     }),
     eventData: z.unknown().openapi({
       description:
-        "Type-specific payload. Task notifications carry { taskTitle, taskKey, projectId, workspaceId, actorName }, plus { oldStatus, newStatus } for status changes, { commenterName, commentId, commentPreview } for comments, { mentionerName, source, commentId, commentPreview } for mentions, { field, oldValue, newValue } for task_updated (field is priority, dueDate or title), { leadTimeMinutes, dueDate, dueDay } for reminders (dueDay is the due date's day in the recipient's time zone), { pageTitle, mentionerName, projectId, workspaceId } for page_mention, { pageTitle, commenterName, commentId, commentPreview, projectId, workspaceId } for page_comment, and { pageTitle, editorName, projectId, workspaceId } for page_updated (all resourceType page).",
+        "Type-specific payload. Task notifications carry { taskTitle, taskKey, projectId, workspaceId, actorName }, plus { oldStatus, newStatus } for status changes, { commenterName, commentId, commentPreview } for comments, { mentionerName, source, commentId, commentPreview } for mentions, { field, oldValue, newValue } for task_updated (field is priority, dueDate or title), { leadTimeMinutes, dueDate, dueDay } for reminders (dueDay is the due date's day in the recipient's time zone), { pageTitle, mentionerName, projectId, workspaceId } for page_mention, { pageTitle, commenterName, commentId, commentPreview, projectId, workspaceId } for page_comment, and { pageTitle, editorName, projectId, workspaceId } for page_updated (all resourceType page), { updateId, projectId, workspaceId, projectName, health, authorName, summaryPreview } for project_update_posted, { updateId, commentId, projectId, workspaceId, projectName, commenterName, commentPreview } for project_update_comment, and { projectId, workspaceId, projectName } for project_update_reminder (all resourceType project).",
     }),
     isRead: z.boolean().nullable(),
     resourceId: z.string().nullable().openapi({
@@ -24,7 +24,7 @@ export const notificationSchema = z
         "The id of the task or workspace the notification points at.",
     }),
     resourceType: z.string().nullable().openapi({
-      description: "`task` or `workspace`.",
+      description: "`task`, `workspace`, `page` or `project`.",
     }),
     workspaceId: z.string().nullable().optional().openapi({
       description:
@@ -132,7 +132,7 @@ export const desktopNotificationSchema = z
     }),
     sound: z.boolean().openapi({
       description:
-        "Whether the alert makes a sound: the user's notification sound settings (on, volume above 0, a sound chosen for this kind of notification, outside quiet hours) call for one now. True exactly when `soundName` is set; kept for desktop apps that predate `soundName`.",
+        "Whether the alert makes a sound: the user's notification sound settings (on, volume above 0, a sound chosen for this kind of notification, outside quiet hours and focus mode unless the notification bypasses them) call for one now. True exactly when `soundName` is set; kept for desktop apps that predate `soundName`.",
     }),
     soundName: z
       .enum(NOTIFICATION_SOUNDS)
@@ -146,6 +146,10 @@ export const desktopNotificationSchema = z
     volume: z.number().int().min(0).max(100).openapi({
       description: "The user's notification sound volume, 0 to 100.",
       example: 70,
+    }),
+    held: z.boolean().openapi({
+      description:
+        "True while the user's quiet hours or focus mode hold desktop alerts and this notification does not bypass them: show nothing now. The inbox and the unread badge still count it, and one summary follows when quiet time ends (the user socket's NOTIFICATIONS_RELEASED hint).",
     }),
   })
   .openapi("DesktopNotification");

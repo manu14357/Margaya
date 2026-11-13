@@ -48,6 +48,11 @@ spec:
             - name: margaya
               containerPort: {{ .Values.margaya.service.targetPort }}
               protocol: TCP
+            {{- if .Values.metrics.enabled }}
+            - name: metrics
+              containerPort: {{ .Values.metrics.port }}
+              protocol: TCP
+            {{- end }}
           env:
             - name: MARGAYA_CLIENT_URL
               value: {{ .Values.margaya.env.clientUrl | trim | trimSuffix "/" | quote }}
@@ -89,6 +94,10 @@ spec:
               value: "postgresql://{{ include "margaya.urlencodeUserinfo" .Values.postgresql.auth.username }}:{{ include "margaya.urlencodeUserinfo" .Values.postgresql.auth.password }}@{{ include "margaya.fullname" . }}-postgresql:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.auth.database }}"
               {{- end }}
               {{- end }}
+            - name: DATABASE_POOL_MAX
+              value: {{ .Values.margaya.env.database.poolMax | default 10 | int | quote }}
+            - name: DATABASE_STATEMENT_TIMEOUT_MS
+              value: {{ .Values.margaya.env.database.statementTimeoutMs | int | quote }}
             - name: DISABLE_REGISTRATION
               value: {{ .Values.margaya.env.disableRegistration | quote }}
             - name: DISABLE_PASSWORD_REGISTRATION
@@ -162,6 +171,35 @@ spec:
             {{- else }}
             - name: MARGAYA_LOCAL_STORAGE
               value: "false"
+            {{- end }}
+            {{- if .Values.metrics.enabled }}
+            - name: MARGAYA_METRICS_ENABLED
+              value: "true"
+            - name: MARGAYA_METRICS_PORT
+              value: {{ .Values.metrics.port | int | quote }}
+            {{- with .Values.metrics.token.existingSecret }}
+            {{- if .name }}
+            - name: MARGAYA_METRICS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .name }}
+                  key: {{ .key }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- with .Values.margaya.env.observability }}
+            {{- if .accessLog }}
+            - name: MARGAYA_ACCESS_LOG
+              value: "true"
+            {{- end }}
+            {{- if eq (toString .logFormat) "json" }}
+            - name: MARGAYA_LOG_FORMAT
+              value: "json"
+            {{- end }}
+            {{- if ne (toString .updateCheck) "" }}
+            - name: MARGAYA_UPDATE_CHECK
+              value: {{ toString .updateCheck | quote }}
+            {{- end }}
             {{- end }}
             {{- with .Values.margaya.extraEnv }}
             {{- toYaml . | nindent 12 }}

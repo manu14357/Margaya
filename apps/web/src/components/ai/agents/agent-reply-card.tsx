@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { MessageCircleQuestion, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { AiGeneratedBadge } from "@/components/ai/ai-content-label";
 import AiMarkdown from "@/components/ai/ai-markdown";
 import { Button } from "@/components/ui/button";
 import { useAgentRun } from "@/hooks/queries/ai/use-agents";
@@ -90,6 +91,7 @@ export function AgentReplyCard({
         {agentName && (
           <span className="text-muted-foreground">{agentName}</span>
         )}
+        <AiGeneratedBadge />
       </header>
       <AiMarkdown text={text} safeLinks className="wrap-anywhere" />
       {(waiting || !needsInput) && (

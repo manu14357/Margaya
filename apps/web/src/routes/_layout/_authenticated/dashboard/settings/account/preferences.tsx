@@ -6,7 +6,9 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import { PanelsLeftRight, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import CalendarFeedSettings from "@/components/calendar-feed/calendar-feed-settings";
 import { useCustomizeSidebarDialog } from "@/components/common/customize-sidebar-dialog";
+import { YourFeedbackSection } from "@/components/feedback/your-feedback-section";
 import AccountTimezoneSetting from "@/components/settings/account-timezone-setting";
 import {
   SettingsGroup,
@@ -352,6 +354,10 @@ function RouteComponent() {
           </SettingsRow>
         </SettingsGroup>
       </SettingsSection>
+
+      <CalendarFeedSettings />
+
+      <YourFeedbackSection />
     </SettingsPage>
   );
 }

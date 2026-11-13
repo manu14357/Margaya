@@ -45,6 +45,18 @@ services:
       - POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
       # Attachments and images when no S3 bucket is configured.
       - MARGAYA_STORAGE_DIR=/app/apps/api/data/uploads
+      # Database connections per instance and the longest a query may run
+      # (ms, 0 = the server's setting). Startup migrations have no limit.
+      - DATABASE_POOL_MAX=${DATABASE_POOL_MAX:-10}
+      - DATABASE_STATEMENT_TIMEOUT_MS=${DATABASE_STATEMENT_TIMEOUT_MS:-300000}
+      # Monitoring, all off by default (docs: Monitoring): Prometheus metrics
+      # at /api/metrics need MARGAYA_METRICS_TOKEN; the access log and JSON
+      # logs go to stdout; the update check shows admins a newer release.
+      - MARGAYA_METRICS_ENABLED=${MARGAYA_METRICS_ENABLED:-false}
+      - MARGAYA_METRICS_TOKEN=${MARGAYA_METRICS_TOKEN:-}
+      - MARGAYA_ACCESS_LOG=${MARGAYA_ACCESS_LOG:-false}
+      - MARGAYA_LOG_FORMAT=${MARGAYA_LOG_FORMAT:-text}
+      - MARGAYA_UPDATE_CHECK=${MARGAYA_UPDATE_CHECK:-}
       # Optional: SMTP_*, SSO providers, GitHub integration, Sentry, Redis...
       # add them here or in the Coolify UI for the margaya service.
     volumes:

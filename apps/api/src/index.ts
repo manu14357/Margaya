@@ -8,6 +8,7 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import * as Sentry from "@sentry/node";
 import type { Session, User } from "better-auth/types";
 import { eq, sql } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Hono } from "hono";
 import { compress } from "hono/compress";
@@ -51,13 +52,15 @@ import { auth } from "./auth";
 import { organizationRoutes } from "./auth-openapi";
 import automationRule from "./automation-rule";
 import billing from "./billing";
+import calendarFeed, { calendarFeedPublic } from "./calendar-feed";
 import codingAgent from "./coding-agent";
 import column from "./column";
 import comment from "./comment";
 import config from "./config";
 import customField from "./custom-field";
 import cycle from "./cycle";
-import db, { getDatabase, schema } from "./database";
+import db, { connectDatabaseClient, getDatabase, schema } from "./database";
+import { withStartupMigrationLock } from "./database/migration-lock";
 import { prepareDatabaseStartup } from "./database/prepare-database-startup";
 import { waitForDatabase } from "./database/wait-for-database";
 import delivery from "./delivery";
@@ -68,6 +71,8 @@ import { eventContext } from "./events";
 import externalImport from "./external-import";
 import externalLink from "./external-link";
 import favorite from "./favorite";
+import feedback from "./feedback";
+import feedbackAdmin from "./feedback/admin";
 import genericWebhookIntegration from "./generic-webhook-integration";
 import giteaIntegration, { handleGiteaWebhookRoute } from "./gitea-integration";
 import githubIntegration, {
@@ -85,6 +90,10 @@ import {
   stopInstanceSettings,
 } from "./instance-settings/snapshot";
 import intake from "./intake";
+import intakeEmail from "./intake-email";
+import intakeEmailInbound from "./intake-email/webhook";
+import intakeForm from "./intake-form";
+import publicIntakeForm from "./intake-form/public";
 import invitation from "./invitation";
 import jiraImport from "./jira-import";
 import label from "./label";
@@ -100,6 +109,26 @@ import notification from "./notification";
 import notificationPreferences from "./notification-preferences";
 import { warnAboutPushSubject } from "./notification-preferences/web-push";
 import oauth from "./oauth";
+import {
+  checkRedis,
+  isDraining,
+  markDraining,
+} from "./observability/lifecycle";
+import { installLogContext } from "./observability/log-context";
+import { PROMETHEUS_CONTENT_TYPE } from "./observability/metrics";
+import {
+  answerMetricsRequest,
+  startMetricsServer,
+} from "./observability/metrics-endpoint";
+import {
+  currentRequestId,
+  REQUEST_ID_HEADER,
+  requestObservability,
+} from "./observability/request-context";
+import {
+  startUpdateChecks,
+  stopUpdateChecks,
+} from "./observability/update-check";
 import { createRoute, errorResponse, jsonResponse, z } from "./openapi";
 import page from "./page";
 import { shutdownPageRooms } from "./page/collab/rooms";
@@ -108,6 +137,7 @@ import { initializePlugins } from "./plugins";
 import { migrateGitHubIntegration } from "./plugins/github/migration";
 import project from "./project";
 import projectAutomation from "./project-automation";
+import projectUpdate from "./project-update";
 import publicBoard from "./public-board";
 import { perIpLimit, publicResponseHeaders } from "./public-board/gate";
 import {
@@ -124,10 +154,18 @@ import recentVisit from "./recent-visit";
 import trash from "./trash";
 import "./recent-visit/subscribers";
 import "./workspace/members-realtime";
+import "./ws/workspace-hints";
 import { initializeSemanticMemory } from "./ai-memory/lifecycle";
 import { initializeScheduler, shutdownScheduler } from "./scheduler";
 import search from "./search";
 import { runSearchIndexBackfill } from "./search/backfill";
+import slackApp from "./slack-app";
+import { setSlackApiFetch } from "./slack-app/acting-user";
+import { handleSlackEventsRoute } from "./slack-app/http";
+import {
+  startSlackSocketManager,
+  stopSlackSocketManager,
+} from "./slack-app/socket";
 import slackIntegration from "./slack-integration";
 import sticky from "./sticky";
 import { getPrivateObject } from "./storage/s3";
@@ -215,6 +253,19 @@ type AppVariables = {
   };
 };
 
+const readinessChecksSchema = z
+  .object({
+    database: z.enum(["ok", "unavailable"]),
+    redis: z.enum(["ok", "unavailable", "disabled"]).openapi({
+      description:
+        "The realtime Redis: disabled when none is configured. Reported, never a reason for 503.",
+    }),
+    draining: z.boolean().openapi({
+      description: "The instance is shutting down.",
+    }),
+  })
+  .openapi("ReadinessChecks");
+
 type ApiVariables = {
   Variables: {
     user: User | null;
@@ -262,6 +313,8 @@ function buildContentDisposition(filename: string, inline: boolean) {
 
 export function createApp() {
   const app = new Hono<AppVariables>();
+  // First: the request ID, metrics and access log see every request.
+  app.use("*", requestObservability());
   app.use("*", clientIpMiddleware());
 
   app.onError((err, c) => {
@@ -274,7 +327,13 @@ export function createApp() {
     }
 
     Sentry.captureException(err);
-    return c.json({ message: "Internal Server Error" }, 500);
+    // The ID ties the answer to the server log line (observability/).
+    const requestId = currentRequestId();
+    console.error("Unhandled API error:", err);
+    return c.json(
+      { message: "Internal Server Error", ...(requestId ? { requestId } : {}) },
+      500,
+    );
   });
   const nodeWs = createNodeWebSocket({ app });
   // node-ws exposes its ws server, but does not accept constructor options.
@@ -306,6 +365,7 @@ export function createApp() {
     "*",
     cors({
       credentials: true,
+      exposeHeaders: [REQUEST_ID_HEADER],
       origin: (origin) => {
         // Reflecting an arbitrary origin alongside credentials lets any site
         // read authenticated responses, so it stays a development convenience.
@@ -348,25 +408,80 @@ export function createApp() {
       tags: ["Instance"],
       summary: "Check readiness",
       description:
-        "Whether this instance can serve requests: it tests the database connection. Use it for readiness probes and uptime checks; GET /health only reports that the process is running.",
+        "Whether this instance can serve requests: it tests the database connection, and answers 503 while the instance shuts down so load balancers stop sending it traffic. checks.redis reports the optional realtime Redis without failing on it: Redis only relays realtime updates between instances. Use it for readiness probes and uptime checks; GET /health only reports that the process is running.",
       security: [],
       responses: {
         200: jsonResponse(
           "The database answered",
-          z.object({ status: z.literal("ready") }).openapi("ReadinessReady"),
+          z
+            .object({
+              status: z.literal("ready"),
+              checks: readinessChecksSchema,
+            })
+            .openapi("ReadinessReady"),
         ),
         503: jsonResponse(
-          "The database didn't answer. Details are in the server log",
+          "The database didn't answer, or the instance is shutting down. Details are in the server log",
           z
-            .object({ status: z.literal("unavailable") })
+            .object({
+              status: z.literal("unavailable"),
+              checks: readinessChecksSchema,
+            })
             .openapi("ReadinessUnavailable"),
         ),
       },
     }),
-    async (c) =>
-      (await isDatabaseReady(() => getDatabase().execute(sql`SELECT 1`)))
-        ? c.json({ status: "ready" as const }, 200)
-        : c.json({ status: "unavailable" as const }, 503),
+    async (c) => {
+      const [databaseReady, redis] = await Promise.all([
+        isDatabaseReady(() => getDatabase().execute(sql`SELECT 1`)),
+        checkRedis(),
+      ]);
+      const draining = isDraining();
+      const checks = {
+        database: databaseReady ? ("ok" as const) : ("unavailable" as const),
+        redis: redis.state,
+        draining,
+      };
+      return databaseReady && !draining
+        ? c.json({ status: "ready" as const, checks }, 200)
+        : c.json({ status: "unavailable" as const, checks }, 503);
+    },
+  );
+
+  // Prometheus metrics, off unless MARGAYA_METRICS_ENABLED=true and
+  // MARGAYA_METRICS_TOKEN is set (observability/metrics-endpoint.ts). A
+  // separate MARGAYA_METRICS_PORT listener serves /metrics without this
+  // route.
+  api.openapi(
+    createRoute({
+      method: "get",
+      operationId: "getMetrics",
+      path: "/metrics",
+      tags: ["Instance"],
+      summary: "Read Prometheus metrics",
+      description:
+        "Prometheus text-format metrics: HTTP requests and latency by route template, WebSocket connections, the database pool, scheduled job runs and failures, email and webhook queue backlogs, AI calls and tokens, and process stats. Off by default: answers 404 unless MARGAYA_METRICS_ENABLED is true and MARGAYA_METRICS_TOKEN is set, and then needs that token as a Bearer credential (not an API key). Labels never name users, workspaces or other records.",
+      security: [{ metricsToken: [] }],
+      responses: {
+        200: {
+          description: "The metrics",
+          content: { "text/plain": { schema: z.string() } },
+        },
+        401: errorResponse("Missing or wrong metrics token"),
+        404: errorResponse("Metrics are off, or no token is set"),
+      },
+    }),
+    async (c) => {
+      const answer = await answerMetricsRequest(c.req.header("Authorization"), {
+        viaPort: false,
+      });
+      c.header("cache-control", "no-store");
+      if (answer.status !== 200) return c.text(answer.body, answer.status);
+      // The exposition format's own content type, version included.
+      return c.text(answer.body, 200, {
+        "content-type": PROMETHEUS_CONTENT_TYPE,
+      });
+    },
   );
 
   const instanceStatusApi = api.openapi(
@@ -525,7 +640,13 @@ export function createApp() {
 
   // Before the app-wide auth middleware: each route resolves its own viewer.
   const publicBoardApi = api.route("/public-board", publicBoard);
+  // Request forms and the inbound mail webhook (#8) authenticate on their
+  // own: nobody signs in to send a request.
+  const publicIntakeFormApi = api.route("/public-form", publicIntakeForm);
+  const intakeEmailInboundApi = api.route("/intake-email", intakeEmailInbound);
   const publicPageApi = api.route("/public-page", publicPage);
+  // Calendar apps fetch feeds without a session; the URL token authenticates.
+  api.route("/calendar-feed", calendarFeedPublic);
 
   api.post("/github-integration/webhook", handleGithubWebhookRoute);
 
@@ -533,6 +654,9 @@ export function createApp() {
     "/gitea-integration/webhook/:integrationId",
     handleGiteaWebhookRoute,
   );
+
+  // Slack app HTTP mode: signed by Slack, not by a session (slack-app/http.ts).
+  api.post("/slack/events/:workspaceId", handleSlackEventsRoute);
 
   const invitationPublicApi = api.get("/invitation/public/:id", async (c) => {
     const { id } = c.req.param();
@@ -738,6 +862,11 @@ export function createApp() {
   // like a presigned S3 URL.
   api.route("/storage", storageUpload);
 
+  api.openAPIRegistry.registerComponent("securitySchemes", "metricsToken", {
+    type: "http",
+    scheme: "bearer",
+    description: "The MARGAYA_METRICS_TOKEN value (only for GET /metrics)",
+  });
   api.openAPIRegistry.registerComponent("securitySchemes", "bearerAuth", {
     type: "http",
     scheme: "bearer",
@@ -956,6 +1085,7 @@ export function createApp() {
     mattermostIntegration,
   );
   const slackIntegrationApi = api.route("/slack-integration", slackIntegration);
+  const slackAppApi = api.route("/slack-app", slackApp);
   const telegramIntegrationApi = api.route(
     "/telegram-integration",
     telegramIntegration,
@@ -977,9 +1107,12 @@ export function createApp() {
   const favoriteApi = api.route("/favorite", favorite);
   const recentVisitApi = api.route("/recent-visit", recentVisit);
   const cycleApi = api.route("/cycle", cycle);
+  const calendarFeedApi = api.route("/calendar-feed", calendarFeed);
   const moduleApi = api.route("/module", moduleRouter);
   const estimateApi = api.route("/estimate", estimate);
   const intakeApi = api.route("/intake", intake);
+  const intakeEmailApi = api.route("/intake-email", intakeEmail);
+  const intakeFormApi = api.route("/intake-form", intakeForm);
   const taskQueryApi = api.route("/task-query", taskQuery);
   const subscriptionApi = api.route("/subscription", subscription);
   const reactionApi = api.route("/reaction", reaction);
@@ -998,12 +1131,15 @@ export function createApp() {
     "/project-automation",
     projectAutomation,
   );
+  const projectUpdateApi = api.route("/project-update", projectUpdate);
   const pageApi = api.route("/page", page);
   const webhookApi = api.route("/webhook", webhook);
   const auditLogApi = api.route("/audit-log", auditLog);
   const publicationApi = api.route("/publication", publication);
   const instanceAdminApi = api.route("/instance-admin", instanceAdmin);
   const identityApi = api.route("/instance-admin/identity", identity);
+  const feedbackAdminApi = api.route("/instance-admin/feedback", feedbackAdmin);
+  const feedbackApi = api.route("/feedback", feedback);
   const apiKeyApi = api.route("/api-key", apiKeyRoutes);
   const aiApi = api.route("/ai", ai);
   const aiAskApi = api.route("/ai/ask", aiAsk);
@@ -1147,6 +1283,8 @@ export function createApp() {
   setAgentApiFetch((request, env) => app.fetch(request, env));
   // A2A requests run as in-process API calls with the caller's credential.
   setA2aApiFetch((request, env) => app.fetch(request, env));
+  // Slack actions run as the linked user through the API's own routes.
+  setSlackApiFetch((request, env) => app.fetch(request, env));
 
   return {
     app,
@@ -1175,11 +1313,14 @@ export function createApp() {
     publicationApi,
     instanceAdminApi,
     identityApi,
+    feedbackAdminApi,
+    feedbackApi,
     apiKeyApi,
     recentVisitApi,
     searchApi,
     mattermostIntegrationApi,
     slackIntegrationApi,
+    slackAppApi,
     taskApi,
     taskRelationApi,
     taskLinkApi,
@@ -1196,9 +1337,14 @@ export function createApp() {
     workspaceApi,
     customFieldApi,
     cycleApi,
+    calendarFeedApi,
     moduleApi,
     estimateApi,
     intakeApi,
+    intakeEmailApi,
+    intakeFormApi,
+    publicIntakeFormApi,
+    intakeEmailInboundApi,
     taskQueryApi,
     subscriptionApi,
     reactionApi,
@@ -1214,6 +1360,7 @@ export function createApp() {
     archiveApi,
     trashApi,
     projectAutomationApi,
+    projectUpdateApi,
     pageApi,
     webhookApi,
     auditLogApi,
@@ -1256,35 +1403,39 @@ export async function runStartupTasks() {
         },
       });
     },
-    runStartupMigrations: async () => {
-      await migrateWorkspaceUserEmail();
-      await migrateSessionColumn();
+    // Schema migrations, data repairs and seeds all run under one advisory
+    // lock, so replicas starting together take turns instead of racing.
+    runStartupMigrations: () =>
+      withStartupMigrationLock(connectDatabaseClient, async (client) => {
+        await migrateWorkspaceUserEmail();
+        await migrateSessionColumn();
 
-      console.log("🔄 Migrating database...");
-      await migrate(getDatabase(), {
-        migrationsFolder: `${currentDir}/../drizzle`,
-      });
-      console.log("✅ Database migrated successfully!");
-    },
+        console.log("🔄 Migrating database...");
+        await migrate(drizzle(client), {
+          migrationsFolder: `${currentDir}/../drizzle`,
+        });
+        console.log("✅ Database migrated successfully!");
+
+        // After Drizzle migrations: apikey table must exist so we can align
+        // columns with Better Auth (reference_id + nullable user_id).
+        await migrateApiKeyReferenceId();
+
+        await migrateNotificationPreferencesSchema();
+        await migrateGitHubIntegration();
+        await migrateColumns();
+        // After the columns exist: archived tasks get their column back (D7).
+        await migrateTaskArchive();
+        await migrateTaskAssignees();
+        // After both: it needs task_assignee rows and task.created_by (B10).
+        await migrateNotificationInbox();
+        // B12: boards public before publications existed keep their links.
+        await migratePublications();
+        await seedDefaultWorkspaceRoles();
+        // After the seed: rows it just inserted already hold every resource.
+        await backfillRolePermissions();
+      }),
   });
 
-  // After Drizzle migrations: apikey table must exist so we can align columns
-  // with Better Auth (reference_id + nullable user_id).
-  await migrateApiKeyReferenceId();
-
-  await migrateNotificationPreferencesSchema();
-  await migrateGitHubIntegration();
-  await migrateColumns();
-  // After the columns exist: archived tasks get their column back (D7).
-  await migrateTaskArchive();
-  await migrateTaskAssignees();
-  // After both: it needs task_assignee rows and task.created_by (B10).
-  await migrateNotificationInbox();
-  // B12: boards public before publications existed keep their links.
-  await migratePublications();
-  await seedDefaultWorkspaceRoles();
-  // After the seed: rows it just inserted already hold every resource.
-  await backfillRolePermissions();
   // B12: DB-backed instance settings; the auth facade and email read them.
   await initializeInstanceSettings();
 
@@ -1304,6 +1455,8 @@ export async function runStartupTasks() {
     console.error("Semantic search startup check failed", error);
   });
   startWebhookDispatcher();
+  // Socket Mode connections to Slack (outbound; no public URL needed).
+  startSlackSocketManager();
   await initializeWebSocketAdapter();
 }
 
@@ -1311,6 +1464,9 @@ export async function startServer(
   injectWebSocket: ReturnType<typeof createNodeWebSocket>["injectWebSocket"],
   port = Number(process.env.PORT) || 1337,
 ) {
+  // Log lines written for a request name its X-Request-Id; MARGAYA_LOG_FORMAT
+  // =json makes them JSON (observability/log-context.ts).
+  installLogContext();
   try {
     await runStartupTasks();
   } catch (error) {
@@ -1333,15 +1489,22 @@ export async function startServer(
   );
 
   injectWebSocket(server);
+  const metricsServer = startMetricsServer();
+  startUpdateChecks();
 
   const gracefulShutdown = async () => {
     if (shuttingDown) return;
     shuttingDown = true;
+    // Readiness answers 503 from here on.
+    markDraining();
 
     console.log("🛑 Shutting down gracefully...");
     shutdownScheduler();
+    stopUpdateChecks();
+    metricsServer?.close();
     stopExportRunner();
     stopWebhookDispatcher();
+    stopSlackSocketManager();
     stopInstanceSettings();
     await flushApiRequestLog();
     // Page rooms persist (and tell clients to reconnect) before the
@@ -1389,10 +1552,13 @@ const {
   publicationApi,
   instanceAdminApi,
   identityApi,
+  feedbackAdminApi,
+  feedbackApi,
   apiKeyApi,
   recentVisitApi,
   searchApi,
   slackIntegrationApi,
+  slackAppApi,
   taskApi,
   taskRelationApi,
   taskLinkApi,
@@ -1409,9 +1575,14 @@ const {
   workspaceApi,
   customFieldApi,
   cycleApi,
+  calendarFeedApi,
   moduleApi,
   estimateApi,
   intakeApi,
+  intakeEmailApi,
+  intakeFormApi,
+  publicIntakeFormApi,
+  intakeEmailInboundApi,
   taskQueryApi,
   subscriptionApi,
   reactionApi,
@@ -1427,6 +1598,7 @@ const {
   archiveApi,
   trashApi,
   projectAutomationApi,
+  projectUpdateApi,
   pageApi,
   webhookApi,
   auditLogApi,
@@ -1486,6 +1658,7 @@ export type AppType =
   | typeof discordIntegrationApi
   | typeof mattermostIntegrationApi
   | typeof slackIntegrationApi
+  | typeof slackAppApi
   | typeof telegramIntegrationApi
   | typeof taskRelationApi
   | typeof taskLinkApi
@@ -1504,9 +1677,14 @@ export type AppType =
   | typeof favoriteApi
   | typeof recentVisitApi
   | typeof cycleApi
+  | typeof calendarFeedApi
   | typeof moduleApi
   | typeof estimateApi
   | typeof intakeApi
+  | typeof intakeEmailApi
+  | typeof intakeFormApi
+  | typeof publicIntakeFormApi
+  | typeof intakeEmailInboundApi
   | typeof taskQueryApi
   | typeof subscriptionApi
   | typeof reactionApi
@@ -1522,6 +1700,7 @@ export type AppType =
   | typeof archiveApi
   | typeof trashApi
   | typeof projectAutomationApi
+  | typeof projectUpdateApi
   | typeof pageApi
   | typeof webhookApi
   | typeof auditLogApi
@@ -1554,6 +1733,8 @@ export type AppType =
   | typeof publicationApi
   | typeof instanceAdminApi
   | typeof identityApi
+  | typeof feedbackAdminApi
+  | typeof feedbackApi
   | typeof apiKeyApi
   | typeof invitationPublicApi
   | typeof oauthApi

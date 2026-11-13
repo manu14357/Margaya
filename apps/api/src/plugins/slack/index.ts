@@ -1,9 +1,12 @@
 import type { IntegrationPlugin } from "../types";
 import { validateSlackConfig } from "./config";
 import {
+  handleIntakeDecided,
+  handleProjectUpdatePosted,
   handleTaskCommentCreated,
   handleTaskCreated,
   handleTaskDescriptionChanged,
+  handleTaskDueDateChanged,
   handleTaskPriorityChanged,
   handleTaskStatusChanged,
   handleTaskTitleChanged,
@@ -18,5 +21,8 @@ export const slackPlugin: IntegrationPlugin = {
   onTaskTitleChanged: handleTaskTitleChanged,
   onTaskDescriptionChanged: handleTaskDescriptionChanged,
   onTaskCommentCreated: handleTaskCommentCreated,
+  onTaskDueDateChanged: handleTaskDueDateChanged,
+  onIntakeDecided: handleIntakeDecided,
+  onProjectUpdatePosted: handleProjectUpdatePosted,
   validateConfig: validateSlackConfig,
 };

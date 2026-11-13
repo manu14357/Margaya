@@ -12,7 +12,7 @@ import { publishEvent } from "../../events";
 import { deliverNotification } from "../../notification-preferences/delivery";
 
 import { safeOutboundError } from "../../utils/outbound-request";
-import { notificationCreatedEvent } from "../created-event";
+import { notificationCreatedPayload } from "../load-quiet-decision";
 import { preferenceKeyForType } from "../recipient-policy";
 import { canReceiveResourceNotification } from "../resource-access";
 
@@ -42,6 +42,14 @@ export async function deriveNotificationWorkspaceId(
       .where(eq(workspaceTable.id, resourceId))
       .limit(1);
     return row?.id ?? null;
+  }
+  if (resourceType === "project") {
+    const [row] = await db
+      .select({ workspaceId: projectTable.workspaceId })
+      .from(projectTable)
+      .where(eq(projectTable.id, resourceId))
+      .limit(1);
+    return row?.workspaceId ?? null;
   }
   if (resourceType === "page") {
     const [row] = await db
@@ -117,7 +125,7 @@ async function createNotification({
   if (notification) {
     await publishEvent(
       "notification.created",
-      notificationCreatedEvent(notification),
+      await notificationCreatedPayload(notification),
     );
     void deliverNotification(notification.id).catch((error) => {
       console.error("Failed to deliver notification", {

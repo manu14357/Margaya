@@ -19,6 +19,7 @@ export const SETTING_GROUPS = [
   "smtp",
   "publicBoards",
   "ai",
+  "feedback",
 ] as const;
 export type SettingGroup = (typeof SETTING_GROUPS)[number];
 
@@ -534,6 +535,71 @@ const AI_SETTINGS: SettingDefinition[] = [
     readEnv: trimmed("MARGAYA_AI_SPEECH_API_KEY"),
   },
 ];
+
+// Product feedback (feedback/). Responses stay on this instance. "Send
+// feedback" is on by default; the occasional survey asks only once an admin
+// turns it on. A trigger of 0 is off.
+export const FEEDBACK_SURVEY_FORMATS = [
+  "faces3",
+  "faces5",
+  "stars",
+  "nps",
+] as const;
+
+const FEEDBACK_SETTINGS: SettingDefinition[] = [
+  {
+    key: "feedback.enabled",
+    group: "feedback",
+    secret: false,
+    default: true,
+    schema: bool,
+    envVar: "MARGAYA_FEEDBACK_ENABLED",
+    readEnv: (env) =>
+      isEnvSet(env, "MARGAYA_FEEDBACK_ENABLED")
+        ? env.MARGAYA_FEEDBACK_ENABLED?.trim().toLowerCase() !== "false"
+        : undefined,
+  },
+  {
+    key: "feedback.survey.enabled",
+    group: "feedback",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: null,
+  },
+  {
+    key: "feedback.survey.format",
+    group: "feedback",
+    secret: false,
+    default: "faces5",
+    schema: z.enum(FEEDBACK_SURVEY_FORMATS),
+    envVar: null,
+  },
+  {
+    key: "feedback.survey.activeDays",
+    group: "feedback",
+    secret: false,
+    default: 10,
+    schema: z.number().int().min(0).max(365),
+    envVar: null,
+  },
+  {
+    key: "feedback.survey.tasksCompleted",
+    group: "feedback",
+    secret: false,
+    default: 10,
+    schema: z.number().int().min(0).max(1000),
+    envVar: null,
+  },
+  {
+    key: "feedback.survey.intervalDays",
+    group: "feedback",
+    secret: false,
+    default: 90,
+    schema: z.number().int().min(30).max(365),
+    envVar: null,
+  },
+];
 const SMTP_LOCK = ["SMTP_HOST"] as const;
 
 export const SETTINGS_CATALOG: readonly SettingDefinition[] = [
@@ -561,6 +627,21 @@ export const SETTINGS_CATALOG: readonly SettingDefinition[] = [
     readEnv: (env) =>
       isEnvSet(env, "MARGAYA_PUBLIC_LANDING")
         ? env.MARGAYA_PUBLIC_LANDING?.trim().toLowerCase() !== "false"
+        : undefined,
+  },
+  {
+    // Opt-in: once a day the server asks the public release feed for the
+    // latest version and tells instance admins when one is newer. Nothing
+    // about the instance is sent (observability/update-check.ts).
+    key: "general.updateCheck",
+    group: "general",
+    secret: false,
+    default: false,
+    schema: bool,
+    envVar: "MARGAYA_UPDATE_CHECK",
+    readEnv: (env) =>
+      isEnvSet(env, "MARGAYA_UPDATE_CHECK")
+        ? env.MARGAYA_UPDATE_CHECK?.trim().toLowerCase() === "true"
         : undefined,
   },
   {
@@ -896,6 +977,7 @@ export const SETTINGS_CATALOG: readonly SettingDefinition[] = [
     envVar: null,
   },
   ...AI_SETTINGS,
+  ...FEEDBACK_SETTINGS,
 ];
 
 export const LOCK_VARIABLE = "MARGAYA_LOCK_INSTANCE_SETTINGS";

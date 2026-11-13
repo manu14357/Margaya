@@ -13,6 +13,9 @@ import {
 import { ContextPanel } from "@/components/context-panel/context-panel";
 import { DemoAlert } from "@/components/demo-alert";
 import { useDesktopShellFrame } from "@/components/desktop/desktop-title-bar";
+import { FeedbackHost } from "@/components/feedback/feedback-host";
+import { UpdateBanner } from "@/components/instance-admin/update-notice";
+import { FocusCustomDialog } from "@/components/notification/focus-custom-dialog";
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import WorkspaceDeletionBanner from "@/components/workspace/workspace-deletion-banner";
 import { isProjectFeatureEnabled } from "@/constants/project-features";
@@ -20,6 +23,7 @@ import { shortcuts } from "@/constants/shortcuts";
 import { isDemoMode } from "@/constants/urls";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
+import { useAppDocumentLock } from "@/hooks/use-app-document-lock";
 import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { useUserWebSocket } from "@/hooks/use-user-websocket";
 import { useUserPreferencesStore } from "@/store/user-preferences";
@@ -44,6 +48,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   useUserWebSocket();
   // In the desktop app's frameless window, the top bar is the title bar.
   useDesktopShellFrame();
+  // The shell fills the window and scrolls inside its panes; the document
+  // itself stays put.
+  useAppDocumentLock();
 
   return (
     <SidebarProvider
@@ -151,6 +158,7 @@ function ShellFrame({ children }: { children: ReactNode }) {
         <div className="pe-(--desktop-controls-width,0px)">
           {isDemoMode && <DemoAlert />}
           {workspaceId && <WorkspaceDeletionBanner workspaceId={workspaceId} />}
+          <UpdateBanner />
         </div>
         <main
           ref={setMainColumn}
@@ -162,6 +170,8 @@ function ShellFrame({ children }: { children: ReactNode }) {
         <MobileTabBar />
       </div>
       <CustomizeSidebarDialog />
+      <FeedbackHost />
+      <FocusCustomDialog />
     </ShellContext.Provider>
   );
 }

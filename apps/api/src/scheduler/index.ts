@@ -12,10 +12,14 @@ import {
 import { runFlowAlerts } from "../delivery/flow-alert-job";
 import { runInstanceAuditRetention } from "../instance-admin/audit-retention";
 import { wakeSnoozedIntakeItems } from "../intake/snooze-job";
+import { pollIntakeMailboxes } from "../intake-email/poll-job";
 import { sendNotificationDigests } from "../notification-email/digest-job";
 import { flushNotificationEmails } from "../notification-email/flush";
+import { releaseHeldDeliveries } from "../notification-preferences/quiet-release";
+import { jobFinished, jobStarted, registerJob } from "../observability/jobs";
 import { runCycleRollover } from "../project-automation/cycle-rollover";
 import { runProjectAutomations } from "../project-automation/job";
+import { sendProjectUpdateReminders } from "../project-update/reminder";
 import { runSearchIndexBackfill } from "../search/backfill";
 import { sweepAbandonedUploads } from "../storage/upload-sweep";
 import { runExportCleanup } from "../task-export/cleanup";
@@ -42,12 +46,17 @@ type JobOutcome = { degraded?: boolean };
 // up the monitor without aborting the rest of the work. Unexpected throws are
 // captured as exception events and swallowed so one bad tick can't take down
 // the scheduler via an unhandled rejection.
+// The same outcome feeds the health page and the job metrics
+// (observability/jobs.ts).
 function withCheckIn<T>(name: string, fn: () => Promise<T>) {
+  registerJob(name);
   return async (): Promise<void> => {
     const checkInId = Sentry.captureCheckIn({
       monitorSlug: name,
       status: "in_progress",
     });
+    const startedAt = performance.now();
+    jobStarted(name);
     try {
       const result = await fn();
       const degraded = Boolean(
@@ -58,6 +67,11 @@ function withCheckIn<T>(name: string, fn: () => Promise<T>) {
         monitorSlug: name,
         status: degraded ? "error" : "ok",
       });
+      jobFinished(
+        name,
+        degraded ? "degraded" : "ok",
+        performance.now() - startedAt,
+      );
     } catch (error) {
       Sentry.captureException(error, { tags: { area: "cron", job: name } });
       Sentry.captureCheckIn({
@@ -65,6 +79,7 @@ function withCheckIn<T>(name: string, fn: () => Promise<T>) {
         monitorSlug: name,
         status: "error",
       });
+      jobFinished(name, "failed", performance.now() - startedAt, error);
       console.error(`Cron job ${name} failed`, error);
     }
   };
@@ -124,12 +139,28 @@ export function initializeScheduler(): void {
       withCheckIn("intake-snooze-wakeup", wakeSnoozedIntakeItems),
     ),
   );
+  // Email intake (#8): the instance mailbox and project mailboxes, on one
+  // instance at a time. Without any mailbox each pass is one settings read.
+  jobs.push(
+    new Cron(
+      "1-59/2 * * * *",
+      withCheckIn("intake-email-poll", () => pollIntakeMailboxes()),
+    ),
+  );
   // Batched notification emails (EMAIL_NOTIFICATION_BATCH_WINDOW_SECONDS);
   // runs even with a window of 0 so rows queued before a change still go.
   jobs.push(
     new Cron(
       "* * * * *",
       withCheckIn("notification-email-flush", () => flushNotificationEmails()),
+    ),
+  );
+  // What quiet hours and focus mode held, once they end. Safe on every
+  // instance (row claims with SKIP LOCKED).
+  jobs.push(
+    new Cron(
+      "* * * * *",
+      withCheckIn("quiet-time-release", () => releaseHeldDeliveries()),
     ),
   );
   jobs.push(
@@ -239,6 +270,16 @@ export function initializeScheduler(): void {
       withCheckIn("flow-alerts", () => runFlowAlerts()),
     ),
   );
+  // Opt-in weekly reminders to project leads to post a status update, on
+  // one instance at a time. Minute 37 is free.
+  jobs.push(
+    new Cron(
+      "37 * * * *",
+      withCheckIn("project-update-reminders", () =>
+        sendProjectUpdateReminders(),
+      ),
+    ),
+  );
   // Trash older than TRASH_RETENTION_DAYS, on one instance at a time (C7).
   jobs.push(
     new Cron(
@@ -283,7 +324,7 @@ export function initializeScheduler(): void {
     ),
   );
   console.log(
-    "⏰ Scheduler started (snoozed notifications, batched notification emails, export recovery and the webhook sweep every minute, reminders and intake snooze wake-ups every 5 minutes, notification digests and scheduled repeating tasks every 15 minutes, seat reconciliation, trial reminders, project automations, cycle rollover, flow alerts, export cleanup, webhook retention, audit log, instance audit and API request log retention, the trash purge, the workspace deletion purge, the abandoned-upload sweep and the search index backfill hourly)",
+    "⏰ Scheduler started (snoozed notifications, batched notification emails, quiet-time releases, export recovery and the webhook sweep every minute, reminders and intake snooze wake-ups every 5 minutes, notification digests and scheduled repeating tasks every 15 minutes, seat reconciliation, trial reminders, project automations, cycle rollover, flow alerts, project update reminders, export cleanup, webhook retention, audit log, instance audit and API request log retention, the trash purge, the workspace deletion purge, the abandoned-upload sweep and the search index backfill hourly)",
   );
 }
 

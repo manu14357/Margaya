@@ -48,6 +48,19 @@ export function addUserConnection(userId: string, ws: WSContext) {
   return conn;
 }
 
+/** Open sockets on this instance, for metrics and the health page. */
+export function localConnectionCounts(): { project: number; user: number } {
+  let project = 0;
+  for (const connections of projectConnections.values()) {
+    project += connections.size;
+  }
+  let user = 0;
+  for (const connections of userConnections.values()) {
+    user += connections.size;
+  }
+  return { project, user };
+}
+
 export function removeUserConnection(userId: string, conn: UserConnection) {
   const connections = userConnections.get(userId);
   if (connections) {
@@ -564,6 +577,7 @@ for (const eventName of [
   "custom_field.created",
   "custom_field.updated",
   "custom_field.deleted",
+  "custom_field.reordered",
 ]) {
   subscribeToEvent<{ projectId?: string; initiatorId?: string }>(
     eventName,
@@ -599,6 +613,29 @@ for (const eventName of ["project.features_updated", "project.updated"]) {
       broadcastToProject(
         projectId,
         { type: "PROJECT_UPDATED", projectId },
+        initiatorId,
+      );
+    },
+  );
+}
+
+// Project status updates (project-update/): one hint for any change to the
+// project's updates, comments or reactions; clients refetch the timeline.
+for (const eventName of [
+  "project_update.created",
+  "project_update.updated",
+  "project_update.deleted",
+  "project_update.comment_created",
+  "project_update.comment_deleted",
+  "project_update.reaction_changed",
+]) {
+  subscribeToEvent<{ projectId?: string; initiatorId?: string }>(
+    eventName,
+    async ({ projectId, initiatorId }) => {
+      if (!projectId) return;
+      broadcastToProject(
+        projectId,
+        { type: "PROJECT_UPDATES_CHANGED", projectId },
         initiatorId,
       );
     },
@@ -804,17 +841,45 @@ for (const [eventName, type] of [
 
 // The type and flags (no content) let the recipient's tabs choose a sound;
 // the id lets Margaya Desktop fetch the alert's text
-// (GET /api/notification/{id}/desktop).
+// (GET /api/notification/{id}/desktop). `quiet` keeps the tabs silent in
+// quiet hours and focus mode. When quiet time holds the desktop channel the
+// id stays out, so every Margaya Desktop version only refreshes its badge.
 subscribeToEvent<NotificationCreatedEvent>(
   "notification.created",
   async (data) => {
     if (data.userId) {
       broadcastToUser(data.userId, {
         type: "NOTIFICATION_CREATED",
-        notificationId: data.notificationId ?? null,
+        notificationId: data.desktopHeld ? null : (data.notificationId ?? null),
         notificationType: data.notificationType ?? null,
         reply: data.reply === true,
         needsInput: data.needsInput === true,
+        quiet: data.quiet === true,
+      });
+    }
+  },
+);
+
+// Quiet time ended and held notifications went out: a count (no content)
+// for Margaya Desktop's one summary alert.
+subscribeToEvent<{ userId?: string; count?: number }>(
+  "notification.deliveries_released",
+  async ({ userId, count }) => {
+    if (userId && typeof count === "number" && count > 0) {
+      broadcastToUser(userId, { type: "NOTIFICATIONS_RELEASED", count });
+    }
+  },
+);
+
+// My preferences changed (focus mode, quiet hours, theme...): my other tabs
+// and devices refetch them. The tab that saved skips its own echo.
+subscribeToEvent<{ userId?: string; initiatorId?: string }>(
+  "user.preferences_changed",
+  async ({ userId, initiatorId }) => {
+    if (userId) {
+      broadcastToUser(userId, {
+        type: "PREFERENCES_UPDATED",
+        originWindowId: originWindowId(userId, initiatorId),
       });
     }
   },
@@ -1013,3 +1078,19 @@ subscribeToEvent<{
     );
   }
 });
+
+// A task's custom field value also shows on board cards and backlog rows,
+// which read the project's values in one query. This follows the task's
+// TASK_UPDATED (registered last, so it is queued after it). It names no task,
+// so quick edits to several tasks share one project-level hint.
+subscribeToEvent<{ projectId?: string; initiatorId?: string }>(
+  "task.custom_field_changed",
+  async ({ projectId, initiatorId }) => {
+    if (!projectId) return;
+    broadcastToProject(
+      projectId,
+      { type: "CUSTOM_FIELD_VALUES_UPDATED", projectId },
+      initiatorId,
+    );
+  },
+);

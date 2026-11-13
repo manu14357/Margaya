@@ -37,6 +37,7 @@ export type {
 export type {
   DigestBrief,
   DigestMention,
+  DigestProjectUpdate,
   DigestTask,
   DigestWorkspace,
   NotificationDigestEmailProps,
@@ -46,4 +47,8 @@ export {
   emailLocales,
   resolveEmailLocale,
 } from "./templates/resolve-locale";
-export { sendTestEmail } from "./test-email";
+export {
+  type SmtpVerifyResult,
+  sendTestEmail,
+  verifySmtpConnection,
+} from "./test-email";

@@ -34,6 +34,8 @@ For development, you'll need at minimum:
 - `POSTGRES_DB` - PostgreSQL database name
 - `POSTGRES_USER` - PostgreSQL username
 - `POSTGRES_PASSWORD` - PostgreSQL password
+- `DATABASE_POOL_MAX` - **Optional.** Database connections each API instance keeps open. Default `10`. With several instances, the instance count times this value must stay below the server's `max_connections` (100 by default), leaving one extra connection per instance for startup migrations.
+- `DATABASE_STATEMENT_TIMEOUT_MS` - **Optional.** The longest a single query may run, in milliseconds, before PostgreSQL cancels it. Default `300000` (5 minutes), generous enough for large exports and analytics. `0` leaves the database server's own setting. Startup migrations run on their own connection without a limit, under an advisory lock so that instances starting together migrate one at a time.
 
 If your app uses a device client ID that is not included in the defaults, set `DEVICE_AUTH_CLIENT_IDS` to the full comma-separated list of allowed IDs (including any defaults you still need), so it includes the client ID your app sends to `/api/auth/device/code`.
 
@@ -74,6 +76,7 @@ Margaya supports many optional configuration options including:
 - `DISABLE_PUBLIC_BOARDS` - Set to `true` to turn off published project boards on this server: every public board link and public board API answers 404, and publishing answers 409. Publications and their settings are kept, so setting it back to `false` restores them. Public board writes (comments, reactions, votes, requests) are rate limited per IP, per account and per board; like `API_KEY_RATE_LIMIT_PER_MINUTE` the counts are per API instance unless Redis is configured, in which case they are shared. Set it in Helm through `extraEnv`.
 - `MARGAYA_INSTANCE_NAME` - The name shown on the sign-in screen and on public boards (1 to 80 characters, default `Margaya`). Setting it locks the name in the admin panel.
 - `MARGAYA_PUBLIC_LANDING` - Whether signed-out visitors to the web app's root (`/`) see the product landing page (default `true`). Set it to `false` to send them straight to sign-in, as before. Signed-in users always go to their dashboard. Setting it locks the switch under Settings > Instance > General. Set it in Helm through `extraEnv`.
+- `MARGAYA_FEEDBACK_ENABLED` - In-app feedback (Send feedback and the optional survey), stored on this server for its admins only (default `true`). Set it to `false` to turn it off. Setting it locks the switch under Settings > Instance > Feedback. Set it in Helm through `extraEnv`.
 - `MARGAYA_LOCK_INSTANCE_SETTINGS` - Set to `true` to manage every instance setting with environment variables only: values saved in the admin panel are ignored and the panel is read-only. See "Instance settings" below.
 - `NOTIFICATION_SECRET_ENCRYPTION_KEY` - Key for encrypting the secrets users save in their notification settings (webhook signing secrets, ntfy and Gotify tokens). Any long random value, e.g. `openssl rand -hex 32`. Without it, saving such a secret answers 503 with this variable's name; everything else in notification settings works. Keep it stable: changing it makes stored secrets unreadable, and users must enter them again.
 - `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` / `VAPID_SUBJECT` - Turn on web push, so people can get alerts on a phone or computer from Settings > Account > Notifications. Push is off until both keys are set. Generate them once with `pnpm --filter @margaya/api admin generate-push-keys` (in the Docker image: `node apps/api/dist/cli/admin.js generate-push-keys`). Keep them stable: new keys turn push off on every device until people turn it on again. `VAPID_SUBJECT` is a contact for push services, a `mailto:` address you read or an `https://` URL; it defaults to `MARGAYA_CLIENT_URL` when that is `https://`. Some push services, Apple's among them, may refuse anything else, so the API warns at startup while it's an example address such as `mailto:admin@example.com`. Browsers only offer push over HTTPS. On iPhone and iPad it also needs the app added to the Home Screen. Set them in Helm through `extraEnv`.
@@ -218,6 +221,20 @@ All Sentry integration is opt-in; leave these unset for zero telemetry.
 - `SENTRY_TRACES_SAMPLE_RATE` - Fraction of API requests to trace for performance monitoring, `0`-`1` (default: `0`, tracing off).
 - `MARGAYA_SENTRY_DSN` - Sentry DSN for the **web container** or the bundled image (browser errors, tracing, session replay). Same runtime-placeholder mechanism as `MARGAYA_TURNSTILE_SITE_KEY`: `apps/web/env.sh` fills it in when the container starts. When it is unset, browsers never download the Sentry SDK; when set, the SDK loads right after the app starts, so an error in the first moments of a page load is not reported.
 - `VITE_SENTRY_DSN` - Local dev only. Set in `apps/web/.env` when running `pnpm dev`.
+
+#### Monitoring
+
+All off by default. See the [Monitoring](https://margaya.app/docs/core/installation/monitoring) docs page.
+
+- `MARGAYA_METRICS_ENABLED` - `true` turns on Prometheus metrics. They are served only when a token or a separate port is also set.
+- `MARGAYA_METRICS_TOKEN` - At least 16 characters. Serves `GET /api/metrics` and asks for `Authorization: Bearer <token>` (on the metrics port too).
+- `MARGAYA_METRICS_PORT` - Serves `GET /metrics` on its own port (for example `9464`), for scrapers inside your network. Publish that port only to them.
+- `MARGAYA_METRICS_HOST` - Address the metrics port binds to (default `0.0.0.0`).
+- `MARGAYA_ACCESS_LOG` - `true` writes one JSON line per request: request ID, method, route template, status and duration. Never paths, queries or bodies.
+- `MARGAYA_LOG_FORMAT` - `json` writes every log line as JSON with its time, level and request ID; `text` (default) keeps plain lines.
+- `MARGAYA_UPDATE_CHECK` - `true` checks the public release list once a day and shows instance admins a notice when a newer version is out; `false` keeps it off. Either locks the switch in **Instance → Health**. Nothing about the instance is sent.
+
+Every response carries an `X-Request-Id` header. A safe ID sent by your proxy is kept; otherwise the API makes one. Log lines written for a request and unexpected 500 answers include it.
 
 For a complete list of all environment variables, their descriptions, and configuration options, see the [official documentation](https://margaya.app/docs/core/installation/environment-variables).
 

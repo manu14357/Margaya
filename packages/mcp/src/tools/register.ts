@@ -1086,6 +1086,66 @@ export function registerTools(
     async () => run(() => client.json("/api/notification")),
   );
 
+  // Margaya agents: the same names, inputs and API calls as the HTTP server.
+  // Only the HTTP server answers run_agent with an MCP Tasks handle.
+  server.registerTool(
+    "list_agents",
+    {
+      description:
+        "List a workspace's Margaya agents (AI teammates) with their id, name, role and whether they are on. Needs AI to be on for the workspace.",
+      inputSchema: z.object({ workspaceId: nonEmptyString }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          `/api/ai/agents?workspaceId=${encodeURIComponent(args.workspaceId)}`,
+        ),
+      ),
+  );
+
+  server.registerTool(
+    "run_agent",
+    {
+      description:
+        "Start a Margaya agent on a task with instructions. The run works with at most your rights; risky changes wait for your approval. Returns the run (id, status): follow it with get_agent_run. On the HTTP endpoint (/api/mcp), a client that supports the MCP Tasks extension gets a task handle instead, and answers approvals and questions through tasks/update.",
+      inputSchema: z.object({
+        workspaceId: nonEmptyString,
+        agentId: nonEmptyString,
+        taskId: nonEmptyString.describe("The task the agent works on"),
+        prompt: z.string().trim().min(1).max(4_000),
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(`/api/ai/agents/${encodeURIComponent(args.agentId)}/runs`, {
+          method: "POST",
+          body: JSON.stringify({
+            workspaceId: args.workspaceId,
+            taskId: args.taskId,
+            prompt: args.prompt,
+          }),
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "get_agent_run",
+    {
+      description:
+        "Get an agent run: status (queued, running, awaiting_approval, needs_input, succeeded, failed, cancelled), the agent's question while it needs input, its summary, and every step with its change and approval state.",
+      inputSchema: z.object({
+        workspaceId: nonEmptyString,
+        runId: nonEmptyString,
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          `/api/ai/agents/runs/${encodeURIComponent(args.runId)}?workspaceId=${encodeURIComponent(args.workspaceId)}`,
+        ),
+      ),
+  );
+
   // Cycles, modules and intake (B13 K27): the same file as the API server's.
   // The SDK's overloads don't resolve for a generic schema; this is the shape
   // the planning tools rely on (the SDK validates the arguments first).

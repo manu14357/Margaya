@@ -48,7 +48,7 @@ function requests() {
 describe("MCP planning tools (cycles, modules, intake)", () => {
   it("registers all 33 tools, identical to the stdio package's file", () => {
     for (const name of PLANNING_TOOL_NAMES) expect(tools.has(name)).toBe(true);
-    expect(PLANNING_TOOL_NAMES).toHaveLength(40);
+    expect(PLANNING_TOOL_NAMES).toHaveLength(44);
 
     const root = resolve(__dirname, "../..");
     expect(
@@ -281,6 +281,44 @@ describe("MCP planning tools (cycles, modules, intake)", () => {
         url: "http://api.test/api/automation-rule/p1/r1",
         method: "PATCH",
         body: { enabled: false },
+      },
+    ]);
+  });
+
+  it("lists, drafts and posts project updates, labelling an AI draft", async () => {
+    await call("list_project_updates", { projectId: "p 1", cursor: "c1" });
+    await call("draft_project_update", { projectId: "p1", useAi: false });
+    await call("create_project_update", {
+      projectId: "p1",
+      health: "at_risk",
+      summary: "Two tasks are late.",
+      aiDrafted: true,
+    });
+    const refused = await call("create_project_update", {
+      projectId: "p1",
+      health: "fine",
+      summary: "x",
+    });
+    expect(refused.isError).toBe(true);
+    expect(requests()).toEqual([
+      {
+        url: "http://api.test/api/project-update/project/p%201?cursor=c1",
+        method: "GET",
+        body: undefined,
+      },
+      {
+        url: "http://api.test/api/project-update/project/p1/draft",
+        method: "POST",
+        body: { useAi: false },
+      },
+      {
+        url: "http://api.test/api/project-update/project/p1",
+        method: "POST",
+        body: {
+          health: "at_risk",
+          summary: "Two tasks are late.",
+          aiAssist: { feature: "project_update" },
+        },
       },
     ]);
   });

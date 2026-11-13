@@ -4,8 +4,10 @@ import { useEffect } from "react";
 import { getApiUrl } from "@/fetchers/get-api-url";
 import { agentKeys } from "@/hooks/queries/ai/use-agents";
 import { taskDraftQueryKeys } from "@/hooks/queries/task-draft/task-draft-query-keys";
+import { userPreferencesQueryKey } from "@/hooks/use-preferences-sync";
 import { handleAgentUserMessage } from "@/lib/ai/agent-realtime";
 import { authClient } from "@/lib/auth-client";
+import { handleFeedbackUserMessage } from "@/lib/feedback-realtime";
 import { handleHomeUserMessage } from "@/lib/home-realtime";
 import {
   playForNotification,
@@ -16,6 +18,20 @@ import { onWake, reconnectDelay } from "@/lib/realtime-reconnect";
 import { onSignOut } from "@/lib/sign-out";
 import { handleTaskExportUserMessage } from "@/lib/task-export/realtime";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
+import {
+  type AuthStoreRefresh,
+  handleWorkspaceUserMessage,
+} from "@/lib/workspace-realtime";
+
+// Better Auth's session and organization stores refetch when their signal
+// atoms are notified (the same calls its own client makes after an update).
+const authStoreRefresh: AuthStoreRefresh = {
+  session: () => authClient.$store.notify("$sessionSignal"),
+  workspaces: () => {
+    authClient.$store.notify("$listOrg");
+    authClient.$store.notify("$activeOrgSignal");
+  },
+};
 
 export function getUserWsUrl() {
   const base = getApiUrl("ws");
@@ -35,6 +51,7 @@ export function useUserWebSocket() {
   const { data: session } = authClient.useSession();
   useEffect(() => {
     if (!session?.user?.id) return;
+    const userId: string = session.user.id;
     // Audio may only start after a click or key press on the page.
     installAudioUnlock();
     // The desktop app plays the sound with its own notifications.
@@ -86,10 +103,13 @@ export function useUserWebSocket() {
           const message = JSON.parse(event.data as string) as {
             type?: string;
             workspaceId?: string;
+            userId?: string;
             taskId?: string;
             notificationType?: string | null;
             reply?: boolean;
             needsInput?: boolean;
+            quiet?: boolean;
+            originWindowId?: string | null;
           };
           // New rows, and state changed elsewhere (another tab, a snooze
           // ending): the inbox pages, counts and the dropdown refetch.
@@ -103,6 +123,16 @@ export function useUserWebSocket() {
           // silently.
           if (message.type === "NOTIFICATION_CREATED") {
             void playForNotification(message);
+          }
+          // My preferences changed on another tab or device (focus mode,
+          // quiet hours, theme...): fetch them; the sync applies them.
+          if (
+            message.type === "PREFERENCES_UPDATED" &&
+            message.originWindowId !== windowId
+          ) {
+            queryClient.invalidateQueries({
+              queryKey: userPreferencesQueryKey,
+            });
           }
           if (message.type === "SUBSCRIPTION_UPDATED") {
             if (message.taskId) {
@@ -168,6 +198,14 @@ export function useUserWebSocket() {
           handleTaskExportUserMessage(queryClient, message);
           // Agent runs and approvals (Agent Desk, approval cards).
           handleAgentUserMessage(queryClient, message);
+          // Instance admins: the Feedback page's summary and list.
+          handleFeedbackUserMessage(queryClient, message);
+          // Shared workspace data: profiles, the workspace, projects,
+          // labels, workspace views, favorites and recents.
+          handleWorkspaceUserMessage(queryClient, message, {
+            currentUserId: userId,
+            refresh: authStoreRefresh,
+          });
         } catch {
           // Ignore malformed messages
         }

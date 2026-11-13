@@ -24,6 +24,21 @@ services:
     environment:
       # Attachments and images when no S3 bucket is configured.
       MARGAYA_STORAGE_DIR: ${MARGAYA_STORAGE_DIR:-/app/apps/api/data/uploads}
+      # Monitoring, all off by default (docs: Monitoring). Metrics need a
+      # token (GET /api/metrics) or a port; to scrape the port, also publish
+      # it below, e.g. "127.0.0.1:9464:9464".
+      MARGAYA_METRICS_ENABLED: ${MARGAYA_METRICS_ENABLED:-false}
+      MARGAYA_METRICS_TOKEN: ${MARGAYA_METRICS_TOKEN:-}
+      MARGAYA_METRICS_PORT: ${MARGAYA_METRICS_PORT:-}
+      MARGAYA_ACCESS_LOG: ${MARGAYA_ACCESS_LOG:-false}
+      MARGAYA_LOG_FORMAT: ${MARGAYA_LOG_FORMAT:-text}
+      # Daily check for a newer release, shown to instance admins only. Empty
+      # leaves the switch to Instance > Health.
+      MARGAYA_UPDATE_CHECK: ${MARGAYA_UPDATE_CHECK:-}
+      # Database connections per instance and the longest a query may run
+      # (ms, 0 = the server's setting). Startup migrations have no limit.
+      DATABASE_POOL_MAX: ${DATABASE_POOL_MAX:-10}
+      DATABASE_STATEMENT_TIMEOUT_MS: ${DATABASE_STATEMENT_TIMEOUT_MS:-300000}
     volumes:
       - uploads_data:/app/apps/api/data/uploads
     depends_on:
