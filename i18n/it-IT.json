@@ -487,6 +487,8 @@
 			"failedTitle": "Autorizzazione non riuscita",
 			"loadingSubtitle": "Caricamento della richiesta…",
 			"redirectUri": "URI di reindirizzamento",
+			"metadataHost": "Client pubblicato da",
+			"localRedirect": "Questo client ti riporta a un'app su questo computer. Qualsiasi app sul tuo computer potrebbe rivendicare questo indirizzo, quindi continua solo se hai appena aperto tu stesso il client.",
 			"signIn": "Accedi",
 			"signInSubtitle": "Accedi prima di approvare questo client MCP.",
 			"signInTitle": "Accedi per continuare",
@@ -573,17 +575,265 @@
 		}
 	},
 	"settings": {
+		"feedback": {
+			"send": {
+				"menuItem": "Invia feedback",
+				"title": "Invia feedback",
+				"description": "Di' a chi gestisce questo server cosa funziona e cosa no. Il tuo feedback resta su questo server.",
+				"mood": "Cosa ne pensi di Margaya?",
+				"comment": "Qualcosa da aggiungere? (facoltativo)",
+				"commentPlaceholder": "Cosa è andato bene, cosa ti ha ostacolato, cosa vorresti vedere",
+				"context": "Inviato con il tuo nome, il tipo di pagina in cui ti trovi ({{page}}) e la versione dell'app ({{version}}). Mai il contenuto delle attività.",
+				"submit": "Invia",
+				"cancel": "Annulla",
+				"done": "Fatto",
+				"thanks": "Grazie! Il tuo feedback è arrivato a chi gestisce questo server. Leggono ogni risposta.",
+				"error": "Impossibile inviare il tuo feedback. Riprova."
+			},
+			"survey": {
+				"questionMood": "Come ti trovi con Margaya?",
+				"questionStars": "Come valuteresti Margaya?",
+				"questionNps": "Quanto è probabile che consiglieresti Margaya a un collega?",
+				"comment": "Qualcosa da aggiungere? (facoltativo)",
+				"notNow": "Non ora",
+				"neverAsk": "Non chiedere più",
+				"privacy": "La tua risposta resta su questo server, con il tuo nome. Puoi cambiarlo in Account → Preferenze.",
+				"thanksTitle": "Grazie",
+				"thanks": "Ti abbiamo ascoltato. La tua risposta aiuta chi gestisce questo server a decidere cosa migliorare.",
+				"whatsNew": "Scopri le novità"
+			},
+			"scale": {
+				"veryUnhappy": "Molto insoddisfatto",
+				"unhappy": "Insoddisfatto",
+				"neutral": "Neutrale",
+				"happy": "Soddisfatto",
+				"veryHappy": "Molto soddisfatto",
+				"stars_one": "{{count}} stella",
+				"stars_many": "{{count}} stelle",
+				"stars_other": "{{count}} stelle",
+				"npsScore_one": "{{count}} su 10",
+				"npsScore_many": "{{count}} su 10",
+				"npsScore_other": "{{count}} su 10",
+				"npsLow": "Per niente probabile",
+				"npsHigh": "Estremamente probabile",
+				"thumbsUp": "Utile",
+				"thumbsDown": "Non utile"
+			},
+			"pageTypes": {
+				"home": "Pagina iniziale",
+				"inbox": "Posta in arrivo",
+				"myWork": "Il mio lavoro",
+				"board": "Vista board",
+				"list": "Elenco",
+				"timeline": "Cronologia",
+				"calendar": "Calendario",
+				"task": "Attività",
+				"cycles": "Cicli",
+				"modules": "Moduli",
+				"views": "Viste",
+				"intake": "Richieste",
+				"pages": "Pagine",
+				"analytics": "Analisi",
+				"settings": "Impostazioni",
+				"other": "Altro"
+			},
+			"features": {
+				"cycles": "Cicli",
+				"modules": "Moduli",
+				"pages": "Pagine",
+				"views": "Viste",
+				"intake": "Richieste",
+				"analytics": "Analisi"
+			},
+			"mine": {
+				"title": "Feedback e sondaggi",
+				"description": "Ciò che invii resta su questo server e solo i suoi amministratori possono leggerlo, insieme al tuo nome e alla tua email.",
+				"survey": "Sondaggio occasionale",
+				"surveyDescription": "Ogni tanto, una piccola scheda nell'angolo fa una domanda. Disattivala per non ricevere mai domande.",
+				"send": "Invia feedback",
+				"sendDescription": "Valuta Margaya o lascia un commento quando vuoi. Lo trovi anche nel menu Aiuto e nella palette comandi.",
+				"data": "Il tuo feedback",
+				"dataDescription": "Scarica una copia di tutto ciò che hai inviato, oppure eliminalo. Anche l'eliminazione del tuo account lo elimina.",
+				"download": "Scarica",
+				"downloadError": "Impossibile scaricare il tuo feedback. Riprova.",
+				"delete": "Elimina tutto",
+				"deleteTitle": "Eliminare tutto il tuo feedback?",
+				"deleteDescription": "Tutto ciò che hai inviato viene rimosso da questo server. L'operazione non può essere annullata.",
+				"deleteConfirm": "Elimina",
+				"deleted_one": "{{count}} risposta eliminata",
+				"deleted_many": "{{count}} risposte eliminate",
+				"deleted_other": "{{count}} risposte eliminate",
+				"deleteError": "Impossibile eliminare il tuo feedback. Riprova."
+			},
+			"admin": {
+				"nav": "Feedback degli utenti",
+				"title": "Feedback degli utenti",
+				"subtitle": "Cosa pensano di Margaya le persone di questo server. Viene archiviato qui e non viene mai inviato altrove.",
+				"settingsTitle": "Invia feedback",
+				"settingsDescription": "Tutti possono valutare Margaya o lasciare un commento dal menu Aiuto, dalla palette comandi o dalle proprie preferenze.",
+				"enabled": "Consenti il feedback",
+				"enabledHint": "Disattivandolo si nascondono «Invia feedback» e il sondaggio. Le risposte già inviate vengono conservate.",
+				"surveyTitle": "Sondaggio occasionale",
+				"surveyDescription": "Una piccola scheda nell'angolo, mai un pop-up. Non chiede mai nei primi 7 giorni di una persona, mentre scrive o ha una finestra di dialogo aperta, per 30 giorni dopo che l'ha chiusa, né dopo «Non chiedere più».",
+				"surveyEnabled": "Chiedi ogni tanto",
+				"surveyEnabledHint": "Chiede quando viene raggiunto uno dei criteri qui sotto, poi non più finché non è trascorso l'intervallo.",
+				"surveyNeedsFeedback": "Non ha effetto finché il feedback è disattivato.",
+				"format": "Scala",
+				"formatHint": "Le faccine sono adatte a come si sentono le persone, le stelle a una valutazione rapida, e la scala da 0 a 10 fornisce un Net Promoter Score.",
+				"formats": {
+					"faces3": "3 faccine",
+					"faces5": "5 faccine",
+					"stars": "5 stelle",
+					"nps": "Da 0 a 10 (NPS)",
+					"thumbs": "Pollici (funzionalità)"
+				},
+				"tasksCompleted": "Dopo attività completate",
+				"tasksCompletedHint": "Chiedi dopo che una persona ha completato questo numero di attività dall'ultimo sondaggio. 0 disattiva questo criterio.",
+				"tasksUnit": "attività",
+				"activeDays": "Dopo giorni di attività",
+				"activeDaysHint": "Chiedi dopo che una persona ha usato Margaya per questo numero di giorni. 0 disattiva questo criterio.",
+				"daysUnit": "giorni",
+				"interval": "Chiedi al massimo ogni",
+				"intervalHint": "Il tempo minimo tra due sondaggi per la stessa persona, da 30 a 365 giorni.",
+				"save": "Salva",
+				"summaryTitle": "Riepilogo",
+				"scale": "Scala",
+				"period": "Periodo",
+				"lastDays_one": "Ultimo {{count}} giorno",
+				"lastDays_many": "Ultimi {{count}} giorni",
+				"lastDays_other": "Ultimi {{count}} giorni",
+				"answers": "Risposte",
+				"average": "Media",
+				"outOf": "{{value}} / {{max}}",
+				"satisfaction": "Soddisfatti",
+				"nps": "NPS",
+				"comments": "Commenti",
+				"none": "–",
+				"bySource": "Tutte le scale: {{general}} da «Invia feedback», {{survey}} dal sondaggio, {{feature}} dalle domande sulle funzionalità.",
+				"summaryEmpty": "Ancora nessuna risposta su questa scala in questo periodo.",
+				"distribution": "Distribuzione",
+				"trend": "Risposte soddisfatte a settimana",
+				"trendNps": "NPS a settimana",
+				"week": "Settimana",
+				"responsesTitle": "Risposte",
+				"source": "Origine",
+				"allSources": "Tutte le origini",
+				"allScales": "Tutte le scale",
+				"kinds": {
+					"general": "Invia feedback",
+					"survey": "Sondaggio",
+					"feature": "Domanda su una funzionalità"
+				},
+				"commentsOnly": "Con un commento",
+				"search": "Cerca commenti o persone",
+				"responsesEmpty": "Ancora nessun feedback. Le risposte compaiono qui man mano che le persone le inviano.",
+				"commentOnly": "Solo commento",
+				"desktop": "App desktop",
+				"loadMore": "Carica altro",
+				"loadError": "Impossibile caricare il feedback.",
+				"retry": "Riprova",
+				"exportCsv": "Esporta CSV",
+				"exportError": "Impossibile esportare il feedback. Riprova.",
+				"delete": "Elimina risposta",
+				"deleteError": "Impossibile eliminare. Riprova.",
+				"purge": "Elimina i vecchi",
+				"purgeTitle": "Elimina feedback",
+				"purgeDescription": "Le risposte vengono rimosse definitivamente da questo server. L'eliminazione viene registrata nel registro di audit.",
+				"purgeWhich": "Quali risposte",
+				"purgeOlder_one": "Più vecchie di {{count}} giorno",
+				"purgeOlder_many": "Più vecchie di {{count}} giorni",
+				"purgeOlder_other": "Più vecchie di {{count}} giorni",
+				"purgeAll": "Tutte le risposte",
+				"purgeConfirm": "Elimina",
+				"purged_one": "{{count}} risposta eliminata",
+				"purged_many": "{{count}} risposte eliminate",
+				"purged_other": "{{count}} risposte eliminate",
+				"cancel": "Annulla",
+				"auditDeleted": "Feedback eliminato"
+			}
+		},
+		"calendarFeed": {
+			"title": "Iscriviti dal calendario",
+			"description": "Vedi le tue date di Margaya nella tua app calendario. I feed sono in sola lettura e si aggiornano circa una volta all'ora.",
+			"menuItem": "Iscriviti dal calendario",
+			"timezoneNote": "Le attività compaiono come eventi di un giorno intero, nei giorni calcolati nel fuso orario del tuo account, o in quello del workspace se non ne hai scelto uno.",
+			"loadError": "Impossibile caricare i tuoi feed di calendario. Riprova più tardi.",
+			"hiddenProject": "Un progetto che non puoi più vedere",
+			"privacy": "Chiunque abbia questo link può vedere i titoli e le date che contiene. Tienilo privato, e crea un nuovo link o revocalo se viene diffuso.",
+			"myTasks": {
+				"label": "Le mie attività",
+				"description": "Le attività assegnate a te che hanno una data di inizio o di scadenza."
+			},
+			"planning": {
+				"label": "Traguardi e cicli",
+				"description": "Traguardi e date dei cicli di tutti i progetti che puoi vedere in questo workspace."
+			},
+			"project": {
+				"settingsDescription": "Ogni attività con data, traguardo e ciclo di questo progetto.",
+				"dialogDescription": "Segui ogni attività con data, traguardo e ciclo di {{project}} nella tua app calendario.",
+				"manageHint": "Puoi vedere e revocare tutti i tuoi link di calendario in Impostazioni, in Account → Preferenze."
+			},
+			"calendarName": {
+				"myTasks": "Le mie attività · {{workspace}}",
+				"planning": "Traguardi e cicli · {{workspace}}",
+				"project": "{{project}} · {{workspace}}"
+			},
+			"status": {
+				"none": "Ancora nessun link",
+				"active": "Link {{start}}…, creato il {{date}}",
+				"lastUsed": "letto l'ultima volta da un calendario {{when}}",
+				"neverUsed": "non ancora letto da un calendario"
+			},
+			"actions": {
+				"create": "Crea link",
+				"createFor": "Crea un link di calendario per {{name}}",
+				"regenerate": "Nuovo link",
+				"regenerateFor": "Crea un nuovo link di calendario per {{name}}",
+				"revoke": "Revoca",
+				"revokeFor": "Revoca il link di calendario per {{name}}",
+				"copy": "Copia",
+				"copied": "Copiato",
+				"open": "Apri nell'app calendario",
+				"done": "Fatto"
+			},
+			"link": {
+				"title": "Il tuo link di calendario",
+				"label": "Link di iscrizione",
+				"once": "Copialo ora: viene mostrato una sola volta. Se lo perdi, crea un nuovo link."
+			},
+			"howTo": {
+				"title": "Come aggiungerlo",
+				"step1": "Copia il link.",
+				"step2": "Nella tua app calendario, scegli di aggiungere un calendario o di iscriverti a un calendario da URL.",
+				"step3": "Incolla il link. Le modifiche compaiono al successivo aggiornamento dell'app."
+			},
+			"regenerateConfirm": {
+				"title": "Creare un nuovo link?",
+				"description": "Il link attuale smette subito di funzionare. I calendari che lo usano non si aggiornano più finché non aggiungi il nuovo link.",
+				"confirm": "Crea nuovo link"
+			},
+			"revokeConfirm": {
+				"title": "Revocare questo link di calendario?",
+				"description": "Il link smette subito di funzionare e i calendari che lo usano non si aggiornano più.",
+				"confirm": "Revoca link"
+			},
+			"toast": {
+				"created": "Link di calendario creato",
+				"revoked": "Link di calendario revocato",
+				"copied": "Link copiato",
+				"copyError": "Impossibile copiare il link. Selezionalo e copialo manualmente.",
+				"error": "Impossibile aggiornare il link di calendario"
+			}
+		},
 		"account": "Account",
-		"information": "Informazioni",
+		"information": "Profilo",
 		"notifications": "Notifiche",
 		"preferences": "Preferenze",
 		"apiKeys": "Chiavi API",
 		"informationPage": {
-			"pageTitle": "Informazioni personali",
-			"title": "Informazioni personali",
-			"subtitle": "Gestisci i tuoi dati personali e le informazioni dell'account.",
-			"sectionTitle": "Informazioni sull'account",
-			"sectionSubtitle": "Gestisci il tuo profilo e i dettagli dell'account.",
+			"pageTitle": "Profilo",
+			"title": "Profilo",
+			"subtitle": "Il tuo nome, la tua immagine e l'email con cui accedi.",
 			"profilePicture": "Immagine profilo",
 			"fullName": "Nome completo",
 			"fullNamePlaceholder": "Inserisci il tuo nome",
@@ -623,14 +873,12 @@
 		"notificationsPage": {
 			"pageTitle": "Notifiche",
 			"title": "Notifiche",
-			"subtitle": "Scegli come Margaya consegna le notifiche del tuo account e quali canali utilizzare.",
+			"subtitle": "Scegli di cosa ti avvisa Margaya, dove ti raggiunge e con quale suono.",
 			"statusConnected": "Connesso",
 			"statusPaused": "In pausa",
 			"emailTitle": "Email",
 			"emailDescription": "Usa la tua email dell'account come destinazione per le notifiche.",
-			"accountEmailLabel": "Email account",
 			"accountEmailNoAddress": "Nessuna email account disponibile",
-			"accountEmailHint": "La consegna via email va sempre all'email dell'account con cui hai effettuato l'accesso.",
 			"saveChanges": "Salva modifiche",
 			"disconnect": "Disconnetti",
 			"ntfyTitle": "ntfy",
@@ -731,7 +979,7 @@
 				"title": "Suoni",
 				"description": "Riproduci un suono quando arriva una notifica mentre Margaya è aperto nel tuo browser.",
 				"enabled": "Riproduci suoni",
-				"enabledDescription": "Le tue scelte sui suoni sono legate al tuo account e valgono in ogni browser.",
+				"enabledDescription": "Le tue scelte sui suoni sono legate al tuo account e valgono su ogni dispositivo.",
 				"volume": "Volume dei suoni",
 				"volumeValue": "{{value}}%",
 				"categoryMentions": "Menzioni e assegnazioni",
@@ -751,14 +999,38 @@
 				"soundMarimba": "Marimba",
 				"preview": "Riproduci {{sound}}",
 				"quietHours": "Ore di silenzio",
-				"quietHoursDescription": "Nessun suono tra questi orari, nel fuso orario del tuo account.",
+				"quietHoursDescription": "Ogni giorno, tra questi orari, le notifiche sono in pausa e silenziose.",
 				"quietFrom": "Dalle",
 				"quietTo": "Alle",
 				"deviceMute": "Disattiva i suoni su questo dispositivo",
 				"deviceMuteDescription": "Silenzia solo questo browser; gli altri tuoi dispositivi continuano a riprodurre i suoni.",
 				"previewFailed": "Il browser non ha riprodotto il suono. Controlla che questa scheda o il sito non siano silenziati.",
 				"desktopDescription": "Nell'app desktop, una notifica riproduce il suono di Margaya che hai scelto qui, al tuo volume, quando queste impostazioni lo prevedono. «Non disturbare» lo silenzia.",
-				"deviceMuteDescriptionDesktop": "Silenzia solo questa app desktop; gli altri tuoi dispositivi continuano a riprodurre i suoni."
+				"deviceMuteDescriptionDesktop": "Silenzia solo questa app desktop; gli altri tuoi dispositivi continuano a riprodurre i suoni.",
+				"previewFailedDesktop": "Il suono non è stato riprodotto. Controlla che l'audio del computer non sia disattivato."
+			},
+			"quiet": {
+				"title": "Ore di silenzio e concentrazione",
+				"description": "Metti in pausa le notifiche per un po', o ogni notte. La posta in arrivo continua a riempirsi; nulla emette suoni.",
+				"focus": "Modalità concentrazione",
+				"focusDescription": "Metti in pausa le notifiche da adesso. Disponibile anche nel menu dell'account e nella palette comandi.",
+				"timeZone": "Gli orari sono nel fuso orario del tuo account, {{zone}}.",
+				"noTimeZone": "Il tuo account non ha ancora un fuso orario, quindi le ore di silenzio seguono l'ora UTC.",
+				"useTimeZone": "Usa {{zone}}",
+				"channels": "Trattieni questi canali",
+				"channelsDescription": "Mentre le notifiche sono in pausa, questi canali restano in attesa. I canali non selezionati continuano ad arrivare, senza suono.",
+				"channelPush": "Notifiche push",
+				"channelEmail": "Posta elettronica",
+				"channelDesktop": "App desktop",
+				"channelNtfy": "ntfy",
+				"channelGotify": "Gotify",
+				"channelWebhook": "Chiamate webhook",
+				"bypass": "Lascia passare queste",
+				"bypassDescription": "Queste arrivano subito, con il loro suono, anche quando le notifiche sono in pausa.",
+				"bypassMentions": "Menzioni dirette",
+				"bypassUrgent": "Attività assegnate a te con priorità urgente",
+				"bypassApprovals": "Agenti in attesa della tua approvazione o risposta",
+				"summaryNote": "Al termine della pausa, ogni canale trattenuto riceve un unico riepilogo: una sola email con tutto, un solo messaggio push, ntfy o Gotify, un solo avviso desktop, e ogni payload webhook trattenuto in ordine."
 			},
 			"pushTitle": "Notifiche push",
 			"pushDescription": "Avvisi sul telefono o sul computer, anche quando Margaya è chiuso. «Notificami su» decide cosa viene inviato e una regola del workspace qui sotto può limitarlo.",
@@ -783,7 +1055,9 @@
 			"pushChannelHintEnabled": "Invia le notifiche del workspace corrispondenti ai tuoi dispositivi.",
 			"pushChannelHintDisabled": "Attiva prima le notifiche push su un dispositivo.",
 			"pushLoadFailed": "Impossibile caricare le impostazioni delle notifiche push. Ricarica questa pagina per riprovare.",
-			"pushDesktopApp": "L'app desktop mostra le notifiche su questo dispositivo, quindi qui le notifiche push del browser non servono."
+			"emailSendsTo": "Vengono inviate a {{email}}.",
+			"pushDesktopTitle": "Notifiche desktop",
+			"pushDesktopDescription": "Margaya Desktop mostra le notifiche su questo computer, anche quando la sua finestra è chiusa. Per disattivarle o cambiarne l'aspetto, usa le impostazioni di notifica del tuo sistema."
 		},
 		"preferencesPage": {
 			"title": "Preferenze",
@@ -830,11 +1104,9 @@
 			"estimatesDescription": "Mostra le stime delle attività sulle card della board"
 		},
 		"developerPage": {
-			"pageTitle": "Impostazioni sviluppatore",
-			"title": "Impostazioni sviluppatore",
-			"subtitle": "Gestisci le tue chiavi API e risorse per sviluppatori.",
-			"apiKeysCardTitle": "Chiavi API",
-			"apiKeysCardDescription": "Crea e gestisci chiavi API per l'accesso programmatico a Margaya.",
+			"pageTitle": "Chiavi API",
+			"title": "Chiavi API",
+			"subtitle": "Le chiavi permettono a script, integrazioni e client MCP di usare l'API di Margaya a tuo nome.",
 			"createApiKey": "Crea chiave API",
 			"unnamedKey": "Chiave senza nome"
 		},
@@ -903,7 +1175,7 @@
 		},
 		"workspaceGeneral": {
 			"pageTitle": "Impostazioni generali",
-			"title": "Impostazioni generali",
+			"title": "Generale",
 			"subtitle": "Gestisci nome e descrizione del tuo workspace.",
 			"workspaceInfoTitle": "Informazioni sul workspace",
 			"workspaceInfoSubtitle": "Configura i dettagli e le preferenze del tuo workspace.",
@@ -1289,7 +1561,7 @@
 		},
 		"projectGeneral": {
 			"pageTitle": "Impostazioni del progetto",
-			"title": "Impostazioni generali",
+			"title": "Generale",
 			"subtitle": "Gestisci nome, chiave, icona e descrizione del tuo progetto.",
 			"projectInfoTitle": "Informazioni sul progetto",
 			"projectInfoSubtitle": "Configura i dettagli e le preferenze del tuo progetto.",
@@ -1336,7 +1608,7 @@
 		},
 		"projectIntegrations": {
 			"pageTitle": "Integrazioni del progetto",
-			"title": "Integrazioni del progetto",
+			"title": "Integrazioni",
 			"subtitle": "Connetti il tuo progetto con strumenti e servizi esterni per ottimizzare il flusso di lavoro.",
 			"githubSectionTitle": "Integrazione GitHub",
 			"githubSectionSubtitle": "Sincronizza le attività con le issue di GitHub e abilita la sincronizzazione bidirezionale.",
@@ -1567,11 +1839,114 @@
 				"taskPriorityChanged": "Cambiamenti di priorità",
 				"taskTitleChanged": "Cambiamenti di titolo",
 				"taskDescriptionChanged": "Cambiamenti di descrizione",
-				"taskCommentCreated": "Nuovi commenti"
+				"taskCommentCreated": "Nuovi commenti",
+				"taskDueDateChanged": "Cambiamenti della data di scadenza",
+				"intakeDecision": "Decisioni sulle richieste (accettata, rifiutata, duplicato)",
+				"projectUpdate": "Aggiornamenti dei progetti"
 			},
+			"buttonsHint": "Con l'app Slack del workspace connessa, i post ricevono i pulsanti «Assegna a me», «Cambia stato» e «Apri». Crea questo webhook dalla stessa app Slack perché i pulsanti raggiungano Margaya.",
 			"connect": "Connetti Slack",
 			"saveChanges": "Salva modifiche",
 			"disconnect": "Disconnetti"
+		},
+		"slackApp": {
+			"workspaceNav": "App Slack",
+			"accountNav": "Slack",
+			"title": "App Slack",
+			"description": "Cerca, acquisisci e aggiorna attività da Slack. Ogni azione viene eseguita con l'account Margaya collegato della persona stessa, con i suoi permessi.",
+			"noPermission": "Solo chi può gestire le impostazioni del workspace può configurare l'app Slack.",
+			"loadError": "Impossibile caricare le impostazioni dell'app Slack. Riprova.",
+			"statusTitle": "Connessione",
+			"unknownTeam": "Workspace Slack (non ancora verificato)",
+			"modeSocket": "Modalità Socket",
+			"modeHttp": "Richieste HTTP",
+			"modeSocketHint": "Consigliata. Margaya apre una connessione in uscita verso Slack, quindi funziona dietro una VPN o un reverse proxy senza URL pubblico.",
+			"modeHttpHint": "Slack invia richieste firmate a questo server. Serve un indirizzo HTTPS pubblico raggiungibile da Slack.",
+			"active": "Attiva",
+			"paused": "In pausa",
+			"unreadable": "I token salvati non sono leggibili, probabilmente perché AUTH_SECRET è cambiato. Inseriscili di nuovo.",
+			"lastError": "Ultimo errore da Slack: {{code}}",
+			"test": "Verifica connessione",
+			"activeLabel": "App Slack attiva",
+			"activeHint": "Se disattivata, Margaya ignora comandi, scorciatoie e pulsanti provenienti da Slack.",
+			"notConnected": "Slack non è connesso",
+			"notConnectedHint": "Segui i passaggi qui sotto per creare l'app Slack e connetterla.",
+			"setupTitle": "Configurazione",
+			"setupHint": "Creare l'app Slack richiede qualche minuto. Ti serve il permesso di installare app nel tuo workspace Slack.",
+			"step1": "1. Scegli come Slack raggiunge Margaya",
+			"step1Hint": "Puoi cambiare in seguito; Slack avrà poi bisogno del manifest corrispondente.",
+			"step2": "2. Crea l'app Slack da questo manifest",
+			"step2Hint": "In Slack, scegli «Create New App», poi «From a manifest», seleziona il tuo workspace Slack e incolla questo testo. Poi installa l'app nel tuo workspace.",
+			"manifestLabel": "Manifest dell'app Slack",
+			"copyManifest": "Copia il manifest",
+			"copy": "Copia",
+			"copied": "Copiato",
+			"copyFailed": "Impossibile copiare. Seleziona il testo e copialo manualmente.",
+			"openSlack": "Apri le app Slack",
+			"noUnfurlDomain": "Le anteprime dei link sono escluse: Slack non può espandere localhost o indirizzi IP. Imposta MARGAYA_CLIENT_URL su un nome di dominio per ottenerle.",
+			"eventsUrl": "URL di richiesta",
+			"eventsUrlHint": "È già nel manifest. Slack lo verifica quando salvi l'app, quindi questo server deve essere raggiungibile via HTTPS.",
+			"step3": "3. Incolla i token",
+			"step3SocketHint": "Token OAuth dell'utente bot (Bot User OAuth Token): OAuth & Permissions. Token a livello di app: Basic Information › App-Level Tokens, con lo scope connections:write.",
+			"step3HttpHint": "Token OAuth dell'utente bot (Bot User OAuth Token): OAuth & Permissions. Segreto di firma (Signing Secret): Basic Information › App Credentials.",
+			"botToken": "Token OAuth dell'utente bot",
+			"botTokenPlaceholder": "xoxb-…",
+			"appToken": "Token a livello di app",
+			"appTokenPlaceholder": "xapp-…",
+			"signingSecret": "Segreto di firma",
+			"signingSecretPlaceholder": "Incolla il segreto di firma",
+			"secretsHint": "Salvati in forma crittografata e mai più mostrati. Lascia un campo vuoto per mantenere il valore salvato.",
+			"connectAndTest": "Connetti e verifica",
+			"saveAndTest": "Salva e verifica",
+			"step4": "4. Collega gli account",
+			"step4Hint": "Ogni persona esegue una volta /margaya link in Slack e conferma in Margaya. Fino ad allora, Slack le chiede di collegarsi e non esegue nulla per lei.",
+			"optionsTitle": "Opzioni",
+			"defaultProject": "Progetto predefinito",
+			"defaultProjectHint": "Dove /margaya add crea un'attività quando il testo non inizia con una chiave di progetto.",
+			"noDefaultProject": "Nessuno",
+			"expandKeys": "Anteprima delle chiavi delle attività nei messaggi",
+			"expandKeysHint": "Risponde in un thread quando un messaggio cita chiavi come WEB-12. Richiede gli scope dei messaggi, quindi copia di nuovo il manifest dopo averlo attivato.",
+			"dangerTitle": "Disconnessione",
+			"disconnect": "Disconnetti l'app Slack",
+			"disconnectHint": "Rimuove i token salvati. Gli account collegati vengono conservati per quando ti riconnetti.",
+			"checks": {
+				"botToken": "Token del bot",
+				"appToken": "Token a livello di app",
+				"signingSecret": "Segreto di firma",
+				"passed": "Riuscito",
+				"failed": "Non riuscito"
+			},
+			"toast": {
+				"saved": "App Slack salvata",
+				"saveError": "Impossibile salvare l'app Slack",
+				"testPassed": "La connessione Slack funziona",
+				"testFailed": "Verifica della connessione Slack non riuscita",
+				"disconnected": "App Slack disconnessa",
+				"unlinked": "Account Slack scollegato"
+			},
+			"accountTitle": "Slack",
+			"accountDescription": "Account Slack che agiscono a tuo nome. I loro comandi, scorciatoie e pulsanti vengono eseguiti con i tuoi permessi.",
+			"linkedTitle": "Account Slack collegati",
+			"linksLoadError": "Impossibile caricare i tuoi collegamenti Slack. Riprova.",
+			"noLinks": "Nessun account Slack collegato",
+			"noLinksHint": "Esegui /margaya link in Slack per collegarne uno.",
+			"linkRow": "{{team}} · {{workspace}}",
+			"unlink": "Scollega",
+			"link": {
+				"invalidTitle": "Questo link non funziona",
+				"invalid": "È scaduto o non è valido. Esegui /margaya link in Slack per ottenerne uno nuovo.",
+				"alreadyTitle": "Già collegato",
+				"already": "Questo account Slack agisce già a tuo nome in {{workspace}}.",
+				"confirmTitle": "Collega il tuo account Slack",
+				"confirmBody": "L'utente Slack {{slackUser}} di {{team}} agirà a tuo nome in {{workspace}}.",
+				"confirmWarning": "Continua solo se quell'account Slack è tuo: i suoi comandi, scorciatoie e pulsanti verranno eseguiti con i tuoi permessi.",
+				"movesLink": "Questo account Slack è ora collegato a un'altra persona; confermando, il collegamento passa a te.",
+				"you": "(tu)",
+				"confirm": "Collega account",
+				"cancel": "Annulla",
+				"linked": "Account Slack collegato",
+				"linkError": "Impossibile collegare l'account Slack"
+			}
 		},
 		"discordIntegration": {
 			"validation": {
@@ -2141,6 +2516,10 @@
 				"ai": {
 					"title": "IA",
 					"description": "Riepiloghi, suggerimenti e altro aiuto dell'IA per questo progetto. Se disattivata, il progetto resta completamente escluso dall'IA."
+				},
+				"updates": {
+					"title": "Aggiornamenti",
+					"description": "Pubblica aggiornamenti di stato datati con un indicatore di andamento, preparati a partire dai dati in tempo reale del progetto."
 				}
 			},
 			"loadError": "Impossibile caricare questo progetto",
@@ -2849,6 +3228,10 @@
 			"billing": "Fatturazione",
 			"label": "Sezioni delle impostazioni",
 			"noProjectsHint": "Crea prima un progetto. Le sue impostazioni compariranno qui.",
+			"groupData": "Dati",
+			"groupServer": "Configurazione server",
+			"aiSettings": "Impostazioni IA",
+			"pageLabel": "Pagina delle impostazioni",
 			"pickProject": "Scegli un progetto per vederne le impostazioni."
 		},
 		"projectAccess": {
@@ -2906,6 +3289,9 @@
 			},
 			"sessions": {
 				"confirmOthersDescription": "Tutti gli altri dispositivi connessi al tuo account dovranno accedere di nuovo. Questo dispositivo resta connesso.",
+				"showAll": "Mostra tutte le sessioni ({{count}})",
+				"showFewer": "Mostra meno",
+				"desktopApp": "Margaya Desktop",
 				"confirmOthersTitle": "Disconnettere tutte le altre sessioni?",
 				"deviceLabel": "{{browser}} su {{os}}",
 				"error": "Impossibile disconnettere la sessione",
@@ -2927,16 +3313,16 @@
 			"title": "Sicurezza"
 		},
 		"timezone": {
-			"accountHint": "Usato per i promemoria, i riepiloghi via email e i giorni su cui contano i filtri delle attività e le analisi. Gli orari sullo schermo restano nel fuso orario del tuo browser.",
+			"accountHint": "Usato per i promemoria, i riepiloghi via email e i giorni su cui contano i filtri delle attività e le analisi. Gli orari sullo schermo restano nel fuso orario di questo dispositivo.",
 			"accountLabel": "Fuso orario",
-			"automatic": "Automatico (browser: {{zone}})",
+			"automatic": "Automatico (questo dispositivo: {{zone}})",
 			"loadError": "Impossibile caricare il fuso orario. Ricarica la pagina per riprovare.",
 			"noResults": "Nessun fuso orario trovato",
 			"placeholder": "Scegli un fuso orario",
 			"search": "Cerca fusi orari",
 			"toastError": "Aggiornamento del fuso orario non riuscito",
 			"toastUpdated": "Fuso orario aggiornato",
-			"useBrowser": "Usa {{zone}}",
+			"useBrowser": "Usa il fuso orario di questo dispositivo ({{zone}})",
 			"workspaceHint": "Definisce \"oggi\" per cicli, automazioni e analisi. I workspace esistenti partono da UTC.",
 			"workspaceLabel": "Fuso orario"
 		},
@@ -3370,6 +3756,97 @@
 			"title": "Continua nel browser",
 			"billing": "Completa l'operazione nella finestra del browser appena aperta, poi torna su Margaya. Il tuo piano si aggiorna al tuo ritorno.",
 			"githubApp": "Completa l'operazione su GitHub nel browser, poi torna su Margaya e verifica di nuovo l'installazione."
+		},
+		"save": "Salva",
+		"unsavedChanges": "Modifiche non salvate",
+		"readOnly": {
+			"workspace": "Puoi vedere queste impostazioni, ma il tuo ruolo non ti consente di modificarle. Chiedi a un proprietario o a un amministratore del workspace.",
+			"project": "Puoi vedere le impostazioni di questo progetto, ma il tuo ruolo non ti consente di modificarle. Chiedi a un proprietario o a un amministratore del workspace."
+		},
+		"projectIntake": {
+			"title": "Fonti delle richieste",
+			"pageTitle": "Fonti delle richieste",
+			"subtitle": "Consenti alle persone di inviare richieste a questo progetto via email o tramite un modulo pubblico. Tutto ciò che inviano arriva in Richieste per essere esaminato.",
+			"noPermission": "Solo chi può condividere i progetti può gestire le fonti delle richieste.",
+			"loadError": "Impossibile caricare queste impostazioni.",
+			"retry": "Riprova",
+			"saved": "Impostazioni salvate",
+			"saveError": "Impossibile salvare le impostazioni",
+			"copy": "Copia",
+			"copied": "Copiato",
+			"open": "Apri",
+			"email": {
+				"title": "Posta elettronica",
+				"description": "Le email inviate o inoltrate all'indirizzo del progetto diventano richieste. Le risposte dello stesso mittente vengono aggiunte come commenti e gli allegati vengono conservati.",
+				"enabled": "Accetta richieste via email",
+				"enabledHint": "Vengono ignorati le risposte automatiche, i messaggi di mancato recapito, le email delle mailing list e i messaggi contrassegnati come spam.",
+				"turnedOn": "Ricezione via email attivata",
+				"turnedOff": "Ricezione via email disattivata",
+				"address": "Indirizzo di inoltro",
+				"addressHint": "Invia o inoltra email a questo indirizzo. Chiunque lo conosca può inviare richieste.",
+				"addressNone": "L'indirizzo compare quando la ricezione via email è attiva e il server dispone di una casella per le richieste.",
+				"rotate": "Nuovo indirizzo",
+				"rotated": "Nuovo indirizzo creato. Quello vecchio non funziona più.",
+				"noInstanceAddress": "Questo server non ha ancora un indirizzo per le richieste. Chiedi al tuo amministratore di configurarne uno, oppure collega qui sotto una casella di posta dedicata a questo progetto.",
+				"allowed": "Accetta solo questi domini",
+				"allowedHint": "Un dominio per riga. Lascia vuoto per accettare qualsiasi mittente. I sottodomini sono inclusi.",
+				"blocked": "Non accettare mai questi domini",
+				"blockedHint": "Un dominio per riga. I domini bloccati prevalgono sull'elenco qui sopra.",
+				"protection": "I messaggi oltre {{size}} MB vengono ignorati. Vengono conservati fino a {{files}} allegati da {{fileSize}} MB ciascuno. Ogni mittente può inviare 10 messaggi all'ora."
+			},
+			"mailbox": {
+				"title": "Casella di posta del progetto",
+				"description": "Facoltativo. Margaya controlla questa casella ogni due minuti e trasforma ogni messaggio non letto in una richiesta per questo progetto. Funziona anche dietro un firewall, perché è Margaya a connettersi al server di posta.",
+				"enabled": "Controlla questa casella",
+				"enabledHint": "Inserisci il server e i dati di accesso, salva, poi attiva questa opzione.",
+				"lastPolled": "Ultimo controllo: {{time}}.",
+				"notPolled": "Non ancora controllata.",
+				"lastError": "Ultimo controllo non riuscito: {{error}}",
+				"host": "Server IMAP",
+				"security": "Crittografia",
+				"securityHint": "Le connessioni sono sempre crittografate.",
+				"tls": "TLS (porta 993)",
+				"starttls": "STARTTLS (porta 143)",
+				"port": "Porta",
+				"portHint": "Lascia vuoto per usare il valore predefinito.",
+				"portInvalid": "Inserisci una porta tra 1 e 65535.",
+				"username": "Nome utente",
+				"password": "Password della casella",
+				"passwordSaved": "È salvata una password. Digitane una nuova per sostituirla.",
+				"folder": "Cartella",
+				"test": "Verifica connessione",
+				"testOk_one": "Connesso. {{count}} messaggio non letto.",
+				"testOk_many": "Connesso. {{count}} messaggi non letti.",
+				"testOk_other": "Connesso. {{count}} messaggi non letti."
+			},
+			"form": {
+				"title": "Modulo di richiesta",
+				"description": "Una pagina pubblica dove chiunque abbia il link può inviare una richiesta. Mostra solo i testi e i campi che scegli qui, mai il tuo workspace o le tue attività.",
+				"enabled": "Apri il modulo",
+				"enabledHint": "I bot vengono tenuti fuori con un campo trappola nascosto e limiti di frequenza, senza captcha.",
+				"opened": "Modulo aperto",
+				"closed": "Modulo chiuso",
+				"sharingOff": "La condivisione pubblica è disattivata su questo server, quindi il modulo non può essere aperto.",
+				"link": "Link del modulo",
+				"linkHint": "Condividi questo link. Chiunque lo abbia può inviare richieste.",
+				"rotate": "Nuovo link",
+				"rotated": "Nuovo link creato. Quello vecchio non funziona più.",
+				"heading": "Intestazione",
+				"headingHint": "Mostrata in cima al modulo.",
+				"intro": "Introduzione",
+				"descriptionField": "Descrizione",
+				"emailField": "Indirizzo email",
+				"emailFieldHint": "Visibile solo a chi smista le richieste, per poter dare seguito.",
+				"nameField": "Nome",
+				"modeOptional": "Facoltativo",
+				"modeRequired": "Obbligatorio",
+				"modeOff": "Nascosto",
+				"customFields": "Campi personalizzati",
+				"customFieldsHint": "I loro nomi e le loro opzioni diventano visibili nel modulo.",
+				"noCustomFields": "Questo progetto non ha campi personalizzati.",
+				"confirmation": "Messaggio di conferma",
+				"confirmationHint": "Mostrato dopo che qualcuno ha inviato una richiesta."
+			}
 		}
 	},
 	"navigation": {
@@ -3583,6 +4060,7 @@
 		"projectNav": {
 			"cycles": "Cicli",
 			"intake": "Richieste",
+			"updates": "Aggiornamenti",
 			"label": "Sezioni progetto",
 			"modules": "Moduli",
 			"pages": "Pagine",
@@ -3634,6 +4112,27 @@
 			"whatsNew": "Novità",
 			"sourceCode": "Codice sorgente",
 			"workspaceAnalytics": "Workspace"
+		},
+		"focus": {
+			"menuLabel": "Metti in pausa le notifiche",
+			"paletteLabel": "Modalità concentrazione: metti in pausa le notifiche",
+			"preset30m": "Per 30 minuti",
+			"preset1h": "Per 1 ora",
+			"preset2h": "Per 2 ore",
+			"presetTomorrow": "Fino a domani",
+			"custom": "Fino a un orario…",
+			"resume": "Riattiva le notifiche",
+			"focusUntil": "Concentrazione fino a {{time}}",
+			"quietUntil": "Ore di silenzio fino a {{time}}",
+			"settings": "Impostazioni delle ore di silenzio",
+			"toastStarted": "Notifiche in pausa fino a {{time}}",
+			"toastResumed": "Notifiche riattivate",
+			"customTitle": "Metti in pausa le notifiche fino a",
+			"customDescription": "La posta in arrivo continua a riempirsi. Le menzioni e le altre eccezioni che hai scelto arrivano comunque.",
+			"customLabel": "Fino a",
+			"customSave": "Metti in pausa",
+			"customInvalid": "Scegli un orario entro i prossimi 7 giorni.",
+			"cancel": "Annulla"
 		},
 		"desktopWindow": {
 			"minimize": "Riduci a icona",
@@ -5573,7 +6072,6 @@
 			"createProject": "Crea progetto",
 			"title": "Titolo",
 			"progress": "Avanzamento",
-			"targetDate": "Data obiettivo",
 			"dueDate": "Data scadenza",
 			"status": "Stato",
 			"emptyTitle": "Nessun progetto ancora",
@@ -8569,6 +9067,7 @@
 			"me": "Io",
 			"priority": "Priorità",
 			"remove": "Rimuovi filtro",
+			"source": "Origine",
 			"status": "Stato",
 			"submittedBy": "Inviata da"
 		},
@@ -8663,6 +9162,25 @@
 			"hintMove": "Sposta",
 			"hintOpen": "Apri attività",
 			"queueLabel": "Coda di smistamento"
+		},
+		"publicForm": {
+			"defaultTitle": "Invia una richiesta",
+			"titleLabel": "Titolo",
+			"descriptionLabel": "Descrizione",
+			"nameLabel": "Il tuo nome",
+			"emailLabel": "La tua email",
+			"emailHint": "Usata solo per dare seguito a questa richiesta.",
+			"choose": "Scegli…",
+			"requiredNote": "I campi contrassegnati con * sono obbligatori.",
+			"submit": "Invia richiesta",
+			"missing": "Compila i campi obbligatori e controlla il tuo indirizzo email.",
+			"tooMany": "Troppe richieste da questa rete. Riprova più tardi.",
+			"failed": "Non è stato possibile inviare la richiesta. Riprova.",
+			"sentTitle": "Richiesta inviata",
+			"sentBody": "Grazie. La tua richiesta è stata ricevuta e verrà esaminata.",
+			"another": "Invia un'altra richiesta",
+			"notFoundTitle": "Modulo non disponibile",
+			"notFoundBody": "Questo modulo non esiste o è chiuso. Verifica il link con la persona che l'ha condiviso."
 		}
 	},
 	"stickies": {
@@ -9728,6 +10246,120 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "Istanza · {{page}}",
+		"health": {
+			"title": "Stato del sistema",
+			"subtitle": "Controlla i servizi, i processi in background e gli errori recenti di questo server.",
+			"recheck": "Controlla di nuovo",
+			"summary": "Riepilogo",
+			"version": "Versione",
+			"uptime": "Tempo di attività",
+			"uptimeDays": "{{days}} g {{hours}} h",
+			"uptimeHours": "{{hours}} h e {{minutes}} min",
+			"startedAt": "Avviato",
+			"node": "Node.js",
+			"latency": "{{ms}} ms",
+			"status": {
+				"ok": "Funzionante",
+				"warning": "Avviso",
+				"error": "Problema",
+				"off": "Disattivato"
+			},
+			"migrations": {
+				"title": "Migrazioni del database",
+				"ok_one": "Aggiornato: {{count}} migrazione applicata.",
+				"ok_many": "Aggiornato: {{count}} migrazioni applicate.",
+				"ok_other": "Aggiornato: {{count}} migrazioni applicate.",
+				"pending_one": "{{count}} migrazione non è ancora stata eseguita. Riavvia il server per applicarla.",
+				"pending_many": "{{count}} migrazioni non sono ancora state eseguite. Riavvia il server per applicarle.",
+				"pending_other": "{{count}} migrazioni non sono ancora state eseguite. Riavvia il server per applicarle.",
+				"unknown": "Impossibile leggere lo stato delle migrazioni. I dettagli sono nel log del server."
+			},
+			"checks": {
+				"title": "Servizi",
+				"description": "Ogni controllo viene eseguito ora, con un limite di 5 secondi. Le risposte non includono mai host, percorsi o password.",
+				"database": "Banca dati",
+				"redis": "Redis",
+				"storage": "Archiviazione dei file",
+				"email": "Posta elettronica",
+				"ai": "Provider IA"
+			},
+			"codes": {
+				"ok": "Risponde.",
+				"unreachable": "Non raggiungibile. I dettagli sono nel log del server.",
+				"unavailable": "Configurato, ma non risponde. Gli aggiornamenti in tempo reale tra server sono in pausa.",
+				"timeout": "Non ha risposto entro il limite di tempo.",
+				"failed": "Il controllo non è riuscito. I dettagli sono nel log del server.",
+				"redisDisabled": "Non configurato. Un singolo server non ne ha bisogno.",
+				"aiDisabled": "L'IA è disattivata su questo server.",
+				"emailNotConfigured": "L'email in uscita non è configurata.",
+				"aiNotConfigured": "L'IA è attiva, ma non sono impostati né una chiave del provider né un endpoint.",
+				"s3": "L'archiviazione compatibile con S3 risponde.",
+				"local": "L'archivio locale integrato è scrivibile.",
+				"storageOff": "I caricamenti sono disattivati: non c'è un'archiviazione S3 e l'archivio locale è disabilitato.",
+				"denied": "Il servizio di archiviazione ha rifiutato il controllo. I caricamenti possono comunque funzionare se la policy del bucket li consente.",
+				"notWritable": "La cartella dell'archivio locale non è scrivibile.",
+				"recentErrors_one": "{{count}} chiamata non è riuscita nelle ultime 24 ore.",
+				"recentErrors_many": "{{count}} chiamate non sono riuscite nelle ultime 24 ore.",
+				"recentErrors_other": "{{count}} chiamate non sono riuscite nelle ultime 24 ore.",
+				"smtpOk": "Accesso al server di posta riuscito. Nessun messaggio è stato inviato.",
+				"smtpAuth": "Il server di posta ha rifiutato il nome utente o la password.",
+				"smtpConnection": "Impossibile connettersi al server di posta.",
+				"smtpTls": "La connessione sicura al server di posta non è riuscita.",
+				"smtpUnknown": "Il controllo del server di posta non è riuscito. I dettagli sono nel log del server."
+			},
+			"activity": {
+				"title": "Code e connessioni",
+				"description": "Le code riguardano l'intera istanza. Le connessioni riguardano solo questo server.",
+				"emailBacklog": "Email in attesa",
+				"webhookPending": "Webhook in attesa",
+				"webhookFailed": "Webhook non riusciti (24 h)",
+				"boardSockets": "Connessioni alle board",
+				"userSockets": "Connessioni all'app",
+				"pageRooms": "Pagine in modifica condivisa",
+				"metrics": "Metriche Prometheus: {{state}}",
+				"metricsOff": "disattivate",
+				"metricsToken": "attive, su /api/metrics con un token",
+				"metricsPort": "attive, su /metrics alla porta {{port}}",
+				"metricsNoEndpoint": "attive, ma non sono impostati né un token né una porta"
+			},
+			"jobs": {
+				"title": "Processi in background",
+				"description": "Processi pianificati su questo server dal suo avvio.",
+				"empty": "Nessun processo in background è stato pianificato su questo server.",
+				"name": "Processo",
+				"lastRun": "Ultima esecuzione",
+				"outcome": "Ultimo risultato",
+				"runs": "Esecuzioni",
+				"failures": "Errori",
+				"running": "In esecuzione",
+				"notRun": "Non ancora eseguito"
+			},
+			"failures": {
+				"title": "Errori recenti",
+				"description": "I processi e le chiamate IA non riusciti più recenti su questo server dal suo avvio. Gli errori dei webhook sono nella pagina «Generale».",
+				"empty": "Nessun errore dall'avvio di questo server.",
+				"sourceJob": "Processo",
+				"sourceAi": "IA",
+				"sourceEmail": "Posta elettronica",
+				"seeLog": "Alcuni elementi non sono riusciti. I dettagli sono nel log del server."
+			}
+		},
+		"update": {
+			"title": "Avviso di aggiornamento",
+			"label": "Cerca nuove versioni",
+			"hint": "Una volta al giorno, questo server legge l'elenco pubblico delle versioni e avvisa gli amministratori dell'istanza quando esce una versione più recente. Non invia nulla su questa istanza.",
+			"off": "Disattivato. Questo server non cerca mai aggiornamenti.",
+			"notChecked": "Non ancora controllato.",
+			"upToDate": "Aggiornato: {{current}} è la versione più recente.",
+			"available": "È disponibile la versione {{latest}}. Questo server esegue {{current}}.",
+			"checkedAt": "Controllato il {{time}}.",
+			"errorUnreachable": "L'elenco delle versioni non è raggiungibile. Il server riproverà entro un'ora.",
+			"errorInvalid": "L'elenco delle versioni ha restituito una risposta che questo server non riesce a leggere.",
+			"releaseNotes": "Note di rilascio",
+			"dismiss": "Ignora",
+			"bannerTitle": "Margaya {{version}} è disponibile",
+			"bannerDescription": "Questo server esegue {{current}}. Solo gli amministratori dell'istanza vedono questo avviso."
+		},
 		"nav": {
 			"admins": "Amministratori",
 			"authentication": "Autenticazione",
@@ -9735,7 +10367,8 @@
 			"general": "Generale",
 			"publicBoards": "Board pubbliche",
 			"workspaces": "Workspace",
-			"ai": "IA"
+			"ai": "IA",
+			"health": "Stato del sistema"
 		},
 		"lockedCallout": "Queste impostazioni sono gestite con variabili d'ambiente su questo server. Le modifiche qui sono disabilitate.",
 		"source": {
@@ -9796,7 +10429,7 @@
 			},
 			"deliveryFailures": {
 				"title": "Consegne non riuscite di recente",
-				"description": "Webhook dei workspace che hanno esaurito i tentativi negli ultimi 7 giorni. Gli errori delle email e dei processi in background sono solo nei log del server.",
+				"description": "Webhook dei workspace che hanno esaurito i tentativi negli ultimi 7 giorni. I processi in background e le chiamate IA non riusciti sono nella pagina «Stato del sistema».",
 				"empty": "Nessuna consegna non riuscita negli ultimi 7 giorni.",
 				"when": "Quando",
 				"workspace": "Workspace",
@@ -10384,6 +11017,19 @@
 		}
 	},
 	"ai": {
+		"provenance": {
+			"label": "Generato dall'IA",
+			"edited": "Modificato da {{name}}, generato in origine dall'IA",
+			"someone": "qualcuno",
+			"byAgent": "Scritto dall'agente {{name}}",
+			"unknownAgent": "un agente eliminato",
+			"byFeature": "Scritto con l'IA ({{feature}}) e accettato da una persona",
+			"byAssist": "Scritto con l'IA e accettato da una persona",
+			"model": "Modello: {{model}}"
+		},
+		"disclosure": {
+			"chat": "Stai chattando con un assistente IA, non con una persona."
+		},
 		"rules": {
 			"title": "Regola da una descrizione",
 			"description": "Descrivi un'automazione a parole tue. L'IA la trasforma in una regola normale che puoi modificare, provare sulla cronologia recente e salvare. Le regole salvate funzionano senza IA.",
@@ -11085,6 +11731,7 @@
 			"triage": "Suggerimenti di smistamento",
 			"translate": "Traduzioni",
 			"brief": "Sintesi per gli stakeholder",
+			"project_update": "Bozze degli aggiornamenti di progetto",
 			"agent_run": "Agenti",
 			"rule_compiler": "Regole di automazione",
 			"capture": "Cattura come attività",
@@ -11314,7 +11961,7 @@
 			"webSearchUnavailable": "L'istanza non ha una ricerca web configurata.",
 			"webSearchLocalOnly": "Non usata finché l'IA resta sui modelli locali.",
 			"storeConversations": "Conserva la cronologia della chat sul server",
-			"storeConversationsHint": "Le conversazioni di ogni persona vengono salvate nel workspace, così può riaprirle da qualsiasi dispositivo. Disattivato: restano solo nel browser di ciascuno.",
+			"storeConversationsHint": "Le conversazioni di ogni persona vengono salvate nel workspace, così può riaprirle da qualsiasi dispositivo. Disattivato: restano solo sul dispositivo di ciascuno.",
 			"allowAutopilot": "Consenti il Pilota automatico",
 			"allowAutopilotHint": "La modalità Crea può applicare modifiche senza conferma. Ogni modifica viene comunque registrata e può essere annullata.",
 			"storesPrompts": "Prompt conservati"
@@ -11411,6 +12058,10 @@
 				"link_tasks": "Collega attività",
 				"delete_task": "Elimina attività",
 				"bulk_move_status": "Cambia lo stato di più attività",
+				"create_task": "Crea attività",
+				"set_task_cycle": "Imposta ciclo",
+				"set_task_modules": "Imposta moduli",
+				"set_custom_field": "Imposta campo personalizzato",
 				"ask_person": "Fai una domanda",
 				"web_search": "Ricerca web",
 				"connector": "Servizio esterno: {{tool}}",
@@ -11446,6 +12097,7 @@
 				"after": "Dopo",
 				"openPage": "Apri pagina",
 				"openSubtask": "Apri sottoattività",
+				"openTask": "Apri attività",
 				"openLinked": "Apri attività collegata",
 				"empty": "(vuoto)",
 				"fields": {
@@ -11462,7 +12114,12 @@
 					"delete": "Sposta nel cestino",
 					"connectorCall": "Chiamata a {{connector}}",
 					"pageContent": "Contenuto della pagina",
-					"pageSection": "Sezione aggiunta"
+					"pageSection": "Sezione aggiunta",
+					"task": "Nuova attività",
+					"cycle": "Ciclo",
+					"modulesAdded": "Aggiunta ai moduli",
+					"modulesRemoved": "Rimossa dai moduli",
+					"customField": "Campo personalizzato {{field}}"
 				},
 				"undoPageError": "Impossibile annullare questa modifica. La pagina è cambiata nel frattempo; ripristina invece una versione precedente dalla sua cronologia."
 			},
@@ -11893,6 +12550,123 @@
 			"noAccess": "Ti serve il permesso per usare l'IA in questo workspace."
 		}
 	},
+	"projectUpdates": {
+		"documentTitle": "Aggiornamenti · {{project}}",
+		"newUpdate": "Nuovo aggiornamento",
+		"loadError": "Impossibile caricare gli aggiornamenti.",
+		"retry": "Riprova",
+		"loadMore": "Mostra aggiornamenti meno recenti",
+		"empty": {
+			"title": "Ancora nessun aggiornamento",
+			"description": "Pubblica un breve aggiornamento di stato così tutti sanno come sta andando il progetto."
+		},
+		"health": {
+			"on_track": "In linea",
+			"at_risk": "A rischio",
+			"off_track": "Fuori rotta"
+		},
+		"edited": "modificato",
+		"actions": "Azioni sull'aggiornamento",
+		"edit": "Modifica",
+		"delete": "Elimina",
+		"deleted": "Aggiornamento eliminato",
+		"deletedUser": "Utente eliminato",
+		"cardLabel": "Aggiornamento di {{name}}",
+		"deleteDialog": {
+			"title": "Eliminare questo aggiornamento?",
+			"description": "L'aggiornamento, i suoi commenti e le sue reazioni vengono rimossi per tutti.",
+			"error": "Impossibile eliminare l'aggiornamento."
+		},
+		"fields": {
+			"health": "Andamento",
+			"summary": "Riepilogo",
+			"summaryPlaceholder": "Come sta andando il progetto?",
+			"highlights": "Punti salienti",
+			"blockers": "Blocchi e rischi",
+			"nextSteps": "Prossimi passi"
+		},
+		"composer": {
+			"title": "Nuovo aggiornamento del progetto",
+			"editTitle": "Modifica aggiornamento del progetto",
+			"draftWithAi": "Bozza con l'IA",
+			"draftFromData": "Bozza dai dati del progetto",
+			"aiFallback": "L'IA non è disponibile al momento, quindi la bozza usa un modello predefinito.",
+			"draftError": "Impossibile preparare la bozza dell'aggiornamento.",
+			"factsLine": "Dai dati in tempo reale: {{completed}} completate, {{moved}} spostate, {{overdue}} in ritardo, {{blocked}} bloccate.",
+			"cancel": "Annulla",
+			"post": "Pubblica aggiornamento",
+			"save": "Salva",
+			"posted": "Aggiornamento pubblicato",
+			"saved": "Aggiornamento salvato",
+			"saveError": "Impossibile salvare l'aggiornamento."
+		},
+		"facts": {
+			"summary": "Dati alla pubblicazione: {{percent}}% completato · {{completed}} completate · {{moved}} spostate · {{overdue}} in ritardo · {{blocked}} bloccate",
+			"cycle": "{{name}}: {{percent}}% completato ({{completed}} su {{total}})",
+			"forecast": "Previsione: 85% di probabilità di finire entro il {{date}}",
+			"overdue": "In ritardo",
+			"blocked": "Bloccate",
+			"completed": "Completate"
+		},
+		"comments": {
+			"toggle_one": "{{count}} commento",
+			"toggle_many": "{{count}} commenti",
+			"toggle_other": "{{count}} commenti",
+			"label": "Commento",
+			"placeholder": "Scrivi un commento…",
+			"send": "Commenta",
+			"delete": "Elimina commento",
+			"error": "Impossibile aggiungere il commento.",
+			"loadError": "Impossibile caricare i commenti."
+		},
+		"follow": {
+			"follow": "Segui gli aggiornamenti",
+			"unfollow": "Smetti di seguire gli aggiornamenti",
+			"error": "Impossibile cambiare il monitoraggio degli aggiornamenti."
+		},
+		"reminder": {
+			"label": "Promemoria settimanale al responsabile del progetto",
+			"weekday": "Giorno del promemoria",
+			"noLead": "Imposta un responsabile del progetto perché lo riceva.",
+			"error": "Impossibile salvare il promemoria."
+		},
+		"widget": {
+			"title": "Aggiornamenti dei progetti",
+			"empty": "Ancora nessun aggiornamento dei progetti.",
+			"error": "Impossibile caricare gli aggiornamenti dei progetti."
+		},
+		"template": {
+			"summary": "Andamento del progetto: {{health}}. {{percent}}% completato ({{completed}} attività su {{total}}), {{open}} aperte.",
+			"changesSinceUpdate": "Dall'ultimo aggiornamento: {{completed}} completate, {{moved}} spostate.",
+			"changesLastWeek": "Negli ultimi 7 giorni: {{completed}} completate, {{moved}} spostate.",
+			"forecast": "La previsione indica l'85% di probabilità di finire entro il {{date}}.",
+			"cycle": "{{name}}: {{percent}}% completato ({{completed}} su {{total}}), termina il {{date}}",
+			"overdue_one": "{{count}} attività in ritardo:",
+			"overdue_many": "{{count}} attività in ritardo:",
+			"overdue_other": "{{count}} attività in ritardo:",
+			"blocked_one": "{{count}} attività bloccata:",
+			"blocked_many": "{{count}} attività bloccate:",
+			"blocked_other": "{{count}} attività bloccate:",
+			"more_one": "e {{count}} altra",
+			"more_many": "e altre {{count}}",
+			"more_other": "e altre {{count}}"
+		},
+		"notifications": {
+			"posted": {
+				"title": "{{authorName}} ha pubblicato un aggiornamento su {{projectName}}",
+				"verb": "ha pubblicato un aggiornamento su {{projectName}}"
+			},
+			"comment": {
+				"title": "{{commenterName}} ha commentato un aggiornamento di {{projectName}}",
+				"verb": "ha commentato un aggiornamento di {{projectName}}"
+			},
+			"reminder": {
+				"title": "È ora di pubblicare un aggiornamento su {{projectName}}",
+				"content": "Racconta come sta andando il progetto con un breve aggiornamento di stato."
+			},
+			"open": "Apri gli aggiornamenti"
+		}
+	},
 	"insight": {
 		"close": "Chiudi",
 		"retry": "Riprova",
@@ -12141,7 +12915,13 @@
 			"followingHeading": "Modifiche alle attività che segui",
 			"changes_one": "{{count}} modifica",
 			"changes_many": "{{count}} modifiche",
-			"changes_other": "{{count}} modifiche"
+			"changes_other": "{{count}} modifiche",
+			"projectUpdatesHeading": "Aggiornamenti dei progetti che segui",
+			"health": {
+				"on_track": "In linea",
+				"at_risk": "A rischio",
+				"off_track": "Fuori rotta"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} aggiornamento su {{title}}",
@@ -12196,6 +12976,12 @@
 		"notificationText": {
 			"commentWithoutPreview": "Nuovo commento su {{taskTitle}}",
 			"pushFixedLine": "Apri Margaya per vedere i dettagli."
+		},
+		"quietSummary": {
+			"title": "Le notifiche sono di nuovo attive",
+			"body_one": "{{count}} notifica è arrivata durante la pausa.",
+			"body_many": "{{count}} notifiche sono arrivate durante la pausa.",
+			"body_other": "{{count}} notifiche sono arrivate durante la pausa."
 		}
 	},
 	"download": {
@@ -12434,7 +13220,11 @@
 				"updateInstall": "Riavvia per aggiornare",
 				"updating": "Aggiornamento in corso…",
 				"updatePackage": "È disponibile la versione {{version}}. Scarica il nuovo pacchetto per aggiornare.",
-				"updateDownload": "Scarica"
+				"updateDownload": "Scarica",
+				"openAtLoginHint": "Avvia Margaya in background quando accedi a questo computer.",
+				"updatesLabel": "Aggiornamenti",
+				"diagnosticsLabel": "Diagnostica",
+				"diagnosticsHint": "Copia la versione dell'app, l'elenco dei tuoi server e le ultime righe del log per una segnalazione di bug. I token di accesso non vengono mai inclusi."
 			},
 			"quickAdd": {
 				"title": "Aggiunta rapida",
@@ -12453,6 +13243,10 @@
 			"downloads": {
 				"finished": "{{file}} scaricato",
 				"failed": "Impossibile scaricare {{file}}"
+			},
+			"notifications": {
+				"releasedTitle": "Le notifiche sono di nuovo attive",
+				"releasedBody": "Notifiche arrivate durante la pausa: {{count}}"
 			},
 			"menu": {
 				"about": "Informazioni su Margaya",

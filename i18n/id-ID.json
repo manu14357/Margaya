@@ -487,6 +487,8 @@
 			"failedTitle": "Otorisasi gagal",
 			"loadingSubtitle": "Memuat permintaan…",
 			"redirectUri": "URI pengalihan",
+			"metadataHost": "Klien diterbitkan oleh",
+			"localRedirect": "Klien ini mengarahkan Anda kembali ke aplikasi di komputer ini. Aplikasi apa pun di komputer Anda dapat mengklaim alamat ini, jadi lanjutkan hanya jika Anda sendiri yang baru saja membuka klien tersebut.",
 			"signIn": "Masuk",
 			"signInSubtitle": "Masuk sebelum menyetujui klien MCP ini.",
 			"signInTitle": "Masuk untuk melanjutkan",
@@ -573,17 +575,253 @@
 		}
 	},
 	"settings": {
+		"feedback": {
+			"send": {
+				"menuItem": "Kirim masukan",
+				"title": "Kirim masukan",
+				"description": "Beri tahu pengelola server ini apa yang berfungsi dan apa yang tidak. Masukan Anda tetap berada di server ini.",
+				"mood": "Bagaimana perasaan Anda tentang Margaya?",
+				"comment": "Ada yang ingin ditambahkan? (opsional)",
+				"commentPlaceholder": "Apa yang berjalan baik, apa yang menghambat Anda, apa yang ingin Anda lihat",
+				"context": "Dikirim beserta nama Anda, jenis halaman yang sedang Anda buka ({{page}}), dan versi aplikasi ({{version}}). Tidak pernah menyertakan isi tugas.",
+				"submit": "Kirim",
+				"cancel": "Batal",
+				"done": "Selesai",
+				"thanks": "Terima kasih! Masukan Anda sudah sampai ke pengelola server ini. Mereka membaca setiap jawaban.",
+				"error": "Masukan Anda tidak dapat dikirim. Coba lagi."
+			},
+			"survey": {
+				"questionMood": "Bagaimana Margaya bekerja untuk Anda?",
+				"questionStars": "Berapa nilai yang Anda berikan untuk Margaya?",
+				"questionNps": "Seberapa mungkin Anda merekomendasikan Margaya kepada rekan kerja?",
+				"comment": "Ada yang ingin ditambahkan? (opsional)",
+				"notNow": "Lain kali",
+				"neverAsk": "Jangan tanya lagi",
+				"privacy": "Jawaban Anda tetap berada di server ini, beserta nama Anda. Ubah ini di Akun → Preferensi.",
+				"thanksTitle": "Terima kasih",
+				"thanks": "Kami mendengar Anda. Jawaban Anda membantu pengelola server ini memutuskan apa yang perlu ditingkatkan.",
+				"whatsNew": "Lihat yang baru"
+			},
+			"scale": {
+				"veryUnhappy": "Sangat tidak senang",
+				"unhappy": "Tidak senang",
+				"neutral": "Biasa saja",
+				"happy": "Senang",
+				"veryHappy": "Sangat senang",
+				"stars_other": "{{count}} bintang",
+				"npsScore_other": "{{count}} dari 10",
+				"npsLow": "Sama sekali tidak mungkin",
+				"npsHigh": "Sangat mungkin",
+				"thumbsUp": "Membantu",
+				"thumbsDown": "Tidak membantu"
+			},
+			"pageTypes": {
+				"home": "Beranda",
+				"inbox": "Kotak masuk",
+				"myWork": "Pekerjaan saya",
+				"board": "Papan",
+				"list": "Daftar",
+				"timeline": "Lini masa",
+				"calendar": "Kalender",
+				"task": "Tugas",
+				"cycles": "Siklus",
+				"modules": "Modul",
+				"views": "Tampilan",
+				"intake": "Penerimaan",
+				"pages": "Halaman",
+				"analytics": "Analitik",
+				"settings": "Pengaturan",
+				"other": "Lainnya"
+			},
+			"features": {
+				"cycles": "Siklus",
+				"modules": "Modul",
+				"pages": "Halaman",
+				"views": "Tampilan",
+				"intake": "Penerimaan",
+				"analytics": "Analitik"
+			},
+			"mine": {
+				"title": "Masukan",
+				"description": "Apa yang Anda kirim tetap berada di server ini dan hanya adminnya yang dapat membacanya, beserta nama dan email Anda.",
+				"survey": "Survei sesekali",
+				"surveyDescription": "Sesekali, kartu kecil di sudut layar mengajukan satu pertanyaan. Nonaktifkan agar tidak pernah ditanya.",
+				"send": "Kirim masukan",
+				"sendDescription": "Nilai Margaya atau tinggalkan komentar kapan saja. Fitur ini juga ada di menu Bantuan dan palet perintah.",
+				"data": "Masukan Anda",
+				"dataDescription": "Unduh salinan semua yang pernah Anda kirim, atau hapus. Menghapus akun Anda juga akan menghapusnya.",
+				"download": "Unduh",
+				"downloadError": "Masukan Anda tidak dapat diunduh. Coba lagi.",
+				"delete": "Hapus semua",
+				"deleteTitle": "Hapus semua masukan Anda?",
+				"deleteDescription": "Semua yang pernah Anda kirim akan dihapus dari server ini. Tindakan ini tidak dapat diurungkan.",
+				"deleteConfirm": "Hapus",
+				"deleted_other": "{{count}} jawaban dihapus",
+				"deleteError": "Masukan Anda tidak dapat dihapus. Coba lagi."
+			},
+			"admin": {
+				"nav": "Masukan",
+				"title": "Masukan",
+				"subtitle": "Pendapat orang-orang di server ini tentang Margaya. Disimpan di sini dan tidak pernah dikirim ke tempat lain.",
+				"settingsTitle": "Kirim masukan",
+				"settingsDescription": "Semua orang dapat menilai Margaya atau meninggalkan komentar dari menu Bantuan, palet perintah, atau preferensi mereka.",
+				"enabled": "Izinkan masukan",
+				"enabledHint": "Menonaktifkannya akan menyembunyikan Kirim masukan dan survei. Jawaban yang sudah dikirim tetap disimpan.",
+				"surveyTitle": "Survei sesekali",
+				"surveyDescription": "Kartu kecil di sudut layar, tidak pernah berupa pop-up. Survei tidak pernah muncul pada 7 hari pertama seseorang, saat mereka mengetik atau membuka dialog, selama 30 hari setelah mereka menutupnya, atau setelah Jangan tanya lagi.",
+				"surveyEnabled": "Tanyakan sesekali",
+				"surveyEnabledHint": "Bertanya setelah salah satu pemicu di bawah tercapai, lalu tidak bertanya lagi sampai intervalnya berlalu.",
+				"surveyNeedsFeedback": "Tidak berpengaruh selama masukan dinonaktifkan.",
+				"format": "Skala",
+				"formatHint": "Wajah cocok untuk perasaan, bintang untuk penilaian cepat, dan 0–10 menghasilkan Net Promoter Score.",
+				"formats": {
+					"faces3": "3 wajah",
+					"faces5": "5 wajah",
+					"stars": "5 bintang",
+					"nps": "0–10 (NPS)",
+					"thumbs": "Jempol (fitur)"
+				},
+				"tasksCompleted": "Setelah tugas diselesaikan",
+				"tasksCompletedHint": "Tanyakan setelah seseorang menyelesaikan sekian tugas sejak survei terakhir bertanya. 0 menonaktifkan pemicu ini.",
+				"tasksUnit": "tugas",
+				"activeDays": "Setelah hari aktif",
+				"activeDaysHint": "Tanyakan setelah seseorang menggunakan Margaya selama sekian hari. 0 menonaktifkan pemicu ini.",
+				"daysUnit": "hari",
+				"interval": "Tanyakan paling sering setiap",
+				"intervalHint": "Jeda terpendek antara dua survei untuk satu orang, 30 sampai 365 hari.",
+				"save": "Simpan",
+				"summaryTitle": "Ringkasan",
+				"scale": "Skala",
+				"period": "Periode",
+				"lastDays_other": "{{count}} hari terakhir",
+				"answers": "Jawaban",
+				"average": "Rata-rata",
+				"outOf": "{{value}} / {{max}}",
+				"satisfaction": "Puas",
+				"nps": "NPS",
+				"comments": "Komentar",
+				"none": "–",
+				"bySource": "Semua skala: {{general}} dari Kirim masukan, {{survey}} dari survei, {{feature}} dari pertanyaan fitur.",
+				"summaryEmpty": "Belum ada jawaban pada skala ini dalam periode ini.",
+				"distribution": "Sebaran",
+				"trend": "Jawaban puas per minggu",
+				"trendNps": "NPS per minggu",
+				"week": "Minggu",
+				"responsesTitle": "Jawaban",
+				"source": "Sumber",
+				"allSources": "Semua sumber",
+				"allScales": "Semua skala",
+				"kinds": {
+					"general": "Kirim masukan",
+					"survey": "Survei",
+					"feature": "Pertanyaan fitur"
+				},
+				"commentsOnly": "Dengan komentar",
+				"search": "Cari komentar atau orang",
+				"responsesEmpty": "Belum ada masukan. Jawaban akan muncul di sini saat orang mengirimkannya.",
+				"commentOnly": "Hanya komentar",
+				"desktop": "Aplikasi desktop",
+				"loadMore": "Muat lebih banyak",
+				"loadError": "Masukan tidak dapat dimuat.",
+				"retry": "Coba lagi",
+				"exportCsv": "Ekspor CSV",
+				"exportError": "Masukan tidak dapat diekspor. Coba lagi.",
+				"delete": "Hapus jawaban",
+				"deleteError": "Tidak dapat dihapus. Coba lagi.",
+				"purge": "Hapus yang lama",
+				"purgeTitle": "Hapus masukan",
+				"purgeDescription": "Jawaban dihapus permanen dari server ini. Penghapusan dicatat di log audit.",
+				"purgeWhich": "Jawaban yang mana",
+				"purgeOlder_other": "Lebih lama dari {{count}} hari",
+				"purgeAll": "Semua jawaban",
+				"purgeConfirm": "Hapus",
+				"purged_other": "{{count}} jawaban dihapus",
+				"cancel": "Batal",
+				"auditDeleted": "Menghapus masukan"
+			}
+		},
+		"calendarFeed": {
+			"title": "Berlangganan di kalender",
+			"description": "Lihat tanggal-tanggal Margaya di aplikasi kalender Anda. Feed hanya bisa dibaca dan diperbarui sekitar sekali per jam.",
+			"menuItem": "Berlangganan di kalender",
+			"timezoneNote": "Tugas ditampilkan sebagai acara sepanjang hari, pada hari yang dihitung menurut zona waktu akun Anda, atau zona waktu ruang kerja jika Anda belum memilihnya.",
+			"loadError": "Feed kalender Anda tidak dapat dimuat. Coba lagi nanti.",
+			"hiddenProject": "Proyek yang tidak lagi dapat Anda lihat",
+			"privacy": "Siapa pun yang memiliki tautan ini dapat melihat judul dan tanggal di dalamnya. Jaga kerahasiaannya, dan buat tautan baru atau cabut jika tautan bocor.",
+			"myTasks": {
+				"label": "Tugas saya",
+				"description": "Tugas yang ditugaskan kepada Anda dan memiliki tanggal mulai atau tenggat."
+			},
+			"planning": {
+				"label": "Tonggak dan siklus",
+				"description": "Tonggak dan tanggal siklus dari setiap proyek yang dapat Anda lihat di ruang kerja ini."
+			},
+			"project": {
+				"settingsDescription": "Setiap tugas bertanggal, tonggak, dan siklus di proyek ini.",
+				"dialogDescription": "Ikuti setiap tugas bertanggal, tonggak, dan siklus dari {{project}} di aplikasi kalender Anda.",
+				"manageHint": "Anda dapat melihat dan mencabut semua tautan kalender Anda di Pengaturan, pada Akun → Preferensi."
+			},
+			"calendarName": {
+				"myTasks": "Tugas saya · {{workspace}}",
+				"planning": "Tonggak dan siklus · {{workspace}}",
+				"project": "{{project}} · {{workspace}}"
+			},
+			"status": {
+				"none": "Belum ada tautan",
+				"active": "Tautan {{start}}…, dibuat {{date}}",
+				"lastUsed": "terakhir dibaca oleh kalender {{when}}",
+				"neverUsed": "belum pernah dibaca oleh kalender"
+			},
+			"actions": {
+				"create": "Buat tautan",
+				"createFor": "Buat tautan kalender untuk {{name}}",
+				"regenerate": "Tautan baru",
+				"regenerateFor": "Buat tautan kalender baru untuk {{name}}",
+				"revoke": "Cabut",
+				"revokeFor": "Cabut tautan kalender untuk {{name}}",
+				"copy": "Salin",
+				"copied": "Disalin",
+				"open": "Buka di aplikasi kalender",
+				"done": "Selesai"
+			},
+			"link": {
+				"title": "Tautan kalender Anda",
+				"label": "Tautan langganan",
+				"once": "Salin sekarang: tautan ini hanya ditampilkan sekali. Jika hilang, buat tautan baru."
+			},
+			"howTo": {
+				"title": "Cara menambahkannya",
+				"step1": "Salin tautannya.",
+				"step2": "Di aplikasi kalender Anda, pilih untuk menambahkan atau berlangganan kalender dari URL.",
+				"step3": "Tempel tautannya. Perubahan muncul saat aplikasi memuat ulang berikutnya."
+			},
+			"regenerateConfirm": {
+				"title": "Buat tautan baru?",
+				"description": "Tautan saat ini langsung berhenti berfungsi. Kalender yang menggunakannya berhenti diperbarui sampai Anda menambahkan tautan baru.",
+				"confirm": "Buat tautan baru"
+			},
+			"revokeConfirm": {
+				"title": "Cabut tautan kalender ini?",
+				"description": "Tautan langsung berhenti berfungsi, dan kalender yang menggunakannya berhenti diperbarui.",
+				"confirm": "Cabut tautan"
+			},
+			"toast": {
+				"created": "Tautan kalender dibuat",
+				"revoked": "Tautan kalender dicabut",
+				"copied": "Tautan disalin",
+				"copyError": "Tautan tidak dapat disalin. Pilih lalu salin sendiri.",
+				"error": "Tautan kalender tidak dapat diperbarui"
+			}
+		},
 		"account": "Akun",
-		"information": "Informasi",
+		"information": "Profil",
 		"notifications": "Notifikasi",
 		"preferences": "Preferensi",
 		"apiKeys": "API Key",
 		"informationPage": {
-			"pageTitle": "Informasi pribadi",
-			"title": "Informasi pribadi",
-			"subtitle": "Kelola detail pribadi dan informasi akun Anda.",
-			"sectionTitle": "Informasi akun",
-			"sectionSubtitle": "Kelola profil dan detail akun Anda.",
+			"pageTitle": "Profil",
+			"title": "Profil",
+			"subtitle": "Nama, foto, dan email yang Anda gunakan untuk masuk.",
 			"profilePicture": "Foto profil",
 			"fullName": "Nama lengkap",
 			"fullNamePlaceholder": "Masukkan nama Anda",
@@ -623,14 +861,12 @@
 		"notificationsPage": {
 			"pageTitle": "Notifikasi",
 			"title": "Notifikasi",
-			"subtitle": "Pilih cara Margaya mengirim notifikasi akun Anda dan kanal yang digunakan.",
+			"subtitle": "Pilih hal yang diberitahukan Margaya kepada Anda, ke mana notifikasi dikirim, dan seperti apa bunyinya.",
 			"statusConnected": "Terhubung",
 			"statusPaused": "Dijeda",
 			"emailTitle": "Email",
 			"emailDescription": "Gunakan email akun Anda sebagai tujuan notifikasi.",
-			"accountEmailLabel": "Email akun",
 			"accountEmailNoAddress": "Email akun tidak tersedia",
-			"accountEmailHint": "Pengiriman email selalu menuju email akun yang sedang masuk.",
 			"saveChanges": "Simpan perubahan",
 			"disconnect": "Putuskan",
 			"ntfyTitle": "ntfy",
@@ -731,7 +967,7 @@
 				"title": "Suara",
 				"description": "Putar suara saat notifikasi masuk ketika Margaya terbuka di browser Anda.",
 				"enabled": "Putar suara",
-				"enabledDescription": "Pilihan suara Anda terikat ke akun Anda dan berlaku di setiap browser.",
+				"enabledDescription": "Pilihan suara Anda terikat ke akun Anda dan berlaku di setiap perangkat.",
 				"volume": "Volume suara",
 				"volumeValue": "{{value}}%",
 				"categoryMentions": "Sebutan dan penugasan",
@@ -751,14 +987,38 @@
 				"soundMarimba": "Marimba",
 				"preview": "Putar {{sound}}",
 				"quietHours": "Jam tenang",
-				"quietHoursDescription": "Tidak ada suara di antara jam ini, sesuai zona waktu akun Anda.",
+				"quietHoursDescription": "Setiap hari di antara jam ini, notifikasi dijeda dan tanpa suara.",
 				"quietFrom": "Dari",
 				"quietTo": "Sampai",
 				"deviceMute": "Bisukan suara di perangkat ini",
 				"deviceMuteDescription": "Hanya membisukan browser ini; perangkat Anda yang lain tetap memutar suara.",
 				"previewFailed": "Browser Anda tidak memutar suara. Pastikan tab atau situs ini tidak dibisukan.",
 				"desktopDescription": "Di aplikasi desktop, notifikasi memutar suara Margaya yang Anda pilih di sini, dengan volume Anda, saat pengaturan ini memintanya. “Jangan Ganggu” membisukannya.",
-				"deviceMuteDescriptionDesktop": "Hanya membisukan aplikasi desktop ini; perangkat Anda yang lain tetap memutar suara."
+				"deviceMuteDescriptionDesktop": "Hanya membisukan aplikasi desktop ini; perangkat Anda yang lain tetap memutar suara.",
+				"previewFailedDesktop": "Suara tidak diputar. Pastikan suara komputer Anda tidak dibisukan."
+			},
+			"quiet": {
+				"title": "Jam tenang dan fokus",
+				"description": "Jeda notifikasi untuk sementara, atau setiap malam. Kotak masuk Anda tetap terisi; tidak ada yang berbunyi.",
+				"focus": "Mode fokus",
+				"focusDescription": "Jeda notifikasi mulai sekarang. Juga tersedia di menu akun dan palet perintah.",
+				"timeZone": "Waktu mengikuti zona waktu akun Anda, {{zone}}.",
+				"noTimeZone": "Akun Anda belum memiliki zona waktu, jadi jam tenang mengikuti UTC.",
+				"useTimeZone": "Gunakan {{zone}}",
+				"channels": "Tahan saluran ini",
+				"channelsDescription": "Selama notifikasi dijeda, saluran ini menunggu. Saluran yang tidak dicentang tetap masuk, tanpa suara.",
+				"channelPush": "Notifikasi push",
+				"channelEmail": "Email",
+				"channelDesktop": "Aplikasi desktop",
+				"channelNtfy": "ntfy",
+				"channelGotify": "Gotify",
+				"channelWebhook": "Webhook",
+				"bypass": "Tetap teruskan ini",
+				"bypassDescription": "Notifikasi ini langsung masuk, dengan suaranya, bahkan saat notifikasi dijeda.",
+				"bypassMentions": "Sebutan langsung",
+				"bypassUrgent": "Tugas yang ditugaskan kepada Anda dengan prioritas mendesak",
+				"bypassApprovals": "Agen yang menunggu persetujuan atau jawaban Anda",
+				"summaryNote": "Saat jeda berakhir, setiap saluran yang ditahan mendapat satu ringkasan: satu email berisi semuanya, satu pesan push, ntfy, atau Gotify, satu peringatan desktop, dan setiap payload webhook yang ditahan secara berurutan."
 			},
 			"pushTitle": "Notifikasi push",
 			"pushDescription": "Peringatan di ponsel atau komputer Anda, bahkan saat Margaya ditutup. “Beri tahu saya tentang” menentukan apa yang dikirim, dan aturan ruang kerja di bawah dapat mempersempitnya.",
@@ -783,7 +1043,9 @@
 			"pushChannelHintEnabled": "Kirim notifikasi ruang kerja yang sesuai ke perangkat Anda.",
 			"pushChannelHintDisabled": "Aktifkan push untuk perangkat terlebih dahulu.",
 			"pushLoadFailed": "Tidak dapat memuat pengaturan push Anda. Muat ulang halaman untuk mencoba lagi.",
-			"pushDesktopApp": "Aplikasi desktop menampilkan notifikasi di perangkat ini, jadi push browser tidak diperlukan di sini."
+			"emailSendsTo": "Dikirim ke {{email}}.",
+			"pushDesktopTitle": "Notifikasi desktop",
+			"pushDesktopDescription": "Margaya Desktop menampilkan notifikasi di komputer ini, bahkan saat jendelanya ditutup. Untuk menonaktifkannya atau mengubah tampilannya, gunakan pengaturan notifikasi sistem Anda."
 		},
 		"preferencesPage": {
 			"title": "Preferensi",
@@ -830,11 +1092,9 @@
 			"estimatesDescription": "Tampilkan estimasi tugas pada kartu papan"
 		},
 		"developerPage": {
-			"pageTitle": "Pengaturan developer",
-			"title": "Pengaturan developer",
-			"subtitle": "Kelola API key dan sumber daya pengembang Anda.",
-			"apiKeysCardTitle": "API Key",
-			"apiKeysCardDescription": "Buat dan kelola API key untuk akses terprogram ke Margaya.",
+			"pageTitle": "API Key",
+			"title": "API Key",
+			"subtitle": "Key memungkinkan skrip, integrasi, dan klien MCP menggunakan API Margaya atas nama Anda.",
 			"createApiKey": "Buat API key",
 			"unnamedKey": "Key tanpa nama"
 		},
@@ -903,7 +1163,7 @@
 		},
 		"workspaceGeneral": {
 			"pageTitle": "Pengaturan umum",
-			"title": "Pengaturan umum",
+			"title": "Umum",
 			"subtitle": "Kelola nama dan deskripsi ruang kerja Anda.",
 			"workspaceInfoTitle": "Informasi ruang kerja",
 			"workspaceInfoSubtitle": "Konfigurasikan detail dan preferensi ruang kerja Anda.",
@@ -951,7 +1211,7 @@
 		},
 		"projectGeneral": {
 			"pageTitle": "Pengaturan proyek",
-			"title": "Pengaturan umum",
+			"title": "Umum",
 			"subtitle": "Kelola nama, key, ikon, dan deskripsi proyek Anda.",
 			"projectInfoTitle": "Informasi proyek",
 			"projectInfoSubtitle": "Konfigurasikan detail dan preferensi proyek Anda.",
@@ -998,7 +1258,7 @@
 		},
 		"projectIntegrations": {
 			"pageTitle": "Integrasi proyek",
-			"title": "Integrasi proyek",
+			"title": "Integrasi",
 			"subtitle": "Hubungkan proyek Anda dengan alat dan layanan eksternal untuk memperlancar alur kerja.",
 			"githubSectionTitle": "Integrasi GitHub",
 			"githubSectionSubtitle": "Sinkronkan tugas dengan issue GitHub dan aktifkan sinkronisasi dua arah.",
@@ -1229,8 +1489,12 @@
 				"taskPriorityChanged": "Perubahan prioritas",
 				"taskTitleChanged": "Perubahan judul",
 				"taskDescriptionChanged": "Perubahan deskripsi",
-				"taskCommentCreated": "Komentar baru"
+				"taskCommentCreated": "Komentar baru",
+				"taskDueDateChanged": "Perubahan tenggat",
+				"intakeDecision": "Keputusan penerimaan (diterima, ditolak, duplikat)",
+				"projectUpdate": "Pembaruan proyek"
 			},
+			"buttonsHint": "Saat aplikasi Slack ruang kerja terhubung, postingan mendapat tombol Tugaskan ke saya, Ubah status, dan Buka. Buat webhook ini dari aplikasi Slack yang sama agar tombolnya sampai ke Margaya.",
 			"connect": "Hubungkan Slack",
 			"saveChanges": "Simpan perubahan",
 			"disconnect": "Putuskan"
@@ -2071,6 +2335,10 @@
 				"ai": {
 					"title": "AI",
 					"description": "Ringkasan, saran, dan bantuan AI lainnya untuk proyek ini. Jika dinonaktifkan, proyek sepenuhnya dikecualikan dari AI."
+				},
+				"updates": {
+					"title": "Pembaruan",
+					"description": "Posting pembaruan status bertanggal dengan nilai kesehatan, yang disusun dari data proyek terkini."
 				}
 			},
 			"loadError": "Tidak dapat memuat proyek ini",
@@ -2749,6 +3017,10 @@
 			"billing": "Penagihan",
 			"label": "Bagian pengaturan",
 			"noProjectsHint": "Buat proyek terlebih dahulu. Pengaturannya akan muncul di sini.",
+			"groupData": "Pengelolaan data",
+			"groupServer": "Pengaturan server",
+			"aiSettings": "Pengaturan AI",
+			"pageLabel": "Halaman pengaturan",
 			"pickProject": "Pilih proyek untuk melihat pengaturannya."
 		},
 		"projectAccess": {
@@ -2806,6 +3078,9 @@
 			},
 			"sessions": {
 				"confirmOthersDescription": "Semua perangkat lain yang masuk ke akun Anda harus masuk lagi. Perangkat ini tetap masuk.",
+				"showAll": "Tampilkan semua sesi ({{count}})",
+				"showFewer": "Tampilkan lebih sedikit",
+				"desktopApp": "Margaya Desktop",
 				"confirmOthersTitle": "Keluarkan semua sesi lain?",
 				"deviceLabel": "{{browser}} di {{os}}",
 				"error": "Gagal mengeluarkan sesi",
@@ -2827,16 +3102,16 @@
 			"title": "Keamanan"
 		},
 		"timezone": {
-			"accountHint": "Digunakan untuk pengingat, ringkasan email, dan hari yang dihitung oleh filter tugas serta analitik. Waktu di layar ditampilkan dalam zona waktu browser Anda.",
+			"accountHint": "Digunakan untuk pengingat, ringkasan email, dan hari yang dihitung oleh filter tugas serta analitik. Waktu di layar ditampilkan dalam zona waktu perangkat ini.",
 			"accountLabel": "Zona waktu",
-			"automatic": "Otomatis (browser: {{zone}})",
+			"automatic": "Otomatis (perangkat ini: {{zone}})",
 			"loadError": "Tidak dapat memuat zona waktu. Muat ulang halaman untuk mencoba lagi.",
 			"noResults": "Zona waktu tidak ditemukan",
 			"placeholder": "Pilih zona waktu",
 			"search": "Cari zona waktu",
 			"toastError": "Gagal memperbarui zona waktu",
 			"toastUpdated": "Zona waktu diperbarui",
-			"useBrowser": "Gunakan {{zone}}",
+			"useBrowser": "Gunakan zona waktu perangkat ini ({{zone}})",
 			"workspaceHint": "Menentukan \"hari ini\" untuk siklus, otomasi, dan analitik. Ruang kerja yang sudah ada dimulai dengan UTC.",
 			"workspaceLabel": "Zona waktu"
 		},
@@ -3046,6 +3321,105 @@
 				"codingAgentProfile": "Profil agen koding"
 			},
 			"title": "Log audit"
+		},
+		"slackApp": {
+			"workspaceNav": "Aplikasi Slack",
+			"accountNav": "Slack",
+			"title": "Aplikasi Slack",
+			"description": "Cari, tangkap, dan perbarui tugas dari Slack. Setiap tindakan berjalan sebagai akun Margaya tertaut milik orang itu sendiri, dengan izinnya.",
+			"noPermission": "Hanya orang yang dapat mengelola pengaturan ruang kerja yang dapat menyiapkan aplikasi Slack.",
+			"loadError": "Pengaturan aplikasi Slack tidak dapat dimuat. Coba lagi.",
+			"statusTitle": "Koneksi",
+			"unknownTeam": "Ruang kerja Slack (belum diperiksa)",
+			"modeSocket": "Mode Socket",
+			"modeHttp": "Permintaan HTTP",
+			"modeSocketHint": "Disarankan. Margaya membuka koneksi keluar ke Slack, jadi tetap berfungsi di balik VPN atau reverse proxy tanpa URL publik.",
+			"modeHttpHint": "Slack mengirim permintaan bertanda tangan ke server ini. Memerlukan alamat HTTPS publik yang dapat dijangkau Slack.",
+			"active": "Aktif",
+			"paused": "Dijeda",
+			"unreadable": "Token yang tersimpan tidak dapat dibaca, mungkin karena AUTH_SECRET berubah. Masukkan lagi.",
+			"lastError": "Kesalahan terakhir dari Slack: {{code}}",
+			"test": "Uji koneksi",
+			"activeLabel": "Aplikasi Slack aktif",
+			"activeHint": "Saat nonaktif, Margaya mengabaikan perintah, pintasan, dan tombol dari Slack.",
+			"notConnected": "Slack belum terhubung",
+			"notConnectedHint": "Ikuti langkah di bawah untuk membuat aplikasi Slack dan menghubungkannya.",
+			"setupTitle": "Penyiapan",
+			"setupHint": "Membuat aplikasi Slack memerlukan beberapa menit. Anda memerlukan izin untuk memasang aplikasi di ruang kerja Slack Anda.",
+			"step1": "1. Pilih cara Slack menjangkau Margaya",
+			"step1Hint": "Anda dapat menggantinya nanti; Slack lalu memerlukan manifes yang sesuai.",
+			"step2": "2. Buat aplikasi Slack dari manifes ini",
+			"step2Hint": "Di Slack, pilih Create New App, lalu From a manifest, pilih ruang kerja Slack Anda, dan tempel ini. Setelah itu pasang aplikasi ke ruang kerja Anda.",
+			"manifestLabel": "Manifes aplikasi Slack",
+			"copyManifest": "Salin manifes",
+			"copy": "Salin",
+			"copied": "Disalin",
+			"copyFailed": "Tidak dapat disalin. Pilih teksnya lalu salin sendiri.",
+			"openSlack": "Buka aplikasi Slack",
+			"noUnfurlDomain": "Pratinjau tautan tidak disertakan: Slack tidak dapat menampilkan pratinjau untuk localhost atau alamat IP. Atur MARGAYA_CLIENT_URL ke nama domain untuk mendapatkannya.",
+			"eventsUrl": "URL permintaan",
+			"eventsUrlHint": "Sudah ada di manifes. Slack memeriksanya saat Anda menyimpan aplikasi, jadi server ini harus dapat dijangkau lewat HTTPS.",
+			"step3": "3. Tempel token",
+			"step3SocketHint": "Token OAuth Pengguna Bot: OAuth & Permissions. Token tingkat aplikasi: Basic Information › App-Level Tokens, dengan cakupan connections:write.",
+			"step3HttpHint": "Token OAuth Pengguna Bot: OAuth & Permissions. Rahasia penandatanganan: Basic Information › App Credentials.",
+			"botToken": "Token OAuth Pengguna Bot",
+			"botTokenPlaceholder": "xoxb-…",
+			"appToken": "Token tingkat aplikasi",
+			"appTokenPlaceholder": "xapp-…",
+			"signingSecret": "Rahasia penandatanganan",
+			"signingSecretPlaceholder": "Tempel rahasia penandatanganan",
+			"secretsHint": "Disimpan terenkripsi dan tidak pernah ditampilkan lagi. Biarkan field kosong untuk mempertahankan nilai yang tersimpan.",
+			"connectAndTest": "Hubungkan dan uji",
+			"saveAndTest": "Simpan dan uji",
+			"step4": "4. Tautkan akun",
+			"step4Hint": "Setiap orang menjalankan /margaya link di Slack satu kali dan mengonfirmasi di Margaya. Sebelum itu, Slack meminta mereka menautkan akun dan tidak melakukan apa pun untuk mereka.",
+			"optionsTitle": "Opsi",
+			"defaultProject": "Proyek bawaan",
+			"defaultProjectHint": "Tempat /margaya add menaruh tugas jika teksnya tidak diawali kunci proyek.",
+			"noDefaultProject": "Tidak ada",
+			"expandKeys": "Pratinjau kunci tugas dalam pesan",
+			"expandKeysHint": "Balas di utas saat pesan menyebut kunci seperti WEB-12. Memerlukan cakupan pesan, jadi salin ulang manifes setelah mengaktifkan ini.",
+			"dangerTitle": "Putuskan",
+			"disconnect": "Putuskan aplikasi Slack",
+			"disconnectHint": "Menghapus token yang tersimpan. Akun tertaut tetap disimpan untuk saat Anda menghubungkan ulang.",
+			"checks": {
+				"botToken": "Token bot",
+				"appToken": "Token tingkat aplikasi",
+				"signingSecret": "Rahasia penandatanganan",
+				"passed": "Berhasil",
+				"failed": "Gagal"
+			},
+			"toast": {
+				"saved": "Aplikasi Slack disimpan",
+				"saveError": "Aplikasi Slack tidak dapat disimpan",
+				"testPassed": "Koneksi Slack berfungsi",
+				"testFailed": "Uji koneksi Slack gagal",
+				"disconnected": "Aplikasi Slack diputuskan",
+				"unlinked": "Tautan akun Slack dilepas"
+			},
+			"accountTitle": "Slack",
+			"accountDescription": "Akun Slack yang bertindak atas nama Anda. Perintah, pintasan, dan tombolnya berjalan dengan izin Anda.",
+			"linkedTitle": "Akun Slack tertaut",
+			"linksLoadError": "Tautan Slack Anda tidak dapat dimuat. Coba lagi.",
+			"noLinks": "Tidak ada akun Slack yang tertaut",
+			"noLinksHint": "Jalankan /margaya link di Slack untuk menautkan akun.",
+			"linkRow": "{{team}} · {{workspace}}",
+			"unlink": "Lepas tautan",
+			"link": {
+				"invalidTitle": "Tautan ini tidak berfungsi",
+				"invalid": "Tautan sudah kedaluwarsa atau tidak valid. Jalankan /margaya link di Slack untuk mendapatkan yang baru.",
+				"alreadyTitle": "Sudah tertaut",
+				"already": "Akun Slack ini sudah bertindak atas nama Anda di {{workspace}}.",
+				"confirmTitle": "Tautkan akun Slack Anda",
+				"confirmBody": "Pengguna Slack {{slackUser}} di {{team}} akan bertindak atas nama Anda di {{workspace}}.",
+				"confirmWarning": "Lanjutkan hanya jika akun Slack itu milik Anda: perintah, pintasan, dan tombolnya akan berjalan dengan izin Anda.",
+				"movesLink": "Akun Slack ini sekarang tertaut ke orang lain; mengonfirmasi akan memindahkan tautannya kepada Anda.",
+				"you": "(Anda)",
+				"confirm": "Tautkan akun",
+				"cancel": "Batal",
+				"linked": "Akun Slack tertaut",
+				"linkError": "Akun Slack tidak dapat ditautkan"
+			}
 		},
 		"trash": {
 			"projectTitle": "Baru dihapus",
@@ -3262,6 +3636,95 @@
 			"title": "Lanjutkan di browser Anda",
 			"billing": "Selesaikan di jendela browser yang baru saja terbuka, lalu kembali ke Margaya. Paket Anda diperbarui saat Anda kembali.",
 			"githubApp": "Selesaikan di GitHub melalui browser Anda, lalu kembali ke Margaya dan periksa pemasangan lagi."
+		},
+		"save": "Simpan",
+		"unsavedChanges": "Perubahan belum disimpan",
+		"readOnly": {
+			"workspace": "Anda dapat melihat pengaturan ini, tetapi peran Anda tidak dapat mengubahnya. Hubungi pemilik atau admin ruang kerja.",
+			"project": "Anda dapat melihat pengaturan proyek ini, tetapi peran Anda tidak dapat mengubahnya. Hubungi pemilik atau admin ruang kerja."
+		},
+		"projectIntake": {
+			"title": "Sumber penerimaan",
+			"pageTitle": "Sumber penerimaan",
+			"subtitle": "Izinkan orang mengirim permintaan ke proyek ini lewat email atau formulir publik. Semua yang mereka kirim masuk ke Penerimaan untuk ditinjau.",
+			"noPermission": "Hanya orang yang dapat membagikan proyek yang dapat mengelola sumber penerimaan.",
+			"loadError": "Pengaturan ini tidak dapat dimuat.",
+			"retry": "Coba lagi",
+			"saved": "Pengaturan disimpan",
+			"saveError": "Pengaturan tidak dapat disimpan",
+			"copy": "Salin",
+			"copied": "Disalin",
+			"open": "Buka",
+			"email": {
+				"title": "Lewat email",
+				"description": "Email yang dikirim atau diteruskan ke alamat proyek menjadi permintaan. Balasan dari pengirim yang sama ditambahkan sebagai komentar, dan lampiran disimpan.",
+				"enabled": "Terima permintaan lewat email",
+				"enabledHint": "Balasan otomatis, email pentalan, email milis, dan pesan yang ditandai sebagai spam diabaikan.",
+				"turnedOn": "Penerimaan lewat email diaktifkan",
+				"turnedOff": "Penerimaan lewat email dinonaktifkan",
+				"address": "Alamat penerusan",
+				"addressHint": "Kirim atau teruskan email ke alamat ini. Siapa pun yang mengetahuinya dapat mengirim permintaan.",
+				"addressNone": "Alamat muncul setelah penerimaan lewat email diaktifkan dan server memiliki kotak surat penerimaan.",
+				"rotate": "Alamat baru",
+				"rotated": "Alamat baru dibuat. Alamat lama tidak berfungsi lagi.",
+				"noInstanceAddress": "Server ini belum memiliki alamat penerimaan. Minta administrator Anda untuk menyiapkannya, atau hubungkan kotak surat milik proyek ini di bawah.",
+				"allowed": "Hanya terima domain ini",
+				"allowedHint": "Satu domain per baris. Biarkan kosong untuk menerima pengirim mana pun. Subdomain ikut disertakan.",
+				"blocked": "Jangan pernah terima domain ini",
+				"blockedHint": "Satu domain per baris. Domain yang diblokir lebih diutamakan daripada daftar di atas.",
+				"protection": "Pesan di atas {{size}} MB dilewati. Hingga {{files}} lampiran berukuran masing-masing {{fileSize}} MB disimpan. Setiap pengirim dapat mengirim 10 pesan per jam."
+			},
+			"mailbox": {
+				"title": "Kotak surat proyek",
+				"description": "Opsional. Margaya memeriksa kotak surat ini setiap dua menit dan mengubah setiap pesan yang belum dibaca menjadi permintaan untuk proyek ini. Cara ini berfungsi di balik firewall, karena Margaya yang menghubungi server email.",
+				"enabled": "Periksa kotak surat ini",
+				"enabledHint": "Isi detail server dan info masuk, simpan, lalu aktifkan ini.",
+				"lastPolled": "Terakhir diperiksa {{time}}.",
+				"notPolled": "Belum diperiksa.",
+				"lastError": "Pemeriksaan terakhir gagal: {{error}}",
+				"host": "Server IMAP",
+				"security": "Enkripsi",
+				"securityHint": "Koneksi selalu dienkripsi.",
+				"tls": "TLS (melalui port 993)",
+				"starttls": "STARTTLS (melalui port 143)",
+				"port": "Nomor port",
+				"portHint": "Biarkan kosong untuk nilai bawaan.",
+				"portInvalid": "Masukkan port antara 1 dan 65535.",
+				"username": "Nama pengguna",
+				"password": "Kata sandi",
+				"passwordSaved": "Kata sandi sudah tersimpan. Ketik yang baru untuk menggantinya.",
+				"folder": "Folder kotak surat",
+				"test": "Uji koneksi",
+				"testOk_other": "Terhubung. {{count}} pesan belum dibaca."
+			},
+			"form": {
+				"title": "Formulir permintaan",
+				"description": "Halaman publik tempat siapa pun yang memiliki tautan dapat mengirim permintaan. Halaman ini hanya menampilkan teks dan field yang Anda pilih di sini, tidak pernah ruang kerja atau tugas Anda.",
+				"enabled": "Buka formulir",
+				"enabledHint": "Bot dicegah dengan field jebakan tersembunyi dan batas laju, tanpa captcha.",
+				"opened": "Formulir dibuka",
+				"closed": "Formulir ditutup",
+				"sharingOff": "Berbagi publik dinonaktifkan di server ini, jadi formulir tidak dapat dibuka.",
+				"link": "Tautan formulir",
+				"linkHint": "Bagikan tautan ini. Siapa pun yang memilikinya dapat mengirim permintaan.",
+				"rotate": "Tautan baru",
+				"rotated": "Tautan baru dibuat. Tautan lama tidak berfungsi lagi.",
+				"heading": "Judul",
+				"headingHint": "Ditampilkan di bagian atas formulir.",
+				"intro": "Pengantar",
+				"descriptionField": "Deskripsi",
+				"emailField": "Alamat email",
+				"emailFieldHint": "Hanya ditampilkan kepada peninjau triase, agar mereka dapat menindaklanjuti.",
+				"nameField": "Nama",
+				"modeOptional": "Opsional",
+				"modeRequired": "Wajib",
+				"modeOff": "Tersembunyi",
+				"customFields": "Field kustom",
+				"customFieldsHint": "Nama dan opsinya akan terlihat di formulir.",
+				"noCustomFields": "Proyek ini tidak memiliki field kustom.",
+				"confirmation": "Pesan konfirmasi",
+				"confirmationHint": "Ditampilkan setelah seseorang mengirim permintaan."
+			}
 		}
 	},
 	"navigation": {
@@ -3475,6 +3938,7 @@
 		"projectNav": {
 			"cycles": "Siklus",
 			"intake": "Penerimaan",
+			"updates": "Pembaruan",
 			"label": "Bagian proyek",
 			"modules": "Modul",
 			"pages": "Halaman",
@@ -3524,6 +3988,27 @@
 			"whatsNew": "Yang baru",
 			"sourceCode": "Kode sumber",
 			"workspaceAnalytics": "Ruang kerja"
+		},
+		"focus": {
+			"menuLabel": "Jeda notifikasi",
+			"paletteLabel": "Mode fokus: jeda notifikasi",
+			"preset30m": "Selama 30 menit",
+			"preset1h": "Selama 1 jam",
+			"preset2h": "Selama 2 jam",
+			"presetTomorrow": "Sampai besok",
+			"custom": "Sampai waktu tertentu…",
+			"resume": "Lanjutkan notifikasi",
+			"focusUntil": "Fokus sampai {{time}}",
+			"quietUntil": "Jam tenang sampai {{time}}",
+			"settings": "Pengaturan jam tenang",
+			"toastStarted": "Notifikasi dijeda sampai {{time}}",
+			"toastResumed": "Notifikasi dilanjutkan",
+			"customTitle": "Jeda notifikasi sampai",
+			"customDescription": "Kotak masuk Anda tetap terisi. Sebutan dan pengecualian lain yang Anda pilih tetap masuk.",
+			"customLabel": "Sampai",
+			"customSave": "Jeda",
+			"customInvalid": "Pilih waktu dalam 7 hari ke depan.",
+			"cancel": "Batal"
 		},
 		"desktopWindow": {
 			"minimize": "Minimalkan",
@@ -5383,7 +5868,6 @@
 			"createProject": "Buat proyek",
 			"title": "Judul",
 			"progress": "Progres",
-			"targetDate": "Tanggal target",
 			"dueDate": "Tenggat",
 			"status": "Status",
 			"emptyTitle": "Belum ada proyek",
@@ -8311,6 +8795,7 @@
 			"me": "Saya",
 			"priority": "Prioritas",
 			"remove": "Hapus filter",
+			"source": "Sumber",
 			"status": "Status",
 			"submittedBy": "Dikirim oleh"
 		},
@@ -8403,6 +8888,25 @@
 			"hintMove": "Pindahkan",
 			"hintOpen": "Buka tugas",
 			"queueLabel": "Antrean triase"
+		},
+		"publicForm": {
+			"defaultTitle": "Kirim permintaan",
+			"titleLabel": "Judul",
+			"descriptionLabel": "Deskripsi",
+			"nameLabel": "Nama Anda",
+			"emailLabel": "Email Anda",
+			"emailHint": "Hanya digunakan untuk menindaklanjuti permintaan ini.",
+			"choose": "Pilih…",
+			"requiredNote": "Kolom bertanda * wajib diisi.",
+			"submit": "Kirim permintaan",
+			"missing": "Isi kolom wajib dan periksa alamat email Anda.",
+			"tooMany": "Terlalu banyak permintaan dari jaringan ini. Coba lagi nanti.",
+			"failed": "Permintaan Anda tidak dapat dikirim. Coba lagi.",
+			"sentTitle": "Permintaan terkirim",
+			"sentBody": "Terima kasih. Permintaan Anda sudah diterima dan akan ditinjau.",
+			"another": "Kirim permintaan lain",
+			"notFoundTitle": "Formulir tidak tersedia",
+			"notFoundBody": "Formulir ini tidak ada atau sudah ditutup. Periksa tautannya dengan orang yang membagikannya."
 		}
 	},
 	"stickies": {
@@ -9450,6 +9954,114 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "Instans · {{page}}",
+		"health": {
+			"title": "Kesehatan",
+			"subtitle": "Periksa layanan, proses latar belakang, dan kegagalan terbaru di server ini.",
+			"recheck": "Periksa lagi",
+			"summary": "Ringkasan",
+			"version": "Versi",
+			"uptime": "Waktu aktif",
+			"uptimeDays": "{{days}} hr {{hours}} j",
+			"uptimeHours": "{{hours}} j {{minutes}} mnt",
+			"startedAt": "Dimulai",
+			"node": "Node.js",
+			"latency": "{{ms}} md",
+			"status": {
+				"ok": "Baik",
+				"warning": "Peringatan",
+				"error": "Masalah",
+				"off": "Nonaktif"
+			},
+			"migrations": {
+				"title": "Migrasi basis data",
+				"ok_other": "Mutakhir: {{count}} migrasi diterapkan.",
+				"pending_other": "{{count}} migrasi belum dijalankan. Mulai ulang server untuk menerapkannya.",
+				"unknown": "Status migrasi tidak dapat dibaca. Detailnya ada di log server."
+			},
+			"checks": {
+				"title": "Layanan",
+				"description": "Setiap pemeriksaan dijalankan sekarang, dengan batas 5 detik. Jawabannya tidak pernah menyertakan host, path, atau kata sandi.",
+				"database": "Basis data",
+				"redis": "Redis",
+				"storage": "Penyimpanan file",
+				"email": "Layanan email",
+				"ai": "Penyedia AI"
+			},
+			"codes": {
+				"ok": "Merespons.",
+				"unreachable": "Tidak dapat dijangkau. Detailnya ada di log server.",
+				"unavailable": "Sudah dikonfigurasi, tetapi tidak merespons. Pembaruan real-time antarserver dijeda.",
+				"timeout": "Tidak merespons dalam batas waktu.",
+				"failed": "Pemeriksaan gagal. Detailnya ada di log server.",
+				"redisDisabled": "Tidak dikonfigurasi. Server tunggal tidak memerlukannya.",
+				"aiDisabled": "AI dinonaktifkan untuk server ini.",
+				"emailNotConfigured": "Email keluar belum disiapkan.",
+				"aiNotConfigured": "AI aktif, tetapi kunci atau endpoint penyedia belum diatur.",
+				"s3": "Penyimpanan yang kompatibel dengan S3 merespons.",
+				"local": "Penyimpanan lokal bawaan dapat ditulisi.",
+				"storageOff": "Unggahan nonaktif: tidak ada penyimpanan S3 dan penyimpanan lokal dinonaktifkan.",
+				"denied": "Layanan penyimpanan menolak pemeriksaan. Unggahan mungkin tetap berfungsi jika kebijakan bucket mengizinkannya.",
+				"notWritable": "Folder penyimpanan lokal tidak dapat ditulisi.",
+				"recentErrors_other": "{{count}} panggilan gagal dalam 24 jam terakhir.",
+				"smtpOk": "Berhasil masuk ke server email. Tidak ada pesan yang dikirim.",
+				"smtpAuth": "Server email menolak nama pengguna atau kata sandi.",
+				"smtpConnection": "Tidak dapat terhubung ke server email.",
+				"smtpTls": "Koneksi aman ke server email gagal.",
+				"smtpUnknown": "Pemeriksaan server email gagal. Detailnya ada di log server."
+			},
+			"activity": {
+				"title": "Antrean dan koneksi",
+				"description": "Antrean berlaku untuk seluruh instans. Koneksi hanya untuk server ini.",
+				"emailBacklog": "Email yang menunggu",
+				"webhookPending": "Webhook yang menunggu",
+				"webhookFailed": "Webhook gagal (24 jam)",
+				"boardSockets": "Koneksi papan",
+				"userSockets": "Koneksi aplikasi",
+				"pageRooms": "Halaman yang sedang diedit bersama",
+				"metrics": "Metrik Prometheus: {{state}}",
+				"metricsOff": "nonaktif",
+				"metricsToken": "aktif, di /api/metrics dengan token",
+				"metricsPort": "aktif, di /metrics pada port {{port}}",
+				"metricsNoEndpoint": "aktif, tetapi token maupun port belum diatur"
+			},
+			"jobs": {
+				"title": "Proses latar belakang",
+				"description": "Proses terjadwal di server ini sejak dimulai.",
+				"empty": "Belum ada proses latar belakang yang dijadwalkan di server ini.",
+				"name": "Proses",
+				"lastRun": "Terakhir dijalankan",
+				"outcome": "Hasil terakhir",
+				"runs": "Jumlah eksekusi",
+				"failures": "Kegagalan",
+				"running": "Sedang berjalan",
+				"notRun": "Belum pernah dijalankan"
+			},
+			"failures": {
+				"title": "Kegagalan terbaru",
+				"description": "Proses dan panggilan AI terbaru yang gagal di server ini sejak dimulai. Kegagalan webhook ada di halaman Umum.",
+				"empty": "Tidak ada kegagalan sejak server ini dimulai.",
+				"sourceJob": "Proses",
+				"sourceAi": "AI",
+				"sourceEmail": "Email",
+				"seeLog": "Beberapa item gagal. Detailnya ada di log server."
+			}
+		},
+		"update": {
+			"title": "Pemberitahuan pembaruan",
+			"label": "Periksa versi baru",
+			"hint": "Sekali sehari, server ini membaca daftar rilis publik dan memberi tahu admin instans saat versi yang lebih baru tersedia. Server tidak mengirim apa pun tentang instans ini.",
+			"off": "Nonaktif. Server ini tidak pernah memeriksa pembaruan.",
+			"notChecked": "Belum diperiksa.",
+			"upToDate": "Mutakhir: {{current}} adalah versi terbaru.",
+			"available": "Versi {{latest}} tersedia. Server ini menjalankan {{current}}.",
+			"checkedAt": "Diperiksa {{time}}.",
+			"errorUnreachable": "Daftar rilis tidak dapat dijangkau. Server akan mencoba lagi dalam satu jam.",
+			"errorInvalid": "Daftar rilis memberikan jawaban yang tidak dapat dibaca server ini.",
+			"releaseNotes": "Catatan rilis",
+			"dismiss": "Tutup",
+			"bannerTitle": "Margaya {{version}} tersedia",
+			"bannerDescription": "Server ini menjalankan {{current}}. Hanya admin instans yang melihat pemberitahuan ini."
+		},
 		"nav": {
 			"admins": "Admin",
 			"authentication": "Autentikasi",
@@ -9457,7 +10069,8 @@
 			"general": "Umum",
 			"publicBoards": "Papan publik",
 			"workspaces": "Ruang kerja",
-			"ai": "AI"
+			"ai": "AI",
+			"health": "Kesehatan"
 		},
 		"lockedCallout": "Pengaturan ini dikelola dengan variabel lingkungan di server ini. Perubahan di sini dinonaktifkan.",
 		"source": {
@@ -9518,7 +10131,7 @@
 			},
 			"deliveryFailures": {
 				"title": "Kegagalan pengiriman terbaru",
-				"description": "Webhook ruang kerja yang kehabisan percobaan ulang dalam 7 hari terakhir. Kesalahan email dan tugas latar belakang hanya ada di log server.",
+				"description": "Webhook ruang kerja yang kehabisan percobaan ulang dalam 7 hari terakhir. Proses latar belakang dan panggilan AI yang gagal ada di halaman Kesehatan.",
 				"empty": "Tidak ada pengiriman gagal dalam 7 hari terakhir.",
 				"when": "Waktu",
 				"workspace": "Ruang kerja",
@@ -10082,6 +10695,19 @@
 		}
 	},
 	"ai": {
+		"provenance": {
+			"label": "Dibuat oleh AI",
+			"edited": "Diedit oleh {{name}}, awalnya dibuat oleh AI",
+			"someone": "seseorang",
+			"byAgent": "Ditulis oleh agen {{name}}",
+			"unknownAgent": "agen yang sudah dihapus",
+			"byFeature": "Ditulis dengan AI ({{feature}}) dan diterima oleh seseorang",
+			"byAssist": "Ditulis dengan AI dan diterima oleh seseorang",
+			"model": "Model AI: {{model}}"
+		},
+		"disclosure": {
+			"chat": "Anda sedang mengobrol dengan asisten AI, bukan dengan manusia."
+		},
 		"rules": {
 			"title": "Aturan dari deskripsi",
 			"description": "Tulis otomatisasi dengan kata-kata biasa. AI mengubahnya menjadi aturan biasa yang bisa Anda edit, uji pada riwayat terbaru, dan simpan. Aturan yang disimpan berjalan tanpa AI.",
@@ -10755,6 +11381,7 @@
 			"triage": "Saran triase",
 			"translate": "Terjemahan",
 			"brief": "Ringkasan untuk pemangku kepentingan",
+			"project_update": "Draf pembaruan proyek",
 			"agent_run": "Agen",
 			"rule_compiler": "Aturan otomatisasi",
 			"capture": "Ubah menjadi tugas",
@@ -10981,7 +11608,7 @@
 			"webSearchUnavailable": "Instans ini belum menyiapkan pencarian web.",
 			"webSearchLocalOnly": "Tidak digunakan selama AI hanya memakai model lokal.",
 			"storeConversations": "Simpan riwayat obrolan di server",
-			"storeConversationsHint": "Percakapan setiap orang disimpan di ruang kerja agar dapat dibuka lagi di perangkat mana pun. Nonaktif: percakapan hanya tersimpan di masing-masing peramban.",
+			"storeConversationsHint": "Percakapan setiap orang disimpan di ruang kerja agar dapat dibuka lagi di perangkat mana pun. Nonaktif: percakapan hanya tersimpan di masing-masing perangkat.",
 			"allowAutopilot": "Izinkan Pilot otomatis",
 			"allowAutopilotHint": "Mode Bangun boleh menerapkan perubahan tanpa konfirmasi. Setiap perubahan tetap dicatat dan dapat diurungkan.",
 			"storesPrompts": "Prompt disimpan"
@@ -11078,6 +11705,10 @@
 				"link_tasks": "Tautkan tugas",
 				"delete_task": "Hapus tugas",
 				"bulk_move_status": "Ubah status beberapa tugas",
+				"create_task": "Buat tugas",
+				"set_task_cycle": "Atur siklus",
+				"set_task_modules": "Atur modul",
+				"set_custom_field": "Atur field kustom",
 				"ask_person": "Ajukan pertanyaan",
 				"web_search": "Pencarian web",
 				"connector": "Layanan eksternal: {{tool}}",
@@ -11113,6 +11744,7 @@
 				"after": "Sesudah",
 				"openPage": "Buka halaman",
 				"openSubtask": "Buka subtugas",
+				"openTask": "Buka tugas",
 				"openLinked": "Buka tugas tertaut",
 				"empty": "(kosong)",
 				"fields": {
@@ -11129,7 +11761,12 @@
 					"delete": "Pindahkan ke sampah",
 					"connectorCall": "Panggilan ke {{connector}}",
 					"pageContent": "Isi halaman",
-					"pageSection": "Bagian yang ditambahkan"
+					"pageSection": "Bagian yang ditambahkan",
+					"task": "Tugas baru",
+					"cycle": "Siklus",
+					"modulesAdded": "Ditambahkan ke modul",
+					"modulesRemoved": "Dihapus dari modul",
+					"customField": "Field kustom {{field}}"
 				},
 				"undoPageError": "Tidak dapat mengurungkan suntingan ini. Halaman sudah berubah sejak itu; pulihkan versi sebelumnya dari riwayatnya."
 			},
@@ -11560,6 +12197,115 @@
 			"noAccess": "Anda memerlukan izin untuk memakai AI di ruang kerja ini."
 		}
 	},
+	"projectUpdates": {
+		"documentTitle": "Pembaruan · {{project}}",
+		"newUpdate": "Pembaruan baru",
+		"loadError": "Pembaruan tidak dapat dimuat.",
+		"retry": "Coba lagi",
+		"loadMore": "Tampilkan pembaruan lama",
+		"empty": {
+			"title": "Belum ada pembaruan",
+			"description": "Posting pembaruan status singkat agar semua orang tahu perkembangan proyek."
+		},
+		"health": {
+			"on_track": "Sesuai rencana",
+			"at_risk": "Berisiko",
+			"off_track": "Melenceng"
+		},
+		"edited": "diedit",
+		"actions": "Tindakan pembaruan",
+		"edit": "Ubah",
+		"delete": "Hapus",
+		"deleted": "Pembaruan dihapus",
+		"deletedUser": "Pengguna yang dihapus",
+		"cardLabel": "Pembaruan oleh {{name}}",
+		"deleteDialog": {
+			"title": "Hapus pembaruan ini?",
+			"description": "Pembaruan beserta komentar dan reaksinya dihapus untuk semua orang.",
+			"error": "Pembaruan tidak dapat dihapus."
+		},
+		"fields": {
+			"health": "Kesehatan",
+			"summary": "Ringkasan",
+			"summaryPlaceholder": "Bagaimana perkembangan proyek?",
+			"highlights": "Sorotan",
+			"blockers": "Hambatan dan risiko",
+			"nextSteps": "Langkah berikutnya"
+		},
+		"composer": {
+			"title": "Pembaruan proyek baru",
+			"editTitle": "Edit pembaruan proyek",
+			"draftWithAi": "Buat draf dengan AI",
+			"draftFromData": "Buat draf dari data proyek",
+			"aiFallback": "AI sedang tidak tersedia, jadi draf menggunakan templat sebagai gantinya.",
+			"draftError": "Draf pembaruan tidak dapat dibuat.",
+			"factsLine": "Dari data langsung: {{completed}} selesai, {{moved}} dipindahkan, {{overdue}} terlambat, {{blocked}} diblokir.",
+			"cancel": "Batal",
+			"post": "Posting pembaruan",
+			"save": "Simpan",
+			"posted": "Pembaruan diposting",
+			"saved": "Pembaruan disimpan",
+			"saveError": "Pembaruan tidak dapat disimpan."
+		},
+		"facts": {
+			"summary": "Data saat diposting: {{percent}}% selesai · {{completed}} selesai · {{moved}} dipindahkan · {{overdue}} terlambat · {{blocked}} diblokir",
+			"cycle": "{{name}}: {{percent}}% selesai ({{completed}} dari {{total}})",
+			"forecast": "Prakiraan: 85% kemungkinan selesai sebelum {{date}}",
+			"overdue": "Terlambat",
+			"blocked": "Diblokir",
+			"completed": "Selesai"
+		},
+		"comments": {
+			"toggle_other": "{{count}} komentar",
+			"label": "Komentar",
+			"placeholder": "Tulis komentar…",
+			"send": "Kirim komentar",
+			"delete": "Hapus komentar",
+			"error": "Komentar tidak dapat ditambahkan.",
+			"loadError": "Komentar tidak dapat dimuat."
+		},
+		"follow": {
+			"follow": "Ikuti pembaruan",
+			"unfollow": "Berhenti mengikuti pembaruan",
+			"error": "Status mengikuti tidak dapat diubah."
+		},
+		"reminder": {
+			"label": "Pengingat mingguan untuk pemimpin proyek",
+			"weekday": "Hari pengingat",
+			"noLead": "Tetapkan pemimpin proyek untuk menerimanya.",
+			"error": "Pengingat tidak dapat disimpan."
+		},
+		"widget": {
+			"title": "Pembaruan proyek",
+			"empty": "Belum ada pembaruan proyek.",
+			"error": "Pembaruan proyek tidak dapat dimuat."
+		},
+		"template": {
+			"summary": "Kondisi proyek: {{health}}. {{percent}}% selesai ({{completed}} dari {{total}} tugas), {{open}} masih terbuka.",
+			"changesSinceUpdate": "Sejak pembaruan terakhir: {{completed}} selesai, {{moved}} dipindahkan.",
+			"changesLastWeek": "Dalam 7 hari terakhir: {{completed}} selesai, {{moved}} dipindahkan.",
+			"forecast": "Prakiraan memberi peluang 85% untuk selesai sebelum {{date}}.",
+			"cycle": "{{name}}: {{percent}}% selesai ({{completed}} dari {{total}}), berakhir {{date}}",
+			"overdue_other": "{{count}} tugas terlambat:",
+			"blocked_other": "{{count}} tugas diblokir:",
+			"more_other": "dan {{count}} lainnya"
+		},
+		"notifications": {
+			"posted": {
+				"title": "{{authorName}} memposting pembaruan untuk {{projectName}}",
+				"verb": "memposting pembaruan untuk {{projectName}}"
+			},
+			"comment": {
+				"title": "{{commenterName}} mengomentari pembaruan {{projectName}}",
+				"verb": "mengomentari pembaruan {{projectName}}"
+			},
+			"reminder": {
+				"title": "Saatnya memposting pembaruan untuk {{projectName}}",
+				"content": "Bagikan perkembangan proyek dengan pembaruan status singkat."
+			},
+			"open": "Buka pembaruan"
+		}
+	},
 	"insight": {
 		"close": "Tutup",
 		"retry": "Coba lagi",
@@ -11766,7 +12512,13 @@
 			"waitingOn": "Menunggu {{keys}}",
 			"hiddenBlockers_other": "{{count}} tugas yang tidak dapat Anda lihat",
 			"followingHeading": "Perubahan pada tugas yang Anda ikuti",
-			"changes_other": "{{count}} perubahan"
+			"changes_other": "{{count}} perubahan",
+			"projectUpdatesHeading": "Pembaruan dari proyek yang Anda ikuti",
+			"health": {
+				"on_track": "Sesuai rencana",
+				"at_risk": "Berisiko",
+				"off_track": "Melenceng"
+			}
 		},
 		"batchSubject": {
 			"task_other": "{{count}} pembaruan pada {{title}}",
@@ -11815,6 +12567,10 @@
 		"notificationText": {
 			"commentWithoutPreview": "Komentar baru pada {{taskTitle}}",
 			"pushFixedLine": "Buka Margaya untuk melihat detailnya."
+		},
+		"quietSummary": {
+			"title": "Notifikasi aktif kembali",
+			"body_other": "{{count}} notifikasi masuk selama notifikasi dijeda."
 		}
 	},
 	"download": {
@@ -12051,7 +12807,11 @@
 				"updateInstall": "Mulai ulang untuk memperbarui",
 				"updating": "Memperbarui…",
 				"updatePackage": "Versi {{version}} tersedia. Unduh paket baru untuk memperbarui.",
-				"updateDownload": "Unduh"
+				"updateDownload": "Unduh",
+				"openAtLoginHint": "Menjalankan Margaya di latar belakang saat Anda masuk ke komputer ini.",
+				"updatesLabel": "Pembaruan",
+				"diagnosticsLabel": "Diagnostik",
+				"diagnosticsHint": "Menyalin versi aplikasi, daftar server Anda, dan baris log terbaru untuk laporan bug. Token masuk tidak pernah disertakan."
 			},
 			"quickAdd": {
 				"title": "Tambah cepat",
@@ -12070,6 +12830,10 @@
 			"downloads": {
 				"finished": "{{file}} telah diunduh",
 				"failed": "Tidak dapat mengunduh {{file}}"
+			},
+			"notifications": {
+				"releasedTitle": "Notifikasi aktif kembali",
+				"releasedBody": "Notifikasi yang masuk selama dijeda: {{count}}"
 			},
 			"menu": {
 				"about": "Tentang Margaya",

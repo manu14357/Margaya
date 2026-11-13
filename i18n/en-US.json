@@ -491,6 +491,8 @@
 			"clientName": "Client name (self-reported)",
 			"clientFallback": "MCP client",
 			"redirectUri": "Redirect URI",
+			"metadataHost": "Client published by",
+			"localRedirect": "This client sends you back to an app on this computer. Any app on your computer could claim this address, so only continue if you just opened the client yourself.",
 			"approve": "Approve",
 			"deny": "Deny"
 		},
@@ -573,17 +575,259 @@
 		}
 	},
 	"settings": {
+		"feedback": {
+			"send": {
+				"menuItem": "Send feedback",
+				"title": "Send feedback",
+				"description": "Tell the people who run this server what works and what doesn't. Your feedback stays on this server.",
+				"mood": "How do you feel about Margaya?",
+				"comment": "Anything to add? (optional)",
+				"commentPlaceholder": "What went well, what got in your way, what you'd like to see",
+				"context": "Sent with your name, the kind of page you're on ({{page}}) and the app version ({{version}}). Never task content.",
+				"submit": "Send",
+				"cancel": "Cancel",
+				"done": "Done",
+				"thanks": "Thanks! Your feedback reached the people who run this server. They read every answer.",
+				"error": "Couldn't send your feedback. Try again."
+			},
+			"survey": {
+				"questionMood": "How is Margaya working for you?",
+				"questionStars": "How would you rate Margaya?",
+				"questionNps": "How likely are you to recommend Margaya to a colleague?",
+				"comment": "Anything to add? (optional)",
+				"notNow": "Not now",
+				"neverAsk": "Don't ask again",
+				"privacy": "Your answer stays on this server, with your name. Change this in Account → Preferences.",
+				"thanksTitle": "Thank you",
+				"thanks": "We heard you. Your answer helps the people who run this server decide what to improve.",
+				"whatsNew": "See what's new"
+			},
+			"scale": {
+				"veryUnhappy": "Very unhappy",
+				"unhappy": "Unhappy",
+				"neutral": "Neutral",
+				"happy": "Happy",
+				"veryHappy": "Very happy",
+				"stars_one": "{{count}} star",
+				"stars_other": "{{count}} stars",
+				"npsScore_one": "{{count}} out of 10",
+				"npsScore_other": "{{count}} out of 10",
+				"npsLow": "Not at all likely",
+				"npsHigh": "Extremely likely",
+				"thumbsUp": "Helpful",
+				"thumbsDown": "Not helpful"
+			},
+			"pageTypes": {
+				"home": "Home",
+				"inbox": "Inbox",
+				"myWork": "My work",
+				"board": "Board",
+				"list": "List",
+				"timeline": "Timeline",
+				"calendar": "Calendar",
+				"task": "Task",
+				"cycles": "Cycles",
+				"modules": "Modules",
+				"views": "Views",
+				"intake": "Intake",
+				"pages": "Pages",
+				"analytics": "Analytics",
+				"settings": "Settings",
+				"other": "Other"
+			},
+			"features": {
+				"cycles": "Cycles",
+				"modules": "Modules",
+				"pages": "Pages",
+				"views": "Views",
+				"intake": "Intake",
+				"analytics": "Analytics"
+			},
+			"mine": {
+				"title": "Feedback",
+				"description": "What you send stays on this server and only its admins can read it, with your name and email.",
+				"survey": "Occasional survey",
+				"surveyDescription": "Now and then, a small card in the corner asks one question. Turn it off to never be asked.",
+				"send": "Send feedback",
+				"sendDescription": "Rate Margaya or leave a comment any time. It's also in the Help menu and the command palette.",
+				"data": "Your feedback",
+				"dataDescription": "Download a copy of everything you've sent, or delete it. Deleting your account deletes it too.",
+				"download": "Download",
+				"downloadError": "Couldn't download your feedback. Try again.",
+				"delete": "Delete all",
+				"deleteTitle": "Delete all your feedback?",
+				"deleteDescription": "Everything you've sent is removed from this server. This can't be undone.",
+				"deleteConfirm": "Delete",
+				"deleted_one": "Deleted {{count}} answer",
+				"deleted_other": "Deleted {{count}} answers",
+				"deleteError": "Couldn't delete your feedback. Try again."
+			},
+			"admin": {
+				"nav": "Feedback",
+				"title": "Feedback",
+				"subtitle": "What people on this server think of Margaya. It is stored here and never sent anywhere else.",
+				"settingsTitle": "Send feedback",
+				"settingsDescription": "Everyone can rate Margaya or leave a comment from the Help menu, the command palette or their preferences.",
+				"enabled": "Allow feedback",
+				"enabledHint": "Turning it off hides Send feedback and the survey. Answers already sent are kept.",
+				"surveyTitle": "Occasional survey",
+				"surveyDescription": "A small card in the corner, never a pop-up. It never asks in someone's first 7 days, while they type or have a dialog open, for 30 days after they close it, or after Don't ask again.",
+				"surveyEnabled": "Ask now and then",
+				"surveyEnabledHint": "Asks once a trigger below is reached, then not again until the interval has passed.",
+				"surveyNeedsFeedback": "Has no effect while feedback is off.",
+				"format": "Scale",
+				"formatHint": "Faces suit how people feel, stars a quick rating, and 0–10 gives a Net Promoter Score.",
+				"formats": {
+					"faces3": "3 faces",
+					"faces5": "5 faces",
+					"stars": "5 stars",
+					"nps": "0–10 (NPS)",
+					"thumbs": "Thumbs (features)"
+				},
+				"tasksCompleted": "After completed tasks",
+				"tasksCompletedHint": "Ask after someone completes this many tasks since the survey last asked. 0 turns this trigger off.",
+				"tasksUnit": "tasks",
+				"activeDays": "After active days",
+				"activeDaysHint": "Ask after someone has used Margaya on this many days. 0 turns this trigger off.",
+				"daysUnit": "days",
+				"interval": "Ask at most every",
+				"intervalHint": "The least time between two surveys for one person, 30 to 365 days.",
+				"save": "Save",
+				"summaryTitle": "Summary",
+				"scale": "Scale",
+				"period": "Period",
+				"lastDays_one": "Last {{count}} day",
+				"lastDays_other": "Last {{count}} days",
+				"answers": "Answers",
+				"average": "Average",
+				"outOf": "{{value}} / {{max}}",
+				"satisfaction": "Happy",
+				"nps": "NPS",
+				"comments": "Comments",
+				"none": "–",
+				"bySource": "All scales: {{general}} from Send feedback, {{survey}} from the survey, {{feature}} from feature prompts.",
+				"summaryEmpty": "No answers on this scale in this period yet.",
+				"distribution": "Distribution",
+				"trend": "Happy answers per week",
+				"trendNps": "NPS per week",
+				"week": "Week",
+				"responsesTitle": "Answers",
+				"source": "Source",
+				"allSources": "All sources",
+				"allScales": "All scales",
+				"kinds": {
+					"general": "Send feedback",
+					"survey": "Survey",
+					"feature": "Feature prompt"
+				},
+				"commentsOnly": "With a comment",
+				"search": "Search comments or people",
+				"responsesEmpty": "No feedback yet. Answers appear here as people send them.",
+				"commentOnly": "Comment only",
+				"desktop": "Desktop app",
+				"loadMore": "Load more",
+				"loadError": "Couldn't load the feedback.",
+				"retry": "Retry",
+				"exportCsv": "Export CSV",
+				"exportError": "Couldn't export the feedback. Try again.",
+				"delete": "Delete answer",
+				"deleteError": "Couldn't delete. Try again.",
+				"purge": "Delete old",
+				"purgeTitle": "Delete feedback",
+				"purgeDescription": "The answers are removed from this server for good. The deletion is recorded in the audit trail.",
+				"purgeWhich": "Which answers",
+				"purgeOlder_one": "Older than {{count}} day",
+				"purgeOlder_other": "Older than {{count}} days",
+				"purgeAll": "All answers",
+				"purgeConfirm": "Delete",
+				"purged_one": "Deleted {{count}} answer",
+				"purged_other": "Deleted {{count}} answers",
+				"cancel": "Cancel",
+				"auditDeleted": "Deleted feedback"
+			}
+		},
+		"calendarFeed": {
+			"title": "Subscribe in calendar",
+			"description": "See your Margaya dates in your calendar app. Feeds are read-only and refresh about once an hour.",
+			"menuItem": "Subscribe in calendar",
+			"timezoneNote": "Tasks appear as all-day events, on days counted in your account time zone, or the workspace's when you haven't chosen one.",
+			"loadError": "Couldn't load your calendar feeds. Try again later.",
+			"hiddenProject": "A project you can no longer see",
+			"privacy": "Anyone with this link can see the titles and dates in it. Keep it private, and create a new link or revoke it if it leaks.",
+			"myTasks": {
+				"label": "My tasks",
+				"description": "Tasks assigned to you that have a start or due date."
+			},
+			"planning": {
+				"label": "Milestones and cycles",
+				"description": "Milestones and cycle dates from every project you can see in this workspace."
+			},
+			"project": {
+				"settingsDescription": "Every dated task, milestone and cycle in this project.",
+				"dialogDescription": "Follow every dated task, milestone and cycle of {{project}} in your calendar app.",
+				"manageHint": "You can see and revoke all your calendar links in Settings, under Account → Preferences."
+			},
+			"calendarName": {
+				"myTasks": "My tasks · {{workspace}}",
+				"planning": "Milestones and cycles · {{workspace}}",
+				"project": "{{project}} · {{workspace}}"
+			},
+			"status": {
+				"none": "No link yet",
+				"active": "Link {{start}}…, created {{date}}",
+				"lastUsed": "last read by a calendar {{when}}",
+				"neverUsed": "not read by a calendar yet"
+			},
+			"actions": {
+				"create": "Create link",
+				"createFor": "Create a calendar link for {{name}}",
+				"regenerate": "New link",
+				"regenerateFor": "Create a new calendar link for {{name}}",
+				"revoke": "Revoke",
+				"revokeFor": "Revoke the calendar link for {{name}}",
+				"copy": "Copy",
+				"copied": "Copied",
+				"open": "Open in calendar app",
+				"done": "Done"
+			},
+			"link": {
+				"title": "Your calendar link",
+				"label": "Subscription link",
+				"once": "Copy it now: it is shown only once. If you lose it, create a new link."
+			},
+			"howTo": {
+				"title": "How to add it",
+				"step1": "Copy the link.",
+				"step2": "In your calendar app, choose to add or subscribe to a calendar from a URL.",
+				"step3": "Paste the link. Changes show up at the app's next refresh."
+			},
+			"regenerateConfirm": {
+				"title": "Create a new link?",
+				"description": "The current link stops working at once. Calendars that use it stop updating until you add the new link.",
+				"confirm": "Create new link"
+			},
+			"revokeConfirm": {
+				"title": "Revoke this calendar link?",
+				"description": "The link stops working at once, and calendars that use it stop updating.",
+				"confirm": "Revoke link"
+			},
+			"toast": {
+				"created": "Calendar link created",
+				"revoked": "Calendar link revoked",
+				"copied": "Link copied",
+				"copyError": "Couldn't copy the link. Select it and copy it yourself.",
+				"error": "Couldn't update the calendar link"
+			}
+		},
 		"account": "Account",
-		"information": "Information",
+		"information": "Profile",
 		"notifications": "Notifications",
 		"preferences": "Preferences",
 		"apiKeys": "API keys",
 		"informationPage": {
-			"pageTitle": "Personal information",
-			"title": "Personal information",
-			"subtitle": "Manage your personal details and account information.",
-			"sectionTitle": "Account information",
-			"sectionSubtitle": "Manage your profile and account details.",
+			"pageTitle": "Profile",
+			"title": "Profile",
+			"subtitle": "Your name, picture and the email you sign in with.",
 			"profilePicture": "Profile picture",
 			"fullName": "Full name",
 			"fullNamePlaceholder": "Enter your name",
@@ -623,14 +867,12 @@
 		"notificationsPage": {
 			"pageTitle": "Notifications",
 			"title": "Notifications",
-			"subtitle": "Choose how Margaya delivers your account notifications and which channels to use.",
+			"subtitle": "Choose what Margaya tells you about, where it reaches you and how it sounds.",
 			"statusConnected": "Connected",
 			"statusPaused": "Paused",
 			"emailTitle": "Email",
 			"emailDescription": "Use your account email as the destination for notifications.",
-			"accountEmailLabel": "Account email",
 			"accountEmailNoAddress": "No account email available",
-			"accountEmailHint": "Email delivery always goes to the signed-in account email.",
 			"saveChanges": "Save changes",
 			"disconnect": "Disconnect",
 			"ntfyTitle": "ntfy",
@@ -731,7 +973,7 @@
 				"title": "Sounds",
 				"description": "Play a sound when a notification arrives while Margaya is open in your browser.",
 				"enabled": "Play sounds",
-				"enabledDescription": "Your sound choices follow your account to every browser.",
+				"enabledDescription": "Your sound choices follow your account to every device.",
 				"volume": "Volume",
 				"volumeValue": "{{value}}%",
 				"categoryMentions": "Mentions and assignments",
@@ -751,14 +993,38 @@
 				"soundMarimba": "Marimba",
 				"preview": "Play {{sound}}",
 				"quietHours": "Quiet hours",
-				"quietHoursDescription": "No sounds between these times, in your account's time zone.",
+				"quietHoursDescription": "Every day between these times, notifications are paused and silent.",
 				"quietFrom": "From",
 				"quietTo": "To",
 				"deviceMute": "Mute sounds on this device",
 				"deviceMuteDescription": "Silences this browser only; your other devices keep playing.",
 				"previewFailed": "Your browser didn't play the sound. Check that this tab or site isn't muted.",
 				"desktopDescription": "In the desktop app, a notification plays the Margaya sound you chose here, at your volume, when these settings call for one. Do Not Disturb silences it.",
-				"deviceMuteDescriptionDesktop": "Silences this desktop app only; your other devices keep playing."
+				"deviceMuteDescriptionDesktop": "Silences this desktop app only; your other devices keep playing.",
+				"previewFailedDesktop": "The sound didn't play. Check that your computer's sound isn't muted."
+			},
+			"quiet": {
+				"title": "Quiet hours and focus",
+				"description": "Pause notifications for a while, or every night. Your inbox still fills; nothing makes a sound.",
+				"focus": "Focus mode",
+				"focusDescription": "Pause notifications from now. Also in the account menu and the command palette.",
+				"timeZone": "Times are in your account time zone, {{zone}}.",
+				"noTimeZone": "Your account has no time zone yet, so quiet hours follow UTC.",
+				"useTimeZone": "Use {{zone}}",
+				"channels": "Hold these channels",
+				"channelsDescription": "While notifications are paused, these wait. Unticked channels keep arriving, without a sound.",
+				"channelPush": "Push",
+				"channelEmail": "Email",
+				"channelDesktop": "Desktop app",
+				"channelNtfy": "ntfy",
+				"channelGotify": "Gotify",
+				"channelWebhook": "Webhook",
+				"bypass": "Let these through",
+				"bypassDescription": "These arrive right away, with their sound, even while notifications are paused.",
+				"bypassMentions": "Direct mentions",
+				"bypassUrgent": "Tasks assigned to you with urgent priority",
+				"bypassApprovals": "Agents waiting for your approval or answer",
+				"summaryNote": "When the pause ends, each held channel gets one summary: a single email with everything, one push, ntfy or Gotify message, one desktop alert, and each held webhook payload in order."
 			},
 			"pushTitle": "Push notifications",
 			"pushDescription": "Alerts on your phone or computer, even when Margaya is closed. \"Notify me about\" decides what is sent, and a workspace rule below can narrow it.",
@@ -783,7 +1049,9 @@
 			"pushChannelHintEnabled": "Send matching workspace notifications to your devices.",
 			"pushChannelHintDisabled": "Turn on push for a device first.",
 			"pushLoadFailed": "Couldn't load your push settings. Reload this page to try again.",
-			"pushDesktopApp": "The desktop app shows notifications on this device, so browser push isn't needed here."
+			"emailSendsTo": "Sent to {{email}}.",
+			"pushDesktopTitle": "Desktop notifications",
+			"pushDesktopDescription": "Margaya Desktop shows notifications on this computer, even when its window is closed. To turn them off or change how they look, use your system's notification settings."
 		},
 		"preferencesPage": {
 			"title": "Preferences",
@@ -830,11 +1098,9 @@
 			"estimatesDescription": "Show task estimates on board cards"
 		},
 		"developerPage": {
-			"pageTitle": "Developer settings",
-			"title": "Developer settings",
-			"subtitle": "Manage your API keys and developer resources.",
-			"apiKeysCardTitle": "API keys",
-			"apiKeysCardDescription": "Create and manage API keys for programmatic access to Margaya.",
+			"pageTitle": "API keys",
+			"title": "API keys",
+			"subtitle": "Keys let scripts, integrations and MCP clients use Margaya's API as you.",
 			"createApiKey": "Create API key",
 			"unnamedKey": "Unnamed key"
 		},
@@ -907,10 +1173,10 @@
 			"noResults": "No time zones found",
 			"workspaceLabel": "Time zone",
 			"workspaceHint": "Defines \"today\" for cycles, automations and analytics. Existing workspaces start on UTC.",
-			"useBrowser": "Use {{zone}}",
+			"useBrowser": "Use this device's time zone ({{zone}})",
 			"accountLabel": "Time zone",
-			"accountHint": "Used for reminders, email digests, and the days that task filters and analytics count in. Times on screen use your browser's time zone.",
-			"automatic": "Automatic (browser: {{zone}})",
+			"accountHint": "Used for reminders, email digests, and the days that task filters and analytics count in. Times on screen use this device's time zone.",
+			"automatic": "Automatic (this device: {{zone}})",
 			"toastUpdated": "Time zone updated",
 			"toastError": "Failed to update the time zone",
 			"loadError": "Couldn't load the time zone. Reload the page to try again."
@@ -950,7 +1216,7 @@
 		},
 		"workspaceGeneral": {
 			"pageTitle": "General settings",
-			"title": "General settings",
+			"title": "General",
 			"subtitle": "Manage your workspace name and description.",
 			"workspaceInfoTitle": "Workspace information",
 			"workspaceInfoSubtitle": "Configure your workspace details and preferences.",
@@ -1882,7 +2148,7 @@
 		},
 		"projectGeneral": {
 			"pageTitle": "Project settings",
-			"title": "General settings",
+			"title": "General",
 			"subtitle": "Manage your project name, key, icon and description.",
 			"projectInfoTitle": "Project information",
 			"projectInfoSubtitle": "Configure your project details and preferences.",
@@ -1974,12 +2240,16 @@
 				"ai": {
 					"title": "AI",
 					"description": "Summaries, suggestions and other AI help for this project. Off keeps the project out of AI entirely."
+				},
+				"updates": {
+					"title": "Updates",
+					"description": "Post dated status updates with a health value, drafted from live project data."
 				}
 			}
 		},
 		"projectIntegrations": {
 			"pageTitle": "Project integrations",
-			"title": "Project integrations",
+			"title": "Integrations",
 			"subtitle": "Connect your project with external tools and services to streamline your workflow.",
 			"githubSectionTitle": "GitHub integration",
 			"githubSectionSubtitle": "Synchronize tasks with GitHub issues and enable two-way sync.",
@@ -2438,11 +2708,114 @@
 				"taskPriorityChanged": "Priority changes",
 				"taskTitleChanged": "Title changes",
 				"taskDescriptionChanged": "Description changes",
-				"taskCommentCreated": "New comments"
+				"taskCommentCreated": "New comments",
+				"taskDueDateChanged": "Due date changes",
+				"intakeDecision": "Intake decisions (accepted, declined, duplicate)",
+				"projectUpdate": "Project updates"
 			},
+			"buttonsHint": "With the workspace's Slack app connected, posts get Assign to me, Change status and Open buttons. Create this webhook from the same Slack app so the buttons reach Margaya.",
 			"connect": "Connect Slack",
 			"saveChanges": "Save changes",
 			"disconnect": "Disconnect"
+		},
+		"slackApp": {
+			"workspaceNav": "Slack app",
+			"accountNav": "Slack",
+			"title": "Slack app",
+			"description": "Search, capture and update tasks from Slack. Every action runs as the person's own linked Margaya account, with their permissions.",
+			"noPermission": "Only people who can manage workspace settings can set up the Slack app.",
+			"loadError": "The Slack app settings couldn't be loaded. Try again.",
+			"statusTitle": "Connection",
+			"unknownTeam": "Slack workspace (not checked yet)",
+			"modeSocket": "Socket Mode",
+			"modeHttp": "HTTP requests",
+			"modeSocketHint": "Recommended. Margaya opens an outbound connection to Slack, so it works behind a VPN or reverse proxy with no public URL.",
+			"modeHttpHint": "Slack sends signed requests to this server. Needs a public HTTPS address that Slack can reach.",
+			"active": "Active",
+			"paused": "Paused",
+			"unreadable": "The stored tokens can't be read, probably because AUTH_SECRET changed. Enter them again.",
+			"lastError": "Last error from Slack: {{code}}",
+			"test": "Test connection",
+			"activeLabel": "Slack app on",
+			"activeHint": "When off, Margaya ignores commands, shortcuts and buttons from Slack.",
+			"notConnected": "Slack isn't connected",
+			"notConnectedHint": "Follow the steps below to create the Slack app and connect it.",
+			"setupTitle": "Set up",
+			"setupHint": "Creating the Slack app takes a few minutes. You need permission to install apps in your Slack workspace.",
+			"step1": "1. Choose how Slack reaches Margaya",
+			"step1Hint": "You can switch later; Slack then needs the matching manifest.",
+			"step2": "2. Create the Slack app from this manifest",
+			"step2Hint": "In Slack, choose Create New App, then From a manifest, pick your Slack workspace and paste this. Then install the app to your workspace.",
+			"manifestLabel": "Slack app manifest",
+			"copyManifest": "Copy manifest",
+			"copy": "Copy",
+			"copied": "Copied",
+			"copyFailed": "Couldn't copy. Select the text and copy it yourself.",
+			"openSlack": "Open Slack apps",
+			"noUnfurlDomain": "Link previews are left out: Slack can't unfurl localhost or IP addresses. Set MARGAYA_CLIENT_URL to a domain name to get them.",
+			"eventsUrl": "Request URL",
+			"eventsUrlHint": "Already in the manifest. Slack checks it when you save the app, so this server must be reachable over HTTPS.",
+			"step3": "3. Paste the tokens",
+			"step3SocketHint": "Bot User OAuth Token: OAuth & Permissions. App-level token: Basic Information › App-Level Tokens, with the connections:write scope.",
+			"step3HttpHint": "Bot User OAuth Token: OAuth & Permissions. Signing secret: Basic Information › App Credentials.",
+			"botToken": "Bot User OAuth Token",
+			"botTokenPlaceholder": "xoxb-…",
+			"appToken": "App-level token",
+			"appTokenPlaceholder": "xapp-…",
+			"signingSecret": "Signing secret",
+			"signingSecretPlaceholder": "Paste the signing secret",
+			"secretsHint": "Stored encrypted and never shown again. Leave a field empty to keep the saved value.",
+			"connectAndTest": "Connect and test",
+			"saveAndTest": "Save and test",
+			"step4": "4. Link accounts",
+			"step4Hint": "Each person runs /margaya link in Slack once and confirms in Margaya. Until then, Slack asks them to link and does nothing for them.",
+			"optionsTitle": "Options",
+			"defaultProject": "Default project",
+			"defaultProjectHint": "Where /margaya add puts a task when the text doesn't start with a project key.",
+			"noDefaultProject": "None",
+			"expandKeys": "Preview task keys in messages",
+			"expandKeysHint": "Reply in a thread when a message mentions keys such as WEB-12. Needs the message scopes, so copy the manifest again after turning this on.",
+			"dangerTitle": "Disconnect",
+			"disconnect": "Disconnect Slack app",
+			"disconnectHint": "Removes the stored tokens. Linked accounts are kept for when you reconnect.",
+			"checks": {
+				"botToken": "Bot token",
+				"appToken": "App-level token",
+				"signingSecret": "Signing secret",
+				"passed": "OK",
+				"failed": "Failed"
+			},
+			"toast": {
+				"saved": "Slack app saved",
+				"saveError": "Couldn't save the Slack app",
+				"testPassed": "Slack connection works",
+				"testFailed": "Slack connection test failed",
+				"disconnected": "Slack app disconnected",
+				"unlinked": "Slack account unlinked"
+			},
+			"accountTitle": "Slack",
+			"accountDescription": "Slack accounts that act as you. Their commands, shortcuts and buttons run with your permissions.",
+			"linkedTitle": "Linked Slack accounts",
+			"linksLoadError": "Your Slack links couldn't be loaded. Try again.",
+			"noLinks": "No linked Slack accounts",
+			"noLinksHint": "Run /margaya link in Slack to link one.",
+			"linkRow": "{{team}} · {{workspace}}",
+			"unlink": "Unlink",
+			"link": {
+				"invalidTitle": "This link doesn't work",
+				"invalid": "It has expired or isn't valid. Run /margaya link in Slack for a new one.",
+				"alreadyTitle": "Already linked",
+				"already": "This Slack account already acts as you in {{workspace}}.",
+				"confirmTitle": "Link your Slack account",
+				"confirmBody": "Slack user {{slackUser}} in {{team}} will act as you in {{workspace}}.",
+				"confirmWarning": "Only continue if that Slack account is yours: its commands, shortcuts and buttons will run with your permissions.",
+				"movesLink": "This Slack account is linked to someone else now; confirming moves the link to you.",
+				"you": "(you)",
+				"confirm": "Link account",
+				"cancel": "Cancel",
+				"linked": "Slack account linked",
+				"linkError": "Couldn't link the Slack account"
+			}
 		},
 		"discordIntegration": {
 			"validation": {
@@ -3053,7 +3426,11 @@
 			"areas": "Settings areas",
 			"billing": "Billing",
 			"pickProject": "Pick a project to see its settings.",
-			"noProjectsHint": "Create a project first. Its settings show up here."
+			"noProjectsHint": "Create a project first. Its settings show up here.",
+			"groupData": "Data",
+			"groupServer": "Server",
+			"aiSettings": "AI settings",
+			"pageLabel": "Settings page"
 		},
 		"security": "Security",
 		"securityPage": {
@@ -3094,7 +3471,10 @@
 				"error": "Failed to sign out the session",
 				"loadError": "Couldn't load your sessions.",
 				"confirmOthersTitle": "Sign out all other sessions?",
-				"confirmOthersDescription": "Every other device signed in to your account will have to sign in again. This device stays signed in."
+				"confirmOthersDescription": "Every other device signed in to your account will have to sign in again. This device stays signed in.",
+				"showAll": "Show all sessions ({{count}})",
+				"showFewer": "Show fewer",
+				"desktopApp": "Margaya Desktop"
 			}
 		},
 		"trash": {
@@ -3315,6 +3695,96 @@
 			"title": "Continue in your browser",
 			"billing": "Finish in the browser window that just opened, then come back to Margaya. Your plan updates when you return.",
 			"githubApp": "Finish on GitHub in your browser, then come back to Margaya and check the installation again."
+		},
+		"save": "Save",
+		"unsavedChanges": "Unsaved changes",
+		"readOnly": {
+			"workspace": "You can see these settings, but your role can't change them. Ask a workspace owner or admin.",
+			"project": "You can see this project's settings, but your role can't change them. Ask a workspace owner or admin."
+		},
+		"projectIntake": {
+			"title": "Intake sources",
+			"pageTitle": "Intake sources",
+			"subtitle": "Let people send requests to this project by email or through a public form. Everything they send lands in Intake for review.",
+			"noPermission": "Only people who can share projects can manage intake sources.",
+			"loadError": "Couldn’t load these settings.",
+			"retry": "Retry",
+			"saved": "Settings saved",
+			"saveError": "Couldn’t save the settings",
+			"copy": "Copy",
+			"copied": "Copied",
+			"open": "Open",
+			"email": {
+				"title": "Email",
+				"description": "Mail sent or forwarded to the project’s address becomes a request. Replies from the same sender are added as comments, and attachments are kept.",
+				"enabled": "Accept requests by email",
+				"enabledHint": "Auto-replies, bounces, mailing-list mail and messages marked as spam are ignored.",
+				"turnedOn": "Email intake turned on",
+				"turnedOff": "Email intake turned off",
+				"address": "Forwarding address",
+				"addressHint": "Send or forward mail to this address. Anyone who knows it can send requests.",
+				"addressNone": "The address appears once email intake is turned on and the server has an intake mailbox.",
+				"rotate": "New address",
+				"rotated": "New address created. The old one no longer works.",
+				"noInstanceAddress": "This server has no intake address yet. Ask your administrator to set one up, or connect this project’s own mailbox below.",
+				"allowed": "Only accept these domains",
+				"allowedHint": "One domain per line. Leave empty to accept any sender. Subdomains are included.",
+				"blocked": "Never accept these domains",
+				"blockedHint": "One domain per line. Blocked domains win over the list above.",
+				"protection": "Messages over {{size}} MB are skipped. Up to {{files}} attachments of {{fileSize}} MB each are kept. Each sender can send 10 messages an hour."
+			},
+			"mailbox": {
+				"title": "Project mailbox",
+				"description": "Optional. Margaya checks this mailbox every two minutes and turns every unread message into a request for this project. It works behind a firewall, because Margaya connects out to the mail server.",
+				"enabled": "Check this mailbox",
+				"enabledHint": "Fill in the server and sign-in details, save, then turn this on.",
+				"lastPolled": "Last checked {{time}}.",
+				"notPolled": "Not checked yet.",
+				"lastError": "Last check failed: {{error}}",
+				"host": "IMAP server",
+				"security": "Encryption",
+				"securityHint": "Connections are always encrypted.",
+				"tls": "TLS (port 993)",
+				"starttls": "STARTTLS (port 143)",
+				"port": "Port",
+				"portHint": "Leave empty for the default.",
+				"portInvalid": "Enter a port between 1 and 65535.",
+				"username": "User name",
+				"password": "Password",
+				"passwordSaved": "A password is saved. Type a new one to replace it.",
+				"folder": "Folder",
+				"test": "Test connection",
+				"testOk_one": "Connected. {{count}} unread message.",
+				"testOk_other": "Connected. {{count}} unread messages."
+			},
+			"form": {
+				"title": "Request form",
+				"description": "A public page where anyone with the link can send a request. It shows only the text and fields you choose here, never your workspace or tasks.",
+				"enabled": "Open the form",
+				"enabledHint": "Bots are kept out with a hidden trap field and rate limits, without a captcha.",
+				"opened": "Form opened",
+				"closed": "Form closed",
+				"sharingOff": "Public sharing is turned off on this server, so the form can’t be opened.",
+				"link": "Form link",
+				"linkHint": "Share this link. Anyone who has it can send requests.",
+				"rotate": "New link",
+				"rotated": "New link created. The old one no longer works.",
+				"heading": "Heading",
+				"headingHint": "Shown at the top of the form.",
+				"intro": "Introduction",
+				"descriptionField": "Description",
+				"emailField": "Email address",
+				"emailFieldHint": "Shown to triagers only, so they can follow up.",
+				"nameField": "Name",
+				"modeOptional": "Optional",
+				"modeRequired": "Required",
+				"modeOff": "Hidden",
+				"customFields": "Custom fields",
+				"customFieldsHint": "Their names and options become visible on the form.",
+				"noCustomFields": "This project has no custom fields.",
+				"confirmation": "Confirmation message",
+				"confirmationHint": "Shown after someone sends a request."
+			}
 		}
 	},
 	"navigation": {
@@ -3438,6 +3908,7 @@
 			"views": "Views",
 			"pages": "Pages",
 			"intake": "Intake",
+			"updates": "Updates",
 			"analytics": "Analytics"
 		},
 		"search": {
@@ -3578,6 +4049,27 @@
 			"unreadOnly": "Unread only",
 			"workspaceAnalytics": "Workspace",
 			"backlog": "Backlog"
+		},
+		"focus": {
+			"menuLabel": "Pause notifications",
+			"paletteLabel": "Focus mode: pause notifications",
+			"preset30m": "For 30 minutes",
+			"preset1h": "For 1 hour",
+			"preset2h": "For 2 hours",
+			"presetTomorrow": "Until tomorrow",
+			"custom": "Until a time…",
+			"resume": "Resume notifications",
+			"focusUntil": "Focus until {{time}}",
+			"quietUntil": "Quiet hours until {{time}}",
+			"settings": "Quiet hours settings",
+			"toastStarted": "Notifications paused until {{time}}",
+			"toastResumed": "Notifications resumed",
+			"customTitle": "Pause notifications until",
+			"customDescription": "Your inbox still fills. Mentions and other exceptions you chose still come through.",
+			"customLabel": "Until",
+			"customSave": "Pause",
+			"customInvalid": "Pick a time within the next 7 days.",
+			"cancel": "Cancel"
 		},
 		"desktopWindow": {
 			"minimize": "Minimize",
@@ -5477,7 +5969,6 @@
 			"createProject": "Create project",
 			"title": "Title",
 			"progress": "Progress",
-			"targetDate": "Target date",
 			"dueDate": "Due date",
 			"status": "Status",
 			"emptyTitle": "No projects yet",
@@ -7728,7 +8219,8 @@
 			"submittedBy": "Submitted by",
 			"me": "Me",
 			"clear": "Clear filters",
-			"remove": "Remove filter"
+			"remove": "Remove filter",
+			"source": "Source"
 		},
 		"sort": {
 			"button": "Sort",
@@ -7911,6 +8403,25 @@
 			"hintMove": "Move",
 			"hintDuplicate": "Duplicate",
 			"hintOpen": "Open task"
+		},
+		"publicForm": {
+			"defaultTitle": "Send a request",
+			"titleLabel": "Title",
+			"descriptionLabel": "Description",
+			"nameLabel": "Your name",
+			"emailLabel": "Your email",
+			"emailHint": "Used only to follow up on this request.",
+			"choose": "Choose…",
+			"requiredNote": "Fields marked * are required.",
+			"submit": "Send request",
+			"missing": "Fill in the required fields and check your email address.",
+			"tooMany": "Too many requests from this network. Try again later.",
+			"failed": "Your request couldn’t be sent. Try again.",
+			"sentTitle": "Request sent",
+			"sentBody": "Thanks. Your request has been received and will be reviewed.",
+			"another": "Send another request",
+			"notFoundTitle": "Form not available",
+			"notFoundBody": "This form doesn’t exist or is closed. Check the link with the person who shared it."
 		}
 	},
 	"cycles": {
@@ -9746,6 +10257,117 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "Instance · {{page}}",
+		"health": {
+			"title": "Health",
+			"subtitle": "Check this server's services, background jobs and recent failures.",
+			"recheck": "Check again",
+			"summary": "Summary",
+			"version": "Version",
+			"uptime": "Uptime",
+			"uptimeDays": "{{days}} d {{hours}} h",
+			"uptimeHours": "{{hours}} h {{minutes}} min",
+			"startedAt": "Started",
+			"node": "Node.js",
+			"latency": "{{ms}} ms",
+			"status": {
+				"ok": "OK",
+				"warning": "Warning",
+				"error": "Problem",
+				"off": "Off"
+			},
+			"migrations": {
+				"title": "Database migrations",
+				"ok_one": "Up to date: {{count}} migration applied.",
+				"ok_other": "Up to date: {{count}} migrations applied.",
+				"pending_one": "{{count}} migration hasn't run yet. Restart the server to apply it.",
+				"pending_other": "{{count}} migrations haven't run yet. Restart the server to apply them.",
+				"unknown": "The migration state can't be read. Details are in the server log."
+			},
+			"checks": {
+				"title": "Services",
+				"description": "Each check runs now, with a 5-second limit. Answers never include hosts, paths or passwords.",
+				"database": "Database",
+				"redis": "Redis",
+				"storage": "File storage",
+				"email": "Email",
+				"ai": "AI provider"
+			},
+			"codes": {
+				"ok": "Answering.",
+				"unreachable": "Can't be reached. Details are in the server log.",
+				"unavailable": "Configured, but not answering. Realtime updates between servers are paused.",
+				"timeout": "Didn't answer within the time limit.",
+				"failed": "The check failed. Details are in the server log.",
+				"redisDisabled": "Not configured. A single server doesn't need it.",
+				"aiDisabled": "AI is turned off for this server.",
+				"emailNotConfigured": "Outgoing email isn't set up.",
+				"aiNotConfigured": "AI is on, but no provider key or endpoint is set.",
+				"s3": "S3-compatible storage is answering.",
+				"local": "The built-in local store is writable.",
+				"storageOff": "Uploads are off: no S3 storage and the local store is disabled.",
+				"denied": "The storage service refused the check. Uploads may still work if the bucket policy allows them.",
+				"notWritable": "The local store's folder isn't writable.",
+				"recentErrors_one": "{{count}} call failed in the last 24 hours.",
+				"recentErrors_other": "{{count}} calls failed in the last 24 hours.",
+				"smtpOk": "Signed in to the mail server. No message was sent.",
+				"smtpAuth": "The mail server refused the user name or password.",
+				"smtpConnection": "Can't connect to the mail server.",
+				"smtpTls": "The secure connection to the mail server failed.",
+				"smtpUnknown": "The mail server check failed. Details are in the server log."
+			},
+			"activity": {
+				"title": "Queues and connections",
+				"description": "Queues are for the whole instance. Connections are for this server only.",
+				"emailBacklog": "Emails waiting",
+				"webhookPending": "Webhooks waiting",
+				"webhookFailed": "Webhooks failed (24 h)",
+				"boardSockets": "Board connections",
+				"userSockets": "App connections",
+				"pageRooms": "Pages being co-edited",
+				"metrics": "Prometheus metrics: {{state}}",
+				"metricsOff": "off",
+				"metricsToken": "on, at /api/metrics with a token",
+				"metricsPort": "on, at /metrics on port {{port}}",
+				"metricsNoEndpoint": "on, but neither a token nor a port is set"
+			},
+			"jobs": {
+				"title": "Background jobs",
+				"description": "Scheduled jobs on this server since it started.",
+				"empty": "No background jobs have been scheduled on this server.",
+				"name": "Job",
+				"lastRun": "Last run",
+				"outcome": "Last result",
+				"runs": "Runs",
+				"failures": "Failures",
+				"running": "Running now",
+				"notRun": "Not run yet"
+			},
+			"failures": {
+				"title": "Recent failures",
+				"description": "The newest failed jobs and AI calls on this server since it started. Webhook failures are on the General page.",
+				"empty": "No failures since this server started.",
+				"sourceJob": "Job",
+				"sourceAi": "AI",
+				"sourceEmail": "Email",
+				"seeLog": "Some items failed. Details are in the server log."
+			}
+		},
+		"update": {
+			"title": "Update notice",
+			"label": "Check for new versions",
+			"hint": "Once a day, this server reads the public release list and tells instance admins when a newer version is out. It sends nothing about this instance.",
+			"off": "Off. This server never checks for updates.",
+			"notChecked": "Not checked yet.",
+			"upToDate": "Up to date: {{current}} is the latest version.",
+			"available": "Version {{latest}} is available. This server runs {{current}}.",
+			"checkedAt": "Checked {{time}}.",
+			"errorUnreachable": "The release list can't be reached. The server tries again within an hour.",
+			"errorInvalid": "The release list gave an answer this server can't read.",
+			"releaseNotes": "Release notes",
+			"dismiss": "Dismiss",
+			"bannerTitle": "Margaya {{version}} is available",
+			"bannerDescription": "This server runs {{current}}. Only instance admins see this notice."
+		},
 		"nav": {
 			"general": "General",
 			"authentication": "Authentication",
@@ -9753,7 +10375,8 @@
 			"workspaces": "Workspaces",
 			"publicBoards": "Public boards",
 			"admins": "Admins",
-			"ai": "AI"
+			"ai": "AI",
+			"health": "Health"
 		},
 		"lockedCallout": "These settings are managed with environment variables on this server. Changes here are disabled.",
 		"source": {
@@ -9814,7 +10437,7 @@
 			},
 			"deliveryFailures": {
 				"title": "Recent delivery failures",
-				"description": "Workspace webhooks that used up their retries in the last 7 days. Email and background job errors are only in the server logs.",
+				"description": "Workspace webhooks that used up their retries in the last 7 days. Failed background jobs and AI calls are on the Health page.",
 				"empty": "No failed deliveries in the last 7 days.",
 				"when": "When",
 				"workspace": "Workspace",
@@ -10232,6 +10855,19 @@
 		}
 	},
 	"ai": {
+		"provenance": {
+			"label": "AI-generated",
+			"edited": "Edited by {{name}}, originally AI-generated",
+			"someone": "someone",
+			"byAgent": "Written by the agent {{name}}",
+			"unknownAgent": "a deleted agent",
+			"byFeature": "Written with AI ({{feature}}) and accepted by a person",
+			"byAssist": "Written with AI and accepted by a person",
+			"model": "Model: {{model}}"
+		},
+		"disclosure": {
+			"chat": "You are chatting with an AI assistant, not a person."
+		},
 		"rules": {
 			"title": "Rule from a description",
 			"description": "Write an automation in plain words. AI turns it into a normal rule that you can edit, try on recent history and save. Saved rules run without AI.",
@@ -10919,6 +11555,7 @@
 			"triage": "Triage suggestions",
 			"translate": "Translations",
 			"brief": "Stakeholder briefs",
+			"project_update": "Project update drafts",
 			"agent_run": "Agents",
 			"rule_compiler": "Automation rules",
 			"capture": "Capture to issue",
@@ -11146,7 +11783,7 @@
 			"webSearchUnavailable": "The instance has no web search set up.",
 			"webSearchLocalOnly": "Not used while AI stays on local models.",
 			"storeConversations": "Keep chat history on the server",
-			"storeConversationsHint": "Each person's conversations are saved in the workspace so they can reopen them on any device. Off: they stay in each browser only.",
+			"storeConversationsHint": "Each person's conversations are saved in the workspace so they can reopen them on any device. Off: they stay on each device only.",
 			"allowAutopilot": "Allow Autopilot",
 			"allowAutopilotHint": "Build mode may apply changes without a confirmation. Every change is still logged and can be undone.",
 			"storesPrompts": "Prompts kept"
@@ -11243,6 +11880,10 @@
 				"link_tasks": "Link tasks",
 				"delete_task": "Delete task",
 				"bulk_move_status": "Change status of several tasks",
+				"create_task": "Create task",
+				"set_task_cycle": "Set cycle",
+				"set_task_modules": "Set modules",
+				"set_custom_field": "Set custom field",
 				"ask_person": "Ask a question",
 				"web_search": "Web search",
 				"connector": "Outside service: {{tool}}",
@@ -11278,6 +11919,7 @@
 				"after": "After",
 				"openPage": "Open page",
 				"openSubtask": "Open sub-task",
+				"openTask": "Open task",
 				"openLinked": "Open linked task",
 				"empty": "(empty)",
 				"fields": {
@@ -11294,7 +11936,12 @@
 					"delete": "Move to trash",
 					"connectorCall": "Call to {{connector}}",
 					"pageContent": "Page content",
-					"pageSection": "Added section"
+					"pageSection": "Added section",
+					"task": "New task",
+					"cycle": "Cycle",
+					"modulesAdded": "Added to modules",
+					"modulesRemoved": "Removed from modules",
+					"customField": "Custom field {{field}}"
 				},
 				"undoPageError": "Couldn't undo this edit. The page was changed since; restore an earlier version from its history instead."
 			},
@@ -11725,6 +12372,119 @@
 			"noAccess": "You need permission to use AI in this workspace."
 		}
 	},
+	"projectUpdates": {
+		"documentTitle": "Updates · {{project}}",
+		"newUpdate": "New update",
+		"loadError": "Couldn't load updates.",
+		"retry": "Retry",
+		"loadMore": "Show older updates",
+		"empty": {
+			"title": "No updates yet",
+			"description": "Post a short status update so everyone knows how the project is going."
+		},
+		"health": {
+			"on_track": "On track",
+			"at_risk": "At risk",
+			"off_track": "Off track"
+		},
+		"edited": "edited",
+		"actions": "Update actions",
+		"edit": "Edit",
+		"delete": "Delete",
+		"deleted": "Update deleted",
+		"deletedUser": "Deleted user",
+		"cardLabel": "Update by {{name}}",
+		"deleteDialog": {
+			"title": "Delete this update?",
+			"description": "The update, its comments and its reactions are removed for everyone.",
+			"error": "Couldn't delete the update."
+		},
+		"fields": {
+			"health": "Health",
+			"summary": "Summary",
+			"summaryPlaceholder": "How is the project going?",
+			"highlights": "Highlights",
+			"blockers": "Blockers and risks",
+			"nextSteps": "Next steps"
+		},
+		"composer": {
+			"title": "New project update",
+			"editTitle": "Edit project update",
+			"draftWithAi": "Draft with AI",
+			"draftFromData": "Draft from project data",
+			"aiFallback": "AI isn't available right now, so the draft uses a template instead.",
+			"draftError": "Couldn't draft the update.",
+			"factsLine": "From live data: {{completed}} completed, {{moved}} moved, {{overdue}} overdue, {{blocked}} blocked.",
+			"cancel": "Cancel",
+			"post": "Post update",
+			"save": "Save",
+			"posted": "Update posted",
+			"saved": "Update saved",
+			"saveError": "Couldn't save the update."
+		},
+		"facts": {
+			"summary": "Data at posting: {{percent}}% complete · {{completed}} completed · {{moved}} moved · {{overdue}} overdue · {{blocked}} blocked",
+			"cycle": "{{name}}: {{percent}}% complete ({{completed}} of {{total}})",
+			"forecast": "Forecast: 85% likely done by {{date}}",
+			"overdue": "Overdue",
+			"blocked": "Blocked",
+			"completed": "Completed"
+		},
+		"comments": {
+			"toggle_one": "{{count}} comment",
+			"toggle_other": "{{count}} comments",
+			"label": "Comment",
+			"placeholder": "Write a comment…",
+			"send": "Comment",
+			"delete": "Delete comment",
+			"error": "Couldn't add the comment.",
+			"loadError": "Couldn't load comments."
+		},
+		"follow": {
+			"follow": "Follow updates",
+			"unfollow": "Unfollow updates",
+			"error": "Couldn't change following."
+		},
+		"reminder": {
+			"label": "Weekly reminder to the project lead",
+			"weekday": "Reminder day",
+			"noLead": "Set a project lead to receive it.",
+			"error": "Couldn't save the reminder."
+		},
+		"widget": {
+			"title": "Project updates",
+			"empty": "No project updates yet.",
+			"error": "Couldn't load project updates."
+		},
+		"template": {
+			"summary": "Project health: {{health}}. {{percent}}% complete ({{completed}} of {{total}} tasks), {{open}} open.",
+			"changesSinceUpdate": "Since the last update: {{completed}} completed, {{moved}} moved.",
+			"changesLastWeek": "In the last 7 days: {{completed}} completed, {{moved}} moved.",
+			"forecast": "The forecast gives an 85% chance to finish by {{date}}.",
+			"cycle": "{{name}}: {{percent}}% complete ({{completed}} of {{total}}), ends {{date}}",
+			"overdue_one": "{{count}} overdue task:",
+			"overdue_other": "{{count}} overdue tasks:",
+			"blocked_one": "{{count}} blocked task:",
+			"blocked_other": "{{count}} blocked tasks:",
+			"more_one": "and {{count}} more",
+			"more_other": "and {{count}} more"
+		},
+		"notifications": {
+			"posted": {
+				"title": "{{authorName}} posted an update on {{projectName}}",
+				"verb": "posted an update on {{projectName}}"
+			},
+			"comment": {
+				"title": "{{commenterName}} commented on an update of {{projectName}}",
+				"verb": "commented on an update of {{projectName}}"
+			},
+			"reminder": {
+				"title": "Time to post an update on {{projectName}}",
+				"content": "Share how the project is going with a short status update."
+			},
+			"open": "Open updates"
+		}
+	},
 	"insight": {
 		"close": "Close",
 		"retry": "Retry",
@@ -11952,7 +12712,13 @@
 			"hiddenBlockers_other": "{{count}} tasks you can't see",
 			"followingHeading": "Changes on tasks you follow",
 			"changes_one": "{{count}} change",
-			"changes_other": "{{count}} changes"
+			"changes_other": "{{count}} changes",
+			"projectUpdatesHeading": "Updates on projects you follow",
+			"health": {
+				"on_track": "On track",
+				"at_risk": "At risk",
+				"off_track": "Off track"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} updates on {{title}}",
@@ -12004,6 +12770,11 @@
 		"notificationText": {
 			"commentWithoutPreview": "New comment on {{taskTitle}}",
 			"pushFixedLine": "Open Margaya to see the details."
+		},
+		"quietSummary": {
+			"title": "Notifications are back on",
+			"body_one": "{{count}} notification arrived while they were paused.",
+			"body_other": "{{count}} notifications arrived while they were paused."
 		}
 	},
 	"download": {
@@ -12241,7 +13012,11 @@
 				"updateInstall": "Restart to update",
 				"updating": "Updating…",
 				"updatePackage": "Version {{version}} is available. Download the new package to update.",
-				"updateDownload": "Download"
+				"updateDownload": "Download",
+				"openAtLoginHint": "Start Margaya in the background when you sign in to this computer.",
+				"updatesLabel": "Updates",
+				"diagnosticsLabel": "Diagnostics",
+				"diagnosticsHint": "Copies the app version, your server list and recent log lines for a bug report. Sign-in tokens are never included."
 			},
 			"quickAdd": {
 				"title": "Quick add",
@@ -12260,6 +13035,10 @@
 			"downloads": {
 				"finished": "Downloaded {{file}}",
 				"failed": "Couldn't download {{file}}"
+			},
+			"notifications": {
+				"releasedTitle": "Notifications are back on",
+				"releasedBody": "Notifications that arrived while they were paused: {{count}}"
 			},
 			"menu": {
 				"about": "About Margaya",

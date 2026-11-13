@@ -487,6 +487,8 @@
 			"failedTitle": "Səlahiyyətləndirmə alınmadı",
 			"loadingSubtitle": "Sorğu yüklənir…",
 			"redirectUri": "Yönləndirmə URI-si",
+			"metadataHost": "Müştərini dərc edən",
+			"localRedirect": "Bu müştəri sizi bu kompüterdəki bir tətbiqə geri göndərir. Kompüterinizdəki istənilən tətbiq bu ünvanı mənimsəyə bilər, ona görə də yalnız müştərini indicə özünüz açmısınızsa davam edin.",
 			"signIn": "Daxil ol",
 			"signInSubtitle": "Bu MCP müştərisini təsdiqləməzdən əvvəl daxil olun.",
 			"signInTitle": "Davam etmək üçün daxil olun",
@@ -573,17 +575,259 @@
 		}
 	},
 	"settings": {
+		"feedback": {
+			"send": {
+				"menuItem": "Rəy göndər",
+				"title": "Rəy göndər",
+				"description": "Bu serveri idarə edənlərə nəyin işlədiyini və nəyin işləmədiyini deyin. Rəyiniz bu serverdə qalır.",
+				"mood": "Margaya haqqında nə düşünürsünüz?",
+				"comment": "Əlavə edəcəyiniz bir şey var? (istəyə bağlı)",
+				"commentPlaceholder": "Nə yaxşı alındı, nə mane oldu, nə görmək istərdiniz",
+				"context": "Adınız, olduğunuz səhifənin növü ({{page}}) və tətbiqin versiyası ({{version}}) ilə birlikdə göndərilir. Tapşırıqların məzmunu heç vaxt göndərilmir.",
+				"submit": "Göndər",
+				"cancel": "Ləğv et",
+				"done": "Hazırdır",
+				"thanks": "Təşəkkür edirik! Rəyiniz bu serveri idarə edənlərə çatdı. Onlar hər cavabı oxuyurlar.",
+				"error": "Rəyinizi göndərmək alınmadı. Yenidən cəhd edin."
+			},
+			"survey": {
+				"questionMood": "Margaya sizin üçün necə işləyir?",
+				"questionStars": "Margaya-nı necə qiymətləndirərdiniz?",
+				"questionNps": "Margaya-nı həmkarınıza tövsiyə etmə ehtimalınız nə qədərdir?",
+				"comment": "Əlavə edəcəyiniz bir şey var? (istəyə bağlı)",
+				"notNow": "İndi yox",
+				"neverAsk": "Bir daha soruşma",
+				"privacy": "Cavabınız adınızla birlikdə bu serverdə qalır. Bunu Hesab → Tərcihlər bölməsində dəyişə bilərsiniz.",
+				"thanksTitle": "Təşəkkür edirik",
+				"thanks": "Sizi eşitdik. Cavabınız bu serveri idarə edənlərə nəyi təkmilləşdirəcəklərinə qərar verməyə kömək edir.",
+				"whatsNew": "Yeniliklərə baxın"
+			},
+			"scale": {
+				"veryUnhappy": "Çox narazı",
+				"unhappy": "Narazı",
+				"neutral": "Neytral",
+				"happy": "Razı",
+				"veryHappy": "Çox razı",
+				"stars_one": "{{count}} ulduz",
+				"stars_other": "{{count}} ulduz",
+				"npsScore_one": "10 üzərindən {{count}}",
+				"npsScore_other": "10 üzərindən {{count}}",
+				"npsLow": "Heç tövsiyə etməzdim",
+				"npsHigh": "Mütləq tövsiyə edərdim",
+				"thumbsUp": "Faydalı",
+				"thumbsDown": "Faydalı deyil"
+			},
+			"pageTypes": {
+				"home": "Ana səhifə",
+				"inbox": "Gələnlər",
+				"myWork": "Mənim işim",
+				"board": "Lövhə",
+				"list": "Siyahı",
+				"timeline": "Zaman xətti",
+				"calendar": "Təqvim",
+				"task": "Tapşırıq",
+				"cycles": "Dövrlər",
+				"modules": "Modullar",
+				"views": "Görünüşlər",
+				"intake": "Qəbul",
+				"pages": "Səhifələr",
+				"analytics": "Analitika",
+				"settings": "Parametrlər",
+				"other": "Digər"
+			},
+			"features": {
+				"cycles": "Dövrlər",
+				"modules": "Modullar",
+				"pages": "Səhifələr",
+				"views": "Görünüşlər",
+				"intake": "Qəbul",
+				"analytics": "Analitika"
+			},
+			"mine": {
+				"title": "Rəylər",
+				"description": "Göndərdikləriniz bu serverdə qalır və onları adınız və e-poçtunuzla birlikdə yalnız serverin adminləri oxuya bilər.",
+				"survey": "Arabir anket",
+				"surveyDescription": "Arabir küncdəki kiçik kart bir sual verir. Heç vaxt soruşulmaması üçün onu söndürün.",
+				"send": "Rəy göndər",
+				"sendDescription": "Margaya-nı istənilən vaxt qiymətləndirin və ya şərh yazın. Bu, Kömək menyusunda və əmr palitrasında da var.",
+				"data": "Rəyləriniz",
+				"dataDescription": "Göndərdiyiniz hər şeyin surətini endirin və ya silin. Hesabınızı silmək onları da silir.",
+				"download": "Endir",
+				"downloadError": "Rəylərinizi endirmək alınmadı. Yenidən cəhd edin.",
+				"delete": "Hamısını sil",
+				"deleteTitle": "Bütün rəyləriniz silinsin?",
+				"deleteDescription": "Göndərdiyiniz hər şey bu serverdən silinir. Bu əməliyyatı geri qaytarmaq olmaz.",
+				"deleteConfirm": "Sil",
+				"deleted_one": "{{count}} cavab silindi",
+				"deleted_other": "{{count}} cavab silindi",
+				"deleteError": "Rəylərinizi silmək alınmadı. Yenidən cəhd edin."
+			},
+			"admin": {
+				"nav": "Rəylər",
+				"title": "Rəylər",
+				"subtitle": "Bu serverdəki insanların Margaya haqqında fikirləri. Burada saxlanılır və heç vaxt başqa yerə göndərilmir.",
+				"settingsTitle": "Rəy göndər",
+				"settingsDescription": "Hər kəs Kömək menyusundan, əmr palitrasından və ya öz tərcihlərindən Margaya-nı qiymətləndirə və ya şərh yaza bilər.",
+				"enabled": "Rəylərə icazə ver",
+				"enabledHint": "Söndürülərsə, «Rəy göndər» və anket gizlədilir. Artıq göndərilmiş cavablar saxlanılır.",
+				"surveyTitle": "Arabir anket",
+				"surveyDescription": "Küncdə kiçik kart, heç vaxt açılan pəncərə deyil. Heç vaxt insanın ilk 7 günündə, yazı yazarkən və ya dialoq açıq olanda, kartı bağladıqdan sonrakı 30 gün ərzində və ya «Bir daha soruşma» seçildikdən sonra soruşmur.",
+				"surveyEnabled": "Arabir soruş",
+				"surveyEnabledHint": "Aşağıdakı tətikləyicilərdən birinə çatıldıqda soruşur, sonra interval keçənədək yenidən soruşmur.",
+				"surveyNeedsFeedback": "Rəylər söndürülü olduqda təsiri yoxdur.",
+				"format": "Şkala",
+				"formatHint": "Üz ifadələri insanların necə hiss etdiyinə, ulduzlar sürətli qiymətləndirməyə uyğundur, 0–10 isə Net Promoter Score (NPS) verir.",
+				"formats": {
+					"faces3": "3 üz ifadəsi",
+					"faces5": "5 üz ifadəsi",
+					"stars": "5 ulduz",
+					"nps": "0–10 (NPS)",
+					"thumbs": "Baş barmaq (funksiyalar)"
+				},
+				"tasksCompleted": "Tamamlanmış tapşırıqlardan sonra",
+				"tasksCompletedHint": "Kimsə anketin sonuncu sualından bəri bu qədər tapşırıq tamamladıqdan sonra soruşun. 0 bu tətikləyicini söndürür.",
+				"tasksUnit": "tapşırıq",
+				"activeDays": "Aktiv günlərdən sonra",
+				"activeDaysHint": "Kimsə Margaya-dan bu qədər gün istifadə etdikdən sonra soruşun. 0 bu tətikləyicini söndürür.",
+				"daysUnit": "gün",
+				"interval": "Ən çoxu bu intervalla soruş",
+				"intervalHint": "Bir nəfər üçün iki anket arasındakı ən qısa müddət, 30-dan 365 günədək.",
+				"save": "Yadda saxla",
+				"summaryTitle": "Xülasə",
+				"scale": "Şkala",
+				"period": "Dövr",
+				"lastDays_one": "Son {{count}} gün",
+				"lastDays_other": "Son {{count}} gün",
+				"answers": "Cavablar",
+				"average": "Orta",
+				"outOf": "{{value}} / {{max}}",
+				"satisfaction": "Razı",
+				"nps": "NPS",
+				"comments": "Şərhlər",
+				"none": "–",
+				"bySource": "Bütün şkalalar: {{general}} «Rəy göndər» vasitəsilə, {{survey}} anketdən, {{feature}} funksiya suallarından.",
+				"summaryEmpty": "Bu dövrdə bu şkala üzrə hələ cavab yoxdur.",
+				"distribution": "Bölgü",
+				"trend": "Həftəlik razı cavablar",
+				"trendNps": "Həftəlik NPS",
+				"week": "Həftə",
+				"responsesTitle": "Cavablar",
+				"source": "Mənbə",
+				"allSources": "Bütün mənbələr",
+				"allScales": "Bütün şkalalar",
+				"kinds": {
+					"general": "Rəy göndər",
+					"survey": "Anket",
+					"feature": "Funksiya sualı"
+				},
+				"commentsOnly": "Şərhli",
+				"search": "Şərhlərdə və ya insanlar arasında axtar",
+				"responsesEmpty": "Hələ rəy yoxdur. İnsanlar göndərdikcə cavablar burada görünəcək.",
+				"commentOnly": "Yalnız şərh",
+				"desktop": "Masaüstü tətbiqi",
+				"loadMore": "Daha çox yüklə",
+				"loadError": "Rəyləri yükləmək alınmadı.",
+				"retry": "Yenidən cəhd et",
+				"exportCsv": "CSV ixrac et",
+				"exportError": "Rəyləri ixrac etmək alınmadı. Yenidən cəhd edin.",
+				"delete": "Cavabı sil",
+				"deleteError": "Silmək alınmadı. Yenidən cəhd edin.",
+				"purge": "Köhnələri sil",
+				"purgeTitle": "Rəyləri sil",
+				"purgeDescription": "Cavablar bu serverdən birdəfəlik silinir. Silinmə audit jurnalına yazılır.",
+				"purgeWhich": "Hansı cavablar",
+				"purgeOlder_one": "{{count}} gündən köhnə",
+				"purgeOlder_other": "{{count}} gündən köhnə",
+				"purgeAll": "Bütün cavablar",
+				"purgeConfirm": "Sil",
+				"purged_one": "{{count}} cavab silindi",
+				"purged_other": "{{count}} cavab silindi",
+				"cancel": "Ləğv et",
+				"auditDeleted": "Rəylər silindi"
+			}
+		},
+		"calendarFeed": {
+			"title": "Təqvimdə abunə ol",
+			"description": "Margaya tarixlərinizi təqvim tətbiqinizdə görün. Lentlər yalnız oxumaq üçündür və təxminən saatda bir yenilənir.",
+			"menuItem": "Təqvimdə abunə ol",
+			"timezoneNote": "Tapşırıqlar bütün günlük tədbirlər kimi görünür; günlər hesabınızın saat qurşağına, onu seçməmisinizsə iş sahəsinin saat qurşağına görə hesablanır.",
+			"loadError": "Təqvim lentlərinizi yükləmək alınmadı. Bir az sonra yenidən cəhd edin.",
+			"hiddenProject": "Artıq görə bilmədiyiniz layihə",
+			"privacy": "Bu keçidə sahib olan hər kəs ondakı başlıqları və tarixləri görə bilər. Onu gizli saxlayın, sızarsa yeni keçid yaradın və ya onu ləğv edin.",
+			"myTasks": {
+				"label": "Tapşırıqlarım",
+				"description": "Sizə təyin edilmiş, başlama və ya son tarixi olan tapşırıqlar."
+			},
+			"planning": {
+				"label": "Mərhələlər və dövrlər",
+				"description": "Bu iş sahəsində görə bildiyiniz bütün layihələrin mərhələləri və dövr tarixləri."
+			},
+			"project": {
+				"settingsDescription": "Bu layihədəki tarixli bütün tapşırıqlar, mərhələlər və dövrlər.",
+				"dialogDescription": "{{project}} layihəsinin tarixli bütün tapşırıqlarını, mərhələlərini və dövrlərini təqvim tətbiqinizdə izləyin.",
+				"manageHint": "Bütün təqvim keçidlərinizi Parametrlərdə, Hesab → Tərcihlər bölməsində görə və ləğv edə bilərsiniz."
+			},
+			"calendarName": {
+				"myTasks": "Tapşırıqlarım · {{workspace}}",
+				"planning": "Mərhələlər və dövrlər · {{workspace}}",
+				"project": "{{project}} · {{workspace}}"
+			},
+			"status": {
+				"none": "Hələ keçid yoxdur",
+				"active": "Keçid {{start}}…, yaradılıb: {{date}}",
+				"lastUsed": "təqvim tərəfindən sonuncu dəfə oxunub: {{when}}",
+				"neverUsed": "hələ heç bir təqvim tərəfindən oxunmayıb"
+			},
+			"actions": {
+				"create": "Keçid yarat",
+				"createFor": "{{name}} üçün təqvim keçidi yarat",
+				"regenerate": "Yeni keçid",
+				"regenerateFor": "{{name}} üçün yeni təqvim keçidi yarat",
+				"revoke": "Ləğv et",
+				"revokeFor": "{{name}} üçün təqvim keçidini ləğv et",
+				"copy": "Kopyala",
+				"copied": "Kopyalandı",
+				"open": "Təqvim tətbiqində aç",
+				"done": "Hazırdır"
+			},
+			"link": {
+				"title": "Təqvim keçidiniz",
+				"label": "Abunə keçidi",
+				"once": "İndi kopyalayın: o yalnız bir dəfə göstərilir. İtirsəniz, yeni keçid yaradın."
+			},
+			"howTo": {
+				"title": "Necə əlavə etmək olar",
+				"step1": "Keçidi kopyalayın.",
+				"step2": "Təqvim tətbiqinizdə URL ilə təqvim əlavə etməyi və ya ona abunə olmağı seçin.",
+				"step3": "Keçidi yapışdırın. Dəyişikliklər tətbiqin növbəti yenilənməsində görünəcək."
+			},
+			"regenerateConfirm": {
+				"title": "Yeni keçid yaradılsın?",
+				"description": "Cari keçid dərhal işləməyi dayandırır. Ondan istifadə edən təqvimlər yeni keçidi əlavə edənədək yenilənməyəcək.",
+				"confirm": "Yeni keçid yarat"
+			},
+			"revokeConfirm": {
+				"title": "Bu təqvim keçidi ləğv edilsin?",
+				"description": "Keçid dərhal işləməyi dayandırır və ondan istifadə edən təqvimlər artıq yenilənmir.",
+				"confirm": "Keçidi ləğv et"
+			},
+			"toast": {
+				"created": "Təqvim keçidi yaradıldı",
+				"revoked": "Təqvim keçidi ləğv edildi",
+				"copied": "Keçid kopyalandı",
+				"copyError": "Keçidi kopyalamaq alınmadı. Onu seçib özünüz kopyalayın.",
+				"error": "Təqvim keçidini yeniləmək alınmadı"
+			}
+		},
 		"account": "Hesab",
-		"information": "Məlumat",
+		"information": "Profil",
 		"notifications": "Bildirişlər",
 		"preferences": "Tərcihlər",
 		"apiKeys": "API açarları",
 		"informationPage": {
-			"pageTitle": "Şəxsi məlumatlar",
-			"title": "Şəxsi məlumatlar",
-			"subtitle": "Şəxsi təfərrüatlarınızı və hesab məlumatlarınızı idarə edin.",
-			"sectionTitle": "Hesab məlumatları",
-			"sectionSubtitle": "Profil və hesab təfərrüatlarınızı idarə edin.",
+			"pageTitle": "Profil",
+			"title": "Profil",
+			"subtitle": "Adınız, şəkliniz və daxil olduğunuz e-poçt ünvanı.",
 			"profilePicture": "Profil şəkli",
 			"fullName": "Tam ad",
 			"fullNamePlaceholder": "Adınızı daxil edin",
@@ -623,14 +867,12 @@
 		"notificationsPage": {
 			"pageTitle": "Bildirişlər",
 			"title": "Bildirişlər",
-			"subtitle": "Margaya-nun hesab bildirişlərinizi necə çatdıracağını və hansı kanallardan istifadə edəcəyini seçin.",
+			"subtitle": "Margaya-nın sizə nə barədə xəbər verəcəyini, sizə harada çatacağını və necə səslənəcəyini seçin.",
 			"statusConnected": "Qoşulub",
 			"statusPaused": "Dayandırılıb",
 			"emailTitle": "E-poçt",
 			"emailDescription": "Bildirişlər üçün hesabınızın e-poçt ünvanından istifadə edin.",
-			"accountEmailLabel": "Hesabın e-poçtu",
 			"accountEmailNoAddress": "Hesabın e-poçt ünvanı yoxdur",
-			"accountEmailHint": "E-poçt həmişə daxil olunmuş hesabın e-poçt ünvanına göndərilir.",
 			"saveChanges": "Dəyişiklikləri yadda saxla",
 			"disconnect": "Ayır",
 			"ntfyTitle": "ntfy",
@@ -731,7 +973,7 @@
 				"title": "Səslər",
 				"description": "Margaya brauzerinizdə açıq olarkən bildiriş gəldikdə səs çalınsın.",
 				"enabled": "Səsləri çal",
-				"enabledDescription": "Səs seçimləriniz hesabınıza bağlıdır və hər brauzerdə keçərlidir.",
+				"enabledDescription": "Səs seçimləriniz hesabınıza bağlıdır və hər cihazda keçərlidir.",
 				"volume": "Səs səviyyəsi",
 				"volumeValue": "{{value}}%",
 				"categoryMentions": "Xatırlatmalar və təyinatlar",
@@ -751,14 +993,38 @@
 				"soundMarimba": "Marimba",
 				"preview": "{{sound}} səsini çal",
 				"quietHours": "Sakit saatlar",
-				"quietHoursDescription": "Hesabınızın saat qurşağına görə bu saatlar arasında səs çalınmır.",
+				"quietHoursDescription": "Hər gün bu saatlar arasında bildirişlər dayandırılır və səssiz olur.",
 				"quietFrom": "Başlanğıc",
 				"quietTo": "Son",
 				"deviceMute": "Bu cihazda səsləri söndür",
 				"deviceMuteDescription": "Yalnız bu brauzerin səsi söndürülür; digər cihazlarınızda səslər çalınmağa davam edir.",
 				"previewFailed": "Brauzeriniz səsi çalmadı. Bu tabın və ya saytın səsinin söndürülmədiyini yoxlayın.",
 				"desktopDescription": "Masaüstü tətbiqində bildiriş, bu ayarlar tələb etdikdə burada seçdiyiniz Margaya səsini sizin səs səviyyənizdə çalır. “Narahat etməyin” rejimi onu səssizləşdirir.",
-				"deviceMuteDescriptionDesktop": "Yalnız bu masaüstü tətbiqinin səsi söndürülür; digər cihazlarınızda səslər çalınmağa davam edir."
+				"deviceMuteDescriptionDesktop": "Yalnız bu masaüstü tətbiqinin səsi söndürülür; digər cihazlarınızda səslər çalınmağa davam edir.",
+				"previewFailedDesktop": "Səs çalınmadı. Kompüterinizin səsinin söndürülmədiyini yoxlayın."
+			},
+			"quiet": {
+				"title": "Sakit saatlar və fokus",
+				"description": "Bildirişləri bir müddətlik və ya hər gecə dayandırın. Gələnlər dolmağa davam edir; heç nə səs çıxarmır.",
+				"focus": "Fokus rejimi",
+				"focusDescription": "Bildirişləri indidən dayandırın. Bu, hesab menyusunda və əmr palitrasında da var.",
+				"timeZone": "Vaxtlar hesabınızın saat qurşağındadır: {{zone}}.",
+				"noTimeZone": "Hesabınızın hələ saat qurşağı yoxdur, ona görə də sakit saatlar UTC üzrə işləyir.",
+				"useTimeZone": "{{zone}} istifadə et",
+				"channels": "Bu kanalları saxla",
+				"channelsDescription": "Bildirişlər dayandırılarkən bunlar gözləyir. İşarələnməmiş kanallar səssiz şəkildə gəlməyə davam edir.",
+				"channelPush": "Push bildirişləri",
+				"channelEmail": "E-poçt",
+				"channelDesktop": "Masaüstü tətbiqi",
+				"channelNtfy": "ntfy",
+				"channelGotify": "Gotify",
+				"channelWebhook": "Webhook",
+				"bypass": "Bunlar yenə də gəlsin",
+				"bypassDescription": "Bildirişlər dayandırılmış olsa belə, bunlar səsi ilə birlikdə dərhal gəlir.",
+				"bypassMentions": "Birbaşa xatırlatmalar",
+				"bypassUrgent": "Sizə təyin edilmiş təcili prioritetli tapşırıqlar",
+				"bypassApprovals": "Təsdiqinizi və ya cavabınızı gözləyən agentlər",
+				"summaryNote": "Fasilə bitəndə saxlanılan hər kanal bir xülasə alır: hər şeyi əhatə edən bir məktub, bir push, ntfy və ya Gotify mesajı, bir masaüstü bildirişi və saxlanılan hər webhook yükü ardıcıllıqla."
 			},
 			"pushTitle": "Push bildirişləri",
 			"pushDescription": "Margaya bağlı olsa belə telefonunuza və ya kompüterinizə gələn xəbərdarlıqlar. Nəyin göndəriləcəyini “Mənə bunlar barədə bildir” müəyyən edir, aşağıdakı iş sahəsi qaydası isə bunu daralda bilər.",
@@ -783,7 +1049,9 @@
 			"pushChannelHintEnabled": "Uyğun iş sahəsi bildirişlərini cihazlarınıza göndərin.",
 			"pushChannelHintDisabled": "Əvvəlcə bir cihaz üçün push-u aktivləşdirin.",
 			"pushLoadFailed": "Push parametrlərinizi yükləmək mümkün olmadı. Yenidən cəhd etmək üçün bu səhifəni yeniləyin.",
-			"pushDesktopApp": "Bu cihazda bildirişləri masaüstü tətbiqi göstərir, ona görə də burada brauzer push bildirişlərinə ehtiyac yoxdur."
+			"emailSendsTo": "{{email}} ünvanına göndərilir.",
+			"pushDesktopTitle": "Masaüstü bildirişləri",
+			"pushDesktopDescription": "Margaya Desktop pəncərəsi bağlı olsa belə, bu kompüterdə bildirişlər göstərir. Onları söndürmək və ya görünüşünü dəyişmək üçün sisteminizin bildiriş parametrlərindən istifadə edin."
 		},
 		"preferencesPage": {
 			"title": "Tərcihlər",
@@ -830,11 +1098,9 @@
 			"estimatesDescription": "Lövhə kartlarında tapşırıq qiymətləndirmələrini göstər"
 		},
 		"developerPage": {
-			"pageTitle": "Developer parametrləri",
-			"title": "Developer parametrləri",
-			"subtitle": "API açarlarınızı və proqramçı resurslarını idarə edin.",
-			"apiKeysCardTitle": "API açarları",
-			"apiKeysCardDescription": "Margaya-ya proqram vasitəsilə giriş üçün API açarları yaradın və idarə edin.",
+			"pageTitle": "API açarları",
+			"title": "API açarları",
+			"subtitle": "Açarlar skriptlərə, inteqrasiyalara və MCP müştərilərinə sizin adınızdan Margaya API-sindən istifadə etməyə imkan verir.",
 			"createApiKey": "API açarı yarat",
 			"unnamedKey": "Adsız açar"
 		},
@@ -903,7 +1169,7 @@
 		},
 		"workspaceGeneral": {
 			"pageTitle": "Ümumi parametrlər",
-			"title": "Ümumi parametrlər",
+			"title": "Ümumi",
 			"subtitle": "İş sahənizin adını və təsvirini idarə edin.",
 			"workspaceInfoTitle": "İş sahəsi haqqında məlumat",
 			"workspaceInfoSubtitle": "İş sahənizin təfərrüatlarını və tərcihlərini tənzimləyin.",
@@ -1288,7 +1554,7 @@
 		},
 		"projectGeneral": {
 			"pageTitle": "Layihə parametrləri",
-			"title": "Ümumi parametrlər",
+			"title": "Ümumi",
 			"subtitle": "Layihənizin adını, açarını, nişanını və təsvirini idarə edin.",
 			"projectInfoTitle": "Layihə haqqında məlumat",
 			"projectInfoSubtitle": "Layihənizin təfərrüatlarını və tərcihlərini tənzimləyin.",
@@ -1335,7 +1601,7 @@
 		},
 		"projectIntegrations": {
 			"pageTitle": "Layihə inteqrasiyaları",
-			"title": "Layihə inteqrasiyaları",
+			"title": "İnteqrasiyalar",
 			"subtitle": "İş axınınızı asanlaşdırmaq üçün layihənizi xarici alət və xidmətlərə qoşun.",
 			"githubSectionTitle": "GitHub inteqrasiyası",
 			"githubSectionSubtitle": "Tapşırıqları GitHub məsələləri ilə sinxronlaşdırın və ikitərəfli sinxronlaşdırmanı aktivləşdirin.",
@@ -1566,11 +1832,114 @@
 				"taskPriorityChanged": "Prioritet dəyişiklikləri",
 				"taskTitleChanged": "Başlıq dəyişiklikləri",
 				"taskDescriptionChanged": "Təsvir dəyişiklikləri",
-				"taskCommentCreated": "Yeni şərhlər"
+				"taskCommentCreated": "Yeni şərhlər",
+				"taskDueDateChanged": "Son tarix dəyişiklikləri",
+				"intakeDecision": "Sorğu qərarları (qəbul edildi, rədd edildi, dublikat)",
+				"projectUpdate": "Layihə yeniləmələri"
 			},
+			"buttonsHint": "İş sahəsinin Slack tətbiqi qoşulu olduqda paylaşımlara «Mənə təyin et», «Vəziyyəti dəyiş» və «Aç» düymələri əlavə olunur. Düymələrin Margaya-ya çatması üçün bu webhook-u həmin Slack tətbiqindən yaradın.",
 			"connect": "Slack-ə qoşul",
 			"saveChanges": "Dəyişiklikləri yadda saxla",
 			"disconnect": "Ayır"
+		},
+		"slackApp": {
+			"workspaceNav": "Slack tətbiqi",
+			"accountNav": "Slack",
+			"title": "Slack tətbiqi",
+			"description": "Slack-dən tapşırıqları axtarın, qeydə alın və yeniləyin. Hər əməliyyat şəxsin öz bağlı Margaya hesabı ilə, onun icazələri ilə icra olunur.",
+			"noPermission": "Slack tətbiqini yalnız iş sahəsi parametrlərini idarə edə bilən şəxslər qura bilər.",
+			"loadError": "Slack tətbiqinin parametrlərini yükləmək alınmadı. Yenidən cəhd edin.",
+			"statusTitle": "Bağlantı",
+			"unknownTeam": "Slack iş sahəsi (hələ yoxlanılmayıb)",
+			"modeSocket": "Soket rejimi (Socket Mode)",
+			"modeHttp": "HTTP sorğuları",
+			"modeSocketHint": "Tövsiyə olunur. Margaya Slack-ə çıxan bağlantı açır, ona görə də ictimai URL olmadan VPN və ya əks proksi arxasında işləyir.",
+			"modeHttpHint": "Slack bu serverə imzalı sorğular göndərir. Slack-in çata biləcəyi ictimai HTTPS ünvanı tələb olunur.",
+			"active": "Aktiv",
+			"paused": "Dayandırılıb",
+			"unreadable": "Saxlanılan giriş nişanlarını oxumaq mümkün deyil, yəqin ki, AUTH_SECRET dəyişib. Onları yenidən daxil edin.",
+			"lastError": "Slack-dən son xəta: {{code}}",
+			"test": "Bağlantını yoxla",
+			"activeLabel": "Slack tətbiqi aktivdir",
+			"activeHint": "Söndürüldükdə Margaya Slack-dən gələn əmrləri, qısayolları və düymələri nəzərə almır.",
+			"notConnected": "Slack qoşulmayıb",
+			"notConnectedHint": "Slack tətbiqini yaratmaq və qoşmaq üçün aşağıdakı addımları izləyin.",
+			"setupTitle": "Quraşdırma",
+			"setupHint": "Slack tətbiqini yaratmaq bir neçə dəqiqə çəkir. Slack iş sahənizdə tətbiq quraşdırmaq icazəniz olmalıdır.",
+			"step1": "1. Slack-in Margaya-ya necə çatacağını seçin",
+			"step1Hint": "Sonra dəyişə bilərsiniz; onda Slack-ə uyğun manifest lazım olacaq.",
+			"step2": "2. Slack tətbiqini bu manifestdən yaradın",
+			"step2Hint": "Slack-də Create New App, sonra From a manifest seçin, Slack iş sahənizi seçin və bunu yapışdırın. Sonra tətbiqi iş sahənizə quraşdırın.",
+			"manifestLabel": "Slack tətbiqinin manifesti",
+			"copyManifest": "Manifesti kopyala",
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"copyFailed": "Kopyalamaq alınmadı. Mətni seçib özünüz kopyalayın.",
+			"openSlack": "Slack tətbiqlərini aç",
+			"noUnfurlDomain": "Keçid önizləmələri daxil edilməyib: Slack localhost və ya IP ünvanlarını aça bilmir. Onları əldə etmək üçün MARGAYA_CLIENT_URL dəyərini domen adına təyin edin.",
+			"eventsUrl": "Sorğu URL-i (Request URL)",
+			"eventsUrlHint": "Artıq manifestdə var. Tətbiqi yadda saxladığınız zaman Slack onu yoxlayır, ona görə də bu server HTTPS üzərindən əlçatan olmalıdır.",
+			"step3": "3. Giriş nişanlarını yapışdırın",
+			"step3SocketHint": "Bot User OAuth Token: OAuth & Permissions. Tətbiq səviyyəli giriş nişanı: Basic Information › App-Level Tokens, connections:write icazəsi ilə.",
+			"step3HttpHint": "Bot User OAuth Token: OAuth & Permissions. İmzalama sirri: Basic Information › App Credentials.",
+			"botToken": "Bot User OAuth giriş nişanı",
+			"botTokenPlaceholder": "xoxb-…",
+			"appToken": "Tətbiq səviyyəli giriş nişanı",
+			"appTokenPlaceholder": "xapp-…",
+			"signingSecret": "İmzalama sirri",
+			"signingSecretPlaceholder": "İmzalama sirrini yapışdırın",
+			"secretsHint": "Şifrələnmiş saxlanılır və bir daha göstərilmir. Mövcud dəyəri saxlamaq üçün sahəni boş buraxın.",
+			"connectAndTest": "Qoş və yoxla",
+			"saveAndTest": "Yadda saxla və yoxla",
+			"step4": "4. Hesabları bağlayın",
+			"step4Hint": "Hər kəs Slack-də bir dəfə /margaya link icra edir və Margaya-da təsdiqləyir. O vaxtadək Slack hesabı bağlamağı xahiş edir və onun üçün heç nə etmir.",
+			"optionsTitle": "Seçimlər",
+			"defaultProject": "Standart layihə",
+			"defaultProjectHint": "Mətn layihə açarı ilə başlamadıqda /margaya add tapşırığı hara əlavə edir.",
+			"noDefaultProject": "Yoxdur",
+			"expandKeys": "Mesajlardakı tapşırıq açarlarına önizləmə",
+			"expandKeysHint": "Mesajda WEB-12 kimi açarlar çəkiləndə mövzuda cavab ver. Mesaj icazələri tələb olunur, ona görə də bunu aktivləşdirdikdən sonra manifesti yenidən kopyalayın.",
+			"dangerTitle": "Ayırma",
+			"disconnect": "Slack tətbiqini ayır",
+			"disconnectHint": "Saxlanılan giriş nişanlarını silir. Bağlı hesablar yenidən qoşulmağınız üçün saxlanılır.",
+			"checks": {
+				"botToken": "Botun giriş nişanı",
+				"appToken": "Tətbiq səviyyəli giriş nişanı",
+				"signingSecret": "İmzalama sirri",
+				"passed": "Uğurlu",
+				"failed": "Alınmadı"
+			},
+			"toast": {
+				"saved": "Slack tətbiqi yadda saxlanıldı",
+				"saveError": "Slack tətbiqini yadda saxlamaq alınmadı",
+				"testPassed": "Slack bağlantısı işləyir",
+				"testFailed": "Slack bağlantı yoxlaması alınmadı",
+				"disconnected": "Slack tətbiqi ayrıldı",
+				"unlinked": "Slack hesabının bağlantısı kəsildi"
+			},
+			"accountTitle": "Slack",
+			"accountDescription": "Sizin adınızdan fəaliyyət göstərən Slack hesabları. Onların əmrləri, qısayolları və düymələri sizin icazələrinizlə işləyir.",
+			"linkedTitle": "Bağlı Slack hesabları",
+			"linksLoadError": "Slack bağlantılarınızı yükləmək alınmadı. Yenidən cəhd edin.",
+			"noLinks": "Bağlı Slack hesabı yoxdur",
+			"noLinksHint": "Hesab bağlamaq üçün Slack-də /margaya link icra edin.",
+			"linkRow": "{{team}} · {{workspace}}",
+			"unlink": "Bağlantını kəs",
+			"link": {
+				"invalidTitle": "Bu keçid işləmir",
+				"invalid": "Müddəti bitib və ya etibarsızdır. Yenisi üçün Slack-də /margaya link icra edin.",
+				"alreadyTitle": "Artıq bağlıdır",
+				"already": "Bu Slack hesabı artıq {{workspace}} iş sahəsində sizin adınızdan fəaliyyət göstərir.",
+				"confirmTitle": "Slack hesabınızı bağlayın",
+				"confirmBody": "{{team}} daxilindəki Slack istifadəçisi {{slackUser}} {{workspace}} iş sahəsində sizin adınızdan fəaliyyət göstərəcək.",
+				"confirmWarning": "Yalnız həmin Slack hesabı sizinsə davam edin: onun əmrləri, qısayolları və düymələri sizin icazələrinizlə işləyəcək.",
+				"movesLink": "Bu Slack hesabı hazırda başqasına bağlıdır; təsdiqləsəniz, bağlantı sizə keçəcək.",
+				"you": "(siz)",
+				"confirm": "Hesabı bağla",
+				"cancel": "Ləğv et",
+				"linked": "Slack hesabı bağlandı",
+				"linkError": "Slack hesabını bağlamaq alınmadı"
+			}
 		},
 		"discordIntegration": {
 			"validation": {
@@ -2106,6 +2475,10 @@
 				"ai": {
 					"title": "Sİ",
 					"description": "Bu layihə üçün xülasələr, təkliflər və digər Sİ köməyi. Söndürüldükdə layihə Sİ-dən tamamilə kənarda qalır."
+				},
+				"updates": {
+					"title": "Yeniləmələr",
+					"description": "Canlı layihə məlumatlarından hazırlanan, vəziyyət dəyəri olan tarixli status yeniləmələri dərc edin."
 				}
 			},
 			"loadError": "Bu layihəni yükləmək mümkün olmadı",
@@ -2799,6 +3172,10 @@
 			"billing": "Ödəniş",
 			"label": "Parametr bölmələri",
 			"noProjectsHint": "Əvvəlcə layihə yaradın. Onun parametrləri burada görünəcək.",
+			"groupData": "Məlumatlar",
+			"groupServer": "Server parametrləri",
+			"aiSettings": "Sİ parametrləri",
+			"pageLabel": "Parametrlər səhifəsi",
 			"pickProject": "Parametrlərinə baxmaq üçün layihə seçin."
 		},
 		"projectAccess": {
@@ -2856,6 +3233,9 @@
 			},
 			"sessions": {
 				"confirmOthersDescription": "Hesabınıza daxil olmuş bütün digər cihazlar yenidən daxil olmalı olacaq. Bu cihazda giriş qalır.",
+				"showAll": "Bütün sessiyaları göstər ({{count}})",
+				"showFewer": "Daha az göstər",
+				"desktopApp": "Margaya Desktop",
 				"confirmOthersTitle": "Bütün digər sessiyalardan çıxış edilsin?",
 				"deviceLabel": "{{os}} üzərində {{browser}}",
 				"error": "Sessiyadan çıxış etmək alınmadı",
@@ -2877,16 +3257,16 @@
 			"title": "Təhlükəsizlik"
 		},
 		"timezone": {
-			"accountHint": "Xatırlatmalar, e-poçt xülasələri, həmçinin tapşırıq filtrləri və analitikanın günləri saydığı saat qurşağı üçün istifadə olunur. Ekrandakı vaxtlar brauzerinizin saat qurşağında göstərilir.",
+			"accountHint": "Xatırlatmalar, e-poçt xülasələri, həmçinin tapşırıq filtrləri və analitikanın günləri saydığı saat qurşağı üçün istifadə olunur. Ekrandakı vaxtlar bu cihazın saat qurşağında göstərilir.",
 			"accountLabel": "Saat qurşağı",
-			"automatic": "Avtomatik (brauzer: {{zone}})",
+			"automatic": "Avtomatik (bu cihaz: {{zone}})",
 			"loadError": "Saat qurşağını yükləmək mümkün olmadı. Yenidən cəhd etmək üçün səhifəni yeniləyin.",
 			"noResults": "Saat qurşağı tapılmadı",
 			"placeholder": "Saat qurşağını seçin",
 			"search": "Saat qurşaqlarında axtar",
 			"toastError": "Saat qurşağını yeniləmək alınmadı",
 			"toastUpdated": "Saat qurşağı yeniləndi",
-			"useBrowser": "{{zone}} istifadə et",
+			"useBrowser": "Bu cihazın saat qurşağından istifadə et ({{zone}})",
 			"workspaceHint": "Dövrlər, avtomatlaşdırmalar və analitika üçün \"bu günü\" müəyyən edir. Mövcud iş sahələri UTC ilə başlayır.",
 			"workspaceLabel": "Saat qurşağı"
 		},
@@ -3315,6 +3695,96 @@
 			"title": "Brauzerinizdə davam edin",
 			"billing": "Yenicə açılan brauzer pəncərəsində prosesi tamamlayın, sonra Margaya-ya qayıdın. Qayıtdığınızda planınız yenilənəcək.",
 			"githubApp": "Brauzerinizdə GitHub-da prosesi tamamlayın, sonra Margaya-ya qayıdın və quraşdırmanı yenidən yoxlayın."
+		},
+		"save": "Yadda saxla",
+		"unsavedChanges": "Yadda saxlanmamış dəyişikliklər",
+		"readOnly": {
+			"workspace": "Bu parametrləri görə bilərsiniz, lakin rolunuz onları dəyişməyə icazə vermir. İş sahəsinin sahibinə və ya inzibatçısına müraciət edin.",
+			"project": "Bu layihənin parametrlərini görə bilərsiniz, lakin rolunuz onları dəyişməyə icazə vermir. İş sahəsinin sahibinə və ya inzibatçısına müraciət edin."
+		},
+		"projectIntake": {
+			"title": "Sorğu mənbələri",
+			"pageTitle": "Sorğu mənbələri",
+			"subtitle": "İnsanlara bu layihəyə e-poçtla və ya ictimai forma vasitəsilə sorğu göndərməyə icazə verin. Göndərilən hər şey nəzərdən keçirilmək üçün Qəbul bölməsinə düşür.",
+			"noPermission": "Sorğu mənbələrini yalnız layihələri paylaşa bilən şəxslər idarə edə bilər.",
+			"loadError": "Bu parametrləri yükləmək alınmadı.",
+			"retry": "Yenidən cəhd et",
+			"saved": "Parametrlər yadda saxlanıldı",
+			"saveError": "Parametrləri yadda saxlamaq alınmadı",
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"open": "Aç",
+			"email": {
+				"title": "E-poçt",
+				"description": "Layihənin ünvanına göndərilən və ya yönləndirilən məktub sorğuya çevrilir. Eyni göndərəndən gələn cavablar şərh kimi əlavə olunur, qoşmalar saxlanılır.",
+				"enabled": "Sorğuları e-poçtla qəbul et",
+				"enabledHint": "Avtomatik cavablar, geri qayıdan məktublar, poçt siyahısı məktubları və spam kimi işarələnmiş mesajlar nəzərə alınmır.",
+				"turnedOn": "E-poçtla qəbul aktivləşdirildi",
+				"turnedOff": "E-poçtla qəbul söndürüldü",
+				"address": "Yönləndirmə ünvanı",
+				"addressHint": "Bu ünvana məktub göndərin və ya yönləndirin. Onu bilən hər kəs sorğu göndərə bilər.",
+				"addressNone": "Ünvan e-poçtla qəbul aktivləşdirildikdə və serverdə sorğu poçt qutusu olduqda görünür.",
+				"rotate": "Yeni ünvan",
+				"rotated": "Yeni ünvan yaradıldı. Köhnəsi artıq işləmir.",
+				"noInstanceAddress": "Bu serverin hələ sorğu ünvanı yoxdur. Administratorunuzdan onu qurmasını xahiş edin və ya aşağıda bu layihənin öz poçt qutusunu qoşun.",
+				"allowed": "Yalnız bu domenləri qəbul et",
+				"allowedHint": "Hər sətirdə bir domen. İstənilən göndərəni qəbul etmək üçün boş saxlayın. Alt domenlər daxildir.",
+				"blocked": "Bu domenləri heç vaxt qəbul etmə",
+				"blockedHint": "Hər sətirdə bir domen. Bloklanmış domenlər yuxarıdakı siyahıdan üstündür.",
+				"protection": "{{size}} MB-dan böyük mesajlar ötürülür. Hər biri {{fileSize}} MB-dək olan {{files}} qoşma saxlanılır. Hər göndərən saatda 10 mesaj göndərə bilər."
+			},
+			"mailbox": {
+				"title": "Layihənin poçt qutusu",
+				"description": "İstəyə bağlıdır. Margaya bu poçt qutusunu hər iki dəqiqədən bir yoxlayır və hər oxunmamış mesajı bu layihə üçün sorğuya çevirir. Margaya poçt serverinə özü qoşulduğu üçün firewall arxasında da işləyir.",
+				"enabled": "Bu poçt qutusunu yoxla",
+				"enabledHint": "Server və giriş məlumatlarını doldurun, yadda saxlayın, sonra bunu aktivləşdirin.",
+				"lastPolled": "Sonuncu yoxlama: {{time}}.",
+				"notPolled": "Hələ yoxlanılmayıb.",
+				"lastError": "Son yoxlama alınmadı: {{error}}",
+				"host": "IMAP serveri",
+				"security": "Şifrələmə",
+				"securityHint": "Bağlantılar həmişə şifrələnir.",
+				"tls": "TLS (993 portu)",
+				"starttls": "STARTTLS (143 portu)",
+				"port": "Port nömrəsi",
+				"portHint": "Standart dəyər üçün boş saxlayın.",
+				"portInvalid": "1 ilə 65535 arasında port daxil edin.",
+				"username": "İstifadəçi adı",
+				"password": "Parol",
+				"passwordSaved": "Parol yadda saxlanılıb. Onu əvəz etmək üçün yenisini yazın.",
+				"folder": "Qovluq",
+				"test": "Bağlantını yoxla",
+				"testOk_one": "Qoşuldu. {{count}} oxunmamış mesaj.",
+				"testOk_other": "Qoşuldu. {{count}} oxunmamış mesaj."
+			},
+			"form": {
+				"title": "Sorğu forması",
+				"description": "Keçidə sahib hər kəsin sorğu göndərə biləcəyi ictimai səhifə. Orada yalnız burada seçdiyiniz mətn və sahələr görünür, iş sahəniz və ya tapşırıqlarınız heç vaxt görünmür.",
+				"enabled": "Formanı aç",
+				"enabledHint": "Botlar captcha olmadan, gizli tələ sahəsi və sürət limitləri ilə kənarda saxlanılır.",
+				"opened": "Forma açıldı",
+				"closed": "Forma bağlandı",
+				"sharingOff": "Bu serverdə ictimai paylaşım söndürülüb, ona görə də forma açıla bilməz.",
+				"link": "Formanın keçidi",
+				"linkHint": "Bu keçidi paylaşın. Ona sahib olan hər kəs sorğu göndərə bilər.",
+				"rotate": "Yeni keçid",
+				"rotated": "Yeni keçid yaradıldı. Köhnəsi artıq işləmir.",
+				"heading": "Başlıq",
+				"headingHint": "Formanın yuxarısında göstərilir.",
+				"intro": "Giriş mətni",
+				"descriptionField": "Təsvir",
+				"emailField": "E-poçt ünvanı",
+				"emailFieldHint": "Əlaqə saxlaya bilmələri üçün yalnız sorğuları çeşidləyənlərə göstərilir.",
+				"nameField": "Ad",
+				"modeOptional": "İstəyə bağlı",
+				"modeRequired": "Məcburi",
+				"modeOff": "Gizli",
+				"customFields": "Fərdi sahələr",
+				"customFieldsHint": "Onların adları və seçimləri formada görünəcək.",
+				"noCustomFields": "Bu layihədə fərdi sahə yoxdur.",
+				"confirmation": "Təsdiq mesajı",
+				"confirmationHint": "Kimsə sorğu göndərdikdən sonra göstərilir."
+			}
 		}
 	},
 	"navigation": {
@@ -3528,6 +3998,7 @@
 		"projectNav": {
 			"cycles": "Dövrlər",
 			"intake": "Qəbul",
+			"updates": "Yeniləmələr",
 			"label": "Layihə bölmələri",
 			"modules": "Modullar",
 			"pages": "Səhifələr",
@@ -3578,6 +4049,27 @@
 			"whatsNew": "Yeniliklər",
 			"sourceCode": "Mənbə kodu",
 			"workspaceAnalytics": "İş sahəsi"
+		},
+		"focus": {
+			"menuLabel": "Bildirişləri dayandır",
+			"paletteLabel": "Fokus rejimi: bildirişləri dayandır",
+			"preset30m": "30 dəqiqəlik",
+			"preset1h": "1 saatlıq",
+			"preset2h": "2 saatlıq",
+			"presetTomorrow": "Sabahadək",
+			"custom": "Müəyyən vaxtadək…",
+			"resume": "Bildirişləri bərpa et",
+			"focusUntil": "Fokus: {{time}} vaxtınadək",
+			"quietUntil": "Sakit saatlar: {{time}} vaxtınadək",
+			"settings": "Sakit saatların parametrləri",
+			"toastStarted": "Bildirişlər {{time}} vaxtınadək dayandırıldı",
+			"toastResumed": "Bildirişlər bərpa edildi",
+			"customTitle": "Bildirişləri bu vaxtadək dayandır",
+			"customDescription": "Gələnlər dolmağa davam edir. Xatırlatmalar və seçdiyiniz digər istisnalar yenə də gəlir.",
+			"customLabel": "Bitmə vaxtı",
+			"customSave": "Dayandır",
+			"customInvalid": "Növbəti 7 gün ərzində bir vaxt seçin.",
+			"cancel": "Ləğv et"
 		},
 		"desktopWindow": {
 			"minimize": "Kiçilt",
@@ -5477,7 +5969,6 @@
 			"createProject": "Layihə yarat",
 			"title": "Başlıq",
 			"progress": "İrəliləyiş",
-			"targetDate": "Hədəf tarixi",
 			"dueDate": "Son tarix",
 			"status": "Vəziyyət",
 			"emptyTitle": "Hələ layihə yoxdur",
@@ -8439,6 +8930,7 @@
 			"me": "Mən",
 			"priority": "Prioritet",
 			"remove": "Süzgəci sil",
+			"source": "Mənbə",
 			"status": "Vəziyyət",
 			"submittedBy": "Göndərən"
 		},
@@ -8532,6 +9024,25 @@
 			"hintMove": "Köçür",
 			"hintOpen": "Tapşırığı aç",
 			"queueLabel": "Çeşidləmə növbəsi"
+		},
+		"publicForm": {
+			"defaultTitle": "Sorğu göndərin",
+			"titleLabel": "Başlıq",
+			"descriptionLabel": "Təsvir",
+			"nameLabel": "Adınız",
+			"emailLabel": "E-poçtunuz",
+			"emailHint": "Yalnız bu sorğu ilə bağlı sizinlə əlaqə saxlamaq üçün istifadə olunur.",
+			"choose": "Seçin…",
+			"requiredNote": "* ilə işarələnmiş sahələr məcburidir.",
+			"submit": "Sorğunu göndər",
+			"missing": "Məcburi sahələri doldurun və e-poçt ünvanınızı yoxlayın.",
+			"tooMany": "Bu şəbəkədən çox sayda sorğu gəlib. Bir az sonra yenidən cəhd edin.",
+			"failed": "Sorğunuzu göndərmək alınmadı. Yenidən cəhd edin.",
+			"sentTitle": "Sorğu göndərildi",
+			"sentBody": "Təşəkkür edirik. Sorğunuz qəbul edildi və nəzərdən keçiriləcək.",
+			"another": "Başqa sorğu göndər",
+			"notFoundTitle": "Forma əlçatan deyil",
+			"notFoundBody": "Bu forma mövcud deyil və ya bağlıdır. Keçidi onu paylaşan şəxslə dəqiqləşdirin."
 		}
 	},
 	"stickies": {
@@ -9588,6 +10099,117 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "Quraşdırma · {{page}}",
+		"health": {
+			"title": "Vəziyyət",
+			"subtitle": "Bu serverin xidmətlərini, arxa plan işlərini və son xətalarını yoxlayın.",
+			"recheck": "Yenidən yoxla",
+			"summary": "Xülasə",
+			"version": "Versiya",
+			"uptime": "İş müddəti",
+			"uptimeDays": "{{days}} g {{hours}} saat",
+			"uptimeHours": "{{hours}} saat {{minutes}} dəq",
+			"startedAt": "İşə düşüb",
+			"node": "Node.js",
+			"latency": "{{ms}} ms",
+			"status": {
+				"ok": "Qaydasındadır",
+				"warning": "Xəbərdarlıq",
+				"error": "Nasazlıq",
+				"off": "Söndürülüb"
+			},
+			"migrations": {
+				"title": "Verilənlər bazası miqrasiyaları",
+				"ok_one": "Aktualdır: {{count}} miqrasiya tətbiq edilib.",
+				"ok_other": "Aktualdır: {{count}} miqrasiya tətbiq edilib.",
+				"pending_one": "{{count}} miqrasiya hələ icra olunmayıb. Tətbiq etmək üçün serveri yenidən başladın.",
+				"pending_other": "{{count}} miqrasiya hələ icra olunmayıb. Tətbiq etmək üçün serveri yenidən başladın.",
+				"unknown": "Miqrasiyaların vəziyyətini oxumaq mümkün deyil. Təfərrüatlar server jurnalındadır."
+			},
+			"checks": {
+				"title": "Xidmətlər",
+				"description": "Hər yoxlama indi, 5 saniyəlik limitlə işləyir. Cavablarda heç vaxt host, yol və ya parol olmur.",
+				"database": "Verilənlər bazası",
+				"redis": "Redis",
+				"storage": "Fayl yaddaşı",
+				"email": "E-poçt",
+				"ai": "Sİ provayderi"
+			},
+			"codes": {
+				"ok": "Cavab verir.",
+				"unreachable": "Əlçatan deyil. Təfərrüatlar server jurnalındadır.",
+				"unavailable": "Qurulub, lakin cavab vermir. Serverlər arasında real vaxt yeniləmələri dayandırılıb.",
+				"timeout": "Vaxt limiti ərzində cavab vermədi.",
+				"failed": "Yoxlama alınmadı. Təfərrüatlar server jurnalındadır.",
+				"redisDisabled": "Qurulmayıb. Tək serverə bu lazım deyil.",
+				"aiDisabled": "Bu serverdə Sİ söndürülüb.",
+				"emailNotConfigured": "Gedən e-poçt qurulmayıb.",
+				"aiNotConfigured": "Sİ aktivdir, lakin provayder açarı və ya son nöqtə təyin edilməyib.",
+				"s3": "S3 uyğun yaddaş cavab verir.",
+				"local": "Daxili lokal yaddaş yazıla biləndir.",
+				"storageOff": "Yükləmələr söndürülüb: S3 yaddaşı yoxdur və lokal yaddaş deaktivdir.",
+				"denied": "Yaddaş xidməti yoxlamanı rədd etdi. Bucket siyasəti icazə verirsə, yükləmələr yenə də işləyə bilər.",
+				"notWritable": "Lokal yaddaşın qovluğu yazıla bilən deyil.",
+				"recentErrors_one": "Son 24 saatda {{count}} çağırış uğursuz oldu.",
+				"recentErrors_other": "Son 24 saatda {{count}} çağırış uğursuz oldu.",
+				"smtpOk": "Poçt serverinə daxil olundu. Heç bir məktub göndərilmədi.",
+				"smtpAuth": "Poçt serveri istifadəçi adını və ya parolu rədd etdi.",
+				"smtpConnection": "Poçt serverinə qoşulmaq mümkün deyil.",
+				"smtpTls": "Poçt serveri ilə təhlükəsiz bağlantı alınmadı.",
+				"smtpUnknown": "Poçt serverinin yoxlanması alınmadı. Təfərrüatlar server jurnalındadır."
+			},
+			"activity": {
+				"title": "Növbələr və bağlantılar",
+				"description": "Növbələr bütün instans üçündür. Bağlantılar yalnız bu server üçündür.",
+				"emailBacklog": "Gözləyən məktublar",
+				"webhookPending": "Gözləyən webhook-lar",
+				"webhookFailed": "Uğursuz webhook-lar (24 saat)",
+				"boardSockets": "Lövhə bağlantıları",
+				"userSockets": "Tətbiq bağlantıları",
+				"pageRooms": "Birgə redaktə edilən səhifələr",
+				"metrics": "Prometheus metrikləri: {{state}}",
+				"metricsOff": "söndürülüb",
+				"metricsToken": "aktivdir, giriş nişanı ilə /api/metrics ünvanında",
+				"metricsPort": "aktivdir, {{port}} portunda /metrics ünvanında",
+				"metricsNoEndpoint": "aktivdir, lakin nə giriş nişanı, nə də port təyin edilib"
+			},
+			"jobs": {
+				"title": "Arxa plan işləri",
+				"description": "Bu server işə düşəndən bəri planlaşdırılmış işlər.",
+				"empty": "Bu serverdə hələ heç bir arxa plan işi planlaşdırılmayıb.",
+				"name": "İş",
+				"lastRun": "Son icra",
+				"outcome": "Son nəticə",
+				"runs": "İcralar",
+				"failures": "Xətalar",
+				"running": "İndi icra olunur",
+				"notRun": "Hələ icra olunmayıb"
+			},
+			"failures": {
+				"title": "Son xətalar",
+				"description": "Bu server işə düşəndən bəri ən son uğursuz işlər və Sİ çağırışları. Webhook xətaları Ümumi səhifəsindədir.",
+				"empty": "Bu server işə düşəndən bəri xəta olmayıb.",
+				"sourceJob": "İş",
+				"sourceAi": "Sİ",
+				"sourceEmail": "E-poçt",
+				"seeLog": "Bəzi elementlər uğursuz oldu. Təfərrüatlar server jurnalındadır."
+			}
+		},
+		"update": {
+			"title": "Yeniləmə bildirişi",
+			"label": "Yeni versiyaları yoxla",
+			"hint": "Bu server gündə bir dəfə ictimai buraxılışlar siyahısını oxuyur və daha yeni versiya çıxanda instans adminlərinə xəbər verir. Bu instans haqqında heç nə göndərmir.",
+			"off": "Söndürülüb. Bu server heç vaxt yeniləmələri yoxlamır.",
+			"notChecked": "Hələ yoxlanılmayıb.",
+			"upToDate": "Aktualdır: {{current}} ən son versiyadır.",
+			"available": "{{latest}} versiyası mövcuddur. Bu serverdə {{current}} işləyir.",
+			"checkedAt": "Yoxlanılıb: {{time}}.",
+			"errorUnreachable": "Buraxılışlar siyahısı əlçatan deyil. Server bir saat ərzində yenidən cəhd edəcək.",
+			"errorInvalid": "Buraxılışlar siyahısı bu serverin oxuya bilmədiyi cavab verdi.",
+			"releaseNotes": "Buraxılış qeydləri",
+			"dismiss": "Bağla",
+			"bannerTitle": "Margaya {{version}} mövcuddur",
+			"bannerDescription": "Bu serverdə {{current}} işləyir. Bu bildirişi yalnız instans adminləri görür."
+		},
 		"nav": {
 			"admins": "Adminlər",
 			"authentication": "Autentifikasiya",
@@ -9595,7 +10217,8 @@
 			"general": "Ümumi",
 			"publicBoards": "İctimai lövhələr",
 			"workspaces": "İş sahələri",
-			"ai": "Sİ"
+			"ai": "Sİ",
+			"health": "Vəziyyət"
 		},
 		"lockedCallout": "Bu parametrlər bu serverdə mühit dəyişənləri ilə idarə olunur. Buradakı dəyişikliklər deaktivdir.",
 		"source": {
@@ -9656,7 +10279,7 @@
 			},
 			"deliveryFailures": {
 				"title": "Son çatdırılma xətaları",
-				"description": "Son 7 gündə təkrar cəhdlərini tükətmiş iş sahəsi webhook-ları. E-poçt və arxa plan işi xətaları yalnız server jurnallarındadır.",
+				"description": "Son 7 gündə təkrar cəhdlərini tükətmiş iş sahəsi webhook-ları. Uğursuz arxa plan işləri və Sİ çağırışları Vəziyyət səhifəsindədir.",
 				"empty": "Son 7 gündə uğursuz çatdırılma yoxdur.",
 				"when": "Nə vaxt",
 				"workspace": "İş sahəsi",
@@ -10232,6 +10855,19 @@
 		}
 	},
 	"ai": {
+		"provenance": {
+			"label": "Sİ tərəfindən yaradılıb",
+			"edited": "Redaktə edən: {{name}}, ilkin olaraq Sİ tərəfindən yaradılıb",
+			"someone": "kimsə",
+			"byAgent": "{{name}} agenti tərəfindən yazılıb",
+			"unknownAgent": "silinmiş agent",
+			"byFeature": "Sİ ilə ({{feature}}) yazılıb və insan tərəfindən qəbul edilib",
+			"byAssist": "Sİ ilə yazılıb və insan tərəfindən qəbul edilib",
+			"model": "İstifadə olunan model: {{model}}"
+		},
+		"disclosure": {
+			"chat": "Siz insanla deyil, Sİ köməkçisi ilə söhbət edirsiniz."
+		},
 		"rules": {
 			"title": "Təsvirdən qayda",
 			"description": "Avtomatlaşdırmanı sadə sözlərlə təsvir edin. Sİ onu redaktə edə, yaxın tarixçə üzərində sınaya və saxlaya biləcəyiniz adi qaydaya çevirir. Saxlanılan qaydalar Sİ olmadan işləyir.",
@@ -10919,6 +11555,7 @@
 			"triage": "Çeşidləmə təklifləri",
 			"translate": "Tərcümələr",
 			"brief": "Maraqlı tərəflər üçün xülasələr",
+			"project_update": "Layihə yeniləməsi qaralamaları",
 			"agent_run": "Agentlər",
 			"rule_compiler": "Avtomatlaşdırma qaydaları",
 			"capture": "Tapşırığa çevirmə",
@@ -11146,7 +11783,7 @@
 			"webSearchUnavailable": "Bu instansiyada internet axtarışı qurulmayıb.",
 			"webSearchLocalOnly": "Sİ yalnız lokal modellərdə işlədikcə istifadə olunmur.",
 			"storeConversations": "Söhbət tarixçəsini serverdə saxla",
-			"storeConversationsHint": "Hər kəsin söhbətləri iş sahəsində saxlanılır ki, onları istənilən cihazda yenidən aça bilsinlər. Söndürülüb: söhbətlər yalnız hər brauzerin özündə qalır.",
+			"storeConversationsHint": "Hər kəsin söhbətləri iş sahəsində saxlanılır ki, onları istənilən cihazda yenidən aça bilsinlər. Söndürülüb: söhbətlər yalnız hər cihazın özündə qalır.",
 			"allowAutopilot": "Avtopilota icazə ver",
 			"allowAutopilotHint": "Qur rejimi dəyişiklikləri təsdiq olmadan tətbiq edə bilər. Hər dəyişiklik yenə də qeydə alınır və geri qaytarıla bilər.",
 			"storesPrompts": "Promptlar saxlanılır"
@@ -11243,6 +11880,10 @@
 				"link_tasks": "Tapşırıqları əlaqələndir",
 				"delete_task": "Tapşırığı sil",
 				"bulk_move_status": "Bir neçə tapşırığın vəziyyətini dəyiş",
+				"create_task": "Tapşırıq yarat",
+				"set_task_cycle": "Dövrü təyin et",
+				"set_task_modules": "Modulları təyin et",
+				"set_custom_field": "Fərdi sahəni təyin et",
 				"ask_person": "Sual ver",
 				"web_search": "Vebdə axtarış",
 				"connector": "Xarici xidmət: {{tool}}",
@@ -11278,6 +11919,7 @@
 				"after": "Sonra",
 				"openPage": "Səhifəni aç",
 				"openSubtask": "Alt tapşırığı aç",
+				"openTask": "Tapşırığı aç",
 				"openLinked": "Əlaqəli tapşırığı aç",
 				"empty": "(boş)",
 				"fields": {
@@ -11294,7 +11936,12 @@
 					"delete": "Zibil qutusuna köçür",
 					"connectorCall": "{{connector}} çağırışı",
 					"pageContent": "Səhifənin məzmunu",
-					"pageSection": "Əlavə edilmiş bölmə"
+					"pageSection": "Əlavə edilmiş bölmə",
+					"task": "Yeni tapşırıq",
+					"cycle": "Dövr",
+					"modulesAdded": "Modullara əlavə edildi",
+					"modulesRemoved": "Modullardan çıxarıldı",
+					"customField": "Fərdi sahə: {{field}}"
 				},
 				"undoPageError": "Bu redaktəni geri almaq mümkün olmadı. Səhifə o vaxtdan bəri dəyişdirilib; əvəzində onun tarixçəsindən əvvəlki versiyanı bərpa edin."
 			},
@@ -11725,6 +12372,119 @@
 			"noAccess": "Bu iş sahəsində Sİ-dən istifadə etmək üçün icazə lazımdır."
 		}
 	},
+	"projectUpdates": {
+		"documentTitle": "Yeniləmələr · {{project}}",
+		"newUpdate": "Yeni yeniləmə",
+		"loadError": "Yeniləmələri yükləmək alınmadı.",
+		"retry": "Yenidən cəhd et",
+		"loadMore": "Köhnə yeniləmələri göstər",
+		"empty": {
+			"title": "Hələ yeniləmə yoxdur",
+			"description": "Layihənin necə getdiyini hamı bilsin deyə qısa vəziyyət yeniləməsi dərc edin."
+		},
+		"health": {
+			"on_track": "Plan üzrə",
+			"at_risk": "Risk altında",
+			"off_track": "Plandan kənarda"
+		},
+		"edited": "redaktə edilib",
+		"actions": "Yeniləmə əməliyyatları",
+		"edit": "Redaktə et",
+		"delete": "Sil",
+		"deleted": "Yeniləmə silindi",
+		"deletedUser": "Silinmiş istifadəçi",
+		"cardLabel": "Yeniləmə: {{name}}",
+		"deleteDialog": {
+			"title": "Bu yeniləmə silinsin?",
+			"description": "Yeniləmə, onun şərhləri və reaksiyaları hamı üçün silinir.",
+			"error": "Yeniləməni silmək alınmadı."
+		},
+		"fields": {
+			"health": "Vəziyyət",
+			"summary": "Xülasə",
+			"summaryPlaceholder": "Layihə necə gedir?",
+			"highlights": "Əsas məqamlar",
+			"blockers": "Maneələr və risklər",
+			"nextSteps": "Növbəti addımlar"
+		},
+		"composer": {
+			"title": "Yeni layihə yeniləməsi",
+			"editTitle": "Layihə yeniləməsini redaktə et",
+			"draftWithAi": "Sİ ilə qaralama",
+			"draftFromData": "Layihə məlumatlarından qaralama",
+			"aiFallback": "Sİ hazırda əlçatan deyil, ona görə də qaralama şablondan hazırlandı.",
+			"draftError": "Yeniləmənin qaralamasını hazırlamaq alınmadı.",
+			"factsLine": "Canlı məlumatlara görə: {{completed}} tamamlanıb, {{moved}} köçürülüb, {{overdue}} vaxtı keçib, {{blocked}} bloklanıb.",
+			"cancel": "Ləğv et",
+			"post": "Yeniləməni dərc et",
+			"save": "Yadda saxla",
+			"posted": "Yeniləmə dərc edildi",
+			"saved": "Yeniləmə yadda saxlanıldı",
+			"saveError": "Yeniləməni yadda saxlamaq alınmadı."
+		},
+		"facts": {
+			"summary": "Dərc anındakı məlumatlar: {{percent}}% tamamlanıb · {{completed}} tamamlanıb · {{moved}} köçürülüb · {{overdue}} vaxtı keçib · {{blocked}} bloklanıb",
+			"cycle": "{{name}}: {{percent}}% tamamlanıb ({{completed}} / {{total}})",
+			"forecast": "Proqnoz: {{date}} tarixinədək bitmə ehtimalı 85%",
+			"overdue": "Vaxtı keçib",
+			"blocked": "Bloklanıb",
+			"completed": "Tamamlanıb"
+		},
+		"comments": {
+			"toggle_one": "{{count}} şərh",
+			"toggle_other": "{{count}} şərh",
+			"label": "Şərh",
+			"placeholder": "Şərh yazın…",
+			"send": "Şərh yaz",
+			"delete": "Şərhi sil",
+			"error": "Şərhi əlavə etmək alınmadı.",
+			"loadError": "Şərhləri yükləmək alınmadı."
+		},
+		"follow": {
+			"follow": "Yeniləmələri izlə",
+			"unfollow": "Yeniləmələri izləməyi dayandır",
+			"error": "İzləməni dəyişmək alınmadı."
+		},
+		"reminder": {
+			"label": "Layihə rəhbərinə həftəlik xatırlatma",
+			"weekday": "Xatırlatma günü",
+			"noLead": "Xatırlatmanın göndərilməsi üçün layihə rəhbəri təyin edin.",
+			"error": "Xatırlatmanı yadda saxlamaq alınmadı."
+		},
+		"widget": {
+			"title": "Layihə yeniləmələri",
+			"empty": "Hələ layihə yeniləməsi yoxdur.",
+			"error": "Layihə yeniləmələrini yükləmək alınmadı."
+		},
+		"template": {
+			"summary": "Layihənin vəziyyəti: {{health}}. {{percent}}% tamamlanıb ({{completed}} / {{total}} tapşırıq), {{open}} açıqdır.",
+			"changesSinceUpdate": "Son yeniləmədən bəri: {{completed}} tamamlanıb, {{moved}} köçürülüb.",
+			"changesLastWeek": "Son 7 gündə: {{completed}} tamamlanıb, {{moved}} köçürülüb.",
+			"forecast": "Proqnoza görə {{date}} tarixinədək bitirmə ehtimalı 85%-dir.",
+			"cycle": "{{name}}: {{percent}}% tamamlanıb ({{completed}} / {{total}}), bitmə tarixi: {{date}}",
+			"overdue_one": "Vaxtı keçmiş {{count}} tapşırıq:",
+			"overdue_other": "Vaxtı keçmiş {{count}} tapşırıq:",
+			"blocked_one": "{{count}} bloklanmış tapşırıq:",
+			"blocked_other": "{{count}} bloklanmış tapşırıq:",
+			"more_one": "və daha {{count}}",
+			"more_other": "və daha {{count}}"
+		},
+		"notifications": {
+			"posted": {
+				"title": "{{authorName}} {{projectName}} layihəsində yeniləmə dərc etdi",
+				"verb": "{{projectName}} layihəsində yeniləmə dərc etdi"
+			},
+			"comment": {
+				"title": "{{commenterName}} {{projectName}} layihəsinin yeniləməsinə şərh yazdı",
+				"verb": "{{projectName}} layihəsinin yeniləməsinə şərh yazdı"
+			},
+			"reminder": {
+				"title": "{{projectName}} layihəsi üçün yeniləmə dərc etmə vaxtıdır",
+				"content": "Qısa vəziyyət yeniləməsi ilə layihənin necə getdiyini paylaşın."
+			},
+			"open": "Yeniləmələri aç"
+		}
+	},
 	"insight": {
 		"close": "Bağla",
 		"retry": "Yenidən cəhd et",
@@ -11952,7 +12712,13 @@
 			"hiddenBlockers_other": "görə bilmədiyiniz {{count}} tapşırıq",
 			"followingHeading": "İzlədiyiniz tapşırıqlardakı dəyişikliklər",
 			"changes_one": "{{count}} dəyişiklik",
-			"changes_other": "{{count}} dəyişiklik"
+			"changes_other": "{{count}} dəyişiklik",
+			"projectUpdatesHeading": "İzlədiyiniz layihələrdəki yeniləmələr",
+			"health": {
+				"on_track": "Plan üzrə",
+				"at_risk": "Risk altında",
+				"off_track": "Plandan kənarda"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{title}} üzrə {{count}} yeniləmə",
@@ -12004,6 +12770,11 @@
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} tapşırığına yeni şərh",
 			"pushFixedLine": "Təfərrüatları görmək üçün Margaya-nı açın."
+		},
+		"quietSummary": {
+			"title": "Bildirişlər yenidən aktivdir",
+			"body_one": "Bildirişlər dayandırılmışkən {{count}} bildiriş gəldi.",
+			"body_other": "Bildirişlər dayandırılmışkən {{count}} bildiriş gəldi."
 		}
 	},
 	"download": {
@@ -12241,7 +13012,11 @@
 				"updateInstall": "Yeniləmək üçün yenidən başlat",
 				"updating": "Yenilənir…",
 				"updatePackage": "{{version}} versiyası mövcuddur. Yeniləmək üçün yeni paketi yükləyin.",
-				"updateDownload": "Yüklə"
+				"updateDownload": "Yüklə",
+				"openAtLoginHint": "Bu kompüterə daxil olduğunuzda Margaya-nı arxa planda işə salır.",
+				"updatesLabel": "Yeniləmələr",
+				"diagnosticsLabel": "Diaqnostika",
+				"diagnosticsHint": "Xəta hesabatı üçün tətbiq versiyasını, server siyahınızı və son jurnal sətirlərini kopyalayır. Giriş tokenləri heç vaxt daxil edilmir."
 			},
 			"quickAdd": {
 				"title": "Sürətli əlavə",
@@ -12260,6 +13035,10 @@
 			"downloads": {
 				"finished": "{{file}} yükləndi",
 				"failed": "{{file}} yüklənə bilmədi"
+			},
+			"notifications": {
+				"releasedTitle": "Bildirişlər yenidən aktivdir",
+				"releasedBody": "Fasilə zamanı gələn bildirişlər: {{count}}"
 			},
 			"menu": {
 				"about": "Margaya haqqında",

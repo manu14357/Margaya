@@ -487,6 +487,8 @@
 			"failedTitle": "授权失败",
 			"loadingSubtitle": "正在加载请求…",
 			"redirectUri": "重定向 URI",
+			"metadataHost": "客户端发布方",
+			"localRedirect": "此客户端会将你带回这台电脑上的某个应用。你电脑上的任何应用都可能占用这个地址，因此只有在你刚刚亲自打开该客户端时才继续。",
 			"signIn": "登录",
 			"signInSubtitle": "请先登录，再批准此 MCP 客户端。",
 			"signInTitle": "登录后继续",
@@ -573,17 +575,253 @@
 		}
 	},
 	"settings": {
+		"feedback": {
+			"send": {
+				"menuItem": "发送反馈",
+				"title": "发送反馈",
+				"description": "告诉运营此服务器的人哪些地方好用、哪些不好用。你的反馈只保存在此服务器上。",
+				"mood": "你觉得 Margaya 怎么样？",
+				"comment": "还有什么想补充的吗？（可选）",
+				"commentPlaceholder": "哪些地方好用，哪些地方碍事，你希望看到什么",
+				"context": "提交时会附带你的姓名、当前页面类型（{{page}}）和应用版本（{{version}}），绝不包含任务内容。",
+				"submit": "发送",
+				"cancel": "取消",
+				"done": "完成",
+				"thanks": "谢谢！你的反馈已送达运营此服务器的人。他们会阅读每一条回答。",
+				"error": "无法发送你的反馈，请重试。"
+			},
+			"survey": {
+				"questionMood": "Margaya 用起来怎么样？",
+				"questionStars": "你会给 Margaya 打几分？",
+				"questionNps": "你有多大可能向同事推荐 Margaya？",
+				"comment": "还有什么想补充的吗？（可选）",
+				"notNow": "以后再说",
+				"neverAsk": "不再询问",
+				"privacy": "你的回答会连同姓名保存在此服务器上。可在“账户 → 偏好设置”中更改。",
+				"thanksTitle": "谢谢",
+				"thanks": "我们收到了。你的回答能帮助运营此服务器的人决定要改进什么。",
+				"whatsNew": "查看更新内容"
+			},
+			"scale": {
+				"veryUnhappy": "非常不满意",
+				"unhappy": "不满意",
+				"neutral": "一般",
+				"happy": "满意",
+				"veryHappy": "非常满意",
+				"stars_other": "{{count}} 星",
+				"npsScore_other": "{{count}} 分（满分 10 分）",
+				"npsLow": "完全不愿意",
+				"npsHigh": "非常愿意",
+				"thumbsUp": "有帮助",
+				"thumbsDown": "没有帮助"
+			},
+			"pageTypes": {
+				"home": "首页",
+				"inbox": "收件箱",
+				"myWork": "我的工作",
+				"board": "看板",
+				"list": "列表",
+				"timeline": "时间线",
+				"calendar": "日历",
+				"task": "任务",
+				"cycles": "迭代",
+				"modules": "模块",
+				"views": "视图",
+				"intake": "收集箱",
+				"pages": "页面",
+				"analytics": "分析",
+				"settings": "设置",
+				"other": "其他"
+			},
+			"features": {
+				"cycles": "迭代",
+				"modules": "模块",
+				"pages": "页面",
+				"views": "视图",
+				"intake": "收集箱",
+				"analytics": "分析"
+			},
+			"mine": {
+				"title": "反馈",
+				"description": "你提交的内容保存在此服务器上，只有其管理员可以查看，并会附带你的姓名和邮箱。",
+				"survey": "不定期调查",
+				"surveyDescription": "偶尔会在角落出现一张小卡片，询问一个问题。关闭后将不再询问。",
+				"send": "发送反馈",
+				"sendDescription": "随时为 Margaya 评分或留下评论。也可以从“帮助”菜单和命令面板中发送。",
+				"data": "你的反馈",
+				"dataDescription": "下载你提交过的所有内容的副本，或将其删除。删除账户时也会一并删除。",
+				"download": "下载",
+				"downloadError": "无法下载你的反馈，请重试。",
+				"delete": "全部删除",
+				"deleteTitle": "删除你的所有反馈？",
+				"deleteDescription": "你提交过的所有内容都将从此服务器中删除。此操作无法撤销。",
+				"deleteConfirm": "删除",
+				"deleted_other": "已删除 {{count}} 条回答",
+				"deleteError": "无法删除你的反馈，请重试。"
+			},
+			"admin": {
+				"nav": "反馈",
+				"title": "反馈",
+				"subtitle": "了解此服务器上的用户对 Margaya 的看法。数据保存在这里，绝不会发送到其他任何地方。",
+				"settingsTitle": "发送反馈",
+				"settingsDescription": "每个人都可以通过“帮助”菜单、命令面板或偏好设置为 Margaya 评分或留下评论。",
+				"enabled": "允许反馈",
+				"enabledHint": "关闭后将隐藏“发送反馈”和调查。已提交的回答会保留。",
+				"surveyTitle": "不定期调查",
+				"surveyDescription": "以角落里的一张小卡片出现，绝不是弹窗。在用户使用的前 7 天、正在输入或打开对话框时、关闭卡片后的 30 天内，以及选择“不再询问”之后，都不会询问。",
+				"surveyEnabled": "不时询问",
+				"surveyEnabledHint": "达到下面任一触发条件时询问，之后在间隔期过去前不会再次询问。",
+				"surveyNeedsFeedback": "反馈关闭时此项不生效。",
+				"format": "评分方式",
+				"formatHint": "表情适合了解感受，星级适合快速评分，0–10 分则可得出净推荐值（NPS）。",
+				"formats": {
+					"faces3": "3 个表情",
+					"faces5": "5 个表情",
+					"stars": "5 星",
+					"nps": "0–10 分（NPS）",
+					"thumbs": "点赞/点踩（功能）"
+				},
+				"tasksCompleted": "完成任务数达到后",
+				"tasksCompletedHint": "当某人自上次调查以来完成的任务数达到此值时询问。设为 0 可关闭此触发条件。",
+				"tasksUnit": "个任务",
+				"activeDays": "使用天数达到后",
+				"activeDaysHint": "当某人使用 Margaya 的天数达到此值时询问。设为 0 可关闭此触发条件。",
+				"daysUnit": "天",
+				"interval": "最短询问间隔",
+				"intervalHint": "同一个人两次调查之间的最短间隔，30 到 365 天。",
+				"save": "保存",
+				"summaryTitle": "概览",
+				"scale": "评分方式",
+				"period": "时间段",
+				"lastDays_other": "最近 {{count}} 天",
+				"answers": "回答",
+				"average": "平均值",
+				"outOf": "{{value}} / {{max}}",
+				"satisfaction": "满意",
+				"nps": "NPS",
+				"comments": "评论",
+				"none": "–",
+				"bySource": "所有评分方式：{{general}} 条来自“发送反馈”，{{survey}} 条来自调查，{{feature}} 条来自功能提问。",
+				"summaryEmpty": "此时间段内还没有该评分方式的回答。",
+				"distribution": "分布",
+				"trend": "每周满意回答数",
+				"trendNps": "每周 NPS",
+				"week": "周",
+				"responsesTitle": "回答",
+				"source": "来源",
+				"allSources": "所有来源",
+				"allScales": "所有评分方式",
+				"kinds": {
+					"general": "发送反馈",
+					"survey": "调查",
+					"feature": "功能提问"
+				},
+				"commentsOnly": "含评论",
+				"search": "搜索评论或用户",
+				"responsesEmpty": "还没有反馈。用户提交后，回答会显示在这里。",
+				"commentOnly": "仅评论",
+				"desktop": "桌面应用",
+				"loadMore": "加载更多",
+				"loadError": "无法加载反馈。",
+				"retry": "重试",
+				"exportCsv": "导出 CSV",
+				"exportError": "无法导出反馈，请重试。",
+				"delete": "删除回答",
+				"deleteError": "无法删除，请重试。",
+				"purge": "删除旧回答",
+				"purgeTitle": "删除反馈",
+				"purgeDescription": "这些回答将从此服务器上永久删除。删除操作会记录在审计记录中。",
+				"purgeWhich": "要删除的回答",
+				"purgeOlder_other": "早于 {{count}} 天",
+				"purgeAll": "所有回答",
+				"purgeConfirm": "删除",
+				"purged_other": "已删除 {{count}} 条回答",
+				"cancel": "取消",
+				"auditDeleted": "已删除反馈"
+			}
+		},
+		"calendarFeed": {
+			"title": "在日历中订阅",
+			"description": "在你的日历应用中查看 Margaya 中的日期。订阅源为只读，大约每小时刷新一次。",
+			"menuItem": "在日历中订阅",
+			"timezoneNote": "任务显示为全天事件，日期按你账户的时区计算；如果你未设置时区，则按工作区的时区计算。",
+			"loadError": "无法加载你的日历订阅源，请稍后重试。",
+			"hiddenProject": "你已无法查看的项目",
+			"privacy": "任何拥有此链接的人都能看到其中的标题和日期。请妥善保管；如果链接泄露，请创建新链接或将其撤销。",
+			"myTasks": {
+				"label": "我的任务",
+				"description": "分配给你且设有开始日期或截止日期的任务。"
+			},
+			"planning": {
+				"label": "里程碑与迭代",
+				"description": "你在此工作区中可见的所有项目的里程碑和迭代日期。"
+			},
+			"project": {
+				"settingsDescription": "此项目中所有带日期的任务、里程碑和迭代。",
+				"dialogDescription": "在日历应用中查看 {{project}} 所有带日期的任务、里程碑和迭代。",
+				"manageHint": "你可以在“设置”的“账户 → 偏好设置”中查看和撤销所有日历链接。"
+			},
+			"calendarName": {
+				"myTasks": "我的任务 · {{workspace}}",
+				"planning": "里程碑与迭代 · {{workspace}}",
+				"project": "{{project}} · {{workspace}}"
+			},
+			"status": {
+				"none": "尚无链接",
+				"active": "链接 {{start}}…，创建于 {{date}}",
+				"lastUsed": "日历上次读取于 {{when}}",
+				"neverUsed": "尚未被日历读取"
+			},
+			"actions": {
+				"create": "创建链接",
+				"createFor": "为 {{name}} 创建日历链接",
+				"regenerate": "新链接",
+				"regenerateFor": "为 {{name}} 创建新的日历链接",
+				"revoke": "撤销",
+				"revokeFor": "撤销 {{name}} 的日历链接",
+				"copy": "复制",
+				"copied": "已复制",
+				"open": "在日历应用中打开",
+				"done": "完成"
+			},
+			"link": {
+				"title": "你的日历链接",
+				"label": "订阅链接",
+				"once": "请立即复制：此链接只显示一次。如果丢失，请创建新链接。"
+			},
+			"howTo": {
+				"title": "如何添加",
+				"step1": "复制链接。",
+				"step2": "在日历应用中，选择通过 URL 添加或订阅日历。",
+				"step3": "粘贴链接。更改会在应用下次刷新时显示。"
+			},
+			"regenerateConfirm": {
+				"title": "创建新链接？",
+				"description": "当前链接会立即失效。使用它的日历在你添加新链接之前将不再更新。",
+				"confirm": "创建新链接"
+			},
+			"revokeConfirm": {
+				"title": "撤销此日历链接？",
+				"description": "链接会立即失效，使用它的日历将不再更新。",
+				"confirm": "撤销链接"
+			},
+			"toast": {
+				"created": "日历链接已创建",
+				"revoked": "日历链接已撤销",
+				"copied": "链接已复制",
+				"copyError": "无法复制链接，请选中后手动复制。",
+				"error": "无法更新日历链接"
+			}
+		},
 		"account": "账户",
-		"information": "信息",
+		"information": "个人资料",
 		"notifications": "通知",
 		"preferences": "偏好设置",
 		"apiKeys": "API 密钥",
 		"informationPage": {
-			"pageTitle": "个人信息",
-			"title": "个人信息",
-			"subtitle": "管理你的个人资料和账户信息。",
-			"sectionTitle": "账户信息",
-			"sectionSubtitle": "管理你的个人资料和账户详情。",
+			"pageTitle": "个人资料",
+			"title": "个人资料",
+			"subtitle": "你的姓名、头像以及用于登录的邮箱。",
 			"profilePicture": "头像",
 			"fullName": "姓名",
 			"fullNamePlaceholder": "输入你的姓名",
@@ -623,14 +861,12 @@
 		"notificationsPage": {
 			"pageTitle": "通知",
 			"title": "通知",
-			"subtitle": "选择 Margaya 发送账户通知的方式和渠道。",
+			"subtitle": "选择 Margaya 通知你哪些内容、在哪里通知你以及使用什么提示音。",
 			"statusConnected": "已连接",
 			"statusPaused": "已暂停",
 			"emailTitle": "邮箱",
 			"emailDescription": "使用你的账户邮箱作为通知接收地址。",
-			"accountEmailLabel": "账户邮箱",
 			"accountEmailNoAddress": "无可用账户邮箱",
-			"accountEmailHint": "邮件通知始终发送到当前登录账户的邮箱。",
 			"saveChanges": "保存更改",
 			"disconnect": "断开连接",
 			"ntfyTitle": "ntfy",
@@ -731,7 +967,7 @@
 				"title": "声音",
 				"description": "在浏览器中打开 Margaya 时，收到通知会播放提示音。",
 				"enabled": "播放声音",
-				"enabledDescription": "你的声音设置随账户同步，在所有浏览器中生效。",
+				"enabledDescription": "你的声音设置随账户同步，在所有设备上生效。",
 				"volume": "音量",
 				"volumeValue": "{{value}}%",
 				"categoryMentions": "提及和分配",
@@ -751,14 +987,38 @@
 				"soundMarimba": "马林巴",
 				"preview": "播放{{sound}}",
 				"quietHours": "免打扰时段",
-				"quietHoursDescription": "按你账户的时区，在这段时间内不播放声音。",
+				"quietHoursDescription": "每天在这段时间内，通知会暂停且静音。",
 				"quietFrom": "从",
 				"quietTo": "至",
 				"deviceMute": "在此设备上静音",
 				"deviceMuteDescription": "只静音此浏览器，你的其他设备仍会播放声音。",
 				"previewFailed": "浏览器未能播放声音。请检查此标签页或网站是否已静音。",
 				"desktopDescription": "在桌面应用中，当这些设置需要提示音时，通知会以你设置的音量播放你在此处选择的 Margaya 提示音。开启勿扰模式时不会发出声音。",
-				"deviceMuteDescriptionDesktop": "只静音此桌面应用，你的其他设备仍会播放声音。"
+				"deviceMuteDescriptionDesktop": "只静音此桌面应用，你的其他设备仍会播放声音。",
+				"previewFailedDesktop": "声音未能播放。请检查电脑是否已静音。"
+			},
+			"quiet": {
+				"title": "免打扰时段与专注模式",
+				"description": "暂停通知一段时间，或每晚暂停。收件箱仍会照常接收，只是不会发出任何声音。",
+				"focus": "专注模式",
+				"focusDescription": "从现在开始暂停通知。也可以从账户菜单和命令面板中开启。",
+				"timeZone": "时间按你账户的时区 {{zone}} 显示。",
+				"noTimeZone": "你的账户尚未设置时区，因此免打扰时段按 UTC 计算。",
+				"useTimeZone": "使用 {{zone}}",
+				"channels": "暂缓以下渠道",
+				"channelsDescription": "通知暂停期间，这些渠道的通知会暂缓发送。未勾选的渠道会继续送达，但不发出声音。",
+				"channelPush": "推送",
+				"channelEmail": "邮件",
+				"channelDesktop": "桌面应用",
+				"channelNtfy": "ntfy",
+				"channelGotify": "Gotify",
+				"channelWebhook": "Webhook",
+				"bypass": "以下通知照常送达",
+				"bypassDescription": "即使通知已暂停，这些通知也会立即送达并播放声音。",
+				"bypassMentions": "直接提及",
+				"bypassUrgent": "分配给你的紧急优先级任务",
+				"bypassApprovals": "等待你批准或回答的智能体",
+				"summaryNote": "暂停结束后，每个被暂缓的渠道都会收到一份汇总：一封包含全部内容的邮件，一条推送、ntfy 或 Gotify 消息，一条桌面提醒，以及按顺序发送的每个被暂缓的 Webhook 负载。"
 			},
 			"pushTitle": "推送通知",
 			"pushDescription": "即使 Margaya 已关闭，也能在手机或电脑上收到提醒。“通知我关于”决定发送哪些内容，下方的工作区规则可以进一步缩小范围。",
@@ -783,7 +1043,9 @@
 			"pushChannelHintEnabled": "将符合条件的工作区通知发送到你的设备。",
 			"pushChannelHintDisabled": "请先为某台设备开启推送。",
 			"pushLoadFailed": "无法加载推送设置。请刷新页面重试。",
-			"pushDesktopApp": "桌面应用会在此设备上显示通知，因此这里不需要浏览器推送。"
+			"emailSendsTo": "发送至 {{email}}。",
+			"pushDesktopTitle": "桌面通知",
+			"pushDesktopDescription": "即使窗口已关闭，Margaya Desktop 也会在此电脑上显示通知。如需关闭通知或更改其显示方式，请使用系统的通知设置。"
 		},
 		"preferencesPage": {
 			"title": "偏好设置",
@@ -830,11 +1092,9 @@
 			"estimatesDescription": "在看板卡片上显示任务预估"
 		},
 		"developerPage": {
-			"pageTitle": "开发者设置",
-			"title": "开发者设置",
-			"subtitle": "管理你的 API 密钥和开发者资源。",
-			"apiKeysCardTitle": "API 密钥",
-			"apiKeysCardDescription": "创建并管理用于以编程方式访问 Margaya 的 API 密钥。",
+			"pageTitle": "API 密钥",
+			"title": "API 密钥",
+			"subtitle": "密钥让脚本、集成和 MCP 客户端以你的身份使用 Margaya 的 API。",
 			"createApiKey": "创建 API 密钥",
 			"unnamedKey": "未命名密钥"
 		},
@@ -903,7 +1163,7 @@
 		},
 		"workspaceGeneral": {
 			"pageTitle": "常规设置",
-			"title": "常规设置",
+			"title": "常规",
 			"subtitle": "管理工作区名称和描述。",
 			"workspaceInfoTitle": "工作区信息",
 			"workspaceInfoSubtitle": "配置工作区详情和偏好。",
@@ -1287,7 +1547,7 @@
 		},
 		"projectGeneral": {
 			"pageTitle": "项目设置",
-			"title": "常规设置",
+			"title": "常规",
 			"subtitle": "管理项目名称、标识、图标和描述。",
 			"projectInfoTitle": "项目信息",
 			"projectInfoSubtitle": "配置项目详情和偏好。",
@@ -1334,7 +1594,7 @@
 		},
 		"projectIntegrations": {
 			"pageTitle": "项目集成",
-			"title": "项目集成",
+			"title": "集成",
 			"subtitle": "将项目与外部工具和服务连接，简化工作流。",
 			"githubSectionTitle": "GitHub 集成",
 			"githubSectionSubtitle": "与 GitHub Issues 同步任务并启用双向同步。",
@@ -1565,11 +1825,114 @@
 				"taskPriorityChanged": "优先级变更",
 				"taskTitleChanged": "标题变更",
 				"taskDescriptionChanged": "描述变更",
-				"taskCommentCreated": "新评论"
+				"taskCommentCreated": "新评论",
+				"taskDueDateChanged": "截止日期变更",
+				"intakeDecision": "收集箱决定（已接受、已拒绝、重复）",
+				"projectUpdate": "项目进展更新"
 			},
+			"buttonsHint": "连接工作区的 Slack 应用后，消息会带有“指派给我”“更改状态”和“打开”按钮。请从同一个 Slack 应用创建此 Webhook，以便按钮能送达 Margaya。",
 			"connect": "连接 Slack",
 			"saveChanges": "保存更改",
 			"disconnect": "断开连接"
+		},
+		"slackApp": {
+			"workspaceNav": "Slack 应用",
+			"accountNav": "Slack",
+			"title": "Slack 应用",
+			"description": "在 Slack 中搜索、记录和更新任务。每个操作都以本人关联的 Margaya 账户、按其权限运行。",
+			"noPermission": "只有能管理工作区设置的人才能设置 Slack 应用。",
+			"loadError": "无法加载 Slack 应用设置，请重试。",
+			"statusTitle": "连接",
+			"unknownTeam": "Slack 工作区（尚未检查）",
+			"modeSocket": "Socket 模式",
+			"modeHttp": "HTTP 请求",
+			"modeSocketHint": "推荐。Margaya 主动向 Slack 建立出站连接，因此无需公开 URL，在 VPN 或反向代理之后也能工作。",
+			"modeHttpHint": "Slack 向此服务器发送签名请求。需要一个 Slack 能访问的公开 HTTPS 地址。",
+			"active": "已启用",
+			"paused": "已暂停",
+			"unreadable": "无法读取已存储的令牌，可能是 AUTH_SECRET 已更改。请重新输入。",
+			"lastError": "Slack 返回的最近错误：{{code}}",
+			"test": "测试连接",
+			"activeLabel": "启用 Slack 应用",
+			"activeHint": "关闭后，Margaya 会忽略来自 Slack 的命令、快捷操作和按钮。",
+			"notConnected": "Slack 未连接",
+			"notConnectedHint": "按照以下步骤创建并连接 Slack 应用。",
+			"setupTitle": "设置",
+			"setupHint": "创建 Slack 应用需要几分钟。你需要拥有在 Slack 工作区中安装应用的权限。",
+			"step1": "1. 选择 Slack 连接 Margaya 的方式",
+			"step1Hint": "之后可以切换；切换后 Slack 需要使用对应的清单。",
+			"step2": "2. 用此清单创建 Slack 应用",
+			"step2Hint": "在 Slack 中依次选择 Create New App 和 From a manifest，选择你的 Slack 工作区并粘贴此内容。然后将应用安装到你的工作区。",
+			"manifestLabel": "Slack 应用清单",
+			"copyManifest": "复制清单",
+			"copy": "复制",
+			"copied": "已复制",
+			"copyFailed": "无法复制，请选中文字后手动复制。",
+			"openSlack": "打开 Slack 应用管理",
+			"noUnfurlDomain": "不包含链接预览：Slack 无法展开 localhost 或 IP 地址。如需预览，请将 MARGAYA_CLIENT_URL 设置为域名。",
+			"eventsUrl": "请求 URL",
+			"eventsUrlHint": "已包含在清单中。保存应用时 Slack 会检查它，因此此服务器必须能通过 HTTPS 访问。",
+			"step3": "3. 粘贴令牌",
+			"step3SocketHint": "Bot User OAuth Token：OAuth & Permissions。应用级令牌：Basic Information › App-Level Tokens，需带 connections:write 权限范围。",
+			"step3HttpHint": "Bot User OAuth Token：OAuth & Permissions。签名密钥：Basic Information › App Credentials。",
+			"botToken": "机器人用户 OAuth 令牌",
+			"botTokenPlaceholder": "xoxb-…",
+			"appToken": "应用级令牌",
+			"appTokenPlaceholder": "xapp-…",
+			"signingSecret": "签名密钥",
+			"signingSecretPlaceholder": "粘贴签名密钥",
+			"secretsHint": "加密存储，不会再次显示。字段留空即可保留已保存的值。",
+			"connectAndTest": "连接并测试",
+			"saveAndTest": "保存并测试",
+			"step4": "4. 关联账户",
+			"step4Hint": "每个人在 Slack 中运行一次 /margaya link，并在 Margaya 中确认。在此之前，Slack 只会提示他们关联，不会替他们执行任何操作。",
+			"optionsTitle": "选项",
+			"defaultProject": "默认项目",
+			"defaultProjectHint": "当文字不以项目键开头时，/margaya add 创建任务所用的项目。",
+			"noDefaultProject": "无",
+			"expandKeys": "预览消息中的任务键",
+			"expandKeysHint": "当消息中提到 WEB-12 这样的键时，在会话串中回复。这需要消息权限范围，因此开启后请重新复制清单。",
+			"dangerTitle": "断开连接",
+			"disconnect": "断开 Slack 应用",
+			"disconnectHint": "删除已存储的令牌。已关联的账户会保留，以便重新连接时使用。",
+			"checks": {
+				"botToken": "机器人令牌",
+				"appToken": "应用级令牌",
+				"signingSecret": "签名密钥",
+				"passed": "通过",
+				"failed": "失败"
+			},
+			"toast": {
+				"saved": "Slack 应用已保存",
+				"saveError": "无法保存 Slack 应用",
+				"testPassed": "Slack 连接正常",
+				"testFailed": "Slack 连接测试失败",
+				"disconnected": "Slack 应用已断开",
+				"unlinked": "Slack 账户已取消关联"
+			},
+			"accountTitle": "Slack",
+			"accountDescription": "以你的身份操作的 Slack 账户。它们的命令、快捷操作和按钮都以你的权限运行。",
+			"linkedTitle": "已关联的 Slack 账户",
+			"linksLoadError": "无法加载你的 Slack 关联，请重试。",
+			"noLinks": "没有已关联的 Slack 账户",
+			"noLinksHint": "在 Slack 中运行 /margaya link 进行关联。",
+			"linkRow": "{{team}} · {{workspace}}",
+			"unlink": "取消关联",
+			"link": {
+				"invalidTitle": "此链接无法使用",
+				"invalid": "链接已过期或无效。请在 Slack 中运行 /margaya link 获取新链接。",
+				"alreadyTitle": "已关联",
+				"already": "此 Slack 账户已在 {{workspace}} 中以你的身份操作。",
+				"confirmTitle": "关联你的 Slack 账户",
+				"confirmBody": "{{team}} 中的 Slack 用户 {{slackUser}} 将在 {{workspace}} 中以你的身份操作。",
+				"confirmWarning": "只有在该 Slack 账户属于你时才继续：它的命令、快捷操作和按钮将以你的权限运行。",
+				"movesLink": "此 Slack 账户目前关联的是其他人；确认后，关联将转移给你。",
+				"you": "（你）",
+				"confirm": "关联账户",
+				"cancel": "取消",
+				"linked": "Slack 账户已关联",
+				"linkError": "无法关联 Slack 账户"
+			}
 		},
 		"discordIntegration": {
 			"validation": {
@@ -2071,6 +2434,10 @@
 				"ai": {
 					"title": "AI",
 					"description": "为此项目提供摘要、建议及其他 AI 辅助。关闭后，此项目将完全不参与 AI。"
+				},
+				"updates": {
+					"title": "进展更新",
+					"description": "发布带日期和健康状况的进展更新，草稿根据实时项目数据生成。"
 				}
 			},
 			"loadError": "加载此项目失败",
@@ -2749,6 +3116,10 @@
 			"billing": "账单",
 			"label": "设置分区",
 			"noProjectsHint": "请先创建项目，它的设置会显示在这里。",
+			"groupData": "数据",
+			"groupServer": "服务器",
+			"aiSettings": "AI 设置",
+			"pageLabel": "设置页面",
 			"pickProject": "选择一个项目以查看其设置。"
 		},
 		"projectAccess": {
@@ -2806,6 +3177,9 @@
 			},
 			"sessions": {
 				"confirmOthersDescription": "已登录你账户的其他所有设备都需要重新登录。此设备将保持登录。",
+				"showAll": "显示全部会话（{{count}}）",
+				"showFewer": "收起",
+				"desktopApp": "Margaya Desktop",
 				"confirmOthersTitle": "退出所有其他会话？",
 				"deviceLabel": "{{os}} 上的 {{browser}}",
 				"error": "退出会话失败",
@@ -2827,16 +3201,16 @@
 			"title": "安全"
 		},
 		"timezone": {
-			"accountHint": "用于提醒、邮件摘要，以及任务筛选和分析计算日期的依据。屏幕上的时间按浏览器时区显示。",
+			"accountHint": "用于提醒、邮件摘要，以及任务筛选和分析计算日期的依据。屏幕上的时间按此设备的时区显示。",
 			"accountLabel": "时区",
-			"automatic": "自动（浏览器：{{zone}}）",
+			"automatic": "自动（此设备：{{zone}}）",
 			"loadError": "无法加载时区，请刷新页面重试。",
 			"noResults": "未找到时区",
 			"placeholder": "选择时区",
 			"search": "搜索时区",
 			"toastError": "更新时区失败",
 			"toastUpdated": "时区已更新",
-			"useBrowser": "使用 {{zone}}",
+			"useBrowser": "使用此设备的时区（{{zone}}）",
 			"workspaceHint": "用于确定迭代、自动化和分析中的“今天”。现有工作区默认使用 UTC。",
 			"workspaceLabel": "时区"
 		},
@@ -3262,6 +3636,95 @@
 			"title": "请在浏览器中继续",
 			"billing": "请在刚打开的浏览器窗口中完成操作，然后返回 Margaya。返回后，你的套餐会随之更新。",
 			"githubApp": "请在浏览器中完成 GitHub 上的操作，然后返回 Margaya 并重新检查安装。"
+		},
+		"save": "保存",
+		"unsavedChanges": "未保存的更改",
+		"readOnly": {
+			"workspace": "你可以查看这些设置，但你的角色无法更改它们。请联系工作区所有者或管理员。",
+			"project": "你可以查看此项目的设置，但你的角色无法更改它们。请联系工作区所有者或管理员。"
+		},
+		"projectIntake": {
+			"title": "收集来源",
+			"pageTitle": "收集来源",
+			"subtitle": "让别人通过邮件或公开表单向此项目提交请求。提交的所有内容都会进入收集箱等待审核。",
+			"noPermission": "只有能分享项目的人才能管理收集来源。",
+			"loadError": "无法加载这些设置。",
+			"retry": "重试",
+			"saved": "设置已保存",
+			"saveError": "无法保存设置",
+			"copy": "复制",
+			"copied": "已复制",
+			"open": "打开",
+			"email": {
+				"title": "邮件",
+				"description": "发送或转发到项目地址的邮件会成为一个请求。同一发件人的回复会作为评论添加，附件也会保留。",
+				"enabled": "通过邮件接收请求",
+				"enabledHint": "自动回复、退信、邮件列表邮件以及被标记为垃圾邮件的消息都会被忽略。",
+				"turnedOn": "邮件收集已开启",
+				"turnedOff": "邮件收集已关闭",
+				"address": "转发地址",
+				"addressHint": "将邮件发送或转发到此地址。任何知道此地址的人都可以提交请求。",
+				"addressNone": "开启邮件收集且服务器配置了收集邮箱后，地址会显示在这里。",
+				"rotate": "新地址",
+				"rotated": "已创建新地址，旧地址已失效。",
+				"noInstanceAddress": "此服务器尚无收集地址。请联系管理员进行设置，或在下方连接此项目自己的邮箱。",
+				"allowed": "仅接受以下域名",
+				"allowedHint": "每行一个域名。留空则接受任何发件人。包括子域名。",
+				"blocked": "始终拒绝以下域名",
+				"blockedHint": "每行一个域名。被屏蔽的域名优先于上面的列表。",
+				"protection": "超过 {{size}} MB 的邮件会被跳过。最多保留 {{files}} 个附件，每个不超过 {{fileSize}} MB。每个发件人每小时最多可发送 10 封邮件。"
+			},
+			"mailbox": {
+				"title": "项目邮箱",
+				"description": "可选。Margaya 每两分钟检查一次此邮箱，并将每封未读邮件转为此项目的请求。由于是 Margaya 主动连接邮件服务器，因此在防火墙后也能正常工作。",
+				"enabled": "检查此邮箱",
+				"enabledHint": "填写服务器和登录信息并保存，然后开启此项。",
+				"lastPolled": "上次检查于 {{time}}。",
+				"notPolled": "尚未检查。",
+				"lastError": "上次检查失败：{{error}}",
+				"host": "IMAP 服务器",
+				"security": "加密",
+				"securityHint": "连接始终加密。",
+				"tls": "TLS（端口 993）",
+				"starttls": "STARTTLS（端口 143）",
+				"port": "端口",
+				"portHint": "留空则使用默认端口。",
+				"portInvalid": "请输入 1 到 65535 之间的端口。",
+				"username": "用户名",
+				"password": "密码",
+				"passwordSaved": "已保存密码。输入新密码即可替换。",
+				"folder": "文件夹",
+				"test": "测试连接",
+				"testOk_other": "已连接。有 {{count}} 封未读邮件。"
+			},
+			"form": {
+				"title": "请求表单",
+				"description": "一个公开页面，任何拥有链接的人都可以提交请求。它只显示你在这里选择的文字和字段，绝不会显示你的工作区或任务。",
+				"enabled": "开放表单",
+				"enabledHint": "通过隐藏的陷阱字段和频率限制拦截机器人，无需验证码。",
+				"opened": "表单已开放",
+				"closed": "表单已关闭",
+				"sharingOff": "此服务器已关闭公开分享，因此无法开放表单。",
+				"link": "表单链接",
+				"linkHint": "分享此链接。任何拥有它的人都可以提交请求。",
+				"rotate": "新链接",
+				"rotated": "已创建新链接，旧链接已失效。",
+				"heading": "标题",
+				"headingHint": "显示在表单顶部。",
+				"intro": "简介",
+				"descriptionField": "描述",
+				"emailField": "邮箱地址",
+				"emailFieldHint": "仅对分派处理人员显示，便于他们跟进。",
+				"nameField": "姓名",
+				"modeOptional": "可选",
+				"modeRequired": "必填",
+				"modeOff": "隐藏",
+				"customFields": "自定义字段",
+				"customFieldsHint": "字段的名称和选项会显示在表单上。",
+				"noCustomFields": "此项目没有自定义字段。",
+				"confirmation": "确认消息",
+				"confirmationHint": "在用户提交请求后显示。"
+			}
 		}
 	},
 	"navigation": {
@@ -3475,6 +3938,7 @@
 		"projectNav": {
 			"cycles": "迭代",
 			"intake": "收集箱",
+			"updates": "进展更新",
 			"label": "项目分区",
 			"modules": "模块",
 			"pages": "页面",
@@ -3524,6 +3988,27 @@
 			"whatsNew": "更新内容",
 			"sourceCode": "源代码",
 			"workspaceAnalytics": "工作区"
+		},
+		"focus": {
+			"menuLabel": "暂停通知",
+			"paletteLabel": "专注模式：暂停通知",
+			"preset30m": "30 分钟",
+			"preset1h": "1 小时",
+			"preset2h": "2 小时",
+			"presetTomorrow": "直到明天",
+			"custom": "直到指定时间…",
+			"resume": "恢复通知",
+			"focusUntil": "专注至 {{time}}",
+			"quietUntil": "免打扰至 {{time}}",
+			"settings": "免打扰时段设置",
+			"toastStarted": "通知已暂停至 {{time}}",
+			"toastResumed": "通知已恢复",
+			"customTitle": "暂停通知直到",
+			"customDescription": "收件箱仍会照常接收。提及和你选择的其他例外通知仍会送达。",
+			"customLabel": "截止时间",
+			"customSave": "暂停",
+			"customInvalid": "请选择未来 7 天内的时间。",
+			"cancel": "取消"
 		},
 		"desktopWindow": {
 			"minimize": "最小化",
@@ -5383,7 +5868,6 @@
 			"createProject": "创建项目",
 			"title": "标题",
 			"progress": "进度",
-			"targetDate": "目标日期",
 			"dueDate": "截止日期",
 			"status": "状态",
 			"emptyTitle": "暂无项目",
@@ -8311,6 +8795,7 @@
 			"me": "我",
 			"priority": "优先级",
 			"remove": "移除筛选",
+			"source": "来源",
 			"status": "状态",
 			"submittedBy": "提交者"
 		},
@@ -8403,6 +8888,25 @@
 			"hintMove": "移动",
 			"hintOpen": "打开任务",
 			"queueLabel": "分诊队列"
+		},
+		"publicForm": {
+			"defaultTitle": "提交请求",
+			"titleLabel": "标题",
+			"descriptionLabel": "描述",
+			"nameLabel": "你的姓名",
+			"emailLabel": "你的邮箱",
+			"emailHint": "仅用于跟进此请求。",
+			"choose": "请选择…",
+			"requiredNote": "标有 * 的字段为必填项。",
+			"submit": "提交请求",
+			"missing": "请填写必填字段，并检查你的邮箱地址。",
+			"tooMany": "来自此网络的请求过多，请稍后重试。",
+			"failed": "无法提交你的请求，请重试。",
+			"sentTitle": "请求已提交",
+			"sentBody": "谢谢。你的请求已收到，将会被审核。",
+			"another": "再提交一个请求",
+			"notFoundTitle": "表单不可用",
+			"notFoundBody": "此表单不存在或已关闭。请向分享链接的人确认。"
 		}
 	},
 	"stickies": {
@@ -9450,6 +9954,114 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "实例 · {{page}}",
+		"health": {
+			"title": "运行状况",
+			"subtitle": "检查这台服务器的服务、后台任务和近期失败。",
+			"recheck": "重新检查",
+			"summary": "概览",
+			"version": "版本",
+			"uptime": "运行时长",
+			"uptimeDays": "{{days}} 天 {{hours}} 小时",
+			"uptimeHours": "{{hours}} 小时 {{minutes}} 分钟",
+			"startedAt": "启动时间",
+			"node": "Node.js",
+			"latency": "{{ms}} 毫秒",
+			"status": {
+				"ok": "正常",
+				"warning": "警告",
+				"error": "有问题",
+				"off": "已关闭"
+			},
+			"migrations": {
+				"title": "数据库迁移",
+				"ok_other": "已是最新：已应用 {{count}} 个迁移。",
+				"pending_other": "有 {{count}} 个迁移尚未运行。请重启服务器以应用它们。",
+				"unknown": "无法读取迁移状态，详情见服务器日志。"
+			},
+			"checks": {
+				"title": "服务",
+				"description": "每项检查都会立即运行，时限为 5 秒。结果中绝不会包含主机、路径或密码。",
+				"database": "数据库",
+				"redis": "Redis",
+				"storage": "文件存储",
+				"email": "邮件",
+				"ai": "AI 提供商"
+			},
+			"codes": {
+				"ok": "响应正常。",
+				"unreachable": "无法访问，详情见服务器日志。",
+				"unavailable": "已配置，但没有响应。服务器之间的实时更新已暂停。",
+				"timeout": "未在时限内响应。",
+				"failed": "检查失败，详情见服务器日志。",
+				"redisDisabled": "未配置。单台服务器不需要它。",
+				"aiDisabled": "此服务器已关闭 AI。",
+				"emailNotConfigured": "尚未设置外发邮件。",
+				"aiNotConfigured": "AI 已开启，但未设置提供商密钥或端点。",
+				"s3": "S3 兼容存储响应正常。",
+				"local": "内置本地存储可写。",
+				"storageOff": "上传已关闭：没有 S3 存储，且本地存储已停用。",
+				"denied": "存储服务拒绝了检查。如果存储桶策略允许，上传可能仍然正常。",
+				"notWritable": "本地存储的文件夹不可写。",
+				"recentErrors_other": "过去 24 小时内有 {{count}} 次调用失败。",
+				"smtpOk": "已登录邮件服务器，未发送任何邮件。",
+				"smtpAuth": "邮件服务器拒绝了用户名或密码。",
+				"smtpConnection": "无法连接到邮件服务器。",
+				"smtpTls": "与邮件服务器建立安全连接失败。",
+				"smtpUnknown": "邮件服务器检查失败，详情见服务器日志。"
+			},
+			"activity": {
+				"title": "队列与连接",
+				"description": "队列统计整个实例，连接仅统计这台服务器。",
+				"emailBacklog": "待发送的邮件",
+				"webhookPending": "等待中的 Webhook",
+				"webhookFailed": "失败的 Webhook（24 小时）",
+				"boardSockets": "看板连接",
+				"userSockets": "应用连接",
+				"pageRooms": "正在协同编辑的页面",
+				"metrics": "Prometheus 指标：{{state}}",
+				"metricsOff": "已关闭",
+				"metricsToken": "已开启，位于 /api/metrics，需要令牌",
+				"metricsPort": "已开启，位于端口 {{port}} 的 /metrics",
+				"metricsNoEndpoint": "已开启，但未设置令牌和端口"
+			},
+			"jobs": {
+				"title": "后台任务",
+				"description": "这台服务器自启动以来的计划后台任务。",
+				"empty": "这台服务器上尚未计划任何后台任务。",
+				"name": "后台任务",
+				"lastRun": "上次运行",
+				"outcome": "上次结果",
+				"runs": "运行次数",
+				"failures": "失败次数",
+				"running": "正在运行",
+				"notRun": "尚未运行"
+			},
+			"failures": {
+				"title": "近期失败",
+				"description": "这台服务器自启动以来最近失败的后台任务和 AI 调用。Webhook 失败记录在“常规”页面。",
+				"empty": "这台服务器自启动以来没有失败记录。",
+				"sourceJob": "后台任务",
+				"sourceAi": "AI",
+				"sourceEmail": "邮件",
+				"seeLog": "部分项目失败，详情见服务器日志。"
+			}
+		},
+		"update": {
+			"title": "更新通知",
+			"label": "检查新版本",
+			"hint": "这台服务器每天读取一次公开的版本发布列表，并在有新版本时通知实例管理员。不会发送任何关于此实例的信息。",
+			"off": "已关闭。这台服务器从不检查更新。",
+			"notChecked": "尚未检查。",
+			"upToDate": "已是最新：{{current}} 是最新版本。",
+			"available": "版本 {{latest}} 已发布。这台服务器运行的是 {{current}}。",
+			"checkedAt": "检查于 {{time}}。",
+			"errorUnreachable": "无法访问版本发布列表。服务器会在一小时内重试。",
+			"errorInvalid": "版本发布列表返回了此服务器无法读取的内容。",
+			"releaseNotes": "发行说明",
+			"dismiss": "关闭",
+			"bannerTitle": "Margaya {{version}} 已发布",
+			"bannerDescription": "这台服务器运行的是 {{current}}。只有实例管理员能看到此通知。"
+		},
 		"nav": {
 			"admins": "管理员",
 			"authentication": "身份验证",
@@ -9457,7 +10069,8 @@
 			"general": "常规",
 			"publicBoards": "公开看板",
 			"workspaces": "工作区",
-			"ai": "AI"
+			"ai": "AI",
+			"health": "运行状况"
 		},
 		"lockedCallout": "这些设置由此服务器上的环境变量管理，无法在此更改。",
 		"source": {
@@ -9518,7 +10131,7 @@
 			},
 			"deliveryFailures": {
 				"title": "近期投递失败",
-				"description": "过去 7 天内已用完重试次数的工作区 Webhook。邮件和后台任务错误仅记录在服务器日志中。",
+				"description": "过去 7 天内已用完重试次数的工作区 Webhook。失败的后台任务和 AI 调用见“运行状况”页面。",
 				"empty": "过去 7 天没有投递失败。",
 				"when": "时间",
 				"workspace": "工作区",
@@ -10082,6 +10695,19 @@
 		}
 	},
 	"ai": {
+		"provenance": {
+			"label": "AI 生成",
+			"edited": "由 {{name}} 编辑，最初由 AI 生成",
+			"someone": "某人",
+			"byAgent": "由智能体 {{name}} 撰写",
+			"unknownAgent": "已删除的智能体",
+			"byFeature": "借助 AI（{{feature}}）撰写，并经人工采纳",
+			"byAssist": "借助 AI 撰写，并经人工采纳",
+			"model": "模型：{{model}}"
+		},
+		"disclosure": {
+			"chat": "与你对话的是 AI 助手，而不是真人。"
+		},
 		"rules": {
 			"title": "根据描述创建规则",
 			"description": "用日常语言描述一个自动化。AI 会把它转换成普通规则，你可以编辑、在近期历史上试运行并保存。保存的规则运行时无需 AI。",
@@ -10755,6 +11381,7 @@
 			"triage": "分拣建议",
 			"translate": "翻译",
 			"brief": "干系人简报",
+			"project_update": "项目进展更新草稿",
 			"agent_run": "智能体",
 			"rule_compiler": "自动化规则",
 			"capture": "捕获为事项",
@@ -10981,7 +11608,7 @@
 			"webSearchUnavailable": "此实例尚未设置网络搜索。",
 			"webSearchLocalOnly": "AI 仅使用本地模型时不会使用。",
 			"storeConversations": "在服务器上保存对话历史",
-			"storeConversationsHint": "每个人的对话都保存在工作区中，可以在任何设备上重新打开。关闭时：对话只保留在各自的浏览器中。",
+			"storeConversationsHint": "每个人的对话都保存在工作区中，可以在任何设备上重新打开。关闭时：对话只保留在各自的设备上。",
 			"allowAutopilot": "允许自动驾驶",
 			"allowAutopilotHint": "构建模式可以无需确认直接应用更改。每项更改仍会被记录，并且可以撤销。",
 			"storesPrompts": "保存提示词"
@@ -11078,6 +11705,10 @@
 				"link_tasks": "关联任务",
 				"delete_task": "删除任务",
 				"bulk_move_status": "更改多个任务的状态",
+				"create_task": "创建任务",
+				"set_task_cycle": "设置迭代",
+				"set_task_modules": "设置模块",
+				"set_custom_field": "设置自定义字段",
 				"ask_person": "提问",
 				"web_search": "网络搜索",
 				"connector": "外部服务：{{tool}}",
@@ -11113,6 +11744,7 @@
 				"after": "更改后",
 				"openPage": "打开页面",
 				"openSubtask": "打开子任务",
+				"openTask": "打开任务",
 				"openLinked": "打开关联任务",
 				"empty": "（空）",
 				"fields": {
@@ -11129,7 +11761,12 @@
 					"delete": "移至回收站",
 					"connectorCall": "调用 {{connector}}",
 					"pageContent": "页面内容",
-					"pageSection": "新增部分"
+					"pageSection": "新增部分",
+					"task": "新任务",
+					"cycle": "迭代",
+					"modulesAdded": "添加到模块",
+					"modulesRemoved": "从模块中移除",
+					"customField": "自定义字段 {{field}}"
 				},
 				"undoPageError": "无法撤销此编辑。页面在此之后已被修改；请改为从其历史记录中恢复较早的版本。"
 			},
@@ -11560,6 +12197,115 @@
 			"noAccess": "你需要在此工作区使用 AI 的权限。"
 		}
 	},
+	"projectUpdates": {
+		"documentTitle": "进展更新 · {{project}}",
+		"newUpdate": "新建进展更新",
+		"loadError": "无法加载进展更新。",
+		"retry": "重试",
+		"loadMore": "显示更早的进展更新",
+		"empty": {
+			"title": "还没有进展更新",
+			"description": "发布一条简短的进展更新，让大家了解项目的进展。"
+		},
+		"health": {
+			"on_track": "进展顺利",
+			"at_risk": "有风险",
+			"off_track": "已偏离"
+		},
+		"edited": "已编辑",
+		"actions": "进展更新操作",
+		"edit": "编辑",
+		"delete": "删除",
+		"deleted": "进展更新已删除",
+		"deletedUser": "已删除的用户",
+		"cardLabel": "{{name}} 的进展更新",
+		"deleteDialog": {
+			"title": "删除这条进展更新？",
+			"description": "这条进展更新及其评论和表情回应将对所有人删除。",
+			"error": "无法删除进展更新。"
+		},
+		"fields": {
+			"health": "健康状况",
+			"summary": "摘要",
+			"summaryPlaceholder": "项目进展如何？",
+			"highlights": "亮点",
+			"blockers": "阻碍与风险",
+			"nextSteps": "后续步骤"
+		},
+		"composer": {
+			"title": "新的项目进展更新",
+			"editTitle": "编辑项目进展更新",
+			"draftWithAi": "用 AI 起草",
+			"draftFromData": "根据项目数据起草",
+			"aiFallback": "AI 暂时不可用，因此草稿改用模板生成。",
+			"draftError": "无法起草进展更新。",
+			"factsLine": "实时数据：已完成 {{completed}} 个，已移动 {{moved}} 个，已逾期 {{overdue}} 个，已阻塞 {{blocked}} 个。",
+			"cancel": "取消",
+			"post": "发布进展更新",
+			"save": "保存",
+			"posted": "进展更新已发布",
+			"saved": "进展更新已保存",
+			"saveError": "无法保存进展更新。"
+		},
+		"facts": {
+			"summary": "发布时的数据：已完成 {{percent}}% · 已完成 {{completed}} 个 · 已移动 {{moved}} 个 · 已逾期 {{overdue}} 个 · 已阻塞 {{blocked}} 个",
+			"cycle": "{{name}}：已完成 {{percent}}%（{{completed}}/{{total}}）",
+			"forecast": "预测：有 85% 的可能在 {{date}} 前完成",
+			"overdue": "已逾期",
+			"blocked": "已阻塞",
+			"completed": "已完成"
+		},
+		"comments": {
+			"toggle_other": "{{count}} 条评论",
+			"label": "评论",
+			"placeholder": "写评论…",
+			"send": "评论",
+			"delete": "删除评论",
+			"error": "无法添加评论。",
+			"loadError": "无法加载评论。"
+		},
+		"follow": {
+			"follow": "关注进展更新",
+			"unfollow": "取消关注进展更新",
+			"error": "无法更改关注状态。"
+		},
+		"reminder": {
+			"label": "每周提醒项目主管",
+			"weekday": "提醒日",
+			"noLead": "设置项目主管后才会收到提醒。",
+			"error": "无法保存提醒。"
+		},
+		"widget": {
+			"title": "项目进展更新",
+			"empty": "还没有项目进展更新。",
+			"error": "无法加载项目进展更新。"
+		},
+		"template": {
+			"summary": "项目状态为“{{health}}”：已完成 {{percent}}%（{{total}} 个任务中完成 {{completed}} 个），{{open}} 个未完成。",
+			"changesSinceUpdate": "自上次进展更新以来：已完成 {{completed}} 个，已移动 {{moved}} 个。",
+			"changesLastWeek": "过去 7 天：已完成 {{completed}} 个，已移动 {{moved}} 个。",
+			"forecast": "预测显示，有 85% 的可能在 {{date}} 前完成。",
+			"cycle": "{{name}}：已完成 {{percent}}%（{{completed}}/{{total}}），{{date}} 结束",
+			"overdue_other": "{{count}} 个已逾期的任务：",
+			"blocked_other": "{{count}} 个已阻塞的任务：",
+			"more_other": "还有 {{count}} 项"
+		},
+		"notifications": {
+			"posted": {
+				"title": "{{authorName}} 发布了 {{projectName}} 的进展更新",
+				"verb": "发布了 {{projectName}} 的进展更新"
+			},
+			"comment": {
+				"title": "{{commenterName}} 评论了 {{projectName}} 的一条进展更新",
+				"verb": "评论了 {{projectName}} 的一条进展更新"
+			},
+			"reminder": {
+				"title": "该发布 {{projectName}} 的进展更新了",
+				"content": "发布一条简短的进展更新，分享项目的进展。"
+			},
+			"open": "打开进展更新"
+		}
+	},
 	"insight": {
 		"close": "关闭",
 		"retry": "重试",
@@ -11766,7 +12512,13 @@
 			"waitingOn": "等待 {{keys}}",
 			"hiddenBlockers_other": "{{count}} 个你无法查看的任务",
 			"followingHeading": "你关注的任务的变更",
-			"changes_other": "{{count}} 处变更"
+			"changes_other": "{{count}} 处变更",
+			"projectUpdatesHeading": "你关注的项目的进展更新",
+			"health": {
+				"on_track": "进展顺利",
+				"at_risk": "有风险",
+				"off_track": "已偏离"
+			}
 		},
 		"batchSubject": {
 			"task_other": "“{{title}}”有 {{count}} 条新动态",
@@ -11815,6 +12567,10 @@
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} 有新评论",
 			"pushFixedLine": "打开 Margaya 查看详情。"
+		},
+		"quietSummary": {
+			"title": "通知已恢复",
+			"body_other": "暂停期间收到了 {{count}} 条通知。"
 		}
 	},
 	"download": {
@@ -12051,7 +12807,11 @@
 				"updateInstall": "重启以更新",
 				"updating": "正在更新…",
 				"updatePackage": "版本 {{version}} 现已推出。请下载新的软件包进行更新。",
-				"updateDownload": "下载"
+				"updateDownload": "下载",
+				"openAtLoginHint": "登录此电脑时在后台启动 Margaya。",
+				"updatesLabel": "更新",
+				"diagnosticsLabel": "诊断",
+				"diagnosticsHint": "复制应用版本、你的服务器列表和最近的日志行，用于提交错误报告。绝不包含登录令牌。"
 			},
 			"quickAdd": {
 				"title": "快速添加",
@@ -12070,6 +12830,10 @@
 			"downloads": {
 				"finished": "已下载 {{file}}",
 				"failed": "无法下载 {{file}}"
+			},
+			"notifications": {
+				"releasedTitle": "通知已恢复",
+				"releasedBody": "暂停期间收到的通知：{{count}} 条"
 			},
 			"menu": {
 				"about": "关于 Margaya",

@@ -487,6 +487,8 @@
 			"failedTitle": "Autorisatie mislukt",
 			"loadingSubtitle": "Verzoek wordt geladen…",
 			"redirectUri": "Redirect-URI",
+			"metadataHost": "Client gepubliceerd door",
+			"localRedirect": "Deze client stuurt je terug naar een app op deze computer. Elke app op je computer kan dit adres claimen, dus ga alleen door als je de client zelf net hebt geopend.",
 			"signIn": "Inloggen",
 			"signInSubtitle": "Log in voordat je deze MCP-client goedkeurt.",
 			"signInTitle": "Log in om door te gaan",
@@ -573,16 +575,258 @@
 		}
 	},
 	"settings": {
+		"feedback": {
+			"send": {
+				"menuItem": "Feedback sturen",
+				"title": "Feedback sturen",
+				"description": "Vertel de mensen die deze server beheren wat werkt en wat niet. Je feedback blijft op deze server.",
+				"mood": "Wat vind je van Margaya?",
+				"comment": "Nog iets toe te voegen? (optioneel)",
+				"commentPlaceholder": "Wat goed ging, wat je in de weg zat, wat je graag zou zien",
+				"context": "Verstuurd met je naam, het soort pagina waarop je bent ({{page}}) en de app-versie ({{version}}). Nooit de inhoud van taken.",
+				"submit": "Versturen",
+				"cancel": "Annuleren",
+				"done": "Klaar",
+				"thanks": "Bedankt! Je feedback is aangekomen bij de mensen die deze server beheren. Ze lezen elk antwoord.",
+				"error": "Kan je feedback niet versturen. Probeer het opnieuw."
+			},
+			"survey": {
+				"questionMood": "Hoe bevalt Margaya je?",
+				"questionStars": "Hoe beoordeel je Margaya?",
+				"questionNps": "Hoe waarschijnlijk is het dat je Margaya aanbeveelt aan een collega?",
+				"comment": "Nog iets toe te voegen? (optioneel)",
+				"notNow": "Niet nu",
+				"neverAsk": "Niet meer vragen",
+				"privacy": "Je antwoord blijft op deze server, met je naam. Wijzig dit onder Account → Voorkeuren.",
+				"thanksTitle": "Bedankt",
+				"thanks": "We hebben je gehoord. Je antwoord helpt de mensen die deze server beheren te beslissen wat er beter kan.",
+				"whatsNew": "Bekijk wat er nieuw is"
+			},
+			"scale": {
+				"veryUnhappy": "Zeer ontevreden",
+				"unhappy": "Ontevreden",
+				"neutral": "Neutraal",
+				"happy": "Tevreden",
+				"veryHappy": "Zeer tevreden",
+				"stars_one": "{{count}} ster",
+				"stars_other": "{{count}} sterren",
+				"npsScore_one": "{{count}} van de 10",
+				"npsScore_other": "{{count}} van de 10",
+				"npsLow": "Helemaal niet waarschijnlijk",
+				"npsHigh": "Zeer waarschijnlijk",
+				"thumbsUp": "Nuttig",
+				"thumbsDown": "Niet nuttig"
+			},
+			"pageTypes": {
+				"home": "Startpagina",
+				"inbox": "Inbox",
+				"myWork": "Mijn werk",
+				"board": "Bord",
+				"list": "Lijst",
+				"timeline": "Tijdlijn",
+				"calendar": "Kalender",
+				"task": "Taak",
+				"cycles": "Cyclussen",
+				"modules": "Modules",
+				"views": "Weergaven",
+				"intake": "Intake",
+				"pages": "Pagina's",
+				"analytics": "Analyse",
+				"settings": "Instellingen",
+				"other": "Overig"
+			},
+			"features": {
+				"cycles": "Cyclussen",
+				"modules": "Modules",
+				"pages": "Pagina's",
+				"views": "Weergaven",
+				"intake": "Intake",
+				"analytics": "Analyse"
+			},
+			"mine": {
+				"title": "Feedback en enquêtes",
+				"description": "Wat je stuurt blijft op deze server en alleen de beheerders ervan kunnen het lezen, samen met je naam en e-mailadres.",
+				"survey": "Af en toe een enquête",
+				"surveyDescription": "Af en toe stelt een kleine kaart in de hoek één vraag. Zet dit uit als je nooit iets gevraagd wilt worden.",
+				"send": "Feedback sturen",
+				"sendDescription": "Beoordeel Margaya of laat op elk moment een opmerking achter. Het staat ook in het Help-menu en het opdrachtpalet.",
+				"data": "Je feedback",
+				"dataDescription": "Download een kopie van alles wat je hebt gestuurd, of verwijder het. Als je je account verwijdert, wordt het ook verwijderd.",
+				"download": "Downloaden",
+				"downloadError": "Kan je feedback niet downloaden. Probeer het opnieuw.",
+				"delete": "Alles verwijderen",
+				"deleteTitle": "Al je feedback verwijderen?",
+				"deleteDescription": "Alles wat je hebt gestuurd wordt van deze server verwijderd. Dit kan niet ongedaan worden gemaakt.",
+				"deleteConfirm": "Verwijderen",
+				"deleted_one": "{{count}} antwoord verwijderd",
+				"deleted_other": "{{count}} antwoorden verwijderd",
+				"deleteError": "Kan je feedback niet verwijderen. Probeer het opnieuw."
+			},
+			"admin": {
+				"nav": "Gebruikersfeedback",
+				"title": "Gebruikersfeedback",
+				"subtitle": "Wat mensen op deze server van Margaya vinden. Het wordt hier opgeslagen en nergens anders naartoe gestuurd.",
+				"settingsTitle": "Feedback sturen",
+				"settingsDescription": "Iedereen kan Margaya beoordelen of een opmerking achterlaten via het Help-menu, het opdrachtpalet of de eigen voorkeuren.",
+				"enabled": "Feedback toestaan",
+				"enabledHint": "Uitzetten verbergt Feedback sturen en de enquête. Al verstuurde antwoorden blijven bewaard.",
+				"surveyTitle": "Af en toe een enquête",
+				"surveyDescription": "Een kleine kaart in de hoek, nooit een pop-up. Er wordt nooit gevraagd in iemands eerste 7 dagen, terwijl iemand typt of een dialoogvenster open heeft, gedurende 30 dagen nadat iemand de kaart heeft gesloten, of na Niet meer vragen.",
+				"surveyEnabled": "Af en toe vragen",
+				"surveyEnabledHint": "Vraagt het zodra een trigger hieronder is bereikt, en daarna pas weer als de interval voorbij is.",
+				"surveyNeedsFeedback": "Heeft geen effect zolang feedback uit staat.",
+				"format": "Schaal",
+				"formatHint": "Gezichtjes passen bij hoe mensen zich voelen, sterren bij een snelle beoordeling, en 0–10 levert een Net Promoter Score op.",
+				"formats": {
+					"faces3": "3 gezichtjes",
+					"faces5": "5 gezichtjes",
+					"stars": "5 sterren",
+					"nps": "0 tot 10 (NPS)",
+					"thumbs": "Duimpjes (functies)"
+				},
+				"tasksCompleted": "Na voltooide taken",
+				"tasksCompletedHint": "Vraag het nadat iemand zoveel taken heeft voltooid sinds de enquête het laatst vroeg. 0 zet deze trigger uit.",
+				"tasksUnit": "taken",
+				"activeDays": "Na actieve dagen",
+				"activeDaysHint": "Vraag het nadat iemand Margaya op zoveel dagen heeft gebruikt. 0 zet deze trigger uit.",
+				"daysUnit": "dagen",
+				"interval": "Hoogstens vragen om de",
+				"intervalHint": "De minimale tijd tussen twee enquêtes voor één persoon, 30 tot 365 dagen.",
+				"save": "Opslaan",
+				"summaryTitle": "Samenvatting",
+				"scale": "Schaal",
+				"period": "Periode",
+				"lastDays_one": "Afgelopen {{count}} dag",
+				"lastDays_other": "Afgelopen {{count}} dagen",
+				"answers": "Antwoorden",
+				"average": "Gemiddelde",
+				"outOf": "{{value}} / {{max}}",
+				"satisfaction": "Tevreden",
+				"nps": "NPS",
+				"comments": "Opmerkingen",
+				"none": "–",
+				"bySource": "Alle schalen: {{general}} via Feedback sturen, {{survey}} via de enquête, {{feature}} via functievragen.",
+				"summaryEmpty": "Nog geen antwoorden op deze schaal in deze periode.",
+				"distribution": "Verdeling",
+				"trend": "Tevreden antwoorden per week",
+				"trendNps": "Wekelijkse NPS",
+				"week": "Kalenderweek",
+				"responsesTitle": "Antwoorden",
+				"source": "Bron",
+				"allSources": "Alle bronnen",
+				"allScales": "Alle schalen",
+				"kinds": {
+					"general": "Feedback sturen",
+					"survey": "Enquête",
+					"feature": "Functievraag"
+				},
+				"commentsOnly": "Met een opmerking",
+				"search": "Opmerkingen of personen zoeken",
+				"responsesEmpty": "Nog geen feedback. Antwoorden verschijnen hier zodra mensen ze versturen.",
+				"commentOnly": "Alleen opmerking",
+				"desktop": "Desktop-app",
+				"loadMore": "Meer laden",
+				"loadError": "Kan de feedback niet laden.",
+				"retry": "Opnieuw proberen",
+				"exportCsv": "CSV exporteren",
+				"exportError": "Kan de feedback niet exporteren. Probeer het opnieuw.",
+				"delete": "Antwoord verwijderen",
+				"deleteError": "Verwijderen mislukt. Probeer het opnieuw.",
+				"purge": "Oude verwijderen",
+				"purgeTitle": "Feedback verwijderen",
+				"purgeDescription": "De antwoorden worden definitief van deze server verwijderd. De verwijdering wordt vastgelegd in het auditlog.",
+				"purgeWhich": "Welke antwoorden",
+				"purgeOlder_one": "Ouder dan {{count}} dag",
+				"purgeOlder_other": "Ouder dan {{count}} dagen",
+				"purgeAll": "Alle antwoorden",
+				"purgeConfirm": "Verwijderen",
+				"purged_one": "{{count}} antwoord verwijderd",
+				"purged_other": "{{count}} antwoorden verwijderd",
+				"cancel": "Annuleren",
+				"auditDeleted": "Feedback verwijderd"
+			}
+		},
+		"calendarFeed": {
+			"title": "Abonneren in agenda",
+			"description": "Bekijk je Margaya-datums in je agenda-app. Feeds zijn alleen-lezen en worden ongeveer eens per uur vernieuwd.",
+			"menuItem": "Abonneren in agenda",
+			"timezoneNote": "Taken verschijnen als afspraken voor de hele dag, op dagen geteld in de tijdzone van je account, of in die van de werkruimte als je er geen hebt gekozen.",
+			"loadError": "Kan je agendafeeds niet laden. Probeer het later opnieuw.",
+			"hiddenProject": "Een project dat je niet meer kunt zien",
+			"privacy": "Iedereen met deze link kan de titels en datums erin zien. Houd hem privé, en maak een nieuwe link of trek hem in als hij uitlekt.",
+			"myTasks": {
+				"label": "Mijn taken",
+				"description": "Taken die aan jou zijn toegewezen en een start- of einddatum hebben."
+			},
+			"planning": {
+				"label": "Mijlpalen en cyclussen",
+				"description": "Mijlpalen en cyclusdatums van alle projecten die je in deze werkruimte kunt zien."
+			},
+			"project": {
+				"settingsDescription": "Elke taak met een datum, elke mijlpaal en elke cyclus in dit project.",
+				"dialogDescription": "Volg elke taak met een datum, elke mijlpaal en elke cyclus van {{project}} in je agenda-app.",
+				"manageHint": "Je kunt al je agendalinks bekijken en intrekken in Instellingen, onder Account → Voorkeuren."
+			},
+			"calendarName": {
+				"myTasks": "Mijn taken · {{workspace}}",
+				"planning": "Mijlpalen en cyclussen · {{workspace}}",
+				"project": "{{project}} · {{workspace}}"
+			},
+			"status": {
+				"none": "Nog geen link",
+				"active": "Link {{start}}…, gemaakt op {{date}}",
+				"lastUsed": "laatst gelezen door een agenda {{when}}",
+				"neverUsed": "nog niet gelezen door een agenda"
+			},
+			"actions": {
+				"create": "Link maken",
+				"createFor": "Een agendalink maken voor {{name}}",
+				"regenerate": "Nieuwe link",
+				"regenerateFor": "Een nieuwe agendalink maken voor {{name}}",
+				"revoke": "Intrekken",
+				"revokeFor": "De agendalink voor {{name}} intrekken",
+				"copy": "Kopiëren",
+				"copied": "Gekopieerd",
+				"open": "Openen in agenda-app",
+				"done": "Klaar"
+			},
+			"link": {
+				"title": "Je agendalink",
+				"label": "Abonnementslink",
+				"once": "Kopieer hem nu: hij wordt maar één keer getoond. Ben je hem kwijt, maak dan een nieuwe link."
+			},
+			"howTo": {
+				"title": "Zo voeg je hem toe",
+				"step1": "Kopieer de link.",
+				"step2": "Kies in je agenda-app om een agenda toe te voegen of je erop te abonneren via een URL.",
+				"step3": "Plak de link. Wijzigingen verschijnen bij de volgende vernieuwing van de app."
+			},
+			"regenerateConfirm": {
+				"title": "Nieuwe link maken?",
+				"description": "De huidige link werkt meteen niet meer. Agenda's die hem gebruiken worden niet meer bijgewerkt totdat je de nieuwe link toevoegt.",
+				"confirm": "Nieuwe link maken"
+			},
+			"revokeConfirm": {
+				"title": "Deze agendalink intrekken?",
+				"description": "De link werkt meteen niet meer, en agenda's die hem gebruiken worden niet meer bijgewerkt.",
+				"confirm": "Link intrekken"
+			},
+			"toast": {
+				"created": "Agendalink gemaakt",
+				"revoked": "Agendalink ingetrokken",
+				"copied": "Link gekopieerd",
+				"copyError": "Kan de link niet kopiëren. Selecteer hem en kopieer hem zelf.",
+				"error": "Kan de agendalink niet bijwerken"
+			}
+		},
 		"account": "Account",
-		"information": "Informatie",
+		"information": "Profiel",
 		"preferences": "Voorkeuren",
 		"apiKeys": "API-sleutels",
 		"informationPage": {
-			"pageTitle": "Persoonlijke gegevens",
-			"title": "Persoonlijke gegevens",
-			"subtitle": "Beheer je persoonlijke gegevens en accountinformatie.",
-			"sectionTitle": "Accountgegevens",
-			"sectionSubtitle": "Beheer je profiel- en accountgegevens.",
+			"pageTitle": "Profiel",
+			"title": "Profiel",
+			"subtitle": "Je naam, je foto en het e-mailadres waarmee je inlogt.",
 			"profilePicture": "Profielfoto",
 			"fullName": "Volledige naam",
 			"fullNamePlaceholder": "Voer je naam in",
@@ -664,11 +908,9 @@
 			"estimatesDescription": "Toon taakinschattingen op bordkaarten"
 		},
 		"developerPage": {
-			"pageTitle": "Ontwikkelaarsinstellingen",
-			"title": "Ontwikkelaarsinstellingen",
-			"subtitle": "Beheer je API-sleutels en ontwikkelaarsbronnen.",
-			"apiKeysCardTitle": "API-sleutels",
-			"apiKeysCardDescription": "Maak en beheer API-sleutels voor programmatische toegang tot Margaya.",
+			"pageTitle": "API-sleutels",
+			"title": "API-sleutels",
+			"subtitle": "Met sleutels kunnen scripts, integraties en MCP-clients namens jou de API van Margaya gebruiken.",
 			"createApiKey": "API-sleutel aanmaken",
 			"unnamedKey": "Naamloze sleutel"
 		},
@@ -737,7 +979,7 @@
 		},
 		"workspaceGeneral": {
 			"pageTitle": "Algemene instellingen",
-			"title": "Algemene instellingen",
+			"title": "Algemeen",
 			"subtitle": "Beheer de naam en beschrijving van je werkruimte.",
 			"workspaceInfoTitle": "Werkruimte-informatie",
 			"workspaceInfoSubtitle": "Configureer de details en voorkeuren van je werkruimte.",
@@ -785,7 +1027,7 @@
 		},
 		"projectGeneral": {
 			"pageTitle": "Projectinstellingen",
-			"title": "Algemene instellingen",
+			"title": "Algemeen",
 			"subtitle": "Beheer projectnaam, sleutel, icoon en beschrijving.",
 			"projectInfoTitle": "Projectinformatie",
 			"projectInfoSubtitle": "Configureer je projectdetails en voorkeuren.",
@@ -832,7 +1074,7 @@
 		},
 		"projectIntegrations": {
 			"pageTitle": "Projectintegraties",
-			"title": "Projectintegraties",
+			"title": "Integraties",
 			"subtitle": "Verbind je project met externe tools om je workflow te stroomlijnen.",
 			"githubSectionTitle": "GitHub-integratie",
 			"githubSectionSubtitle": "Synchroniseer taken met GitHub issues en activeer tweerichtings-synchronisatie.",
@@ -987,11 +1229,114 @@
 				"taskPriorityChanged": "Prioriteitswijzigingen",
 				"taskTitleChanged": "Titelwijzigingen",
 				"taskDescriptionChanged": "Beschrijvingswijzigingen",
-				"taskCommentCreated": "Nieuwe reacties"
+				"taskCommentCreated": "Nieuwe reacties",
+				"taskDueDateChanged": "Wijzigingen van einddatum",
+				"intakeDecision": "Intakebeslissingen (geaccepteerd, afgewezen, duplicaat)",
+				"projectUpdate": "Projectupdates"
 			},
+			"buttonsHint": "Met de Slack-app van de werkruimte verbonden krijgen berichten de knoppen Aan mij toewijzen, Status wijzigen en Openen. Maak deze webhook vanuit dezelfde Slack-app, zodat de knoppen Margaya bereiken.",
 			"connect": "Verbind Slack",
 			"saveChanges": "Wijzigingen opslaan",
 			"disconnect": "Ontkoppelen"
+		},
+		"slackApp": {
+			"workspaceNav": "Slack-app",
+			"accountNav": "Slack",
+			"title": "Slack-app",
+			"description": "Zoek, leg vast en werk taken bij vanuit Slack. Elke actie draait als het eigen gekoppelde Margaya-account van die persoon, met diens rechten.",
+			"noPermission": "Alleen mensen die werkruimte-instellingen mogen beheren, kunnen de Slack-app instellen.",
+			"loadError": "De instellingen van de Slack-app konden niet worden geladen. Probeer het opnieuw.",
+			"statusTitle": "Verbinding",
+			"unknownTeam": "Slack-workspace (nog niet gecontroleerd)",
+			"modeSocket": "Socketmodus (Socket Mode)",
+			"modeHttp": "HTTP-verzoeken",
+			"modeSocketHint": "Aanbevolen. Margaya opent een uitgaande verbinding met Slack, dus het werkt achter een VPN of reverse proxy zonder openbare URL.",
+			"modeHttpHint": "Slack stuurt ondertekende verzoeken naar deze server. Vereist een openbaar HTTPS-adres dat Slack kan bereiken.",
+			"active": "Actief",
+			"paused": "Gepauzeerd",
+			"unreadable": "De opgeslagen tokens kunnen niet worden gelezen, waarschijnlijk omdat AUTH_SECRET is gewijzigd. Voer ze opnieuw in.",
+			"lastError": "Laatste fout van Slack: {{code}}",
+			"test": "Verbinding testen",
+			"activeLabel": "Slack-app aan",
+			"activeHint": "Als dit uit staat, negeert Margaya opdrachten, snelkoppelingen en knoppen uit Slack.",
+			"notConnected": "Slack is niet verbonden",
+			"notConnectedHint": "Volg de stappen hieronder om de Slack-app te maken en te verbinden.",
+			"setupTitle": "Instellen",
+			"setupHint": "Het maken van de Slack-app duurt een paar minuten. Je hebt toestemming nodig om apps te installeren in je Slack-workspace.",
+			"step1": "1. Kies hoe Slack Margaya bereikt",
+			"step1Hint": "Je kunt later wisselen; Slack heeft dan het bijbehorende manifest nodig.",
+			"step2": "2. Maak de Slack-app met dit manifest",
+			"step2Hint": "Kies in Slack Create New App en dan From a manifest, selecteer je Slack-workspace en plak dit. Installeer daarna de app in je workspace.",
+			"manifestLabel": "Manifest van de Slack-app",
+			"copyManifest": "Manifest kopiëren",
+			"copy": "Kopiëren",
+			"copied": "Gekopieerd",
+			"copyFailed": "Kopiëren mislukt. Selecteer de tekst en kopieer hem zelf.",
+			"openSlack": "Slack-apps openen",
+			"noUnfurlDomain": "Linkvoorbeelden worden weggelaten: Slack kan geen voorbeeld tonen van localhost of IP-adressen. Stel MARGAYA_CLIENT_URL in op een domeinnaam om ze te krijgen.",
+			"eventsUrl": "Aanvraag-URL (Request URL)",
+			"eventsUrlHint": "Staat al in het manifest. Slack controleert hem als je de app opslaat, dus deze server moet via HTTPS bereikbaar zijn.",
+			"step3": "3. Plak de tokens",
+			"step3SocketHint": "Bot User OAuth Token: onder OAuth & Permissions. Token op app-niveau: onder Basic Information › App-Level Tokens, met de scope connections:write.",
+			"step3HttpHint": "Bot User OAuth Token: onder OAuth & Permissions. Ondertekeningsgeheim: onder Basic Information › App Credentials.",
+			"botToken": "OAuth-token van de botgebruiker (Bot User OAuth Token)",
+			"botTokenPlaceholder": "xoxb-…",
+			"appToken": "Token op app-niveau",
+			"appTokenPlaceholder": "xapp-…",
+			"signingSecret": "Ondertekeningsgeheim",
+			"signingSecretPlaceholder": "Plak het ondertekeningsgeheim",
+			"secretsHint": "Versleuteld opgeslagen en nooit meer getoond. Laat een veld leeg om de opgeslagen waarde te behouden.",
+			"connectAndTest": "Verbinden en testen",
+			"saveAndTest": "Opslaan en testen",
+			"step4": "4. Koppel accounts",
+			"step4Hint": "Iedereen voert eenmalig /margaya link uit in Slack en bevestigt in Margaya. Tot die tijd vraagt Slack om te koppelen en doet het verder niets voor die persoon.",
+			"optionsTitle": "Opties",
+			"defaultProject": "Standaardproject",
+			"defaultProjectHint": "Waar /margaya add een taak plaatst als de tekst niet met een projectsleutel begint.",
+			"noDefaultProject": "Geen",
+			"expandKeys": "Voorbeeld van taaksleutels in berichten",
+			"expandKeysHint": "Antwoordt in een thread als een bericht sleutels zoals WEB-12 noemt. Vereist de berichtscopes, dus kopieer het manifest opnieuw nadat je dit hebt aangezet.",
+			"dangerTitle": "Ontkoppelen",
+			"disconnect": "Slack-app ontkoppelen",
+			"disconnectHint": "Verwijdert de opgeslagen tokens. Gekoppelde accounts blijven bewaard voor als je opnieuw verbindt.",
+			"checks": {
+				"botToken": "Bottoken",
+				"appToken": "Token op app-niveau",
+				"signingSecret": "Ondertekeningsgeheim",
+				"passed": "Geslaagd",
+				"failed": "Mislukt"
+			},
+			"toast": {
+				"saved": "Slack-app opgeslagen",
+				"saveError": "Kan de Slack-app niet opslaan",
+				"testPassed": "Verbinding met Slack werkt",
+				"testFailed": "Verbindingstest met Slack mislukt",
+				"disconnected": "Slack-app ontkoppeld",
+				"unlinked": "Slack-account ontkoppeld"
+			},
+			"accountTitle": "Slack",
+			"accountDescription": "Slack-accounts die namens jou handelen. Hun opdrachten, snelkoppelingen en knoppen werken met jouw rechten.",
+			"linkedTitle": "Gekoppelde Slack-accounts",
+			"linksLoadError": "Je Slack-koppelingen konden niet worden geladen. Probeer het opnieuw.",
+			"noLinks": "Geen gekoppelde Slack-accounts",
+			"noLinksHint": "Voer /margaya link uit in Slack om er een te koppelen.",
+			"linkRow": "{{team}} · {{workspace}}",
+			"unlink": "Ontkoppelen",
+			"link": {
+				"invalidTitle": "Deze link werkt niet",
+				"invalid": "Hij is verlopen of ongeldig. Voer /margaya link uit in Slack voor een nieuwe.",
+				"alreadyTitle": "Al gekoppeld",
+				"already": "Dit Slack-account handelt al namens jou in {{workspace}}.",
+				"confirmTitle": "Je Slack-account koppelen",
+				"confirmBody": "Slack-gebruiker {{slackUser}} in {{team}} gaat namens jou handelen in {{workspace}}.",
+				"confirmWarning": "Ga alleen door als dat Slack-account van jou is: de opdrachten, snelkoppelingen en knoppen ervan werken dan met jouw rechten.",
+				"movesLink": "Dit Slack-account is nu aan iemand anders gekoppeld; als je bevestigt, gaat de koppeling naar jou.",
+				"you": "(jij)",
+				"confirm": "Account koppelen",
+				"cancel": "Annuleren",
+				"linked": "Slack-account gekoppeld",
+				"linkError": "Kan het Slack-account niet koppelen"
+			}
 		},
 		"discordIntegration": {
 			"validation": {
@@ -1373,14 +1718,12 @@
 		"notificationsPage": {
 			"pageTitle": "Meldingen",
 			"title": "Meldingen",
-			"subtitle": "Kies hoe Margaya je accountmeldingen bezorgt en welke kanalen worden gebruikt.",
+			"subtitle": "Kies waarover Margaya je informeert, waar het je bereikt en hoe het klinkt.",
 			"statusConnected": "Verbonden",
 			"statusPaused": "Gepauzeerd",
 			"emailTitle": "E-mail",
 			"emailDescription": "Gebruik je account-e-mailadres als bestemming voor meldingen.",
-			"accountEmailLabel": "Account-e-mailadres",
 			"accountEmailNoAddress": "Geen account-e-mailadres beschikbaar",
-			"accountEmailHint": "E-mails worden altijd bezorgd op het e-mailadres van het ingelogde account.",
 			"saveChanges": "Wijzigingen opslaan",
 			"disconnect": "Ontkoppelen",
 			"ntfyTitle": "ntfy",
@@ -1481,7 +1824,7 @@
 				"title": "Geluiden",
 				"description": "Speel een geluid af wanneer er een melding binnenkomt terwijl Margaya open is in je browser.",
 				"enabled": "Geluiden afspelen",
-				"enabledDescription": "Je geluidskeuzes horen bij je account en gelden in elke browser.",
+				"enabledDescription": "Je geluidskeuzes horen bij je account en gelden op elk apparaat.",
 				"volume": "Geluidsvolume",
 				"volumeValue": "{{value}}%",
 				"categoryMentions": "Vermeldingen en toewijzingen",
@@ -1501,14 +1844,38 @@
 				"soundMarimba": "Marimba",
 				"preview": "{{sound}} afspelen",
 				"quietHours": "Stille uren",
-				"quietHoursDescription": "Geen geluiden tussen deze tijden, in de tijdzone van je account.",
+				"quietHoursDescription": "Elke dag tussen deze tijden worden meldingen gepauzeerd en klinkt er geen geluid.",
 				"quietFrom": "Van",
 				"quietTo": "Tot",
 				"deviceMute": "Geluiden dempen op dit apparaat",
 				"deviceMuteDescription": "Dempt alleen deze browser. Je andere apparaten blijven geluid afspelen.",
 				"previewFailed": "Je browser heeft het geluid niet afgespeeld. Controleer of dit tabblad of deze site niet gedempt is.",
 				"desktopDescription": "In de desktop-app speelt een melding het Margaya-geluid af dat je hier hebt gekozen, op jouw volume, wanneer deze instellingen daarom vragen. Niet storen dempt het.",
-				"deviceMuteDescriptionDesktop": "Dempt alleen deze desktop-app. Je andere apparaten blijven geluid afspelen."
+				"deviceMuteDescriptionDesktop": "Dempt alleen deze desktop-app. Je andere apparaten blijven geluid afspelen.",
+				"previewFailedDesktop": "Het geluid is niet afgespeeld. Controleer of het geluid van je computer niet gedempt is."
+			},
+			"quiet": {
+				"title": "Stille uren en focus",
+				"description": "Pauzeer meldingen een tijdje, of elke nacht. Je inbox vult zich nog steeds; er klinkt niets.",
+				"focus": "Focusmodus",
+				"focusDescription": "Pauzeer meldingen vanaf nu. Ook beschikbaar in het accountmenu en het opdrachtpalet.",
+				"timeZone": "Tijden staan in de tijdzone van je account, {{zone}}.",
+				"noTimeZone": "Je account heeft nog geen tijdzone, dus stille uren volgen UTC.",
+				"useTimeZone": "{{zone}} gebruiken",
+				"channels": "Deze kanalen vasthouden",
+				"channelsDescription": "Zolang meldingen gepauzeerd zijn, wachten deze. Niet-aangevinkte kanalen blijven binnenkomen, zonder geluid.",
+				"channelPush": "Pushmeldingen",
+				"channelEmail": "E-mail",
+				"channelDesktop": "Desktop-app",
+				"channelNtfy": "ntfy",
+				"channelGotify": "Gotify",
+				"channelWebhook": "Webhook",
+				"bypass": "Deze altijd doorlaten",
+				"bypassDescription": "Deze komen meteen binnen, met geluid, ook als meldingen gepauzeerd zijn.",
+				"bypassMentions": "Directe vermeldingen",
+				"bypassUrgent": "Taken met urgente prioriteit die aan jou zijn toegewezen",
+				"bypassApprovals": "Agents die wachten op je goedkeuring of antwoord",
+				"summaryNote": "Als de pauze voorbij is, krijgt elk vastgehouden kanaal één samenvatting: één e-mail met alles, één push-, ntfy- of Gotify-bericht, één desktopmelding, en elke vastgehouden webhook-payload op volgorde."
 			},
 			"pushTitle": "Pushmeldingen",
 			"pushDescription": "Meldingen op je telefoon of computer, ook als Margaya gesloten is. “Stuur mij meldingen over” bepaalt wat er wordt verstuurd, en een werkruimteregel hieronder kan dat beperken.",
@@ -1533,7 +1900,9 @@
 			"pushChannelHintEnabled": "Stuur passende werkruimtemeldingen naar je apparaten.",
 			"pushChannelHintDisabled": "Schakel push eerst in voor een apparaat.",
 			"pushLoadFailed": "Je pushinstellingen konden niet worden geladen. Laad deze pagina opnieuw om het nog eens te proberen.",
-			"pushDesktopApp": "De desktop-app toont meldingen op dit apparaat, dus browserpush is hier niet nodig."
+			"emailSendsTo": "Wordt verzonden naar {{email}}.",
+			"pushDesktopTitle": "Bureaubladmeldingen",
+			"pushDesktopDescription": "Margaya Desktop toont meldingen op deze computer, ook als het venster gesloten is. Gebruik de meldingsinstellingen van je systeem om ze uit te zetten of hun weergave te wijzigen."
 		},
 		"workspaceRoles": {
 			"pageTitle": "Rollen",
@@ -2106,6 +2475,10 @@
 				"ai": {
 					"title": "AI",
 					"description": "Samenvattingen, suggesties en andere AI-hulp voor dit project. Uitgeschakeld houdt het project volledig buiten AI."
+				},
+				"updates": {
+					"title": "Statusupdates",
+					"description": "Plaats gedateerde statusupdates met een projectstatus, als concept opgesteld uit actuele projectgegevens."
 				}
 			},
 			"loadError": "Laden van dit project mislukt",
@@ -2799,6 +3172,10 @@
 			"billing": "Facturering",
 			"label": "Instellingensecties",
 			"noProjectsHint": "Maak eerst een project aan. De instellingen ervan verschijnen dan hier.",
+			"groupData": "Gegevens",
+			"groupServer": "Serverconfiguratie",
+			"aiSettings": "AI-instellingen",
+			"pageLabel": "Instellingenpagina",
 			"pickProject": "Kies een project om de instellingen ervan te zien."
 		},
 		"projectAccess": {
@@ -2856,6 +3233,9 @@
 			},
 			"sessions": {
 				"confirmOthersDescription": "Alle andere apparaten die op je account zijn ingelogd, moeten opnieuw inloggen. Dit apparaat blijft ingelogd.",
+				"showAll": "Alle sessies tonen ({{count}})",
+				"showFewer": "Minder tonen",
+				"desktopApp": "Margaya Desktop",
 				"confirmOthersTitle": "Alle andere sessies uitloggen?",
 				"deviceLabel": "{{browser}} op {{os}}",
 				"error": "Kan de sessie niet uitloggen",
@@ -2877,16 +3257,16 @@
 			"title": "Beveiliging"
 		},
 		"timezone": {
-			"accountHint": "Gebruikt voor herinneringen, e-mailoverzichten en de dagen waarmee taakfilters en analyses rekenen. Tijden op het scherm staan in de tijdzone van je browser.",
+			"accountHint": "Gebruikt voor herinneringen, e-mailoverzichten en de dagen waarmee taakfilters en analyses rekenen. Tijden op het scherm staan in de tijdzone van dit apparaat.",
 			"accountLabel": "Tijdzone",
-			"automatic": "Automatisch (browser: {{zone}})",
+			"automatic": "Automatisch (dit apparaat: {{zone}})",
 			"loadError": "Kan de tijdzone niet laden. Laad de pagina opnieuw om het nog eens te proberen.",
 			"noResults": "Geen tijdzones gevonden",
 			"placeholder": "Kies een tijdzone",
 			"search": "Tijdzones zoeken",
 			"toastError": "Kan de tijdzone niet bijwerken",
 			"toastUpdated": "Tijdzone bijgewerkt",
-			"useBrowser": "{{zone}} gebruiken",
+			"useBrowser": "Tijdzone van dit apparaat gebruiken ({{zone}})",
 			"workspaceHint": "Bepaalt wat \"vandaag\" is voor cyclussen, automatiseringen en analyses. Bestaande werkruimtes starten op UTC.",
 			"workspaceLabel": "Tijdzone"
 		},
@@ -3315,6 +3695,96 @@
 			"title": "Ga verder in je browser",
 			"billing": "Rond het af in het browservenster dat net is geopend en kom daarna terug naar Margaya. Je abonnement wordt bijgewerkt zodra je terug bent.",
 			"githubApp": "Rond het af op GitHub in je browser, kom daarna terug naar Margaya en controleer de installatie opnieuw."
+		},
+		"save": "Opslaan",
+		"unsavedChanges": "Niet-opgeslagen wijzigingen",
+		"readOnly": {
+			"workspace": "Je kunt deze instellingen bekijken, maar met jouw rol kun je ze niet wijzigen. Vraag het aan een eigenaar of beheerder van de werkruimte.",
+			"project": "Je kunt de instellingen van dit project bekijken, maar met jouw rol kun je ze niet wijzigen. Vraag het aan een eigenaar of beheerder van de werkruimte."
+		},
+		"projectIntake": {
+			"title": "Intakebronnen",
+			"pageTitle": "Intakebronnen",
+			"subtitle": "Laat mensen per e-mail of via een openbaar formulier verzoeken naar dit project sturen. Alles wat ze sturen komt ter beoordeling in Intake terecht.",
+			"noPermission": "Alleen mensen die projecten mogen delen, kunnen intakebronnen beheren.",
+			"loadError": "Kan deze instellingen niet laden.",
+			"retry": "Opnieuw proberen",
+			"saved": "Instellingen opgeslagen",
+			"saveError": "Kan de instellingen niet opslaan",
+			"copy": "Kopiëren",
+			"copied": "Gekopieerd",
+			"open": "Openen",
+			"email": {
+				"title": "E-mail",
+				"description": "E-mail die naar het adres van het project wordt gestuurd of doorgestuurd, wordt een verzoek. Antwoorden van dezelfde afzender worden als reacties toegevoegd, en bijlagen blijven bewaard.",
+				"enabled": "Verzoeken per e-mail accepteren",
+				"enabledHint": "Automatische antwoorden, bounces, mail van mailinglijsten en berichten die als spam zijn gemarkeerd worden genegeerd.",
+				"turnedOn": "Intake per e-mail aangezet",
+				"turnedOff": "Intake per e-mail uitgezet",
+				"address": "Doorstuuradres",
+				"addressHint": "Stuur of forward e-mail naar dit adres. Iedereen die het kent, kan verzoeken versturen.",
+				"addressNone": "Het adres verschijnt zodra intake per e-mail aanstaat en de server een intake-mailbox heeft.",
+				"rotate": "Nieuw adres",
+				"rotated": "Nieuw adres gemaakt. Het oude werkt niet meer.",
+				"noInstanceAddress": "Deze server heeft nog geen intake-adres. Vraag je beheerder er een in te stellen, of koppel hieronder een eigen mailbox voor dit project.",
+				"allowed": "Alleen deze domeinen accepteren",
+				"allowedHint": "Eén domein per regel. Laat leeg om elke afzender te accepteren. Subdomeinen tellen mee.",
+				"blocked": "Deze domeinen nooit accepteren",
+				"blockedHint": "Eén domein per regel. Geblokkeerde domeinen gaan voor de lijst hierboven.",
+				"protection": "Berichten groter dan {{size}} MB worden overgeslagen. Tot {{files}} bijlagen van elk {{fileSize}} MB blijven bewaard. Elke afzender kan 10 berichten per uur sturen."
+			},
+			"mailbox": {
+				"title": "Projectmailbox",
+				"description": "Optioneel. Margaya controleert deze mailbox elke twee minuten en maakt van elk ongelezen bericht een verzoek voor dit project. Dit werkt achter een firewall, omdat Margaya zelf verbinding maakt met de mailserver.",
+				"enabled": "Deze mailbox controleren",
+				"enabledHint": "Vul de server- en inloggegevens in, sla op en zet dit dan aan.",
+				"lastPolled": "Laatst gecontroleerd op {{time}}.",
+				"notPolled": "Nog niet gecontroleerd.",
+				"lastError": "Laatste controle mislukt: {{error}}",
+				"host": "IMAP-server",
+				"security": "Versleuteling",
+				"securityHint": "Verbindingen zijn altijd versleuteld.",
+				"tls": "TLS (poort 993)",
+				"starttls": "STARTTLS (poort 143)",
+				"port": "Poort",
+				"portHint": "Laat leeg voor de standaardpoort.",
+				"portInvalid": "Voer een poort in tussen 1 en 65535.",
+				"username": "Gebruikersnaam",
+				"password": "Wachtwoord",
+				"passwordSaved": "Er is een wachtwoord opgeslagen. Typ een nieuw wachtwoord om het te vervangen.",
+				"folder": "Map",
+				"test": "Verbinding testen",
+				"testOk_one": "Verbonden. {{count}} ongelezen bericht.",
+				"testOk_other": "Verbonden. {{count}} ongelezen berichten."
+			},
+			"form": {
+				"title": "Aanvraagformulier",
+				"description": "Een openbare pagina waar iedereen met de link een verzoek kan versturen. Hij toont alleen de tekst en velden die je hier kiest, nooit je werkruimte of taken.",
+				"enabled": "Formulier openen",
+				"enabledHint": "Bots worden buiten gehouden met een verborgen valveld en snelheidslimieten, zonder captcha.",
+				"opened": "Formulier geopend",
+				"closed": "Formulier gesloten",
+				"sharingOff": "Openbaar delen staat uit op deze server, dus het formulier kan niet worden geopend.",
+				"link": "Formulierlink",
+				"linkHint": "Deel deze link. Iedereen die hem heeft, kan verzoeken versturen.",
+				"rotate": "Nieuwe link",
+				"rotated": "Nieuwe link gemaakt. De oude werkt niet meer.",
+				"heading": "Kop",
+				"headingHint": "Getoond boven aan het formulier.",
+				"intro": "Inleiding",
+				"descriptionField": "Beschrijving",
+				"emailField": "E-mailadres",
+				"emailFieldHint": "Alleen zichtbaar voor wie de verzoeken beoordeelt, zodat die contact kan opnemen.",
+				"nameField": "Naam",
+				"modeOptional": "Optioneel",
+				"modeRequired": "Verplicht",
+				"modeOff": "Verborgen",
+				"customFields": "Aangepaste velden",
+				"customFieldsHint": "Hun namen en opties worden zichtbaar op het formulier.",
+				"noCustomFields": "Dit project heeft geen aangepaste velden.",
+				"confirmation": "Bevestigingsbericht",
+				"confirmationHint": "Getoond nadat iemand een verzoek heeft verstuurd."
+			}
 		}
 	},
 	"navigation": {
@@ -3528,6 +3998,7 @@
 		"projectNav": {
 			"cycles": "Cyclussen",
 			"intake": "Intake",
+			"updates": "Statusupdates",
 			"label": "Projectonderdelen",
 			"modules": "Modules",
 			"pages": "Pagina's",
@@ -3578,6 +4049,27 @@
 			"whatsNew": "Wat is er nieuw",
 			"sourceCode": "Broncode",
 			"workspaceAnalytics": "Werkruimte"
+		},
+		"focus": {
+			"menuLabel": "Meldingen pauzeren",
+			"paletteLabel": "Focusmodus: meldingen pauzeren",
+			"preset30m": "30 minuten",
+			"preset1h": "1 uur",
+			"preset2h": "2 uur",
+			"presetTomorrow": "Tot morgen",
+			"custom": "Tot een tijdstip…",
+			"resume": "Meldingen hervatten",
+			"focusUntil": "Focus tot {{time}}",
+			"quietUntil": "Stille uren tot {{time}}",
+			"settings": "Instellingen voor stille uren",
+			"toastStarted": "Meldingen gepauzeerd tot {{time}}",
+			"toastResumed": "Meldingen hervat",
+			"customTitle": "Meldingen pauzeren tot",
+			"customDescription": "Je inbox vult zich nog steeds. Vermeldingen en andere uitzonderingen die je hebt gekozen komen nog door.",
+			"customLabel": "Tot",
+			"customSave": "Pauzeren",
+			"customInvalid": "Kies een tijdstip binnen de komende 7 dagen.",
+			"cancel": "Annuleren"
 		},
 		"desktopWindow": {
 			"minimize": "Minimaliseren",
@@ -5477,7 +5969,6 @@
 			"createProject": "Project aanmaken",
 			"title": "Titel",
 			"progress": "Voortgang",
-			"targetDate": "Streefdatum",
 			"dueDate": "Einddatum",
 			"status": "Status",
 			"emptyTitle": "Nog geen projecten",
@@ -8439,6 +8930,7 @@
 			"me": "Ik",
 			"priority": "Prioriteit",
 			"remove": "Filter verwijderen",
+			"source": "Bron",
 			"status": "Status",
 			"submittedBy": "Ingediend door"
 		},
@@ -8532,6 +9024,25 @@
 			"hintMove": "Verplaatsen",
 			"hintOpen": "Taak openen",
 			"queueLabel": "Triagewachtrij"
+		},
+		"publicForm": {
+			"defaultTitle": "Verzoek versturen",
+			"titleLabel": "Titel",
+			"descriptionLabel": "Beschrijving",
+			"nameLabel": "Je naam",
+			"emailLabel": "Je e-mailadres",
+			"emailHint": "Alleen gebruikt om op dit verzoek terug te komen.",
+			"choose": "Kies…",
+			"requiredNote": "Velden met een * zijn verplicht.",
+			"submit": "Verzoek versturen",
+			"missing": "Vul de verplichte velden in en controleer je e-mailadres.",
+			"tooMany": "Te veel verzoeken vanaf dit netwerk. Probeer het later opnieuw.",
+			"failed": "Je verzoek kon niet worden verstuurd. Probeer het opnieuw.",
+			"sentTitle": "Verzoek verstuurd",
+			"sentBody": "Bedankt. Je verzoek is ontvangen en wordt beoordeeld.",
+			"another": "Nog een verzoek versturen",
+			"notFoundTitle": "Formulier niet beschikbaar",
+			"notFoundBody": "Dit formulier bestaat niet of is gesloten. Controleer de link bij degene die hem heeft gedeeld."
 		}
 	},
 	"stickies": {
@@ -9588,6 +10099,117 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "Instantie · {{page}}",
+		"health": {
+			"title": "Serverstatus",
+			"subtitle": "Controleer de diensten, achtergrondtaken en recente fouten van deze server.",
+			"recheck": "Opnieuw controleren",
+			"summary": "Samenvatting",
+			"version": "Versie",
+			"uptime": "Looptijd",
+			"uptimeDays": "{{days}} d {{hours}} u",
+			"uptimeHours": "{{hours}} u {{minutes}} min",
+			"startedAt": "Gestart",
+			"node": "Node.js",
+			"latency": "{{ms}} ms",
+			"status": {
+				"ok": "In orde",
+				"warning": "Waarschuwing",
+				"error": "Probleem",
+				"off": "Uit"
+			},
+			"migrations": {
+				"title": "Databankmigraties",
+				"ok_one": "Bijgewerkt: {{count}} migratie toegepast.",
+				"ok_other": "Bijgewerkt: {{count}} migraties toegepast.",
+				"pending_one": "{{count}} migratie is nog niet uitgevoerd. Start de server opnieuw om deze toe te passen.",
+				"pending_other": "{{count}} migraties zijn nog niet uitgevoerd. Start de server opnieuw om ze toe te passen.",
+				"unknown": "De migratiestatus kan niet worden gelezen. Details staan in het serverlog."
+			},
+			"checks": {
+				"title": "Diensten",
+				"description": "Elke controle draait nu, met een limiet van 5 seconden. Antwoorden bevatten nooit hosts, paden of wachtwoorden.",
+				"database": "Databank",
+				"redis": "Redis",
+				"storage": "Bestandsopslag",
+				"email": "E-mail",
+				"ai": "AI-provider"
+			},
+			"codes": {
+				"ok": "Reageert.",
+				"unreachable": "Niet bereikbaar. Details staan in het serverlog.",
+				"unavailable": "Geconfigureerd, maar reageert niet. Realtime-updates tussen servers zijn gepauzeerd.",
+				"timeout": "Heeft niet binnen de tijdslimiet gereageerd.",
+				"failed": "De controle is mislukt. Details staan in het serverlog.",
+				"redisDisabled": "Niet geconfigureerd. Eén server heeft het niet nodig.",
+				"aiDisabled": "AI staat uit voor deze server.",
+				"emailNotConfigured": "Uitgaande e-mail is niet ingesteld.",
+				"aiNotConfigured": "AI staat aan, maar er is geen providersleutel of endpoint ingesteld.",
+				"s3": "S3-compatibele opslag reageert.",
+				"local": "De ingebouwde lokale opslag is beschrijfbaar.",
+				"storageOff": "Uploads staan uit: er is geen S3-opslag en de lokale opslag is uitgeschakeld.",
+				"denied": "De opslagdienst weigerde de controle. Uploads werken mogelijk nog als het bucketbeleid ze toestaat.",
+				"notWritable": "De map van de lokale opslag is niet beschrijfbaar.",
+				"recentErrors_one": "{{count}} aanroep is mislukt in de afgelopen 24 uur.",
+				"recentErrors_other": "{{count}} aanroepen zijn mislukt in de afgelopen 24 uur.",
+				"smtpOk": "Aangemeld bij de mailserver. Er is geen bericht verstuurd.",
+				"smtpAuth": "De mailserver weigerde de gebruikersnaam of het wachtwoord.",
+				"smtpConnection": "Kan geen verbinding maken met de mailserver.",
+				"smtpTls": "De beveiligde verbinding met de mailserver is mislukt.",
+				"smtpUnknown": "De controle van de mailserver is mislukt. Details staan in het serverlog."
+			},
+			"activity": {
+				"title": "Wachtrijen en verbindingen",
+				"description": "Wachtrijen gelden voor de hele instantie. Verbindingen alleen voor deze server.",
+				"emailBacklog": "Wachtende e-mails",
+				"webhookPending": "Wachtende webhooks",
+				"webhookFailed": "Mislukte webhooks (24 u)",
+				"boardSockets": "Bordverbindingen",
+				"userSockets": "App-verbindingen",
+				"pageRooms": "Pagina's die samen worden bewerkt",
+				"metrics": "Prometheus-metrics: {{state}}",
+				"metricsOff": "uit",
+				"metricsToken": "aan, op /api/metrics met een token",
+				"metricsPort": "aan, op /metrics via poort {{port}}",
+				"metricsNoEndpoint": "aan, maar er is geen token en geen poort ingesteld"
+			},
+			"jobs": {
+				"title": "Achtergrondtaken",
+				"description": "Geplande taken op deze server sinds de start.",
+				"empty": "Er zijn geen achtergrondtaken gepland op deze server.",
+				"name": "Achtergrondtaak",
+				"lastRun": "Laatst uitgevoerd",
+				"outcome": "Laatste resultaat",
+				"runs": "Uitvoeringen",
+				"failures": "Fouten",
+				"running": "Wordt nu uitgevoerd",
+				"notRun": "Nog niet uitgevoerd"
+			},
+			"failures": {
+				"title": "Recente fouten",
+				"description": "De nieuwste mislukte taken en AI-aanroepen op deze server sinds de start. Mislukte webhooks staan op de pagina Algemeen.",
+				"empty": "Geen fouten sinds deze server is gestart.",
+				"sourceJob": "Achtergrondtaak",
+				"sourceAi": "AI",
+				"sourceEmail": "E-mail",
+				"seeLog": "Sommige items zijn mislukt. Details staan in het serverlog."
+			}
+		},
+		"update": {
+			"title": "Updatemelding",
+			"label": "Op nieuwe versies controleren",
+			"hint": "Eenmaal per dag leest deze server de openbare releaselijst en laat instantiebeheerders weten wanneer er een nieuwere versie is. Er wordt niets over deze instantie verstuurd.",
+			"off": "Uit. Deze server controleert nooit op updates.",
+			"notChecked": "Nog niet gecontroleerd.",
+			"upToDate": "Bijgewerkt: {{current}} is de nieuwste versie.",
+			"available": "Versie {{latest}} is beschikbaar. Deze server draait {{current}}.",
+			"checkedAt": "Gecontroleerd op {{time}}.",
+			"errorUnreachable": "De releaselijst is niet bereikbaar. De server probeert het binnen een uur opnieuw.",
+			"errorInvalid": "De releaselijst gaf een antwoord dat deze server niet kan lezen.",
+			"releaseNotes": "Release-opmerkingen",
+			"dismiss": "Sluiten",
+			"bannerTitle": "Margaya {{version}} is beschikbaar",
+			"bannerDescription": "Deze server draait {{current}}. Alleen instantiebeheerders zien deze melding."
+		},
 		"nav": {
 			"admins": "Beheerders",
 			"authentication": "Authenticatie",
@@ -9595,7 +10217,8 @@
 			"general": "Algemeen",
 			"publicBoards": "Openbare borden",
 			"workspaces": "Werkruimtes",
-			"ai": "AI"
+			"ai": "AI",
+			"health": "Serverstatus"
 		},
 		"lockedCallout": "Deze instellingen worden op deze server beheerd met omgevingsvariabelen. Wijzigingen hier zijn uitgeschakeld.",
 		"source": {
@@ -9656,7 +10279,7 @@
 			},
 			"deliveryFailures": {
 				"title": "Recente bezorgfouten",
-				"description": "Webhooks van werkruimtes die in de afgelopen 7 dagen al hun nieuwe pogingen hebben opgebruikt. Fouten bij e-mail en achtergrondtaken staan alleen in de serverlogs.",
+				"description": "Webhooks van werkruimtes die in de afgelopen 7 dagen al hun nieuwe pogingen hebben opgebruikt. Mislukte achtergrondtaken en AI-aanroepen staan op de pagina Serverstatus.",
 				"empty": "Geen mislukte bezorgingen in de afgelopen 7 dagen.",
 				"when": "Wanneer",
 				"workspace": "Werkruimte",
@@ -10232,6 +10855,19 @@
 		}
 	},
 	"ai": {
+		"provenance": {
+			"label": "Door AI gegenereerd",
+			"edited": "Bewerkt door {{name}}, oorspronkelijk door AI gegenereerd",
+			"someone": "iemand",
+			"byAgent": "Geschreven door de agent {{name}}",
+			"unknownAgent": "een verwijderde agent",
+			"byFeature": "Geschreven met AI ({{feature}}) en geaccepteerd door een persoon",
+			"byAssist": "Geschreven met AI en geaccepteerd door een persoon",
+			"model": "AI-model: {{model}}"
+		},
+		"disclosure": {
+			"chat": "Je chat met een AI-assistent, niet met een persoon."
+		},
 		"rules": {
 			"title": "Regel uit een beschrijving",
 			"description": "Beschrijf een automatisering in gewone woorden. AI maakt er een normale regel van die je kunt bewerken, op recente geschiedenis kunt testen en kunt opslaan. Opgeslagen regels werken zonder AI.",
@@ -10919,6 +11555,7 @@
 			"triage": "Triagesuggesties",
 			"translate": "Vertalingen",
 			"brief": "Briefings voor belanghebbenden",
+			"project_update": "Concepten voor projectupdates",
 			"agent_run": "AI-agents",
 			"rule_compiler": "Automatiseringsregels",
 			"capture": "Vastleggen als melding",
@@ -11146,7 +11783,7 @@
 			"webSearchUnavailable": "Op deze installatie is geen webzoekfunctie ingesteld.",
 			"webSearchLocalOnly": "Niet gebruikt zolang AI alleen lokale modellen gebruikt.",
 			"storeConversations": "Chatgeschiedenis op de server bewaren",
-			"storeConversationsHint": "De gesprekken van iedereen worden in de werkruimte opgeslagen, zodat ze die op elk apparaat kunnen heropenen. Uit: ze blijven alleen in de eigen browser.",
+			"storeConversationsHint": "De gesprekken van iedereen worden in de werkruimte opgeslagen, zodat ze die op elk apparaat kunnen heropenen. Uit: ze blijven alleen op het eigen apparaat.",
 			"allowAutopilot": "Automatische piloot toestaan",
 			"allowAutopilotHint": "De modus Bouwen mag wijzigingen doorvoeren zonder bevestiging. Elke wijziging wordt nog steeds vastgelegd en kan ongedaan worden gemaakt.",
 			"storesPrompts": "Prompts bewaard"
@@ -11243,6 +11880,10 @@
 				"link_tasks": "Taken koppelen",
 				"delete_task": "Taak verwijderen",
 				"bulk_move_status": "Status van meerdere taken wijzigen",
+				"create_task": "Taak aanmaken",
+				"set_task_cycle": "Cyclus instellen",
+				"set_task_modules": "Modules instellen",
+				"set_custom_field": "Aangepast veld instellen",
 				"ask_person": "Vraag stellen",
 				"web_search": "Zoeken op het web",
 				"connector": "Externe dienst: {{tool}}",
@@ -11278,6 +11919,7 @@
 				"after": "Na",
 				"openPage": "Pagina openen",
 				"openSubtask": "Subtaak openen",
+				"openTask": "Taak openen",
 				"openLinked": "Gekoppelde taak openen",
 				"empty": "(leeg)",
 				"fields": {
@@ -11294,7 +11936,12 @@
 					"delete": "Naar prullenbak verplaatsen",
 					"connectorCall": "Aanroep naar {{connector}}",
 					"pageContent": "Pagina-inhoud",
-					"pageSection": "Toegevoegde sectie"
+					"pageSection": "Toegevoegde sectie",
+					"task": "Nieuwe taak",
+					"cycle": "Cyclus",
+					"modulesAdded": "Toegevoegd aan modules",
+					"modulesRemoved": "Verwijderd uit modules",
+					"customField": "Aangepast veld {{field}}"
 				},
 				"undoPageError": "Kan deze bewerking niet ongedaan maken. De pagina is intussen gewijzigd; herstel in plaats daarvan een eerdere versie uit de geschiedenis."
 			},
@@ -11725,6 +12372,119 @@
 			"noAccess": "Je hebt toestemming nodig om AI in deze werkruimte te gebruiken."
 		}
 	},
+	"projectUpdates": {
+		"documentTitle": "Statusupdates · {{project}}",
+		"newUpdate": "Nieuwe update",
+		"loadError": "Kan de updates niet laden.",
+		"retry": "Opnieuw proberen",
+		"loadMore": "Oudere updates tonen",
+		"empty": {
+			"title": "Nog geen updates",
+			"description": "Plaats een korte statusupdate zodat iedereen weet hoe het project ervoor staat."
+		},
+		"health": {
+			"on_track": "Op schema",
+			"at_risk": "Risico",
+			"off_track": "Achter op schema"
+		},
+		"edited": "bewerkt",
+		"actions": "Acties voor update",
+		"edit": "Bewerken",
+		"delete": "Verwijderen",
+		"deleted": "Update verwijderd",
+		"deletedUser": "Verwijderde gebruiker",
+		"cardLabel": "Update van {{name}}",
+		"deleteDialog": {
+			"title": "Deze update verwijderen?",
+			"description": "De update, de reacties en de emoji-reacties erop worden voor iedereen verwijderd.",
+			"error": "Kan de update niet verwijderen."
+		},
+		"fields": {
+			"health": "Status",
+			"summary": "Samenvatting",
+			"summaryPlaceholder": "Hoe staat het project ervoor?",
+			"highlights": "Hoogtepunten",
+			"blockers": "Blokkades en risico's",
+			"nextSteps": "Volgende stappen"
+		},
+		"composer": {
+			"title": "Nieuwe projectupdate",
+			"editTitle": "Projectupdate bewerken",
+			"draftWithAi": "Concept met AI",
+			"draftFromData": "Concept uit projectgegevens",
+			"aiFallback": "AI is nu niet beschikbaar, dus het concept gebruikt een sjabloon.",
+			"draftError": "Kan geen concept voor de update maken.",
+			"factsLine": "Uit actuele gegevens: {{completed}} voltooid, {{moved}} verplaatst, {{overdue}} te laat, {{blocked}} geblokkeerd.",
+			"cancel": "Annuleren",
+			"post": "Update plaatsen",
+			"save": "Opslaan",
+			"posted": "Update geplaatst",
+			"saved": "Update opgeslagen",
+			"saveError": "Kan de update niet opslaan."
+		},
+		"facts": {
+			"summary": "Gegevens bij plaatsen: {{percent}}% voltooid · {{completed}} voltooid · {{moved}} verplaatst · {{overdue}} te laat · {{blocked}} geblokkeerd",
+			"cycle": "{{name}}: {{percent}}% voltooid ({{completed}} van {{total}})",
+			"forecast": "Prognose: 85% kans op afronding vóór {{date}}",
+			"overdue": "Te laat",
+			"blocked": "Geblokkeerd",
+			"completed": "Voltooid"
+		},
+		"comments": {
+			"toggle_one": "{{count}} reactie",
+			"toggle_other": "{{count}} reacties",
+			"label": "Reactie",
+			"placeholder": "Schrijf een reactie…",
+			"send": "Reageren",
+			"delete": "Reactie verwijderen",
+			"error": "Kan de reactie niet toevoegen.",
+			"loadError": "Kan de reacties niet laden."
+		},
+		"follow": {
+			"follow": "Updates volgen",
+			"unfollow": "Updates niet meer volgen",
+			"error": "Kan het volgen niet wijzigen."
+		},
+		"reminder": {
+			"label": "Wekelijkse herinnering aan de projectleider",
+			"weekday": "Dag van de herinnering",
+			"noLead": "Stel een projectleider in om deze te ontvangen.",
+			"error": "Kan de herinnering niet opslaan."
+		},
+		"widget": {
+			"title": "Projectupdates",
+			"empty": "Nog geen projectupdates.",
+			"error": "Kan de projectupdates niet laden."
+		},
+		"template": {
+			"summary": "Projectstatus: {{health}}. {{percent}}% voltooid ({{completed}} van {{total}} taken), {{open}} open.",
+			"changesSinceUpdate": "Sinds de vorige update: {{completed}} voltooid, {{moved}} verplaatst.",
+			"changesLastWeek": "In de afgelopen 7 dagen: {{completed}} voltooid, {{moved}} verplaatst.",
+			"forecast": "De prognose geeft 85% kans op afronding vóór {{date}}.",
+			"cycle": "{{name}}: {{percent}}% voltooid ({{completed}} van {{total}}), eindigt op {{date}}",
+			"overdue_one": "{{count}} taak te laat:",
+			"overdue_other": "{{count}} taken te laat:",
+			"blocked_one": "{{count}} geblokkeerde taak:",
+			"blocked_other": "{{count}} geblokkeerde taken:",
+			"more_one": "en nog {{count}}",
+			"more_other": "en nog {{count}}"
+		},
+		"notifications": {
+			"posted": {
+				"title": "{{authorName}} heeft een update geplaatst over {{projectName}}",
+				"verb": "heeft een update geplaatst over {{projectName}}"
+			},
+			"comment": {
+				"title": "{{commenterName}} heeft gereageerd op een update van {{projectName}}",
+				"verb": "heeft gereageerd op een update van {{projectName}}"
+			},
+			"reminder": {
+				"title": "Tijd voor een update over {{projectName}}",
+				"content": "Laat met een korte statusupdate weten hoe het project ervoor staat."
+			},
+			"open": "Updates openen"
+		}
+	},
 	"insight": {
 		"close": "Sluiten",
 		"retry": "Opnieuw proberen",
@@ -11952,7 +12712,13 @@
 			"hiddenBlockers_other": "{{count}} taken die je niet kunt zien",
 			"followingHeading": "Wijzigingen in taken die je volgt",
 			"changes_one": "{{count}} wijziging",
-			"changes_other": "{{count}} wijzigingen"
+			"changes_other": "{{count}} wijzigingen",
+			"projectUpdatesHeading": "Updates van projecten die je volgt",
+			"health": {
+				"on_track": "Op schema",
+				"at_risk": "Risico",
+				"off_track": "Achter op schema"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} nieuwe update voor {{title}}",
@@ -12004,6 +12770,11 @@
 		"notificationText": {
 			"commentWithoutPreview": "Nieuwe reactie op {{taskTitle}}",
 			"pushFixedLine": "Open Margaya om de details te bekijken."
+		},
+		"quietSummary": {
+			"title": "Meldingen staan weer aan",
+			"body_one": "Er kwam {{count}} melding binnen tijdens de pauze.",
+			"body_other": "Er kwamen {{count}} meldingen binnen tijdens de pauze."
 		}
 	},
 	"download": {
@@ -12241,7 +13012,11 @@
 				"updateInstall": "Opnieuw starten om bij te werken",
 				"updating": "Bijwerken…",
 				"updatePackage": "Versie {{version}} is beschikbaar. Download het nieuwe pakket om bij te werken.",
-				"updateDownload": "Downloaden"
+				"updateDownload": "Downloaden",
+				"openAtLoginHint": "Start Margaya op de achtergrond wanneer je inlogt op deze computer.",
+				"updatesLabel": "App-updates",
+				"diagnosticsLabel": "Diagnose",
+				"diagnosticsHint": "Kopieert de appversie, je serverlijst en recente logregels voor een bugrapport. Inlogtokens worden nooit meegenomen."
 			},
 			"quickAdd": {
 				"title": "Snel toevoegen",
@@ -12260,6 +13035,10 @@
 			"downloads": {
 				"finished": "{{file}} gedownload",
 				"failed": "Kan {{file}} niet downloaden"
+			},
+			"notifications": {
+				"releasedTitle": "Meldingen staan weer aan",
+				"releasedBody": "Meldingen die binnenkwamen tijdens de pauze: {{count}}"
 			},
 			"menu": {
 				"about": "Over Margaya",

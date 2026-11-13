@@ -487,6 +487,8 @@
 			"failedTitle": "Yetkilendirme başarısız",
 			"loadingSubtitle": "İstek yükleniyor…",
 			"redirectUri": "Yönlendirme URI'si",
+			"metadataHost": "İstemciyi yayımlayan",
+			"localRedirect": "Bu istemci sizi bu bilgisayardaki bir uygulamaya geri gönderir. Bilgisayarınızdaki herhangi bir uygulama bu adresi sahiplenebilir; bu yüzden yalnızca istemciyi az önce kendiniz açtıysanız devam edin.",
 			"signIn": "Giriş yap",
 			"signInSubtitle": "Bu MCP istemcisini onaylamadan önce giriş yapın.",
 			"signInTitle": "Devam etmek için giriş yapın",
@@ -573,17 +575,259 @@
 		}
 	},
 	"settings": {
+		"feedback": {
+			"send": {
+				"menuItem": "Geri bildirim gönder",
+				"title": "Geri bildirim gönder",
+				"description": "Bu sunucuyu yönetenlere neyin işe yarayıp neyin yaramadığını anlatın. Geri bildiriminiz bu sunucuda kalır.",
+				"mood": "Margaya hakkında ne düşünüyorsunuz?",
+				"comment": "Eklemek istediğiniz bir şey var mı? (isteğe bağlı)",
+				"commentPlaceholder": "Neler iyi gitti, neler önünüze engel oldu, neler görmek istersiniz",
+				"context": "Adınız, bulunduğunuz sayfanın türü ({{page}}) ve uygulama sürümüyle ({{version}}) birlikte gönderilir. Görev içeriği asla gönderilmez.",
+				"submit": "Gönder",
+				"cancel": "İptal",
+				"done": "Bitti",
+				"thanks": "Teşekkürler! Geri bildiriminiz bu sunucuyu yönetenlere ulaştı. Her yanıtı okurlar.",
+				"error": "Geri bildiriminiz gönderilemedi. Tekrar deneyin."
+			},
+			"survey": {
+				"questionMood": "Margaya sizin için nasıl çalışıyor?",
+				"questionStars": "Margaya'yı nasıl puanlarsınız?",
+				"questionNps": "Margaya'yı bir iş arkadaşınıza önerme olasılığınız nedir?",
+				"comment": "Eklemek istediğiniz bir şey var mı? (isteğe bağlı)",
+				"notNow": "Şimdi değil",
+				"neverAsk": "Bir daha sorma",
+				"privacy": "Yanıtınız adınızla birlikte bu sunucuda kalır. Bunu Hesap → Tercihler'den değiştirebilirsiniz.",
+				"thanksTitle": "Teşekkürler",
+				"thanks": "Sizi duyduk. Yanıtınız, bu sunucuyu yönetenlerin neyi iyileştireceklerine karar vermesine yardımcı olur.",
+				"whatsNew": "Yenilikleri görün"
+			},
+			"scale": {
+				"veryUnhappy": "Hiç memnun değil",
+				"unhappy": "Memnun değil",
+				"neutral": "Nötr",
+				"happy": "Memnun",
+				"veryHappy": "Çok memnun",
+				"stars_one": "{{count}} yıldız",
+				"stars_other": "{{count}} yıldız",
+				"npsScore_one": "10 üzerinden {{count}}",
+				"npsScore_other": "10 üzerinden {{count}}",
+				"npsLow": "Hiç önermezdim",
+				"npsHigh": "Kesinlikle önerirdim",
+				"thumbsUp": "Yararlı",
+				"thumbsDown": "Yararlı değil"
+			},
+			"pageTypes": {
+				"home": "Ana sayfa",
+				"inbox": "Gelen kutusu",
+				"myWork": "İşlerim",
+				"board": "Pano",
+				"list": "Liste",
+				"timeline": "Zaman çizelgesi",
+				"calendar": "Takvim",
+				"task": "Görev",
+				"cycles": "Döngüler",
+				"modules": "Modüller",
+				"views": "Görünümler",
+				"intake": "Gelen istekler",
+				"pages": "Sayfalar",
+				"analytics": "Analitik",
+				"settings": "Ayarlar",
+				"other": "Diğer"
+			},
+			"features": {
+				"cycles": "Döngüler",
+				"modules": "Modüller",
+				"pages": "Sayfalar",
+				"views": "Görünümler",
+				"intake": "Gelen istekler",
+				"analytics": "Analitik"
+			},
+			"mine": {
+				"title": "Geri bildirim",
+				"description": "Gönderdikleriniz bu sunucuda kalır ve adınız ve e-posta adresinizle birlikte yalnızca yöneticileri tarafından okunabilir.",
+				"survey": "Ara sıra anket",
+				"surveyDescription": "Arada bir, köşedeki küçük bir kart tek bir soru sorar. Hiç sorulmaması için kapatın.",
+				"send": "Geri bildirim gönder",
+				"sendDescription": "Margaya'yı istediğiniz zaman puanlayın veya yorum bırakın. Yardım menüsünde ve komut paletinde de bulunur.",
+				"data": "Geri bildirimleriniz",
+				"dataDescription": "Gönderdiğiniz her şeyin bir kopyasını indirin veya silin. Hesabınızı silmek bunları da siler.",
+				"download": "İndir",
+				"downloadError": "Geri bildirimleriniz indirilemedi. Tekrar deneyin.",
+				"delete": "Tümünü sil",
+				"deleteTitle": "Tüm geri bildirimleriniz silinsin mi?",
+				"deleteDescription": "Gönderdiğiniz her şey bu sunucudan kaldırılır. Bu işlem geri alınamaz.",
+				"deleteConfirm": "Sil",
+				"deleted_one": "{{count}} yanıt silindi",
+				"deleted_other": "{{count}} yanıt silindi",
+				"deleteError": "Geri bildirimleriniz silinemedi. Tekrar deneyin."
+			},
+			"admin": {
+				"nav": "Geri bildirim",
+				"title": "Geri bildirim",
+				"subtitle": "Bu sunucudaki kişilerin Margaya hakkında düşündükleri. Burada saklanır ve başka hiçbir yere gönderilmez.",
+				"settingsTitle": "Geri bildirim gönder",
+				"settingsDescription": "Herkes Yardım menüsünden, komut paletinden veya tercihlerinden Margaya'yı puanlayabilir ya da yorum bırakabilir.",
+				"enabled": "Geri bildirime izin ver",
+				"enabledHint": "Kapatıldığında Geri bildirim gönder ve anket gizlenir. Önceden gönderilmiş yanıtlar saklanır.",
+				"surveyTitle": "Ara sıra anket",
+				"surveyDescription": "Köşede küçük bir kart; asla açılır pencere değil. Kişinin ilk 7 gününde, yazarken veya bir iletişim kutusu açıkken, kapattıktan sonraki 30 gün boyunca ya da Bir daha sorma seçildikten sonra hiç sormaz.",
+				"surveyEnabled": "Arada bir sor",
+				"surveyEnabledHint": "Aşağıdaki tetikleyicilerden birine ulaşıldığında sorar, ardından aralık geçene kadar tekrar sormaz.",
+				"surveyNeedsFeedback": "Geri bildirim kapalıyken etkisi yoktur.",
+				"format": "Ölçek",
+				"formatHint": "Yüz ifadeleri kişilerin nasıl hissettiğine, yıldızlar hızlı bir puana uygundur; 0–10 ise Net Promoter Score (NPS) verir.",
+				"formats": {
+					"faces3": "3 yüz ifadesi",
+					"faces5": "5 yüz ifadesi",
+					"stars": "5 yıldız",
+					"nps": "0–10 (NPS)",
+					"thumbs": "Başparmak (özellikler)"
+				},
+				"tasksCompleted": "Tamamlanan görev sayısından sonra",
+				"tasksCompletedHint": "Biri, anketin son sorduğundan bu yana bu kadar görev tamamladıktan sonra sor. 0 bu tetikleyiciyi kapatır.",
+				"tasksUnit": "görev",
+				"activeDays": "Etkin gün sayısından sonra",
+				"activeDaysHint": "Biri Margaya'yı bu kadar gün kullandıktan sonra sor. 0 bu tetikleyiciyi kapatır.",
+				"daysUnit": "gün",
+				"interval": "En fazla şu sıklıkla sor:",
+				"intervalHint": "Bir kişiye yapılan iki anket arasındaki en kısa süre; 30 ile 365 gün arası.",
+				"save": "Kaydet",
+				"summaryTitle": "Özet",
+				"scale": "Ölçek",
+				"period": "Dönem",
+				"lastDays_one": "Son {{count}} gün",
+				"lastDays_other": "Son {{count}} gün",
+				"answers": "Yanıtlar",
+				"average": "Ortalama",
+				"outOf": "{{value}} / {{max}}",
+				"satisfaction": "Memnun",
+				"nps": "NPS",
+				"comments": "Yorumlar",
+				"none": "–",
+				"bySource": "Tüm ölçekler: {{general}} Geri bildirim gönder'den, {{survey}} anketten, {{feature}} özellik sorularından.",
+				"summaryEmpty": "Bu dönemde bu ölçekte henüz yanıt yok.",
+				"distribution": "Dağılım",
+				"trend": "Haftalık memnun yanıtlar",
+				"trendNps": "Haftalık NPS",
+				"week": "Hafta",
+				"responsesTitle": "Yanıtlar",
+				"source": "Kaynak",
+				"allSources": "Tüm kaynaklar",
+				"allScales": "Tüm ölçekler",
+				"kinds": {
+					"general": "Geri bildirim gönder",
+					"survey": "Anket",
+					"feature": "Özellik sorusu"
+				},
+				"commentsOnly": "Yorumlu",
+				"search": "Yorumlarda veya kişilerde ara",
+				"responsesEmpty": "Henüz geri bildirim yok. Kişiler gönderdikçe yanıtlar burada görünür.",
+				"commentOnly": "Yalnızca yorum",
+				"desktop": "Masaüstü uygulaması",
+				"loadMore": "Daha fazla yükle",
+				"loadError": "Geri bildirimler yüklenemedi.",
+				"retry": "Tekrar dene",
+				"exportCsv": "CSV olarak dışa aktar",
+				"exportError": "Geri bildirimler dışa aktarılamadı. Tekrar deneyin.",
+				"delete": "Yanıtı sil",
+				"deleteError": "Silinemedi. Tekrar deneyin.",
+				"purge": "Eskileri sil",
+				"purgeTitle": "Geri bildirimleri sil",
+				"purgeDescription": "Yanıtlar bu sunucudan kalıcı olarak kaldırılır. Silme işlemi denetim kaydına yazılır.",
+				"purgeWhich": "Hangi yanıtlar",
+				"purgeOlder_one": "{{count}} günden eski",
+				"purgeOlder_other": "{{count}} günden eski",
+				"purgeAll": "Tüm yanıtlar",
+				"purgeConfirm": "Sil",
+				"purged_one": "{{count}} yanıt silindi",
+				"purged_other": "{{count}} yanıt silindi",
+				"cancel": "İptal",
+				"auditDeleted": "Geri bildirim silindi"
+			}
+		},
+		"calendarFeed": {
+			"title": "Takvimde abone ol",
+			"description": "Margaya tarihlerinizi takvim uygulamanızda görün. Beslemeler salt okunurdur ve yaklaşık saatte bir yenilenir.",
+			"menuItem": "Takvimde abone ol",
+			"timezoneNote": "Görevler tüm gün süren etkinlikler olarak görünür; günler hesabınızın saat dilimine, siz seçmediyseniz çalışma alanının saat dilimine göre hesaplanır.",
+			"loadError": "Takvim beslemeleriniz yüklenemedi. Daha sonra tekrar deneyin.",
+			"hiddenProject": "Artık göremediğiniz bir proje",
+			"privacy": "Bu bağlantıya sahip olan herkes içindeki başlıkları ve tarihleri görebilir. Gizli tutun; sızarsa yeni bir bağlantı oluşturun veya iptal edin.",
+			"myTasks": {
+				"label": "Görevlerim",
+				"description": "Size atanmış, başlangıç veya bitiş tarihi olan görevler."
+			},
+			"planning": {
+				"label": "Kilometre taşları ve döngüler",
+				"description": "Bu çalışma alanında görebildiğiniz tüm projelerin kilometre taşları ve döngü tarihleri."
+			},
+			"project": {
+				"settingsDescription": "Bu projedeki tarihli tüm görevler, kilometre taşları ve döngüler.",
+				"dialogDescription": "{{project}} projesinin tarihli tüm görevlerini, kilometre taşlarını ve döngülerini takvim uygulamanızda takip edin.",
+				"manageHint": "Tüm takvim bağlantılarınızı Ayarlar'da, Hesap → Tercihler altında görebilir ve iptal edebilirsiniz."
+			},
+			"calendarName": {
+				"myTasks": "Görevlerim · {{workspace}}",
+				"planning": "Kilometre taşları ve döngüler · {{workspace}}",
+				"project": "{{project}} · {{workspace}}"
+			},
+			"status": {
+				"none": "Henüz bağlantı yok",
+				"active": "Bağlantı {{start}}…, oluşturulma: {{date}}",
+				"lastUsed": "bir takvim tarafından son okunma: {{when}}",
+				"neverUsed": "henüz bir takvim tarafından okunmadı"
+			},
+			"actions": {
+				"create": "Bağlantı oluştur",
+				"createFor": "{{name}} için takvim bağlantısı oluştur",
+				"regenerate": "Yeni bağlantı",
+				"regenerateFor": "{{name}} için yeni bir takvim bağlantısı oluştur",
+				"revoke": "İptal et",
+				"revokeFor": "{{name}} için takvim bağlantısını iptal et",
+				"copy": "Kopyala",
+				"copied": "Kopyalandı",
+				"open": "Takvim uygulamasında aç",
+				"done": "Bitti"
+			},
+			"link": {
+				"title": "Takvim bağlantınız",
+				"label": "Abonelik bağlantısı",
+				"once": "Şimdi kopyalayın: yalnızca bir kez gösterilir. Kaybederseniz yeni bir bağlantı oluşturun."
+			},
+			"howTo": {
+				"title": "Nasıl eklenir",
+				"step1": "Bağlantıyı kopyalayın.",
+				"step2": "Takvim uygulamanızda bir URL'den takvim eklemeyi veya takvime abone olmayı seçin.",
+				"step3": "Bağlantıyı yapıştırın. Değişiklikler uygulamanın bir sonraki yenilemesinde görünür."
+			},
+			"regenerateConfirm": {
+				"title": "Yeni bir bağlantı oluşturulsun mu?",
+				"description": "Mevcut bağlantı hemen çalışmayı durdurur. Onu kullanan takvimler, yeni bağlantıyı ekleyene kadar güncellenmez.",
+				"confirm": "Yeni bağlantı oluştur"
+			},
+			"revokeConfirm": {
+				"title": "Bu takvim bağlantısı iptal edilsin mi?",
+				"description": "Bağlantı hemen çalışmayı durdurur ve onu kullanan takvimler artık güncellenmez.",
+				"confirm": "Bağlantıyı iptal et"
+			},
+			"toast": {
+				"created": "Takvim bağlantısı oluşturuldu",
+				"revoked": "Takvim bağlantısı iptal edildi",
+				"copied": "Bağlantı kopyalandı",
+				"copyError": "Bağlantı kopyalanamadı. Seçip kendiniz kopyalayın.",
+				"error": "Takvim bağlantısı güncellenemedi"
+			}
+		},
 		"account": "Hesap",
-		"information": "Bilgiler",
+		"information": "Profil",
 		"notifications": "Bildirimler",
 		"preferences": "Tercihler",
 		"apiKeys": "API anahtarları",
 		"informationPage": {
-			"pageTitle": "Kişisel bilgiler",
-			"title": "Kişisel bilgiler",
-			"subtitle": "Kişisel ayrıntılarınızı ve hesap bilgilerinizi yönetin.",
-			"sectionTitle": "Hesap bilgileri",
-			"sectionSubtitle": "Profilinizi ve hesap ayrıntılarınızı yönetin.",
+			"pageTitle": "Profil",
+			"title": "Profil",
+			"subtitle": "Adınız, fotoğrafınız ve oturum açtığınız e-posta adresi.",
 			"profilePicture": "Profil fotoğrafı",
 			"fullName": "Ad Soyad",
 			"fullNamePlaceholder": "Adınızı girin",
@@ -623,14 +867,12 @@
 		"notificationsPage": {
 			"pageTitle": "Bildirimler",
 			"title": "Bildirimler",
-			"subtitle": "Margaya'nun hesap bildirimlerinizi nasıl ileteceğini ve hangi kanalları kullanacağını seçin.",
+			"subtitle": "Margaya'nın size neyi bildireceğini, size nerede ulaşacağını ve nasıl ses çıkaracağını seçin.",
 			"statusConnected": "Bağlı",
 			"statusPaused": "Duraklatıldı",
 			"emailTitle": "E-posta",
 			"emailDescription": "Bildirimleriniz için hedef olarak hesap e-postanızı kullanın.",
-			"accountEmailLabel": "Hesap e-postası",
 			"accountEmailNoAddress": "Kullanılabilir hesap e-postası yok",
-			"accountEmailHint": "E-posta bildirimleri her zaman giriş yapılan hesap e-postasına gönderilir.",
 			"saveChanges": "Değişiklikleri kaydet",
 			"disconnect": "Bağlantıyı kes",
 			"ntfyTitle": "ntfy",
@@ -731,7 +973,7 @@
 				"title": "Sesler",
 				"description": "Margaya tarayıcınızda açıkken bir bildirim geldiğinde ses çalın.",
 				"enabled": "Ses çal",
-				"enabledDescription": "Ses tercihleriniz hesabınıza bağlıdır ve her tarayıcıda geçerlidir.",
+				"enabledDescription": "Ses tercihleriniz hesabınıza bağlıdır ve her cihazda geçerlidir.",
 				"volume": "Ses düzeyi",
 				"volumeValue": "%{{value}}",
 				"categoryMentions": "Bahsetmeler ve atamalar",
@@ -751,14 +993,38 @@
 				"soundMarimba": "Marimba",
 				"preview": "{{sound}} sesini çal",
 				"quietHours": "Sessiz saatler",
-				"quietHoursDescription": "Hesabınızın saat dilimine göre bu saatler arasında ses çalınmaz.",
+				"quietHoursDescription": "Her gün bu saatler arasında bildirimler duraklatılır ve sessizdir.",
 				"quietFrom": "Başlangıç",
 				"quietTo": "Bitiş",
 				"deviceMute": "Bu cihazda sesleri kapat",
 				"deviceMuteDescription": "Yalnızca bu tarayıcının sesi kapanır; diğer cihazlarınız ses çalmaya devam eder.",
 				"previewFailed": "Tarayıcınız sesi çalamadı. Bu sekmenin veya sitenin sessize alınmadığından emin olun.",
 				"desktopDescription": "Masaüstü uygulamasında bildirim, bu ayarlar gerektirdiğinde burada seçtiğiniz Margaya sesini sizin ses düzeyinizde çalar. “Rahatsız Etmeyin” modu bu sesi kapatır.",
-				"deviceMuteDescriptionDesktop": "Yalnızca bu masaüstü uygulamasının sesi kapanır; diğer cihazlarınız ses çalmaya devam eder."
+				"deviceMuteDescriptionDesktop": "Yalnızca bu masaüstü uygulamasının sesi kapanır; diğer cihazlarınız ses çalmaya devam eder.",
+				"previewFailedDesktop": "Ses çalınmadı. Bilgisayarınızın sesinin kapalı olmadığından emin olun."
+			},
+			"quiet": {
+				"title": "Sessiz saatler ve odak",
+				"description": "Bildirimleri bir süreliğine veya her gece duraklatın. Gelen kutunuz dolmaya devam eder; hiçbir şey ses çıkarmaz.",
+				"focus": "Odak modu",
+				"focusDescription": "Bildirimleri şu andan itibaren duraklatın. Hesap menüsünde ve komut paletinde de bulunur.",
+				"timeZone": "Saatler hesabınızın saat dilimindedir: {{zone}}.",
+				"noTimeZone": "Hesabınızın henüz bir saat dilimi yok, bu nedenle sessiz saatler UTC'ye göre işler.",
+				"useTimeZone": "{{zone}} kullan",
+				"channels": "Bu kanalları beklet",
+				"channelsDescription": "Bildirimler duraklatılmışken bunlar bekler. İşaretlenmemiş kanallar sessizce gelmeye devam eder.",
+				"channelPush": "Anlık bildirim",
+				"channelEmail": "E-posta",
+				"channelDesktop": "Masaüstü uygulaması",
+				"channelNtfy": "ntfy",
+				"channelGotify": "Gotify",
+				"channelWebhook": "Webhook",
+				"bypass": "Bunlar yine de iletilsin",
+				"bypassDescription": "Bildirimler duraklatılmışken bile bunlar sesleriyle birlikte hemen gelir.",
+				"bypassMentions": "Doğrudan bahsetmeler",
+				"bypassUrgent": "Size atanan acil öncelikli görevler",
+				"bypassApprovals": "Onayınızı veya yanıtınızı bekleyen ajanlar",
+				"summaryNote": "Duraklatma bittiğinde bekletilen her kanal tek bir özet alır: her şeyi içeren tek bir e-posta, tek bir push, ntfy veya Gotify iletisi, tek bir masaüstü uyarısı ve bekletilen her webhook yükü sırasıyla."
 			},
 			"pushTitle": "Anlık bildirimler",
 			"pushDescription": "Margaya kapalıyken bile telefonunuza veya bilgisayarınıza gelen uyarılar. Neyin gönderileceğini “Bana bildirim gönder” belirler; aşağıdaki bir çalışma alanı kuralı bunu daraltabilir.",
@@ -783,7 +1049,9 @@
 			"pushChannelHintEnabled": "Eşleşen çalışma alanı bildirimlerini cihazlarınıza gönderin.",
 			"pushChannelHintDisabled": "Önce bir cihaz için anlık bildirimleri açın.",
 			"pushLoadFailed": "Anlık bildirim ayarlarınız yüklenemedi. Tekrar denemek için bu sayfayı yenileyin.",
-			"pushDesktopApp": "Bu cihazda bildirimleri masaüstü uygulaması gösterir, bu yüzden burada tarayıcı anlık bildirimlerine gerek yok."
+			"emailSendsTo": "{{email}} adresine gönderilir.",
+			"pushDesktopTitle": "Masaüstü bildirimleri",
+			"pushDesktopDescription": "Margaya Desktop, penceresi kapalıyken bile bu bilgisayarda bildirim gösterir. Bildirimleri kapatmak veya görünümlerini değiştirmek için sisteminizin bildirim ayarlarını kullanın."
 		},
 		"preferencesPage": {
 			"title": "Tercihler",
@@ -830,11 +1098,9 @@
 			"estimatesDescription": "Pano kartlarında görev tahminlerini göster"
 		},
 		"developerPage": {
-			"pageTitle": "Geliştirici ayarları",
-			"title": "Geliştirici ayarları",
-			"subtitle": "API anahtarlarınızı ve geliştirici kaynaklarınızı yönetin.",
-			"apiKeysCardTitle": "API anahtarları",
-			"apiKeysCardDescription": "Margaya'ya programlı erişim için API anahtarları oluşturun ve yönetin.",
+			"pageTitle": "API anahtarları",
+			"title": "API anahtarları",
+			"subtitle": "Anahtarlar; betiklerin, entegrasyonların ve MCP istemcilerinin Margaya API'sini sizin adınıza kullanmasını sağlar.",
 			"createApiKey": "API anahtarı oluştur",
 			"unnamedKey": "Adsız anahtar"
 		},
@@ -903,7 +1169,7 @@
 		},
 		"workspaceGeneral": {
 			"pageTitle": "Genel ayarlar",
-			"title": "Genel ayarlar",
+			"title": "Genel",
 			"subtitle": "Çalışma alanı adınızı ve açıklamanızı yönetin.",
 			"workspaceInfoTitle": "Çalışma alanı bilgileri",
 			"workspaceInfoSubtitle": "Çalışma alanı ayrıntılarınızı ve tercihlerinizi yapılandırın.",
@@ -951,7 +1217,7 @@
 		},
 		"projectGeneral": {
 			"pageTitle": "Proje ayarları",
-			"title": "Genel ayarlar",
+			"title": "Genel",
 			"subtitle": "Proje adınızı, anahtarını, simgesini ve açıklamasını yönetin.",
 			"projectInfoTitle": "Proje bilgileri",
 			"projectInfoSubtitle": "Proje ayrıntılarınızı ve tercihlerinizi yapılandırın.",
@@ -998,7 +1264,7 @@
 		},
 		"projectIntegrations": {
 			"pageTitle": "Proje entegrasyonları",
-			"title": "Proje entegrasyonları",
+			"title": "Entegrasyonlar",
 			"subtitle": "İş akışınızı kolaylaştırmak için projenizi dış araçlar ve hizmetlerle bağlayın.",
 			"githubSectionTitle": "GitHub entegrasyonu",
 			"githubSectionSubtitle": "Görevleri GitHub sorunlarıyla senkronize edin ve çift yönlü senkronizasyonu etkinleştirin.",
@@ -1229,11 +1495,114 @@
 				"taskPriorityChanged": "Öncelik değişiklikleri",
 				"taskTitleChanged": "Başlık değişiklikleri",
 				"taskDescriptionChanged": "Açıklama değişiklikleri",
-				"taskCommentCreated": "Yeni yorumlar"
+				"taskCommentCreated": "Yeni yorumlar",
+				"taskDueDateChanged": "Bitiş tarihi değişiklikleri",
+				"intakeDecision": "Gelen istek kararları (kabul edildi, reddedildi, yinelenen)",
+				"projectUpdate": "Proje güncellemeleri"
 			},
+			"buttonsHint": "Çalışma alanının Slack uygulaması bağlıyken gönderilere Bana ata, Durumu değiştir ve Aç düğmeleri eklenir. Düğmelerin Margaya'ya ulaşması için bu webhook'u aynı Slack uygulamasından oluşturun.",
 			"connect": "Slack bağla",
 			"saveChanges": "Değişiklikleri kaydet",
 			"disconnect": "Bağlantıyı kes"
+		},
+		"slackApp": {
+			"workspaceNav": "Slack uygulaması",
+			"accountNav": "Slack",
+			"title": "Slack uygulaması",
+			"description": "Slack'ten görevleri arayın, kaydedin ve güncelleyin. Her işlem, kişinin kendi bağlı Margaya hesabıyla ve onun izinleriyle çalışır.",
+			"noPermission": "Slack uygulamasını yalnızca çalışma alanı ayarlarını yönetebilen kişiler kurabilir.",
+			"loadError": "Slack uygulaması ayarları yüklenemedi. Tekrar deneyin.",
+			"statusTitle": "Bağlantı",
+			"unknownTeam": "Slack çalışma alanı (henüz denetlenmedi)",
+			"modeSocket": "Soket modu (Socket Mode)",
+			"modeHttp": "HTTP istekleri",
+			"modeSocketHint": "Önerilir. Margaya Slack'e giden bir bağlantı açar; böylece herkese açık bir URL olmadan VPN veya ters proxy arkasında çalışır.",
+			"modeHttpHint": "Slack bu sunucuya imzalı istekler gönderir. Slack'in erişebileceği herkese açık bir HTTPS adresi gerekir.",
+			"active": "Etkin",
+			"paused": "Duraklatıldı",
+			"unreadable": "Kayıtlı belirteçler okunamıyor; büyük olasılıkla AUTH_SECRET değişti. Belirteçleri yeniden girin.",
+			"lastError": "Slack'ten gelen son hata: {{code}}",
+			"test": "Bağlantıyı test et",
+			"activeLabel": "Slack uygulaması açık",
+			"activeHint": "Kapalıyken Margaya, Slack'ten gelen komutları, kısayolları ve düğmeleri yok sayar.",
+			"notConnected": "Slack bağlı değil",
+			"notConnectedHint": "Slack uygulamasını oluşturmak ve bağlamak için aşağıdaki adımları izleyin.",
+			"setupTitle": "Kurulum",
+			"setupHint": "Slack uygulamasını oluşturmak birkaç dakika sürer. Slack çalışma alanınıza uygulama yükleme izniniz olmalıdır.",
+			"step1": "1. Slack'in Margaya'ya nasıl ulaşacağını seçin",
+			"step1Hint": "Daha sonra değiştirebilirsiniz; o zaman Slack'in buna uygun manifeste ihtiyacı olur.",
+			"step2": "2. Slack uygulamasını bu manifestten oluşturun",
+			"step2Hint": "Slack'te Create New App'i, ardından From a manifest'i seçin, Slack çalışma alanınızı belirleyin ve bunu yapıştırın. Sonra uygulamayı çalışma alanınıza yükleyin.",
+			"manifestLabel": "Slack uygulaması manifesti",
+			"copyManifest": "Manifesti kopyala",
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"copyFailed": "Kopyalanamadı. Metni seçip kendiniz kopyalayın.",
+			"openSlack": "Slack uygulamalarını aç",
+			"noUnfurlDomain": "Bağlantı önizlemeleri dahil edilmedi: Slack, localhost veya IP adreslerini genişletemez. Önizlemeleri almak için MARGAYA_CLIENT_URL değerini bir alan adına ayarlayın.",
+			"eventsUrl": "İstek URL'si (Request URL)",
+			"eventsUrlHint": "Manifestte zaten var. Uygulamayı kaydettiğinizde Slack bunu denetler, bu nedenle bu sunucuya HTTPS üzerinden erişilebilmelidir.",
+			"step3": "3. Belirteçleri yapıştırın",
+			"step3SocketHint": "Bot User OAuth Token: OAuth & Permissions. Uygulama düzeyi belirteç: Basic Information › App-Level Tokens, connections:write kapsamıyla.",
+			"step3HttpHint": "Bot User OAuth Token: OAuth & Permissions. İmzalama gizli anahtarı: Basic Information › App Credentials.",
+			"botToken": "Bot User OAuth belirteci",
+			"botTokenPlaceholder": "xoxb-…",
+			"appToken": "Uygulama düzeyi belirteç",
+			"appTokenPlaceholder": "xapp-…",
+			"signingSecret": "İmzalama gizli anahtarı",
+			"signingSecretPlaceholder": "İmzalama gizli anahtarını yapıştırın",
+			"secretsHint": "Şifreli olarak saklanır ve bir daha gösterilmez. Kayıtlı değeri korumak için alanı boş bırakın.",
+			"connectAndTest": "Bağla ve test et",
+			"saveAndTest": "Kaydet ve test et",
+			"step4": "4. Hesapları bağlayın",
+			"step4Hint": "Her kişi Slack'te bir kez /margaya link komutunu çalıştırır ve Margaya'da onaylar. O zamana kadar Slack, hesabını bağlamasını ister ve onun için hiçbir şey yapmaz.",
+			"optionsTitle": "Seçenekler",
+			"defaultProject": "Varsayılan proje",
+			"defaultProjectHint": "Metin bir proje anahtarıyla başlamadığında /margaya add komutunun görevi ekleyeceği yer.",
+			"noDefaultProject": "Yok",
+			"expandKeys": "İletilerdeki görev anahtarlarını önizle",
+			"expandKeysHint": "Bir ileti WEB-12 gibi anahtarlardan bahsettiğinde ileti dizisinde yanıt ver. İleti kapsamları gerekir; bu yüzden bunu açtıktan sonra manifesti yeniden kopyalayın.",
+			"dangerTitle": "Bağlantıyı kes",
+			"disconnect": "Slack uygulamasının bağlantısını kes",
+			"disconnectHint": "Kayıtlı belirteçleri kaldırır. Bağlı hesaplar, yeniden bağlandığınızda kullanılmak üzere saklanır.",
+			"checks": {
+				"botToken": "Bot belirteci",
+				"appToken": "Uygulama düzeyi belirteç",
+				"signingSecret": "İmzalama gizli anahtarı",
+				"passed": "Başarılı",
+				"failed": "Başarısız"
+			},
+			"toast": {
+				"saved": "Slack uygulaması kaydedildi",
+				"saveError": "Slack uygulaması kaydedilemedi",
+				"testPassed": "Slack bağlantısı çalışıyor",
+				"testFailed": "Slack bağlantı testi başarısız oldu",
+				"disconnected": "Slack uygulamasının bağlantısı kesildi",
+				"unlinked": "Slack hesabının bağlantısı kaldırıldı"
+			},
+			"accountTitle": "Slack",
+			"accountDescription": "Sizin adınıza işlem yapan Slack hesapları. Komutları, kısayolları ve düğmeleri sizin izinlerinizle çalışır.",
+			"linkedTitle": "Bağlı Slack hesapları",
+			"linksLoadError": "Slack bağlantılarınız yüklenemedi. Tekrar deneyin.",
+			"noLinks": "Bağlı Slack hesabı yok",
+			"noLinksHint": "Bir hesap bağlamak için Slack'te /margaya link komutunu çalıştırın.",
+			"linkRow": "{{team}} · {{workspace}}",
+			"unlink": "Bağlantıyı kaldır",
+			"link": {
+				"invalidTitle": "Bu bağlantı çalışmıyor",
+				"invalid": "Süresi dolmuş veya geçersiz. Yenisi için Slack'te /margaya link komutunu çalıştırın.",
+				"alreadyTitle": "Zaten bağlı",
+				"already": "Bu Slack hesabı {{workspace}} çalışma alanında zaten sizin adınıza işlem yapıyor.",
+				"confirmTitle": "Slack hesabınızı bağlayın",
+				"confirmBody": "{{team}} içindeki {{slackUser}} Slack kullanıcısı, {{workspace}} çalışma alanında sizin adınıza işlem yapacak.",
+				"confirmWarning": "Yalnızca bu Slack hesabı sizinse devam edin: komutları, kısayolları ve düğmeleri sizin izinlerinizle çalışacak.",
+				"movesLink": "Bu Slack hesabı şu anda başka birine bağlı; onaylarsanız bağlantı size taşınır.",
+				"you": "(siz)",
+				"confirm": "Hesabı bağla",
+				"cancel": "İptal",
+				"linked": "Slack hesabı bağlandı",
+				"linkError": "Slack hesabı bağlanamadı"
+			}
 		},
 		"discordIntegration": {
 			"validation": {
@@ -2106,6 +2475,10 @@
 				"ai": {
 					"title": "YZ",
 					"description": "Bu proje için özetler, öneriler ve diğer YZ yardımları. Kapalıyken proje YZ'nin tamamen dışında kalır."
+				},
+				"updates": {
+					"title": "Güncellemeler",
+					"description": "Canlı proje verilerinden hazırlanan, sağlık değeri içeren tarihli durum güncellemeleri yayımlayın."
 				}
 			},
 			"loadError": "Bu proje yüklenemedi",
@@ -2799,6 +3172,10 @@
 			"billing": "Faturalandırma",
 			"label": "Ayar bölümleri",
 			"noProjectsHint": "Önce bir proje oluşturun. Ayarları burada görünür.",
+			"groupData": "Veriler",
+			"groupServer": "Sunucu",
+			"aiSettings": "YZ ayarları",
+			"pageLabel": "Ayarlar sayfası",
 			"pickProject": "Ayarlarını görmek için bir proje seçin."
 		},
 		"projectAccess": {
@@ -2856,6 +3233,9 @@
 			},
 			"sessions": {
 				"confirmOthersDescription": "Hesabınızda oturum açmış diğer tüm cihazların yeniden giriş yapması gerekecek. Bu cihazın oturumu açık kalır.",
+				"showAll": "Tüm oturumları göster ({{count}})",
+				"showFewer": "Daha az göster",
+				"desktopApp": "Margaya Desktop",
 				"confirmOthersTitle": "Diğer tüm oturumlar kapatılsın mı?",
 				"deviceLabel": "{{os}} üzerinde {{browser}}",
 				"error": "Oturum kapatılamadı",
@@ -2877,16 +3257,16 @@
 			"title": "Güvenlik"
 		},
 		"timezone": {
-			"accountHint": "Hatırlatıcılar, e-posta özetleri ve talep filtreleriyle analizlerin günleri saydığı saat dilimi için kullanılır. Ekrandaki saatler tarayıcınızın saat diliminde gösterilir.",
+			"accountHint": "Hatırlatıcılar, e-posta özetleri ve görev filtreleriyle analizlerin günleri saydığı saat dilimi için kullanılır. Ekrandaki saatler bu cihazın saat diliminde gösterilir.",
 			"accountLabel": "Saat dilimi",
-			"automatic": "Otomatik (tarayıcı: {{zone}})",
+			"automatic": "Otomatik (bu cihaz: {{zone}})",
 			"loadError": "Saat dilimi yüklenemedi. Tekrar denemek için sayfayı yenileyin.",
 			"noResults": "Saat dilimi bulunamadı",
 			"placeholder": "Saat dilimi seçin",
 			"search": "Saat dilimlerinde ara",
 			"toastError": "Saat dilimi güncellenemedi",
 			"toastUpdated": "Saat dilimi güncellendi",
-			"useBrowser": "{{zone}} kullan",
+			"useBrowser": "Bu cihazın saat dilimini kullan ({{zone}})",
 			"workspaceHint": "Döngüler, otomasyonlar ve analizler için \"bugün\"ü belirler. Mevcut çalışma alanları UTC ile başlar.",
 			"workspaceLabel": "Saat dilimi"
 		},
@@ -3315,6 +3695,96 @@
 			"title": "Tarayıcınızda devam edin",
 			"billing": "Az önce açılan tarayıcı penceresinde işlemi tamamlayın, ardından Margaya'ya dönün. Döndüğünüzde planınız güncellenir.",
 			"githubApp": "Tarayıcınızda GitHub'daki işlemi tamamlayın, ardından Margaya'ya dönün ve kurulumu tekrar kontrol edin."
+		},
+		"save": "Kaydet",
+		"unsavedChanges": "Kaydedilmemiş değişiklikler",
+		"readOnly": {
+			"workspace": "Bu ayarları görebilirsiniz ancak rolünüz bunları değiştirmeye izin vermiyor. Bir çalışma alanı sahibinden veya yöneticisinden isteyin.",
+			"project": "Bu projenin ayarlarını görebilirsiniz ancak rolünüz bunları değiştirmeye izin vermiyor. Bir çalışma alanı sahibinden veya yöneticisinden isteyin."
+		},
+		"projectIntake": {
+			"title": "İstek kaynakları",
+			"pageTitle": "İstek kaynakları",
+			"subtitle": "Kişilerin bu projeye e-postayla veya herkese açık bir formla istek göndermesine izin verin. Gönderilen her şey incelenmek üzere Gelen istekler'e düşer.",
+			"noPermission": "İstek kaynaklarını yalnızca projeleri paylaşabilen kişiler yönetebilir.",
+			"loadError": "Bu ayarlar yüklenemedi.",
+			"retry": "Tekrar dene",
+			"saved": "Ayarlar kaydedildi",
+			"saveError": "Ayarlar kaydedilemedi",
+			"copy": "Kopyala",
+			"copied": "Kopyalandı",
+			"open": "Aç",
+			"email": {
+				"title": "E-posta",
+				"description": "Projenin adresine gönderilen veya iletilen e-postalar isteğe dönüşür. Aynı gönderenden gelen yanıtlar yorum olarak eklenir ve ekler saklanır.",
+				"enabled": "E-postayla istek kabul et",
+				"enabledHint": "Otomatik yanıtlar, geri dönen iletiler, posta listesi iletileri ve istenmeyen olarak işaretlenen iletiler yok sayılır.",
+				"turnedOn": "E-postayla istek alma açıldı",
+				"turnedOff": "E-postayla istek alma kapatıldı",
+				"address": "Yönlendirme adresi",
+				"addressHint": "Bu adrese e-posta gönderin veya iletin. Adresi bilen herkes istek gönderebilir.",
+				"addressNone": "Adres, e-postayla istek alma açıldığında ve sunucuda bir istek posta kutusu olduğunda görünür.",
+				"rotate": "Yeni adres",
+				"rotated": "Yeni adres oluşturuldu. Eskisi artık çalışmıyor.",
+				"noInstanceAddress": "Bu sunucunun henüz bir istek adresi yok. Yöneticinizden bir adres ayarlamasını isteyin veya aşağıdan bu projenin kendi posta kutusunu bağlayın.",
+				"allowed": "Yalnızca bu alan adlarını kabul et",
+				"allowedHint": "Her satıra bir alan adı. Herhangi bir göndereni kabul etmek için boş bırakın. Alt alan adları dahildir.",
+				"blocked": "Bu alan adlarını asla kabul etme",
+				"blockedHint": "Her satıra bir alan adı. Engellenen alan adları yukarıdaki listeye üstün gelir.",
+				"protection": "{{size}} MB'tan büyük iletiler atlanır. Her biri en fazla {{fileSize}} MB olan {{files}} ek saklanır. Her gönderen saatte 10 ileti gönderebilir."
+			},
+			"mailbox": {
+				"title": "Proje posta kutusu",
+				"description": "İsteğe bağlı. Margaya bu posta kutusunu iki dakikada bir denetler ve okunmamış her iletiyi bu proje için bir isteğe dönüştürür. Margaya posta sunucusuna dışarıya doğru bağlandığı için güvenlik duvarının arkasında da çalışır.",
+				"enabled": "Bu posta kutusunu denetle",
+				"enabledHint": "Sunucu ve oturum açma bilgilerini doldurun, kaydedin, ardından bunu açın.",
+				"lastPolled": "Son denetim: {{time}}.",
+				"notPolled": "Henüz denetlenmedi.",
+				"lastError": "Son denetim başarısız oldu: {{error}}",
+				"host": "IMAP sunucusu",
+				"security": "Şifreleme",
+				"securityHint": "Bağlantılar her zaman şifrelidir.",
+				"tls": "TLS (bağlantı noktası 993)",
+				"starttls": "STARTTLS (bağlantı noktası 143)",
+				"port": "Bağlantı noktası",
+				"portHint": "Varsayılan için boş bırakın.",
+				"portInvalid": "1 ile 65535 arasında bir bağlantı noktası girin.",
+				"username": "Kullanıcı adı",
+				"password": "Parola",
+				"passwordSaved": "Kayıtlı bir parola var. Değiştirmek için yenisini yazın.",
+				"folder": "Klasör",
+				"test": "Bağlantıyı test et",
+				"testOk_one": "Bağlandı. {{count}} okunmamış ileti.",
+				"testOk_other": "Bağlandı. {{count}} okunmamış ileti."
+			},
+			"form": {
+				"title": "İstek formu",
+				"description": "Bağlantıya sahip herkesin istek gönderebileceği herkese açık bir sayfa. Yalnızca burada seçtiğiniz metni ve alanları gösterir; çalışma alanınızı veya görevlerinizi asla göstermez.",
+				"enabled": "Formu aç",
+				"enabledHint": "Botlar, captcha olmadan, gizli bir tuzak alanı ve hız sınırlarıyla engellenir.",
+				"opened": "Form açıldı",
+				"closed": "Form kapatıldı",
+				"sharingOff": "Bu sunucuda herkese açık paylaşım kapalı, bu yüzden form açılamaz.",
+				"link": "Form bağlantısı",
+				"linkHint": "Bu bağlantıyı paylaşın. Bağlantıya sahip herkes istek gönderebilir.",
+				"rotate": "Yeni bağlantı",
+				"rotated": "Yeni bağlantı oluşturuldu. Eskisi artık çalışmıyor.",
+				"heading": "Başlık",
+				"headingHint": "Formun en üstünde gösterilir.",
+				"intro": "Giriş metni",
+				"descriptionField": "Açıklama",
+				"emailField": "E-posta adresi",
+				"emailFieldHint": "Geri dönüş yapabilmeleri için yalnızca istekleri inceleyenlere gösterilir.",
+				"nameField": "Ad",
+				"modeOptional": "İsteğe bağlı",
+				"modeRequired": "Zorunlu",
+				"modeOff": "Gizli",
+				"customFields": "Özel alanlar",
+				"customFieldsHint": "Adları ve seçenekleri formda görünür hâle gelir.",
+				"noCustomFields": "Bu projede özel alan yok.",
+				"confirmation": "Onay mesajı",
+				"confirmationHint": "Biri istek gönderdikten sonra gösterilir."
+			}
 		}
 	},
 	"navigation": {
@@ -3528,6 +3998,7 @@
 		"projectNav": {
 			"cycles": "Döngüler",
 			"intake": "Giriş",
+			"updates": "Güncellemeler",
 			"label": "Proje bölümleri",
 			"modules": "Modüller",
 			"pages": "Sayfalar",
@@ -3578,6 +4049,27 @@
 			"whatsNew": "Yenilikler",
 			"sourceCode": "Kaynak kod",
 			"workspaceAnalytics": "Çalışma alanı"
+		},
+		"focus": {
+			"menuLabel": "Bildirimleri duraklat",
+			"paletteLabel": "Odak modu: bildirimleri duraklat",
+			"preset30m": "30 dakika boyunca",
+			"preset1h": "1 saat boyunca",
+			"preset2h": "2 saat boyunca",
+			"presetTomorrow": "Yarına kadar",
+			"custom": "Belirli bir saate kadar…",
+			"resume": "Bildirimleri sürdür",
+			"focusUntil": "Odaklanma: {{time}} saatine kadar",
+			"quietUntil": "Sessiz saatler: {{time}} saatine kadar",
+			"settings": "Sessiz saat ayarları",
+			"toastStarted": "Bildirimler {{time}} saatine kadar duraklatıldı",
+			"toastResumed": "Bildirimler sürdürüldü",
+			"customTitle": "Bildirimleri şu zamana kadar duraklat",
+			"customDescription": "Gelen kutunuz dolmaya devam eder. Bahsetmeler ve seçtiğiniz diğer istisnalar yine de ulaşır.",
+			"customLabel": "Bitiş",
+			"customSave": "Duraklat",
+			"customInvalid": "Önümüzdeki 7 gün içinde bir zaman seçin.",
+			"cancel": "İptal"
 		},
 		"desktopWindow": {
 			"minimize": "Simge Durumuna Küçült",
@@ -5477,7 +5969,6 @@
 			"createProject": "Proje oluştur",
 			"title": "Başlık",
 			"progress": "İlerleme",
-			"targetDate": "Hedef tarih",
 			"dueDate": "Bitiş tarihi",
 			"status": "Durum",
 			"emptyTitle": "Henüz proje yok",
@@ -8439,6 +8930,7 @@
 			"me": "Ben",
 			"priority": "Öncelik",
 			"remove": "Filtreyi kaldır",
+			"source": "Kaynak",
 			"status": "Durum",
 			"submittedBy": "Gönderen"
 		},
@@ -8532,6 +9024,25 @@
 			"hintMove": "Taşı",
 			"hintOpen": "Görevi aç",
 			"queueLabel": "Ayıklama kuyruğu"
+		},
+		"publicForm": {
+			"defaultTitle": "İstek gönder",
+			"titleLabel": "Başlık",
+			"descriptionLabel": "Açıklama",
+			"nameLabel": "Adınız",
+			"emailLabel": "E-posta adresiniz",
+			"emailHint": "Yalnızca bu istekle ilgili size geri dönmek için kullanılır.",
+			"choose": "Seçin…",
+			"requiredNote": "* ile işaretli alanlar zorunludur.",
+			"submit": "İsteği gönder",
+			"missing": "Zorunlu alanları doldurun ve e-posta adresinizi kontrol edin.",
+			"tooMany": "Bu ağdan çok fazla istek geldi. Daha sonra tekrar deneyin.",
+			"failed": "İsteğiniz gönderilemedi. Tekrar deneyin.",
+			"sentTitle": "İstek gönderildi",
+			"sentBody": "Teşekkürler. İsteğiniz alındı ve incelenecek.",
+			"another": "Başka bir istek gönder",
+			"notFoundTitle": "Form kullanılamıyor",
+			"notFoundBody": "Bu form mevcut değil veya kapalı. Bağlantıyı, paylaşan kişiyle kontrol edin."
 		}
 	},
 	"stickies": {
@@ -9588,6 +10099,117 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "Örnek · {{page}}",
+		"health": {
+			"title": "Sağlık",
+			"subtitle": "Bu sunucunun hizmetlerini, arka plan işlerini ve son hatalarını denetleyin.",
+			"recheck": "Yeniden denetle",
+			"summary": "Özet",
+			"version": "Sürüm",
+			"uptime": "Çalışma süresi",
+			"uptimeDays": "{{days}} g {{hours}} sa",
+			"uptimeHours": "{{hours}} sa {{minutes}} dk",
+			"startedAt": "Başlangıç",
+			"node": "Node.js",
+			"latency": "{{ms}} msn",
+			"status": {
+				"ok": "Sorun yok",
+				"warning": "Uyarı",
+				"error": "Sorun",
+				"off": "Kapalı"
+			},
+			"migrations": {
+				"title": "Veritabanı geçişleri",
+				"ok_one": "Güncel: {{count}} geçiş uygulandı.",
+				"ok_other": "Güncel: {{count}} geçiş uygulandı.",
+				"pending_one": "{{count}} geçiş henüz çalışmadı. Uygulamak için sunucuyu yeniden başlatın.",
+				"pending_other": "{{count}} geçiş henüz çalışmadı. Uygulamak için sunucuyu yeniden başlatın.",
+				"unknown": "Geçiş durumu okunamıyor. Ayrıntılar sunucu günlüğünde."
+			},
+			"checks": {
+				"title": "Hizmetler",
+				"description": "Her denetim şimdi, 5 saniyelik bir sınırla çalışır. Yanıtlar hiçbir zaman ana bilgisayar, yol veya parola içermez.",
+				"database": "Veritabanı",
+				"redis": "Redis",
+				"storage": "Dosya depolama",
+				"email": "E-posta",
+				"ai": "YZ sağlayıcısı"
+			},
+			"codes": {
+				"ok": "Yanıt veriyor.",
+				"unreachable": "Erişilemiyor. Ayrıntılar sunucu günlüğünde.",
+				"unavailable": "Yapılandırılmış, ancak yanıt vermiyor. Sunucular arası gerçek zamanlı güncellemeler duraklatıldı.",
+				"timeout": "Süre sınırı içinde yanıt vermedi.",
+				"failed": "Denetim başarısız oldu. Ayrıntılar sunucu günlüğünde.",
+				"redisDisabled": "Yapılandırılmamış. Tek bir sunucunun buna ihtiyacı yoktur.",
+				"aiDisabled": "YZ bu sunucuda kapalı.",
+				"emailNotConfigured": "Giden e-posta ayarlanmamış.",
+				"aiNotConfigured": "YZ açık, ancak sağlayıcı anahtarı veya uç nokta ayarlanmamış.",
+				"s3": "S3 uyumlu depolama yanıt veriyor.",
+				"local": "Yerleşik yerel depo yazılabilir durumda.",
+				"storageOff": "Yüklemeler kapalı: S3 depolama yok ve yerel depo devre dışı.",
+				"denied": "Depolama hizmeti denetimi reddetti. Kova ilkesi izin veriyorsa yüklemeler yine de çalışabilir.",
+				"notWritable": "Yerel deponun klasörü yazılabilir değil.",
+				"recentErrors_one": "Son 24 saatte {{count}} çağrı başarısız oldu.",
+				"recentErrors_other": "Son 24 saatte {{count}} çağrı başarısız oldu.",
+				"smtpOk": "Posta sunucusunda oturum açıldı. Hiçbir ileti gönderilmedi.",
+				"smtpAuth": "Posta sunucusu kullanıcı adını veya parolayı reddetti.",
+				"smtpConnection": "Posta sunucusuna bağlanılamıyor.",
+				"smtpTls": "Posta sunucusuyla güvenli bağlantı kurulamadı.",
+				"smtpUnknown": "Posta sunucusu denetimi başarısız oldu. Ayrıntılar sunucu günlüğünde."
+			},
+			"activity": {
+				"title": "Kuyruklar ve bağlantılar",
+				"description": "Kuyruklar tüm örnek içindir. Bağlantılar yalnızca bu sunucu içindir.",
+				"emailBacklog": "Bekleyen e-postalar",
+				"webhookPending": "Bekleyen webhook'lar",
+				"webhookFailed": "Başarısız webhook'lar (24 sa)",
+				"boardSockets": "Pano bağlantıları",
+				"userSockets": "Uygulama bağlantıları",
+				"pageRooms": "Birlikte düzenlenen sayfalar",
+				"metrics": "Prometheus ölçümleri: {{state}}",
+				"metricsOff": "kapalı",
+				"metricsToken": "açık, belirteçle /api/metrics adresinde",
+				"metricsPort": "açık, {{port}} numaralı bağlantı noktasında /metrics adresinde",
+				"metricsNoEndpoint": "açık, ancak ne belirteç ne de bağlantı noktası ayarlı"
+			},
+			"jobs": {
+				"title": "Arka plan işleri",
+				"description": "Bu sunucu başladığından beri zamanlanmış işler.",
+				"empty": "Bu sunucuda henüz hiçbir arka plan işi zamanlanmadı.",
+				"name": "İş",
+				"lastRun": "Son çalışma",
+				"outcome": "Son sonuç",
+				"runs": "Çalışmalar",
+				"failures": "Hatalar",
+				"running": "Şu anda çalışıyor",
+				"notRun": "Henüz çalışmadı"
+			},
+			"failures": {
+				"title": "Son hatalar",
+				"description": "Bu sunucu başladığından beri en son başarısız olan işler ve YZ çağrıları. Webhook hataları Genel sayfasındadır.",
+				"empty": "Bu sunucu başladığından beri hata yok.",
+				"sourceJob": "İş",
+				"sourceAi": "YZ",
+				"sourceEmail": "E-posta",
+				"seeLog": "Bazı öğeler başarısız oldu. Ayrıntılar sunucu günlüğünde."
+			}
+		},
+		"update": {
+			"title": "Güncelleme bildirimi",
+			"label": "Yeni sürümleri denetle",
+			"hint": "Bu sunucu günde bir kez herkese açık sürüm listesini okur ve daha yeni bir sürüm çıktığında örnek yöneticilerine bildirir. Bu örnek hakkında hiçbir şey göndermez.",
+			"off": "Kapalı. Bu sunucu güncellemeleri hiçbir zaman denetlemez.",
+			"notChecked": "Henüz denetlenmedi.",
+			"upToDate": "Güncel: {{current}} en son sürüm.",
+			"available": "{{latest}} sürümü kullanılabilir. Bu sunucu {{current}} sürümünü çalıştırıyor.",
+			"checkedAt": "Denetlenme zamanı: {{time}}.",
+			"errorUnreachable": "Sürüm listesine ulaşılamıyor. Sunucu bir saat içinde yeniden dener.",
+			"errorInvalid": "Sürüm listesi, bu sunucunun okuyamadığı bir yanıt verdi.",
+			"releaseNotes": "Sürüm notları",
+			"dismiss": "Kapat",
+			"bannerTitle": "Margaya {{version}} kullanılabilir",
+			"bannerDescription": "Bu sunucu {{current}} sürümünü çalıştırıyor. Bu bildirimi yalnızca örnek yöneticileri görür."
+		},
 		"nav": {
 			"admins": "Yöneticiler",
 			"authentication": "Kimlik doğrulama",
@@ -9595,7 +10217,8 @@
 			"general": "Genel",
 			"publicBoards": "Herkese açık panolar",
 			"workspaces": "Çalışma alanları",
-			"ai": "YZ"
+			"ai": "YZ",
+			"health": "Sağlık"
 		},
 		"lockedCallout": "Bu ayarlar bu sunucuda ortam değişkenleriyle yönetiliyor. Buradaki değişiklikler devre dışı.",
 		"source": {
@@ -9656,7 +10279,7 @@
 			},
 			"deliveryFailures": {
 				"title": "Son teslimat hataları",
-				"description": "Son 7 günde yeniden deneme haklarını tüketen çalışma alanı webhook'ları. E-posta ve arka plan işi hataları yalnızca sunucu günlüklerinde yer alır.",
+				"description": "Son 7 günde yeniden deneme haklarını tüketen çalışma alanı webhook'ları. Başarısız arka plan işleri ve YZ çağrıları Sağlık sayfasındadır.",
 				"empty": "Son 7 günde başarısız teslimat yok.",
 				"when": "Ne zaman",
 				"workspace": "Çalışma alanı",
@@ -10232,6 +10855,19 @@
 		}
 	},
 	"ai": {
+		"provenance": {
+			"label": "YZ tarafından oluşturuldu",
+			"edited": "Düzenleyen: {{name}}, ilk hâli YZ tarafından oluşturuldu",
+			"someone": "biri",
+			"byAgent": "{{name}} ajanı tarafından yazıldı",
+			"unknownAgent": "silinmiş bir ajan",
+			"byFeature": "YZ ile ({{feature}}) yazıldı ve bir kişi tarafından onaylandı",
+			"byAssist": "YZ ile yazıldı ve bir kişi tarafından onaylandı",
+			"model": "Kullanılan model: {{model}}"
+		},
+		"disclosure": {
+			"chat": "Bir insanla değil, bir YZ asistanıyla sohbet ediyorsunuz."
+		},
 		"rules": {
 			"title": "Açıklamadan kural",
 			"description": "Bir otomasyonu kendi sözcüklerinizle anlatın. YZ bunu düzenleyebileceğiniz, yakın geçmiş üzerinde deneyebileceğiniz ve kaydedebileceğiniz normal bir kurala dönüştürür. Kaydedilen kurallar YZ olmadan çalışır.",
@@ -10919,6 +11555,7 @@
 			"triage": "Önceliklendirme önerileri",
 			"translate": "Çeviriler",
 			"brief": "Paydaş özetleri",
+			"project_update": "Proje güncellemesi taslakları",
 			"agent_run": "Ajanlar",
 			"rule_compiler": "Otomasyon kuralları",
 			"capture": "Göreve dönüştürme",
@@ -11146,7 +11783,7 @@
 			"webSearchUnavailable": "Bu sunucuda web araması ayarlanmamış.",
 			"webSearchLocalOnly": "YZ yalnızca yerel modelleri kullandığı sürece kullanılmaz.",
 			"storeConversations": "Sohbet geçmişini sunucuda tut",
-			"storeConversationsHint": "Herkesin sohbetleri çalışma alanında kaydedilir, böylece bunları her cihazda yeniden açabilirler. Kapalı: sohbetler yalnızca her kişinin kendi tarayıcısında kalır.",
+			"storeConversationsHint": "Herkesin sohbetleri çalışma alanında kaydedilir, böylece bunları her cihazda yeniden açabilirler. Kapalı: sohbetler yalnızca her kişinin kendi cihazında kalır.",
 			"allowAutopilot": "Otomatik pilota izin ver",
 			"allowAutopilotHint": "Oluştur modu değişiklikleri onay almadan uygulayabilir. Her değişiklik yine kaydedilir ve geri alınabilir.",
 			"storesPrompts": "İstemler saklanıyor"
@@ -11243,6 +11880,10 @@
 				"link_tasks": "Görevleri bağla",
 				"delete_task": "Görevi sil",
 				"bulk_move_status": "Birden çok görevin durumunu değiştir",
+				"create_task": "Görev oluştur",
+				"set_task_cycle": "Döngüyü ayarla",
+				"set_task_modules": "Modülleri ayarla",
+				"set_custom_field": "Özel alanı ayarla",
 				"ask_person": "Soru sor",
 				"web_search": "Web araması",
 				"connector": "Dış hizmet: {{tool}}",
@@ -11278,6 +11919,7 @@
 				"after": "Sonra",
 				"openPage": "Sayfayı aç",
 				"openSubtask": "Alt görevi aç",
+				"openTask": "Görevi aç",
 				"openLinked": "Bağlı görevi aç",
 				"empty": "(boş)",
 				"fields": {
@@ -11294,7 +11936,12 @@
 					"delete": "Çöp kutusuna taşı",
 					"connectorCall": "{{connector}} çağrısı",
 					"pageContent": "Sayfa içeriği",
-					"pageSection": "Eklenen bölüm"
+					"pageSection": "Eklenen bölüm",
+					"task": "Yeni görev",
+					"cycle": "Döngü",
+					"modulesAdded": "Modüllere eklendi",
+					"modulesRemoved": "Modüllerden çıkarıldı",
+					"customField": "Özel alan: {{field}}"
 				},
 				"undoPageError": "Bu düzenleme geri alınamadı. Sayfa o zamandan beri değişti; bunun yerine geçmişinden önceki bir sürümü geri yükleyin."
 			},
@@ -11725,6 +12372,119 @@
 			"noAccess": "Bu çalışma alanında YZ kullanmak için izniniz olmalı."
 		}
 	},
+	"projectUpdates": {
+		"documentTitle": "Güncellemeler · {{project}}",
+		"newUpdate": "Yeni güncelleme",
+		"loadError": "Güncellemeler yüklenemedi.",
+		"retry": "Tekrar dene",
+		"loadMore": "Daha eski güncellemeleri göster",
+		"empty": {
+			"title": "Henüz güncelleme yok",
+			"description": "Projenin nasıl gittiğini herkes bilsin diye kısa bir durum güncellemesi yayımlayın."
+		},
+		"health": {
+			"on_track": "Planlandığı gibi",
+			"at_risk": "Risk altında",
+			"off_track": "Plandan sapmış"
+		},
+		"edited": "düzenlendi",
+		"actions": "Güncelleme işlemleri",
+		"edit": "Düzenle",
+		"delete": "Sil",
+		"deleted": "Güncelleme silindi",
+		"deletedUser": "Silinmiş kullanıcı",
+		"cardLabel": "Güncelleme: {{name}}",
+		"deleteDialog": {
+			"title": "Bu güncelleme silinsin mi?",
+			"description": "Güncelleme, yorumları ve tepkileri herkes için kaldırılır.",
+			"error": "Güncelleme silinemedi."
+		},
+		"fields": {
+			"health": "Sağlık",
+			"summary": "Özet",
+			"summaryPlaceholder": "Proje nasıl gidiyor?",
+			"highlights": "Öne çıkanlar",
+			"blockers": "Engeller ve riskler",
+			"nextSteps": "Sonraki adımlar"
+		},
+		"composer": {
+			"title": "Yeni proje güncellemesi",
+			"editTitle": "Proje güncellemesini düzenle",
+			"draftWithAi": "YZ ile taslak oluştur",
+			"draftFromData": "Proje verilerinden taslak oluştur",
+			"aiFallback": "YZ şu anda kullanılamıyor, bu nedenle taslakta bir şablon kullanıldı.",
+			"draftError": "Güncelleme taslağı oluşturulamadı.",
+			"factsLine": "Canlı verilere göre: {{completed}} tamamlandı, {{moved}} taşındı, {{overdue}} gecikmiş, {{blocked}} engellenmiş.",
+			"cancel": "İptal",
+			"post": "Güncellemeyi yayımla",
+			"save": "Kaydet",
+			"posted": "Güncelleme yayımlandı",
+			"saved": "Güncelleme kaydedildi",
+			"saveError": "Güncelleme kaydedilemedi."
+		},
+		"facts": {
+			"summary": "Yayımlandığı andaki veriler: %{{percent}} tamamlandı · {{completed}} tamamlandı · {{moved}} taşındı · {{overdue}} gecikmiş · {{blocked}} engellenmiş",
+			"cycle": "{{name}}: %{{percent}} tamamlandı ({{completed}} / {{total}})",
+			"forecast": "Tahmin: {{date}} tarihine kadar bitme olasılığı %85",
+			"overdue": "Gecikmiş",
+			"blocked": "Engellenmiş",
+			"completed": "Tamamlandı"
+		},
+		"comments": {
+			"toggle_one": "{{count}} yorum",
+			"toggle_other": "{{count}} yorum",
+			"label": "Yorum",
+			"placeholder": "Bir yorum yazın…",
+			"send": "Yorum yap",
+			"delete": "Yorumu sil",
+			"error": "Yorum eklenemedi.",
+			"loadError": "Yorumlar yüklenemedi."
+		},
+		"follow": {
+			"follow": "Güncellemeleri takip et",
+			"unfollow": "Güncellemeleri takip etmeyi bırak",
+			"error": "Takip durumu değiştirilemedi."
+		},
+		"reminder": {
+			"label": "Proje liderine haftalık hatırlatıcı",
+			"weekday": "Hatırlatma günü",
+			"noLead": "Hatırlatıcının gitmesi için bir proje lideri belirleyin.",
+			"error": "Hatırlatıcı kaydedilemedi."
+		},
+		"widget": {
+			"title": "Proje güncellemeleri",
+			"empty": "Henüz proje güncellemesi yok.",
+			"error": "Proje güncellemeleri yüklenemedi."
+		},
+		"template": {
+			"summary": "Proje durumu: {{health}}. %{{percent}} tamamlandı ({{completed}} / {{total}} görev), {{open}} açık.",
+			"changesSinceUpdate": "Son güncellemeden bu yana: {{completed}} tamamlandı, {{moved}} taşındı.",
+			"changesLastWeek": "Son 7 günde: {{completed}} tamamlandı, {{moved}} taşındı.",
+			"forecast": "Tahmine göre {{date}} tarihine kadar bitirme olasılığı %85.",
+			"cycle": "{{name}}: %{{percent}} tamamlandı ({{completed}} / {{total}}), bitiş: {{date}}",
+			"overdue_one": "{{count}} gecikmiş görev:",
+			"overdue_other": "{{count}} gecikmiş görev:",
+			"blocked_one": "{{count}} engellenmiş görev:",
+			"blocked_other": "{{count}} engellenmiş görev:",
+			"more_one": "ve {{count}} tane daha",
+			"more_other": "ve {{count}} tane daha"
+		},
+		"notifications": {
+			"posted": {
+				"title": "{{authorName}}, {{projectName}} projesinde bir güncelleme yayımladı",
+				"verb": "{{projectName}} projesinde bir güncelleme yayımladı"
+			},
+			"comment": {
+				"title": "{{commenterName}}, {{projectName}} projesindeki bir güncellemeye yorum yaptı",
+				"verb": "{{projectName}} projesindeki bir güncellemeye yorum yaptı"
+			},
+			"reminder": {
+				"title": "{{projectName}} projesi için güncelleme yayımlama zamanı",
+				"content": "Kısa bir durum güncellemesiyle projenin nasıl gittiğini paylaşın."
+			},
+			"open": "Güncellemeleri aç"
+		}
+	},
 	"insight": {
 		"close": "Kapat",
 		"retry": "Yeniden dene",
@@ -11952,7 +12712,13 @@
 			"hiddenBlockers_other": "göremediğiniz {{count}} görev",
 			"followingHeading": "Takip ettiğiniz görevlerdeki değişiklikler",
 			"changes_one": "{{count}} değişiklik",
-			"changes_other": "{{count}} değişiklik"
+			"changes_other": "{{count}} değişiklik",
+			"projectUpdatesHeading": "Takip ettiğiniz projelerdeki güncellemeler",
+			"health": {
+				"on_track": "Planlandığı gibi",
+				"at_risk": "Risk altında",
+				"off_track": "Plandan sapmış"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{title}} için {{count}} güncelleme",
@@ -12004,6 +12770,11 @@
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} talebine yeni yorum",
 			"pushFixedLine": "Ayrıntıları görmek için Margaya'yı açın."
+		},
+		"quietSummary": {
+			"title": "Bildirimler yeniden açık",
+			"body_one": "Bildirimler duraklatılmışken {{count}} bildirim geldi.",
+			"body_other": "Bildirimler duraklatılmışken {{count}} bildirim geldi."
 		}
 	},
 	"download": {
@@ -12241,7 +13012,11 @@
 				"updateInstall": "Güncellemek için yeniden başlat",
 				"updating": "Güncelleniyor…",
 				"updatePackage": "{{version}} sürümü kullanılabilir. Güncellemek için yeni paketi indirin.",
-				"updateDownload": "İndir"
+				"updateDownload": "İndir",
+				"openAtLoginHint": "Bu bilgisayarda oturum açtığınızda Margaya'yı arka planda başlatır.",
+				"updatesLabel": "Güncellemeler",
+				"diagnosticsLabel": "Tanılama",
+				"diagnosticsHint": "Hata raporu için uygulama sürümünü, sunucu listenizi ve son günlük satırlarını kopyalar. Oturum açma belirteçleri asla eklenmez."
 			},
 			"quickAdd": {
 				"title": "Hızlı ekle",
@@ -12260,6 +13035,10 @@
 			"downloads": {
 				"finished": "{{file}} indirildi",
 				"failed": "{{file}} indirilemedi"
+			},
+			"notifications": {
+				"releasedTitle": "Bildirimler yeniden açık",
+				"releasedBody": "Duraklatılmışken gelen bildirimler: {{count}}"
 			},
 			"menu": {
 				"about": "Margaya Hakkında",

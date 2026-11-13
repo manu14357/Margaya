@@ -487,6 +487,8 @@
 			"failedTitle": "認可に失敗しました",
 			"loadingSubtitle": "リクエストを読み込み中…",
 			"redirectUri": "リダイレクト URI",
+			"metadataHost": "クライアントの公開元",
+			"localRedirect": "このクライアントは、このコンピューター上のアプリにあなたを戻します。このアドレスはコンピューター上のどのアプリでも名乗れるため、ご自身でクライアントを開いた直後の場合のみ続行してください。",
 			"signIn": "サインイン",
 			"signInSubtitle": "この MCP クライアントを承認する前にサインインしてください。",
 			"signInTitle": "続けるにはサインインしてください",
@@ -573,17 +575,253 @@
 		}
 	},
 	"settings": {
+		"feedback": {
+			"send": {
+				"menuItem": "フィードバックを送信",
+				"title": "フィードバックを送信",
+				"description": "このサーバーの運営者に、うまくいっている点とそうでない点を伝えてください。フィードバックはこのサーバー内にとどまります。",
+				"mood": "Margaya の使い心地はいかがですか？",
+				"comment": "補足があればどうぞ（任意）",
+				"commentPlaceholder": "良かった点、困った点、欲しい機能など",
+				"context": "あなたの名前、表示中のページの種類（{{page}}）、アプリのバージョン（{{version}}）とともに送信されます。タスクの内容は送信されません。",
+				"submit": "送信",
+				"cancel": "キャンセル",
+				"done": "完了",
+				"thanks": "ありがとうございます。フィードバックはこのサーバーの運営者に届きました。すべての回答に目を通しています。",
+				"error": "フィードバックを送信できませんでした。もう一度お試しください。"
+			},
+			"survey": {
+				"questionMood": "Margaya の使い心地はいかがですか？",
+				"questionStars": "Margaya を評価してください",
+				"questionNps": "Margaya を同僚に勧める可能性はどのくらいありますか？",
+				"comment": "補足があればどうぞ（任意）",
+				"notNow": "後で",
+				"neverAsk": "今後は表示しない",
+				"privacy": "回答はあなたの名前とともにこのサーバー内に保存されます。「アカウント → 環境設定」で変更できます。",
+				"thanksTitle": "ありがとうございます",
+				"thanks": "ご回答ありがとうございます。いただいた回答は、このサーバーの運営者が改善点を決める助けになります。",
+				"whatsNew": "新機能を見る"
+			},
+			"scale": {
+				"veryUnhappy": "とても不満",
+				"unhappy": "不満",
+				"neutral": "普通",
+				"happy": "満足",
+				"veryHappy": "とても満足",
+				"stars_other": "星 {{count}} つ",
+				"npsScore_other": "10 点中 {{count}} 点",
+				"npsLow": "まったく勧めたくない",
+				"npsHigh": "非常に勧めたい",
+				"thumbsUp": "役に立つ",
+				"thumbsDown": "役に立たない"
+			},
+			"pageTypes": {
+				"home": "ホーム",
+				"inbox": "受信トレイ",
+				"myWork": "自分の作業",
+				"board": "ボード",
+				"list": "リスト",
+				"timeline": "タイムライン",
+				"calendar": "カレンダー",
+				"task": "タスク",
+				"cycles": "サイクル",
+				"modules": "モジュール",
+				"views": "ビュー",
+				"intake": "受付",
+				"pages": "ページ",
+				"analytics": "アナリティクス",
+				"settings": "設定",
+				"other": "その他"
+			},
+			"features": {
+				"cycles": "サイクル",
+				"modules": "モジュール",
+				"pages": "ページ",
+				"views": "ビュー",
+				"intake": "受付",
+				"analytics": "アナリティクス"
+			},
+			"mine": {
+				"title": "フィードバック",
+				"description": "送信した内容はこのサーバーに保存され、あなたの名前とメールアドレスとともに管理者だけが閲覧できます。",
+				"survey": "ときどき行うアンケート",
+				"surveyDescription": "ときどき、画面の隅に小さなカードが表示され、質問を 1 つします。オフにすると今後は尋ねられません。",
+				"send": "フィードバックを送信",
+				"sendDescription": "いつでも Margaya を評価したり、コメントを残したりできます。ヘルプメニューとコマンドパレットからも送信できます。",
+				"data": "あなたのフィードバック",
+				"dataDescription": "送信した内容すべてのコピーをダウンロードするか、削除できます。アカウントを削除した場合も削除されます。",
+				"download": "ダウンロード",
+				"downloadError": "フィードバックをダウンロードできませんでした。もう一度お試しください。",
+				"delete": "すべて削除",
+				"deleteTitle": "フィードバックをすべて削除しますか？",
+				"deleteDescription": "送信した内容はすべてこのサーバーから削除されます。この操作は元に戻せません。",
+				"deleteConfirm": "削除",
+				"deleted_other": "{{count}} 件の回答を削除しました",
+				"deleteError": "フィードバックを削除できませんでした。もう一度お試しください。"
+			},
+			"admin": {
+				"nav": "フィードバック",
+				"title": "フィードバック",
+				"subtitle": "このサーバーの利用者が Margaya をどう感じているかを確認します。データはここに保存され、外部に送信されることはありません。",
+				"settingsTitle": "フィードバックを送信",
+				"settingsDescription": "誰でも、ヘルプメニュー、コマンドパレット、環境設定から Margaya を評価したりコメントを残したりできます。",
+				"enabled": "フィードバックを許可",
+				"enabledHint": "オフにすると「フィードバックを送信」とアンケートが非表示になります。送信済みの回答は保持されます。",
+				"surveyTitle": "ときどき行うアンケート",
+				"surveyDescription": "画面の隅に表示される小さなカードで、ポップアップではありません。利用開始から 7 日間、入力中やダイアログを開いている間、カードを閉じてから 30 日間、「今後は表示しない」を選んだ後は表示されません。",
+				"surveyEnabled": "ときどき尋ねる",
+				"surveyEnabledHint": "下のいずれかの条件に達すると尋ね、その後は間隔が過ぎるまで尋ねません。",
+				"surveyNeedsFeedback": "フィードバックがオフの間は効果がありません。",
+				"format": "尺度",
+				"formatHint": "顔アイコンは気持ち、星はすばやい評価に向いています。0〜10 ではネットプロモータースコア（NPS）を測れます。",
+				"formats": {
+					"faces3": "顔アイコン 3 段階",
+					"faces5": "顔アイコン 5 段階",
+					"stars": "星 5 段階",
+					"nps": "0〜10（NPS）",
+					"thumbs": "グッド／バッド（機能）"
+				},
+				"tasksCompleted": "完了したタスク数に達したら",
+				"tasksCompletedHint": "前回のアンケート以降に完了したタスクがこの数に達したら尋ねます。0 にするとこの条件はオフになります。",
+				"tasksUnit": "件のタスク",
+				"activeDays": "利用日数に達したら",
+				"activeDaysHint": "Margaya を利用した日数がこの値に達したら尋ねます。0 にするとこの条件はオフになります。",
+				"daysUnit": "日",
+				"interval": "質問の最短間隔",
+				"intervalHint": "同じ人に次のアンケートを出すまでの最短期間です（30〜365 日）。",
+				"save": "保存",
+				"summaryTitle": "概要",
+				"scale": "尺度",
+				"period": "期間",
+				"lastDays_other": "過去 {{count}} 日間",
+				"answers": "回答",
+				"average": "平均",
+				"outOf": "{{value}} / {{max}}",
+				"satisfaction": "満足",
+				"nps": "NPS",
+				"comments": "コメント",
+				"none": "–",
+				"bySource": "すべての尺度: 「フィードバックを送信」から {{general}} 件、アンケートから {{survey}} 件、機能別の質問から {{feature}} 件。",
+				"summaryEmpty": "この期間、この尺度の回答はまだありません。",
+				"distribution": "分布",
+				"trend": "週ごとの満足の回答",
+				"trendNps": "週ごとの NPS",
+				"week": "週",
+				"responsesTitle": "回答",
+				"source": "経路",
+				"allSources": "すべての経路",
+				"allScales": "すべての尺度",
+				"kinds": {
+					"general": "フィードバックを送信",
+					"survey": "アンケート",
+					"feature": "機能別の質問"
+				},
+				"commentsOnly": "コメントあり",
+				"search": "コメントまたはユーザーを検索",
+				"responsesEmpty": "フィードバックはまだありません。送信されると、ここに回答が表示されます。",
+				"commentOnly": "コメントのみ",
+				"desktop": "デスクトップアプリ",
+				"loadMore": "さらに読み込む",
+				"loadError": "フィードバックを読み込めませんでした。",
+				"retry": "再試行",
+				"exportCsv": "CSV をエクスポート",
+				"exportError": "フィードバックをエクスポートできませんでした。もう一度お試しください。",
+				"delete": "回答を削除",
+				"deleteError": "削除できませんでした。もう一度お試しください。",
+				"purge": "古い回答を削除",
+				"purgeTitle": "フィードバックを削除",
+				"purgeDescription": "回答はこのサーバーから完全に削除されます。削除の記録は監査証跡に残ります。",
+				"purgeWhich": "削除する回答",
+				"purgeOlder_other": "{{count}} 日より前",
+				"purgeAll": "すべての回答",
+				"purgeConfirm": "削除",
+				"purged_other": "{{count}} 件の回答を削除しました",
+				"cancel": "キャンセル",
+				"auditDeleted": "フィードバックを削除"
+			}
+		},
+		"calendarFeed": {
+			"title": "カレンダーで購読",
+			"description": "Margaya の日付をカレンダーアプリで確認できます。フィードは読み取り専用で、約 1 時間ごとに更新されます。",
+			"menuItem": "カレンダーで購読",
+			"timezoneNote": "タスクは終日の予定として表示されます。日付はアカウントのタイムゾーン（未設定の場合はワークスペースのタイムゾーン）で計算されます。",
+			"loadError": "カレンダーフィードを読み込めませんでした。しばらくしてからもう一度お試しください。",
+			"hiddenProject": "表示できなくなったプロジェクト",
+			"privacy": "このリンクを知っている人は誰でも、含まれるタイトルと日付を閲覧できます。他人に知られないようにし、漏れた場合は新しいリンクを作成するか取り消してください。",
+			"myTasks": {
+				"label": "自分のタスク",
+				"description": "自分に割り当てられた、開始日または期限のあるタスクです。"
+			},
+			"planning": {
+				"label": "マイルストーンとサイクル",
+				"description": "このワークスペースで表示できるすべてのプロジェクトのマイルストーンとサイクルの日付です。"
+			},
+			"project": {
+				"settingsDescription": "このプロジェクトの日付付きのタスク、マイルストーン、サイクルすべて。",
+				"dialogDescription": "{{project}} の日付付きのタスク、マイルストーン、サイクルをすべてカレンダーアプリで確認できます。",
+				"manageHint": "すべてのカレンダーリンクは、設定の「アカウント → 環境設定」で確認・取り消しできます。"
+			},
+			"calendarName": {
+				"myTasks": "自分のタスク · {{workspace}}",
+				"planning": "マイルストーンとサイクル · {{workspace}}",
+				"project": "{{project}} · {{workspace}}"
+			},
+			"status": {
+				"none": "リンクはまだありません",
+				"active": "リンク {{start}}…、{{date}} に作成",
+				"lastUsed": "カレンダーによる最終読み込み: {{when}}",
+				"neverUsed": "まだカレンダーに読み込まれていません"
+			},
+			"actions": {
+				"create": "リンクを作成",
+				"createFor": "{{name}} のカレンダーリンクを作成",
+				"regenerate": "新しいリンク",
+				"regenerateFor": "{{name}} の新しいカレンダーリンクを作成",
+				"revoke": "取り消す",
+				"revokeFor": "{{name}} のカレンダーリンクを取り消す",
+				"copy": "コピー",
+				"copied": "コピーしました",
+				"open": "カレンダーアプリで開く",
+				"done": "完了"
+			},
+			"link": {
+				"title": "カレンダーリンク",
+				"label": "購読リンク",
+				"once": "今すぐコピーしてください。このリンクは一度しか表示されません。紛失した場合は新しいリンクを作成してください。"
+			},
+			"howTo": {
+				"title": "追加方法",
+				"step1": "リンクをコピーします。",
+				"step2": "カレンダーアプリで、URL からカレンダーを追加（または購読）する操作を選びます。",
+				"step3": "リンクを貼り付けます。変更はアプリの次回の更新時に反映されます。"
+			},
+			"regenerateConfirm": {
+				"title": "新しいリンクを作成しますか？",
+				"description": "現在のリンクはすぐに使えなくなります。このリンクを使っているカレンダーは、新しいリンクを追加するまで更新されません。",
+				"confirm": "新しいリンクを作成"
+			},
+			"revokeConfirm": {
+				"title": "このカレンダーリンクを取り消しますか？",
+				"description": "リンクはすぐに使えなくなり、このリンクを使っているカレンダーは更新されなくなります。",
+				"confirm": "リンクを取り消す"
+			},
+			"toast": {
+				"created": "カレンダーリンクを作成しました",
+				"revoked": "カレンダーリンクを取り消しました",
+				"copied": "リンクをコピーしました",
+				"copyError": "リンクをコピーできませんでした。リンクを選択して手動でコピーしてください。",
+				"error": "カレンダーリンクを更新できませんでした"
+			}
+		},
 		"account": "アカウント",
-		"information": "基本情報",
+		"information": "プロフィール",
 		"notifications": "通知",
 		"preferences": "環境設定",
 		"apiKeys": "APIキー",
 		"informationPage": {
-			"pageTitle": "個人情報",
-			"title": "個人情報",
-			"subtitle": "個人情報およびアカウント情報を管理します。",
-			"sectionTitle": "アカウント情報",
-			"sectionSubtitle": "プロフィールおよびアカウントの詳細を管理します。",
+			"pageTitle": "プロフィール",
+			"title": "プロフィール",
+			"subtitle": "名前、プロフィール画像、サインインに使うメールアドレス。",
 			"profilePicture": "プロフィール画像",
 			"fullName": "氏名",
 			"fullNamePlaceholder": "名前を入力",
@@ -623,14 +861,12 @@
 		"notificationsPage": {
 			"pageTitle": "通知",
 			"title": "通知",
-			"subtitle": "Margaya からのアカウント通知の配信方法と使用するチャンネルを選択します。",
+			"subtitle": "Margaya が何を知らせるか、どこに届けるか、どんな音で知らせるかを選択します。",
 			"statusConnected": "接続済み",
 			"statusPaused": "一時停止中",
 			"emailTitle": "メール",
 			"emailDescription": "アカウントのメールアドレスを通知の送信先として使用します。",
-			"accountEmailLabel": "アカウントのメールアドレス",
 			"accountEmailNoAddress": "登録されているメールアドレスがありません",
-			"accountEmailHint": "メール通知は常にサインイン中のアカウントのメールアドレスに送信されます。",
 			"saveChanges": "変更を保存",
 			"disconnect": "接続を解除",
 			"ntfyTitle": "ntfy",
@@ -731,7 +967,7 @@
 				"title": "サウンド",
 				"description": "ブラウザで Margaya を開いているときに通知が届くと、サウンドを再生します。",
 				"enabled": "サウンドを再生",
-				"enabledDescription": "サウンドの設定はアカウントに保存され、どのブラウザでも適用されます。",
+				"enabledDescription": "サウンドの設定はアカウントに保存され、どのデバイスでも適用されます。",
 				"volume": "音量",
 				"volumeValue": "{{value}}%",
 				"categoryMentions": "メンションと割り当て",
@@ -751,14 +987,38 @@
 				"soundMarimba": "マリンバ",
 				"preview": "{{sound}} を再生",
 				"quietHours": "消音時間帯",
-				"quietHoursDescription": "アカウントのタイムゾーンで、この時間帯はサウンドを鳴らしません。",
+				"quietHoursDescription": "毎日この時間帯は、通知が一時停止され、サウンドも鳴りません。",
 				"quietFrom": "開始",
 				"quietTo": "終了",
 				"deviceMute": "このデバイスでサウンドをミュート",
 				"deviceMuteDescription": "このブラウザだけをミュートします。ほかのデバイスでは引き続き再生されます。",
 				"previewFailed": "ブラウザでサウンドを再生できませんでした。このタブまたはサイトがミュートになっていないか確認してください。",
 				"desktopDescription": "デスクトップアプリでは、これらの設定でサウンドを鳴らす場合に、ここで選んだ Margaya のサウンドが設定した音量で再生されます。おやすみモード（応答不可）がオンのときは鳴りません。",
-				"deviceMuteDescriptionDesktop": "このデスクトップアプリだけをミュートします。ほかのデバイスでは引き続き再生されます。"
+				"deviceMuteDescriptionDesktop": "このデスクトップアプリだけをミュートします。ほかのデバイスでは引き続き再生されます。",
+				"previewFailedDesktop": "サウンドを再生できませんでした。コンピューターの音声がミュートになっていないか確認してください。"
+			},
+			"quiet": {
+				"title": "消音時間帯と集中モード",
+				"description": "通知を一定時間、または毎晩一時停止します。受信トレイには引き続き届きますが、サウンドは鳴りません。",
+				"focus": "集中モード",
+				"focusDescription": "今から通知を一時停止します。アカウントメニューとコマンドパレットからも使えます。",
+				"timeZone": "時刻はアカウントのタイムゾーン（{{zone}}）で表示されます。",
+				"noTimeZone": "アカウントにタイムゾーンが設定されていないため、消音時間帯は UTC に従います。",
+				"useTimeZone": "{{zone}} を使用",
+				"channels": "保留するチャンネル",
+				"channelsDescription": "通知の一時停止中、これらのチャンネルの通知は保留されます。チェックを外したチャンネルには、サウンドなしで引き続き届きます。",
+				"channelPush": "プッシュ",
+				"channelEmail": "メール",
+				"channelDesktop": "デスクトップアプリ",
+				"channelNtfy": "ntfy",
+				"channelGotify": "Gotify",
+				"channelWebhook": "Webhook",
+				"bypass": "例外として届ける通知",
+				"bypassDescription": "これらは通知の一時停止中でも、サウンド付きですぐに届きます。",
+				"bypassMentions": "自分宛てのメンション",
+				"bypassUrgent": "自分に割り当てられた優先度「緊急」のタスク",
+				"bypassApprovals": "あなたの承認または回答を待っているエージェント",
+				"summaryNote": "一時停止が終わると、保留していた各チャンネルにまとめが 1 回届きます。メールはすべてをまとめた 1 通、プッシュ・ntfy・Gotify は 1 件のメッセージ、デスクトップは 1 件の通知、Webhook は保留したペイロードを順番に送信します。"
 			},
 			"pushTitle": "プッシュ通知",
 			"pushDescription": "Margaya を閉じていても、スマートフォンやパソコンに通知が届きます。送信される内容は「通知を受け取るイベント」で決まり、下のワークスペースのルールでさらに絞り込めます。",
@@ -783,7 +1043,9 @@
 			"pushChannelHintEnabled": "条件に合うワークスペースの通知をデバイスに送信します。",
 			"pushChannelHintDisabled": "先にデバイスのプッシュ通知をオンにしてください。",
 			"pushLoadFailed": "プッシュ通知の設定を読み込めませんでした。ページを再読み込みしてもう一度お試しください。",
-			"pushDesktopApp": "このデバイスではデスクトップアプリが通知を表示するため、ここではブラウザーのプッシュ通知は必要ありません。"
+			"emailSendsTo": "送信先: {{email}}",
+			"pushDesktopTitle": "デスクトップ通知",
+			"pushDesktopDescription": "Margaya Desktop は、ウィンドウを閉じていてもこのコンピューターに通知を表示します。通知をオフにしたり表示方法を変えたりするには、システムの通知設定を使用してください。"
 		},
 		"preferencesPage": {
 			"title": "環境設定",
@@ -830,11 +1092,9 @@
 			"estimatesDescription": "ボードカードにタスクの見積もりを表示します"
 		},
 		"developerPage": {
-			"pageTitle": "開発者設定",
-			"title": "開発者設定",
-			"subtitle": "APIキーと開発者向けリソースを管理します。",
-			"apiKeysCardTitle": "APIキー",
-			"apiKeysCardDescription": "Margaya にプログラムからアクセスするための API キーを作成・管理します。",
+			"pageTitle": "APIキー",
+			"title": "APIキー",
+			"subtitle": "キーを使うと、スクリプト、連携、MCP クライアントがあなたとして Margaya の API を利用できます。",
 			"createApiKey": "APIキーを作成",
 			"unnamedKey": "名前のないキー"
 		},
@@ -903,7 +1163,7 @@
 		},
 		"workspaceGeneral": {
 			"pageTitle": "一般設定",
-			"title": "一般設定",
+			"title": "一般",
 			"subtitle": "ワークスペースの名前と説明を管理します。",
 			"workspaceInfoTitle": "ワークスペース情報",
 			"workspaceInfoSubtitle": "ワークスペースの詳細と基本設定を管理します。",
@@ -1287,7 +1547,7 @@
 		},
 		"projectGeneral": {
 			"pageTitle": "プロジェクト設定",
-			"title": "一般設定",
+			"title": "一般",
 			"subtitle": "プロジェクトの名前、キー、アイコン、説明を管理します。",
 			"projectInfoTitle": "プロジェクト情報",
 			"projectInfoSubtitle": "プロジェクトの詳細と基本設定を行います。",
@@ -1334,7 +1594,7 @@
 		},
 		"projectIntegrations": {
 			"pageTitle": "プロジェクトの連携",
-			"title": "プロジェクトの連携",
+			"title": "連携",
 			"subtitle": "プロジェクトを外部ツールやサービスと接続し、ワークフローを効率化します。",
 			"githubSectionTitle": "GitHub 連携",
 			"githubSectionSubtitle": "タスクを GitHub Issue と同期し、双方向同期を有効にします。",
@@ -1565,11 +1825,114 @@
 				"taskPriorityChanged": "優先度の変更",
 				"taskTitleChanged": "タイトルの変更",
 				"taskDescriptionChanged": "説明の変更",
-				"taskCommentCreated": "新しいコメント"
+				"taskCommentCreated": "新しいコメント",
+				"taskDueDateChanged": "期限の変更",
+				"intakeDecision": "受付の判断（承認、却下、重複）",
+				"projectUpdate": "プロジェクトの進捗報告"
 			},
+			"buttonsHint": "ワークスペースの Slack アプリが接続されていると、投稿に「自分に割り当て」「ステータスを変更」「開く」ボタンが付きます。ボタンが Margaya に届くよう、この Webhook は同じ Slack アプリから作成してください。",
 			"connect": "Slack に接続",
 			"saveChanges": "変更を保存",
 			"disconnect": "接続解除"
+		},
+		"slackApp": {
+			"workspaceNav": "Slack アプリ",
+			"accountNav": "Slack",
+			"title": "Slack アプリ",
+			"description": "Slack からタスクを検索、作成、更新できます。すべての操作は、各ユーザーがリンクした Margaya アカウントとして、そのユーザーの権限で実行されます。",
+			"noPermission": "Slack アプリを設定できるのは、ワークスペースの設定を管理できるユーザーだけです。",
+			"loadError": "Slack アプリの設定を読み込めませんでした。もう一度お試しください。",
+			"statusTitle": "接続",
+			"unknownTeam": "Slack ワークスペース（未確認）",
+			"modeSocket": "ソケットモード",
+			"modeHttp": "HTTP リクエスト",
+			"modeSocketHint": "推奨。Margaya から Slack へ外向きの接続を開くため、公開 URL がなくても VPN やリバースプロキシの内側で動作します。",
+			"modeHttpHint": "Slack がこのサーバーに署名付きリクエストを送信します。Slack から到達できる公開 HTTPS アドレスが必要です。",
+			"active": "有効",
+			"paused": "一時停止中",
+			"unreadable": "保存されたトークンを読み取れません。AUTH_SECRET が変更された可能性があります。もう一度入力してください。",
+			"lastError": "Slack からの最新のエラー: {{code}}",
+			"test": "接続をテスト",
+			"activeLabel": "Slack アプリを有効にする",
+			"activeHint": "オフの場合、Margaya は Slack からのコマンド、ショートカット、ボタンを無視します。",
+			"notConnected": "Slack は接続されていません",
+			"notConnectedHint": "以下の手順に従って Slack アプリを作成し、接続してください。",
+			"setupTitle": "セットアップ",
+			"setupHint": "Slack アプリの作成には数分かかります。Slack ワークスペースにアプリをインストールする権限が必要です。",
+			"step1": "1. Slack から Margaya への接続方法を選ぶ",
+			"step1Hint": "後で切り替えることもできます。その場合、Slack には対応するマニフェストが必要です。",
+			"step2": "2. このマニフェストから Slack アプリを作成する",
+			"step2Hint": "Slack で Create New App、From a manifest の順に選び、Slack ワークスペースを選択してこれを貼り付けます。その後、アプリをワークスペースにインストールします。",
+			"manifestLabel": "Slack アプリのマニフェスト",
+			"copyManifest": "マニフェストをコピー",
+			"copy": "コピー",
+			"copied": "コピーしました",
+			"copyFailed": "コピーできませんでした。テキストを選択して手動でコピーしてください。",
+			"openSlack": "Slack アプリを開く",
+			"noUnfurlDomain": "リンクプレビューは含まれません。Slack は localhost や IP アドレスを展開できないためです。プレビューを使うには、MARGAYA_CLIENT_URL にドメイン名を設定してください。",
+			"eventsUrl": "リクエスト URL",
+			"eventsUrlHint": "マニフェストに含まれています。アプリの保存時に Slack が確認するため、このサーバーに HTTPS で到達できる必要があります。",
+			"step3": "3. トークンを貼り付ける",
+			"step3SocketHint": "Bot User OAuth Token: OAuth & Permissions。アプリレベルトークン: Basic Information › App-Level Tokens（connections:write スコープ付き）。",
+			"step3HttpHint": "Bot User OAuth Token: OAuth & Permissions。署名シークレット: Basic Information › App Credentials。",
+			"botToken": "ボットユーザー OAuth トークン",
+			"botTokenPlaceholder": "xoxb-…",
+			"appToken": "アプリレベルトークン",
+			"appTokenPlaceholder": "xapp-…",
+			"signingSecret": "署名シークレット",
+			"signingSecretPlaceholder": "署名シークレットを貼り付け",
+			"secretsHint": "暗号化して保存され、再表示されることはありません。保存済みの値を残すには、フィールドを空欄のままにします。",
+			"connectAndTest": "接続してテスト",
+			"saveAndTest": "保存してテスト",
+			"step4": "4. アカウントをリンクする",
+			"step4Hint": "各ユーザーが Slack で /margaya link を一度実行し、Margaya で確定します。それまでは、Slack はリンクを求めるだけで、そのユーザーの操作は行いません。",
+			"optionsTitle": "オプション",
+			"defaultProject": "既定のプロジェクト",
+			"defaultProjectHint": "テキストがプロジェクトキーで始まらない場合に、/margaya add でタスクを作成するプロジェクトです。",
+			"noDefaultProject": "なし",
+			"expandKeys": "メッセージ内のタスクキーをプレビュー",
+			"expandKeysHint": "メッセージに WEB-12 のようなキーが含まれていると、スレッドで返信します。メッセージ用のスコープが必要なため、オンにした後でマニフェストをもう一度コピーしてください。",
+			"dangerTitle": "接続を解除",
+			"disconnect": "Slack アプリの接続を解除",
+			"disconnectHint": "保存されたトークンを削除します。リンク済みのアカウントは再接続に備えて保持されます。",
+			"checks": {
+				"botToken": "ボットトークン",
+				"appToken": "アプリレベルトークン",
+				"signingSecret": "署名シークレット",
+				"passed": "成功",
+				"failed": "失敗"
+			},
+			"toast": {
+				"saved": "Slack アプリを保存しました",
+				"saveError": "Slack アプリを保存できませんでした",
+				"testPassed": "Slack に正常に接続できます",
+				"testFailed": "Slack の接続テストに失敗しました",
+				"disconnected": "Slack アプリの接続を解除しました",
+				"unlinked": "Slack アカウントのリンクを解除しました"
+			},
+			"accountTitle": "Slack",
+			"accountDescription": "あなたとして動作する Slack アカウントです。これらのコマンド、ショートカット、ボタンはあなたの権限で実行されます。",
+			"linkedTitle": "リンク済みの Slack アカウント",
+			"linksLoadError": "Slack のリンクを読み込めませんでした。もう一度お試しください。",
+			"noLinks": "リンク済みの Slack アカウントはありません",
+			"noLinksHint": "リンクするには、Slack で /margaya link を実行してください。",
+			"linkRow": "{{team}} · {{workspace}}",
+			"unlink": "リンクを解除",
+			"link": {
+				"invalidTitle": "このリンクは使用できません",
+				"invalid": "有効期限が切れているか、無効です。Slack で /margaya link を実行して新しいリンクを取得してください。",
+				"alreadyTitle": "リンク済み",
+				"already": "この Slack アカウントは、{{workspace}} ですでにあなたとして動作しています。",
+				"confirmTitle": "Slack アカウントをリンク",
+				"confirmBody": "{{team}} の Slack ユーザー {{slackUser}} が、{{workspace}} であなたとして動作します。",
+				"confirmWarning": "その Slack アカウントがご自身のものである場合のみ続行してください。そのアカウントのコマンド、ショートカット、ボタンはあなたの権限で実行されます。",
+				"movesLink": "この Slack アカウントは現在別のユーザーにリンクされています。確定すると、リンクがあなたに移ります。",
+				"you": "（あなた）",
+				"confirm": "アカウントをリンク",
+				"cancel": "キャンセル",
+				"linked": "Slack アカウントをリンクしました",
+				"linkError": "Slack アカウントをリンクできませんでした"
+			}
 		},
 		"discordIntegration": {
 			"validation": {
@@ -2071,6 +2434,10 @@
 				"ai": {
 					"title": "AI",
 					"description": "このプロジェクトでの要約、提案などの AI 支援。オフにすると、このプロジェクトは AI の対象から完全に外れます。"
+				},
+				"updates": {
+					"title": "進捗報告",
+					"description": "最新のプロジェクトデータから下書きを作成し、状況を添えた日付付きの進捗報告を投稿します。"
 				}
 			},
 			"loadError": "このプロジェクトを読み込めませんでした",
@@ -2749,6 +3116,10 @@
 			"billing": "請求",
 			"label": "設定のセクション",
 			"noProjectsHint": "まずプロジェクトを作成してください。その設定がここに表示されます。",
+			"groupData": "データ",
+			"groupServer": "サーバー",
+			"aiSettings": "AI 設定",
+			"pageLabel": "設定ページ",
 			"pickProject": "プロジェクトを選ぶと、その設定が表示されます。"
 		},
 		"projectAccess": {
@@ -2806,6 +3177,9 @@
 			},
 			"sessions": {
 				"confirmOthersDescription": "アカウントにサインインしている他のすべてのデバイスで、再度サインインが必要になります。このデバイスはサインインしたままです。",
+				"showAll": "すべてのセッションを表示（{{count}}）",
+				"showFewer": "表示を減らす",
+				"desktopApp": "Margaya Desktop",
 				"confirmOthersTitle": "他のすべてのセッションからサインアウトしますか？",
 				"deviceLabel": "{{os}} 上の {{browser}}",
 				"error": "セッションのサインアウトに失敗しました",
@@ -2827,16 +3201,16 @@
 			"title": "セキュリティ"
 		},
 		"timezone": {
-			"accountHint": "リマインダー、メールダイジェスト、およびタスクのフィルターや分析で日付を数える基準に使用されます。画面上の時刻はブラウザーのタイムゾーンで表示されます。",
+			"accountHint": "リマインダー、メールダイジェスト、およびタスクのフィルターや分析で日付を数える基準に使用されます。画面上の時刻はこのデバイスのタイムゾーンで表示されます。",
 			"accountLabel": "タイムゾーン",
-			"automatic": "自動（ブラウザー: {{zone}}）",
+			"automatic": "自動（このデバイス: {{zone}}）",
 			"loadError": "タイムゾーンを読み込めませんでした。ページを再読み込みしてもう一度お試しください。",
 			"noResults": "タイムゾーンが見つかりません",
 			"placeholder": "タイムゾーンを選択",
 			"search": "タイムゾーンを検索",
 			"toastError": "タイムゾーンの更新に失敗しました",
 			"toastUpdated": "タイムゾーンを更新しました",
-			"useBrowser": "{{zone}} を使用",
+			"useBrowser": "このデバイスのタイムゾーンを使用（{{zone}}）",
 			"workspaceHint": "サイクル、自動化、分析における「今日」を決めます。既存のワークスペースは UTC で始まります。",
 			"workspaceLabel": "タイムゾーン"
 		},
@@ -3262,6 +3636,95 @@
 			"title": "ブラウザーで続行してください",
 			"billing": "開いたブラウザーウインドウで手続きを完了してから、Margaya に戻ってください。戻るとプランが更新されます。",
 			"githubApp": "ブラウザーで GitHub での手続きを完了してから Margaya に戻り、インストールをもう一度確認してください。"
+		},
+		"save": "保存",
+		"unsavedChanges": "未保存の変更",
+		"readOnly": {
+			"workspace": "この設定は閲覧できますが、あなたのロールでは変更できません。ワークスペースのオーナーまたは管理者に依頼してください。",
+			"project": "このプロジェクトの設定は閲覧できますが、あなたのロールでは変更できません。ワークスペースのオーナーまたは管理者に依頼してください。"
+		},
+		"projectIntake": {
+			"title": "受付の経路",
+			"pageTitle": "受付の経路",
+			"subtitle": "メールや公開フォームから、このプロジェクトにリクエストを送れるようにします。送信された内容はすべて受付に届き、レビューを待ちます。",
+			"noPermission": "受付の経路を管理できるのは、プロジェクトを共有できるユーザーだけです。",
+			"loadError": "設定を読み込めませんでした。",
+			"retry": "再試行",
+			"saved": "設定を保存しました",
+			"saveError": "設定を保存できませんでした",
+			"copy": "コピー",
+			"copied": "コピーしました",
+			"open": "開く",
+			"email": {
+				"title": "メール",
+				"description": "プロジェクトのアドレスに送信・転送されたメールはリクエストになります。同じ送信者からの返信はコメントとして追加され、添付ファイルも保持されます。",
+				"enabled": "メールでリクエストを受け付ける",
+				"enabledHint": "自動返信、エラーメール、メーリングリストのメール、スパムと判定されたメッセージは無視されます。",
+				"turnedOn": "メールでの受付をオンにしました",
+				"turnedOff": "メールでの受付をオフにしました",
+				"address": "転送先アドレス",
+				"addressHint": "このアドレスにメールを送信または転送します。このアドレスを知っている人は誰でもリクエストを送信できます。",
+				"addressNone": "メールでの受付をオンにし、サーバーに受付用メールボックスがあると、アドレスが表示されます。",
+				"rotate": "新しいアドレス",
+				"rotated": "新しいアドレスを作成しました。以前のアドレスは使えなくなりました。",
+				"noInstanceAddress": "このサーバーにはまだ受付用アドレスがありません。管理者に設定を依頼するか、下でこのプロジェクト専用のメールボックスを接続してください。",
+				"allowed": "次のドメインのみ受け付ける",
+				"allowedHint": "1 行に 1 ドメイン。空欄にすると、すべての送信者を受け付けます。サブドメインも含まれます。",
+				"blocked": "次のドメインは受け付けない",
+				"blockedHint": "1 行に 1 ドメイン。上のリストよりもブロックするドメインが優先されます。",
+				"protection": "{{size}} MB を超えるメッセージはスキップされます。添付ファイルは 1 件あたり {{fileSize}} MB まで、最大 {{files}} 件保持されます。各送信者が送れるメッセージは 1 時間に 10 件までです。"
+			},
+			"mailbox": {
+				"title": "プロジェクトのメールボックス",
+				"description": "任意。Margaya はこのメールボックスを 2 分ごとに確認し、未読のメッセージをすべてこのプロジェクトのリクエストにします。Margaya からメールサーバーへ接続するため、ファイアウォールの内側でも動作します。",
+				"enabled": "このメールボックスを確認",
+				"enabledHint": "サーバーとサインイン情報を入力して保存してから、これをオンにしてください。",
+				"lastPolled": "最終確認: {{time}}",
+				"notPolled": "まだ確認していません。",
+				"lastError": "前回の確認に失敗しました: {{error}}",
+				"host": "IMAP サーバー",
+				"security": "暗号化",
+				"securityHint": "接続は常に暗号化されます。",
+				"tls": "TLS（ポート 993）",
+				"starttls": "STARTTLS（ポート 143）",
+				"port": "ポート",
+				"portHint": "既定値を使う場合は空欄のままにします。",
+				"portInvalid": "1〜65535 のポート番号を入力してください。",
+				"username": "ユーザー名",
+				"password": "パスワード",
+				"passwordSaved": "パスワードは保存済みです。置き換えるには新しいパスワードを入力してください。",
+				"folder": "フォルダー",
+				"test": "接続をテスト",
+				"testOk_other": "接続しました。未読メッセージは {{count}} 件です。"
+			},
+			"form": {
+				"title": "リクエストフォーム",
+				"description": "リンクを知っている人なら誰でもリクエストを送信できる公開ページです。ここで選んだテキストとフィールドだけが表示され、ワークスペースやタスクが表示されることはありません。",
+				"enabled": "フォームを公開",
+				"enabledHint": "CAPTCHA を使わず、非表示のトラップ用フィールドとレート制限でボットを防ぎます。",
+				"opened": "フォームを公開しました",
+				"closed": "フォームを閉じました",
+				"sharingOff": "このサーバーでは公開共有がオフになっているため、フォームを公開できません。",
+				"link": "フォームのリンク",
+				"linkHint": "このリンクを共有してください。リンクを知っている人は誰でもリクエストを送信できます。",
+				"rotate": "新しいリンク",
+				"rotated": "新しいリンクを作成しました。以前のリンクは使えなくなりました。",
+				"heading": "見出し",
+				"headingHint": "フォームの上部に表示されます。",
+				"intro": "紹介文",
+				"descriptionField": "説明",
+				"emailField": "メールアドレス",
+				"emailFieldHint": "仕分け担当者が連絡できるよう、仕分け担当者にのみ表示されます。",
+				"nameField": "名前",
+				"modeOptional": "任意",
+				"modeRequired": "必須",
+				"modeOff": "非表示",
+				"customFields": "カスタムフィールド",
+				"customFieldsHint": "フィールドの名前と選択肢がフォームに表示されます。",
+				"noCustomFields": "このプロジェクトにはカスタムフィールドがありません。",
+				"confirmation": "確認メッセージ",
+				"confirmationHint": "リクエストの送信後に表示されます。"
+			}
 		}
 	},
 	"navigation": {
@@ -3475,6 +3938,7 @@
 		"projectNav": {
 			"cycles": "サイクル",
 			"intake": "受付",
+			"updates": "進捗報告",
 			"label": "プロジェクトセクション",
 			"modules": "モジュール",
 			"pages": "ページ",
@@ -3524,6 +3988,27 @@
 			"whatsNew": "新機能",
 			"sourceCode": "ソースコード",
 			"workspaceAnalytics": "ワークスペース"
+		},
+		"focus": {
+			"menuLabel": "通知を一時停止",
+			"paletteLabel": "集中モード: 通知を一時停止",
+			"preset30m": "30 分",
+			"preset1h": "1 時間",
+			"preset2h": "2 時間",
+			"presetTomorrow": "明日まで",
+			"custom": "時刻を指定…",
+			"resume": "通知を再開",
+			"focusUntil": "{{time}} まで集中モード",
+			"quietUntil": "{{time}} まで消音時間帯",
+			"settings": "消音時間帯の設定",
+			"toastStarted": "{{time}} まで通知を一時停止しました",
+			"toastResumed": "通知を再開しました",
+			"customTitle": "通知の一時停止の終了時刻",
+			"customDescription": "受信トレイには引き続き届きます。メンションなど、例外として選んだ通知はそのまま届きます。",
+			"customLabel": "終了時刻",
+			"customSave": "一時停止",
+			"customInvalid": "7 日以内の時刻を選んでください。",
+			"cancel": "キャンセル"
 		},
 		"desktopWindow": {
 			"minimize": "最小化",
@@ -5383,7 +5868,6 @@
 			"createProject": "プロジェクトを作成",
 			"title": "タイトル",
 			"progress": "進捗",
-			"targetDate": "目標日",
 			"dueDate": "期限",
 			"status": "ステータス",
 			"emptyTitle": "プロジェクトがまだありません",
@@ -8311,6 +8795,7 @@
 			"me": "自分",
 			"priority": "優先度",
 			"remove": "フィルターを削除",
+			"source": "経路",
 			"status": "ステータス",
 			"submittedBy": "送信者"
 		},
@@ -8403,6 +8888,25 @@
 			"hintMove": "移動",
 			"hintOpen": "タスクを開く",
 			"queueLabel": "仕分けキュー"
+		},
+		"publicForm": {
+			"defaultTitle": "リクエストを送信",
+			"titleLabel": "タイトル",
+			"descriptionLabel": "説明",
+			"nameLabel": "お名前",
+			"emailLabel": "メールアドレス",
+			"emailHint": "このリクエストに関する連絡にのみ使用します。",
+			"choose": "選択…",
+			"requiredNote": "* の付いた項目は必須です。",
+			"submit": "リクエストを送信",
+			"missing": "必須項目を入力し、メールアドレスを確認してください。",
+			"tooMany": "このネットワークからのリクエストが多すぎます。しばらくしてからもう一度お試しください。",
+			"failed": "リクエストを送信できませんでした。もう一度お試しください。",
+			"sentTitle": "リクエストを送信しました",
+			"sentBody": "ありがとうございます。リクエストを受け付けました。内容を確認します。",
+			"another": "別のリクエストを送信",
+			"notFoundTitle": "フォームを利用できません",
+			"notFoundBody": "このフォームは存在しないか、受付を終了しています。リンクを共有した人に確認してください。"
 		}
 	},
 	"stickies": {
@@ -9450,6 +9954,114 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "インスタンス · {{page}}",
+		"health": {
+			"title": "稼働状況",
+			"subtitle": "このサーバーのサービス、バックグラウンドジョブ、最近の失敗を確認します。",
+			"recheck": "再チェック",
+			"summary": "概要",
+			"version": "バージョン",
+			"uptime": "稼働時間",
+			"uptimeDays": "{{days}} 日 {{hours}} 時間",
+			"uptimeHours": "{{hours}} 時間 {{minutes}} 分",
+			"startedAt": "起動日時",
+			"node": "Node.js",
+			"latency": "{{ms}} ミリ秒",
+			"status": {
+				"ok": "正常",
+				"warning": "警告",
+				"error": "問題あり",
+				"off": "オフ"
+			},
+			"migrations": {
+				"title": "データベースのマイグレーション",
+				"ok_other": "最新です。{{count}} 件のマイグレーションが適用済みです。",
+				"pending_other": "{{count}} 件のマイグレーションがまだ実行されていません。適用するにはサーバーを再起動してください。",
+				"unknown": "マイグレーションの状態を読み取れません。詳細はサーバーログにあります。"
+			},
+			"checks": {
+				"title": "サービス",
+				"description": "各チェックは今すぐ実行され、制限時間は 5 秒です。結果にホスト、パス、パスワードが含まれることはありません。",
+				"database": "データベース",
+				"redis": "Redis",
+				"storage": "ファイルストレージ",
+				"email": "メール",
+				"ai": "AI プロバイダー"
+			},
+			"codes": {
+				"ok": "応答しています。",
+				"unreachable": "接続できません。詳細はサーバーログにあります。",
+				"unavailable": "設定済みですが、応答していません。サーバー間のリアルタイム更新は一時停止しています。",
+				"timeout": "制限時間内に応答がありませんでした。",
+				"failed": "チェックに失敗しました。詳細はサーバーログにあります。",
+				"redisDisabled": "未設定です。サーバーが 1 台なら不要です。",
+				"aiDisabled": "このサーバーでは AI がオフになっています。",
+				"emailNotConfigured": "メール送信が設定されていません。",
+				"aiNotConfigured": "AI はオンですが、プロバイダーのキーもエンドポイントも設定されていません。",
+				"s3": "S3 互換ストレージが応答しています。",
+				"local": "組み込みのローカルストアに書き込めます。",
+				"storageOff": "アップロードはオフです。S3 ストレージがなく、ローカルストアも無効になっています。",
+				"denied": "ストレージサービスがチェックを拒否しました。バケットポリシーで許可されていれば、アップロードは引き続き機能する場合があります。",
+				"notWritable": "ローカルストアのフォルダーに書き込めません。",
+				"recentErrors_other": "過去 24 時間に {{count}} 件の呼び出しが失敗しました。",
+				"smtpOk": "メールサーバーにサインインしました。メッセージは送信していません。",
+				"smtpAuth": "メールサーバーがユーザー名またはパスワードを拒否しました。",
+				"smtpConnection": "メールサーバーに接続できません。",
+				"smtpTls": "メールサーバーへの安全な接続に失敗しました。",
+				"smtpUnknown": "メールサーバーのチェックに失敗しました。詳細はサーバーログにあります。"
+			},
+			"activity": {
+				"title": "キューと接続",
+				"description": "キューはインスタンス全体の値です。接続はこのサーバーのみの値です。",
+				"emailBacklog": "送信待ちのメール",
+				"webhookPending": "待機中の Webhook",
+				"webhookFailed": "失敗した Webhook（24 時間）",
+				"boardSockets": "ボードの接続",
+				"userSockets": "アプリの接続",
+				"pageRooms": "共同編集中のページ",
+				"metrics": "Prometheus メトリクス: {{state}}",
+				"metricsOff": "オフ",
+				"metricsToken": "オン（トークン付きの /api/metrics）",
+				"metricsPort": "オン（ポート {{port}} の /metrics）",
+				"metricsNoEndpoint": "オン（ただしトークンもポートも未設定）"
+			},
+			"jobs": {
+				"title": "バックグラウンドジョブ",
+				"description": "このサーバーの起動以降にスケジュールされたジョブです。",
+				"empty": "このサーバーではバックグラウンドジョブがスケジュールされていません。",
+				"name": "ジョブ",
+				"lastRun": "最終実行",
+				"outcome": "最終結果",
+				"runs": "実行回数",
+				"failures": "失敗",
+				"running": "実行中",
+				"notRun": "未実行"
+			},
+			"failures": {
+				"title": "最近の失敗",
+				"description": "このサーバーの起動以降に失敗した、最新のジョブと AI 呼び出しです。Webhook の失敗は「一般」ページにあります。",
+				"empty": "このサーバーの起動以降、失敗はありません。",
+				"sourceJob": "ジョブ",
+				"sourceAi": "AI",
+				"sourceEmail": "メール",
+				"seeLog": "一部の項目が失敗しました。詳細はサーバーログにあります。"
+			}
+		},
+		"update": {
+			"title": "更新のお知らせ",
+			"label": "新しいバージョンを確認",
+			"hint": "このサーバーは 1 日 1 回、公開されているリリース一覧を読み込み、新しいバージョンが出るとインスタンス管理者に知らせます。このインスタンスに関する情報は一切送信しません。",
+			"off": "オフ。このサーバーは更新を確認しません。",
+			"notChecked": "まだ確認していません。",
+			"upToDate": "最新です。{{current}} が最新バージョンです。",
+			"available": "バージョン {{latest}} が利用可能です。このサーバーは {{current}} で稼働しています。",
+			"checkedAt": "確認日時: {{time}}",
+			"errorUnreachable": "リリース一覧に接続できません。サーバーは 1 時間以内に再試行します。",
+			"errorInvalid": "リリース一覧から、このサーバーが読み取れない応答が返されました。",
+			"releaseNotes": "リリースノート",
+			"dismiss": "閉じる",
+			"bannerTitle": "Margaya {{version}} が利用可能です",
+			"bannerDescription": "このサーバーは {{current}} で稼働しています。このお知らせはインスタンス管理者にのみ表示されます。"
+		},
 		"nav": {
 			"admins": "管理者",
 			"authentication": "認証",
@@ -9457,7 +10069,8 @@
 			"general": "一般",
 			"publicBoards": "公開ボード",
 			"workspaces": "ワークスペース",
-			"ai": "AI"
+			"ai": "AI",
+			"health": "稼働状況"
 		},
 		"lockedCallout": "これらの設定は、このサーバーの環境変数で管理されています。ここでの変更は無効です。",
 		"source": {
@@ -9518,7 +10131,7 @@
 			},
 			"deliveryFailures": {
 				"title": "最近の配信失敗",
-				"description": "過去 7 日間に再試行の上限に達したワークスペースの Webhook です。メールとバックグラウンドジョブのエラーはサーバーログにのみ記録されます。",
+				"description": "過去 7 日間に再試行の上限に達したワークスペースの Webhook です。失敗したバックグラウンドジョブと AI 呼び出しは「稼働状況」ページにあります。",
 				"empty": "過去 7 日間に配信の失敗はありません。",
 				"when": "日時",
 				"workspace": "ワークスペース",
@@ -10082,6 +10695,19 @@
 		}
 	},
 	"ai": {
+		"provenance": {
+			"label": "AI 生成",
+			"edited": "{{name}} が編集（元は AI 生成）",
+			"someone": "誰か",
+			"byAgent": "エージェント {{name}} が作成",
+			"unknownAgent": "削除されたエージェント",
+			"byFeature": "AI（{{feature}}）で作成し、人が承認",
+			"byAssist": "AI で作成し、人が承認",
+			"model": "モデル: {{model}}"
+		},
+		"disclosure": {
+			"chat": "このチャットの相手は人ではなく、AI アシスタントです。"
+		},
 		"rules": {
 			"title": "説明からルールを作成",
 			"description": "自動化を普段の言葉で書いてください。AI が通常のルールに変換し、編集・最近の履歴での試行・保存ができます。保存したルールは AI なしで動作します。",
@@ -10755,6 +11381,7 @@
 			"triage": "トリアージの提案",
 			"translate": "翻訳",
 			"brief": "関係者向けブリーフ",
+			"project_update": "進捗報告の下書き",
 			"agent_run": "エージェント",
 			"rule_compiler": "自動化ルール",
 			"capture": "課題として取り込み",
@@ -10981,7 +11608,7 @@
 			"webSearchUnavailable": "このインスタンスではウェブ検索が設定されていません。",
 			"webSearchLocalOnly": "AI がローカルモデルのみを使用している間は使われません。",
 			"storeConversations": "チャット履歴をサーバーに保存",
-			"storeConversationsHint": "各メンバーの会話をワークスペースに保存し、どのデバイスからでも開き直せるようにします。オフ: 会話は各ブラウザにのみ保存されます。",
+			"storeConversationsHint": "各メンバーの会話をワークスペースに保存し、どのデバイスからでも開き直せるようにします。オフ: 会話は各デバイスにのみ保存されます。",
 			"allowAutopilot": "オートパイロットを許可",
 			"allowAutopilotHint": "作成モードで確認なしに変更を適用できるようにします。すべての変更は記録され、元に戻すことができます。",
 			"storesPrompts": "プロンプトを保存中"
@@ -11078,6 +11705,10 @@
 				"link_tasks": "タスクをリンク",
 				"delete_task": "タスクを削除",
 				"bulk_move_status": "複数のタスクのステータスを変更",
+				"create_task": "タスクを作成",
+				"set_task_cycle": "サイクルを設定",
+				"set_task_modules": "モジュールを設定",
+				"set_custom_field": "カスタムフィールドを設定",
 				"ask_person": "質問する",
 				"web_search": "Web 検索",
 				"connector": "外部サービス: {{tool}}",
@@ -11113,6 +11744,7 @@
 				"after": "変更後",
 				"openPage": "ページを開く",
 				"openSubtask": "サブタスクを開く",
+				"openTask": "タスクを開く",
 				"openLinked": "リンクされたタスクを開く",
 				"empty": "(空)",
 				"fields": {
@@ -11129,7 +11761,12 @@
 					"delete": "ゴミ箱に移動",
 					"connectorCall": "{{connector}} の呼び出し",
 					"pageContent": "ページの内容",
-					"pageSection": "追加されたセクション"
+					"pageSection": "追加されたセクション",
+					"task": "新しいタスク",
+					"cycle": "サイクル",
+					"modulesAdded": "モジュールに追加",
+					"modulesRemoved": "モジュールから削除",
+					"customField": "カスタムフィールド {{field}}"
 				},
 				"undoPageError": "この編集を元に戻せませんでした。その後ページが変更されています。代わりに履歴から以前のバージョンを復元してください。"
 			},
@@ -11560,6 +12197,115 @@
 			"noAccess": "このワークスペースで AI を使用するには権限が必要です。"
 		}
 	},
+	"projectUpdates": {
+		"documentTitle": "進捗報告 · {{project}}",
+		"newUpdate": "新しい進捗報告",
+		"loadError": "進捗報告を読み込めませんでした。",
+		"retry": "再試行",
+		"loadMore": "以前の進捗報告を表示",
+		"empty": {
+			"title": "進捗報告はまだありません",
+			"description": "短い進捗報告を投稿して、プロジェクトの状況を全員に共有しましょう。"
+		},
+		"health": {
+			"on_track": "順調",
+			"at_risk": "リスクあり",
+			"off_track": "遅延"
+		},
+		"edited": "編集済み",
+		"actions": "進捗報告の操作",
+		"edit": "編集",
+		"delete": "削除",
+		"deleted": "進捗報告を削除しました",
+		"deletedUser": "削除されたユーザー",
+		"cardLabel": "{{name}} の進捗報告",
+		"deleteDialog": {
+			"title": "この進捗報告を削除しますか？",
+			"description": "進捗報告とそのコメント、リアクションが全員に対して削除されます。",
+			"error": "進捗報告を削除できませんでした。"
+		},
+		"fields": {
+			"health": "状況",
+			"summary": "概要",
+			"summaryPlaceholder": "プロジェクトの状況はいかがですか？",
+			"highlights": "ハイライト",
+			"blockers": "障害とリスク",
+			"nextSteps": "次のステップ"
+		},
+		"composer": {
+			"title": "新しい進捗報告",
+			"editTitle": "進捗報告を編集",
+			"draftWithAi": "AI で下書き",
+			"draftFromData": "プロジェクトのデータから下書き",
+			"aiFallback": "現在 AI を利用できないため、テンプレートから下書きを作成しました。",
+			"draftError": "進捗報告の下書きを作成できませんでした。",
+			"factsLine": "最新データ: 完了 {{completed}} 件、移動 {{moved}} 件、期限切れ {{overdue}} 件、ブロック中 {{blocked}} 件。",
+			"cancel": "キャンセル",
+			"post": "進捗報告を投稿",
+			"save": "保存",
+			"posted": "進捗報告を投稿しました",
+			"saved": "進捗報告を保存しました",
+			"saveError": "進捗報告を保存できませんでした。"
+		},
+		"facts": {
+			"summary": "投稿時のデータ: {{percent}}% 完了 · 完了 {{completed}} 件 · 移動 {{moved}} 件 · 期限切れ {{overdue}} 件 · ブロック中 {{blocked}} 件",
+			"cycle": "{{name}}: {{percent}}% 完了（{{total}} 件中 {{completed}} 件）",
+			"forecast": "予測: {{date}} までに完了する確率 85%",
+			"overdue": "期限切れ",
+			"blocked": "ブロック中",
+			"completed": "完了"
+		},
+		"comments": {
+			"toggle_other": "コメント {{count}} 件",
+			"label": "コメント",
+			"placeholder": "コメントを入力…",
+			"send": "コメント",
+			"delete": "コメントを削除",
+			"error": "コメントを追加できませんでした。",
+			"loadError": "コメントを読み込めませんでした。"
+		},
+		"follow": {
+			"follow": "進捗報告をフォロー",
+			"unfollow": "進捗報告のフォローを解除",
+			"error": "フォロー設定を変更できませんでした。"
+		},
+		"reminder": {
+			"label": "プロジェクトリーダーへの毎週のリマインダー",
+			"weekday": "リマインダーの曜日",
+			"noLead": "受け取るにはプロジェクトリーダーを設定してください。",
+			"error": "リマインダーを保存できませんでした。"
+		},
+		"widget": {
+			"title": "プロジェクトの進捗報告",
+			"empty": "プロジェクトの進捗報告はまだありません。",
+			"error": "プロジェクトの進捗報告を読み込めませんでした。"
+		},
+		"template": {
+			"summary": "プロジェクトの状況は「{{health}}」です: {{percent}}% 完了（{{total}} 件中 {{completed}} 件のタスク）、未完了 {{open}} 件。",
+			"changesSinceUpdate": "前回の進捗報告以降: 完了 {{completed}} 件、移動 {{moved}} 件。",
+			"changesLastWeek": "過去 7 日間: 完了 {{completed}} 件、移動 {{moved}} 件。",
+			"forecast": "予測では、{{date}} までに完了する確率は 85% です。",
+			"cycle": "{{name}}: {{percent}}% 完了（{{total}} 件中 {{completed}} 件）、{{date}} に終了",
+			"overdue_other": "期限切れのタスク {{count}} 件:",
+			"blocked_other": "ブロック中のタスク {{count}} 件:",
+			"more_other": "ほか {{count}} 件"
+		},
+		"notifications": {
+			"posted": {
+				"title": "{{authorName}} さんが {{projectName}} の進捗報告を投稿しました",
+				"verb": "が {{projectName}} の進捗報告を投稿しました"
+			},
+			"comment": {
+				"title": "{{commenterName}} さんが {{projectName}} の進捗報告にコメントしました",
+				"verb": "が {{projectName}} の進捗報告にコメントしました"
+			},
+			"reminder": {
+				"title": "{{projectName}} の進捗報告を投稿する時期です",
+				"content": "短い進捗報告で、プロジェクトの状況を共有しましょう。"
+			},
+			"open": "進捗報告を開く"
+		}
+	},
 	"insight": {
 		"close": "閉じる",
 		"retry": "再試行",
@@ -11766,7 +12512,13 @@
 			"waitingOn": "{{keys}} を待っています",
 			"hiddenBlockers_other": "表示できないタスク {{count}} 件",
 			"followingHeading": "フォロー中のタスクの変更",
-			"changes_other": "{{count}} 件の変更"
+			"changes_other": "{{count}} 件の変更",
+			"projectUpdatesHeading": "フォロー中のプロジェクトの進捗報告",
+			"health": {
+				"on_track": "順調",
+				"at_risk": "リスクあり",
+				"off_track": "遅延"
+			}
 		},
 		"batchSubject": {
 			"task_other": "{{title}} の更新 {{count}} 件",
@@ -11815,6 +12567,10 @@
 		"notificationText": {
 			"commentWithoutPreview": "「{{taskTitle}}」に新しいコメントがあります",
 			"pushFixedLine": "詳細を確認するには Margaya を開いてください。"
+		},
+		"quietSummary": {
+			"title": "通知を再開しました",
+			"body_other": "一時停止中に {{count}} 件の通知が届きました。"
 		}
 	},
 	"download": {
@@ -12051,7 +12807,11 @@
 				"updateInstall": "再起動してアップデート",
 				"updating": "アップデート中…",
 				"updatePackage": "バージョン {{version}} を利用できます。新しいパッケージをダウンロードしてアップデートしてください。",
-				"updateDownload": "ダウンロード"
+				"updateDownload": "ダウンロード",
+				"openAtLoginHint": "このコンピューターにサインインしたときに、Margaya をバックグラウンドで起動します。",
+				"updatesLabel": "アップデート",
+				"diagnosticsLabel": "診断",
+				"diagnosticsHint": "不具合の報告用に、アプリのバージョン、サーバーの一覧、最近のログ行をコピーします。サインイン用のトークンは含まれません。"
 			},
 			"quickAdd": {
 				"title": "クイック追加",
@@ -12070,6 +12830,10 @@
 			"downloads": {
 				"finished": "{{file}} をダウンロードしました",
 				"failed": "{{file}} をダウンロードできませんでした"
+			},
+			"notifications": {
+				"releasedTitle": "通知を再開しました",
+				"releasedBody": "一時停止中に届いた通知: {{count}} 件"
 			},
 			"menu": {
 				"about": "Margaya について",

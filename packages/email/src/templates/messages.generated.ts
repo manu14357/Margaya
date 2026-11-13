@@ -91,7 +91,13 @@ const messages = {
 			"hiddenBlockers_other": "{{count}} tasks you can't see",
 			"followingHeading": "Changes on tasks you follow",
 			"changes_one": "{{count}} change",
-			"changes_other": "{{count}} changes"
+			"changes_other": "{{count}} changes",
+			"projectUpdatesHeading": "Updates on projects you follow",
+			"health": {
+				"on_track": "On track",
+				"at_risk": "At risk",
+				"off_track": "Off track"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} updates on {{title}}",
@@ -143,6 +149,11 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "New comment on {{taskTitle}}",
 			"pushFixedLine": "Open Margaya to see the details."
+		},
+		"quietSummary": {
+			"title": "Notifications are back on",
+			"body_one": "{{count}} notification arrived while they were paused.",
+			"body_other": "{{count}} notifications arrived while they were paused."
 		}
 	},
 	az: {
@@ -232,7 +243,13 @@ const messages = {
 			"hiddenBlockers_other": "görə bilmədiyiniz {{count}} tapşırıq",
 			"followingHeading": "İzlədiyiniz tapşırıqlardakı dəyişikliklər",
 			"changes_one": "{{count}} dəyişiklik",
-			"changes_other": "{{count}} dəyişiklik"
+			"changes_other": "{{count}} dəyişiklik",
+			"projectUpdatesHeading": "İzlədiyiniz layihələrdəki yeniləmələr",
+			"health": {
+				"on_track": "Plan üzrə",
+				"at_risk": "Risk altında",
+				"off_track": "Plandan kənarda"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{title}} üzrə {{count}} yeniləmə",
@@ -284,6 +301,11 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} tapşırığına yeni şərh",
 			"pushFixedLine": "Təfərrüatları görmək üçün Margaya-nı açın."
+		},
+		"quietSummary": {
+			"title": "Bildirişlər yenidən aktivdir",
+			"body_one": "Bildirişlər dayandırılmışkən {{count}} bildiriş gəldi.",
+			"body_other": "Bildirişlər dayandırılmışkən {{count}} bildiriş gəldi."
 		}
 	},
 	de: {
@@ -373,7 +395,13 @@ const messages = {
 			"hiddenBlockers_other": "{{count}} Aufgaben, die du nicht sehen kannst",
 			"followingHeading": "Änderungen an Aufgaben, denen du folgst",
 			"changes_one": "{{count}} Änderung",
-			"changes_other": "{{count}} Änderungen"
+			"changes_other": "{{count}} Änderungen",
+			"projectUpdatesHeading": "Statusupdates zu Projekten, denen du folgst",
+			"health": {
+				"on_track": "Im Plan",
+				"at_risk": "Gefährdet",
+				"off_track": "Nicht im Plan"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} Aktualisierung zu {{title}}",
@@ -425,6 +453,11 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Neuer Kommentar zu „{{taskTitle}}“",
 			"pushFixedLine": "Öffne Margaya, um die Details zu sehen."
+		},
+		"quietSummary": {
+			"title": "Benachrichtigungen sind wieder aktiv",
+			"body_one": "{{count}} Benachrichtigung ist während der Pause eingegangen.",
+			"body_other": "{{count}} Benachrichtigungen sind während der Pause eingegangen."
 		}
 	},
 	el: {
@@ -514,7 +547,13 @@ const messages = {
 			"hiddenBlockers_other": "{{count}} εργασίες που δεν μπορείτε να δείτε",
 			"followingHeading": "Αλλαγές σε εργασίες που παρακολουθείτε",
 			"changes_one": "{{count}} αλλαγή",
-			"changes_other": "{{count}} αλλαγές"
+			"changes_other": "{{count}} αλλαγές",
+			"projectUpdatesHeading": "Ενημερώσεις για έργα που παρακολουθείτε",
+			"health": {
+				"on_track": "Εντός πορείας",
+				"at_risk": "Σε κίνδυνο",
+				"off_track": "Εκτός πορείας"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} ενημέρωση για {{title}}",
@@ -566,6 +605,11 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Νέο σχόλιο στην εργασία {{taskTitle}}",
 			"pushFixedLine": "Ανοίξτε το Margaya για να δείτε τις λεπτομέρειες."
+		},
+		"quietSummary": {
+			"title": "Οι ειδοποιήσεις ενεργοποιήθηκαν ξανά",
+			"body_one": "{{count}} ειδοποίηση έφτασε όσο οι ειδοποιήσεις ήταν σε παύση.",
+			"body_other": "{{count}} ειδοποιήσεις έφτασαν όσο οι ειδοποιήσεις ήταν σε παύση."
 		}
 	},
 	es: {
@@ -661,7 +705,13 @@ const messages = {
 			"followingHeading": "Cambios en las tareas que sigues",
 			"changes_one": "{{count}} cambio",
 			"changes_many": "{{count}} cambios",
-			"changes_other": "{{count}} cambios"
+			"changes_other": "{{count}} cambios",
+			"projectUpdatesHeading": "Actualizaciones de los proyectos que sigues",
+			"health": {
+				"on_track": "En buen camino",
+				"at_risk": "En riesgo",
+				"off_track": "Desviado"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} actualización en {{title}}",
@@ -716,6 +766,12 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Nuevo comentario en {{taskTitle}}",
 			"pushFixedLine": "Abre Margaya para ver los detalles."
+		},
+		"quietSummary": {
+			"title": "Las notificaciones vuelven a estar activas",
+			"body_one": "{{count}} notificación llegó durante la pausa.",
+			"body_many": "{{count}} notificaciones llegaron durante la pausa.",
+			"body_other": "{{count}} notificaciones llegaron durante la pausa."
 		}
 	},
 	fr: {
@@ -811,7 +867,13 @@ const messages = {
 			"followingHeading": "Modifications des tâches que vous suivez",
 			"changes_one": "{{count}} modification",
 			"changes_many": "{{count}} modifications",
-			"changes_other": "{{count}} modifications"
+			"changes_other": "{{count}} modifications",
+			"projectUpdatesHeading": "Points d'avancement des projets que vous suivez",
+			"health": {
+				"on_track": "En bonne voie",
+				"at_risk": "À risque",
+				"off_track": "En difficulté"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} mise à jour sur {{title}}",
@@ -866,6 +928,12 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Nouveau commentaire sur {{taskTitle}}",
 			"pushFixedLine": "Ouvrez Margaya pour voir les détails."
+		},
+		"quietSummary": {
+			"title": "Les notifications sont réactivées",
+			"body_one": "{{count}} notification est arrivée pendant la pause.",
+			"body_many": "{{count}} notifications sont arrivées pendant la pause.",
+			"body_other": "{{count}} notifications sont arrivées pendant la pause."
 		}
 	},
 	hi: {
@@ -955,7 +1023,13 @@ const messages = {
 			"hiddenBlockers_other": "{{count}} कार्य जिन्हें आप नहीं देख सकते",
 			"followingHeading": "आपके फ़ॉलो किए कार्यों में बदलाव",
 			"changes_one": "{{count}} बदलाव",
-			"changes_other": "{{count}} बदलाव"
+			"changes_other": "{{count}} बदलाव",
+			"projectUpdatesHeading": "आपके फ़ॉलो किए गए प्रोजेक्ट के अपडेट",
+			"health": {
+				"on_track": "सही दिशा में",
+				"at_risk": "जोखिम में",
+				"off_track": "पटरी से बाहर"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{title}} पर {{count}} अपडेट",
@@ -1007,6 +1081,11 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} पर नई टिप्पणी",
 			"pushFixedLine": "विवरण देखने के लिए Margaya खोलें।"
+		},
+		"quietSummary": {
+			"title": "सूचनाएँ फिर से चालू हैं",
+			"body_one": "सूचनाएँ रुकी रहने के दौरान {{count}} सूचना आई।",
+			"body_other": "सूचनाएँ रुकी रहने के दौरान {{count}} सूचनाएँ आईं।"
 		}
 	},
 	id: {
@@ -1090,7 +1169,13 @@ const messages = {
 			"waitingOn": "Menunggu {{keys}}",
 			"hiddenBlockers_other": "{{count}} tugas yang tidak dapat Anda lihat",
 			"followingHeading": "Perubahan pada tugas yang Anda ikuti",
-			"changes_other": "{{count}} perubahan"
+			"changes_other": "{{count}} perubahan",
+			"projectUpdatesHeading": "Pembaruan dari proyek yang Anda ikuti",
+			"health": {
+				"on_track": "Sesuai rencana",
+				"at_risk": "Berisiko",
+				"off_track": "Melenceng"
+			}
 		},
 		"batchSubject": {
 			"task_other": "{{count}} pembaruan pada {{title}}",
@@ -1139,6 +1224,10 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Komentar baru pada {{taskTitle}}",
 			"pushFixedLine": "Buka Margaya untuk melihat detailnya."
+		},
+		"quietSummary": {
+			"title": "Notifikasi aktif kembali",
+			"body_other": "{{count}} notifikasi masuk selama notifikasi dijeda."
 		}
 	},
 	it: {
@@ -1234,7 +1323,13 @@ const messages = {
 			"followingHeading": "Modifiche alle attività che segui",
 			"changes_one": "{{count}} modifica",
 			"changes_many": "{{count}} modifiche",
-			"changes_other": "{{count}} modifiche"
+			"changes_other": "{{count}} modifiche",
+			"projectUpdatesHeading": "Aggiornamenti dei progetti che segui",
+			"health": {
+				"on_track": "In linea",
+				"at_risk": "A rischio",
+				"off_track": "Fuori rotta"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} aggiornamento su {{title}}",
@@ -1289,6 +1384,12 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Nuovo commento su {{taskTitle}}",
 			"pushFixedLine": "Apri Margaya per vedere i dettagli."
+		},
+		"quietSummary": {
+			"title": "Le notifiche sono di nuovo attive",
+			"body_one": "{{count}} notifica è arrivata durante la pausa.",
+			"body_many": "{{count}} notifiche sono arrivate durante la pausa.",
+			"body_other": "{{count}} notifiche sono arrivate durante la pausa."
 		}
 	},
 	ja: {
@@ -1372,7 +1473,13 @@ const messages = {
 			"waitingOn": "{{keys}} を待っています",
 			"hiddenBlockers_other": "表示できないタスク {{count}} 件",
 			"followingHeading": "フォロー中のタスクの変更",
-			"changes_other": "{{count}} 件の変更"
+			"changes_other": "{{count}} 件の変更",
+			"projectUpdatesHeading": "フォロー中のプロジェクトの進捗報告",
+			"health": {
+				"on_track": "順調",
+				"at_risk": "リスクあり",
+				"off_track": "遅延"
+			}
 		},
 		"batchSubject": {
 			"task_other": "{{title}} の更新 {{count}} 件",
@@ -1421,6 +1528,10 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "「{{taskTitle}}」に新しいコメントがあります",
 			"pushFixedLine": "詳細を確認するには Margaya を開いてください。"
+		},
+		"quietSummary": {
+			"title": "通知を再開しました",
+			"body_other": "一時停止中に {{count}} 件の通知が届きました。"
 		}
 	},
 	ko: {
@@ -1504,7 +1615,13 @@ const messages = {
 			"waitingOn": "{{keys}} 대기 중",
 			"hiddenBlockers_other": "볼 수 없는 작업 {{count}}개",
 			"followingHeading": "팔로우 중인 작업의 변경",
-			"changes_other": "변경 {{count}}건"
+			"changes_other": "변경 {{count}}건",
+			"projectUpdatesHeading": "팔로우 중인 프로젝트의 업데이트",
+			"health": {
+				"on_track": "순조로움",
+				"at_risk": "위험",
+				"off_track": "지연"
+			}
 		},
 		"batchSubject": {
 			"task_other": "{{title}} 업데이트 {{count}}개",
@@ -1553,6 +1670,10 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}}에 새 댓글이 달렸습니다",
 			"pushFixedLine": "Margaya를 열어 세부 정보를 확인하세요."
+		},
+		"quietSummary": {
+			"title": "알림이 다시 켜졌습니다",
+			"body_other": "일시 중지된 동안 알림 {{count}}개가 도착했습니다."
 		}
 	},
 	mk: {
@@ -1642,7 +1763,13 @@ const messages = {
 			"hiddenBlockers_other": "{{count}} задачи што не можеш да ги видиш",
 			"followingHeading": "Промени на задачите што ги следиш",
 			"changes_one": "{{count}} промена",
-			"changes_other": "{{count}} промени"
+			"changes_other": "{{count}} промени",
+			"projectUpdatesHeading": "Ажурирања за проектите што ги следиш",
+			"health": {
+				"on_track": "Според план",
+				"at_risk": "Под ризик",
+				"off_track": "Надвор од план"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} ажурирање за {{title}}",
@@ -1694,6 +1821,11 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Нов коментар на {{taskTitle}}",
 			"pushFixedLine": "Отвори ја Margaya за да ги видиш деталите."
+		},
+		"quietSummary": {
+			"title": "Известувањата повторно се вклучени",
+			"body_one": "{{count}} известување пристигна додека известувањата беа паузирани.",
+			"body_other": "{{count}} известувања пристигнаа додека беа паузирани."
 		}
 	},
 	nl: {
@@ -1783,7 +1915,13 @@ const messages = {
 			"hiddenBlockers_other": "{{count}} taken die je niet kunt zien",
 			"followingHeading": "Wijzigingen in taken die je volgt",
 			"changes_one": "{{count}} wijziging",
-			"changes_other": "{{count}} wijzigingen"
+			"changes_other": "{{count}} wijzigingen",
+			"projectUpdatesHeading": "Updates van projecten die je volgt",
+			"health": {
+				"on_track": "Op schema",
+				"at_risk": "Risico",
+				"off_track": "Achter op schema"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} nieuwe update voor {{title}}",
@@ -1835,6 +1973,11 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Nieuwe reactie op {{taskTitle}}",
 			"pushFixedLine": "Open Margaya om de details te bekijken."
+		},
+		"quietSummary": {
+			"title": "Meldingen staan weer aan",
+			"body_one": "Er kwam {{count}} melding binnen tijdens de pauze.",
+			"body_other": "Er kwamen {{count}} meldingen binnen tijdens de pauze."
 		}
 	},
 	pl: {
@@ -1936,7 +2079,13 @@ const messages = {
 			"changes_one": "{{count}} zmiana",
 			"changes_few": "{{count}} zmiany",
 			"changes_many": "{{count}} zmian",
-			"changes_other": "{{count}} zmiany"
+			"changes_other": "{{count}} zmiany",
+			"projectUpdatesHeading": "Aktualizacje obserwowanych projektów",
+			"health": {
+				"on_track": "Zgodnie z planem",
+				"at_risk": "Zagrożony",
+				"off_track": "Opóźniony"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} aktualizacja w zadaniu {{title}}",
@@ -1994,6 +2143,13 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Nowy komentarz w {{taskTitle}}",
 			"pushFixedLine": "Otwórz Margaya, aby zobaczyć szczegóły."
+		},
+		"quietSummary": {
+			"title": "Powiadomienia są znowu włączone",
+			"body_one": "{{count}} powiadomienie przyszło podczas pauzy.",
+			"body_few": "{{count}} powiadomienia przyszły podczas pauzy.",
+			"body_many": "{{count}} powiadomień przyszło podczas pauzy.",
+			"body_other": "{{count}} powiadomienia przyszło podczas pauzy."
 		}
 	},
 	pt: {
@@ -2089,7 +2245,13 @@ const messages = {
 			"followingHeading": "Alterações em tarefas que você acompanha",
 			"changes_one": "{{count}} alteração",
 			"changes_many": "{{count}} alterações",
-			"changes_other": "{{count}} alterações"
+			"changes_other": "{{count}} alterações",
+			"projectUpdatesHeading": "Atualizações dos projetos que você acompanha",
+			"health": {
+				"on_track": "No prazo",
+				"at_risk": "Em risco",
+				"off_track": "Fora do prazo"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} atualização em {{title}}",
@@ -2144,6 +2306,12 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Novo comentário em {{taskTitle}}",
 			"pushFixedLine": "Abra o Margaya para ver os detalhes."
+		},
+		"quietSummary": {
+			"title": "As notificações voltaram",
+			"body_one": "{{count}} notificação chegou durante a pausa.",
+			"body_many": "{{count}} notificações chegaram durante a pausa.",
+			"body_other": "{{count}} notificações chegaram durante a pausa."
 		}
 	},
 	ru: {
@@ -2245,7 +2413,13 @@ const messages = {
 			"changes_one": "{{count}} изменение",
 			"changes_few": "{{count}} изменения",
 			"changes_many": "{{count}} изменений",
-			"changes_other": "{{count}} изменения"
+			"changes_other": "{{count}} изменения",
+			"projectUpdatesHeading": "Обновления отслеживаемых проектов",
+			"health": {
+				"on_track": "По плану",
+				"at_risk": "Под угрозой",
+				"off_track": "Отстаёт от плана"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} обновление в задаче {{title}}",
@@ -2303,6 +2477,13 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Новый комментарий к задаче «{{taskTitle}}»",
 			"pushFixedLine": "Откройте Margaya, чтобы посмотреть подробности."
+		},
+		"quietSummary": {
+			"title": "Уведомления снова включены",
+			"body_one": "{{count}} уведомление пришло во время паузы.",
+			"body_few": "{{count}} уведомления пришли во время паузы.",
+			"body_many": "{{count}} уведомлений пришло во время паузы.",
+			"body_other": "{{count}} уведомления пришло во время паузы."
 		}
 	},
 	tr: {
@@ -2392,7 +2573,13 @@ const messages = {
 			"hiddenBlockers_other": "göremediğiniz {{count}} görev",
 			"followingHeading": "Takip ettiğiniz görevlerdeki değişiklikler",
 			"changes_one": "{{count}} değişiklik",
-			"changes_other": "{{count}} değişiklik"
+			"changes_other": "{{count}} değişiklik",
+			"projectUpdatesHeading": "Takip ettiğiniz projelerdeki güncellemeler",
+			"health": {
+				"on_track": "Planlandığı gibi",
+				"at_risk": "Risk altında",
+				"off_track": "Plandan sapmış"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{title}} için {{count}} güncelleme",
@@ -2444,6 +2631,11 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} talebine yeni yorum",
 			"pushFixedLine": "Ayrıntıları görmek için Margaya'yı açın."
+		},
+		"quietSummary": {
+			"title": "Bildirimler yeniden açık",
+			"body_one": "Bildirimler duraklatılmışken {{count}} bildirim geldi.",
+			"body_other": "Bildirimler duraklatılmışken {{count}} bildirim geldi."
 		}
 	},
 	uk: {
@@ -2545,7 +2737,13 @@ const messages = {
 			"changes_one": "{{count}} зміна",
 			"changes_few": "{{count}} зміни",
 			"changes_many": "{{count}} змін",
-			"changes_other": "{{count}} зміни"
+			"changes_other": "{{count}} зміни",
+			"projectUpdatesHeading": "Оновлення проєктів, за якими ви стежите",
+			"health": {
+				"on_track": "За планом",
+				"at_risk": "Під загрозою",
+				"off_track": "Відхилення від плану"
+			}
 		},
 		"batchSubject": {
 			"task_one": "{{count}} оновлення в завданні {{title}}",
@@ -2603,6 +2801,13 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Новий коментар до {{taskTitle}}",
 			"pushFixedLine": "Відкрийте Margaya, щоб переглянути деталі."
+		},
+		"quietSummary": {
+			"title": "Сповіщення знову ввімкнено",
+			"body_one": "Під час паузи надійшло {{count}} сповіщення.",
+			"body_few": "Під час паузи надійшло {{count}} сповіщення.",
+			"body_many": "Під час паузи надійшло {{count}} сповіщень.",
+			"body_other": "Під час паузи надійшло {{count}} сповіщення."
 		}
 	},
 	vi: {
@@ -2686,7 +2891,13 @@ const messages = {
 			"waitingOn": "Đang chờ {{keys}}",
 			"hiddenBlockers_other": "{{count}} công việc bạn không xem được",
 			"followingHeading": "Thay đổi trên công việc bạn theo dõi",
-			"changes_other": "{{count}} thay đổi"
+			"changes_other": "{{count}} thay đổi",
+			"projectUpdatesHeading": "Cập nhật từ các dự án bạn theo dõi",
+			"health": {
+				"on_track": "Đúng tiến độ",
+				"at_risk": "Có rủi ro",
+				"off_track": "Chệch hướng"
+			}
 		},
 		"batchSubject": {
 			"task_other": "{{count}} cập nhật cho {{title}}",
@@ -2735,6 +2946,10 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "Bình luận mới trên {{taskTitle}}",
 			"pushFixedLine": "Mở Margaya để xem chi tiết."
+		},
+		"quietSummary": {
+			"title": "Thông báo đã bật lại",
+			"body_other": "{{count}} thông báo đã đến trong lúc thông báo bị tạm dừng."
 		}
 	},
 	zh: {
@@ -2818,7 +3033,13 @@ const messages = {
 			"waitingOn": "等待 {{keys}}",
 			"hiddenBlockers_other": "{{count}} 个你无法查看的任务",
 			"followingHeading": "你关注的任务的变更",
-			"changes_other": "{{count}} 处变更"
+			"changes_other": "{{count}} 处变更",
+			"projectUpdatesHeading": "你关注的项目的进展更新",
+			"health": {
+				"on_track": "进展顺利",
+				"at_risk": "有风险",
+				"off_track": "已偏离"
+			}
 		},
 		"batchSubject": {
 			"task_other": "“{{title}}”有 {{count}} 条新动态",
@@ -2867,6 +3088,10 @@ const messages = {
 		"notificationText": {
 			"commentWithoutPreview": "{{taskTitle}} 有新评论",
 			"pushFixedLine": "打开 Margaya 查看详情。"
+		},
+		"quietSummary": {
+			"title": "通知已恢复",
+			"body_other": "暂停期间收到了 {{count}} 条通知。"
 		}
 	},
 } satisfies Record<EmailLocale, object>;

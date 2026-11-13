@@ -487,6 +487,8 @@
 			"failedTitle": "Ủy quyền không thành công",
 			"loadingSubtitle": "Đang tải yêu cầu…",
 			"redirectUri": "URI chuyển hướng",
+			"metadataHost": "Ứng dụng khách được phát hành bởi",
+			"localRedirect": "Ứng dụng khách này đưa bạn trở lại một ứng dụng trên máy tính này. Bất kỳ ứng dụng nào trên máy tính của bạn cũng có thể chiếm địa chỉ này, vì vậy chỉ tiếp tục nếu chính bạn vừa mở ứng dụng khách đó.",
 			"signIn": "Đăng nhập",
 			"signInSubtitle": "Hãy đăng nhập trước khi phê duyệt MCP client này.",
 			"signInTitle": "Đăng nhập để tiếp tục",
@@ -573,17 +575,253 @@
 		}
 	},
 	"settings": {
+		"feedback": {
+			"send": {
+				"menuItem": "Gửi góp ý",
+				"title": "Gửi góp ý",
+				"description": "Cho những người vận hành máy chủ này biết điều gì hiệu quả và điều gì chưa. Góp ý của bạn ở lại trên máy chủ này.",
+				"mood": "Bạn cảm thấy thế nào về Margaya?",
+				"comment": "Bạn muốn nói thêm gì không? (không bắt buộc)",
+				"commentPlaceholder": "Điều gì tốt, điều gì cản trở bạn, bạn muốn thấy gì",
+				"context": "Được gửi kèm tên của bạn, loại trang bạn đang xem ({{page}}) và phiên bản ứng dụng ({{version}}). Không bao giờ kèm nội dung công việc.",
+				"submit": "Gửi",
+				"cancel": "Hủy",
+				"done": "Xong",
+				"thanks": "Cảm ơn bạn! Góp ý của bạn đã đến tay những người vận hành máy chủ này. Họ đọc mọi câu trả lời.",
+				"error": "Không thể gửi góp ý của bạn. Hãy thử lại."
+			},
+			"survey": {
+				"questionMood": "Margaya đang phục vụ bạn thế nào?",
+				"questionStars": "Bạn đánh giá Margaya thế nào?",
+				"questionNps": "Bạn có khả năng giới thiệu Margaya cho đồng nghiệp đến mức nào?",
+				"comment": "Bạn muốn nói thêm gì không? (không bắt buộc)",
+				"notNow": "Để sau",
+				"neverAsk": "Đừng hỏi lại",
+				"privacy": "Câu trả lời của bạn ở lại trên máy chủ này, kèm tên của bạn. Thay đổi điều này trong Tài khoản → Tùy chọn.",
+				"thanksTitle": "Cảm ơn bạn",
+				"thanks": "Chúng tôi đã ghi nhận. Câu trả lời của bạn giúp những người vận hành máy chủ này quyết định cần cải thiện điều gì.",
+				"whatsNew": "Xem có gì mới"
+			},
+			"scale": {
+				"veryUnhappy": "Rất không hài lòng",
+				"unhappy": "Không hài lòng",
+				"neutral": "Bình thường",
+				"happy": "Hài lòng",
+				"veryHappy": "Rất hài lòng",
+				"stars_other": "{{count}} sao",
+				"npsScore_other": "{{count}} trên 10",
+				"npsLow": "Hoàn toàn không",
+				"npsHigh": "Rất có thể",
+				"thumbsUp": "Hữu ích",
+				"thumbsDown": "Không hữu ích"
+			},
+			"pageTypes": {
+				"home": "Trang chủ",
+				"inbox": "Hộp thư đến",
+				"myWork": "Công việc của tôi",
+				"board": "Bảng",
+				"list": "Danh sách",
+				"timeline": "Dòng thời gian",
+				"calendar": "Lịch",
+				"task": "Công việc",
+				"cycles": "Chu kỳ",
+				"modules": "Mô-đun",
+				"views": "Chế độ xem",
+				"intake": "Tiếp nhận",
+				"pages": "Trang",
+				"analytics": "Phân tích",
+				"settings": "Cài đặt",
+				"other": "Khác"
+			},
+			"features": {
+				"cycles": "Chu kỳ",
+				"modules": "Mô-đun",
+				"pages": "Trang",
+				"views": "Chế độ xem",
+				"intake": "Tiếp nhận",
+				"analytics": "Phân tích"
+			},
+			"mine": {
+				"title": "Góp ý",
+				"description": "Những gì bạn gửi sẽ ở lại trên máy chủ này và chỉ quản trị viên của máy chủ mới đọc được, kèm tên và email của bạn.",
+				"survey": "Khảo sát định kỳ",
+				"surveyDescription": "Thỉnh thoảng, một thẻ nhỏ ở góc màn hình sẽ hỏi một câu. Tắt đi nếu bạn không muốn được hỏi.",
+				"send": "Gửi góp ý",
+				"sendDescription": "Đánh giá Margaya hoặc để lại bình luận bất cứ lúc nào. Tính năng này cũng có trong menu Trợ giúp và bảng lệnh.",
+				"data": "Góp ý của bạn",
+				"dataDescription": "Tải xuống bản sao mọi thứ bạn đã gửi, hoặc xóa chúng. Xóa tài khoản cũng sẽ xóa dữ liệu này.",
+				"download": "Tải xuống",
+				"downloadError": "Không thể tải xuống góp ý của bạn. Hãy thử lại.",
+				"delete": "Xóa tất cả",
+				"deleteTitle": "Xóa tất cả góp ý của bạn?",
+				"deleteDescription": "Mọi thứ bạn đã gửi sẽ bị xóa khỏi máy chủ này. Không thể hoàn tác thao tác này.",
+				"deleteConfirm": "Xóa",
+				"deleted_other": "Đã xóa {{count}} câu trả lời",
+				"deleteError": "Không thể xóa góp ý của bạn. Hãy thử lại."
+			},
+			"admin": {
+				"nav": "Góp ý",
+				"title": "Góp ý",
+				"subtitle": "Mọi người trên máy chủ này nghĩ gì về Margaya. Dữ liệu được lưu tại đây và không bao giờ gửi đi nơi khác.",
+				"settingsTitle": "Gửi góp ý",
+				"settingsDescription": "Mọi người đều có thể đánh giá Margaya hoặc để lại bình luận từ menu Trợ giúp, bảng lệnh hoặc phần tùy chọn của họ.",
+				"enabled": "Cho phép góp ý",
+				"enabledHint": "Tắt tùy chọn này sẽ ẩn Gửi góp ý và khảo sát. Các câu trả lời đã gửi vẫn được giữ lại.",
+				"surveyTitle": "Khảo sát định kỳ",
+				"surveyDescription": "Một thẻ nhỏ ở góc màn hình, không bao giờ là cửa sổ bật lên. Khảo sát không bao giờ hỏi trong 7 ngày đầu của một người, khi họ đang gõ hoặc đang mở hộp thoại, trong 30 ngày sau khi họ đóng nó, hoặc sau khi chọn Đừng hỏi lại.",
+				"surveyEnabled": "Thỉnh thoảng hỏi",
+				"surveyEnabledHint": "Hỏi khi đạt một điều kiện kích hoạt bên dưới, sau đó không hỏi lại cho đến khi hết khoảng thời gian chờ.",
+				"surveyNeedsFeedback": "Không có tác dụng khi góp ý đang tắt.",
+				"format": "Thang đo",
+				"formatHint": "Khuôn mặt phù hợp để thể hiện cảm xúc, ngôi sao để chấm điểm nhanh, còn 0–10 cho ra chỉ số Net Promoter Score.",
+				"formats": {
+					"faces3": "3 khuôn mặt",
+					"faces5": "5 khuôn mặt",
+					"stars": "5 ngôi sao",
+					"nps": "0–10 (NPS)",
+					"thumbs": "Ngón cái (tính năng)"
+				},
+				"tasksCompleted": "Sau số công việc hoàn thành",
+				"tasksCompletedHint": "Hỏi sau khi ai đó hoàn thành số công việc này kể từ lần khảo sát hỏi gần nhất. 0 sẽ tắt điều kiện kích hoạt này.",
+				"tasksUnit": "công việc",
+				"activeDays": "Sau số ngày hoạt động",
+				"activeDaysHint": "Hỏi sau khi ai đó đã dùng Margaya trong số ngày này. 0 sẽ tắt điều kiện kích hoạt này.",
+				"daysUnit": "ngày",
+				"interval": "Hỏi tối đa mỗi",
+				"intervalHint": "Khoảng thời gian ngắn nhất giữa hai lần khảo sát cho một người, từ 30 đến 365 ngày.",
+				"save": "Lưu",
+				"summaryTitle": "Tóm tắt",
+				"scale": "Thang đo",
+				"period": "Khoảng thời gian",
+				"lastDays_other": "{{count}} ngày qua",
+				"answers": "Câu trả lời",
+				"average": "Trung bình",
+				"outOf": "{{value}} / {{max}}",
+				"satisfaction": "Hài lòng",
+				"nps": "NPS",
+				"comments": "Bình luận",
+				"none": "–",
+				"bySource": "Tất cả thang đo: {{general}} từ Gửi góp ý, {{survey}} từ khảo sát, {{feature}} từ câu hỏi về tính năng.",
+				"summaryEmpty": "Chưa có câu trả lời nào trên thang đo này trong khoảng thời gian này.",
+				"distribution": "Phân bố",
+				"trend": "Câu trả lời hài lòng mỗi tuần",
+				"trendNps": "NPS mỗi tuần",
+				"week": "Tuần",
+				"responsesTitle": "Câu trả lời",
+				"source": "Nguồn",
+				"allSources": "Tất cả nguồn",
+				"allScales": "Tất cả thang đo",
+				"kinds": {
+					"general": "Gửi góp ý",
+					"survey": "Khảo sát",
+					"feature": "Câu hỏi về tính năng"
+				},
+				"commentsOnly": "Có bình luận",
+				"search": "Tìm bình luận hoặc người",
+				"responsesEmpty": "Chưa có góp ý nào. Câu trả lời sẽ xuất hiện ở đây khi mọi người gửi.",
+				"commentOnly": "Chỉ có bình luận",
+				"desktop": "Ứng dụng máy tính",
+				"loadMore": "Tải thêm",
+				"loadError": "Không thể tải góp ý.",
+				"retry": "Thử lại",
+				"exportCsv": "Xuất CSV",
+				"exportError": "Không thể xuất góp ý. Hãy thử lại.",
+				"delete": "Xóa câu trả lời",
+				"deleteError": "Không thể xóa. Hãy thử lại.",
+				"purge": "Xóa dữ liệu cũ",
+				"purgeTitle": "Xóa góp ý",
+				"purgeDescription": "Các câu trả lời bị xóa vĩnh viễn khỏi máy chủ này. Thao tác xóa được ghi lại trong nhật ký kiểm tra.",
+				"purgeWhich": "Những câu trả lời nào",
+				"purgeOlder_other": "Cũ hơn {{count}} ngày",
+				"purgeAll": "Tất cả câu trả lời",
+				"purgeConfirm": "Xóa",
+				"purged_other": "Đã xóa {{count}} câu trả lời",
+				"cancel": "Hủy",
+				"auditDeleted": "Đã xóa góp ý"
+			}
+		},
+		"calendarFeed": {
+			"title": "Đăng ký trong lịch",
+			"description": "Xem các ngày trong Margaya ngay trong ứng dụng lịch của bạn. Nguồn cấp chỉ để đọc và làm mới khoảng mỗi giờ một lần.",
+			"menuItem": "Đăng ký trong lịch",
+			"timezoneNote": "Công việc hiển thị dưới dạng sự kiện cả ngày, vào những ngày được tính theo múi giờ tài khoản của bạn, hoặc theo múi giờ của không gian làm việc nếu bạn chưa chọn.",
+			"loadError": "Không thể tải nguồn cấp lịch của bạn. Hãy thử lại sau.",
+			"hiddenProject": "Một dự án bạn không còn xem được",
+			"privacy": "Bất kỳ ai có liên kết này đều xem được tiêu đề và ngày trong đó. Hãy giữ bí mật, và tạo liên kết mới hoặc thu hồi nếu nó bị lộ.",
+			"myTasks": {
+				"label": "Công việc của tôi",
+				"description": "Các công việc được giao cho bạn có ngày bắt đầu hoặc ngày đến hạn."
+			},
+			"planning": {
+				"label": "Cột mốc và chu kỳ",
+				"description": "Cột mốc và ngày của chu kỳ từ mọi dự án bạn xem được trong không gian làm việc này."
+			},
+			"project": {
+				"settingsDescription": "Mọi công việc có ngày, cột mốc và chu kỳ trong dự án này.",
+				"dialogDescription": "Theo dõi mọi công việc có ngày, cột mốc và chu kỳ của {{project}} trong ứng dụng lịch của bạn.",
+				"manageHint": "Bạn có thể xem và thu hồi mọi liên kết lịch của mình trong Cài đặt, tại Tài khoản → Tùy chọn."
+			},
+			"calendarName": {
+				"myTasks": "Công việc của tôi · {{workspace}}",
+				"planning": "Cột mốc và chu kỳ · {{workspace}}",
+				"project": "{{project}} · {{workspace}}"
+			},
+			"status": {
+				"none": "Chưa có liên kết",
+				"active": "Liên kết {{start}}…, tạo ngày {{date}}",
+				"lastUsed": "lịch đọc lần cuối {{when}}",
+				"neverUsed": "chưa có lịch nào đọc"
+			},
+			"actions": {
+				"create": "Tạo liên kết",
+				"createFor": "Tạo liên kết lịch cho {{name}}",
+				"regenerate": "Liên kết mới",
+				"regenerateFor": "Tạo liên kết lịch mới cho {{name}}",
+				"revoke": "Thu hồi",
+				"revokeFor": "Thu hồi liên kết lịch cho {{name}}",
+				"copy": "Sao chép",
+				"copied": "Đã sao chép",
+				"open": "Mở trong ứng dụng lịch",
+				"done": "Xong"
+			},
+			"link": {
+				"title": "Liên kết lịch của bạn",
+				"label": "Liên kết đăng ký",
+				"once": "Hãy sao chép ngay: liên kết chỉ hiển thị một lần. Nếu bị mất, hãy tạo liên kết mới."
+			},
+			"howTo": {
+				"title": "Cách thêm",
+				"step1": "Sao chép liên kết.",
+				"step2": "Trong ứng dụng lịch, chọn thêm hoặc đăng ký lịch từ URL.",
+				"step3": "Dán liên kết. Thay đổi sẽ xuất hiện ở lần làm mới tiếp theo của ứng dụng."
+			},
+			"regenerateConfirm": {
+				"title": "Tạo liên kết mới?",
+				"description": "Liên kết hiện tại ngừng hoạt động ngay lập tức. Các lịch đang dùng nó sẽ ngừng cập nhật cho đến khi bạn thêm liên kết mới.",
+				"confirm": "Tạo liên kết mới"
+			},
+			"revokeConfirm": {
+				"title": "Thu hồi liên kết lịch này?",
+				"description": "Liên kết ngừng hoạt động ngay lập tức, và các lịch đang dùng nó sẽ ngừng cập nhật.",
+				"confirm": "Thu hồi liên kết"
+			},
+			"toast": {
+				"created": "Đã tạo liên kết lịch",
+				"revoked": "Đã thu hồi liên kết lịch",
+				"copied": "Đã sao chép liên kết",
+				"copyError": "Không thể sao chép liên kết. Hãy chọn và tự sao chép.",
+				"error": "Không thể cập nhật liên kết lịch"
+			}
+		},
 		"account": "Tài khoản",
-		"information": "Thông tin",
+		"information": "Hồ sơ",
 		"notifications": "Thông báo",
 		"preferences": "Tùy chọn",
 		"apiKeys": "Khóa API",
 		"informationPage": {
-			"pageTitle": "Thông tin cá nhân",
-			"title": "Thông tin cá nhân",
-			"subtitle": "Quản lý thông tin cá nhân và tài khoản của bạn.",
-			"sectionTitle": "Thông tin tài khoản",
-			"sectionSubtitle": "Quản lý hồ sơ và thông tin tài khoản của bạn.",
+			"pageTitle": "Hồ sơ",
+			"title": "Hồ sơ",
+			"subtitle": "Tên, ảnh và email bạn dùng để đăng nhập.",
 			"profilePicture": "Ảnh đại diện",
 			"fullName": "Họ và tên",
 			"fullNamePlaceholder": "Nhập tên của bạn",
@@ -623,14 +861,12 @@
 		"notificationsPage": {
 			"pageTitle": "Thông báo",
 			"title": "Thông báo",
-			"subtitle": "Chọn cách Margaya gửi thông báo tài khoản của bạn và các kênh sử dụng.",
+			"subtitle": "Chọn những gì Margaya báo cho bạn, nơi bạn nhận thông báo và âm thanh của chúng.",
 			"statusConnected": "Đã kết nối",
 			"statusPaused": "Đã tạm dừng",
 			"emailTitle": "Email",
 			"emailDescription": "Dùng email tài khoản của bạn làm nơi nhận thông báo.",
-			"accountEmailLabel": "Email tài khoản",
 			"accountEmailNoAddress": "Không có email tài khoản",
-			"accountEmailHint": "Thông báo qua email luôn được gửi đến email của tài khoản đang đăng nhập.",
 			"saveChanges": "Lưu thay đổi",
 			"disconnect": "Ngắt kết nối",
 			"ntfyTitle": "ntfy",
@@ -731,7 +967,7 @@
 				"title": "Âm thanh",
 				"description": "Phát âm thanh khi có thông báo trong lúc Margaya đang mở trên trình duyệt của bạn.",
 				"enabled": "Phát âm thanh",
-				"enabledDescription": "Lựa chọn âm thanh của bạn được lưu theo tài khoản và áp dụng trên mọi trình duyệt.",
+				"enabledDescription": "Lựa chọn âm thanh của bạn được lưu theo tài khoản và áp dụng trên mọi thiết bị.",
 				"volume": "Âm lượng",
 				"volumeValue": "{{value}}%",
 				"categoryMentions": "Lượt nhắc đến và giao việc",
@@ -751,14 +987,38 @@
 				"soundMarimba": "Đàn marimba",
 				"preview": "Phát {{sound}}",
 				"quietHours": "Giờ yên lặng",
-				"quietHoursDescription": "Không phát âm thanh trong khoảng thời gian này, theo múi giờ của tài khoản.",
+				"quietHoursDescription": "Mỗi ngày trong khoảng thời gian này, thông báo sẽ tạm dừng và im lặng.",
 				"quietFrom": "Từ",
 				"quietTo": "Đến",
 				"deviceMute": "Tắt tiếng trên thiết bị này",
 				"deviceMuteDescription": "Chỉ tắt tiếng trình duyệt này; các thiết bị khác của bạn vẫn phát âm thanh.",
 				"previewFailed": "Trình duyệt của bạn không phát được âm thanh. Hãy kiểm tra xem tab hoặc trang web này có đang bị tắt tiếng không.",
 				"desktopDescription": "Trong ứng dụng máy tính, thông báo sẽ phát âm thanh Margaya bạn đã chọn ở đây, theo mức âm lượng của bạn, khi các cài đặt này yêu cầu. Chế độ Không làm phiền sẽ tắt tiếng âm thanh này.",
-				"deviceMuteDescriptionDesktop": "Chỉ tắt tiếng ứng dụng máy tính này; các thiết bị khác của bạn vẫn phát âm thanh."
+				"deviceMuteDescriptionDesktop": "Chỉ tắt tiếng ứng dụng máy tính này; các thiết bị khác của bạn vẫn phát âm thanh.",
+				"previewFailedDesktop": "Âm thanh không phát được. Hãy kiểm tra xem máy tính của bạn có đang bị tắt tiếng không."
+			},
+			"quiet": {
+				"title": "Giờ yên lặng và tập trung",
+				"description": "Tạm dừng thông báo trong một lúc, hoặc mỗi đêm. Hộp thư đến của bạn vẫn tiếp tục nhận; không có gì phát âm thanh.",
+				"focus": "Chế độ tập trung",
+				"focusDescription": "Tạm dừng thông báo từ bây giờ. Cũng có trong menu tài khoản và bảng lệnh.",
+				"timeZone": "Thời gian theo múi giờ tài khoản của bạn, {{zone}}.",
+				"noTimeZone": "Tài khoản của bạn chưa có múi giờ, nên giờ yên lặng theo giờ UTC.",
+				"useTimeZone": "Dùng {{zone}}",
+				"channels": "Giữ lại các kênh này",
+				"channelsDescription": "Khi thông báo tạm dừng, các kênh này sẽ chờ. Các kênh không được chọn vẫn tiếp tục nhận, nhưng không có âm thanh.",
+				"channelPush": "Thông báo đẩy",
+				"channelEmail": "Thư điện tử",
+				"channelDesktop": "Ứng dụng máy tính",
+				"channelNtfy": "ntfy",
+				"channelGotify": "Gotify",
+				"channelWebhook": "Webhook",
+				"bypass": "Vẫn cho phép những thông báo này",
+				"bypassDescription": "Những thông báo này đến ngay lập tức, kèm âm thanh, kể cả khi thông báo đang tạm dừng.",
+				"bypassMentions": "Lượt nhắc đến trực tiếp",
+				"bypassUrgent": "Công việc được giao cho bạn với mức ưu tiên khẩn cấp",
+				"bypassApprovals": "Tác tử đang chờ bạn phê duyệt hoặc trả lời",
+				"summaryNote": "Khi hết tạm dừng, mỗi kênh bị giữ lại nhận một bản tóm tắt: một email chứa mọi thứ, một tin nhắn đẩy, ntfy hoặc Gotify, một cảnh báo trên máy tính, và từng payload webhook bị giữ lại theo thứ tự."
 			},
 			"pushTitle": "Thông báo đẩy",
 			"pushDescription": "Cảnh báo trên điện thoại hoặc máy tính, ngay cả khi Margaya đã đóng. Mục “Thông báo cho tôi về” quyết định nội dung được gửi, và quy tắc không gian làm việc bên dưới có thể thu hẹp thêm.",
@@ -783,7 +1043,9 @@
 			"pushChannelHintEnabled": "Gửi các thông báo không gian làm việc phù hợp đến thiết bị của bạn.",
 			"pushChannelHintDisabled": "Hãy bật thông báo đẩy cho một thiết bị trước.",
 			"pushLoadFailed": "Không thể tải cài đặt thông báo đẩy. Hãy tải lại trang để thử lại.",
-			"pushDesktopApp": "Ứng dụng máy tính hiển thị thông báo trên thiết bị này, nên không cần thông báo đẩy của trình duyệt ở đây."
+			"emailSendsTo": "Gửi đến {{email}}.",
+			"pushDesktopTitle": "Thông báo trên máy tính",
+			"pushDesktopDescription": "Margaya Desktop hiển thị thông báo trên máy tính này, ngay cả khi cửa sổ ứng dụng đã đóng. Để tắt thông báo hoặc thay đổi cách hiển thị, hãy dùng cài đặt thông báo của hệ thống."
 		},
 		"preferencesPage": {
 			"title": "Tùy chọn",
@@ -830,11 +1092,9 @@
 			"estimatesDescription": "Hiển thị ước tính công việc trên thẻ trong bảng"
 		},
 		"developerPage": {
-			"pageTitle": "Cài đặt nhà phát triển",
-			"title": "Cài đặt nhà phát triển",
-			"subtitle": "Quản lý khóa API và tài nguyên dành cho nhà phát triển của bạn.",
-			"apiKeysCardTitle": "Khóa API",
-			"apiKeysCardDescription": "Tạo và quản lý khóa API để truy cập Margaya bằng chương trình.",
+			"pageTitle": "Khóa API",
+			"title": "Khóa API",
+			"subtitle": "Khóa cho phép script, tích hợp và ứng dụng khách MCP dùng API của Margaya dưới danh nghĩa của bạn.",
 			"createApiKey": "Tạo khóa API",
 			"unnamedKey": "Khóa chưa đặt tên"
 		},
@@ -903,7 +1163,7 @@
 		},
 		"workspaceGeneral": {
 			"pageTitle": "Cài đặt chung",
-			"title": "Cài đặt chung",
+			"title": "Chung",
 			"subtitle": "Quản lý tên và mô tả không gian làm việc của bạn.",
 			"workspaceInfoTitle": "Thông tin không gian làm việc",
 			"workspaceInfoSubtitle": "Cấu hình chi tiết và tùy chọn cho không gian làm việc của bạn.",
@@ -1287,7 +1547,7 @@
 		},
 		"projectGeneral": {
 			"pageTitle": "Cài đặt dự án",
-			"title": "Cài đặt chung",
+			"title": "Chung",
 			"subtitle": "Quản lý tên, mã, biểu tượng và mô tả dự án của bạn.",
 			"projectInfoTitle": "Thông tin dự án",
 			"projectInfoSubtitle": "Cấu hình chi tiết và tùy chọn cho dự án của bạn.",
@@ -1334,7 +1594,7 @@
 		},
 		"projectIntegrations": {
 			"pageTitle": "Tích hợp của dự án",
-			"title": "Tích hợp của dự án",
+			"title": "Tích hợp",
 			"subtitle": "Kết nối dự án của bạn với các công cụ và dịch vụ bên ngoài để tối ưu quy trình làm việc.",
 			"githubSectionTitle": "Tích hợp GitHub",
 			"githubSectionSubtitle": "Đồng bộ công việc với GitHub issues và bật đồng bộ hai chiều.",
@@ -1565,8 +1825,12 @@
 				"taskPriorityChanged": "Thay đổi mức ưu tiên",
 				"taskTitleChanged": "Thay đổi tiêu đề",
 				"taskDescriptionChanged": "Thay đổi mô tả",
-				"taskCommentCreated": "Bình luận mới"
+				"taskCommentCreated": "Bình luận mới",
+				"taskDueDateChanged": "Thay đổi ngày đến hạn",
+				"intakeDecision": "Quyết định tiếp nhận (chấp nhận, từ chối, trùng lặp)",
+				"projectUpdate": "Cập nhật dự án"
 			},
+			"buttonsHint": "Khi ứng dụng Slack của không gian làm việc đã kết nối, các bài đăng có nút Giao cho tôi, Đổi trạng thái và Mở. Hãy tạo webhook này từ cùng ứng dụng Slack để các nút đến được Margaya.",
 			"connect": "Kết nối Slack",
 			"saveChanges": "Lưu thay đổi",
 			"disconnect": "Ngắt kết nối"
@@ -2071,6 +2335,10 @@
 				"ai": {
 					"title": "AI",
 					"description": "Tóm tắt, gợi ý và các hỗ trợ AI khác cho dự án này. Tắt sẽ loại hoàn toàn dự án khỏi AI."
+				},
+				"updates": {
+					"title": "Cập nhật",
+					"description": "Đăng các cập nhật trạng thái có ngày kèm đánh giá tình trạng, được soạn từ dữ liệu dự án trực tiếp."
 				}
 			},
 			"loadError": "Không thể tải dự án này",
@@ -2749,6 +3017,10 @@
 			"billing": "Thanh toán",
 			"label": "Các phần cài đặt",
 			"noProjectsHint": "Hãy tạo một dự án trước. Cài đặt của dự án sẽ hiện ở đây.",
+			"groupData": "Dữ liệu",
+			"groupServer": "Máy chủ",
+			"aiSettings": "Cài đặt AI",
+			"pageLabel": "Trang cài đặt",
 			"pickProject": "Chọn một dự án để xem cài đặt của dự án đó."
 		},
 		"projectAccess": {
@@ -2806,6 +3078,9 @@
 			},
 			"sessions": {
 				"confirmOthersDescription": "Mọi thiết bị khác đang đăng nhập vào tài khoản của bạn sẽ phải đăng nhập lại. Thiết bị này vẫn được giữ đăng nhập.",
+				"showAll": "Hiện tất cả phiên ({{count}})",
+				"showFewer": "Ẩn bớt",
+				"desktopApp": "Margaya Desktop",
 				"confirmOthersTitle": "Đăng xuất tất cả phiên khác?",
 				"deviceLabel": "{{browser}} trên {{os}}",
 				"error": "Không thể đăng xuất phiên",
@@ -2827,16 +3102,16 @@
 			"title": "Bảo mật"
 		},
 		"timezone": {
-			"accountHint": "Dùng cho lời nhắc, email tổng hợp và các ngày mà bộ lọc công việc cùng phân tích dùng để tính. Thời gian trên màn hình hiển thị theo múi giờ của trình duyệt.",
+			"accountHint": "Dùng cho lời nhắc, email tổng hợp và các ngày mà bộ lọc công việc cùng phân tích dùng để tính. Thời gian trên màn hình hiển thị theo múi giờ của thiết bị này.",
 			"accountLabel": "Múi giờ",
-			"automatic": "Tự động (trình duyệt: {{zone}})",
+			"automatic": "Tự động (thiết bị này: {{zone}})",
 			"loadError": "Không thể tải múi giờ. Hãy tải lại trang để thử lại.",
 			"noResults": "Không tìm thấy múi giờ",
 			"placeholder": "Chọn múi giờ",
 			"search": "Tìm múi giờ",
 			"toastError": "Không thể cập nhật múi giờ",
 			"toastUpdated": "Đã cập nhật múi giờ",
-			"useBrowser": "Dùng {{zone}}",
+			"useBrowser": "Dùng múi giờ của thiết bị này ({{zone}})",
 			"workspaceHint": "Xác định “hôm nay” cho chu kỳ, tự động hóa và phân tích. Các không gian làm việc hiện có bắt đầu với UTC.",
 			"workspaceLabel": "Múi giờ"
 		},
@@ -3046,6 +3321,105 @@
 				"codingAgentProfile": "Hồ sơ tác tử lập trình"
 			},
 			"title": "Nhật ký kiểm tra"
+		},
+		"slackApp": {
+			"workspaceNav": "Ứng dụng Slack",
+			"accountNav": "Slack",
+			"title": "Ứng dụng Slack",
+			"description": "Tìm kiếm, ghi nhận và cập nhật công việc từ Slack. Mọi thao tác đều chạy dưới tài khoản Margaya đã liên kết của chính người đó, với quyền của họ.",
+			"noPermission": "Chỉ những người có thể quản lý cài đặt không gian làm việc mới thiết lập được ứng dụng Slack.",
+			"loadError": "Không thể tải cài đặt ứng dụng Slack. Hãy thử lại.",
+			"statusTitle": "Kết nối",
+			"unknownTeam": "Không gian làm việc Slack (chưa kiểm tra)",
+			"modeSocket": "Chế độ Socket",
+			"modeHttp": "Yêu cầu HTTP",
+			"modeSocketHint": "Khuyến nghị. Margaya mở một kết nối đi ra tới Slack, nên vẫn hoạt động sau VPN hoặc reverse proxy mà không cần URL công khai.",
+			"modeHttpHint": "Slack gửi các yêu cầu có chữ ký đến máy chủ này. Cần một địa chỉ HTTPS công khai mà Slack truy cập được.",
+			"active": "Đang hoạt động",
+			"paused": "Đã tạm dừng",
+			"unreadable": "Không thể đọc các token đã lưu, có thể do AUTH_SECRET đã thay đổi. Hãy nhập lại.",
+			"lastError": "Lỗi gần nhất từ Slack: {{code}}",
+			"test": "Kiểm tra kết nối",
+			"activeLabel": "Bật ứng dụng Slack",
+			"activeHint": "Khi tắt, Margaya bỏ qua lệnh, phím tắt và nút từ Slack.",
+			"notConnected": "Chưa kết nối Slack",
+			"notConnectedHint": "Làm theo các bước bên dưới để tạo ứng dụng Slack và kết nối nó.",
+			"setupTitle": "Thiết lập",
+			"setupHint": "Việc tạo ứng dụng Slack mất vài phút. Bạn cần quyền cài đặt ứng dụng trong không gian làm việc Slack của mình.",
+			"step1": "1. Chọn cách Slack kết nối tới Margaya",
+			"step1Hint": "Bạn có thể đổi sau; khi đó Slack cần manifest tương ứng.",
+			"step2": "2. Tạo ứng dụng Slack từ manifest này",
+			"step2Hint": "Trong Slack, chọn Create New App, rồi From a manifest, chọn không gian làm việc Slack của bạn và dán nội dung này. Sau đó cài ứng dụng vào không gian làm việc.",
+			"manifestLabel": "Manifest ứng dụng Slack",
+			"copyManifest": "Sao chép manifest",
+			"copy": "Sao chép",
+			"copied": "Đã sao chép",
+			"copyFailed": "Không thể sao chép. Hãy chọn văn bản và tự sao chép.",
+			"openSlack": "Mở trang ứng dụng Slack",
+			"noUnfurlDomain": "Không có bản xem trước liên kết: Slack không thể xem trước localhost hoặc địa chỉ IP. Đặt MARGAYA_CLIENT_URL thành một tên miền để có chúng.",
+			"eventsUrl": "URL yêu cầu",
+			"eventsUrlHint": "Đã có sẵn trong manifest. Slack kiểm tra URL này khi bạn lưu ứng dụng, nên máy chủ này phải truy cập được qua HTTPS.",
+			"step3": "3. Dán các token",
+			"step3SocketHint": "Token OAuth người dùng bot: OAuth & Permissions. Token cấp ứng dụng: Basic Information › App-Level Tokens, với phạm vi connections:write.",
+			"step3HttpHint": "Token OAuth người dùng bot: OAuth & Permissions. Khóa bí mật ký: Basic Information › App Credentials.",
+			"botToken": "Token OAuth người dùng bot",
+			"botTokenPlaceholder": "xoxb-…",
+			"appToken": "Token cấp ứng dụng",
+			"appTokenPlaceholder": "xapp-…",
+			"signingSecret": "Khóa bí mật ký",
+			"signingSecretPlaceholder": "Dán khóa bí mật ký",
+			"secretsHint": "Được lưu ở dạng mã hóa và không bao giờ hiển thị lại. Để trống một trường để giữ giá trị đã lưu.",
+			"connectAndTest": "Kết nối và kiểm tra",
+			"saveAndTest": "Lưu và kiểm tra",
+			"step4": "4. Liên kết tài khoản",
+			"step4Hint": "Mỗi người chạy /margaya link trong Slack một lần và xác nhận trong Margaya. Trước đó, Slack sẽ yêu cầu họ liên kết và không làm gì cho họ.",
+			"optionsTitle": "Tùy chọn",
+			"defaultProject": "Dự án mặc định",
+			"defaultProjectHint": "Nơi /margaya add đặt công việc khi văn bản không bắt đầu bằng mã dự án.",
+			"noDefaultProject": "Không có",
+			"expandKeys": "Xem trước mã công việc trong tin nhắn",
+			"expandKeysHint": "Trả lời trong luồng khi tin nhắn nhắc đến mã như WEB-12. Cần phạm vi quyền đọc tin nhắn, nên hãy sao chép lại manifest sau khi bật tùy chọn này.",
+			"dangerTitle": "Ngắt kết nối",
+			"disconnect": "Ngắt kết nối ứng dụng Slack",
+			"disconnectHint": "Xóa các token đã lưu. Các tài khoản đã liên kết được giữ lại cho lần kết nối lại.",
+			"checks": {
+				"botToken": "Token bot",
+				"appToken": "Token cấp ứng dụng",
+				"signingSecret": "Khóa bí mật ký",
+				"passed": "Đạt",
+				"failed": "Thất bại"
+			},
+			"toast": {
+				"saved": "Đã lưu ứng dụng Slack",
+				"saveError": "Không thể lưu ứng dụng Slack",
+				"testPassed": "Kết nối Slack hoạt động",
+				"testFailed": "Kiểm tra kết nối Slack thất bại",
+				"disconnected": "Đã ngắt kết nối ứng dụng Slack",
+				"unlinked": "Đã hủy liên kết tài khoản Slack"
+			},
+			"accountTitle": "Slack",
+			"accountDescription": "Các tài khoản Slack hành động thay bạn. Lệnh, phím tắt và nút của chúng chạy với quyền của bạn.",
+			"linkedTitle": "Tài khoản Slack đã liên kết",
+			"linksLoadError": "Không thể tải các liên kết Slack của bạn. Hãy thử lại.",
+			"noLinks": "Chưa có tài khoản Slack nào được liên kết",
+			"noLinksHint": "Chạy /margaya link trong Slack để liên kết một tài khoản.",
+			"linkRow": "{{team}} · {{workspace}}",
+			"unlink": "Hủy liên kết",
+			"link": {
+				"invalidTitle": "Liên kết này không hoạt động",
+				"invalid": "Liên kết đã hết hạn hoặc không hợp lệ. Chạy /margaya link trong Slack để lấy liên kết mới.",
+				"alreadyTitle": "Đã liên kết",
+				"already": "Tài khoản Slack này đã hành động thay bạn trong {{workspace}}.",
+				"confirmTitle": "Liên kết tài khoản Slack của bạn",
+				"confirmBody": "Người dùng Slack {{slackUser}} trong {{team}} sẽ hành động thay bạn trong {{workspace}}.",
+				"confirmWarning": "Chỉ tiếp tục nếu tài khoản Slack đó là của bạn: lệnh, phím tắt và nút của nó sẽ chạy với quyền của bạn.",
+				"movesLink": "Tài khoản Slack này hiện đang liên kết với người khác; xác nhận sẽ chuyển liên kết sang bạn.",
+				"you": "(bạn)",
+				"confirm": "Liên kết tài khoản",
+				"cancel": "Hủy",
+				"linked": "Đã liên kết tài khoản Slack",
+				"linkError": "Không thể liên kết tài khoản Slack"
+			}
 		},
 		"trash": {
 			"projectTitle": "Đã xóa gần đây",
@@ -3262,6 +3636,95 @@
 			"title": "Tiếp tục trong trình duyệt",
 			"billing": "Hãy hoàn tất trong cửa sổ trình duyệt vừa mở, rồi quay lại Margaya. Gói của bạn sẽ được cập nhật khi bạn quay lại.",
 			"githubApp": "Hãy hoàn tất trên GitHub trong trình duyệt, rồi quay lại Margaya và kiểm tra lại cài đặt."
+		},
+		"save": "Lưu",
+		"unsavedChanges": "Thay đổi chưa lưu",
+		"readOnly": {
+			"workspace": "Bạn có thể xem các cài đặt này nhưng vai trò của bạn không cho phép thay đổi. Hãy nhờ chủ sở hữu hoặc quản trị viên của không gian làm việc.",
+			"project": "Bạn có thể xem cài đặt của dự án này nhưng vai trò của bạn không cho phép thay đổi. Hãy nhờ chủ sở hữu hoặc quản trị viên của không gian làm việc."
+		},
+		"projectIntake": {
+			"title": "Nguồn tiếp nhận",
+			"pageTitle": "Nguồn tiếp nhận",
+			"subtitle": "Cho phép mọi người gửi yêu cầu đến dự án này qua email hoặc qua biểu mẫu công khai. Mọi thứ họ gửi đều vào Tiếp nhận để xem xét.",
+			"noPermission": "Chỉ những người có thể chia sẻ dự án mới quản lý được nguồn tiếp nhận.",
+			"loadError": "Không thể tải các cài đặt này.",
+			"retry": "Thử lại",
+			"saved": "Đã lưu cài đặt",
+			"saveError": "Không thể lưu cài đặt",
+			"copy": "Sao chép",
+			"copied": "Đã sao chép",
+			"open": "Mở",
+			"email": {
+				"title": "Qua email",
+				"description": "Thư gửi hoặc chuyển tiếp đến địa chỉ của dự án sẽ trở thành một yêu cầu. Phản hồi từ cùng người gửi được thêm làm bình luận, và tệp đính kèm được giữ lại.",
+				"enabled": "Nhận yêu cầu qua email",
+				"enabledHint": "Thư trả lời tự động, thư bị trả về, thư từ danh sách gửi thư và thư bị đánh dấu là spam đều bị bỏ qua.",
+				"turnedOn": "Đã bật tiếp nhận qua email",
+				"turnedOff": "Đã tắt tiếp nhận qua email",
+				"address": "Địa chỉ chuyển tiếp",
+				"addressHint": "Gửi hoặc chuyển tiếp thư đến địa chỉ này. Bất kỳ ai biết địa chỉ đều có thể gửi yêu cầu.",
+				"addressNone": "Địa chỉ sẽ xuất hiện khi tiếp nhận qua email được bật và máy chủ có hộp thư tiếp nhận.",
+				"rotate": "Địa chỉ mới",
+				"rotated": "Đã tạo địa chỉ mới. Địa chỉ cũ không còn hoạt động.",
+				"noInstanceAddress": "Máy chủ này chưa có địa chỉ tiếp nhận. Hãy nhờ quản trị viên thiết lập, hoặc kết nối hộp thư riêng của dự án này bên dưới.",
+				"allowed": "Chỉ chấp nhận các tên miền này",
+				"allowedHint": "Mỗi dòng một tên miền. Để trống để chấp nhận mọi người gửi. Bao gồm cả tên miền con.",
+				"blocked": "Không bao giờ chấp nhận các tên miền này",
+				"blockedHint": "Mỗi dòng một tên miền. Tên miền bị chặn được ưu tiên hơn danh sách ở trên.",
+				"protection": "Thư lớn hơn {{size}} MB sẽ bị bỏ qua. Giữ lại tối đa {{files}} tệp đính kèm, mỗi tệp {{fileSize}} MB. Mỗi người gửi có thể gửi 10 thư mỗi giờ."
+			},
+			"mailbox": {
+				"title": "Hộp thư dự án",
+				"description": "Không bắt buộc. Margaya kiểm tra hộp thư này mỗi hai phút và biến mọi thư chưa đọc thành yêu cầu cho dự án này. Cách này vẫn hoạt động sau tường lửa, vì Margaya chủ động kết nối ra máy chủ thư.",
+				"enabled": "Kiểm tra hộp thư này",
+				"enabledHint": "Điền thông tin máy chủ và đăng nhập, lưu lại, rồi bật tùy chọn này.",
+				"lastPolled": "Kiểm tra lần cuối {{time}}.",
+				"notPolled": "Chưa kiểm tra.",
+				"lastError": "Lần kiểm tra gần nhất thất bại: {{error}}",
+				"host": "Máy chủ IMAP",
+				"security": "Mã hóa",
+				"securityHint": "Kết nối luôn được mã hóa.",
+				"tls": "TLS (cổng 993)",
+				"starttls": "STARTTLS (cổng 143)",
+				"port": "Cổng",
+				"portHint": "Để trống để dùng giá trị mặc định.",
+				"portInvalid": "Nhập cổng từ 1 đến 65535.",
+				"username": "Tên người dùng",
+				"password": "Mật khẩu",
+				"passwordSaved": "Đã lưu một mật khẩu. Nhập mật khẩu mới để thay thế.",
+				"folder": "Thư mục",
+				"test": "Kiểm tra kết nối",
+				"testOk_other": "Đã kết nối. {{count}} thư chưa đọc."
+			},
+			"form": {
+				"title": "Biểu mẫu yêu cầu",
+				"description": "Một trang công khai nơi bất kỳ ai có liên kết đều có thể gửi yêu cầu. Trang chỉ hiển thị văn bản và các trường bạn chọn ở đây, không bao giờ hiển thị không gian làm việc hay công việc của bạn.",
+				"enabled": "Mở biểu mẫu",
+				"enabledHint": "Bot bị chặn bằng một trường bẫy ẩn và giới hạn tần suất, không cần captcha.",
+				"opened": "Đã mở biểu mẫu",
+				"closed": "Đã đóng biểu mẫu",
+				"sharingOff": "Chia sẻ công khai đang tắt trên máy chủ này, nên không thể mở biểu mẫu.",
+				"link": "Liên kết biểu mẫu",
+				"linkHint": "Chia sẻ liên kết này. Bất kỳ ai có liên kết đều có thể gửi yêu cầu.",
+				"rotate": "Liên kết mới",
+				"rotated": "Đã tạo liên kết mới. Liên kết cũ không còn hoạt động.",
+				"heading": "Tiêu đề",
+				"headingHint": "Hiển thị ở đầu biểu mẫu.",
+				"intro": "Lời giới thiệu",
+				"descriptionField": "Mô tả",
+				"emailField": "Địa chỉ email",
+				"emailFieldHint": "Chỉ hiển thị cho người phân loại, để họ có thể liên hệ lại.",
+				"nameField": "Tên",
+				"modeOptional": "Không bắt buộc",
+				"modeRequired": "Bắt buộc",
+				"modeOff": "Ẩn",
+				"customFields": "Trường tùy chỉnh",
+				"customFieldsHint": "Tên và các tùy chọn của chúng sẽ hiển thị trên biểu mẫu.",
+				"noCustomFields": "Dự án này không có trường tùy chỉnh nào.",
+				"confirmation": "Thông điệp xác nhận",
+				"confirmationHint": "Hiển thị sau khi ai đó gửi yêu cầu."
+			}
 		}
 	},
 	"navigation": {
@@ -3475,6 +3938,7 @@
 		"projectNav": {
 			"cycles": "Chu kỳ",
 			"intake": "Tiếp nhận",
+			"updates": "Cập nhật",
 			"label": "Mục của dự án",
 			"modules": "Mô-đun",
 			"pages": "Trang",
@@ -3524,6 +3988,27 @@
 			"whatsNew": "Có gì mới",
 			"sourceCode": "Mã nguồn",
 			"workspaceAnalytics": "Không gian làm việc"
+		},
+		"focus": {
+			"menuLabel": "Tạm dừng thông báo",
+			"paletteLabel": "Chế độ tập trung: tạm dừng thông báo",
+			"preset30m": "Trong 30 phút",
+			"preset1h": "Trong 1 giờ",
+			"preset2h": "Trong 2 giờ",
+			"presetTomorrow": "Đến ngày mai",
+			"custom": "Đến một thời điểm…",
+			"resume": "Tiếp tục nhận thông báo",
+			"focusUntil": "Tập trung đến {{time}}",
+			"quietUntil": "Giờ yên lặng đến {{time}}",
+			"settings": "Cài đặt giờ yên lặng",
+			"toastStarted": "Đã tạm dừng thông báo đến {{time}}",
+			"toastResumed": "Đã tiếp tục nhận thông báo",
+			"customTitle": "Tạm dừng thông báo đến",
+			"customDescription": "Hộp thư đến của bạn vẫn tiếp tục nhận. Lượt nhắc đến và các ngoại lệ khác bạn đã chọn vẫn được gửi tới.",
+			"customLabel": "Đến",
+			"customSave": "Tạm dừng",
+			"customInvalid": "Chọn một thời điểm trong 7 ngày tới.",
+			"cancel": "Hủy"
 		},
 		"desktopWindow": {
 			"minimize": "Thu nhỏ",
@@ -5383,7 +5868,6 @@
 			"createProject": "Tạo dự án",
 			"title": "Tiêu đề",
 			"progress": "Tiến độ",
-			"targetDate": "Ngày mục tiêu",
 			"dueDate": "Ngày đến hạn",
 			"status": "Trạng thái",
 			"emptyTitle": "Chưa có dự án nào",
@@ -8311,6 +8795,7 @@
 			"me": "Tôi",
 			"priority": "Mức ưu tiên",
 			"remove": "Xóa bộ lọc",
+			"source": "Nguồn",
 			"status": "Trạng thái",
 			"submittedBy": "Người gửi"
 		},
@@ -8403,6 +8888,25 @@
 			"hintMove": "Di chuyển",
 			"hintOpen": "Mở công việc",
 			"queueLabel": "Hàng đợi phân loại"
+		},
+		"publicForm": {
+			"defaultTitle": "Gửi yêu cầu",
+			"titleLabel": "Tiêu đề",
+			"descriptionLabel": "Mô tả",
+			"nameLabel": "Tên của bạn",
+			"emailLabel": "Email của bạn",
+			"emailHint": "Chỉ dùng để liên hệ lại về yêu cầu này.",
+			"choose": "Chọn…",
+			"requiredNote": "Các trường có dấu * là bắt buộc.",
+			"submit": "Gửi yêu cầu",
+			"missing": "Điền các trường bắt buộc và kiểm tra địa chỉ email của bạn.",
+			"tooMany": "Có quá nhiều yêu cầu từ mạng này. Hãy thử lại sau.",
+			"failed": "Không thể gửi yêu cầu của bạn. Hãy thử lại.",
+			"sentTitle": "Đã gửi yêu cầu",
+			"sentBody": "Cảm ơn bạn. Yêu cầu của bạn đã được nhận và sẽ được xem xét.",
+			"another": "Gửi yêu cầu khác",
+			"notFoundTitle": "Biểu mẫu không khả dụng",
+			"notFoundBody": "Biểu mẫu này không tồn tại hoặc đã đóng. Hãy kiểm tra lại liên kết với người đã chia sẻ nó."
 		}
 	},
 	"stickies": {
@@ -9450,6 +9954,114 @@
 	},
 	"instanceAdmin": {
 		"pageTitle": "Phiên bản · {{page}}",
+		"health": {
+			"title": "Tình trạng",
+			"subtitle": "Kiểm tra các dịch vụ, tác vụ nền và lỗi gần đây của máy chủ này.",
+			"recheck": "Kiểm tra lại",
+			"summary": "Tóm tắt",
+			"version": "Phiên bản",
+			"uptime": "Thời gian hoạt động",
+			"uptimeDays": "{{days}} ngày {{hours}} giờ",
+			"uptimeHours": "{{hours}} giờ {{minutes}} phút",
+			"startedAt": "Khởi động lúc",
+			"node": "Node.js",
+			"latency": "{{ms}} ms",
+			"status": {
+				"ok": "Bình thường",
+				"warning": "Cảnh báo",
+				"error": "Có sự cố",
+				"off": "Tắt"
+			},
+			"migrations": {
+				"title": "Di trú cơ sở dữ liệu",
+				"ok_other": "Đã cập nhật: đã áp dụng {{count}} bản di trú.",
+				"pending_other": "{{count}} bản di trú chưa chạy. Khởi động lại máy chủ để áp dụng.",
+				"unknown": "Không thể đọc trạng thái di trú. Chi tiết có trong nhật ký máy chủ."
+			},
+			"checks": {
+				"title": "Dịch vụ",
+				"description": "Mỗi lần kiểm tra chạy ngay bây giờ, với giới hạn 5 giây. Kết quả không bao giờ chứa máy chủ, đường dẫn hay mật khẩu.",
+				"database": "Cơ sở dữ liệu",
+				"redis": "Redis",
+				"storage": "Lưu trữ tệp",
+				"email": "Dịch vụ email",
+				"ai": "Nhà cung cấp AI"
+			},
+			"codes": {
+				"ok": "Đang phản hồi.",
+				"unreachable": "Không thể truy cập. Chi tiết có trong nhật ký máy chủ.",
+				"unavailable": "Đã cấu hình nhưng không phản hồi. Cập nhật thời gian thực giữa các máy chủ đang tạm dừng.",
+				"timeout": "Không phản hồi trong giới hạn thời gian.",
+				"failed": "Kiểm tra thất bại. Chi tiết có trong nhật ký máy chủ.",
+				"redisDisabled": "Chưa cấu hình. Một máy chủ đơn lẻ không cần đến nó.",
+				"aiDisabled": "AI đã bị tắt trên máy chủ này.",
+				"emailNotConfigured": "Chưa thiết lập email gửi đi.",
+				"aiNotConfigured": "AI đang bật, nhưng chưa đặt khóa hoặc điểm cuối của nhà cung cấp.",
+				"s3": "Bộ lưu trữ tương thích S3 đang phản hồi.",
+				"local": "Kho lưu trữ cục bộ tích hợp có thể ghi được.",
+				"storageOff": "Tải lên đang tắt: không có bộ lưu trữ S3 và kho lưu trữ cục bộ bị vô hiệu hóa.",
+				"denied": "Dịch vụ lưu trữ đã từ chối lần kiểm tra. Việc tải lên có thể vẫn hoạt động nếu chính sách bucket cho phép.",
+				"notWritable": "Không thể ghi vào thư mục của kho lưu trữ cục bộ.",
+				"recentErrors_other": "{{count}} lệnh gọi thất bại trong 24 giờ qua.",
+				"smtpOk": "Đã đăng nhập vào máy chủ thư. Không có thư nào được gửi.",
+				"smtpAuth": "Máy chủ thư đã từ chối tên người dùng hoặc mật khẩu.",
+				"smtpConnection": "Không thể kết nối tới máy chủ thư.",
+				"smtpTls": "Kết nối bảo mật tới máy chủ thư thất bại.",
+				"smtpUnknown": "Kiểm tra máy chủ thư thất bại. Chi tiết có trong nhật ký máy chủ."
+			},
+			"activity": {
+				"title": "Hàng đợi và kết nối",
+				"description": "Hàng đợi tính cho toàn bộ phiên bản. Kết nối chỉ tính cho máy chủ này.",
+				"emailBacklog": "Email đang chờ",
+				"webhookPending": "Webhook đang chờ",
+				"webhookFailed": "Webhook thất bại (24 giờ)",
+				"boardSockets": "Kết nối bảng",
+				"userSockets": "Kết nối ứng dụng",
+				"pageRooms": "Trang đang được cùng chỉnh sửa",
+				"metrics": "Số liệu Prometheus: {{state}}",
+				"metricsOff": "tắt",
+				"metricsToken": "bật, tại /api/metrics với token",
+				"metricsPort": "bật, tại /metrics trên cổng {{port}}",
+				"metricsNoEndpoint": "bật, nhưng chưa đặt token hay cổng"
+			},
+			"jobs": {
+				"title": "Tác vụ nền",
+				"description": "Các tác vụ đã lên lịch trên máy chủ này kể từ khi khởi động.",
+				"empty": "Chưa có tác vụ nền nào được lên lịch trên máy chủ này.",
+				"name": "Tác vụ",
+				"lastRun": "Lần chạy gần nhất",
+				"outcome": "Kết quả gần nhất",
+				"runs": "Số lần chạy",
+				"failures": "Số lần thất bại",
+				"running": "Đang chạy",
+				"notRun": "Chưa chạy"
+			},
+			"failures": {
+				"title": "Lỗi gần đây",
+				"description": "Các tác vụ và lệnh gọi AI thất bại gần nhất trên máy chủ này kể từ khi khởi động. Lỗi webhook nằm ở trang Chung.",
+				"empty": "Không có lỗi nào kể từ khi máy chủ này khởi động.",
+				"sourceJob": "Tác vụ",
+				"sourceAi": "AI",
+				"sourceEmail": "Thư điện tử",
+				"seeLog": "Một số mục đã thất bại. Chi tiết có trong nhật ký máy chủ."
+			}
+		},
+		"update": {
+			"title": "Thông báo cập nhật",
+			"label": "Kiểm tra phiên bản mới",
+			"hint": "Mỗi ngày một lần, máy chủ này đọc danh sách bản phát hành công khai và báo cho quản trị viên phiên bản khi có phiên bản mới hơn. Máy chủ không gửi bất kỳ thông tin nào về phiên bản này.",
+			"off": "Tắt. Máy chủ này không bao giờ kiểm tra cập nhật.",
+			"notChecked": "Chưa kiểm tra.",
+			"upToDate": "Đã cập nhật: {{current}} là phiên bản mới nhất.",
+			"available": "Đã có phiên bản {{latest}}. Máy chủ này đang chạy {{current}}.",
+			"checkedAt": "Đã kiểm tra {{time}}.",
+			"errorUnreachable": "Không thể truy cập danh sách bản phát hành. Máy chủ sẽ thử lại trong vòng một giờ.",
+			"errorInvalid": "Danh sách bản phát hành trả về câu trả lời mà máy chủ này không đọc được.",
+			"releaseNotes": "Ghi chú phát hành",
+			"dismiss": "Bỏ qua",
+			"bannerTitle": "Đã có Margaya {{version}}",
+			"bannerDescription": "Máy chủ này đang chạy {{current}}. Chỉ quản trị viên phiên bản mới thấy thông báo này."
+		},
 		"nav": {
 			"admins": "Quản trị viên",
 			"authentication": "Xác thực",
@@ -9457,7 +10069,8 @@
 			"general": "Chung",
 			"publicBoards": "Bảng công khai",
 			"workspaces": "Không gian làm việc",
-			"ai": "AI"
+			"ai": "AI",
+			"health": "Tình trạng"
 		},
 		"lockedCallout": "Các cài đặt này được quản lý bằng biến môi trường trên máy chủ này. Không thể thay đổi tại đây.",
 		"source": {
@@ -9518,7 +10131,7 @@
 			},
 			"deliveryFailures": {
 				"title": "Lỗi gửi gần đây",
-				"description": "Các webhook của không gian làm việc đã dùng hết số lần thử lại trong 7 ngày qua. Lỗi email và tác vụ nền chỉ có trong nhật ký máy chủ.",
+				"description": "Các webhook của không gian làm việc đã dùng hết số lần thử lại trong 7 ngày qua. Tác vụ nền và lệnh gọi AI thất bại nằm ở trang Tình trạng.",
 				"empty": "Không có lần gửi thất bại nào trong 7 ngày qua.",
 				"when": "Thời điểm",
 				"workspace": "Không gian làm việc",
@@ -10082,6 +10695,19 @@
 		}
 	},
 	"ai": {
+		"provenance": {
+			"label": "Do AI tạo",
+			"edited": "Được {{name}} chỉnh sửa, ban đầu do AI tạo",
+			"someone": "ai đó",
+			"byAgent": "Được viết bởi tác tử {{name}}",
+			"unknownAgent": "một tác tử đã bị xóa",
+			"byFeature": "Được viết bằng AI ({{feature}}) và đã được một người chấp nhận",
+			"byAssist": "Được viết bằng AI và đã được một người chấp nhận",
+			"model": "Mô hình: {{model}}"
+		},
+		"disclosure": {
+			"chat": "Bạn đang trò chuyện với trợ lý AI, không phải với người thật."
+		},
 		"rules": {
 			"title": "Quy tắc từ mô tả",
 			"description": "Viết một tự động hóa bằng lời thường. AI sẽ chuyển nó thành một quy tắc bình thường mà bạn có thể chỉnh sửa, thử trên lịch sử gần đây và lưu. Quy tắc đã lưu chạy mà không cần AI.",
@@ -10755,6 +11381,7 @@
 			"triage": "Gợi ý phân loại",
 			"translate": "Bản dịch",
 			"brief": "Bản tóm lược cho các bên liên quan",
+			"project_update": "Bản nháp cập nhật dự án",
 			"agent_run": "Tác tử",
 			"rule_compiler": "Quy tắc tự động hóa",
 			"capture": "Ghi nhận thành vấn đề",
@@ -10981,7 +11608,7 @@
 			"webSearchUnavailable": "Phiên bản này chưa thiết lập tìm kiếm web.",
 			"webSearchLocalOnly": "Không dùng khi AI chỉ chạy trên mô hình cục bộ.",
 			"storeConversations": "Lưu lịch sử trò chuyện trên máy chủ",
-			"storeConversationsHint": "Cuộc trò chuyện của mỗi người được lưu trong không gian làm việc để họ mở lại trên mọi thiết bị. Khi tắt: chúng chỉ nằm trong từng trình duyệt.",
+			"storeConversationsHint": "Cuộc trò chuyện của mỗi người được lưu trong không gian làm việc để họ mở lại trên mọi thiết bị. Khi tắt: chúng chỉ nằm trên từng thiết bị.",
 			"allowAutopilot": "Cho phép Tự động lái",
 			"allowAutopilotHint": "Chế độ Xây dựng có thể áp dụng thay đổi mà không cần xác nhận. Mọi thay đổi vẫn được ghi lại và có thể hoàn tác.",
 			"storesPrompts": "Đang lưu prompt"
@@ -11078,6 +11705,10 @@
 				"link_tasks": "Liên kết công việc",
 				"delete_task": "Xóa công việc",
 				"bulk_move_status": "Đổi trạng thái của nhiều công việc",
+				"create_task": "Tạo công việc",
+				"set_task_cycle": "Đặt chu kỳ",
+				"set_task_modules": "Đặt mô-đun",
+				"set_custom_field": "Đặt trường tùy chỉnh",
 				"ask_person": "Đặt câu hỏi",
 				"web_search": "Tìm kiếm web",
 				"connector": "Dịch vụ bên ngoài: {{tool}}",
@@ -11113,6 +11744,7 @@
 				"after": "Sau",
 				"openPage": "Mở trang",
 				"openSubtask": "Mở công việc con",
+				"openTask": "Mở công việc",
 				"openLinked": "Mở công việc được liên kết",
 				"empty": "(trống)",
 				"fields": {
@@ -11129,7 +11761,12 @@
 					"delete": "Chuyển vào thùng rác",
 					"connectorCall": "Gọi tới {{connector}}",
 					"pageContent": "Nội dung trang",
-					"pageSection": "Phần đã thêm"
+					"pageSection": "Phần đã thêm",
+					"task": "Công việc mới",
+					"cycle": "Chu kỳ",
+					"modulesAdded": "Đã thêm vào mô-đun",
+					"modulesRemoved": "Đã xóa khỏi mô-đun",
+					"customField": "Trường tùy chỉnh {{field}}"
 				},
 				"undoPageError": "Không thể hoàn tác chỉnh sửa này. Trang đã thay đổi kể từ đó; hãy khôi phục một phiên bản trước từ lịch sử của trang."
 			},
@@ -11560,6 +12197,115 @@
 			"noAccess": "Bạn cần có quyền dùng AI trong không gian làm việc này."
 		}
 	},
+	"projectUpdates": {
+		"documentTitle": "Cập nhật · {{project}}",
+		"newUpdate": "Cập nhật mới",
+		"loadError": "Không thể tải cập nhật.",
+		"retry": "Thử lại",
+		"loadMore": "Hiện cập nhật cũ hơn",
+		"empty": {
+			"title": "Chưa có cập nhật nào",
+			"description": "Đăng một cập nhật trạng thái ngắn để mọi người biết dự án đang tiến triển ra sao."
+		},
+		"health": {
+			"on_track": "Đúng tiến độ",
+			"at_risk": "Có rủi ro",
+			"off_track": "Chệch hướng"
+		},
+		"edited": "đã chỉnh sửa",
+		"actions": "Thao tác với cập nhật",
+		"edit": "Chỉnh sửa",
+		"delete": "Xóa",
+		"deleted": "Đã xóa cập nhật",
+		"deletedUser": "Người dùng đã bị xóa",
+		"cardLabel": "Cập nhật của {{name}}",
+		"deleteDialog": {
+			"title": "Xóa cập nhật này?",
+			"description": "Cập nhật cùng các bình luận và biểu cảm của nó sẽ bị xóa đối với mọi người.",
+			"error": "Không thể xóa cập nhật."
+		},
+		"fields": {
+			"health": "Tình trạng",
+			"summary": "Tóm tắt",
+			"summaryPlaceholder": "Dự án đang tiến triển ra sao?",
+			"highlights": "Điểm nổi bật",
+			"blockers": "Trở ngại và rủi ro",
+			"nextSteps": "Bước tiếp theo"
+		},
+		"composer": {
+			"title": "Cập nhật dự án mới",
+			"editTitle": "Chỉnh sửa cập nhật dự án",
+			"draftWithAi": "Soạn nháp bằng AI",
+			"draftFromData": "Soạn nháp từ dữ liệu dự án",
+			"aiFallback": "AI hiện không khả dụng, vì vậy bản nháp dùng mẫu có sẵn thay thế.",
+			"draftError": "Không thể soạn nháp cập nhật.",
+			"factsLine": "Từ dữ liệu trực tiếp: {{completed}} hoàn thành, {{moved}} đã chuyển, {{overdue}} quá hạn, {{blocked}} bị chặn.",
+			"cancel": "Hủy",
+			"post": "Đăng cập nhật",
+			"save": "Lưu",
+			"posted": "Đã đăng cập nhật",
+			"saved": "Đã lưu cập nhật",
+			"saveError": "Không thể lưu cập nhật."
+		},
+		"facts": {
+			"summary": "Dữ liệu lúc đăng: hoàn thành {{percent}}% · {{completed}} hoàn thành · {{moved}} đã chuyển · {{overdue}} quá hạn · {{blocked}} bị chặn",
+			"cycle": "{{name}}: hoàn thành {{percent}}% ({{completed}}/{{total}})",
+			"forecast": "Dự báo: 85% khả năng xong trước {{date}}",
+			"overdue": "Quá hạn",
+			"blocked": "Bị chặn",
+			"completed": "Hoàn thành"
+		},
+		"comments": {
+			"toggle_other": "{{count}} bình luận",
+			"label": "Bình luận",
+			"placeholder": "Viết bình luận…",
+			"send": "Gửi bình luận",
+			"delete": "Xóa bình luận",
+			"error": "Không thể thêm bình luận.",
+			"loadError": "Không thể tải bình luận."
+		},
+		"follow": {
+			"follow": "Theo dõi cập nhật",
+			"unfollow": "Bỏ theo dõi cập nhật",
+			"error": "Không thể thay đổi trạng thái theo dõi."
+		},
+		"reminder": {
+			"label": "Lời nhắc hằng tuần cho trưởng dự án",
+			"weekday": "Ngày nhắc",
+			"noLead": "Hãy chỉ định trưởng dự án để nhận lời nhắc.",
+			"error": "Không thể lưu lời nhắc."
+		},
+		"widget": {
+			"title": "Cập nhật dự án",
+			"empty": "Chưa có cập nhật dự án nào.",
+			"error": "Không thể tải cập nhật dự án."
+		},
+		"template": {
+			"summary": "Tình trạng dự án: {{health}}. Hoàn thành {{percent}}% ({{completed}}/{{total}} công việc), còn {{open}} đang mở.",
+			"changesSinceUpdate": "Kể từ cập nhật trước: {{completed}} hoàn thành, {{moved}} đã chuyển.",
+			"changesLastWeek": "Trong 7 ngày qua: {{completed}} hoàn thành, {{moved}} đã chuyển.",
+			"forecast": "Dự báo cho thấy 85% khả năng hoàn thành trước {{date}}.",
+			"cycle": "{{name}}: hoàn thành {{percent}}% ({{completed}}/{{total}}), kết thúc ngày {{date}}",
+			"overdue_other": "{{count}} công việc quá hạn:",
+			"blocked_other": "{{count}} công việc bị chặn:",
+			"more_other": "và {{count}} mục khác"
+		},
+		"notifications": {
+			"posted": {
+				"title": "{{authorName}} đã đăng một cập nhật cho {{projectName}}",
+				"verb": "đã đăng một cập nhật cho {{projectName}}"
+			},
+			"comment": {
+				"title": "{{commenterName}} đã bình luận về một cập nhật của {{projectName}}",
+				"verb": "đã bình luận về một cập nhật của {{projectName}}"
+			},
+			"reminder": {
+				"title": "Đến lúc đăng cập nhật cho {{projectName}}",
+				"content": "Chia sẻ tình hình dự án bằng một cập nhật trạng thái ngắn."
+			},
+			"open": "Mở cập nhật"
+		}
+	},
 	"insight": {
 		"close": "Đóng",
 		"retry": "Thử lại",
@@ -11766,7 +12512,13 @@
 			"waitingOn": "Đang chờ {{keys}}",
 			"hiddenBlockers_other": "{{count}} công việc bạn không xem được",
 			"followingHeading": "Thay đổi trên công việc bạn theo dõi",
-			"changes_other": "{{count}} thay đổi"
+			"changes_other": "{{count}} thay đổi",
+			"projectUpdatesHeading": "Cập nhật từ các dự án bạn theo dõi",
+			"health": {
+				"on_track": "Đúng tiến độ",
+				"at_risk": "Có rủi ro",
+				"off_track": "Chệch hướng"
+			}
 		},
 		"batchSubject": {
 			"task_other": "{{count}} cập nhật cho {{title}}",
@@ -11815,6 +12567,10 @@
 		"notificationText": {
 			"commentWithoutPreview": "Bình luận mới trên {{taskTitle}}",
 			"pushFixedLine": "Mở Margaya để xem chi tiết."
+		},
+		"quietSummary": {
+			"title": "Thông báo đã bật lại",
+			"body_other": "{{count}} thông báo đã đến trong lúc thông báo bị tạm dừng."
 		}
 	},
 	"download": {
@@ -12051,7 +12807,11 @@
 				"updateInstall": "Khởi động lại để cập nhật",
 				"updating": "Đang cập nhật…",
 				"updatePackage": "Đã có phiên bản {{version}}. Hãy tải gói mới xuống để cập nhật.",
-				"updateDownload": "Tải xuống"
+				"updateDownload": "Tải xuống",
+				"openAtLoginHint": "Khởi động Margaya ở chế độ nền khi bạn đăng nhập vào máy tính này.",
+				"updatesLabel": "Cập nhật",
+				"diagnosticsLabel": "Chẩn đoán",
+				"diagnosticsHint": "Sao chép phiên bản ứng dụng, danh sách máy chủ của bạn và các dòng nhật ký gần đây để báo lỗi. Mã thông báo đăng nhập không bao giờ được đưa vào."
 			},
 			"quickAdd": {
 				"title": "Thêm nhanh",
@@ -12070,6 +12830,10 @@
 			"downloads": {
 				"finished": "Đã tải xuống {{file}}",
 				"failed": "Không thể tải xuống {{file}}"
+			},
+			"notifications": {
+				"releasedTitle": "Thông báo đã bật lại",
+				"releasedBody": "Thông báo đến trong lúc tạm dừng: {{count}}"
 			},
 			"menu": {
 				"about": "Giới thiệu về Margaya",
