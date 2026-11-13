@@ -30,6 +30,17 @@ import {
 } from "../../../helpers/task-ui";
 import { uniqueName } from "../../../helpers/ui";
 
+/** The calendar's accessible day name, for example "January 1st, 2040". */
+function calendarDayName(day: Date): RegExp {
+  const n = day.getDate();
+  const suffix =
+    n % 100 >= 11 && n % 100 <= 13
+      ? "th"
+      : (["th", "st", "nd", "rd"][n % 10] ?? "th");
+  const month = day.toLocaleString("en-US", { month: "long" });
+  return new RegExp(`${month} ${n}${suffix}, ${day.getFullYear()}`);
+}
+
 // The dev servers are shared with other suites; allow slow page loads.
 test.describe.configure({ timeout: 180_000 });
 test.use({ navigationTimeout: 120_000 });
@@ -413,26 +424,35 @@ test.describe("gantt", () => {
     await expect(barFor(undated.title)).toHaveCount(0);
     await expect(barFor(current.title)).toBeVisible();
 
-    const start = page.getByRole("textbox", { name: "Timeline start date" });
-    const initialStart = await start.inputValue();
+    // The period start is a calendar button showing the date in the locale.
+    const start = page.getByRole("button", { name: /^Timeline start date/ });
+    const initialStart = (await start.textContent()) ?? "";
     const next = page.getByRole("button", { name: "Next period" });
     const previous = page.getByRole("button", { name: "Previous period" });
 
     await expect(next).toBeEnabled();
     await next.click();
-    await expect(start).not.toHaveValue(initialStart);
-    const afterNext = await start.inputValue();
-    expect(afterNext > initialStart).toBe(true);
+    await expect(start).not.toHaveText(initialStart);
+    const afterNext = (await start.textContent()) ?? "";
     await expect(barFor(late.title)).toBeVisible();
 
     await expect(previous).toBeEnabled();
     await previous.click();
-    await expect(start).not.toHaveValue(afterNext);
+    await expect(start).not.toHaveText(afterNext);
 
-    // Typing a start date jumps there.
+    // Picking a start date from the calendar jumps there.
     const earlyStart = localDay(-84);
-    await start.fill(ymd(earlyStart));
-    await start.press("Enter");
+    await start.click();
+    const calendar = page.getByRole("dialog");
+    await calendar
+      .getByLabel("Choose the Year")
+      .selectOption(String(earlyStart.getFullYear()));
+    await calendar
+      .getByLabel("Choose the Month")
+      .selectOption(String(earlyStart.getMonth()));
+    await calendar
+      .getByRole("button", { name: calendarDayName(earlyStart) })
+      .click();
     await expect(barFor(early.title)).toBeVisible();
 
     await page.getByRole("button", { name: "Jump to today" }).click();

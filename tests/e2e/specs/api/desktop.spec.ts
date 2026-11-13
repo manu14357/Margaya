@@ -91,9 +91,16 @@ test(
     });
     await expectJson(await bearer.get("/api/notification"));
 
-    await expectStatus(await native.post("/api/auth/desktop/sign-out"), 401);
+    // The app always sends a JSON body; the auth layer answers 415 before
+    // it checks credentials when there is none.
+    await expectStatus(
+      await native.post("/api/auth/desktop/sign-out", { data: {} }),
+      401,
+    );
     expect(
-      await expectJson(await bearer.post("/api/auth/desktop/sign-out")),
+      await expectJson(
+        await bearer.post("/api/auth/desktop/sign-out", { data: {} }),
+      ),
     ).toEqual({ success: true });
     await expectStatus(await bearer.get("/api/notification"), 401);
 
@@ -129,10 +136,14 @@ test(
     }>(await bearer.get(`/api/notification/${created.id}/desktop`));
     expect(Object.keys(alert).sort()).toEqual([
       "body",
+      "held",
       "id",
+      "sound",
+      "soundName",
       "tag",
       "title",
       "url",
+      "volume",
     ]);
     expect(alert.url.startsWith(E2E_WEB_URL)).toBe(true);
     expect(JSON.stringify(alert)).not.toContain("nobody else");

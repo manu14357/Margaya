@@ -351,6 +351,7 @@ test(
         // Opt-in: off until the person turns it on.
         { key: "my-brief", enabled: false },
         { key: "pinned-reports", enabled: false },
+        { key: "project-updates", enabled: false },
       ],
     });
 
@@ -360,6 +361,7 @@ test(
       { key: "recents", enabled: true },
       { key: "my-brief", enabled: true },
       { key: "pinned-reports", enabled: false },
+      { key: "project-updates", enabled: true },
       { key: "risks", enabled: false },
     ];
     const saved = await expectJson<HomePreferences>(

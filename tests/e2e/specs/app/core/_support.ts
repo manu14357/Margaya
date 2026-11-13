@@ -203,8 +203,9 @@ export async function expectToast(
 }
 
 /** The sidebar (the app's left navigation). */
+/** The section panel beside the rail: on the projects page, the project list. */
 export function sidebar(page: Page): Locator {
-  return page.locator("[data-sidebar=sidebar]").first();
+  return page.getByRole("complementary", { name: "Section navigation" });
 }
 
 /** Opens the "More" menu of a sidebar row whose button reads `name`. */

@@ -62,6 +62,15 @@ const ANONYMOUS_OVERRIDES: Record<
     data: { roleName: "x", organizationId: "x", data: {} },
   },
   getOrganizationRole: { params: { roleName: "x", organizationId: "x" } },
+  // A well-formed PKCE request, so the answer is about credentials, not the body.
+  authorizeDesktopSignIn: {
+    data: {
+      state: "e2e-anonymous-state",
+      code_challenge: "A".repeat(43),
+      code_challenge_method: "S256",
+    },
+  },
+  signOutDesktop: { data: {} },
 };
 
 async function send(
@@ -97,7 +106,10 @@ test.describe("unauthenticated callers", () => {
       const allowed =
         operation.operationId === "listOrganizationUserInvitations"
           ? [400, 401]
-          : [401];
+          : // Metrics are off on this instance: the route hides itself.
+            operation.operationId === "getMetrics"
+            ? [401, 404]
+            : [401];
       if (!allowed.includes(response.status())) {
         failures.push(
           `${operation.method.toUpperCase()} ${operation.path} -> ${response.status()} ${(await response.text()).slice(0, 120)}`,
