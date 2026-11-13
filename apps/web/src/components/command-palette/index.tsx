@@ -61,6 +61,7 @@ import {
 import { useUserPreferencesStore } from "@/store/user-preferences";
 import { useAskCommands } from "../ai/ask/use-ask-commands";
 import { useBuildWithAiCommand } from "../ai-build/use-build-with-ai-command";
+import { useFeedbackCommand } from "../feedback/use-feedback-command";
 import { usePageCommands } from "../page/use-page-commands";
 import CreateProjectModal from "../shared/modals/create-project-modal";
 import { EntityCommandsSource } from "./entity-commands";
@@ -292,6 +293,7 @@ function CommandPalette() {
     projectId: projectIdFromRoute,
   });
   const preferenceCommands = usePreferenceCommands({ open });
+  const feedbackCommand = useFeedbackCommand();
 
   const { mode, term } = parsePaletteQuery(query);
   const askCommands = useAskCommands({
@@ -608,6 +610,7 @@ function CommandPalette() {
               }, 100);
             },
           },
+          ...feedbackCommand,
         ],
       },
       ...(viewCommands.items.length > 0
@@ -635,6 +638,7 @@ function CommandPalette() {
       pageCommands,
       preferenceCommands,
       askCommands.items,
+      feedbackCommand,
     ],
   );
 

@@ -47,6 +47,7 @@ export const INSTANCE_AUDIT_ACTIONS = [
   "saml.connection_created",
   "saml.connection_updated",
   "saml.connection_deleted",
+  "feedback.deleted",
 ] as const;
 
 export type InstanceAuditAction = (typeof INSTANCE_AUDIT_ACTIONS)[number];

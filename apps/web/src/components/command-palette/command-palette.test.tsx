@@ -85,6 +85,10 @@ vi.mock("./use-preference-commands", () => ({
   ],
 }));
 
+vi.mock("../feedback/use-feedback-command", () => ({
+  useFeedbackCommand: () => [],
+}));
+
 vi.mock("./entity-commands", async () => {
   const { useEffect } = await import("react");
   return {

@@ -1,0 +1,111 @@
+---
+title: Feedback
+description: Tell the people who run your Margaya server what works and what doesn't, answer the occasional one-question survey, and, as an instance admin, read, chart, export and delete the answers. Feedback never leaves the server.
+---
+
+Margaya has a built-in way to collect feedback. It is meant to stay out of the way: you can send feedback whenever you like, and a short survey asks at most once every few months.
+
+<Info>
+Feedback is stored on **this** Margaya server and only its instance admins can read it. It is never sent to the Margaya project or to anyone else.
+</Info>
+
+## Send feedback
+
+Open **Send feedback** from any of these:
+
+- the **Help** menu (the question mark in the rail);
+- the command palette (<Kbd>⌘</Kbd> <Kbd>K</Kbd> or <Kbd>Ctrl</Kbd> <Kbd>K</Kbd>, then type "feedback");
+- **Settings → Account → Preferences → Feedback**.
+
+Pick how you feel on five faces, add a comment if you want, and select **Send**. A face, a comment or both is enough.
+
+<Screenshot src="feedback/send-feedback" alt="The Send feedback dialog with five faces, a comment box, and a note on what is sent with the feedback" />
+
+It also works in the desktop app, which shows the same dialog.
+
+## The occasional survey
+
+When your instance admin turns it on, a small card sometimes appears in the bottom corner with one question. Depending on the server, you answer with faces, 1 to 5 stars, or a 0 to 10 scale for how likely you are to recommend Margaya.
+
+<Screenshot src="feedback/survey-card" alt="The survey card in the bottom-right corner, asking how Margaya is working, with five faces, Don't ask again and a close button" />
+
+The card is never a pop-up and never takes the keyboard focus. It does not appear:
+
+- in your first 7 days on the server, or during onboarding;
+- while you are typing, or while a dialog, sheet or menu is open;
+- more often than your admin allows (every 90 days by default);
+- for 30 days after you close it with **×**;
+- ever again after you choose **Don't ask again**.
+
+It asks only after a milestone: after you have completed a number of tasks, or used Margaya on a number of days. Your admin chooses the numbers.
+
+You can use the keyboard throughout. Tab moves to the scale, the arrow keys change your choice, and each choice has a name that screen readers read out, such as "Happy" or "4 stars".
+
+## Your feedback and your privacy
+
+Each answer is stored with:
+
+- your name and email address, so admins can follow up;
+- your rating and comment;
+- the **kind** of page you were on, such as "Board" or "Settings";
+- the app version, and whether you used the web or desktop app.
+
+It never includes task titles, descriptions, project names, links or screenshots.
+
+Under **Settings → Account → Preferences → Feedback** you can:
+
+- turn the survey off or on for yourself;
+- **Download** a JSON copy of everything you have sent;
+- **Delete all** of it.
+
+Deleting your account also deletes your feedback.
+
+## For instance admins
+
+Open **Settings → Instance → Feedback**.
+
+<Screenshot src="feedback/admin-feedback" alt="The Feedback page under Instance settings, with the survey settings, summary tiles, a distribution chart, a weekly trend and the list of answers" />
+
+### Settings
+
+| Setting | What it does | Default |
+| --- | --- | --- |
+| Allow feedback | Shows **Send feedback** to everyone. Turning it off also stops the survey; answers already sent are kept. | On |
+| Ask now and then | Turns the occasional survey on. | Off |
+| Scale | 3 faces, 5 faces, 5 stars, or 0–10 (NPS). | 5 faces |
+| After completed tasks | Ask once someone completes this many tasks since the survey last asked them. 0 turns this trigger off. | 10 |
+| After active days | Ask once someone has used Margaya on this many days since the survey last asked them. 0 turns this trigger off. | 10 |
+| Ask at most every | The least time between two surveys for one person, 30 to 365 days. | 90 days |
+
+Whichever trigger is reached first asks. The first-week rule, the snooze after closing, and **Don't ask again** always apply. The `MARGAYA_FEEDBACK_ENABLED` environment variable locks **Allow feedback** (see [Environment variables](/core/installation/environment-variables)).
+
+### Summary
+
+Choose a scale and a period (30, 90, 180 or 365 days) to see:
+
+- **Answers** and the **Average** score;
+- **Happy**: the share of happy answers (the top face of three, 4–5 faces or stars, a thumbs up);
+- **NPS** for the 0–10 scale: the percentage of promoters (9–10) minus the percentage of detractors (0–6), from −100 to 100;
+- the **Distribution** of scores, and the happy share (or NPS) **per week**.
+
+The summary counts one scale at a time, so if you change the scale, compare the periods before and after the change separately.
+
+### Answers
+
+The list shows the newest answers first, with who sent them and from which kind of page. Filter by source (Send feedback, Survey or Feature prompt), by scale, or to answers with a comment, or search comments, names and emails. The list updates live when someone sends feedback.
+
+- **Export CSV** downloads the filtered answers, at most 10,000 rows.
+- The bin icon deletes one answer.
+- **Delete old** deletes answers older than 90, 180 or 365 days, or all of them.
+
+Deleting needs a recent sign-in, like other instance changes, and is recorded in the instance [audit trail](/core/installation/instance-admin).
+
+### Good practice
+
+- **Close the loop.** Tell people what changed because of their feedback, for example in a workspace page or your release notes. Answers are more useful when people see they were read.
+- **Keep the survey rare.** Response rates and the quality of answers drop when people are asked too often. The 90-day default is a good starting point.
+- **Keep only what you need.** Use **Delete old** regularly, and mention the feedback feature in your privacy notice if your organisation has one.
+
+## API
+
+Signed-in sessions (the web and desktop apps) use the [Feedback](/api-reference/endpoints/feedback/submitFeedback) endpoints. API keys are refused, so scripts can't fill the list. Instance admins read and delete answers through the [instance admin](/api-reference/endpoints/instance-admin/listInstanceFeedback) endpoints, and change the settings with [updateInstanceSettings](/api-reference/endpoints/instance-admin/updateInstanceSettings) using the `feedback.*` keys.

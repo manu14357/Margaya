@@ -51,4 +51,5 @@ export const INSTANCE_AUDIT_ACTION_KEYS = {
     "accountSecurity:auditTrail.actions.samlConnectionUpdated",
   "saml.connection_deleted":
     "accountSecurity:auditTrail.actions.samlConnectionDeleted",
+  "feedback.deleted": "settings:feedback.admin.auditDeleted",
 } as const;

@@ -5,6 +5,8 @@ import { HelpMenu } from "./shell-menus";
 
 const state = vi.hoisted(() => ({
   config: undefined as { sourceCodeUrl: string } | undefined,
+  feedback: false,
+  openFeedback: vi.fn(),
 }));
 
 vi.mock("react-i18next", () => ({
@@ -19,11 +21,19 @@ vi.mock("@/components/version-display", () => ({
 vi.mock("@/hooks/queries/config/use-get-config", () => ({
   default: () => ({ data: state.config }),
 }));
+vi.mock("@/components/feedback/feedback-host", () => ({
+  useFeedbackAvailable: () => state.feedback,
+}));
+vi.mock("@/components/feedback/feedback-dialog-store", () => ({
+  openFeedbackDialog: state.openFeedback,
+}));
 
 afterEach(() => {
   cleanup();
   document.body.innerHTML = "";
   state.config = undefined;
+  state.feedback = false;
+  state.openFeedback.mockReset();
 });
 
 async function openHelp() {
@@ -48,5 +58,25 @@ describe("HelpMenu source code link", () => {
       "href",
       GITHUB_REPOSITORY_URL,
     );
+  });
+});
+
+describe("HelpMenu Send feedback", () => {
+  it("opens the feedback dialog when the instance has feedback on", async () => {
+    state.feedback = true;
+    await openHelp();
+    fireEvent.click(
+      screen.getByRole("menuitem", { name: "settings:feedback.send.menuItem" }),
+    );
+    expect(state.openFeedback).toHaveBeenCalled();
+  });
+
+  it("is absent when the instance has feedback off", async () => {
+    await openHelp();
+    expect(
+      screen.queryByRole("menuitem", {
+        name: "settings:feedback.send.menuItem",
+      }),
+    ).toBeNull();
   });
 });
