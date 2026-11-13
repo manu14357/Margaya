@@ -54,6 +54,7 @@ import { cn } from "@/lib/cn";
 import { copyToClipboard } from "@/lib/copy-to-clipboard";
 import { formatDateTime, formatRelativeTime } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
+import { keepAnchorInView } from "@/lib/keep-anchor-in-view";
 import { taskUrl } from "@/lib/task-key";
 import { toast } from "@/lib/toast";
 import type { CommentVisibility, PublicAuthorKind } from "@/types/publication";
@@ -180,10 +181,13 @@ export default function CommentCard({
     taskId,
   ])?.projectId;
 
-  // A copied comment link opens the task scrolled to its comment.
+  // A copied comment link opens the task scrolled to its comment, and keeps
+  // it there while the rest of the task page loads above it.
   useEffect(() => {
     if (window.location.hash !== `#comment-${commentId}`) return;
-    rootRef.current?.scrollIntoView?.({ block: "center" });
+    const node = rootRef.current;
+    if (!node) return;
+    return keepAnchorInView(node);
   }, [commentId]);
 
   const handleEdit = useCallback(() => {
