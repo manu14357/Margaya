@@ -192,6 +192,8 @@ const getFollowRoute = createRoute({
   path: "/project/{projectId}/follow",
   tags: TAGS,
   summary: "Whether you follow a project's updates",
+  description:
+    "Whether the caller follows the project's status updates, and whether they are its lead (the lead follows unless they unfollowed). Needs the Updates feature and access to the project.",
   middleware: [...readProject] as const,
   request: { params: projectIdParam },
   responses: {
@@ -230,6 +232,8 @@ const getReminderRoute = createRoute({
   path: "/project/{projectId}/reminder",
   tags: TAGS,
   summary: "Get the weekly update reminder",
+  description:
+    "Whether the weekly reminder to post an update is on, its weekday (0 is Sunday) and the project lead it goes to. Anyone who can see the project can read it; changing it needs project:update.",
   middleware: [...readProject] as const,
   request: { params: projectIdParam },
   responses: {
