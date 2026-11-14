@@ -10,6 +10,13 @@ export const trashedPageParam = z.object({
   pageId: z.string().min(1).openapi({ description: "A trashed page's id." }),
 });
 
+export const trashedWhiteboardParam = z.object({
+  whiteboardId: z
+    .string()
+    .min(1)
+    .openapi({ description: "A trashed whiteboard's id." }),
+});
+
 export const trashProjectParam = z.object({
   projectId: z.string().min(1).openapi({ description: "The project's id." }),
 });

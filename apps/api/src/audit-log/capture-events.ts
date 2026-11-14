@@ -1,7 +1,11 @@
 import { eq, inArray } from "drizzle-orm";
 import db from "../database";
-import { projectTable } from "../database/schema";
+import { projectTable, whiteboardTable } from "../database/schema";
 import { subscribeToEvent } from "../events";
+import {
+  BOARD_LIFECYCLE_EVENTS,
+  boardLifecycleActions,
+} from "../whiteboard/activity-map";
 import type { AuditAction } from "./actions";
 import { type AuditRequestStore, auditContext } from "./context";
 import { type AuditInput, recordAudit, trackAudit } from "./record";
@@ -17,7 +21,7 @@ type EventData = Record<string, unknown> & {
   name?: string;
 };
 
-type Mapper = (data: EventData) => Promise<AuditInput | null>;
+type Mapper = (data: EventData) => Promise<AuditInput | AuditInput[] | null>;
 
 function str(value: unknown): string | null {
   return typeof value === "string" && value ? value : null;
@@ -95,7 +99,44 @@ function pageEntry(action: AuditAction, data: EventData): AuditInput | null {
   };
 }
 
+async function whiteboardTitle(whiteboardId: string) {
+  const [row] = await db
+    .select({ title: whiteboardTable.title })
+    .from(whiteboardTable)
+    .where(eq(whiteboardTable.id, whiteboardId))
+    .limit(1);
+  return row ? row.title : null;
+}
+
+/**
+ * Entries about a whiteboard's lifecycle (whiteboard/activity-map.ts): the
+ * title is the label, and metadata.projectId keeps restricted projects'
+ * boards out of the log for readers who can't see them. Never content.
+ */
+function whiteboardEntries(eventName: string): Mapper {
+  return async (data) => {
+    const workspaceId = str(data.workspaceId);
+    const whiteboardId = str(data.whiteboardId);
+    const actions = boardLifecycleActions(eventName, data);
+    if (!workspaceId || !whiteboardId || actions.length === 0) return null;
+    const title =
+      typeof data.title === "string"
+        ? data.title
+        : await whiteboardTitle(whiteboardId);
+    return actions.map((action) => ({
+      workspaceId,
+      action: `whiteboard.${action}` as const,
+      target: { type: "whiteboard", id: whiteboardId, label: title || null },
+      metadata: { projectId: str(data.projectId), title },
+      actor: { userId: str(data.userId) },
+    }));
+  };
+}
+
 export const EVENT_ACTIONS: Record<string, Mapper> = {
+  ...Object.fromEntries(
+    BOARD_LIFECYCLE_EVENTS.map((name) => [name, whiteboardEntries(name)]),
+  ),
   "workspace.created": async (data) => {
     const workspaceId = str(data.workspaceId);
     if (!workspaceId) return null;

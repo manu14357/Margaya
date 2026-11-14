@@ -272,6 +272,7 @@ describe("trash auto purge", () => {
       projects: 0,
       tasks: 0,
       pages: 0,
+      whiteboards: 0,
     });
     expect(await s.taskRow(old.id)).not.toBeNull();
 
@@ -281,6 +282,7 @@ describe("trash auto purge", () => {
       projects: 1,
       tasks: 1,
       pages: 0,
+      whiteboards: 0,
     });
     expect(await s.taskRow(old.id)).toBeNull();
     expect(await s.taskRow(inOldProject.id)).toBeNull();

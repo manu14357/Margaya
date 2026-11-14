@@ -308,6 +308,7 @@ describe("API integration: page trash", () => {
       projects: 0,
       tasks: 0,
       pages: 0,
+      whiteboards: 0,
     });
     expect(await pageRow(old.id)).toBeDefined();
 

@@ -15,6 +15,15 @@ import { requestHiddenProjectIds } from "../project/visibility";
 import { taskSchema } from "../task/response";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
+import {
+  requireWhiteboardsFeature,
+  whiteboardAccess,
+} from "../whiteboard/middleware";
+import {
+  deletedWhiteboardSchema,
+  whiteboardSchema,
+} from "../whiteboard/response";
+import { whiteboardCallerOf } from "../whiteboard/shared";
 import { listProjectTrash, listWorkspaceTrash, liveProjectOf } from "./lists";
 import {
   listPageTrash,
@@ -27,12 +36,14 @@ import {
   trashedPageListSchema,
   trashedProjectListSchema,
   trashedTaskListSchema,
+  trashedWhiteboardListSchema,
 } from "./response";
 import {
   listProjectTrashQuery,
   listTrashQuery,
   trashedPageParam,
   trashedTaskParam,
+  trashedWhiteboardParam,
   trashProjectParam,
 } from "./schema";
 import {
@@ -40,6 +51,11 @@ import {
   purgeTrashedTask,
   restoreTrashedTask,
 } from "./task-trash";
+import {
+  listWhiteboardTrash,
+  purgeTrashedWhiteboard,
+  restoreTrashedWhiteboard,
+} from "./whiteboard-trash";
 
 // Trash and restore (C7). Deleting goes through the task, project and page
 // delete routes; these list the trash, restore, and delete permanently.
@@ -267,6 +283,82 @@ const purgePageRoute = createRoute({
   },
 });
 
+const trashedWhiteboardRoute = [
+  whiteboardAccess("whiteboardId", { trashed: true }),
+  requireWorkspacePermission({ whiteboard: ["read"] }),
+  requireWhiteboardsFeature,
+] as const;
+
+const listWhiteboardTrashRoute = createRoute({
+  method: "get",
+  operationId: "listWhiteboardTrash",
+  path: "/project/{projectId}/whiteboards",
+  tags: TAGS,
+  summary: "List a project's deleted whiteboards",
+  description:
+    "One page of the whiteboards deleted from a project, most recently deleted first, with who deleted them and when. Needs whiteboard:read and the project's Whiteboards feature.",
+  middleware: [
+    workspaceAccess.fromProject("projectId", {
+      notFoundMessage: "Project not found",
+    }),
+    requireWorkspacePermission({ whiteboard: ["read"] }),
+    requireProjectFeature("whiteboards", {
+      resource: "project",
+      key: "projectId",
+    }),
+  ] as const,
+  request: { params: trashProjectParam, query: listTrashQuery },
+  responses: {
+    200: jsonResponse(
+      "A page of trashed whiteboards",
+      trashedWhiteboardListSchema,
+    ),
+    400: errorResponse("Invalid query"),
+    403: errorResponse(
+      "No workspace access, missing whiteboard:read, or the project's Whiteboards feature is off",
+    ),
+    404: errorResponse("Project not found, or in the trash"),
+  },
+});
+
+const restoreWhiteboardRoute = createRoute({
+  method: "post",
+  operationId: "restoreDeletedWhiteboard",
+  path: "/whiteboard/{whiteboardId}/restore",
+  tags: TAGS,
+  summary: "Restore a deleted whiteboard",
+  description:
+    "Bring a trashed whiteboard back into the archive with its content and images (whiteboard.restored is published). Its creator with whiteboard:update, or whiteboard:delete.",
+  middleware: [...trashedWhiteboardRoute] as const,
+  request: { params: trashedWhiteboardParam },
+  responses: {
+    200: jsonResponse("The restored whiteboard", whiteboardSchema),
+    403: errorResponse(
+      "Not the creator or an admin, or the project's Whiteboards feature is off",
+    ),
+    404: errorResponse("Whiteboard not found in the trash"),
+  },
+});
+
+const purgeWhiteboardRoute = createRoute({
+  method: "delete",
+  operationId: "purgeWhiteboard",
+  path: "/whiteboard/{whiteboardId}",
+  tags: TAGS,
+  summary: "Delete a whiteboard permanently",
+  description:
+    "Permanently delete a trashed whiteboard with its content, images and task links. This cannot be undone. Its creator with whiteboard:update, or whiteboard:delete.",
+  middleware: [...trashedWhiteboardRoute] as const,
+  request: { params: trashedWhiteboardParam },
+  responses: {
+    200: jsonResponse("The deleted whiteboard", deletedWhiteboardSchema),
+    403: errorResponse(
+      "Not the creator or an admin, or the project's Whiteboards feature is off",
+    ),
+    404: errorResponse("Whiteboard not found in the trash"),
+  },
+});
+
 const trash = apiRouter<
   BaseVariables & { workspaceId: string; projectId: string | null }
 >()
@@ -358,6 +450,38 @@ const trash = apiRouter<
       await purgeTrashedPage(
         c.req.valid("param").pageId,
         await pageCallerOf(c),
+      ),
+      200,
+    ),
+  )
+  .openapi(listWhiteboardTrashRoute, async (c) => {
+    const { projectId } = c.req.valid("param");
+    const project = await liveProjectOf(projectId, c.get("workspaceId"));
+    if (!project)
+      throw new HTTPException(404, { message: "Project not found" });
+    return c.json(
+      await listWhiteboardTrash(
+        project.id,
+        await whiteboardCallerOf(c),
+        c.req.valid("query"),
+      ),
+      200,
+    );
+  })
+  .openapi(restoreWhiteboardRoute, async (c) =>
+    c.json(
+      await restoreTrashedWhiteboard(
+        c.req.valid("param").whiteboardId,
+        await whiteboardCallerOf(c),
+      ),
+      200,
+    ),
+  )
+  .openapi(purgeWhiteboardRoute, async (c) =>
+    c.json(
+      await purgeTrashedWhiteboard(
+        c.req.valid("param").whiteboardId,
+        await whiteboardCallerOf(c),
       ),
       200,
     ),

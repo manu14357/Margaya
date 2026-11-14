@@ -91,6 +91,30 @@ export const trashedPageListSchema = z
   })
   .openapi("TrashedPageList");
 
+export const trashedWhiteboardSchema = z
+  .object({
+    id: z.string(),
+    projectId: z.string(),
+    title: z.string().openapi({ description: "May be empty (Untitled)." }),
+    icon: z.string().nullable(),
+    canManage: z.boolean().openapi({
+      description:
+        "The caller may restore it or delete it permanently: its creator with whiteboard:update, or whiteboard:delete.",
+    }),
+    ...deletedByShape,
+  })
+  .openapi("TrashedWhiteboard");
+
+export const trashedWhiteboardListSchema = z
+  .object({
+    items: z.array(trashedWhiteboardSchema),
+    total: z.number().int(),
+    page: z.number().int(),
+    limit: z.number().int(),
+    hasMore: z.boolean(),
+  })
+  .openapi("TrashedWhiteboardList");
+
 export const emptyTrashResultSchema = z
   .object({
     deletedCount: z.number().int().openapi({

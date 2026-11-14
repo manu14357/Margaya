@@ -5,6 +5,10 @@ import { assetTable, projectTable, taskTable } from "../database/schema";
 import { publishEvent } from "../events";
 import { handOverAssets } from "../storage/asset-handover";
 import { deleteS3Keys } from "../storage/cleanup-assets";
+import {
+  deleteBoardAssetObjects,
+  projectBoardAssetKeys,
+} from "../whiteboard/assets";
 import { restoreBatch } from "./task-trash";
 
 // Project trash (C7). Deleting a project stamps it and every live task in it
@@ -132,6 +136,8 @@ export async function hardDeleteProject(
     .from(assetTable)
     .where(eq(assetTable.projectId, project.id));
   const orphans = await handOverAssets(assets, { projectId: project.id });
+  // Whiteboard images belong to their boards only: they all go.
+  const boardImageKeys = await projectBoardAssetKeys(project.id);
   const [deleted] = await db
     .delete(projectTable)
     .where(eq(projectTable.id, project.id))
@@ -140,6 +146,7 @@ export async function hardDeleteProject(
   if (orphans.length > 0) {
     deleteS3Keys(orphans.map((asset) => asset.objectKey)).catch(() => {});
   }
+  void deleteBoardAssetObjects(boardImageKeys);
   await publishEvent("project.purged", projectEvent(deleted, userId));
   return deleted;
 }

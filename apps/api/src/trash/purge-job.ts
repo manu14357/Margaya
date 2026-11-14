@@ -1,17 +1,23 @@
 import { and, asc, eq, isNotNull, isNull, lt } from "drizzle-orm";
 import db from "../database";
-import { pageTable, projectTable, taskTable } from "../database/schema";
+import {
+  pageTable,
+  projectTable,
+  taskTable,
+  whiteboardTable,
+} from "../database/schema";
 import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { hardDeleteTasks } from "./hard-delete";
 import { hardDeletePage } from "./page-trash";
 import { hardDeleteProject } from "./project-trash";
 import { purgeCutoff, trashRetentionDays } from "./settings";
+import { hardDeleteWhiteboard } from "./whiteboard-trash";
 
 // Hourly, on one instance at a time (C7): trash older than
 // TRASH_RETENTION_DAYS is deleted permanently through the same code as a
-// manual "Delete permanently". Projects go first, so their tasks and pages
-// leave with them; then trashed tasks and pages of live projects. 0 days turns
-// it off.
+// manual "Delete permanently". Projects go first, so their tasks, pages and
+// whiteboards leave with them; then trashed tasks, pages and whiteboards of
+// live projects. 0 days turns it off.
 
 export const TRASH_PURGE_LEASE = "trash-purge";
 const LEASE_MS = 10 * 60 * 1000;
@@ -28,6 +34,7 @@ export type TrashPurgeOutcome = {
   projects: number;
   tasks: number;
   pages: number;
+  whiteboards: number;
 };
 
 const NOTHING: TrashPurgeOutcome = {
@@ -35,6 +42,7 @@ const NOTHING: TrashPurgeOutcome = {
   projects: 0,
   tasks: 0,
   pages: 0,
+  whiteboards: 0,
 };
 
 async function purgeOnce(
@@ -129,9 +137,43 @@ async function purgeOnce(
     if (due.length < limits.batch) break;
   }
 
-  if (outcome.projects > 0 || outcome.tasks > 0 || outcome.pages > 0) {
+  const failedBoards = new Set<string>();
+  while (Date.now() - startedAt < limits.budgetMs) {
+    const rows = await db
+      .select({ board: whiteboardTable })
+      .from(whiteboardTable)
+      .innerJoin(projectTable, eq(projectTable.id, whiteboardTable.projectId))
+      .where(
+        and(
+          isNotNull(whiteboardTable.deletedAt),
+          lt(whiteboardTable.deletedAt, cutoff),
+          // Boards of a trashed project leave with the project.
+          isNull(projectTable.deletedAt),
+        ),
+      )
+      .orderBy(asc(whiteboardTable.deletedAt))
+      .limit(limits.batch + failedBoards.size);
+    const due = rows.filter(({ board }) => !failedBoards.has(board.id));
+    for (const { board } of due) {
+      try {
+        if (await hardDeleteWhiteboard(board, null)) outcome.whiteboards += 1;
+      } catch (error) {
+        failedBoards.add(board.id);
+        outcome.degraded = true;
+        console.error(`trash: failed to purge whiteboard ${board.id}`, error);
+      }
+    }
+    if (due.length < limits.batch) break;
+  }
+
+  if (
+    outcome.projects > 0 ||
+    outcome.tasks > 0 ||
+    outcome.pages > 0 ||
+    outcome.whiteboards > 0
+  ) {
     console.log(
-      `trash: purged ${outcome.projects} projects, ${outcome.tasks} tasks and ${outcome.pages} pages`,
+      `trash: purged ${outcome.projects} projects, ${outcome.tasks} tasks, ${outcome.pages} pages and ${outcome.whiteboards} whiteboards`,
     );
   }
   return outcome;
