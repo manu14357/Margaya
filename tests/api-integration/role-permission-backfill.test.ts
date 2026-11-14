@@ -84,6 +84,7 @@ describe("API integration: role permission backfill", () => {
         "module",
         "page",
         "view",
+        "whiteboard",
       ],
       updated: 3,
     });
@@ -117,6 +118,14 @@ describe("API integration: role permission backfill", () => {
     expect(stored.viewer?.page).toEqual(["read"]);
     expect(stored.member?.page).toEqual(["create", "read", "update"]);
     expect(stored.admin?.page).toEqual(["create", "read", "update", "delete"]);
+    expect(stored.viewer?.whiteboard).toEqual(["read"]);
+    expect(stored.member?.whiteboard).toEqual(["create", "read", "update"]);
+    expect(stored.admin?.whiteboard).toEqual([
+      "create",
+      "read",
+      "update",
+      "delete",
+    ]);
     // Other resources and custom roles are untouched.
     expect(stored.member?.task).toEqual(LEGACY.member.task);
     expect(stored.reporter).toEqual({ project: ["read"] });
@@ -136,6 +145,7 @@ describe("API integration: role permission backfill", () => {
       "module",
       "page",
       "view",
+      "whiteboard",
     ]);
   });
 
@@ -172,6 +182,7 @@ describe("API integration: role permission backfill", () => {
           view: [],
           intake: [],
           page: [],
+          whiteboard: [],
         }),
       },
       { workspaceId: workspace.id, role: "member", permission: "not json" },
@@ -187,6 +198,7 @@ describe("API integration: role permission backfill", () => {
         "module",
         "page",
         "view",
+        "whiteboard",
       ],
       updated: 0,
     });
@@ -203,6 +215,7 @@ describe("API integration: role permission backfill", () => {
           view: [],
           intake: [],
           page: [],
+          whiteboard: [],
         }),
         member: "not json",
       },

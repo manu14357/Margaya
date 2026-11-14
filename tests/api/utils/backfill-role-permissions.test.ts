@@ -16,6 +16,7 @@ describe("pendingBackfillResources", () => {
       "module",
       "page",
       "view",
+      "whiteboard",
     ]);
     expect(pendingBackfillResources(new Set(["cycle"]))).toEqual([
       "ai",
@@ -25,6 +26,7 @@ describe("pendingBackfillResources", () => {
       "module",
       "page",
       "view",
+      "whiteboard",
     ]);
     expect(
       pendingBackfillResources(
@@ -37,6 +39,7 @@ describe("pendingBackfillResources", () => {
           "module",
           "page",
           "view",
+          "whiteboard",
         ]),
       ),
     ).toEqual([]);

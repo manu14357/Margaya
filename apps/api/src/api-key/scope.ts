@@ -23,6 +23,7 @@ export const API_KEY_AREAS = [
   "view",
   "intake",
   "page",
+  "whiteboard",
   "analytics",
   "workspace",
   "audit_log",

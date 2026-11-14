@@ -23,6 +23,10 @@ export const statement = {
   // update: edit pages, and lock, archive or move your own; delete: manage
   // (lock, archive, move, delete) any page you can see.
   page: ["create", "read", "update", "delete"],
+  // Project whiteboards, with the same meaning as page: update edits a
+  // board's content and locks or archives your own; delete manages (lock,
+  // archive, trash, publish) any board you can see.
+  whiteboard: ["create", "read", "update", "delete"],
   // The workspace audit log; owners and admins only by default.
   audit_log: ["read"],
   // use: AI features (only while AI is on for the instance, workspace and
@@ -43,6 +47,7 @@ export const viewer = ac.newRole({
   view: ["read"],
   intake: ["create", "read"],
   page: ["read"],
+  whiteboard: ["read"],
 });
 
 export const member = ac.newRole({
@@ -57,6 +62,7 @@ export const member = ac.newRole({
   intake: ["create", "read", "triage"],
   analytics: ["read"],
   page: ["create", "read", "update"],
+  whiteboard: ["create", "read", "update"],
   ai: ["use"],
 });
 
@@ -72,6 +78,7 @@ export const admin = ac.newRole({
   intake: ["create", "read", "triage"],
   analytics: ["read"],
   page: ["create", "read", "update", "delete"],
+  whiteboard: ["create", "read", "update", "delete"],
   audit_log: ["read"],
   ai: ["use", "manage"],
 });
@@ -88,6 +95,7 @@ export const owner = ac.newRole({
   intake: ["create", "read", "triage"],
   analytics: ["read"],
   page: ["create", "read", "update", "delete"],
+  whiteboard: ["create", "read", "update", "delete"],
   audit_log: ["read"],
   ai: ["use", "manage"],
 });
@@ -106,6 +114,7 @@ export const guest = ac.newRole({
   module: ["read"],
   view: ["read"],
   page: ["read"],
+  whiteboard: ["read"],
 });
 
 export const builtInRoles = { guest, viewer, member, admin, owner } as const;

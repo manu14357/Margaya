@@ -44,6 +44,12 @@ describe("@margaya/permissions statement surface", () => {
     expect(statement.intake).toEqual(["create", "read", "triage"]);
     expect(statement.analytics).toEqual(["read"]);
     expect(statement.page).toEqual(["create", "read", "update", "delete"]);
+    expect(statement.whiteboard).toEqual([
+      "create",
+      "read",
+      "update",
+      "delete",
+    ]);
     // The organization plugin's defaults must still be present so we can
     // reuse them in member/admin/owner roles without breaking better-auth
     // checks like organization:update.
@@ -100,6 +106,21 @@ describe("built-in role privileges", () => {
       "update",
       "delete",
     ]);
+  });
+
+  it("grants whiteboards like pages: viewers read, members edit, admins manage", () => {
+    const all = ["create", "read", "update", "delete"];
+    expect(viewer.statements.whiteboard).toEqual(["read"]);
+    expect(member.statements.whiteboard).toEqual(["create", "read", "update"]);
+    expect(admin.statements.whiteboard).toEqual(all);
+    expect(owner.statements.whiteboard).toEqual(all);
+    expect(defaultRolePayloads.viewer.whiteboard).toEqual(["read"]);
+    expect(defaultRolePayloads.member.whiteboard).toEqual([
+      "create",
+      "read",
+      "update",
+    ]);
+    expect(defaultRolePayloads.admin.whiteboard).toEqual(all);
   });
 
   it("member, admin and owner can read analytics", () => {
@@ -201,6 +222,7 @@ describe("guest role", () => {
       module: ["read"],
       view: ["read"],
       page: ["read"],
+      whiteboard: ["read"],
     });
   });
 

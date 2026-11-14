@@ -25,6 +25,7 @@ export const AGENT_AREAS = [
   "view",
   "intake",
   "page",
+  "whiteboard",
   "workspace",
 ] as const;
 
