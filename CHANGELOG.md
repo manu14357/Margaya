@@ -1,3 +1,7 @@
+### Documentation
+
+- define the release version format and bump rules in the skills: [9c22666](https://github.com/manu14357/Margaya/commit/9c226669a38673bf86be824ef258fc7b6fc9250f)
+
 ### Features
 
 - **landing:** link the desktop download from the navbar and footer: [5acd79d](https://github.com/manu14357/Margaya/commit/5acd79d9763e9aa685240bb1cf42265af07594bc)
