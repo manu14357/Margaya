@@ -157,6 +157,7 @@ Output: `apps/desktop/src-tauri/target/[<triple>/]release/bundle/{nsis,msi,dmg,m
 - macOS builds are signed with a Developer ID certificate and notarized when the Apple secrets exist: `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_API_ISSUER`, `APPLE_API_KEY`, `APPLE_API_PRIVATE_KEY` (the workflow writes the `.p8` file and sets `APPLE_API_KEY_PATH`). Use an Apple API key, never an account password. Without all six, the Mac build is ad-hoc signed and not notarized.
 - Windows builds are unsigned until an OV code-signing certificate is bought, so SmartScreen warns on first run; the Download page explains the step. Updates applied by the app itself are not affected.
 - Signing secrets belong to the protected `desktop-release` environment, which pull-request workflows cannot read.
+- **Version:** the desktop app has no version of its own. It ships with the Margaya release that triggers it (`vX.Y.Z`, plain SemVer). `desktop-release.yml` stamps that version into the installers and `latest.json` at build time, so the `0.1.0` in `apps/desktop/package.json`, `tauri.conf.json` and `Cargo.toml` is a placeholder: don't bump it. When a server change needs a newer app, raise `DESKTOP_MIN_VERSION` in the same change and mark it breaking (`commit-and-release` skill, "Choosing the bump").
 - Never trigger a release or the workflow yourself. Commit scope for this app is `desktop` (`commit-and-release` skill).
 
 ## i18n

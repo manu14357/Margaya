@@ -1,6 +1,6 @@
 ---
 name: commit-and-release
-description: Prepare and make commits in Margaya only when explicitly asked - conventional commit messages checked by commitlint, scopes used in this repo, husky hooks (biome ci, commitlint), targeted Biome checks, the checks CI runs, and how semantic-release cuts releases. Use when the user asks to commit, write a commit message, open a PR, or asks how releases, versioning or CI work.
+description: Prepare and make commits in Margaya only when explicitly asked - conventional commit messages checked by commitlint, scopes used in this repo, husky hooks (biome ci, commitlint), targeted Biome checks, the checks CI runs, the version format (one SemVer vX.Y.Z for server, images, chart and desktop; separate mcp-vX.Y.Z), how to mark breaking changes for a major version, and how semantic-release cuts releases. Use when the user asks to commit, write a commit message, open a PR, prepare or cut a release, bump a version, or asks how releases, versioning or CI work.
 ---
 
 # Commit and release
@@ -75,13 +75,73 @@ Hooks (`.husky/`): `pre-commit` runs `biome check --staged` on the staged files 
 
 Pull requests (only when asked): the title must also pass commitlint (`.github/workflows/pr-title.yml`), since it can become the commit semantic-release reads.
 
-## 6. How releases happen (do not trigger them)
+## 6. Versions and releases (do not trigger them)
 
-- `release.config.js` (semantic-release) releases from `main` only. Version bump comes from conventional commits (`conventionalcommits` preset) unless `RELEASE_TYPE` forces `patch`/`minor`/`major`.
-- `scripts/release/notes.mjs` groups notes by pull request (Features, Bug Fixes, Performance Improvements, Reverts, Code Refactoring, Documentation); `scripts/release/apply-version.mjs` stamps the version; the release commit is `chore(release): vX.Y.Z [skip ci]` and updates `CHANGELOG.md`, `package.json` and `charts/margaya/Chart.yaml`.
-- `.github/workflows/release.yml` is manual (`workflow_dispatch`, with a dry-run input) and builds images and the Helm chart. `build-images.yml` and `helm-chart.yml` sign them keylessly with cosign and attest SLSA provenance (the calling jobs must grant `id-token`, `attestations` and `artifact-metadata: write`), and its `assets` job attaches the SBOMs, `image-digests.txt` and `SHA256SUMS-sbom.txt` to the GitHub Release. How users check them: `apps/docs/core/installation/verify-a-release.mdx`. `nightly.yml`, `docker.yml` and `deploy-site.yml` are manual too; `publish-mcp.yml` runs on a published release.
-- `desktop-release.yml` runs when a release is published (`v*` tags, not prereleases) or by manual dispatch with a tag. It builds the desktop installers and attaches them, with the updater's `latest.json`, the `.sig` files and `SHA256SUMS.txt`, to that GitHub Release, then rebuilds the site's Download page. Its signing secrets live in the `desktop-release` environment and are never needed locally; see the `desktop-app` skill. CI's `desktop` job in `ci.yml` runs the launcher typecheck, tests and build plus `cargo test --locked`.
-- `feat` and `fix` commits change the next version, so choose the type honestly.
+### One version, one format
+
+Margaya ships one version for the server, the web app, the Docker images, the Helm chart and the desktop app: plain SemVer `MAJOR.MINOR.PATCH` (`1.0.1`), tagged `vMAJOR.MINOR.PATCH` (`v1.0.1`). No pre-release or build suffix on a release: MSI installers can't carry one, and `desktop-release.yml` rejects any tag that isn't `vX.Y.Z`. `scripts/security/validate-release-version.mjs` checks the format.
+
+| Where the version appears | Who writes it |
+| --- | --- |
+| Git tag `vX.Y.Z` and the GitHub Release | semantic-release |
+| `package.json` `version` | `scripts/release/apply-version.mjs`, run by semantic-release |
+| `charts/margaya/Chart.yaml` `version` and `appVersion` | the same script; both always equal the tag |
+| `CHANGELOG.md` | `@semantic-release/changelog`, notes from `scripts/release/notes.mjs` |
+| Image tags and the version the images report | `release.yml` (`build-images.yml`), from the planned version |
+| Desktop installers, `latest.json` | `desktop-release.yml` stamps the tag's version at build time |
+| `apps/desktop/package.json`, `tauri.conf.json`, `Cargo.toml` | Placeholders (`0.1.0`). Leave them alone |
+
+`verify-release-source.mjs` refuses a release whose tag, `package.json` version and both chart versions don't agree.
+
+**Never edit these by hand**: no version bumps in `package.json`, `Chart.yaml` or the desktop files, no hand-written `CHANGELOG.md` sections, and no `v*` tags created locally. A hand edit is either overwritten by the release commit or ships a version that no tag backs (a nightly image reporting an unreleased number).
+
+The one exception is `@margaya/mcp`. It versions on its own: bump `packages/mcp/package.json` in the change that alters the package, and publish it with a matching `mcp-vX.Y.Z` tag. `publish-mcp.yml` runs only for `mcp-v*` tags (or manual dispatch) and refuses a tag that differs from the package version.
+
+### Choosing the bump
+
+The commit types since the last tag decide the next version (`conventionalcommits` preset):
+
+| Commits since the last release | Next version | Example |
+| --- | --- | --- |
+| Only `docs`, `chore`, `test`, `ci`, `build`, `style`, `refactor` | No release | stays `1.0.0` |
+| At least one `fix` or `perf` | Patch | `1.0.0` → `1.0.1` |
+| At least one `feat` | Minor | `1.0.1` → `1.1.0` |
+| At least one breaking change | Major | `1.1.0` → `2.0.0` |
+
+A **major update** is anything an existing installation or client has to act on. Mark it with `!` after the type and a `BREAKING CHANGE:` footer that says what breaks and how to upgrade, for example:
+
+```text
+feat(api)!: require a workspace id on every task search
+
+BREAKING CHANGE: GET /api/search/tasks now needs workspaceId. Callers that
+omitted it get 400; pass the workspace id from the URL.
+```
+
+It is breaking when it:
+- removes or renames a route, a request field or a response field, or changes their meaning (`apps/docs/openapi.json` shows it);
+- removes or renames an environment variable or Helm value, or changes a default that changes behaviour;
+- needs more than the automatic migration on upgrade: a manual step, downtime, or a migration that isn't additive;
+- changes the permission vocabulary or a built-in role so that people lose access;
+- removes an MCP tool or changes its input;
+- needs a newer desktop app (raise `DESKTOP_MIN_VERSION`), or changes `/api/config` in a way older desktop apps can't read.
+
+Choose the type honestly: `feat` and `fix` change the version, and a breaking change without `!` ships as a minor or patch version that breaks installations.
+
+### Cutting a release (the user does this)
+
+Releases come only from `main`, through `.github/workflows/release.yml` (manual, `workflow_dispatch`):
+1. Make sure the commits are pushed and CI is green on `main`.
+2. Run **Release** with `release_type: auto` and `dry_run: true`. The run summary shows the planned version and notes.
+3. If they're right, run it again with `dry_run: false`. It builds and signs the images and the Helm chart, publishes the release commit `chore(release): vX.Y.Z [skip ci]` (updating `CHANGELOG.md`, `package.json` and `Chart.yaml`), the tag and the GitHub Release, then attaches the SBOMs and checksums.
+4. Publishing the release starts `desktop-release.yml`, which attaches the desktop installers and `latest.json`, then rebuilds the Download page.
+
+Use `release_type: patch`, `minor` or `major` only when the commits since the last tag don't describe the release: for example `patch` to ship `1.0.1` after `docs`/`chore` commits only. Never force a lower bump than the commits call for.
+
+### The workflows
+
+- `build-images.yml` and `helm-chart.yml` sign images and the chart keylessly with cosign and attest SLSA provenance (the calling jobs must grant `id-token`, `attestations` and `artifact-metadata: write`). The `assets` job attaches the SBOMs, `image-digests.txt` and `SHA256SUMS-sbom.txt` to the GitHub Release. How users check them: `apps/docs/core/installation/verify-a-release.mdx`.
+- `desktop-release.yml` runs when a release is published (`v*` tags, not prereleases) or by manual dispatch with an existing tag. Its signing secrets live in the `desktop-release` environment and are never needed locally; see the `desktop-app` skill. CI's `desktop` job in `ci.yml` runs the launcher typecheck, tests and build plus `cargo test --locked`.
+- `nightly.yml`, `docker.yml` and `deploy-site.yml` are manual. `publish-mcp.yml` runs on `mcp-v*` tags.
 
 ## Done when
 
@@ -90,3 +150,4 @@ Pull requests (only when asked): the title must also pass commitlint (`.github/w
 - [ ] Targeted Biome check and the relevant tests pass; skipped checks are reported.
 - [ ] `pnpm exec commitlint` accepts the message; timestamps are real; hooks ran.
 - [ ] `git status` after the commit shows only the user's pre-existing changes.
+- [ ] Breaking changes carry `!` and a `BREAKING CHANGE:` footer with upgrade steps, and no version, changelog or tag was edited by hand.
