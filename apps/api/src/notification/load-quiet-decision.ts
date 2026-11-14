@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import db from "../database";
 import { taskTable, userTable } from "../database/schema";
 import { cleanPreferences } from "../user/controllers/user-preferences";
@@ -84,24 +84,72 @@ export async function loadQuietDecision(
  * socket can keep the web app silent and Margaya Desktop from alerting. A
  * failed lookup never blocks the hint: it goes out as not quiet.
  */
-export async function notificationCreatedPayload(row: {
+type PayloadRow = {
   id: string;
   userId: string;
   type: string;
   eventData: unknown;
   resourceId: string | null;
   resourceType: string | null;
-}): Promise<NotificationCreatedEvent> {
-  const decision = await loadQuietDecision(row).catch((error) => {
-    console.error("Quiet-time check failed", {
-      notificationId: row.id,
-      error: error instanceof Error ? error.message : String(error),
-    });
-    return NOT_QUIET;
-  });
+};
+
+/**
+ * `user` skips the user lookup: pass the recipient's settings when the
+ * caller has them, or null for a recipient that no longer exists.
+ */
+export async function notificationCreatedPayload(
+  row: PayloadRow,
+  user?: QuietUser | null,
+): Promise<NotificationCreatedEvent> {
+  const decision =
+    user === null
+      ? NOT_QUIET
+      : await loadQuietDecision(row, user ? { user } : {}).catch((error) => {
+          console.error("Quiet-time check failed", {
+            notificationId: row.id,
+            error: error instanceof Error ? error.message : String(error),
+          });
+          return NOT_QUIET;
+        });
   return {
     ...notificationCreatedEvent(row),
     quiet: decision.quiet,
     desktopHeld: decision.held.has("desktop"),
   };
+}
+
+/**
+ * The payloads for a batch of new notifications, reading every recipient's
+ * quiet-time settings in one query, so a fan-out to 30 people costs the
+ * same statements as one to 2.
+ */
+export async function notificationCreatedPayloads(
+  rows: readonly PayloadRow[],
+): Promise<NotificationCreatedEvent[]> {
+  const userIds = [...new Set(rows.map((row) => row.userId))];
+  let users: Map<string, QuietUser>;
+  try {
+    const found =
+      userIds.length === 0
+        ? []
+        : await db
+            .select({
+              id: userTable.id,
+              preferences: userTable.preferences,
+              timezone: userTable.timezone,
+            })
+            .from(userTable)
+            .where(inArray(userTable.id, userIds));
+    users = new Map(found.map(({ id, ...user }) => [id, user]));
+  } catch (error) {
+    console.error("Quiet-time check failed", {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    users = new Map();
+  }
+  return Promise.all(
+    rows.map((row) =>
+      notificationCreatedPayload(row, users.get(row.userId) ?? null),
+    ),
+  );
 }
