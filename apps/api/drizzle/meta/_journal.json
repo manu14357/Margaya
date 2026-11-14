@@ -344,6 +344,20 @@
 			"when": 1794568606659,
 			"tag": "0048_wave3_features",
 			"breakpoints": true
+		},
+		{
+			"idx": 49,
+			"version": "7",
+			"when": 1794669506628,
+			"tag": "0049_whiteboards",
+			"breakpoints": true
+		},
+		{
+			"idx": 50,
+			"version": "7",
+			"when": 1794675294240,
+			"tag": "0050_whiteboard_activity",
+			"breakpoints": true
 		}
 	]
 }

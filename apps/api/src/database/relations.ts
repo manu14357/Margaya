@@ -78,6 +78,10 @@ import {
   userTable,
   verificationTable,
   webhookDeliveryTable,
+  whiteboardActivityTable,
+  whiteboardAssetTable,
+  whiteboardTable,
+  whiteboardTaskLinkTable,
   workflowRuleTable,
   workspaceRoleTable,
   workspaceTable,
@@ -1278,6 +1282,65 @@ export const automationRunTableRelations = relations(
     }),
     task: one(taskTable, {
       fields: [automationRunTable.taskId],
+      references: [taskTable.id],
+    }),
+  }),
+);
+
+export const whiteboardTableRelations = relations(
+  whiteboardTable,
+  ({ one, many }) => ({
+    workspace: one(workspaceTable, {
+      fields: [whiteboardTable.workspaceId],
+      references: [workspaceTable.id],
+    }),
+    project: one(projectTable, {
+      fields: [whiteboardTable.projectId],
+      references: [projectTable.id],
+    }),
+    createdBy: one(userTable, {
+      fields: [whiteboardTable.createdById],
+      references: [userTable.id],
+    }),
+    assets: many(whiteboardAssetTable),
+    taskLinks: many(whiteboardTaskLinkTable),
+    activity: many(whiteboardActivityTable),
+  }),
+);
+
+export const whiteboardActivityTableRelations = relations(
+  whiteboardActivityTable,
+  ({ one }) => ({
+    whiteboard: one(whiteboardTable, {
+      fields: [whiteboardActivityTable.whiteboardId],
+      references: [whiteboardTable.id],
+    }),
+    actor: one(userTable, {
+      fields: [whiteboardActivityTable.actorId],
+      references: [userTable.id],
+    }),
+  }),
+);
+
+export const whiteboardAssetTableRelations = relations(
+  whiteboardAssetTable,
+  ({ one }) => ({
+    whiteboard: one(whiteboardTable, {
+      fields: [whiteboardAssetTable.whiteboardId],
+      references: [whiteboardTable.id],
+    }),
+  }),
+);
+
+export const whiteboardTaskLinkTableRelations = relations(
+  whiteboardTaskLinkTable,
+  ({ one }) => ({
+    whiteboard: one(whiteboardTable, {
+      fields: [whiteboardTaskLinkTable.whiteboardId],
+      references: [whiteboardTable.id],
+    }),
+    task: one(taskTable, {
+      fields: [whiteboardTaskLinkTable.taskId],
       references: [taskTable.id],
     }),
   }),

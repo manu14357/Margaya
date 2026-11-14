@@ -441,6 +441,7 @@ export const projectTable = pgTable(
     modulesEnabled: boolean("modules_enabled").notNull().default(true),
     viewsEnabled: boolean("views_enabled").notNull().default(true),
     pagesEnabled: boolean("pages_enabled").notNull().default(true),
+    whiteboardsEnabled: boolean("whiteboards_enabled").notNull().default(true),
     intakeEnabled: boolean("intake_enabled").notNull().default(false),
     estimatesEnabled: boolean("estimates_enabled").notNull().default(false),
     timeTrackingEnabled: boolean("time_tracking_enabled")
@@ -3408,6 +3409,188 @@ export const pageTable = pgTable(
       "page_logo_check",
       sql`(${table.logoKind} is null and ${table.logoValue} is null) or (${table.logoKind} in ('emoji', 'icon') and ${table.logoValue} is not null)`,
     ),
+  ],
+);
+
+// A project's collaborative canvas (whiteboard/). The board itself is the
+// Yjs state in `content_yjs`; `content_text` and `element_count` are
+// projections written on every persist, for search and the list.
+export const whiteboardTable = pgTable(
+  "whiteboard",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    title: text("title").notNull().default(""),
+    // One emoji, or null.
+    icon: text("icon"),
+    isLocked: boolean("is_locked").notNull().default(false),
+    lockedById: text("locked_by_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    lockedAt: timestamp("locked_at", { mode: "date" }),
+    archivedAt: timestamp("archived_at", { mode: "date" }),
+    // Set while the board is in the trash; only archived boards get there.
+    deletedAt: timestamp("deleted_at", { mode: "date" }),
+    deletedById: text("deleted_by_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    // The read-only public link; a new token on every publish.
+    publicToken: text("public_token").unique("whiteboard_public_token_unique"),
+    publishedAt: timestamp("published_at", { mode: "date" }),
+    publishedById: text("published_by_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    contentYjs: bytea("content_yjs"),
+    contentText: text("content_text").notNull().default(""),
+    elementCount: integer("element_count").notNull().default(0),
+    contentVersion: integer("content_version").notNull().default(0),
+    createdById: text("created_by_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    updatedById: text("updated_by_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("whiteboard_projectId_archivedAt_idx").on(
+      table.projectId,
+      table.archivedAt,
+    ),
+    index("whiteboard_workspace_idx").on(table.workspaceId),
+    index("whiteboard_deletedAt_idx")
+      .on(table.deletedAt)
+      .where(sql`${table.deletedAt} is not null`),
+    index("whiteboard_lockedById_idx").on(table.lockedById),
+    index("whiteboard_createdById_idx").on(table.createdById),
+    index("whiteboard_updatedById_idx").on(table.updatedById),
+    index("whiteboard_deletedById_idx").on(table.deletedById),
+    index("whiteboard_publishedById_idx").on(table.publishedById),
+  ],
+);
+
+// Images placed on a whiteboard. Only raster types whose bytes were checked
+// after upload get a row; the storage object goes when the board is deleted
+// for good.
+export const whiteboardAssetTable = pgTable(
+  "whiteboard_asset",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    whiteboardId: text("whiteboard_id")
+      .notNull()
+      .references(() => whiteboardTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    objectKey: text("object_key").notNull().unique(),
+    mimeType: text("mime_type").notNull(),
+    size: integer("size").notNull(),
+    width: integer("width"),
+    height: integer("height"),
+    createdById: text("created_by_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("whiteboard_asset_whiteboard_idx").on(table.whiteboardId),
+    index("whiteboard_asset_workspace_idx").on(table.workspaceId),
+    index("whiteboard_asset_createdById_idx").on(table.createdById),
+  ],
+);
+
+// Which tasks have a card on which board, rewritten from the board's
+// content on every persist ("On whiteboards" on a task).
+export const whiteboardTaskLinkTable = pgTable(
+  "whiteboard_task_link",
+  {
+    whiteboardId: text("whiteboard_id")
+      .notNull()
+      .references(() => whiteboardTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    taskId: text("task_id")
+      .notNull()
+      .references(() => taskTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+  },
+  (table) => [
+    primaryKey({ columns: [table.whiteboardId, table.taskId] }),
+    index("whiteboard_task_link_task_idx").on(table.taskId),
+  ],
+);
+
+// A board's history for its project members (the audit log is for admins):
+// lifecycle changes and at most one "edited" row per person per board every
+// ten minutes. `metadata` holds the board title at the time, never content.
+export const whiteboardActivityTable = pgTable(
+  "whiteboard_activity",
+  {
+    id: text("id")
+      .$defaultFn(() => createId())
+      .primaryKey(),
+    whiteboardId: text("whiteboard_id")
+      .notNull()
+      .references(() => whiteboardTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaceTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    actorId: text("actor_id").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    action: text("action").notNull(),
+    metadata: jsonb("metadata").$type<{ title?: string | null }>(),
+    createdAt: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    // Newest first per board; NULLS FIRST matches a plain `desc` order.
+    index("whiteboard_activity_whiteboard_created_idx").on(
+      table.whiteboardId,
+      table.createdAt.desc().nullsFirst(),
+      table.id.desc().nullsFirst(),
+    ),
+    index("whiteboard_activity_workspace_idx").on(table.workspaceId),
+    index("whiteboard_activity_actor_idx").on(table.actorId),
   ],
 );
 
