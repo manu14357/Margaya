@@ -51,7 +51,7 @@
     "bcryptjs": "^3.0.2",
     "better-auth": "^1.6.26",
     "creem": "^1.6.0",
-    "croner": "^10.0.1",
+    "croner": "^11.0.0",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.8",
