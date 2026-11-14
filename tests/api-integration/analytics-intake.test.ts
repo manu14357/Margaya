@@ -148,7 +148,13 @@ describe("API integration: analytics intake", () => {
     });
     // 1, 2, 4, 24 and 216 hours: the middle one.
     expect(result.medianHoursToTriage).toBe(4);
-    expect(result.bySource).toEqual({ in_app: 7, api: 1, public_board: 0 });
+    expect(result.bySource).toEqual({
+      in_app: 7,
+      api: 1,
+      public_board: 0,
+      email: 0,
+      form: 0,
+    });
     expect(result.byProject).toEqual([
       {
         projectId: s.p1.id,
