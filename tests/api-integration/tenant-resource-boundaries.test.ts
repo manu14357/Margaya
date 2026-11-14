@@ -157,12 +157,21 @@ describe("tenant resource boundaries", () => {
     expect(await db.select().from(schema.labelTable)).toEqual([untouched]);
     expect(removeGithub.mock.calls).toEqual([[own.task.id, "bug"]]);
     expect(removeGitea.mock.calls).toEqual([[own.task.id, "bug"]]);
-    expect(publish).toHaveBeenCalledTimes(1);
+    // One task event for the own task, plus the workspace's own label-list
+    // hint; nothing names the foreign task or workspace.
+    expect(publish).toHaveBeenCalledTimes(2);
     expect(publish).toHaveBeenCalledWith(
       "task.label_deleted",
       expect.objectContaining({ taskId: own.task.id }),
       { waitForHandlers: true },
     );
+    expect(publish).toHaveBeenCalledWith("label.changed", {
+      workspaceId: own.workspace.id,
+      userId: own.user.id,
+    });
+    const published = JSON.stringify(publish.mock.calls);
+    expect(published).not.toContain(foreign.task.id);
+    expect(published).not.toContain(foreign.workspace.id);
   });
 
   it("uses the same response for missing and foreign move destinations and still permits local moves", async () => {
