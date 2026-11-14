@@ -1,0 +1,32 @@
+{
+	"name": "@margaya/whiteboard",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"license": "AGPL-3.0-only",
+	"scripts": {
+		"build": "tsc",
+		"typecheck": "tsc --noEmit",
+		"lint": "biome check --write .",
+		"test": "vitest run --config vitest.config.ts",
+		"test:watch": "vitest --config vitest.config.ts"
+	},
+	"peerDependencies": {
+		"yjs": "13.6.33"
+	},
+	"devDependencies": {
+		"@margaya/typescript-config": "workspace:*",
+		"typescript": "^7.0.2",
+		"vite": "^8.2.0",
+		"vitest": "^4.1.11",
+		"yjs": "13.6.33"
+	}
+}

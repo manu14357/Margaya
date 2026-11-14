@@ -114,6 +114,7 @@
 	"devDependencies": {
 		"@babel/core": "^8.0.1",
 		"@margaya/editor-schema": "workspace:*",
+		"@margaya/whiteboard": "workspace:*",
 		"@margaya/landing": "workspace:*",
 		"@margaya/libs": "workspace:*",
 		"@margaya/permissions": "workspace:*",

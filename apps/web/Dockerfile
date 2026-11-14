@@ -24,6 +24,7 @@ COPY packages/typescript-config/package.json ./packages/typescript-config/
 COPY packages/libs/package.json ./packages/libs/
 COPY packages/permissions/package.json ./packages/permissions/
 COPY packages/editor-schema/package.json ./packages/editor-schema/
+COPY packages/whiteboard/package.json ./packages/whiteboard/
 COPY packages/landing/package.json ./packages/landing/
 
 # Install dependencies
@@ -34,6 +35,7 @@ COPY packages/typescript-config ./packages/typescript-config
 COPY packages/libs ./packages/libs
 COPY packages/permissions ./packages/permissions
 COPY packages/editor-schema ./packages/editor-schema
+COPY packages/whiteboard ./packages/whiteboard
 COPY packages/landing ./packages/landing
 COPY i18n ./i18n
 COPY apps/web ./apps/web
@@ -43,6 +45,9 @@ WORKDIR /app/packages/permissions
 RUN pnpm run build
 
 WORKDIR /app/packages/editor-schema
+RUN pnpm run build
+
+WORKDIR /app/packages/whiteboard
 RUN pnpm run build
 
 # Build the application

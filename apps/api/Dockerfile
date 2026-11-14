@@ -15,6 +15,7 @@ COPY packages/email/package.json ./packages/email/
 COPY packages/libs/package.json ./packages/libs/
 COPY packages/permissions/package.json ./packages/permissions/
 COPY packages/editor-schema/package.json ./packages/editor-schema/
+COPY packages/whiteboard/package.json ./packages/whiteboard/
 COPY apps/api/package.json ./apps/api/
 
 # Install dependencies
@@ -26,6 +27,7 @@ COPY packages/email ./packages/email
 COPY packages/libs ./packages/libs
 COPY packages/permissions ./packages/permissions
 COPY packages/editor-schema ./packages/editor-schema
+COPY packages/whiteboard ./packages/whiteboard
 COPY i18n ./i18n
 COPY apps/api ./apps/api
 
@@ -39,6 +41,9 @@ RUN pnpm run build
 
 # Build the editor schema shared with the web editor
 WORKDIR /app/packages/editor-schema
+RUN pnpm run build
+
+WORKDIR /app/packages/whiteboard
 RUN pnpm run build
 
 # Fix TypeScript config and build API
@@ -61,6 +66,7 @@ COPY packages/libs/package.json ./packages/libs/
 COPY packages/email/package.json ./packages/email/
 COPY packages/permissions/package.json ./packages/permissions/
 COPY packages/editor-schema/package.json ./packages/editor-schema/
+COPY packages/whiteboard/package.json ./packages/whiteboard/
 COPY apps/api/package.json ./apps/api/
 
 RUN sed -i 's/"prepare": "husky"/"prepare": ""/g' package.json && \
@@ -70,6 +76,7 @@ RUN sed -i 's/"prepare": "husky"/"prepare": ""/g' package.json && \
 # app) plus a devDependency, so --prod leaves it unresolvable from the package.
 # Link the API's own copy.
 RUN ln -s ../../../apps/api/node_modules/yjs packages/editor-schema/node_modules/yjs
+RUN mkdir -p packages/whiteboard/node_modules && ln -sfn ../../../apps/api/node_modules/yjs packages/whiteboard/node_modules/yjs
 
 # Production stage - use specific version tag without SHA256
 FROM node:24.19.0-alpine AS runtime
@@ -92,13 +99,14 @@ COPY --from=builder --chown=appuser:appuser /app/apps/api/drizzle ./apps/api/dri
 COPY --from=builder --chown=appuser:appuser /app/packages/email ./packages/email
 COPY --from=builder --chown=appuser:appuser /app/packages/permissions ./packages/permissions
 COPY --from=builder --chown=appuser:appuser /app/packages/editor-schema/dist ./packages/editor-schema/dist
+COPY --from=builder --chown=appuser:appuser /app/packages/whiteboard/dist ./packages/whiteboard/dist
 # Margaya's guides, which Ask AI searches for questions about using Margaya
 COPY --chown=appuser:appuser apps/docs/core ./apps/docs/core
 ENV MARGAYA_DOCS_DIR=/app/apps/docs/core
 
 # Fail the build early if the runtime dependency layout is broken on the target architecture
 RUN cd /app/apps/api && node -e "const fs=require('fs');for(const m of ['bcryptjs','hono','pg','drizzle-orm','better-auth','ioredis','valibot','octokit','@modelcontextprotocol/sdk','@margaya/editor-schema']){fs.accessSync('node_modules/'+m+'/package.json')};fs.accessSync('node_modules/@margaya/editor-schema/dist/index.js')" && \
-  node --input-type=module -e "for (const m of ['@margaya/editor-schema','@margaya/email','@margaya/permissions']) await import(m)"
+  node --input-type=module -e "for (const m of ['@margaya/editor-schema','@margaya/whiteboard','@margaya/email','@margaya/permissions']) await import(m)"
 
 # Switch to non-root user
 USER appuser
