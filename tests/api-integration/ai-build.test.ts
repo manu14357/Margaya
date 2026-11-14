@@ -95,6 +95,17 @@ async function restrictWeb(s: Scene, members: string[] = []) {
   }
 }
 
+/** A day relative to today (UTC), so the cycles below never end in the past. */
+function dayFromToday(offset: number): string {
+  const day = new Date();
+  day.setUTCDate(day.getUTCDate() + offset);
+  return day.toISOString().slice(0, 10);
+}
+
+// Sprint 1 is running now; Sprint 2 comes after it.
+const SPRINT_1 = { startDate: dayFromToday(-5), endDate: dayFromToday(6) };
+const SPRINT_2 = { startDate: dayFromToday(9), endDate: dayFromToday(20) };
+
 const PLAN = {
   summary: "Relaunch the website over two sprints.",
   project: { name: "Website relaunch", key: "WR", description: "Q4 relaunch" },
@@ -105,15 +116,13 @@ const PLAN = {
       ref: "c1",
       name: "Sprint 1",
       description: "",
-      startDate: "2026-11-02",
-      endDate: "2026-11-13",
+      ...SPRINT_1,
     },
     {
       ref: "c2",
       name: "Sprint 2",
       description: "",
-      startDate: "2026-11-16",
-      endDate: "2026-11-27",
+      ...SPRINT_2,
     },
   ],
   modules: [{ ref: "m1", name: "Content", description: "All copy" }],
@@ -386,11 +395,8 @@ describe("talk to build: apply", () => {
   it("reports what the caller's permissions refused and keeps the rest", async () => {
     const s = await aiScene();
     const { points } = await s.insertEstimate();
-    await s.insertCycle({
-      name: "Existing",
-      startDate: "2026-11-02",
-      endDate: "2026-11-13",
-    });
+    // Same dates as Sprint 1, so the plan's Sprint 1 overlaps it.
+    await s.insertCycle({ name: "Existing", ...SPRINT_1 });
     const report = await s.ok<Report>(
       s.mia,
       "POST",

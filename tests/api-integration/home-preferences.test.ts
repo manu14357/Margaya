@@ -27,6 +27,7 @@ const DEFAULTS = [
   { key: "risks", enabled: true },
   { key: "my-brief", enabled: false },
   { key: "pinned-reports", enabled: false },
+  { key: "project-updates", enabled: false },
 ];
 
 async function preferences(role = "member") {
@@ -78,6 +79,7 @@ describe("API integration: home preferences", () => {
       { key: "recents", enabled: true },
       { key: "my-brief", enabled: true },
       { key: "pinned-reports", enabled: false },
+      { key: "project-updates", enabled: true },
     ];
     const saved = (await (
       await expectStatus(put(widgets), 200)
@@ -182,6 +184,7 @@ describe("API integration: home preferences", () => {
       { key: "risks", enabled: true },
       { key: "my-brief", enabled: false },
       { key: "pinned-reports", enabled: false },
+      { key: "project-updates", enabled: false },
     ]);
   });
 
