@@ -76,6 +76,7 @@ export async function copiedProjectFields(
     modulesEnabled: source.modulesEnabled,
     viewsEnabled: source.viewsEnabled,
     pagesEnabled: source.pagesEnabled,
+    whiteboardsEnabled: source.whiteboardsEnabled,
     intakeEnabled: source.intakeEnabled,
     estimatesEnabled: source.estimatesEnabled,
     timeTrackingEnabled: source.timeTrackingEnabled,

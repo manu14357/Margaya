@@ -5,6 +5,7 @@ import { recordInstanceAudit } from "../instance-admin/audit";
 import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { deleteS3Keys } from "../storage/cleanup-assets";
 import { purgeWorkspaceExports } from "../task-export/storage";
+import { workspaceBoardAssetKeys } from "../whiteboard/assets";
 
 // Hourly, on one instance at a time: workspaces whose grace period is over
 // are deleted for good. Each delete re-checks the due date in its WHERE
@@ -31,6 +32,7 @@ async function purgeWorkspace(
     .select({ objectKey: assetTable.objectKey })
     .from(assetTable)
     .where(eq(assetTable.workspaceId, workspace.id));
+  const boardImageKeys = await workspaceBoardAssetKeys(workspace.id);
 
   const [deleted] = await db
     .delete(workspaceTable)
@@ -44,7 +46,7 @@ async function purgeWorkspace(
     .returning({ id: workspaceTable.id });
   if (!deleted) return false;
 
-  const keys = assets.map((asset) => asset.objectKey);
+  const keys = [...assets.map((asset) => asset.objectKey), ...boardImageKeys];
   for (let start = 0; start < keys.length; start += FILE_BATCH) {
     await deleteS3Keys(keys.slice(start, start + FILE_BATCH)).catch((error) => {
       console.error("Stored files of a purged workspace remain", error);

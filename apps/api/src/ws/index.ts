@@ -169,6 +169,7 @@ export async function shutdownWebSocketAdapter() {
   projectBroadcastTimeouts.clear();
   projectBroadcastQueues.clear();
   pageContentHints.clear();
+  whiteboardContentHints.clear();
 
   const currentAdapter = adapter;
   if (currentAdapter) {
@@ -330,7 +331,7 @@ export function broadcastToProject(
     projectBroadcastQueues.set(projectId, new Map());
   }
 
-  const messageKey = `${message.type}:${message.taskId ?? ""}:${message.sourceTaskId ?? ""}:${message.targetTaskId ?? ""}:${message.pageId ?? ""}`;
+  const messageKey = `${message.type}:${message.taskId ?? ""}:${message.sourceTaskId ?? ""}:${message.targetTaskId ?? ""}:${message.pageId ?? ""}:${message.whiteboardId ?? ""}`;
   projectBroadcastQueues
     .get(projectId)
     ?.set(messageKey, { message, excludeInitiatorId });
@@ -729,6 +730,53 @@ subscribeToEvent<PageHintEvent>(
       { type: "PAGE_DELETED", projectId, pageId },
       initiatorId,
     );
+  },
+);
+
+// Whiteboard list hints: ids only, so a client refetches what it may see.
+// Content saves arrive every few seconds while people draw: at most one
+// hint per board per minute (a leading send and one trailing send).
+type WhiteboardHintEvent = {
+  whiteboardId?: string;
+  projectId?: string;
+  initiatorId?: string;
+};
+
+function sendWhiteboardChanged({
+  whiteboardId,
+  projectId,
+  initiatorId,
+}: WhiteboardHintEvent) {
+  if (!whiteboardId || !projectId) return;
+  broadcastToProject(
+    projectId,
+    { type: "whiteboard.changed", projectId, whiteboardId },
+    initiatorId,
+  );
+}
+
+for (const eventName of [
+  "whiteboard.created",
+  "whiteboard.updated",
+  "whiteboard.deleted",
+  "whiteboard.restored",
+  "whiteboard.purged",
+]) {
+  subscribeToEvent<WhiteboardHintEvent>(eventName, async (data) =>
+    sendWhiteboardChanged(data),
+  );
+}
+
+const whiteboardContentHints = new HintThrottle<WhiteboardHintEvent>(
+  60_000,
+  sendWhiteboardChanged,
+);
+subscribeToEvent<WhiteboardHintEvent>(
+  "whiteboard.content_saved",
+  async (data) => {
+    if (data.whiteboardId) {
+      whiteboardContentHints.push(data.whiteboardId, data);
+    }
   },
 );
 

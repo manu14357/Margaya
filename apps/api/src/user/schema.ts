@@ -44,6 +44,7 @@ export const SIDEBAR_RAIL_ITEMS = [
   "my-work",
   "projects",
   "pages",
+  "whiteboards",
   "analytics",
 ] as const;
 

@@ -1,6 +1,10 @@
 import { asc, inArray, lt } from "drizzle-orm";
 import db from "../database";
-import { assetTable, storageUploadTable } from "../database/schema";
+import {
+  assetTable,
+  storageUploadTable,
+  whiteboardAssetTable,
+} from "../database/schema";
 import { HOURLY_JOB_HOLD_MS, withJobLease } from "../scheduler/leader-lock";
 import { InvalidStorageKeyError, sweepLocalTempFiles } from "./local";
 import { deleteS3Object, storageDriver } from "./s3";
@@ -45,13 +49,19 @@ async function sweepBatch(cutoff: Date, outcome: SweepOutcome) {
   if (rows.length === 0) return { done: true };
 
   const keys = rows.map((row) => row.objectKey);
+  // Whiteboard images are finalized into their own table.
+  const [assets, boardImages] = await Promise.all([
+    db
+      .select({ objectKey: assetTable.objectKey })
+      .from(assetTable)
+      .where(inArray(assetTable.objectKey, keys)),
+    db
+      .select({ objectKey: whiteboardAssetTable.objectKey })
+      .from(whiteboardAssetTable)
+      .where(inArray(whiteboardAssetTable.objectKey, keys)),
+  ]);
   const finalized = new Set(
-    (
-      await db
-        .select({ objectKey: assetTable.objectKey })
-        .from(assetTable)
-        .where(inArray(assetTable.objectKey, keys))
-    ).map((row) => row.objectKey),
+    [...assets, ...boardImages].map((row) => row.objectKey),
   );
 
   const settled: string[] = [];

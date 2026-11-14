@@ -96,8 +96,8 @@ export async function authorizePageSocket(
   };
 }
 
-/** Whether the socket's session or API key is still valid. */
-async function credentialsValid(identity: ConnectionIdentity) {
+/** Whether the socket's session or API key is still valid (board sockets too). */
+export async function credentialsValid(identity: ConnectionIdentity) {
   const now = new Date();
   if (identity.apiKeyId) {
     const [key] = await db

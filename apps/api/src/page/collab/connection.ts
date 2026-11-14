@@ -4,6 +4,7 @@ import { type ControlMessage, encodeControl } from "./protocol";
 
 // One page socket. The room owns the protocol; this holds the identity, the
 // cached permissions, the rate limit and the client ids the socket controls.
+// Whiteboard rooms reuse it with their own caller type.
 
 export type CollabSocket = {
   send(data: Uint8Array): void;
@@ -27,7 +28,7 @@ export type ConnectionIdentity = {
 
 let nextConnectionId = 1;
 
-export class PageConnection {
+export class PageConnection<Caller = PageCaller> {
   readonly id = nextConnectionId++;
   /** Awareness client ids whose states this socket owns. */
   readonly controlled = new Set<number>();
@@ -49,7 +50,7 @@ export class PageConnection {
   constructor(
     private readonly socket: CollabSocket,
     readonly identity: ConnectionIdentity,
-    public caller: PageCaller,
+    public caller: Caller,
   ) {}
 
   get userId() {

@@ -34,6 +34,7 @@ export const projectSchema = z
     modulesEnabled: featureFlag("Modules"),
     viewsEnabled: featureFlag("Project views"),
     pagesEnabled: featureFlag("Pages"),
+    whiteboardsEnabled: featureFlag("Whiteboards"),
     intakeEnabled: featureFlag("Intake"),
     estimatesEnabled: featureFlag("Estimates"),
     timeTrackingEnabled: featureFlag("Time tracking"),

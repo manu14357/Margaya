@@ -23,6 +23,7 @@ const DEFAULT_FLAGS = {
   modulesEnabled: true,
   viewsEnabled: true,
   pagesEnabled: true,
+  whiteboardsEnabled: true,
   intakeEnabled: false,
   estimatesEnabled: false,
   timeTrackingEnabled: true,

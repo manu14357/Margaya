@@ -6,6 +6,8 @@ export type ProjectBroadcastMessage = {
   targetTaskId?: string;
   /** Page hints (PAGE_UPDATED, PAGE_DELETED). */
   pageId?: string;
+  /** Whiteboard hints (whiteboard.changed). */
+  whiteboardId?: string;
 };
 
 export type BroadcastMessage = {

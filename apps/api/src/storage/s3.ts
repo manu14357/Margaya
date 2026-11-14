@@ -405,6 +405,94 @@ export function assertPageAssetKeyMatchesContext(
   return /^[A-Za-z0-9._-]+$/.test(suffix) && !suffix.startsWith(".");
 }
 
+type WhiteboardAssetContext = {
+  workspaceId: string;
+  projectId: string;
+  whiteboardId: string;
+  assetId: string;
+};
+
+/**
+ * The object key of a whiteboard image, derived from its ids alone (with
+ * S3_KEY_PREFIX applied), so a client can never point a finalize at
+ * another object.
+ */
+export function whiteboardAssetKey(context: WhiteboardAssetContext) {
+  return applyKeyPrefix(
+    activeKeyPrefix(),
+    [
+      "workspace",
+      sanitizePathSegment(context.workspaceId),
+      "project",
+      sanitizePathSegment(context.projectId),
+      "whiteboard",
+      sanitizePathSegment(context.whiteboardId),
+      "files",
+      sanitizePathSegment(context.assetId),
+    ].join("/"),
+  );
+}
+
+/** A presigned PUT (or local upload link) for a whiteboard image. */
+export async function createWhiteboardAssetUploadUrl(
+  context: WhiteboardAssetContext & { contentType: string; size: number },
+): Promise<TaskImageUploadUrl> {
+  validateTaskAssetUploadInput(context.contentType, context.size);
+  const key = whiteboardAssetKey(context);
+  if (usesLocalStorage()) {
+    return {
+      key,
+      uploadUrl: localUploadUrl(key, context.contentType, context.size),
+      headers: { "Content-Type": context.contentType },
+    };
+  }
+  const config = getStorageConfig();
+  const uploadUrl = await getSignedUrl(
+    getClient(config),
+    new PutObjectCommand({
+      Bucket: config.bucket,
+      Key: key,
+      ContentType: context.contentType,
+      ContentLength: context.size,
+    }),
+    {
+      expiresIn: config.presignTtlSeconds,
+      signableHeaders: new Set(["content-length", "content-type"]),
+    },
+  );
+  return { key, uploadUrl, headers: { "Content-Type": context.contentType } };
+}
+
+/** The first bytes of a stored object (at most `maxBytes`). */
+export async function readObjectHead(
+  key: string,
+  maxBytes: number,
+): Promise<Uint8Array> {
+  const object = await getPrivateObject(key);
+  const reader = (object.body as ReadableStream<Uint8Array>).getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  try {
+    while (size < maxBytes) {
+      const { done, value } = await reader.read();
+      if (done || !value) break;
+      chunks.push(value);
+      size += value.byteLength;
+    }
+  } finally {
+    void reader.cancel().catch(() => {});
+  }
+  const head = new Uint8Array(Math.min(size, maxBytes));
+  let offset = 0;
+  for (const chunk of chunks) {
+    const take = Math.min(chunk.byteLength, head.byteLength - offset);
+    head.set(chunk.subarray(0, take), offset);
+    offset += take;
+    if (offset >= head.byteLength) break;
+  }
+  return head;
+}
+
 export function applyKeyPrefix(prefix: string, key: string) {
   if (!prefix) return key;
   const trimmed = prefix.replace(/\/+$/, "");

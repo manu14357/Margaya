@@ -1022,6 +1022,18 @@ export const WEBHOOK_EXCLUDED_EVENTS: Readonly<Record<string, string>> = {
   "custom_field.deleted": "custom fields stay inside the workspace",
   "custom_field.values_changed": "custom fields stay inside the workspace",
   "custom_field.reordered": "ordering only",
+  "whiteboard.created":
+    "whiteboards stay inside the workspace; not yet a public event",
+  "whiteboard.updated":
+    "whiteboards stay inside the workspace; not yet a public event",
+  "whiteboard.content_saved":
+    "whiteboard content saves; drawing changes are not webhook events",
+  "whiteboard.deleted":
+    "whiteboards stay inside the workspace; not yet a public event",
+  "whiteboard.restored":
+    "whiteboards stay inside the workspace; not yet a public event",
+  "whiteboard.purged":
+    "whiteboards stay inside the workspace; not yet a public event",
   "project.reordered": "ordering only",
   "label.changed": "UI refresh hint; label edits stay inside the workspace",
   "user.profile_changed": "personal data",

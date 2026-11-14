@@ -27,7 +27,7 @@ Mounting a new router in `src/index.ts` takes three edits: `const fooApi = api.r
 - `publishEvent` adds `initiatorId` from `eventContext`, so the sender's own window can skip its echo.
 - Subscribers are side-effect modules (`<feature>/subscribers.ts`) imported by their feature's `index.ts` (for example `import "./subscribers"` in `src/notification/index.ts`). An unimported subscriber never runs.
 - `src/ws/index.ts` maps events to WebSocket hints. For a new event to reach the board, add it to a mapped list there (for example `taskUpdateEvents`) and handle the hint in `apps/web/src/hooks/use-project-websocket.ts`. Hints carry only a type and ids; clients refetch. Never put entity data in them.
-- `broadcastToProject` batches per project and dedupes by type and ids; `broadcastToUser` serves `/api/ws/user`. Socket routes: `/api/ws/:projectId`, `/api/ws/user`, `/api/ws/page/:pageId`.
+- `broadcastToProject` batches per project and dedupes by type and ids; `broadcastToUser` serves `/api/ws/user`. Socket routes: `/api/ws/:projectId`, `/api/ws/user`, `/api/ws/page/:pageId`, `/api/ws/whiteboard/:whiteboardId` (the page wire format; its doc-channel key is `whiteboard:<id>`).
 - `initializeWebSocketAdapter` picks `RedisBroadcastAdapter` when `REDIS_URL`, `REDIS_SENTINELS` or `REDIS_CLUSTER_NODES` is set, otherwise `InMemoryBroadcastAdapter`. Only socket delivery uses Redis. Shared background work uses PostgreSQL queues (`FOR UPDATE SKIP LOCKED` in `src/ai-agent/runner.ts`). Skill: `realtime-events`.
 
 ## Database

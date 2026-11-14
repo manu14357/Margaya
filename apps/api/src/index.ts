@@ -147,11 +147,15 @@ import {
 } from "./public-board/legacy";
 import { PUBLIC_LIMITS } from "./public-board/limits";
 import publicPage from "./public-page";
+import publicWhiteboard from "./public-whiteboard";
 import publication from "./publication";
 import quickLink from "./quick-link";
 import reaction from "./reaction";
 import recentVisit from "./recent-visit";
 import trash from "./trash";
+import whiteboard from "./whiteboard";
+import { shutdownWhiteboardRooms } from "./whiteboard/collab/rooms";
+import { whiteboardCollabWebSocket } from "./whiteboard/collab/ws-route";
 import "./recent-visit/subscribers";
 import "./workspace/members-realtime";
 import "./ws/workspace-hints";
@@ -645,6 +649,7 @@ export function createApp() {
   const publicIntakeFormApi = api.route("/public-form", publicIntakeForm);
   const intakeEmailInboundApi = api.route("/intake-email", intakeEmailInbound);
   const publicPageApi = api.route("/public-page", publicPage);
+  const publicWhiteboardApi = api.route("/public-whiteboard", publicWhiteboard);
   // Calendar apps fetch feeds without a session; the URL token authenticates.
   api.route("/calendar-feed", calendarFeedPublic);
 
@@ -1133,6 +1138,7 @@ export function createApp() {
   );
   const projectUpdateApi = api.route("/project-update", projectUpdate);
   const pageApi = api.route("/page", page);
+  const whiteboardApi = api.route("/whiteboard", whiteboard);
   const webhookApi = api.route("/webhook", webhook);
   const auditLogApi = api.route("/audit-log", auditLog);
   const publicationApi = api.route("/publication", publication);
@@ -1178,6 +1184,11 @@ export function createApp() {
 
   // Page collaboration socket (Yjs sync and awareness, binary frames).
   api.get("/ws/page/:pageId", pageCollabWebSocket(upgradeWebSocket));
+  // Whiteboard collaboration socket (the same wire format as pages).
+  api.get(
+    "/ws/whiteboard/:whiteboardId",
+    whiteboardCollabWebSocket(upgradeWebSocket),
+  );
 
   // User-scoped WebSocket endpoint; MUST be registered before /ws/:projectId
   // so the literal path "user" isn't consumed by the param route.
@@ -1310,6 +1321,7 @@ export function createApp() {
     publicProjectApi,
     publicBoardApi,
     publicPageApi,
+    publicWhiteboardApi,
     publicationApi,
     instanceAdminApi,
     identityApi,
@@ -1362,6 +1374,7 @@ export function createApp() {
     projectAutomationApi,
     projectUpdateApi,
     pageApi,
+    whiteboardApi,
     webhookApi,
     auditLogApi,
     aiApi,
@@ -1510,6 +1523,7 @@ export async function startServer(
     // Page rooms persist (and tell clients to reconnect) before the
     // broadcast adapter goes away.
     await shutdownPageRooms();
+    await shutdownWhiteboardRooms();
     await shutdownWebSocketAdapter();
     server.close();
     process.exit(0);
@@ -1549,6 +1563,7 @@ const {
   publicProjectApi,
   publicBoardApi,
   publicPageApi,
+  publicWhiteboardApi,
   publicationApi,
   instanceAdminApi,
   identityApi,
@@ -1600,6 +1615,7 @@ const {
   projectAutomationApi,
   projectUpdateApi,
   pageApi,
+  whiteboardApi,
   webhookApi,
   auditLogApi,
   aiApi,
@@ -1702,6 +1718,7 @@ export type AppType =
   | typeof projectAutomationApi
   | typeof projectUpdateApi
   | typeof pageApi
+  | typeof whiteboardApi
   | typeof webhookApi
   | typeof auditLogApi
   | typeof aiApi
@@ -1730,6 +1747,7 @@ export type AppType =
   | typeof publicProjectApi
   | typeof publicBoardApi
   | typeof publicPageApi
+  | typeof publicWhiteboardApi
   | typeof publicationApi
   | typeof instanceAdminApi
   | typeof identityApi

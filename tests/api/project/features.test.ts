@@ -14,6 +14,7 @@ describe("project feature catalog", () => {
       "modulesEnabled",
       "viewsEnabled",
       "pagesEnabled",
+      "whiteboardsEnabled",
       "intakeEnabled",
       "estimatesEnabled",
       "timeTrackingEnabled",
@@ -46,6 +47,8 @@ describe("project feature catalog", () => {
       modules: true,
       views: true,
       pages: true,
+      // Whiteboards are on like Pages, so the section shows up everywhere.
+      whiteboards: true,
       intake: false,
       estimates: false,
       timeTracking: true,

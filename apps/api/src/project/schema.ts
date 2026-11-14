@@ -103,6 +103,7 @@ export const updateProjectFeaturesBody = z
     modulesEnabled: featureFlag("Larger pieces of work grouping tasks."),
     viewsEnabled: featureFlag("Saved project views."),
     pagesEnabled: featureFlag("Project documents."),
+    whiteboardsEnabled: featureFlag("Collaborative project whiteboards."),
     intakeEnabled: featureFlag("The request review queue."),
     estimatesEnabled: featureFlag("Task size estimates."),
     timeTrackingEnabled: featureFlag("Time entries logged on tasks."),
