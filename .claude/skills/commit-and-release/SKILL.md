@@ -133,7 +133,7 @@ Releases come only from `main`, through `.github/workflows/release.yml` (manual,
 1. Make sure the commits are pushed and CI is green on `main`.
 2. Run **Release** with `release_type: auto` and `dry_run: true`. The run summary shows the planned version and notes.
 3. If they're right, run it again with `dry_run: false`. It builds and signs the images and the Helm chart, publishes the release commit `chore(release): vX.Y.Z [skip ci]` (updating `CHANGELOG.md`, `package.json` and `Chart.yaml`), the tag and the GitHub Release, then attaches the SBOMs and checksums.
-4. Publishing the release starts `desktop-release.yml`, which attaches the desktop installers and `latest.json`, then rebuilds the Download page.
+4. The desktop installers come from `desktop-release.yml`, which attaches them with `latest.json` and rebuilds the Download page. A release published with the default `GITHUB_TOKEN` can't start other workflows, so without a `RELEASE_TOKEN` secret it does not start by itself. Run **Desktop Release** by hand with the new tag (`gh workflow run desktop-release.yml --ref main -f tag=vX.Y.Z`), and check that the GitHub Release lists the installers afterwards.
 
 Use `release_type: patch`, `minor` or `major` only when the commits since the last tag don't describe the release: for example `patch` to ship `1.0.1` after `docs`/`chore` commits only. Never force a lower bump than the commits call for.
 
