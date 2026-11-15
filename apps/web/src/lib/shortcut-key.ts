@@ -38,6 +38,17 @@ export const KEYS_OWNED_BY_OTHERS = [
   "[data-slot='popover-popup']",
 ].join(", ");
 
+/**
+ * Focus inside a widget that declares it handles its own keys (a whiteboard
+ * canvas is `role="application"`): app shortcuts treat it like a text field.
+ */
+export function isKeyOwningTarget(target: EventTarget | null): boolean {
+  if (isTypingTarget(target)) return true;
+  return (
+    target instanceof Element && Boolean(target.closest("[role='application']"))
+  );
+}
+
 /** Typing targets own every key: fields, the editors, contenteditable. */
 export function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof Element)) return false;

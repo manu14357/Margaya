@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { isTypingTarget, shortcutKey } from "@/lib/shortcut-key";
+import { isKeyOwningTarget, shortcutKey } from "@/lib/shortcut-key";
 
 export function getModifierKeyText(): string {
   if (typeof window === "undefined") return "";
@@ -175,7 +175,7 @@ export function KeyboardShortcutsProvider({
     (event: KeyboardEvent) => {
       // An IME is mid-composition; the key belongs to it.
       if (event.isComposing || event.key === "Process") return;
-      const isEditingText = isTypingTarget(event.target);
+      const isEditingText = isKeyOwningTarget(event.target);
       if (isEditingText && !event.metaKey && !event.ctrlKey) {
         return;
       }

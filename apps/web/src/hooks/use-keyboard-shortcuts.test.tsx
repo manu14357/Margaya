@@ -52,6 +52,31 @@ describe("shortcut key normalization", () => {
     expect(handler).not.toHaveBeenCalled();
   });
 
+  it("leaves single keys to a focused application widget such as a whiteboard", () => {
+    const single = vi.fn();
+    const sequence = vi.fn();
+    const { result } = renderHook(useKeyboardShortcuts, {
+      wrapper: KeyboardShortcutsProvider,
+    });
+    act(() => {
+      result.current.registerShortcut("c", single);
+      result.current.registerSequentialShortcut("p", "l", sequence);
+    });
+    const board = document.createElement("div");
+    board.setAttribute("role", "application");
+    board.tabIndex = 0;
+    document.body.append(board);
+    try {
+      fireEvent.keyDown(board, { key: "c" });
+      fireEvent.keyDown(board, { key: "p" });
+      fireEvent.keyDown(board, { key: "l" });
+    } finally {
+      board.remove();
+    }
+    expect(single).not.toHaveBeenCalled();
+    expect(sequence).not.toHaveBeenCalled();
+  });
+
   it("fires letter shortcuts on Cyrillic and Greek layouts by physical key", () => {
     const single = vi.fn();
     const sequence = vi.fn();

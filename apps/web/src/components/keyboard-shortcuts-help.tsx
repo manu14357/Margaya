@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { KbdSequence } from "@/components/ui/kbd";
 import { shortcuts } from "@/constants/shortcuts";
 import { getProjectSections } from "@/lib/project-sections";
+import { isKeyOwningTarget } from "@/lib/shortcut-key";
 
 type ShortcutItem = {
   keys: string[];
@@ -311,13 +312,11 @@ export function KeyboardShortcutsHelp() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement;
-      const isTyping =
-        target.tagName === "INPUT" ||
-        target.tagName === "TEXTAREA" ||
-        target.contentEditable === "true";
+      // A field, or a widget with its own "?" (a whiteboard's shortcuts),
+      // keeps the key.
+      if (e.defaultPrevented || isKeyOwningTarget(e.target)) return;
 
-      if (e.key === "?" && !isTyping) {
+      if (e.key === "?") {
         e.preventDefault();
         setOpen(true);
       }

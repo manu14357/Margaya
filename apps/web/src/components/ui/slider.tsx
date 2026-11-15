@@ -12,6 +12,7 @@ function Slider({
   value,
   min = 0,
   max = 100,
+  "aria-label": ariaLabel,
   ...props
 }: SliderPrimitive.Root.Props) {
   const _values = React.useMemo(() => {
@@ -51,6 +52,9 @@ function Slider({
             <SliderPrimitive.Thumb
               className="block size-5 shrink-0 select-none rounded-full border border-input bg-background not-dark:bg-clip-padding shadow-xs/5 outline-none transition-[box-shadow,scale] before:absolute before:inset-0 before:rounded-full before:shadow-[0_1px_--theme(--color-black/4%)] has-focus-visible:ring-[3px] has-focus-visible:ring-ring/24 data-dragging:scale-120 sm:size-4 dark:border-background dark:has-focus-visible:ring-ring/48 [:has(*:focus-visible),[data-dragging]]:shadow-none"
               data-slot="slider-thumb"
+              // The thumb holds the focusable input, so the name belongs on it;
+              // on the root it only names a group and the slider has none.
+              aria-label={ariaLabel}
               index={index}
               key={String(index)}
             />
