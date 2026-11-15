@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { saveAs } from "file-saver";
 import {
   type AdminFeedbackFilters,
   deleteAdminFeedback,
@@ -15,6 +14,7 @@ import {
 } from "@/fetchers/feedback/feedback";
 import { feedbackKeys } from "@/hooks/queries/feedback/use-feedback";
 import { withReauth } from "@/lib/reauth";
+import { saveFile } from "@/lib/save-file";
 
 // None of these touch tasks: skip the global task-query refresh.
 const meta = { refreshTaskQueries: false };
@@ -64,14 +64,14 @@ export function downloadOwnFeedback(items: unknown[]) {
   const blob = new Blob([JSON.stringify({ feedback: items }, null, 2)], {
     type: "application/json",
   });
-  saveAs(blob, "my-feedback.json");
+  saveFile(blob, "my-feedback.json");
 }
 
 export function useExportAdminFeedback() {
   return useMutation({
     mutationFn: async (filters: AdminFeedbackFilters) => {
       const file = await exportAdminFeedback(filters);
-      saveAs(file.blob, file.fileName);
+      saveFile(file.blob, file.fileName);
       return file.fileName;
     },
     meta,

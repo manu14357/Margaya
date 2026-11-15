@@ -1,9 +1,9 @@
-import { saveAs } from "file-saver";
 import i18n from "i18next";
 import downloadTaskExport, {
   taskExportDownloadUrl,
 } from "@/fetchers/task-export/download-task-export";
 import getTaskExport from "@/fetchers/task-export/get-task-export";
+import { saveFile } from "@/lib/save-file";
 import { canDownload } from "@/lib/task-export/status";
 
 /** A whole-workspace archive can reach 4 GB: too much to hold in a tab. */
@@ -46,6 +46,6 @@ export async function saveTaskExport({
     return startBrowserDownload(id);
   }
   const file = await downloadTaskExport(id, fileName);
-  saveAs(file.blob, file.fileName);
+  saveFile(file.blob, file.fileName);
   return file.fileName;
 }

@@ -1,5 +1,4 @@
 import { useNavigate } from "@tanstack/react-router";
-import { saveAs } from "file-saver";
 import {
   ChevronDown,
   Download,
@@ -35,6 +34,7 @@ import type { ExternalImportSource } from "@/fetchers/external-import/external-i
 import useExportTasks from "@/hooks/mutations/task/use-export-tasks";
 import useImportTasks from "@/hooks/mutations/task/use-import-tasks";
 import { useCreateTaskExport } from "@/hooks/mutations/task-export/use-create-task-export";
+import { saveFile } from "@/lib/save-file";
 import { JSON_IMPORT_BATCH_SIZE } from "@/lib/task-import/batch";
 import { toast } from "@/lib/toast";
 import type { ProjectWithTasks } from "@/types/project";
@@ -119,7 +119,7 @@ export function TasksImportExport({ project }: TasksImportExportProps) {
         type: "application/json",
       });
 
-      saveAs(blob, `${project.slug}-tasks-export.json`);
+      saveFile(blob, `${project.slug}-tasks-export.json`);
 
       toast.dismiss();
       toast.success(t("settings:tasksImportExport.exportSuccess"));

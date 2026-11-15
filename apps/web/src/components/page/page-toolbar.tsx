@@ -1,5 +1,4 @@
 import type { Editor } from "@tiptap/core";
-import { saveAs } from "file-saver";
 import {
   Archive,
   ArchiveRestore,
@@ -47,6 +46,7 @@ import { generateLink } from "@/lib/generate-link";
 import { pageErrorMessage } from "@/lib/pages/page-errors";
 import { pagePath } from "@/lib/pages/page-paths";
 import { printPage, useLightThemeWhilePrinting } from "@/lib/pages/print-page";
+import { saveFile } from "@/lib/save-file";
 import "@/styles/page-print.css";
 import { toast } from "@/lib/toast";
 import { useUserPreferencesStore } from "@/store/user-preferences";
@@ -388,7 +388,7 @@ export default function PageHeaderActions({
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() =>
-                saveAs(
+                saveFile(
                   new Blob([markdown()], {
                     type: "text/markdown;charset=utf-8",
                   }),

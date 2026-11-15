@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { saveAs } from "file-saver";
 import exportAuditLog from "@/fetchers/audit-log/export-audit-log";
+import { saveFile } from "@/lib/save-file";
 import type { AuditLogFilters } from "@/types/audit-log";
 
 /** Downloads the filtered audit log as CSV and saves it. */
@@ -11,7 +11,7 @@ export function useExportAuditLog() {
       filters: AuditLogFilters;
     }) => {
       const file = await exportAuditLog(input);
-      saveAs(file.blob, file.fileName);
+      saveFile(file.blob, file.fileName);
       return file.fileName;
     },
   });

@@ -1,4 +1,4 @@
-import { saveAs } from "file-saver";
+import { saveFile } from "@/lib/save-file";
 
 // Browser-side CSV download (K12): no export route, the table on screen is
 // the file.
@@ -14,5 +14,5 @@ export function csvFileName(slug: string, section: string, today: string) {
 }
 
 export function downloadCsv(fileName: string, text: string) {
-  saveAs(new Blob([text], { type: "text/csv;charset=utf-8" }), fileName);
+  saveFile(new Blob([text], { type: "text/csv;charset=utf-8" }), fileName);
 }
