@@ -10,6 +10,7 @@ mod bridge;
 mod commands;
 mod diagnostics;
 mod discovery;
+mod downloads;
 mod error;
 mod i18n;
 mod menus;
@@ -184,7 +185,12 @@ pub fn run() {
             let links_app = handle.clone();
             app.deep_link()
                 .on_open_url(move |event| signin::handle_deep_links(&links_app, event.urls()));
+            // Started by a click on a download's notification after the app
+            // was quit: show the folder, and start in the tray like the
+            // login item, so no window covers the file manager.
+            let mut started_for_download = false;
             if let Ok(Some(links)) = app.deep_link().get_current() {
+                started_for_download = auth::only_download_links(&links);
                 signin::handle_deep_links(&handle, links);
             }
 
@@ -213,7 +219,7 @@ pub fn run() {
 
             // Like a chat app: the server windows open last time come back;
             // the launcher shows only when there are none.
-            if !std::env::args().any(|arg| arg == HIDDEN_ARG) {
+            if !std::env::args().any(|arg| arg == HIDDEN_ARG) && !started_for_download {
                 windows::spawn_ui(&handle, |app| {
                     if !windows::open_startup_windows(app) {
                         windows::show_launcher(app);

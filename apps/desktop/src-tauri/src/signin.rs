@@ -1,5 +1,6 @@
 //! Sign-in and deep links, wired to the app: opening the system browser,
-//! finishing a callback, and opening `margaya://open` links.
+//! finishing a callback, and opening `margaya://open` and
+//! `margaya://download` links.
 
 use serde::Serialize;
 use tauri::{AppHandle, Emitter, Manager};
@@ -110,6 +111,7 @@ pub fn handle_deep_links(app: &AppHandle, links: Vec<Url>) {
                 server,
             }) => handle_callback(app, code, state, server),
             Some(DeepLink::Open { server, path }) => handle_open(app, &server, &path),
+            Some(DeepLink::Download { id }) => crate::downloads::show(app, id.as_deref()),
             None => log::warn!("ignored a deep link the app does not understand"),
         }
     }

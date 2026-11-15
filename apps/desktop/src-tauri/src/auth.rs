@@ -127,6 +127,10 @@ pub enum DeepLink {
     },
     /// margaya://open?server=<apiUrl>&path=/…
     Open { server: String, path: String },
+    /// margaya://download?id=<uuid>: a click on a download's notification.
+    /// Only an id this process handed out shows a file; no id, or one it
+    /// doesn't know, shows the Downloads folder (see downloads.rs).
+    Download { id: Option<String> },
 }
 
 pub const AUTH_SCHEME: &str = "com.margaya.desktop";
@@ -149,8 +153,33 @@ pub fn parse_deep_link(url: &Url) -> Option<DeepLink> {
             let path = urls::safe_relative_path(&path)?.to_string();
             Some(DeepLink::Open { server, path })
         }
+        ALIAS_SCHEME if host == crate::downloads::LINK_HOST && path.is_empty() => {
+            // Websites can open this link: nothing but an id is accepted.
+            let only_id = url.query_pairs().all(|(name, _)| name == "id")
+                && url.query_pairs().count() <= 1
+                && url.port().is_none()
+                && url.username().is_empty()
+                && url.password().is_none()
+                && url.fragment().is_none();
+            if !only_id {
+                return None;
+            }
+            let id = match non_empty("id") {
+                Some(raw) => Some(crate::downloads::parse_id(&raw)?),
+                None => None,
+            };
+            Some(DeepLink::Download { id })
+        }
         _ => None,
     }
+}
+
+/// True when every link is a `margaya://download` link (and there is one).
+pub fn only_download_links(links: &[Url]) -> bool {
+    !links.is_empty()
+        && links
+            .iter()
+            .all(|link| matches!(parse_deep_link(link), Some(DeepLink::Download { .. })))
 }
 
 #[derive(Debug, Deserialize)]
@@ -321,6 +350,64 @@ mod tests {
         );
         assert_eq!(link("margaya://open?path=%2F"), None);
         assert_eq!(link("https://open?server=x"), None);
+    }
+
+    #[test]
+    fn parses_download_links_with_an_id_only() {
+        let id = "5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e91";
+        assert_eq!(
+            link(&format!("margaya://download?id={id}")),
+            Some(DeepLink::Download {
+                id: Some(id.into())
+            })
+        );
+        assert_eq!(
+            link("margaya://download"),
+            Some(DeepLink::Download { id: None })
+        );
+        assert_eq!(
+            link("margaya://download?id="),
+            Some(DeepLink::Download { id: None })
+        );
+        // Never a path, another spelling, a second value or anything extra.
+        for bad in [
+            "margaya://download?id=C%3A%5CWindows%5Cnotepad.exe",
+            "margaya://download?id=%2Fetc%2Fpasswd",
+            "margaya://download?id=..%2F..%2Fx",
+            "margaya://download?id=5B0C8A52-3F7E-4C1D-9A7E-2D4F1C6B8E91",
+            "margaya://download?id=5b0c8a523f7e4c1d9a7e2d4f1c6b8e91",
+            "margaya://download?path=%2Fetc%2Fpasswd",
+            "margaya://download?file=report.csv",
+            "margaya://download/C:/Windows/notepad.exe",
+            "margaya://download?id=5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e91&path=%2Fx",
+            "margaya://download?id=5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e91&id=5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e92",
+            "margaya://download?id=5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e91#x",
+            "margaya://download:8080?id=5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e91",
+            "com.margaya.desktop://download?id=5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e91",
+        ] {
+            assert_eq!(link(bad), None, "{bad}");
+        }
+    }
+
+    #[test]
+    fn a_download_link_alone_starts_the_app_in_the_tray() {
+        let urls =
+            |raw: &[&str]| -> Vec<Url> { raw.iter().map(|r| Url::parse(r).unwrap()).collect() };
+        assert!(only_download_links(&urls(&[
+            "margaya://download?id=5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e91"
+        ])));
+        assert!(only_download_links(&urls(&["margaya://download"])));
+        assert!(!only_download_links(&[]));
+        assert!(!only_download_links(&urls(&[
+            "margaya://open?server=https%3A%2F%2Fapi.example"
+        ])));
+        assert!(!only_download_links(&urls(&[
+            "margaya://download?path=%2Fx"
+        ])));
+        assert!(!only_download_links(&urls(&[
+            "margaya://download",
+            "margaya://open?server=https%3A%2F%2Fapi.example"
+        ])));
     }
 
     #[test]

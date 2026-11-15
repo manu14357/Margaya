@@ -10,6 +10,7 @@ use tauri::async_runtime::JoinHandle;
 use url::Url;
 
 use crate::auth::PendingSignIns;
+use crate::downloads::Downloads;
 use crate::error::{AppError, AppResult, ErrorKind};
 use crate::opener::RecentOpens;
 use crate::routing::{AnnouncedPopups, ChromeState};
@@ -52,9 +53,15 @@ pub struct WindowInfo {
 /// toasts carry their own link).
 #[cfg_attr(windows, allow(dead_code))]
 #[derive(Debug, Clone)]
-pub struct NotificationTarget {
-    pub server_id: String,
-    pub url: Option<String>,
+pub enum NotificationTarget {
+    /// A page of a server (an alert from the server).
+    Page {
+        server_id: String,
+        url: Option<String>,
+    },
+    /// A finished download, by its id in [`AppState::downloads`]; none for
+    /// a failed one (the Downloads folder).
+    Download { id: Option<String> },
 }
 
 pub struct AppState {
@@ -79,6 +86,9 @@ pub struct AppState {
     pub windows: Mutex<HashMap<String, WindowInfo>>,
     /// The server window the person used last, for the tray and second launch.
     pub last_focused: Mutex<Option<String>>,
+    /// Where downloads are going, and the finished ones a notification click
+    /// can still show (in memory only).
+    pub downloads: Mutex<Downloads>,
     /// When a native notification last made a sound (one per burst).
     pub last_alert_sound: Mutex<Option<std::time::Instant>>,
     /// Held while a server's main window is found or created.
@@ -119,6 +129,7 @@ impl AppState {
             announced_popups: Mutex::default(),
             windows: Mutex::default(),
             last_focused: Mutex::default(),
+            downloads: Mutex::default(),
             last_alert_sound: Mutex::default(),
             opening_windows: Mutex::default(),
             next_window: AtomicU32::new(1),

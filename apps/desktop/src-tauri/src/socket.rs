@@ -17,7 +17,7 @@ use url::Url;
 use crate::api;
 use crate::error::ErrorKind;
 use crate::servers::Server;
-use crate::state::{lock, AppState};
+use crate::state::{lock, AppState, NotificationTarget};
 use crate::{badge_view, i18n, notify, tokens, urls};
 
 const KEEPALIVE: Duration = Duration::from_secs(25);
@@ -268,18 +268,23 @@ fn show_release_summary(app: &AppHandle, server: &Server, count: u64) {
 }
 
 /// A click on a native notification (macOS and Linux) opens its URL in that
-/// server's window. Windows toasts open their `margaya://open` link instead.
+/// server's window, or shows a download in its folder. Windows toasts open
+/// their `margaya://open` or `margaya://download` link instead.
 #[cfg_attr(windows, allow(dead_code))]
 pub fn on_notification_click(app: &AppHandle, local_id: i32) {
     let state = app.state::<AppState>();
-    let Some(target) = state.notification_target(local_id) else {
+    let (server_id, url) = match state.notification_target(local_id) {
+        Some(NotificationTarget::Page { server_id, url }) => (server_id, url),
+        Some(NotificationTarget::Download { id }) => {
+            crate::downloads::show(app, id.as_deref());
+            return;
+        }
+        None => return,
+    };
+    let Ok(server) = state.server(&server_id) else {
         return;
     };
-    let Ok(server) = state.server(&target.server_id) else {
-        return;
-    };
-    let target = target
-        .url
+    let target = url
         .and_then(|raw| Url::parse(&raw).ok())
         .map_or(crate::windows::Target::None, crate::windows::Target::InApp);
     crate::windows::spawn_ui(app, move |app| {

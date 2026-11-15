@@ -8,7 +8,6 @@ use std::time::Duration;
 
 use tauri::webview::{Color, DownloadEvent, NewWindowFeatures, NewWindowResponse, PageLoadEvent};
 use tauri::{AppHandle, Manager, Theme, WebviewUrl, WebviewWindow, WebviewWindowBuilder, Wry};
-use tauri_plugin_notification::NotificationExt;
 use url::Url;
 
 use crate::error::{AppError, AppResult};
@@ -831,14 +830,25 @@ fn file_name_of(path: Option<&Path>, url: &Url) -> String {
         .unwrap_or_else(|| "download".to_string())
 }
 
+/// Every download goes to the Downloads folder under its own cleaned name,
+/// numbered when that name is taken (on disk or by a download still
+/// running). Its notification's click shows the file in its folder (see
+/// downloads.rs).
 fn handle_download(app: &AppHandle, label: &str, event: DownloadEvent<'_>) -> bool {
     let state = app.state::<AppState>();
     match event {
         DownloadEvent::Requested { url, destination } => {
-            let name = file_name_of(Some(destination.as_path()), &url);
+            // The webview's suggestion carries the page's `download` name
+            // (file-saver, the whiteboard export) for blob: and data: URLs.
+            let name = sanitize_file_name(&file_name_of(Some(destination.as_path()), &url));
+            let mut downloads = lock(&state.downloads);
             if let Ok(dir) = app.path().download_dir() {
-                *destination = unique_path(&dir, &sanitize_file_name(&name), Path::exists);
+                *destination = unique_path(&dir, &name, |path| {
+                    path.exists() || downloads.is_running(path)
+                });
             }
+            downloads.started(label, url.as_str(), destination.clone());
+            drop(downloads);
             state.with_window(label, |info| {
                 info.downloads += 1;
                 // A window opened for a link that turned out to be a file
@@ -851,30 +861,83 @@ fn handle_download(app: &AppHandle, label: &str, event: DownloadEvent<'_>) -> bo
             true
         }
         DownloadEvent::Finished { url, path, success } => {
-            let file = file_name_of(path.as_deref(), &url);
-            let title = if success {
-                i18n::tv("downloads.finished", &[("file", &file)])
-            } else {
-                log::warn!("a download failed");
-                i18n::tv("downloads.failed", &[("file", &file)])
-            };
-            let _ = app.notification().builder().title(title).show();
-            let close = state.with_window(label, |info| {
-                info.downloads = info.downloads.saturating_sub(1);
-                info.download_only && info.downloads == 0
-            });
-            if close && matches!(servers::parse_window_label(label), Some(WindowKind::Secondary(..))) {
-                let label = label.to_string();
-                spawn_ui(app, move |app| {
-                    if let Some(window) = app.get_webview_window(&label) {
-                        let _ = window.close();
+            // macOS reports no path here: use the one chosen at the start.
+            let started = lock(&state.downloads).finished(label, url.as_str());
+            let known = path.or(started);
+            // A failed blob: download has no name in its URL; keep the one
+            // it was going to be saved under.
+            let file = sanitize_file_name(&file_name_of(known.as_deref(), &url));
+            let saved = known.filter(|_| success);
+            let (title, body, id) = match saved {
+                Some(saved) => (
+                    i18n::tv("downloads.finished", &[("file", &file)]),
+                    i18n::t("downloads.showInFolder"),
+                    Some(lock(&state.downloads).remember(saved)),
+                ),
+                None => {
+                    if success {
+                        log::warn!("a download finished without a known path");
+                    } else {
+                        log::warn!("a download failed");
                     }
-                });
+                    let title = if success {
+                        "downloads.finished"
+                    } else {
+                        "downloads.failed"
+                    };
+                    (
+                        i18n::tv(title, &[("file", &file)]),
+                        i18n::t("downloads.openFolder"),
+                        None,
+                    )
+                }
+            };
+            crate::notify::show_download(app, title, body, id);
+            let done = state.with_window(label, |info| {
+                info.downloads = info.downloads.saturating_sub(1);
+                let done = info.download_only && info.downloads == 0;
+                if done {
+                    info.download_only = false;
+                }
+                done
+            });
+            if done {
+                finish_download_window(app, label);
             }
             true
         }
         _ => true,
     }
+}
+
+/// A window that opened only for a download: an additional window closes; a
+/// main window (opened at a link that turned out to be a file) loads its
+/// server's start page, still hidden, so it isn't blank when shown later.
+fn finish_download_window(app: &AppHandle, label: &str) {
+    let label = label.to_string();
+    spawn_ui(app, move |app| {
+        let Some(window) = app.get_webview_window(&label) else {
+            return;
+        };
+        match servers::parse_window_label(&label) {
+            Some(WindowKind::Secondary(..)) => {
+                let _ = window.close();
+            }
+            Some(WindowKind::Primary(id)) => {
+                let web = app
+                    .state::<AppState>()
+                    .server(id)
+                    .ok()
+                    .and_then(|server| server.web());
+                if let Some(web) = web {
+                    if let Err(error) = window.navigate(web) {
+                        log::warn!("could not load a server window after a download: {error}");
+                    }
+                }
+            }
+            _ => {}
+        }
+    });
 }
 
 /// Invisible direction marks and overrides: "report" + U+202E + "fdp.exe"

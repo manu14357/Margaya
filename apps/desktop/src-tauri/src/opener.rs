@@ -1,4 +1,5 @@
-//! Opening links outside the app (system browser, mail app). Every open runs
+//! Opening links outside the app (system browser, mail app), and showing a
+//! downloaded file in the system file manager. Every open runs
 //! on its own short-lived thread: the shell call can block or pump messages
 //! (for example while Windows asks which app to use), and doing that on the
 //! UI thread, or inside a WebView2 callback, froze the app.
@@ -176,6 +177,95 @@ fn platform_open(url: &str) -> Result<(), String> {
 #[cfg(all(not(feature = "e2e"), not(windows)))]
 fn platform_open(url: &str) -> Result<(), String> {
     tauri_plugin_opener::open_url(url, None::<&str>).map_err(|error| error.to_string())
+}
+
+/// Shows a downloaded file selected in the system file manager (Explorer's
+/// `SHOpenFolderAndSelectItems`, Finder, `org.freedesktop.FileManager1`), or
+/// opens a folder. Never opens or runs the file itself: when selecting it
+/// fails, its folder opens instead. Blocks; call it off the UI thread.
+#[cfg(not(feature = "e2e"))]
+pub fn show_in_folder(target: &crate::downloads::Reveal) -> Result<(), String> {
+    use crate::downloads::Reveal;
+    // The click came to this process (or a second one that passed its
+    // foreground right on); let the file manager come to the front.
+    #[cfg(windows)]
+    unsafe {
+        use ::windows::Win32::UI::WindowsAndMessaging::{AllowSetForegroundWindow, ASFW_ANY};
+        let _ = AllowSetForegroundWindow(ASFW_ANY);
+    }
+    match target {
+        Reveal::Select(file) => tauri_plugin_opener::reveal_item_in_dir(file).or_else(|error| {
+            log::info!("could not select a download ({error}); opening its folder");
+            let folder = file
+                .parent()
+                .filter(|parent| parent.is_dir())
+                .ok_or_else(|| error.to_string())?;
+            open_folder(folder)
+        }),
+        Reveal::Folder(folder) => open_folder(folder),
+    }
+}
+
+/// Test builds write `reveal <path>` or `folder <path>` to
+/// `MARGAYA_E2E_OPEN_LOG` instead of opening a file manager.
+#[cfg(feature = "e2e")]
+pub fn show_in_folder(target: &crate::downloads::Reveal) -> Result<(), String> {
+    use crate::downloads::Reveal;
+    let line = match target {
+        Reveal::Select(file) => format!("reveal {}", file.display()),
+        Reveal::Folder(folder) => format!("folder {}", folder.display()),
+    };
+    platform_open(&line)
+}
+
+/// Opens a folder in Explorer, as a folder whatever its name looks like.
+#[cfg(all(not(feature = "e2e"), windows))]
+fn open_folder(folder: &std::path::Path) -> Result<(), String> {
+    use std::os::windows::ffi::OsStrExt;
+
+    use ::windows::core::{w, PCWSTR};
+    use ::windows::Win32::System::Com::{
+        CoInitializeEx, CoUninitialize, COINIT_APARTMENTTHREADED, COINIT_DISABLE_OLE1DDE,
+    };
+    use ::windows::Win32::UI::Shell::{
+        ShellExecuteExW, SEE_MASK_CLASSNAME, SEE_MASK_FLAG_NO_UI, SEE_MASK_NOASYNC,
+        SHELLEXECUTEINFOW,
+    };
+
+    if !folder.is_dir() {
+        return Err("not a folder".into());
+    }
+    let wide: Vec<u16> = folder
+        .as_os_str()
+        .encode_wide()
+        .chain(std::iter::once(0))
+        .collect();
+    // SAFETY: as in `platform_open`; `wide` outlives ShellExecuteExW.
+    unsafe {
+        let com = CoInitializeEx(None, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+        let mut info = SHELLEXECUTEINFOW {
+            cbSize: std::mem::size_of::<SHELLEXECUTEINFOW>() as u32,
+            fMask: SEE_MASK_CLASSNAME | SEE_MASK_NOASYNC | SEE_MASK_FLAG_NO_UI,
+            lpVerb: w!("open"),
+            lpFile: PCWSTR(wide.as_ptr()),
+            lpClass: w!("folder"),
+            nShow: 1, // SW_SHOWNORMAL
+            ..Default::default()
+        };
+        let result = ShellExecuteExW(&mut info).map_err(|error| error.to_string());
+        if com.is_ok() {
+            CoUninitialize();
+        }
+        result
+    }
+}
+
+#[cfg(all(not(feature = "e2e"), not(windows)))]
+fn open_folder(folder: &std::path::Path) -> Result<(), String> {
+    if !folder.is_dir() {
+        return Err("not a folder".into());
+    }
+    tauri_plugin_opener::open_path(folder, None::<&str>).map_err(|error| error.to_string())
 }
 
 #[cfg(test)]

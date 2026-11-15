@@ -18,6 +18,10 @@
 //! a `default` action, so a click comes back as `tap` while Margaya runs;
 //! the icon is the app's own PNG, so it shows for an AppImage too.
 //!
+//! Finished and failed downloads get their own silent notification
+//! (`show_download`); a click shows the file in its folder through
+//! `margaya://download` or the plugin's `tap` (see downloads.rs).
+//!
 //! Sound: the alert makes a sound when the server says the user's Margaya
 //! sound settings call for one (`sound` in
 //! `GET /api/notification/{id}/desktop`), unless sounds are muted on this
@@ -163,25 +167,98 @@ fn escape_xml(text: &str) -> String {
     out
 }
 
+/// A protocol-activated toast: a click opens `launch`. Always silent: the
+/// app plays the Margaya sound itself.
+#[cfg_attr(not(windows), allow(dead_code))]
+fn toast_document(title: &str, body: &str, attribution: Option<&str>, launch: &str) -> String {
+    let launch = escape_xml(launch);
+    let title = escape_xml(title);
+    let body = escape_xml(body);
+    let source = attribution.map_or_else(String::new, |source| {
+        format!(
+            r#"<text placement="attribution">{}</text>"#,
+            escape_xml(source)
+        )
+    });
+    format!(
+        r#"<toast launch="{launch}" activationType="protocol"><visual><binding template="ToastGeneric"><text hint-maxLines="2">{title}</text><text>{body}</text>{source}</binding></visual><audio silent="true"/></toast>"#
+    )
+}
+
 /// The toast's XML. `attribution` (the server's name) is shown when the
 /// person uses more than one server.
 #[cfg_attr(not(windows), allow(dead_code))]
 pub fn toast_xml(alert: &Alert, launch: &str, attribution: bool) -> String {
-    let launch = escape_xml(launch);
-    let title = escape_xml(&alert.title);
-    let body = escape_xml(&alert.body);
-    let source = if attribution {
-        format!(
-            r#"<text placement="attribution">{}</text>"#,
-            escape_xml(&alert.server_label)
-        )
-    } else {
-        String::new()
-    };
-    // Always silent: the app plays the Margaya sound itself.
-    format!(
-        r#"<toast launch="{launch}" activationType="protocol"><visual><binding template="ToastGeneric"><text hint-maxLines="2">{title}</text><text>{body}</text>{source}</binding></visual><audio silent="true"/></toast>"#
-    )
+    let source = attribution.then_some(alert.server_label.as_str());
+    toast_document(&alert.title, &alert.body, source, launch)
+}
+
+/// A download's toast: the file name in the title, what a click does below.
+#[cfg_attr(not(windows), allow(dead_code))]
+pub fn download_toast_xml(title: &str, body: &str, launch: &str) -> String {
+    toast_document(title, body, None, launch)
+}
+
+/// The toast group of download notifications. Each has its own tag (its id),
+/// so several downloads at once keep one notification each.
+#[cfg_attr(not(windows), allow(dead_code))]
+const DOWNLOAD_GROUP: &str = "downloads";
+
+/// Shows a download's notification: a click shows the file in its folder
+/// (`id`, from [`crate::downloads::Downloads::remember`]) or, without one,
+/// opens the Downloads folder. Silent everywhere: the person just asked for
+/// the file. Margaya's quiet hours hold only the server's alerts; the
+/// system's Do Not Disturb applies to this one as to any other.
+pub fn show_download(app: &AppHandle, title: String, body: String, id: Option<String>) {
+    let link = crate::downloads::click_link(id.as_deref());
+    #[cfg(feature = "e2e")]
+    e2e_record_download(&link);
+
+    #[cfg(windows)]
+    {
+        let app_id = app.config().identifier.clone();
+        let xml = download_toast_xml(&title, &body, &link);
+        // A failed download has no id; its toast still needs a tag of its own.
+        let tag = id.unwrap_or_else(|| uuid::Uuid::new_v4().hyphenated().to_string());
+        let tag = toast_key(&tag);
+        tauri::async_runtime::spawn_blocking(move || {
+            match toast::show(&app_id, &xml, &tag, DOWNLOAD_GROUP) {
+                Ok(true) => {}
+                Ok(false) => {
+                    log::info!("download notification not shown: notifications are off for the app")
+                }
+                Err(error) => log::warn!("could not show a download notification: {error}"),
+            }
+        });
+    }
+
+    #[cfg(not(windows))]
+    {
+        use tauri_plugin_notification::NotificationExt;
+        let _ = link;
+        let local_id = app
+            .state::<AppState>()
+            .remember_notification(crate::state::NotificationTarget::Download { id });
+        let app = app.clone();
+        // Not on the UI thread: the download callback runs there, and the
+        // plugin talks to the notification server (D-Bus on Linux).
+        tauri::async_runtime::spawn_blocking(move || {
+            #[cfg_attr(not(target_os = "linux"), allow(unused_mut))]
+            let mut builder = app
+                .notification()
+                .builder()
+                .id(local_id)
+                .title(title)
+                .body(body);
+            #[cfg(target_os = "linux")]
+            if let Some(icon) = linux_icon(&app) {
+                builder = builder.icon(icon);
+            }
+            if let Err(error) = builder.show() {
+                log::warn!("could not show a download notification: {error}");
+            }
+        });
+    }
 }
 
 /// Shows an alert natively.
@@ -220,7 +297,7 @@ pub fn show(app: &AppHandle, server: &Server, alert: Alert) {
     {
         use tauri_plugin_notification::NotificationExt;
         let _ = (several, link);
-        let local_id = state.remember_notification(crate::state::NotificationTarget {
+        let local_id = state.remember_notification(crate::state::NotificationTarget::Page {
             server_id: alert.server_id.clone(),
             url: alert.url.as_ref().map(Url::to_string),
         });
@@ -266,6 +343,23 @@ fn e2e_record(alert: &Alert, link: &str) {
         "volume": alert.sound.map(|tone| tone.volume),
         "link": link,
     });
+    if let Ok(mut file) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(path)
+    {
+        let _ = writeln!(file, "{line}");
+    }
+}
+
+/// Test builds: a download notification's click link, as for alerts.
+#[cfg(feature = "e2e")]
+fn e2e_record_download(link: &str) {
+    use std::io::Write;
+    let Ok(path) = std::env::var("MARGAYA_E2E_NOTIFY_LOG") else {
+        return;
+    };
+    let line = serde_json::json!({ "kind": "download", "link": link });
     if let Ok(mut file) = std::fs::OpenOptions::new()
         .create(true)
         .append(true)
@@ -495,6 +589,34 @@ mod tests {
             false
         )
         .contains('\u{0}'));
+    }
+
+    #[test]
+    fn builds_a_download_toast_with_escaped_names() {
+        let id = "5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e91";
+        let link = crate::downloads::click_link(Some(id));
+        // What windows.rs puts in the title: the cleaned file name.
+        let name = crate::windows::sanitize_file_name("Q3 <plan> & \"notes\" 'v2'\u{202E}gnp.exe");
+        let xml = download_toast_xml(
+            &format!("Downloaded {name}"),
+            "Click to show in folder",
+            &link,
+        );
+        assert!(xml.starts_with(&format!(
+            r#"<toast launch="margaya://download?id={id}" activationType="protocol">"#
+        )));
+        assert!(xml.contains(
+            "<text hint-maxLines=\"2\">Downloaded Q3 _plan_ &amp; _notes_ &apos;v2&apos;_gnp.exe</text>"
+        ));
+        assert!(xml.contains("<text>Click to show in folder</text>"));
+        assert!(xml.contains(r#"<audio silent="true"/>"#));
+        assert!(!xml.contains("attribution"));
+        assert!(!xml.contains('\u{202E}'));
+        // Names in any script stay as they are; markup in them doesn't.
+        let xml = download_toast_xml("Скачан отчёт_<b>.csv 報告.png", "x", "margaya://download");
+        assert!(xml.contains("Скачан отчёт_&lt;b&gt;.csv 報告.png"));
+        assert!(!xml.contains("<b>"));
+        assert_eq!(xml.matches("<toast ").count(), 1);
     }
 
     #[test]
