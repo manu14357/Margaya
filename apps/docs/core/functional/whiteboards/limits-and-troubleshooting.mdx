@@ -1,0 +1,77 @@
+---
+title: Limits and troubleshooting
+description: The limits of Margaya Whiteboards, from boards per project to elements, images and connections, and what to do when a board can't connect, save, load an image or show the tab
+---
+
+## Limits
+
+| What | Limit |
+| --- | --- |
+| Boards per project | 5,000, archived boards included (boards in the trash don't count) |
+| Board name | 255 characters |
+| Elements on one board | 20,000 ("This board is full. Remove something before adding more.") |
+| Text in one element | 20,000 characters |
+| Points in one drawing or line | 5,000 |
+| Saved size of one board | 32 MB ("This board is too large to save more changes.") |
+| People on one board at a time | 100 connections ("Too many people have this board open. Try again later.") |
+| Images | PNG, JPEG, GIF or WebP, with the same size limit as task attachments |
+| Imported files | 50 MB |
+| Zoom | 10% to 3,000% |
+| Elements added by one API request | 2,000 |
+
+Self-hosted instances set the upload size limit for images with the same settings as for attachments. See [Object storage and image uploads](/core/installation/object-storage-and-image-uploads).
+
+## Troubleshooting
+
+### I don't see the Whiteboards tab
+
+- Whiteboards may be off for the project: open **Settings**, the project, then **Features**, and switch **Whiteboards** on. See [Overview](/core/functional/whiteboards#turn-whiteboards-on-or-off).
+- Your role may not include **View whiteboards**. Ask a workspace admin.
+- Guests don't get **All whiteboards** in the sidebar.
+
+### The board says "Can't connect" or shows the saved copy
+
+The board can't reach the server's live connection. Check your network, then choose **Retry** on the badge or the banner. Meanwhile, "Can't reach the live board. Showing the last saved copy, read-only." lets you read the board.
+
+On a self-hosted instance behind a proxy, the proxy must allow WebSocket connections to the API, as for live updates elsewhere in Margaya.
+
+### My changes weren't saved after I was offline
+
+If the board was locked, archived or became read-only for you while you were offline, Margaya doesn't apply your offline changes and says so. Ask someone to unlock or restore the board, then make the changes again.
+
+### I can't draw: the board is read-only
+
+Look at the banner at the top of the board:
+
+<Screenshot src="whiteboards/locked-banner" alt="A locked board with a Locked badge next to its name and a banner saying that Elena Marsh locked this board, with an Unlock button, above a toolbar that only offers Select, Hand and Laser pointer" caption="The banner says why a board is read-only." />
+
+- "You can view this board but not edit it.": your role can only view whiteboards.
+- "… locked this board. Unlock it to make changes.": choose **Unlock** if you can, or ask the person who locked it.
+- "This board is archived and read-only.": choose **Restore** if you can.
+
+### An image doesn't upload
+
+- Only PNG, JPEG, GIF and WebP images can go on a board ("Only PNG, JPEG, GIF and WebP images can go on a board").
+- The file may be larger than the upload limit, or the server may have no file storage set up. "The image could not be uploaded." shows then.
+- "Couldn't add the image" after pasting from another board or importing a board file means an image couldn't be copied to this board, for example because you can't open the board it came from. The other elements are still added.
+- "The image is still loading. Try cropping it again in a moment." appears when you crop an image before it has loaded.
+
+### "This board is too large to save more changes."
+
+The board reached 32 MB, usually because of many large images or very long drawings. Choose **Reload**, then remove or crop images, or split the board: copy part of it into a new board and delete it from this one.
+
+### "That file is not a Margaya board."
+
+Only `.margaya-board` files and PNGs exported from a board can be imported. A PNG without board content that you drop onto the canvas is added as an image instead.
+
+### "Couldn't load this whiteboard" or "Whiteboard not found"
+
+The board may have been deleted, moved to the trash, or you may no longer have access to its project. Check the project's **Recently deleted** list, see [Trash and restore](/core/functional/trash-and-restore#restore-a-deleted-whiteboard), or ask a workspace admin.
+
+### The public link shows "This link isn't available"
+
+The board was unpublished, published again with a new link, archived or moved to the trash, or public boards are turned off for the workspace, the project or the instance. See [Stop sharing](/core/functional/whiteboards/share-and-export#stop-sharing).
+
+### A task card shows no task
+
+The task may have been deleted or moved to the trash, or you can't see it. Removing the card from the board is safe: it never changes the task.

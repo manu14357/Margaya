@@ -1,9 +1,9 @@
 ---
 title: Trash and Restore
-description: Deleted tasks, pages and projects go to the trash first, so you can bring them back before they are deleted permanently
+description: Deleted tasks, pages, whiteboards and projects go to the trash first, so you can bring them back before they are deleted permanently
 ---
 
-Deleting a task, a page or a project does not erase it right away. It moves to the trash, where it stays restorable until someone deletes it permanently or the automatic purge removes it (after 30 days by default).
+Deleting a task, a page, a whiteboard or a project does not erase it right away. It moves to the trash, where it stays restorable until someone deletes it permanently or the automatic purge removes it (after 30 days by default).
 
 While something is in the trash, Margaya behaves as if it no longer exists: it disappears from boards, lists, Your work, search, analytics, cycles, modules, the inbox, favorites, recent items, exports, public boards, integrations and the MCP tools. Nothing about it is lost, though: comments, attachments, relations, time entries and history are kept and come back with it.
 
@@ -49,9 +49,23 @@ The **Pages** section only appears while **Pages** is on for the project. It lis
 
 While a page is in the trash, its link answers "Page not found", and notifications about it are hidden until it comes back.
 
+## Restore a deleted whiteboard
+
+A whiteboard has to be [archived](/core/functional/whiteboards/create-and-organize#lock-archive-and-delete) before you can move it to the trash. It goes there with its content and images, and its public link is revoked.
+
+1. Go to **Settings** and open **Projects**.
+2. Select the project and open **Recently deleted**. You can also click **Recently deleted** on the **Archived** tab of the project's **Whiteboards**.
+3. Under **Whiteboards**, find the board (**Search deleted whiteboards** matches its name) and click **Restore**.
+
+The board goes back to the **Archived** tab ("Whiteboard restored to Archived"). Restore it from there to use it again. Its public link stays revoked; publish it again for a new one.
+
+**Delete permanently** in a row's **...** menu removes the board, its content and its images for everyone, and can't be undone. The **Whiteboards** section has no **Empty trash**.
+
+The **Whiteboards** section only appears while **Whiteboards** is on for the project. You can restore or delete a board you created, or any board if you have **Manage all whiteboards**. While a board is in the trash, its link answers "Whiteboard not found".
+
 ## Delete and restore a project
 
-Deleting a project (from its settings or the project list) moves it to the trash with all its tasks. Its board, cycles, modules, pages, views and public board are unavailable while it is there, and its key stays reserved, so no new project can take it.
+Deleting a project (from its settings or the project list) moves it to the trash with all its tasks. Its board, cycles, modules, pages, whiteboards, views and public board are unavailable while it is there, and its key stays reserved, so no new project can take it.
 
 To bring it back, go to **Settings**, open **Workspace**, then **Recently deleted**, and click **Restore**. The project returns with the tasks that were deleted together with it; tasks deleted on their own earlier stay in the project's own trash. From the same page you can **Delete permanently** a project and everything in it. Files that a task, comment or page of another project still shows stay with that text.
 
@@ -61,15 +75,16 @@ To bring it back, go to **Settings**, open **Workspace**, then **Recently delete
 
 - Restoring needs the same permission as deleting: **task:delete** for tasks and **project:delete** for projects. Workspace admins and owners have both by default.
 - A page needs **page:update** and your ownership of the page, or **page:delete** for any page you can see. So Members can restore and delete their own pages.
+- A whiteboard needs **whiteboard:update** if you created it, or **whiteboard:delete** for any board. So Members can restore and delete their own boards.
 - Deleting permanently needs the same permissions.
-- Anyone who can read the project can see its **Recently deleted** list. The **Pages** section also needs **page:read**.
+- Anyone who can read the project can see its **Recently deleted** list. The **Pages** section also needs **page:read**, and the **Whiteboards** section **whiteboard:read**.
 
 ## Automatic purge
 
-An hourly job deletes items that have been in the trash for longer than the retention period, in the same way as **Delete permanently**. On self-hosted instances the period is set with `TRASH_RETENTION_DAYS` (default `30`; `0` turns the automatic purge off). See [Environment variables](/core/installation/environment-variables).
+An hourly job deletes items, whiteboards included, that have been in the trash for longer than the retention period, in the same way as **Delete permanently**. On self-hosted instances the period is set with `TRASH_RETENTION_DAYS` (default `30`; `0` turns the automatic purge off). See [Environment variables](/core/installation/environment-variables).
 
 ## Webhooks, integrations and the API
 
 - `task.deleted`, `page.deleted` and `project.deleted` mean "moved to the trash", so existing integrations keep working.
-- `task.restored`, `page.restored` and `project.restored` are sent when something comes back, and `task.purged`, `page.purged` and `project.purged` when it is deleted permanently. Private pages are left out. See [Webhooks](/core/functional/webhooks).
-- The API's trash routes list, restore and permanently delete trashed tasks, pages and projects. The MCP `delete_task` tool moves a task to the trash and `restore_task` brings it back.
+- `task.restored`, `page.restored` and `project.restored` are sent when something comes back, and `task.purged`, `page.purged` and `project.purged` when it is deleted permanently. Private pages are left out. Whiteboards send no webhook events. See [Webhooks](/core/functional/webhooks).
+- The API's trash routes list, restore and permanently delete trashed tasks, pages, whiteboards and projects. The MCP `delete_task` tool moves a task to the trash and `restore_task` brings it back.

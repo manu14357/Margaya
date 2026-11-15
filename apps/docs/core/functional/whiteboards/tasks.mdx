@@ -1,0 +1,80 @@
+---
+title: Work with tasks on a board
+description: Put live cards of the project's tasks on a whiteboard, turn sticky notes into real tasks, turn arrows between cards into task dependencies, and see on a task which boards it appears on
+---
+
+A board is connected to its project's tasks. Cards show the real tasks and update as they change, sticky notes from a workshop can become tasks without retyping, and an arrow between two cards can become a dependency on the tasks themselves.
+
+<Screenshot src="whiteboards/task-cards" alt="The Launch planning board with two task cards, WEB-1 Redesign the pricing page (In Progress) and WEB-2 Fix hero video autoplay on Safari (In Review), joined by a selected arrow, and the Style panel showing the Make dependency button" caption="Two task cards joined by an arrow. Make dependency turns the arrow into a real dependency." />
+
+## Task cards
+
+A task card shows a task of the board's project with live data:
+
+- the task's key and its column, as a colored status badge;
+- its title;
+- the assignee's initials, the priority and the due date.
+
+Cards update by themselves when the task changes, for everyone on the board. Tasks in a done or canceled column show a muted, struck-through title. Double-click a card, or choose **Open task** in its right-click menu, to open the task.
+
+A card is a drawing of the task, not the task itself: moving, styling or deleting a card never changes the task. Arrows can connect to cards like to any shape, and **Find on board** finds cards by key and title.
+
+### Add task cards
+
+1. Choose **Task card** in the toolbar. The **Add task cards** dialog opens.
+2. Search by title or key in **Search tasks by title or key**, then tick one or more tasks. Tasks that already have a card on the board are marked **On this board**.
+3. Choose the button that counts the cards, for example **Add 2 cards**. Until you pick a task it reads **Add cards** and does nothing.
+
+<Screenshot src="whiteboards/task-picker" alt="The Add task cards dialog with pricing typed in the search field, WEB-1 Redesign the pricing page marked On this board, WEB-16 Write the pricing FAQ ticked, and the Add 1 card button" caption="Pick the tasks to show on the board." />
+
+The cards are laid out in rows around the middle of your view, selected, so you can move them together right away. The list shows up to 100 tasks at a time; search to narrow it down.
+
+Only the project's own tasks can go on its boards, and adding cards needs permission to edit the board. Press `Enter` in the search field to add the first match straight away.
+
+## Turn sticky notes into tasks
+
+Sticky notes from a brainstorm, retrospective or planning session can become real tasks in a couple of clicks:
+
+1. Select one or more sticky notes. `Shift`-click to add notes, or drag a box around them.
+2. Choose **Turn into a task** (or **Turn into 3 tasks**, for three notes) in the Style panel or the right-click menu. The **Turn notes into tasks** dialog opens.
+3. Pick the **Column** the tasks start in.
+4. Check the **Task titles**. Each title comes from the first line of its note, and you can edit it here. The other lines of the note become the task's description. Notes without a title are skipped.
+5. Choose the button that counts the tasks, for example **Create 3 tasks**.
+
+<Screenshot src="whiteboards/turn-into-tasks" alt="The Turn notes into tasks dialog with the To Do column picked and three task titles taken from sticky notes: Skip button on every intro screen, Ask for notifications after the first task, and Show a sample project, with the Create 3 tasks button" caption="Each note becomes a task in the column you pick." />
+
+Each note is replaced by a live card of its new task at the same place, and arrows that pointed at a note now point at its card. "Created 3 tasks" confirms it. If some notes can't become tasks, the others are still created and a message says how many failed, for example "1 note could not become a task".
+
+Turning notes into tasks needs permission to create tasks in the project. The new tasks are ordinary tasks: if you change your mind, delete them from the project.
+
+## Make a dependency
+
+Draw an arrow from one task card to another to plan the order of work, then make it a real dependency:
+
+1. Draw an arrow that starts on one task card and ends on another, so that both ends are [bound](/core/functional/whiteboards/arrows-and-connectors#connect-arrows-to-shapes) to the cards.
+2. Select the arrow and choose **Make dependency** in the Style panel or the right-click menu.
+
+The task at the start of the arrow now **blocks** the task at the end. "Dependency created" confirms it, and the relation shows on both tasks, on the timeline and in [Find blocked tasks](/core/functional/views#find-blocked-tasks). If it can't be created, for example because it would make a loop, "The dependency could not be created." says so.
+
+Once an arrow stands for a dependency, its menu and the Style panel offer **Remove dependency** instead. It deletes the relation between the tasks and keeps the arrow.
+
+Making or removing a dependency needs permission to edit tasks. The arrow and the relation are separate things: a dependency created elsewhere doesn't draw an arrow, and an arrow without **Make dependency** is only a drawing.
+
+### Delete an arrow that stands for a dependency
+
+Deleting such an arrow, with `Delete`, cut, the menu or the eraser, removes only the drawing at first. A message near the bottom of the board asks "Also remove the dependency between WEB-8 and WEB-13?":
+
+<Screenshot src="whiteboards/dependency-prompt" alt="The Release order board with the WEB-8 and WEB-13 task cards after their arrow was deleted, and a message asking Also remove the dependency between WEB-8 and WEB-13? with Keep and Remove buttons" caption="Deleting the arrow asks whether to remove the dependency too." />
+
+- **Remove** deletes the relation as well ("Dependency removed").
+- **Keep** leaves the relation on the tasks.
+
+Deleting several of these arrows at once asks about all of them in one message, for example "Also remove 2 dependencies between these tasks?".
+
+## On whiteboards, on the task
+
+The task's detail, both the side sheet and the full task page, lists the boards that hold a card of the task under **On whiteboards**. Click a board to open it.
+
+<Screenshot src="whiteboards/task-on-whiteboards" alt="The task page of WEB-1 Redesign the pricing page, with Sub-tasks, a Relations section showing that it blocks WEB-6 Newsletter sign-up flow, and an On whiteboards section listing Launch planning" caption="On whiteboards lists the boards that show the task." />
+
+The list only shows boards you can open, and only while the project has Whiteboards turned on. It's hidden when no board shows the task.

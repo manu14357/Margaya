@@ -1,0 +1,60 @@
+---
+title: Arrows and connectors
+description: Draw arrows and lines that stay connected to shapes, route them straight, curved or with right angles, change their arrowheads, label them and build flowcharts with one key
+---
+
+Arrows and lines connect the things on a board. An arrow whose ends are attached to shapes follows them when they move, so a flowchart or a map of dependencies stays tidy while you rearrange it.
+
+<Screenshot src="whiteboards/arrows" alt="The Signup flow board: Start, Enter email, Valid?, Welcome, Show error and Welcome email joined by arrows, with Yes and No labels, a dashed elbow arrow labelled Try again selected, and the Style panel showing Line type set to Elbow and the Arrowheads choices" caption="A flowchart with straight, elbow and curved arrows. The selected arrow is an elbow connector." />
+
+## Draw an arrow or a line
+
+Pick **Arrow** (`A` or `5`) or **Line** (`L` or `6`), then:
+
+- **Drag** from one point to another for a straight connection.
+- **Click** without dragging to start a line with several points. Each click adds a point. Click the last point again, or press `Enter`, to finish. `Esc` cancels.
+
+An arrow gets an arrowhead at its end; a line has none. Both can carry the same style, so you can turn one into the other by changing the arrowheads.
+
+## Connect arrows to shapes
+
+An end that you draw near a shape, a sticky note, text, a frame, an image or a task card **binds** to it. The shape is highlighted while you draw, so you can see where the end will attach. While you add points with clicks, clicking onto a shape ends the line there.
+
+- A bound arrow follows its shapes: move or resize either shape and the arrow is redrawn between them.
+- The end sits just outside the shape's outline, where the arrow meets it.
+- Drag an end's handle onto another shape to reconnect it, or onto empty canvas to detach it.
+- Moving an arrow on its own, without its shapes, detaches the ends from shapes that stay behind.
+
+An arrow between two task cards can also become a real dependency between the tasks. See [Work with tasks](/core/functional/whiteboards/tasks#make-a-dependency).
+
+## Change the route
+
+Select an arrow or line and pick its **Line type** in the Style panel:
+
+- **Straight**: straight segments between its points.
+- **Curved**: a smooth curve through its points.
+- **Elbow**: right angles only. A bound elbow connector finds its own way around the two shapes, so you don't have to place the bends.
+
+To reshape a straight or curved line, select it and drag one of its points. Drag the small handle in the middle of a segment to add a point there.
+
+## Arrowheads
+
+**Arrowheads** in the Style panel sets the **Start** and **End** of an arrow or line to **None**, **Arrow**, **Triangle**, **Dot** or **Bar**. For example, a dot at the start and an arrow at the end show where a flow comes from and where it goes.
+
+**Stroke**, **Stroke width**, **Stroke style** (**Solid**, **Dashed** or **Dotted**) and **Sketchiness** work on arrows as on shapes: a dashed arrow is a good way to show an optional or retry path.
+
+## Label an arrow
+
+Double-click an arrow or line, or select it and press `Enter`, to write a label on it, such as **Yes** or **No** after a decision. The label stays in the middle of the arrow when the arrow moves. Press `Esc` or `Ctrl` `Enter` to finish.
+
+## Build a flowchart quickly
+
+Select a shape, a sticky note or a task card and press `Ctrl` with an arrow key (`⌘` on macOS). A copy of the shape appears in that direction, empty and ready for text, joined to the original by an arrow, and it becomes the selection, so you can keep going:
+
+1. Draw a first shape, for example **Start**, and type its text.
+2. Press `Ctrl` `↓` to add the next step below it, and type its text.
+3. Press `Ctrl` `→` on a decision to branch to the right, and `Ctrl` `←` to branch to the left.
+
+When the spot is already taken, the copy moves sideways to the nearest free place, so pressing the same key again fans out several branches. The new arrow uses your current **Line type** and arrowhead. A task card's copy is a plain rectangle, because a second card of the same task would only repeat it.
+
+The **Flowchart** template starts a board with a ready-made flow. See [Start from a template](/core/functional/whiteboards/create-and-organize#start-from-a-template).

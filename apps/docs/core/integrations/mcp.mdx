@@ -213,6 +213,7 @@ Both the HTTP endpoint and stdio package expose the same tools:
 - Cycles: `list_cycles`, `get_cycle`, `create_cycle`, `update_cycle`, `delete_cycle`, `set_cycle_archived`, `update_cycle_tasks`, `set_task_cycle`, `transfer_cycle_tasks`
 - Modules: `list_modules`, `get_module`, `create_module`, `update_module`, `delete_module`, `set_module_archived`, `list_module_tasks`, `update_module_tasks`, `set_task_modules`, `add_module_link`, `delete_module_link`
 - Pages: `list_pages`, `get_page`, `create_page`, `update_page`, `replace_page_content`, `set_page_archived`, `delete_page`
+- Whiteboards: `list_whiteboards`, `get_whiteboard`, `add_whiteboard_sticky` (needs the project's Whiteboards feature on; see [Whiteboards](/core/functional/whiteboards))
 - Intake: `list_intake_items`, `get_intake_item`, `submit_intake_item`, `update_intake_item`, `triage_intake_item`, `delete_intake_item`
 - Task templates: `list_task_templates`, `create_task_from_template` (see [Task templates](/core/functional/task-templates))
 - Repeating tasks: `get_task_recurrence`, `set_task_recurrence`, `remove_task_recurrence` (see [Repeating tasks](/core/functional/repeating-tasks))
@@ -225,12 +226,19 @@ slugs it returns are exactly the values `create_task` and `update_task_status`
 accept. Likewise `list_workspace_members` resolves the user IDs the assignee
 tools expect. There is no `delete_time_entry` tool yet.
 
-The cycle, module, page and intake tools are thin wrappers over the same API routes,
+The cycle, module, page, whiteboard and intake tools are thin wrappers over the same API routes,
 so they follow the same rules: a project with the feature turned off answers
 with the API's message, and dates are calendar days (`YYYY-MM-DD`).
 `triage_intake_item` checks what each action needs before calling the API.
 Page content is markdown: `get_page` returns it, `replace_page_content` replaces
 the whole document, and `search` also finds pages.
+`list_whiteboards` lists a project's boards without their content (`archived`
+lists the archived ones, and `query` matches titles and the text on boards).
+`get_whiteboard` returns a board's title and state, the text on it and how many
+elements of each type it holds. `add_whiteboard_sticky` adds a sticky note with
+`text`, and optionally `x`, `y` and `color` (yellow, orange, pink, purple, blue,
+green, gray or a `#rrggbb` value); people with the board open see it at once. It
+needs `whiteboard:update` on a board that is not locked or archived.
 An API key (as `Authorization: Bearer <key>` or `x-api-key`) works on the HTTP
 endpoint too, with its owner's permissions.
 

@@ -1916,6 +1916,137 @@
           "content"
         ]
       },
+      "PublicWhiteboard": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WhiteboardElement"
+            },
+            "description": "Live elements. Image elements reference /public-whiteboard/{token}/assets/{assetId}; editor ids are left out."
+          },
+          "settings": {
+            "$ref": "#/components/schemas/WhiteboardSettings"
+          },
+          "tasks": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/WhiteboardTaskCard"
+            },
+            "description": "Task cards by task id: a snapshot of the board's tasks in its own project. Cards of other tasks have no entry."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "title",
+          "icon",
+          "elements",
+          "settings",
+          "tasks",
+          "updatedAt"
+        ]
+      },
+      "WhiteboardElement": {
+        "type": "object",
+        "additionalProperties": {},
+        "description": "A validated board element: id, type, geometry, style, version and the type's own fields."
+      },
+      "WhiteboardSettings": {
+        "type": "object",
+        "properties": {
+          "background": {
+            "type": "string"
+          },
+          "gridSize": {
+            "type": "number",
+            "description": "Snap grid size in board units; 0 turns snapping off."
+          },
+          "pattern": {
+            "type": "string",
+            "enum": [
+              "plain",
+              "dots",
+              "grid",
+              "lines"
+            ],
+            "description": "The visible canvas background: plain (the default), dots, grid or ruled lines."
+          },
+          "patternSize": {
+            "type": "number",
+            "description": "Spacing of the background pattern in board units."
+          }
+        },
+        "required": [
+          "background",
+          "gridSize",
+          "pattern",
+          "patternSize"
+        ]
+      },
+      "WhiteboardTaskCard": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "statusName": {
+            "type": "string"
+          },
+          "statusColor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "assigneeName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dueDate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "priority": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "done": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "key",
+          "title",
+          "statusName",
+          "statusColor",
+          "assigneeName",
+          "dueDate",
+          "priority",
+          "done"
+        ]
+      },
       "Config": {
         "type": "object",
         "properties": {
@@ -2346,6 +2477,10 @@
             "type": "boolean",
             "description": "Whether Pages is turned on. While off, its routes answer 403 and its data is kept."
           },
+          "whiteboardsEnabled": {
+            "type": "boolean",
+            "description": "Whether Whiteboards is turned on. While off, its routes answer 403 and its data is kept."
+          },
           "intakeEnabled": {
             "type": "boolean",
             "description": "Whether Intake is turned on. While off, its routes answer 403 and its data is kept."
@@ -2405,6 +2540,7 @@
           "modulesEnabled",
           "viewsEnabled",
           "pagesEnabled",
+          "whiteboardsEnabled",
           "intakeEnabled",
           "estimatesEnabled",
           "timeTrackingEnabled",
@@ -8745,6 +8881,7 @@
                         "my-work",
                         "projects",
                         "pages",
+                        "whiteboards",
                         "analytics"
                       ]
                     },
@@ -8760,6 +8897,7 @@
                         "my-work",
                         "projects",
                         "pages",
+                        "whiteboards",
                         "analytics"
                       ]
                     },
@@ -9065,6 +9203,7 @@
                     "my-work",
                     "projects",
                     "pages",
+                    "whiteboards",
                     "analytics"
                   ]
                 },
@@ -9080,6 +9219,7 @@
                     "my-work",
                     "projects",
                     "pages",
+                    "whiteboards",
                     "analytics"
                   ]
                 },
@@ -9373,6 +9513,7 @@
               "modules",
               "views",
               "pages",
+              "whiteboards",
               "intake",
               "estimates",
               "timeTracking",
@@ -18459,6 +18600,309 @@
           "projectId"
         ]
       },
+      "TrashedWhiteboardList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TrashedWhiteboard"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "hasMore": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "limit",
+          "hasMore"
+        ]
+      },
+      "TrashedWhiteboard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "description": "May be empty (Untitled)."
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "canManage": {
+            "type": "boolean",
+            "description": "The caller may restore it or delete it permanently: its creator with whiteboard:update, or whiteboard:delete."
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When it was deleted."
+          },
+          "deletedBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "description": "Who deleted it; null for a deleted user account."
+          },
+          "purgeAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When the auto purge deletes it permanently; null when TRASH_RETENTION_DAYS is 0."
+          }
+        },
+        "required": [
+          "id",
+          "projectId",
+          "title",
+          "icon",
+          "canManage",
+          "deletedAt",
+          "deletedBy",
+          "purgeAt"
+        ]
+      },
+      "Whiteboard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "description": "May be empty (Untitled)."
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "One emoji, or null."
+          },
+          "isLocked": {
+            "type": "boolean"
+          },
+          "lockedBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "description": "Who locked it; null when unlocked."
+          },
+          "lockedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "archivedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "publicToken": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The public link token while published; null when unpublished or when the caller can't manage the board."
+          },
+          "publishedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "elementCount": {
+            "type": "integer",
+            "description": "Live elements on the board at the last save."
+          },
+          "contentVersion": {
+            "type": "integer",
+            "description": "Grows on every content save; use it to bust cached previews."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "image"
+            ]
+          },
+          "updatedBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "image"
+            ]
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/WhiteboardCapabilities"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "projectId",
+          "title",
+          "icon",
+          "isLocked",
+          "lockedBy",
+          "lockedAt",
+          "archivedAt",
+          "publicToken",
+          "publishedAt",
+          "elementCount",
+          "contentVersion",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy",
+          "capabilities"
+        ]
+      },
+      "WhiteboardCapabilities": {
+        "type": "object",
+        "properties": {
+          "canEdit": {
+            "type": "boolean",
+            "description": "Edit the content, title and icon: whiteboard:update while the board is not locked or archived."
+          },
+          "canManage": {
+            "type": "boolean",
+            "description": "Lock, archive and move to the trash: the board's creator with whiteboard:update, or whiteboard:delete."
+          },
+          "canPublish": {
+            "type": "boolean",
+            "description": "Publish or unpublish a public link: whiteboard:delete, on a board that is not archived."
+          },
+          "canDuplicate": {
+            "type": "boolean",
+            "description": "Make a copy: whiteboard:create."
+          }
+        },
+        "required": [
+          "canEdit",
+          "canManage",
+          "canPublish",
+          "canDuplicate"
+        ]
+      },
+      "DeletedWhiteboard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "projectId"
+        ]
+      },
       "AutomationPreview": {
         "type": "object",
         "properties": {
@@ -20227,6 +20671,772 @@
           "contentType",
           "size"
         ]
+      },
+      "WhiteboardList": {
+        "type": "object",
+        "properties": {
+          "whiteboards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WhiteboardSummary"
+            }
+          }
+        },
+        "required": [
+          "whiteboards"
+        ]
+      },
+      "WhiteboardSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "description": "May be empty (Untitled)."
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "One emoji, or null."
+          },
+          "isLocked": {
+            "type": "boolean"
+          },
+          "lockedBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "description": "Who locked it; null when unlocked."
+          },
+          "lockedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "archivedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "publicToken": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The public link token while published; null when unpublished or when the caller can't manage the board."
+          },
+          "publishedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "elementCount": {
+            "type": "integer",
+            "description": "Live elements on the board at the last save."
+          },
+          "contentVersion": {
+            "type": "integer",
+            "description": "Grows on every content save; use it to bust cached previews."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "image"
+            ]
+          },
+          "updatedBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "image"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "projectId",
+          "title",
+          "icon",
+          "isLocked",
+          "lockedBy",
+          "lockedAt",
+          "archivedAt",
+          "publicToken",
+          "publishedAt",
+          "elementCount",
+          "contentVersion",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy"
+        ]
+      },
+      "CreateWhiteboardInput": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "May be empty (Untitled)."
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 16,
+            "description": "One emoji, or null for none."
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WhiteboardElementInput"
+            },
+            "maxItems": 2000,
+            "description": "Starting content, for example a template. Elements are validated like any edit."
+          }
+        },
+        "required": [
+          "projectId"
+        ],
+        "additionalProperties": false
+      },
+      "WhiteboardElementInput": {
+        "type": "object",
+        "additionalProperties": {},
+        "description": "A board element as plain JSON (id, type, geometry, style and the type's own fields). Unknown fields are dropped, numbers are clamped to the board limits, and an element that can't be repaired is skipped."
+      },
+      "WorkspaceWhiteboardList": {
+        "type": "object",
+        "properties": {
+          "whiteboards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceWhiteboard"
+            }
+          }
+        },
+        "required": [
+          "whiteboards"
+        ]
+      },
+      "WorkspaceWhiteboard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "description": "May be empty (Untitled)."
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "One emoji, or null."
+          },
+          "isLocked": {
+            "type": "boolean"
+          },
+          "lockedBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "description": "Who locked it; null when unlocked."
+          },
+          "lockedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "archivedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "publicToken": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The public link token while published; null when unpublished or when the caller can't manage the board."
+          },
+          "publishedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "elementCount": {
+            "type": "integer",
+            "description": "Live elements on the board at the last save."
+          },
+          "contentVersion": {
+            "type": "integer",
+            "description": "Grows on every content save; use it to bust cached previews."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "image"
+            ]
+          },
+          "updatedBy": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "image"
+            ]
+          },
+          "project": {
+            "$ref": "#/components/schemas/WhiteboardProject"
+          }
+        },
+        "required": [
+          "id",
+          "workspaceId",
+          "projectId",
+          "title",
+          "icon",
+          "isLocked",
+          "lockedBy",
+          "lockedAt",
+          "archivedAt",
+          "publicToken",
+          "publishedAt",
+          "elementCount",
+          "contentVersion",
+          "createdAt",
+          "updatedAt",
+          "createdBy",
+          "updatedBy",
+          "project"
+        ]
+      },
+      "WhiteboardProject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The project's icon name; its colour comes from its id."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "icon"
+        ]
+      },
+      "WhiteboardActivityPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WhiteboardActivityEntry"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Pass as cursor for the next (older) page; null at the end."
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "WhiteboardActivityEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "created",
+              "renamed",
+              "icon_changed",
+              "locked",
+              "unlocked",
+              "archived",
+              "unarchived",
+              "published",
+              "unpublished",
+              "trashed",
+              "restored",
+              "edited"
+            ],
+            "description": "What happened. edited is written at most once per person per board every 10 minutes while they draw."
+          },
+          "actor": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "image"
+            ],
+            "description": "Who did it; null for the system or a deleted account."
+          },
+          "title": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The board's title at the time (after a rename, the new one)."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "action",
+          "actor",
+          "title",
+          "createdAt"
+        ]
+      },
+      "UpdateWhiteboardInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "May be empty (Untitled)."
+          },
+          "icon": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 16,
+            "description": "One emoji, or null for none."
+          }
+        },
+        "additionalProperties": false,
+        "minProperties": 1
+      },
+      "WhiteboardContent": {
+        "type": "object",
+        "properties": {
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WhiteboardElement"
+            },
+            "description": "Live elements in stacking order; deleted ones are left out."
+          },
+          "settings": {
+            "$ref": "#/components/schemas/WhiteboardSettings"
+          },
+          "contentVersion": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "elements",
+          "settings",
+          "contentVersion"
+        ]
+      },
+      "WhiteboardElementsResult": {
+        "type": "object",
+        "properties": {
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WhiteboardElement"
+            },
+            "description": "The elements as written, with their new versions."
+          },
+          "skipped": {
+            "type": "integer",
+            "description": "Elements left out: invalid ones that could not be repaired, and repeated ids (the newest copy is kept)."
+          },
+          "contentVersion": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "elements",
+          "skipped",
+          "contentVersion"
+        ]
+      },
+      "AddWhiteboardElementsInput": {
+        "type": "object",
+        "properties": {
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WhiteboardElementInput"
+            },
+            "minItems": 1,
+            "maxItems": 2000,
+            "description": "At most 2000 elements."
+          }
+        },
+        "required": [
+          "elements"
+        ],
+        "additionalProperties": false
+      },
+      "DuplicateWhiteboardInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "The copy's title; the server adds nothing to it. Defaults to the source's title."
+          }
+        },
+        "additionalProperties": false
+      },
+      "WhiteboardPublication": {
+        "type": "object",
+        "properties": {
+          "publicToken": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "publishedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "publicToken",
+          "publishedAt"
+        ]
+      },
+      "WhiteboardAssetUpload": {
+        "type": "object",
+        "properties": {
+          "assetId": {
+            "type": "string",
+            "description": "The image's id once finalized; reference it on the board."
+          },
+          "upload": {
+            "type": "object",
+            "properties": {
+              "uploadUrl": {
+                "type": "string",
+                "description": "PUT the image bytes here."
+              },
+              "headers": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "description": "Headers the upload must carry, including Content-Type."
+              }
+            },
+            "required": [
+              "uploadUrl",
+              "headers"
+            ]
+          }
+        },
+        "required": [
+          "assetId",
+          "upload"
+        ]
+      },
+      "WhiteboardAssetUploadInput": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "contentType": {
+            "type": "string",
+            "enum": [
+              "image/png",
+              "image/jpeg",
+              "image/gif",
+              "image/webp"
+            ]
+          },
+          "size": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          }
+        },
+        "required": [
+          "filename",
+          "contentType",
+          "size"
+        ],
+        "additionalProperties": false
+      },
+      "WhiteboardAsset": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "whiteboardId": {
+            "type": "string"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "width": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "height": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "whiteboardId",
+          "mimeType",
+          "size",
+          "width",
+          "height",
+          "createdAt"
+        ]
+      },
+      "FinalizeWhiteboardAssetInput": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "type": "string",
+            "enum": [
+              "image/png",
+              "image/jpeg",
+              "image/gif",
+              "image/webp"
+            ]
+          },
+          "size": {
+            "type": "integer",
+            "exclusiveMinimum": 0
+          },
+          "width": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 100000,
+            "description": "The image's width in pixels, used when the server can't read it from the file."
+          },
+          "height": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 100000
+          }
+        },
+        "required": [
+          "contentType",
+          "size"
+        ],
+        "additionalProperties": false
       },
       "WebhookEventCatalog": {
         "type": "object",
@@ -23520,6 +24730,13 @@
                 ]
               },
               "page": {
+                "type": "string",
+                "enum": [
+                  "read",
+                  "write"
+                ]
+              },
+              "whiteboard": {
                 "type": "string",
                 "enum": [
                   "read",
@@ -37798,6 +39015,125 @@
         }
       }
     },
+    "/public-whiteboard/{token}": {
+      "get": {
+        "operationId": "getPublicWhiteboard",
+        "tags": [
+          "Public whiteboards"
+        ],
+        "summary": "Get a public whiteboard",
+        "description": "A published whiteboard, read-only, without signing in: its live elements, settings and a snapshot of the task cards it shows (tasks of its own project only). Answers 404 once the board is unpublished, archived or deleted, when its project is archived, trashed or has Whiteboards off, or when its workspace no longer allows public pages or is pending deletion.",
+        "security": [],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The whiteboard's public link token."
+            },
+            "required": true,
+            "description": "The whiteboard's public link token.",
+            "name": "token",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicWhiteboard"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown or revoked link, or the workspace no longer allows public pages",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests; see Retry-After",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public-whiteboard/{token}/assets/{assetId}": {
+      "get": {
+        "operationId": "getPublicWhiteboardAsset",
+        "tags": [
+          "Public whiteboards"
+        ],
+        "summary": "Get a public whiteboard image",
+        "description": "An image the published whiteboard shows. Images of other boards, or no longer on this one, are never served.",
+        "security": [],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "description": "The whiteboard's public link token."
+            },
+            "required": true,
+            "description": "The whiteboard's public link token.",
+            "name": "token",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "assetId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The image",
+            "content": {
+              "image/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown link, or not an image of this whiteboard",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests; see Retry-After",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/calendar-feed/{token}/feed.ics": {
       "get": {
         "operationId": "getCalendarFeed",
@@ -40685,6 +42021,10 @@
                   "pagesEnabled": {
                     "type": "boolean",
                     "description": "Project documents."
+                  },
+                  "whiteboardsEnabled": {
+                    "type": "boolean",
+                    "description": "Collaborative project whiteboards."
                   },
                   "intakeEnabled": {
                     "type": "boolean",
@@ -68251,6 +69591,224 @@
         }
       }
     },
+    "/trash/project/{projectId}/whiteboards": {
+      "get": {
+        "operationId": "listWhiteboardTrash",
+        "tags": [
+          "Trash"
+        ],
+        "summary": "List a project's deleted whiteboards",
+        "description": "One page of the whiteboards deleted from a project, most recently deleted first, with who deleted them and when. Needs whiteboard:read and the project's Whiteboards feature.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The project's id."
+            },
+            "required": true,
+            "description": "The project's id.",
+            "name": "projectId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 100,
+              "description": "Title (tasks, pages) or name (projects) contains this text, ignoring case; a task key such as ABC-12 or a number also matches."
+            },
+            "required": false,
+            "description": "Title (tasks, pages) or name (projects) contains this text, ignoring case; a task key such as ABC-12 or a number also matches.",
+            "name": "search",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "1-based page number (default 1)."
+            },
+            "required": false,
+            "description": "1-based page number (default 1).",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Page size, 1-100 (default 50)."
+            },
+            "required": false,
+            "description": "Page size, 1-100 (default 50).",
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of trashed whiteboards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrashedWhiteboardList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "No workspace access, missing whiteboard:read, or the project's Whiteboards feature is off",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found, or in the trash",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trash/whiteboard/{whiteboardId}/restore": {
+      "post": {
+        "operationId": "restoreDeletedWhiteboard",
+        "tags": [
+          "Trash"
+        ],
+        "summary": "Restore a deleted whiteboard",
+        "description": "Bring a trashed whiteboard back into the archive with its content and images (whiteboard.restored is published). Its creator with whiteboard:update, or whiteboard:delete.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "A trashed whiteboard's id."
+            },
+            "required": true,
+            "description": "A trashed whiteboard's id.",
+            "name": "whiteboardId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The restored whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whiteboard"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Not the creator or an admin, or the project's Whiteboards feature is off",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Whiteboard not found in the trash",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trash/whiteboard/{whiteboardId}": {
+      "delete": {
+        "operationId": "purgeWhiteboard",
+        "tags": [
+          "Trash"
+        ],
+        "summary": "Delete a whiteboard permanently",
+        "description": "Permanently delete a trashed whiteboard with its content, images and task links. This cannot be undone. Its creator with whiteboard:update, or whiteboard:delete.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "A trashed whiteboard's id."
+            },
+            "required": true,
+            "description": "A trashed whiteboard's id.",
+            "name": "whiteboardId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The deleted whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletedWhiteboard"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Not the creator or an admin, or the project's Whiteboards feature is off",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Whiteboard not found in the trash",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/project-automation/{projectId}/preview": {
       "get": {
         "operationId": "previewProjectAutomation",
@@ -72043,6 +73601,1545 @@
           },
           "503": {
             "description": "Uploads are not configured, or the upload could not be verified",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard": {
+      "get": {
+        "operationId": "listWhiteboards",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "List whiteboards",
+        "description": "A project's whiteboards without their content, most recently updated first. Live boards by default, archived ones with archived=true; q matches the title and the text on the board. Needs whiteboard:read and the project's Whiteboards feature.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The project's id."
+            },
+            "required": true,
+            "description": "The project's id.",
+            "name": "projectId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "description": "true lists archived boards instead of live ones (default false)."
+            },
+            "required": false,
+            "description": "true lists archived boards instead of live ones (default false).",
+            "name": "archived",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 200,
+              "description": "Only boards whose title or text on the board contains this, ignoring case."
+            },
+            "required": false,
+            "description": "Only boards whose title or text on the board contains this, ignoring case.",
+            "name": "q",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The whiteboards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "No workspace access, missing whiteboard:read, or the project's Whiteboards feature is off",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown project, a project in the trash, or one the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Create whiteboard",
+        "description": "Create a whiteboard in a project, blank or with starting elements (a template). Elements are validated like any edit: unknown fields are dropped, values clamped, and elements that can't be repaired are skipped. Needs whiteboard:create. At most 5,000 boards per project.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWhiteboardInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The new whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whiteboard"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body, or the icon is not a single emoji",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "No workspace access, missing whiteboard:create, or the project's Whiteboards feature is off",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown project, a project in the trash, or one the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The project has 5,000 whiteboards",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body or the content is too large",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/by-task/{taskId}": {
+      "get": {
+        "operationId": "listTaskWhiteboards",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "List whiteboards showing a task",
+        "description": "Live whiteboards that hold a card for the task, as of their last save. Needs whiteboard:read and the Whiteboards feature of the task's project.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The task's id."
+            },
+            "required": true,
+            "description": "The task's id.",
+            "name": "taskId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The whiteboards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "No workspace access, missing whiteboard:read, or the project's Whiteboards feature is off",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown task, a task in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/workspace/{workspaceId}": {
+      "get": {
+        "operationId": "listWorkspaceWhiteboards",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "List the workspace's whiteboards",
+        "description": "Boards of every project the caller can see that has the Whiteboards feature on and is not in the trash, each with its project, most recently updated first and at most 2,000. Live boards by default, archived ones with archived=true; q matches the title and the text on the board. Restricted projects the caller can't see, and projects whose project role withholds whiteboard:read, are left out. Needs whiteboard:read.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The workspace's id."
+            },
+            "required": true,
+            "description": "The workspace's id.",
+            "name": "workspaceId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "description": "true lists archived boards instead of live ones (default false)."
+            },
+            "required": false,
+            "description": "true lists archived boards instead of live ones (default false).",
+            "name": "archived",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 200,
+              "description": "Only boards whose title or text on the board contains this, ignoring case."
+            },
+            "required": false,
+            "description": "Only boards whose title or text on the board contains this, ignoring case.",
+            "name": "q",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The whiteboards with their projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceWhiteboardList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "No workspace access, or missing whiteboard:read",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}": {
+      "get": {
+        "operationId": "getWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Get whiteboard",
+        "description": "One whiteboard without its content, with the caller's capabilities. publicToken is only shown to callers who can manage the board. Needs whiteboard:read.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whiteboard"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:read, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Update whiteboard",
+        "description": "Rename the board or change its icon (one emoji, or null to remove it). Needs whiteboard:update on a board that is not locked or archived. Unchanged values publish nothing.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWhiteboardInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whiteboard"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An empty body, an unknown field, or an icon that is not a single emoji",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:update, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The whiteboard is locked or archived",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Delete whiteboard",
+        "description": "Move an archived whiteboard to the project's trash, closing its live sessions and revoking its public link. The board's creator with whiteboard:update, or whiteboard:delete. Restore or delete it for good through the trash routes.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The deleted whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletedWhiteboard"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Not the board's creator with whiteboard:update and no whiteboard:delete, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The whiteboard is not archived",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/activity": {
+      "get": {
+        "operationId": "listWhiteboardActivity",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "List whiteboard activity",
+        "description": "The board's history, newest first, 50 entries a page: created, renamed, icon changed, locked, unlocked, archived, unarchived, published, unpublished, moved to the trash and restored, plus edited (at most one entry per person every 10 minutes). Entries name who and when, never content. Needs whiteboard:read.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 512,
+              "description": "The nextCursor of the previous page."
+            },
+            "required": false,
+            "description": "The nextCursor of the previous page.",
+            "name": "cursor",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of the board's history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardActivityPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid cursor",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:read, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/content": {
+      "get": {
+        "operationId": "getWhiteboardContent",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Get whiteboard content",
+        "description": "The board's live elements (deleted ones left out) and settings. With a live session on this server the answer includes unsaved edits; otherwise it is the last saved content, which can lag live edits by up to 10 seconds. Needs whiteboard:read.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardContent"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:read, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/elements": {
+      "post": {
+        "operationId": "addWhiteboardElements",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Add whiteboard elements",
+        "description": "Add elements to the board, or replace elements with the same ids. Elements are validated (invalid ones are skipped and counted) and written with versions above the board's, so they win; people with the board open see them at once, and the change is saved immediately. Needs whiteboard:update on a board that is not locked or archived.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWhiteboardElementsInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The written elements",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardElementsResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:update, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The whiteboard is locked or archived, or it holds the most elements a board may",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The body or the board is too large",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/preview.svg": {
+      "get": {
+        "operationId": "getWhiteboardPreview",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Get whiteboard preview",
+        "description": "A standalone SVG image of the board for list thumbnails, with live task cards. Images on the board show as placeholders. Cached privately for 60 seconds; add ?v=<contentVersion> to bust the cache. Needs whiteboard:read.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The SVG image",
+            "content": {
+              "image/svg+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:read, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/duplicate": {
+      "post": {
+        "operationId": "duplicateWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Duplicate whiteboard",
+        "description": "Copy the board's content (unsaved live edits on this server included) into a new board in the same project. The title is taken as sent, or the source's title; nothing is appended. Needs whiteboard:read and whiteboard:create.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DuplicateWhiteboardInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The copy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whiteboard"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:create, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The project has 5,000 whiteboards",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/lock": {
+      "post": {
+        "operationId": "lockWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Lock whiteboard",
+        "description": "Make the board read-only for everyone, its creator included; live sessions switch to read-only at once. The board's creator with whiteboard:update, or whiteboard:delete.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whiteboard"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Not the board's creator with whiteboard:update and no whiteboard:delete, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "unlockWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Unlock whiteboard",
+        "description": "Make a locked board editable again. The board's creator with whiteboard:update, or whiteboard:delete.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whiteboard"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Not the board's creator with whiteboard:update and no whiteboard:delete, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/archive": {
+      "post": {
+        "operationId": "archiveWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Archive whiteboard",
+        "description": "Archive the board: it becomes read-only, leaves the list and its public link is revoked. The board's creator with whiteboard:update, or whiteboard:delete.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whiteboard"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Not the board's creator with whiteboard:update and no whiteboard:delete, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/unarchive": {
+      "post": {
+        "operationId": "unarchiveWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Unarchive whiteboard",
+        "description": "Bring an archived board back to the list. Its public link stays revoked. The board's creator with whiteboard:update, or whiteboard:delete.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The whiteboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Whiteboard"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Not the board's creator with whiteboard:update and no whiteboard:delete, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/publication": {
+      "post": {
+        "operationId": "publishWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Publish whiteboard",
+        "description": "Publish a read-only public link to the board, readable without signing in at /public-whiteboard/{token}. Every publish issues a new token, revoking the previous one. Needs whiteboard:delete and the workspace's public pages setting; the board must not be archived.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The publication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardPublication"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:delete, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The workspace doesn't allow public pages, or the board is archived",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "unpublishWhiteboard",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Unpublish whiteboard",
+        "description": "Revoke the board's public link. Needs whiteboard:delete.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The publication",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardPublication"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:delete, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/assets": {
+      "post": {
+        "operationId": "createWhiteboardAssetUpload",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Create whiteboard image upload",
+        "description": "Get an image id and a URL to PUT a PNG, JPEG, GIF or WebP image to (the instance's upload size limit applies), then call the finalize route. Needs whiteboard:update on a board that is not locked or archived.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WhiteboardAssetUploadInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The upload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardAssetUpload"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unsupported image type, or the file is too large",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:update, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The whiteboard is locked or archived",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Uploads are not configured on this instance",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/assets/{assetId}/finalize": {
+      "post": {
+        "operationId": "finalizeWhiteboardAsset",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Finalize whiteboard image upload",
+        "description": "Check the uploaded image (its size, declared type and its bytes: only real PNG, JPEG, GIF and WebP files are kept) and record it on the board. Finalizing again returns the same image. Needs whiteboard:update on a board that is not locked or archived.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The image's id."
+            },
+            "required": true,
+            "description": "The image's id.",
+            "name": "assetId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FinalizeWhiteboardAssetInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardAsset"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The upload is missing, doesn't match the declared size or type, or is not one of the allowed image types",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:update, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The whiteboard is locked or archived",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Uploads are not configured, or the upload could not be verified",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whiteboard/{id}/assets/{assetId}": {
+      "get": {
+        "operationId": "getWhiteboardAsset",
+        "tags": [
+          "Whiteboards"
+        ],
+        "summary": "Get whiteboard image",
+        "description": "Download an image of the board. Needs whiteboard:read; archived boards' images stay readable.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The image's id."
+            },
+            "required": true,
+            "description": "The image's id.",
+            "name": "assetId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The image",
+            "content": {
+              "image/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "Missing whiteboard:read, or the Whiteboards feature is turned off for the board's project",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see, or not an image of this board",
             "content": {
               "text/plain": {
                 "schema": {
@@ -77181,6 +80278,13 @@
                         ]
                       },
                       "page": {
+                        "type": "string",
+                        "enum": [
+                          "read",
+                          "write"
+                        ]
+                      },
+                      "whiteboard": {
                         "type": "string",
                         "enum": [
                           "read",

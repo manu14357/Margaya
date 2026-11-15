@@ -1,0 +1,94 @@
+---
+title: Create and organize boards
+description: Create whiteboards blank or from a template, rename them, give them an icon, duplicate, lock, archive, move to the trash and restore them, and find them again with search and sorting
+---
+
+Boards live in a project's **Whiteboards** tab and in **All whiteboards** in the sidebar. This page covers everything you do with a board as a whole. For what goes on the canvas, see [Draw and write](/core/functional/whiteboards/draw-and-write).
+
+## Create a board
+
+- On a project's **Whiteboards** tab, choose **New whiteboard**. The board opens right away, named **Untitled board** until you give it a name.
+- On **All whiteboards** in the sidebar, choose **New whiteboard** and pick the project under **Create in project**. Only projects with Whiteboards on are listed.
+- In the command palette, choose **New whiteboard** while you are in the project. **Go to whiteboards** opens the project's tab.
+
+Creating boards needs the **Create whiteboards** permission (members and up by default). A project holds up to 5,000 boards.
+
+## Start from a template
+
+Open the arrow next to **New whiteboard** (**More ways to create a whiteboard**) and pick a template under **Start from a template**. The board starts with the template's frames, notes and shapes and is named after the template. Everything on it can be changed or deleted afterwards.
+
+<Screenshot src="whiteboards/template-menu" alt="The New whiteboard button with its menu open under Start from a template, listing Blank board, Brainstorm, Retrospective, Sprint planning, User story map, Roadmap, Flowchart and Kanban sketch, each with a one-line description" caption="Templates start a board with frames, notes and shapes already in place." />
+
+| Template | What you get |
+| --- | --- |
+| **Blank board** | An empty canvas, the same as **New whiteboard**. |
+| **Brainstorm** | A central "What are we solving?" ellipse, an **Ideas** heading and eight empty sticky notes in a ring around it. |
+| **Retrospective** | A **Retrospective** title and three frames, **Went well**, **To improve** and **Actions**, each with empty sticky notes to fill in. |
+| **Sprint planning** | A **Sprint goal** frame with a line of text to write the goal, and three frames below it: **Backlog**, **Committed** and **Risks**, each with sticky notes. |
+| **User story map** | Four **Activity** notes across the top, a **Story** note under each, and dashed lines that separate **Release 1** and **Release 2**. |
+| **Roadmap** | A **Roadmap** title, a long arrow for time, and **Now**, **Next** and **Later** frames side by side with sticky notes. |
+| **Flowchart** | **Start**, a **Step**, a **Decision?** with **Yes** and **No** branches, another step, a document shape and **End**, all joined by connected arrows. |
+| **Kanban sketch** | **To do**, **Doing** and **Done** frames to move sticky notes across. |
+
+The template's labels are written in your language when you create the board.
+
+## Rename a board and change its icon
+
+- Click the name in the board's header and type a new one (up to 255 characters). Press `Enter` or click away to save, or `Esc` to cancel. You can also choose **Rename** in the board's menu.
+- Click the icon next to the name, or choose **Change icon** in the board's menu, to open **Choose an icon**. Pick an emoji, use **Search emoji** to find one, or choose **Remove icon** to go back to the default.
+
+Renaming and changing the icon need the **Edit whiteboards** permission, and the board must not be locked or archived.
+
+## The board menu
+
+Each card on the list has a **…** menu, and the board itself has the same actions in **More board options** (**…**) at the top right of the header. Depending on your permissions and the board's state, the menu holds:
+
+<Screenshot src="whiteboards/card-menu" alt="The menu of the Launch planning card with Open, Open in new tab, Copy link, Rename, Change icon, Duplicate, Public link, Lock and Archive" caption="A board's menu on the list." />
+
+- **Open** and **Open in new tab** (on the list only), and **Copy link** to copy the board's address.
+- **Rename** and **Change icon**.
+- **Duplicate**: a copy in the same project named "Title (copy)", with the board's current content. Duplicating needs permission to create whiteboards.
+- **Publish to the web**, or **Public link** on a published board. See [Share and export](/core/functional/whiteboards/share-and-export).
+- **Lock** or **Unlock**, **Archive** or **Restore from archive**, and **Move to trash** on archived boards.
+
+## Lock, archive and delete
+
+### Lock a board
+
+**Lock** makes the board read-only for everyone, its creator included, so nobody moves something by accident. Use the lock button in the header or **Lock** in the board's menu. "Whiteboard locked" confirms it, the card gets a **Locked** badge, and the board shows the banner "Elena Marsh locked this board. Unlock it to make changes." **Unlock** in the banner, the header or the menu reverses it.
+
+<Screenshot src="whiteboards/locked-banner" alt="The Sprint 14 retrospective board with a Locked badge next to its name and a banner saying that Elena Marsh locked this board, with an Unlock button" caption="A locked board is read-only until someone unlocks it." />
+
+Locking a board is not the same as locking an element: to pin one element in place while the rest of the board stays editable, see [Lock elements](/core/functional/whiteboards/draw-and-write#lock-elements).
+
+### Archive a board
+
+**Archive** moves the board to the **Archived** tab. An archived board is read-only, with the banner "This board is archived and read-only.", and archiving revokes its public link. **Restore from archive** in its menu, or **Restore** in the banner, brings it back to **Boards**.
+
+### Move a board to the trash
+
+**Move to trash** is only offered on archived boards, so a board in use can't be deleted by mistake. After you confirm, "Moved to Recently deleted" appears and the board goes to the project's **Recently deleted** list with its content and images. Its public link is revoked.
+
+To bring it back or delete it for good:
+
+1. On the project's **Whiteboards** tab, open **Archived** and choose **Recently deleted**. You can also go to **Settings**, open **Projects**, select the project and open **Recently deleted**.
+2. Under **Whiteboards**, find the board (**Search deleted whiteboards** matches its name).
+3. Choose **Restore** to put it back on the **Archived** tab ("Whiteboard restored to Archived"), or **Delete permanently** in the row's **…** menu to remove the board, its content and its images for everyone. Permanent deletion can't be undone.
+
+The automatic trash purge deletes boards that have been in the trash longer than the retention period (30 days by default). See [Trash and restore](/core/functional/trash-and-restore#restore-a-deleted-whiteboard).
+
+### Who can lock, archive and delete
+
+A board's creator can lock, archive, move to the trash, restore and permanently delete their own boards. People with **Manage all whiteboards** (admins and owners by default) can do it for any board.
+
+## Find a board
+
+On a project's tab and on **All whiteboards**:
+
+- **Boards** lists the boards in use, and **Archived** lists the archived ones.
+- **Search boards** matches board names and the text on boards: text, sticky notes, shape labels and frame names. **Escape** or **Clear search** clears it.
+- The sort menu offers **Last edited** (the default), **Created** and **Name**, ascending or descending. Your choice is remembered in your browser.
+
+**All whiteboards** also has a **Project** menu: pick a project to see only its boards, or turn off **Group by project** for one grid sorted across projects. The list refreshes every 30 seconds while it's open, and right away after your own changes.
+
+To find something on a board you have open, use **Find on board**. See [Move around the canvas](/core/functional/whiteboards/canvas-and-navigation#find-on-board).

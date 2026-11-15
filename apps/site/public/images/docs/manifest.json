@@ -983,7 +983,7 @@
 		},
 		"tasks/project-features": {
 			"width": 752,
-			"height": 607,
+			"height": 672,
 			"format": "webp"
 		},
 		"tasks/public-board": {
@@ -1114,6 +1114,166 @@
 		"views/workspace-timeline": {
 			"width": 1128,
 			"height": 1208,
+			"format": "webp"
+		},
+		"whiteboards/arrows": {
+			"width": 1440,
+			"height": 1150,
+			"format": "webp"
+		},
+		"whiteboards/background-dots": {
+			"width": 1440,
+			"height": 820,
+			"format": "webp"
+		},
+		"whiteboards/background-grid": {
+			"width": 1440,
+			"height": 820,
+			"format": "webp"
+		},
+		"whiteboards/card-menu": {
+			"width": 287,
+			"height": 506,
+			"format": "webp"
+		},
+		"whiteboards/context-menu": {
+			"width": 224,
+			"height": 556,
+			"format": "webp"
+		},
+		"whiteboards/crop": {
+			"width": 1440,
+			"height": 820,
+			"format": "webp"
+		},
+		"whiteboards/dependency-prompt": {
+			"width": 1440,
+			"height": 760,
+			"format": "webp"
+		},
+		"whiteboards/editor": {
+			"width": 1440,
+			"height": 900,
+			"format": "webp"
+		},
+		"whiteboards/empty-board": {
+			"width": 1440,
+			"height": 760,
+			"format": "webp"
+		},
+		"whiteboards/export-menu": {
+			"width": 249,
+			"height": 176,
+			"format": "webp"
+		},
+		"whiteboards/follow": {
+			"width": 1440,
+			"height": 820,
+			"format": "webp"
+		},
+		"whiteboards/help-dialog": {
+			"width": 768,
+			"height": 1291,
+			"format": "webp"
+		},
+		"whiteboards/history": {
+			"width": 448,
+			"height": 600,
+			"format": "webp"
+		},
+		"whiteboards/list": {
+			"width": 1440,
+			"height": 760,
+			"format": "webp"
+		},
+		"whiteboards/locked-banner": {
+			"width": 1440,
+			"height": 640,
+			"format": "webp"
+		},
+		"whiteboards/minimap": {
+			"width": 1440,
+			"height": 820,
+			"format": "webp"
+		},
+		"whiteboards/more-menu": {
+			"width": 249,
+			"height": 398,
+			"format": "webp"
+		},
+		"whiteboards/pen-styles": {
+			"width": 1440,
+			"height": 820,
+			"format": "webp"
+		},
+		"whiteboards/phone": {
+			"width": 390,
+			"height": 844,
+			"format": "webp"
+		},
+		"whiteboards/phone-more-tools": {
+			"width": 390,
+			"height": 844,
+			"format": "webp"
+		},
+		"whiteboards/public-view": {
+			"width": 1440,
+			"height": 820,
+			"format": "webp"
+		},
+		"whiteboards/search": {
+			"width": 448,
+			"height": 204,
+			"format": "webp"
+		},
+		"whiteboards/shape-library": {
+			"width": 565,
+			"height": 447,
+			"format": "webp"
+		},
+		"whiteboards/share-dialog": {
+			"width": 448,
+			"height": 342,
+			"format": "webp"
+		},
+		"whiteboards/style-panel": {
+			"width": 240,
+			"height": 939,
+			"format": "webp"
+		},
+		"whiteboards/task-cards": {
+			"width": 1440,
+			"height": 1350,
+			"format": "webp"
+		},
+		"whiteboards/task-on-whiteboards": {
+			"width": 1440,
+			"height": 760,
+			"format": "webp"
+		},
+		"whiteboards/task-picker": {
+			"width": 512,
+			"height": 270,
+			"format": "webp"
+		},
+		"whiteboards/template-menu": {
+			"width": 313,
+			"height": 522,
+			"format": "webp"
+		},
+		"whiteboards/toolbar": {
+			"width": 540,
+			"height": 58,
+			"format": "webp"
+		},
+		"whiteboards/turn-into-tasks": {
+			"width": 512,
+			"height": 382,
+			"format": "webp"
+		},
+		"whiteboards/workspace-list": {
+			"width": 1440,
+			"height": 1000,
 			"format": "webp"
 		}
 	}

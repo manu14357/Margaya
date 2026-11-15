@@ -1,0 +1,86 @@
+---
+title: Whiteboards overview
+description: Margaya Whiteboards are shared canvases inside a project for sketching, brainstorming and mapping work, with live task cards, sticky notes that become tasks and arrows that become dependencies
+---
+
+Margaya Whiteboards are shared canvases inside a project. Sketch a flow, run a retrospective with sticky notes, or lay out a sprint with live cards of the project's tasks. Several people can work on the same board at once and see each other's cursors, and everything you draw is saved as you go.
+
+<Screenshot src="whiteboards/editor" alt="The Launch planning board: the toolbar at the top, the Style panel open at the left for a selected green sticky note, a Launch week frame with three sticky notes, two task cards joined by an arrow, a Launch review rectangle, a Go live ellipse and Priya Raman's named cursor" caption="A board with the Style panel open for the selected note, and a collaborator's cursor." />
+
+A board is made for project work, not only drawing:
+
+- **Task cards** show tasks of the project with live data, and update as the tasks change.
+- **Sticky notes become tasks** in a couple of clicks, and keep their place on the board as cards.
+- **An arrow between two task cards** can become a real dependency between the tasks.
+- **Templates** start a sprint planning, retrospective, roadmap or flowchart in one click.
+
+## Turn Whiteboards on or off
+
+Whiteboards is a project feature and is **on by default**. To change it:
+
+1. Open **Settings**, then the project, then **Features**.
+2. Switch **Whiteboards** on or off.
+
+With the feature on, the project has a **Whiteboards** tab next to **Pages**. Turning it off hides the tab and every board in the project, and the API refuses the project's whiteboard requests. Nothing is deleted, and the boards come back when you turn it on again. See [Turn on project features](/core/functional/project-features-and-column-groups).
+
+## Find your boards
+
+### The project's Whiteboards tab
+
+Open a project and choose the **Whiteboards** tab. Boards show as cards with a preview of their content, the board's icon and name, and when and by whom it was last edited. A **Locked** or **Published** badge marks boards that are locked or shared on the web.
+
+<Screenshot src="whiteboards/list" alt="The Whiteboards tab of Website relaunch with the Boards and Archived tabs, Search boards, the Last edited sort, and board cards for Launch planning (Published), Sprint 14 retrospective (Locked), Signup flow, Release order, Homepage review, Hero sketches and Pricing page ideas" caption="The project's Whiteboards tab." />
+
+### All whiteboards
+
+**Whiteboards** in the main sidebar, right after **Pages**, lists the boards of every project you can see in one place. It shows once at least one project has Whiteboards on and your role can view boards; guests don't get it. The side panel links to **All whiteboards** and to each project's Whiteboards tab, and **Go to all whiteboards** in the command palette opens it from anywhere.
+
+<Screenshot src="whiteboards/workspace-list" alt="All whiteboards for Studio North, with boards grouped under Website relaunch and Mobile app, each card showing a preview, the board name and who edited it last" caption="All whiteboards groups the boards of every project you can see." />
+
+Boards are grouped by project, newest edited first. Turn off **Group by project** in the **Project** menu for one grid, or pick a project there to see only its boards. Boards of restricted projects you aren't part of, and of projects with Whiteboards off or in the trash, are left out. See [Create and organize boards](/core/functional/whiteboards/create-and-organize) for search, sorting and creating boards from here.
+
+## A board at a glance
+
+- **Header**: the back arrow to the list, the board's icon and name, the sync badge (**Saved**, **Not saved yet**, **Offline** or **Can't connect**), the lock button, **Share** (the globe), **Export** and **More board options** (**…**).
+- **Toolbar** at the top of the canvas: the drawing tools. See [Draw and write](/core/functional/whiteboards/draw-and-write).
+- **Style panel** at the left: shows up while elements are selected or a drawing tool is picked.
+- **Bottom bar**: zoom, undo and redo, the minimap, the **Background** and **Keyboard shortcuts**. See [Move around the canvas](/core/functional/whiteboards/canvas-and-navigation).
+- **People on this board** at the top right: the avatars of everyone else on the board. Click one to follow them. See [Collaborate](/core/functional/whiteboards/collaborate).
+
+## Who can do what
+
+| Action | Viewer | Member | Admin | Owner |
+| --- | --- | --- | --- | --- |
+| See Whiteboards and open boards read-only, pan, zoom, search and use the laser pointer | Yes | Yes | Yes | Yes |
+| See a board's history and export it | Yes | Yes | Yes | Yes |
+| Create and duplicate boards | No | Yes | Yes | Yes |
+| Draw on boards, rename them and change their icon | No | Yes | Yes | Yes |
+| Lock, archive and move your own boards to the trash, and restore or delete them | No | Yes | Yes | Yes |
+| Lock, archive, move to the trash, restore and delete any board | No | No | Yes | Yes |
+| Publish a board to the web | No | No | Yes | Yes |
+
+These come from the workspace **Whiteboards** permissions in the role editor: **View whiteboards**, **Create whiteboards**, **Edit whiteboards** and **Manage all whiteboards**, with the same default grants as the Pages permissions. Custom roles can mix them.
+
+- Boards have no private level: everyone who can view whiteboards in a project sees all of its boards. In a [restricted project](/core/functional/restricted-projects), only people who can see the project see its boards.
+- People who can only view a board see the banner "You can view this board but not edit it." They can still move around, search, follow others and point with the laser.
+- Turning notes into tasks also needs permission to create tasks, and making a dependency needs permission to edit tasks.
+
+## API, agents and audit log
+
+- Boards are available through the [REST API](/api-reference/endpoints/whiteboards/listWhiteboards), with the same permissions and limits. A request can add up to 2,000 elements, and people with the board open see them at once. Published boards have their own [public routes](/api-reference/endpoints/public-whiteboards/getPublicWhiteboard).
+- The [MCP](/core/integrations/mcp) tools `list_whiteboards` and `get_whiteboard` read boards and the text on them, and `add_whiteboard_sticky` adds a sticky note to a board. They need the project's Whiteboards feature on.
+- The workspace [audit log](/core/functional/audit-log) records when a board is created, renamed, locked, archived, published, moved to the trash, restored or deleted permanently, never its content.
+- Workspace [webhooks](/core/functional/webhooks) don't send whiteboard events: boards stay inside the workspace.
+
+## In this section
+
+- [Create and organize boards](/core/functional/whiteboards/create-and-organize): new boards, templates, rename, duplicate, lock, archive and the trash.
+- [Draw and write](/core/functional/whiteboards/draw-and-write): the tools, shapes, sticky notes, pens, images, frames and the Style panel.
+- [Arrows and connectors](/core/functional/whiteboards/arrows-and-connectors): bind arrows to shapes, route them and build flowcharts quickly.
+- [Move around the canvas](/core/functional/whiteboards/canvas-and-navigation): pan, zoom, the minimap, search, the background and snapping.
+- [Work with tasks on a board](/core/functional/whiteboards/tasks): task cards, sticky notes to tasks and dependencies.
+- [Collaborate on a board](/core/functional/whiteboards/collaborate): live editing, cursors, following, offline work and history.
+- [Share and export boards](/core/functional/whiteboards/share-and-export): public links, PNG, SVG and board files.
+- [Whiteboard keyboard shortcuts](/core/functional/whiteboards/keyboard-shortcuts)
+- [Phones, tablets and the desktop app](/core/functional/whiteboards/phones-tablets-and-desktop)
+- [Limits and troubleshooting](/core/functional/whiteboards/limits-and-troubleshooting)

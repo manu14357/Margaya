@@ -1,0 +1,63 @@
+---
+title: Share and export boards
+description: Publish a whiteboard as a read-only public link, see what people outside the workspace can see, export a board as PNG, SVG or a .margaya-board file, and import board files
+---
+
+Share a board with people outside the workspace through a read-only link, or take its content with you as an image or a board file.
+
+## Publish a board to the web
+
+A board can be shared through a public, read-only link. Boards follow the workspace's **Public pages** setting, so an admin first turns on **Public pages** in the workspace's general settings; it is off by default. Then:
+
+1. Open the board and choose **Share** (the globe) in the header, or **Publish to the web** in the board's menu. On a published board the menu item reads **Public link**. The **Share whiteboard** dialog opens.
+2. Switch on **Publish to the web**. "Whiteboard published" confirms it.
+3. Use **Copy link**, or **Open public link** to see the page as others will.
+
+<Screenshot src="whiteboards/share-dialog" alt="The Share whiteboard dialog with Publish to the web switched on, the public link with copy and open buttons, and a note that viewers see the board and the titles and status of its task cards, nothing else from the project" caption="Publish a board and copy its public link." />
+
+Only people who can manage all whiteboards (admins and owners by default) can publish or unpublish a board, so only they see **Share** and **Publish to the web**. An archived board can't be published: restore it from the archive first.
+
+### What the public page shows
+
+<Screenshot src="whiteboards/public-view" alt="The public page of Launch planning: the board name with a Read-only badge and the date it was updated, the Launch week frame with sticky notes, a Launch review rectangle and a Go live ellipse, and two task cards that show only the task key, title and status" caption="The public page: the board, read-only, with task cards reduced to key, title and status." />
+
+- Anyone with the link can view the board without signing in. They can pan, zoom and fit the board, but can't change anything.
+- The page shows the board's name, a **Read-only** badge and when the board was last updated.
+- Shapes, text, sticky notes, drawings, frames and images show as on the board, with the board's background.
+- **Task cards show only the task key, title and status** (its column), for tasks in the board's own project. No assignee, priority, due date or anything else from the project is shared.
+- Search engines are asked not to index the page. The link carries an unguessable token.
+
+### Stop sharing
+
+- Switch **Publish to the web** off to revoke the link at once ("Public link turned off"). Publishing again creates a new link, so the old one shows "This link isn't available".
+- Archiving the board or moving it to the trash revokes its link too.
+- The link also stops working while **Public pages** is off for the workspace, while Whiteboards is off for the project, when the project is archived or deleted, or when an instance admin turns off **Allow public boards**. See [Instance administration](/core/installation/instance-admin).
+
+## Export a board
+
+Choose **Export** (the download button) in the board's header:
+
+<Screenshot src="whiteboards/export-menu" alt="The Export menu in the board header with Export as PNG, Export as SVG and Download board file" caption="The Export menu." />
+
+| Option | What you get |
+| --- | --- |
+| **Export as PNG** | An image of the whole board at twice the screen resolution, with its paper color and background pattern. The board's content is stored inside the PNG, so you can import the image again later and get editable elements back. |
+| **Export as SVG** | A vector image of the whole board with its paper color, without the background pattern. Good for documents and slides that need sharp lines at any size. |
+| **Download board file** | A `.margaya-board` file with every element, the board's images and its settings, for backups or to move the content to another board or another Margaya server. |
+
+Files are named after the board. Exports follow your theme, so a board exported in dark mode has a dark background. Everyone who can open a board can export it, including people who can only view it. Images on the board are included in the export, also in the board content stored inside a PNG.
+
+## Import a board file
+
+To bring content into a board:
+
+- Choose **Import board file** in **More board options** and pick a `.margaya-board` file or a PNG exported from a board.
+- Or drop such a file onto the canvas.
+
+The imported elements are added to the board next to what is already there, and a message confirms it. Nothing on the board is replaced. The file's images are uploaded to this board; if one can't be, "Couldn't add the image" says so and the image shows as an empty placeholder. A PNG you drop that holds no board content is placed as an ordinary image instead, and a file that isn't a board gives "That file is not a Margaya board." Files up to 50 MB can be imported. Importing needs permission to edit the board.
+
+<Screenshot src="whiteboards/more-menu" alt="The More board options menu with Zoom to fit, Full screen, Import board file, History, Copy link, Rename, Change icon, Duplicate, Public link, Lock and Archive" caption="More board options holds Import board file and History." />
+
+## Copy between boards
+
+Select elements and copy them (`Ctrl` `C`), then paste them (`Ctrl` `V`) into another board, in the same or another project. Task cards keep pointing at their tasks, and images are uploaded to the board you paste into. Pasting plain text from elsewhere adds a text element, and pasting an image adds the image.

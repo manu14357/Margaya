@@ -1,0 +1,68 @@
+---
+title: Move around the canvas
+description: Pan and zoom a whiteboard, fit it to the screen, use the minimap, find text on the board, choose a background pattern and paper color, and snap elements to a grid or to each other
+---
+
+A board has no edges: it grows in every direction as you add to it. This page covers how to get around a big board, how to find things on it and how to set up its background.
+
+## Pan
+
+- Scroll with the mouse wheel or two fingers on a touchpad to move up, down, left and right. Hold `Shift` while you scroll to move sideways with a plain mouse wheel.
+- Hold `Space` and drag, or pick **Hand (pan)** (`H`) and drag.
+- On a touch screen, drag with one finger while **Hand (pan)** is active, or pinch and drag with two fingers.
+
+## Zoom
+
+| To | Do this |
+| --- | --- |
+| Zoom in or out | `Ctrl` `+` and `Ctrl` `-`, the **Zoom in** and **Zoom out** buttons in the bottom bar, `Ctrl` with the mouse wheel, or pinch on a touchpad or touch screen. The mouse and pinch zoom around the pointer. |
+| Go back to 100% | Click the percentage in the bottom bar, or press `Ctrl` `0` (**Reset zoom**). |
+| See the whole board | **Zoom to fit** (`Shift` `1`): the fit button in the bottom bar, or **Zoom to fit** in **More board options**. |
+| Look closely at the selection | **Zoom to selection** (`Shift` `2`). |
+
+Zoom goes from 10% to 3,000%. On macOS, use `⌘` instead of `Ctrl`.
+
+## The minimap
+
+**Show minimap** (`Alt` `M`, or the map button in the bottom bar) shows a small overview of the whole board in the bottom-right corner, with a frame around the part you are looking at. Click or drag in the minimap to move your view there. Your browser remembers whether the minimap is open.
+
+<Screenshot src="whiteboards/minimap" alt="The Signup flow board with the minimap open in the bottom-right corner, showing the whole flowchart as gray blocks and a green frame around the visible part" caption="The minimap shows the whole board and where you are on it." />
+
+The minimap isn't shown on phone-sized screens.
+
+## Find on board
+
+**Find on board** (`Ctrl` `F`) searches the text on the board you have open: text, sticky notes, shape and arrow labels, frame names and the keys and titles of task cards.
+
+<Screenshot src="whiteboards/search" alt="The Find on board dialog with launch typed in the search field and two matches: Launch week and Launch review Thursday 10:00" caption="Find on board lists the elements whose text matches." />
+
+1. Press `Ctrl` `F` (`⌘` `F` on macOS) while the board has focus.
+2. Type a word. **Matches** lists up to 50 elements; "Nothing on this board matches." means there are none.
+3. Click a match, or press `Enter` for the first one. The board scrolls to that element, zooms out if it doesn't fit, and selects it.
+
+To find a board by its content from the list, use **Search boards** on the Whiteboards tab instead. See [Find a board](/core/functional/whiteboards/create-and-organize#find-a-board).
+
+## Background
+
+The **Background** button in the bottom bar sets the canvas behind everything on the board. The background is part of the board, so everyone on it sees the same one. On a phone it is in the **Style** popover when nothing is selected.
+
+<Screenshot src="whiteboards/background-dots" alt="The Hero sketches board with a dotted background and the Background popover open, showing Pattern with Dots picked, the Spacing slider at Medium and the Paper color swatches" caption="A dotted background, with the Background popover open." />
+
+- **Pattern**: **Plain** (the default), **Dots**, **Grid** or **Lines**.
+- **Spacing**: **Small**, **Medium** or **Large**, for the dots, grid or lines. It has no effect on **Plain**.
+- **Paper color**: **White**, **Cream**, **Stone**, **Mist** or **Mint**. In dark mode the board turns them into matching dark shades, so the board stays readable for everyone.
+
+<Screenshot src="whiteboards/background-grid" alt="The Release order board on a mint grid background, with two task cards, a sticky note and the Background popover open with Grid and the Mint paper color picked" caption="A grid on mint paper." />
+
+The pattern is only a backdrop: it doesn't make elements snap. **Export as PNG** includes the pattern; **Export as SVG** includes the paper color but not the pattern. Viewers and the public page see the background but can't change it.
+
+## Snap to grid and to objects
+
+- **Snap to objects** (`Alt` `S`) is on by default: as you move or resize elements, they snap to the edges and centers of nearby elements, and guide lines show what they line up with. Hold `Ctrl` while dragging to move freely for a moment. Your browser remembers the setting.
+- **Snap to grid** (`Ctrl` `'`) makes elements snap to a grid of 20 units as you draw, move and resize them. On a plain board the grid shows while snapping is on, so you can see where things will land; on a board with a background pattern, the pattern stays as it is and the snapping works the same. It's a board setting, so it's on or off for everyone on the board.
+
+Both are also in the right-click menu of the empty canvas.
+
+## Full screen
+
+**Full screen** in **More board options** shows the board without the rest of Margaya, using your whole screen. Choose **Exit full screen** or press `Esc` to go back.

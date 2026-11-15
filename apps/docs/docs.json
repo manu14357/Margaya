@@ -104,6 +104,22 @@
 								"pages": ["core/functional/pages", "core/functional/drafts"]
 							},
 							{
+								"group": "Whiteboards",
+								"pages": [
+									"core/functional/whiteboards",
+									"core/functional/whiteboards/create-and-organize",
+									"core/functional/whiteboards/draw-and-write",
+									"core/functional/whiteboards/arrows-and-connectors",
+									"core/functional/whiteboards/canvas-and-navigation",
+									"core/functional/whiteboards/tasks",
+									"core/functional/whiteboards/collaborate",
+									"core/functional/whiteboards/share-and-export",
+									"core/functional/whiteboards/keyboard-shortcuts",
+									"core/functional/whiteboards/phones-tablets-and-desktop",
+									"core/functional/whiteboards/limits-and-troubleshooting"
+								]
+							},
+							{
 								"group": "AI",
 								"pages": [
 									"core/functional/ai-overview",
@@ -469,6 +485,32 @@
 							"api-reference/endpoints/pages/getPagePublication",
 							"api-reference/endpoints/pages/publishPage",
 							"api-reference/endpoints/pages/unpublishPage"
+						]
+					},
+					{
+						"group": "Whiteboards",
+						"pages": [
+							"api-reference/endpoints/whiteboards/listWhiteboards",
+							"api-reference/endpoints/whiteboards/createWhiteboard",
+							"api-reference/endpoints/whiteboards/listTaskWhiteboards",
+							"api-reference/endpoints/whiteboards/listWorkspaceWhiteboards",
+							"api-reference/endpoints/whiteboards/getWhiteboard",
+							"api-reference/endpoints/whiteboards/listWhiteboardActivity",
+							"api-reference/endpoints/whiteboards/updateWhiteboard",
+							"api-reference/endpoints/whiteboards/deleteWhiteboard",
+							"api-reference/endpoints/whiteboards/getWhiteboardContent",
+							"api-reference/endpoints/whiteboards/addWhiteboardElements",
+							"api-reference/endpoints/whiteboards/getWhiteboardPreview",
+							"api-reference/endpoints/whiteboards/duplicateWhiteboard",
+							"api-reference/endpoints/whiteboards/lockWhiteboard",
+							"api-reference/endpoints/whiteboards/unlockWhiteboard",
+							"api-reference/endpoints/whiteboards/archiveWhiteboard",
+							"api-reference/endpoints/whiteboards/unarchiveWhiteboard",
+							"api-reference/endpoints/whiteboards/publishWhiteboard",
+							"api-reference/endpoints/whiteboards/unpublishWhiteboard",
+							"api-reference/endpoints/whiteboards/createWhiteboardAssetUpload",
+							"api-reference/endpoints/whiteboards/finalizeWhiteboardAsset",
+							"api-reference/endpoints/whiteboards/getWhiteboardAsset"
 						]
 					},
 					{
@@ -897,6 +939,13 @@
 						]
 					},
 					{
+						"group": "Public whiteboards",
+						"pages": [
+							"api-reference/endpoints/public-whiteboards/getPublicWhiteboard",
+							"api-reference/endpoints/public-whiteboards/getPublicWhiteboardAsset"
+						]
+					},
+					{
 						"group": "Trash",
 						"pages": [
 							"api-reference/endpoints/trash/listTaskTrash",
@@ -908,7 +957,10 @@
 							"api-reference/endpoints/trash/purgeProject",
 							"api-reference/endpoints/trash/listPageTrash",
 							"api-reference/endpoints/trash/restoreDeletedPage",
-							"api-reference/endpoints/trash/purgePage"
+							"api-reference/endpoints/trash/purgePage",
+							"api-reference/endpoints/trash/listWhiteboardTrash",
+							"api-reference/endpoints/trash/restoreDeletedWhiteboard",
+							"api-reference/endpoints/trash/purgeWhiteboard"
 						]
 					},
 					{

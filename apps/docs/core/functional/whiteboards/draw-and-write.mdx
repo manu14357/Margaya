@@ -1,0 +1,196 @@
+---
+title: Draw and write
+description: The whiteboard tools one by one, the shape library, text, sticky notes, pens, the eraser and laser pointer, images and cropping, frames, groups, layers, alignment, locked elements, links and the Style panel
+---
+
+Everything on a board is an element: a shape, a sticky note, a piece of text, an arrow, a drawing, an image, a frame or a task card. This page walks through the tools that create them and the Style panel that changes them. Arrows have [their own page](/core/functional/whiteboards/arrows-and-connectors).
+
+<Screenshot src="whiteboards/empty-board" alt="A new empty board called Pricing page ideas, with the toolbar at the top of the canvas and the zoom, undo, minimap, background and help buttons in the bar at the bottom" caption="A new board: the toolbar at the top, the bottom bar below." />
+
+## The toolbar
+
+The toolbar sits at the top of the canvas. Pick a tool, then click or drag on the canvas. Hover a button to see its name and key.
+
+<Screenshot src="whiteboards/toolbar" alt="The whiteboard toolbar with Select and Hand, then Shapes with its library arrow, Arrow, Line, Pen and Text, then Sticky note, Task card, Image and Frame, then Eraser and Laser pointer, and the Keep tool active lock at the end" caption="The toolbar, in five groups." />
+
+| Tool | Keys | What it does |
+| --- | --- | --- |
+| **Select** | `V` or `1` | Select, move, resize and rotate elements. Drag on empty canvas to select everything in a box. |
+| **Hand (pan)** | `H`, or hold `Space` | Move around the board. |
+| **Shapes** | `Shift` `S` opens the library | Draws the last shape you picked. The arrow beside the button opens the [shape library](#shapes-and-the-shape-library). |
+| Rectangle, diamond, ellipse | `R` or `2`, `D` or `3`, `O` or `4` | Pick one of the three classic shapes for the **Shapes** button. |
+| **Arrow** | `A` or `5` | Draw an arrow. See [Arrows and connectors](/core/functional/whiteboards/arrows-and-connectors). |
+| **Line** | `L` or `6` | Draw a line without arrowheads. |
+| **Pen** | `P` or `7` | Draw freehand with a pen, marker or highlighter. See [Pens](#pens). |
+| **Text** | `T` or `8` | Click to type text. |
+| **Sticky note** | `S` | Click or drag to place a sticky note. |
+| **Task card** | | Add cards of the project's tasks. See [Work with tasks](/core/functional/whiteboards/tasks). |
+| **Image** | `9` | Pick a PNG, JPEG, GIF or WebP image to place on the board. |
+| **Frame** | `F` | Drag to draw a frame that holds other elements. |
+| **Eraser** | `E` or `0` | Click or drag over elements to remove them. |
+| **Laser pointer** | `K` | Point at something. The trail fades, and everyone on the board sees it. |
+| **Keep tool active** | `Q` | Keep the current tool after you draw, instead of going back to **Select**. |
+
+After you draw a shape, a sticky note, text or a frame, the board switches back to **Select**, so you can move what you just made. The **Hand (pan)**, **Pen**, **Eraser** and **Laser pointer** tools stay active, because you usually use them several times in a row. Turn on **Keep tool active** (the lock at the end of the toolbar, or `Q`) to keep any tool until you pick another one. `Esc` returns to **Select**.
+
+On a read-only board the toolbar only offers **Select**, **Hand (pan)** and **Laser pointer**.
+
+## Shapes and the shape library
+
+Drag on the canvas to draw a shape, or click to place one at its default size. Hold `Shift` while you drag to keep the proportions (a square, a circle), and `Alt` to draw from the center outwards.
+
+The shape library holds 25 shapes in four groups. Open it with the arrow beside the **Shapes** button, or press `Shift` `S`.
+
+<Screenshot src="whiteboards/shape-library" alt="The shape library open under the toolbar, with a Search shapes field and the Basic, Polygons and Arrows groups of shapes" caption="The shape library. Scroll it for the Symbols group." />
+
+- **Basic**: rectangle, ellipse, diamond, triangle, right triangle, parallelogram, trapezoid, cylinder and document.
+- **Polygons**: pentagon, hexagon, octagon, star, plus and cross.
+- **Arrows**: right, left, up, down and double arrows, and a chevron.
+- **Symbols**: heart, cloud, speech bubble and moon.
+
+Type in **Search shapes** to find a shape by name, and press `Enter` to pick the first match. The **Shapes** button then draws that shape until you pick another one. If nothing matches, the library says "No shapes match".
+
+To swap the outline of shapes you have already drawn, select them and choose **Change shape** in the Style panel or the right-click menu. The text, colors, size and connected arrows stay. To place a shape at a precise spot, right-click empty canvas and choose **Add shape**.
+
+## Text and labels
+
+- Use the **Text** tool and click where the text goes, or double-click empty canvas. Clicking a text, a sticky note or a shape with the **Text** tool edits its words instead of adding a new text on top.
+- Double-click a shape, sticky note, arrow or line to write a label on it. With one element selected, `Enter` does the same.
+- `Enter` inside the text starts a new line. `Esc` or `Ctrl` `Enter` finishes editing.
+- Double-click a frame's name to rename the frame.
+
+Text grows with what you type, and its box fits the words again when you change the font or font size. While you type in Japanese, Chinese or another language that uses an input method, `Esc` and `Enter` go to the input method first. Pick its **Font** (**Hand**, **Sans** or **Mono**), **Font size** (**S**, **M**, **L** or **XL**) and **Text align** (**Left**, **Center** or **Right**) in the Style panel. One element holds up to 20,000 characters.
+
+## Sticky notes
+
+Pick **Sticky note** (`S`) and click to place a note, or drag to give it your own size. The note opens for typing right away. Notes come in seven **Note color** options: yellow, orange, pink, green, blue, purple and gray, plus a **Custom color**.
+
+Sticky notes can become real tasks of the project. See [Turn sticky notes into tasks](/core/functional/whiteboards/tasks#turn-sticky-notes-into-tasks).
+
+## Pens
+
+The **Pen** tool draws freehand. The **Pen style** row at the top of the Style panel, shown while the **Pen** tool is active or drawings are selected, has three styles:
+
+- **Pen**: a smooth stroke that follows stylus pressure. Without a stylus, Margaya simulates the pressure so the line still looks hand-drawn.
+- **Marker**: a broad stroke of even width.
+- **Highlighter**: a wide, see-through stroke that lets what is under it show. It starts in yellow, and keeps its own color and width apart from the other pens.
+
+<Screenshot src="whiteboards/pen-styles" alt="The Hero sketches board with three wavy strokes labelled Pen, Marker and Highlighter, the highlighter stroke selected and the Style panel showing Pen style with Highlighter picked and the highlighter colors" caption="The Pen style row, with a highlighter stroke selected." />
+
+The toolbar's **Pen** button shows the style that new strokes get, and the board remembers the last style you picked. Select drawings to see their style, or to change it. **Stroke** and **Stroke width** set the color and thickness.
+
+## Eraser and laser pointer
+
+- **Eraser** (`E`): click an element, or drag across several. Elements fade as you pass over them and are removed when you let go. Erasing part of a group removes the whole group, and [locked elements](#lock-elements) are skipped. Undo brings them back.
+- **Laser pointer** (`K`): drag to draw a short red trail that fades after a second. Everyone on the board sees it, so it's the way to point at something during a call. Viewers can use it too, and it never changes the board.
+
+## Images
+
+Put an image on the board in any of these ways:
+
+- Pick **Image** (`9`) in the toolbar and choose a file. It lands in the middle of your view.
+- Paste an image you copied (`Ctrl` `V`).
+- Drag image files from your computer and drop them on the canvas.
+
+Only PNG, JPEG, GIF and WebP images can go on a board, with the same size limits as task attachments. Pasting or dropping any other kind of file, such as an SVG or a PDF, says "Only PNG, JPEG, GIF and WebP images can go on a board". "Uploading image…" shows while the file uploads. Images are stored with your server's file uploads, so they need [object storage or local uploads](/core/installation/object-storage-and-image-uploads) to be set up; otherwise adding one fails with an error.
+
+### Crop an image
+
+To crop an image, double-click it, press `Enter` with it selected, or choose **Crop image** in the Style panel or the right-click menu.
+
+<Screenshot src="whiteboards/crop" alt="The Homepage review board in crop mode: the homepage mock-up image with eight crop handles around it, the Style panel open with the Image section showing Done cropping and Reset crop, and three sticky notes of review comments beside the image" caption="Crop mode: drag the handles to choose the part to keep." />
+
+1. The whole image shows dimmed around the part you keep.
+2. Drag the eight handles to change the kept part (hold `Shift` to keep its proportions), or drag inside it to move it over the image.
+3. Press `Enter` or `Esc`, choose **Done cropping**, or click outside the image to finish.
+
+One undo takes back the whole crop. **Reset crop** shows the whole image again. Cropping never changes the uploaded file, so you can always widen the crop later.
+
+## Frames
+
+A **frame** (`F`) is a named area of the board, such as a column of a retrospective or a sprint's backlog. Drag to draw one, then double-click its name to rename it.
+
+Elements you place inside a frame belong to it: they move with the frame, are cut off at its edges, and are deleted with it. Drag an element out of the frame to take it out. Frame names count as board text, so search finds them.
+
+## Select, move and transform
+
+- Click an element to select it, `Shift`-click to add more, or drag on empty canvas to select everything in a box. `Ctrl` `A` selects everything.
+- Drag to move. Arrow keys nudge the selection by 1, or by 10 with `Shift`.
+- Drag a corner handle to resize, or the round handle above an element to rotate it. Hold `Shift` to keep the proportions or snap the angle to steps of 15°, and `Alt` to resize from the center.
+- Hold `Alt` while you drag to drag a copy and leave the original in place. `Ctrl` `D` duplicates the selection next to it.
+- **Flip horizontally** (`Shift` `H`) and **Flip vertically** (`Shift` `V`) mirror the selection.
+- `Alt` `←` and `Alt` `→` move the selection to the previous or next element, so you can go through a board with the keyboard.
+
+Elements snap to each other as you move them. See [Snapping](/core/functional/whiteboards/canvas-and-navigation#snap-to-grid-and-to-objects).
+
+## Groups
+
+**Group** (`Ctrl` `G`) joins the selection so it moves and resizes as one. **Ungroup** (`Ctrl` `Shift` `G`) splits it again. Clicking an element of a group selects the whole group; double-click to select an element inside it.
+
+## Layers
+
+Elements that overlap are stacked. Use the **Layers** buttons in the Style panel, or the right-click menu:
+
+| Action | Keys |
+| --- | --- |
+| **Bring to front** | `Ctrl` `Shift` `]` |
+| **Bring forward** | `Ctrl` `]` |
+| **Send backward** | `Ctrl` `[` |
+| **Send to back** | `Ctrl` `Shift` `[` |
+
+## Align and distribute
+
+Select two or more elements to show **Align** in the Style panel: **Align left**, **Align centers horizontally**, **Align right**, **Align top**, **Align centers vertically** and **Align bottom**. With three or more, **Distribute horizontally** and **Distribute vertically** space them evenly. `Ctrl` `Shift` with an arrow key aligns to the left, right, top or bottom.
+
+## Lock elements
+
+**Lock** in the Style panel's **Actions**, or **Lock or unlock** (`Ctrl` `Shift` `L`), pins elements so they can't be moved, changed, erased or deleted by accident. Use it for a background image or a template's frames. Select a locked element and choose **Unlock** to change it again.
+
+To make the whole board read-only, [lock the board](/core/functional/whiteboards/create-and-organize#lock-a-board) instead.
+
+## Links
+
+Select one element and choose **Edit link** in the Style panel or the right-click menu. In the **Link** dialog, enter a web address (`https://`), a `mailto:` address, or a link to another element of the board (`#element=` and its id), then **Save**. **Remove link** takes it off.
+
+An element with a link offers **Open link** in its right-click menu. **Copy link to element** copies the board's address with that element in it: opening it scrolls the board to the element and selects it, which is handy to point a colleague at one note.
+
+## The Style panel
+
+Select one or more elements, or pick a drawing tool, to show the **Style** panel at the left. Before anything is selected, it sets the style of the next element you draw. It shows only the options that fit the selection, and with several kinds of elements selected each option reads and changes only the elements it applies to: a **Background** color leaves sticky notes alone, and **Stroke width** ignores text.
+
+<Screenshot src="whiteboards/style-panel" alt="The Style panel for a selected rectangle: Change shape, Stroke and Background colors, Fill with Solid, Hatch, Cross-hatch and None, Stroke width, Stroke style, Sketchiness, Corners, Font, Font size, Text align, Opacity, Layers and Actions" caption="The Style panel for a selected rectangle." />
+
+| Option | What it sets |
+| --- | --- |
+| **Stroke** (**Text color** for text) | The outline or text color: black, red, green, blue, orange, purple, teal or gray, or a **Custom color**. |
+| **Background** | The fill color of a shape: none, red, green, blue, yellow, purple, teal or gray, or a custom color. |
+| **Note color** | The color of sticky notes. |
+| **Fill** | **Solid**, **Hatch**, **Cross-hatch** or **None**. |
+| **Stroke width** | **Thin**, **Medium**, **Bold** or **Extra bold**. |
+| **Stroke style** | **Solid**, **Dashed** or **Dotted**. |
+| **Sketchiness** | **Clean**, **Light** or **Rough**, from exact lines to a hand-drawn look. |
+| **Corners** | **Sharp**, **Round** or **Rounder**, for rectangles. |
+| **Font**, **Font size**, **Text align** | For anything with text. |
+| **Line type**, **Arrowheads** | For arrows and lines. See [Arrows and connectors](/core/functional/whiteboards/arrows-and-connectors). |
+| **Opacity** | From 10% to fully opaque. |
+| **Layers**, **Align**, **Actions** | Stacking, alignment, and **Duplicate**, **Group**, **Ungroup**, **Lock**, **Edit link** and **Delete**. |
+
+Below these, the panel shows **Crop image** for an image, **Turn into a task** for sticky notes and **Make dependency** for an arrow between two task cards.
+
+**Copy style** (`Ctrl` `Alt` `C`) and **Paste style** (`Ctrl` `Alt` `V`) copy the colors, stroke, font and other style of one element onto others.
+
+## The right-click menu
+
+Right-click an element, or press and hold it on a touch screen, for the actions that fit it: **Cut**, **Copy**, **Paste**, **Duplicate**, **Edit text**, **Copy style**, **Paste style**, the layer and group actions, **Flip horizontally** and **Flip vertically**, **Lock** or **Unlock**, the link actions and **Delete**, plus **Change shape**, **Crop image**, **Open task**, **Turn into a task** or **Make dependency** where they apply.
+
+<Screenshot src="whiteboards/context-menu" alt="The right-click menu of the Launch review rectangle on the Launch planning board, with Cut, Copy, Paste, Duplicate, Change shape, Edit text, Copy style, Paste style, the layer actions, Group, the flip actions, Lock, Edit link, Copy link to element and Delete" caption="The right-click menu of a shape." />
+
+Right-click empty canvas for **Paste**, **Add shape**, **Select all**, **Zoom to fit**, **Reset zoom**, **Snap to grid**, **Snap to objects** and **Keyboard shortcuts**.
+
+## Copy, paste and undo
+
+- `Ctrl` `C`, `Ctrl` `X` and `Ctrl` `V` copy, cut and paste elements, also between boards. Images pasted into another board are uploaded to that board, so they show there too. Pasting plain text adds a text element, and pasting an image adds the image.
+- `Ctrl` `Z` undoes and `Ctrl` `Shift` `Z` or `Ctrl` `Y` redoes. Undo goes back through your own changes only and leaves other people's edits alone. The undo and redo buttons are in the bar at the bottom.
+- `Delete` or `Backspace` deletes the selection.
+
+On macOS, use `⌘` wherever this page says `Ctrl`, and `Option` for `Alt`. The full list is in [Whiteboard keyboard shortcuts](/core/functional/whiteboards/keyboard-shortcuts).

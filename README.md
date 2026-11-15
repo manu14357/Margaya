@@ -61,6 +61,10 @@ Open source under the [GNU AGPL-3.0](LICENSE), with a [commercial license](COMME
 - **Estimates**: points, sizes or time
 - **Intake**: a review queue for incoming requests, filled in the app, by API, by email (IMAP or inbound webhook) or through a public request form
 - **Pages**: docs and specs next to your tasks, edited together live, with comments and version history
+- **Whiteboards**: a live canvas in every project, and all your boards in one place in the sidebar.
+  - **Drawing:** sticky notes, 25 shapes, connector arrows, pens and highlighter, frames, images with crop, and plain, dot, grid or lined backgrounds.
+  - **Tasks:** live task cards, sticky notes that turn into tasks, and arrows that become task dependencies.
+  - **Working together:** templates, live cursors and follow mode, board history, a read-only public link, and export to PNG or SVG.
 - **Analytics**: open, created and completed work, with CSV export
 - **Forecast and risk**: when work will likely finish and what could make it slip
 - **Project updates**: dated status posts with a health value, drafted from live project data, with followers, comments and a weekly reminder
@@ -94,7 +98,7 @@ Works with Claude, or with your own local model through any OpenAI-compatible se
 - **Quiet hours and focus mode** hold push, email, desktop, ntfy, Gotify and webhook deliveries, then send one summary
 - **Realtime updates**: everyone sees changes instantly
 - **Calendar feeds**: subscribe to your tasks, a project, or milestones and cycles from any calendar app with a private, revocable link
-- **Public boards and pages**: share a project or page with anyone; public boards can also take moderated comments
+- **Public boards, pages and whiteboards**: share a project, page or whiteboard with anyone through a read-only link; public boards can also take moderated comments
 
 ### Integrations
 
@@ -128,6 +132,8 @@ Works with Claude, or with your own local model through any OpenAI-compatible se
 - **20 languages**
 - Light, dark and high-contrast themes
 - **Keyboard shortcuts** for everything common
+- **Phones and tablets**: touch-sized controls throughout, and a calendar that shows a tap-friendly day agenda
+- **Desktop app** for Windows, macOS and Linux that opens your own server, with native notifications and quick add
 
 ## Screenshots
 
@@ -160,6 +166,16 @@ Works with Claude, or with your own local model through any OpenAI-compatible se
     <td width="50%" align="center">
       <img src="apps/site/public/images/docs/ai/agent-desk-light.webp" alt="AI agents" /><br />
       <sub><b>AI agents</b> — delegate work, then review and undo</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <img src="apps/site/public/images/docs/whiteboards/editor-light.webp" alt="A whiteboard with sticky notes, live task cards and a collaborator's cursor" /><br />
+      <sub><b>Whiteboards</b> — sticky notes, live task cards and live cursors</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="apps/site/public/images/docs/whiteboards/shape-library-light.webp" alt="The whiteboard shape library" /><br />
+      <sub><b>Shape library</b> — 25 shapes, searchable</sub>
     </td>
   </tr>
 </table>

@@ -1,0 +1,78 @@
+---
+title: Collaborate on a board
+description: Edit a whiteboard together in real time, see each other's cursors and selections, follow someone's view, keep working offline, understand read-only boards and see who changed a board in its history
+---
+
+Every board is live. When several people have it open, they all draw on the same canvas and see each other's changes as they happen, with nothing to save or refresh.
+
+## Live editing and cursors
+
+- Changes from other people appear right away, for everyone on the board.
+- You see each person's cursor with their name, in their own color, and the elements they selected are outlined in that color.
+- Everyone sees the [laser pointer](/core/functional/whiteboards/draw-and-write#eraser-and-laser-pointer), which makes it easy to point at something during a call.
+- **People on this board**, at the top right of the canvas, shows the avatars of everyone else on the board, one per person even with several tabs open.
+
+Two people can change different elements at the same moment without getting in each other's way. If they change the same element at once, the last change wins, and nothing else is lost.
+
+**Undo** (`Ctrl` `Z`) and **Redo** (`Ctrl` `Shift` `Z` or `Ctrl` `Y`) go back through your own changes only. Your undo never takes back what someone else did, and only puts back the parts of an element you changed, so a colleague's later edits to the same element stay.
+
+## Follow someone
+
+Click a person's avatar at the top right of the board to follow them. Your view moves and zooms with theirs, a frame in their color surrounds the canvas, and a bar shows **Following** with their name.
+
+<Screenshot src="whiteboards/follow" alt="The Signup flow board while following Priya Raman: a colored frame around the canvas, Priya Raman's named cursor next to the Enter email step, and a Following Priya Raman bar with a Stop button at the top right" caption="Following a colleague: your view moves with theirs." />
+
+To stop following, choose **Stop**, click the avatar again, or pan or zoom yourself. Following is handy when someone walks the team through a board in a meeting: everyone follows the presenter and sees what they see.
+
+## Save state
+
+The badge in the board's header shows whether your changes have reached the server:
+
+| Badge | Meaning |
+| --- | --- |
+| **Saved** | Everything you did is stored. |
+| **Not saved yet** | Your latest changes are on their way. |
+| **Offline** | Your device has no connection. It shows as soon as your browser loses the network. Keep working; your changes are sent when you're back online. |
+| **Can't connect** | The board can't reach the server. Choose **Retry** to try again. |
+
+The browser warns you before you close a tab with changes that haven't been sent yet.
+
+## Work offline
+
+If the connection drops while a board is open, you can keep drawing. Your changes sync when the connection returns and merge with what others did in the meantime.
+
+If the board was locked or archived while you were offline, or you can no longer edit it, your offline changes are not saved and a message says why, for example "The board was locked while you were offline, so your offline changes weren't saved."
+
+If the live board can't be reached at all, Margaya shows the last saved copy, read-only, with the banner "Can't reach the live board. Showing the last saved copy, read-only." Use **Retry** to reconnect.
+
+## Read-only boards
+
+A board is read-only for you when:
+
+- your role can only view whiteboards: the banner says "You can view this board but not edit it." and the header shows **Read-only**;
+- the board is locked: the banner says who locked it, with **Unlock** if you may unlock it;
+- the board is archived: the banner says "This board is archived and read-only.", with **Restore** if you may restore it.
+
+On a read-only board you can still move around, zoom, search, follow people, use the laser pointer, copy elements, look at the history and export the board. The toolbar only offers **Select**, **Hand (pan)** and **Laser pointer**.
+
+## History
+
+Choose **History** in **More board options** (the **…** button at the top right) to open **Board history**: what happened to the board, newest first.
+
+<Screenshot src="whiteboards/history" alt="The Board history panel for Launch planning, listing Elena Marsh's entries newest first: Changed the icon, Edited the board, Published the board to the web and Created the board, each with how long ago" caption="Board history shows who changed the board and when." />
+
+Each entry shows who did it, how long ago, and what changed: created the board, renamed it, changed its icon, locked or unlocked it, archived it or restored it from the archive, published it or stopped publishing it, moved it to the trash or restored it, and edited it. Hover the time to see the exact date. **Load more** shows older entries.
+
+- Drawing is grouped: a person's edits show as one **Edited the board** entry at most every 10 minutes.
+- The history never shows the board's content, only who changed it and when.
+- Everyone who can open the board can see its history, and it updates while the panel is open.
+- A board deleted permanently takes its history with it. The workspace [audit log](/core/functional/audit-log) keeps those changes, including the permanent delete.
+
+## When something happens to the board
+
+| Message | What happened |
+| --- | --- |
+| "This whiteboard was deleted" | The board was moved to the trash or deleted while you had it open. |
+| "You were signed out. Sign in again to keep editing." | Your session ended. Sign in again to keep working on the board. |
+| "Too many people have this board open. Try again later." | The board already has 100 connections. |
+| "This board is too large to save more changes." | The board reached its size limit. Use **Reload**, then remove something. See [Limits](/core/functional/whiteboards/limits-and-troubleshooting). |
