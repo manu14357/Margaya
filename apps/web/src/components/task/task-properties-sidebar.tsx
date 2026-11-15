@@ -83,7 +83,7 @@ function PropertyRow({ property, label, children }: PropertyRowProps) {
   return (
     <div
       data-property={property}
-      className="col-span-2 grid min-h-8 grid-cols-subgrid items-center [&:not(:has(>dd>*))]:hidden"
+      className="col-span-2 grid min-h-8 grid-cols-subgrid items-center pointer-coarse:min-h-11 [&:not(:has(>dd>*))]:hidden"
     >
       {label ? (
         <dt className="truncate text-muted-foreground text-xs">{label}</dt>
@@ -207,7 +207,7 @@ export default function TaskPropertiesSidebar({
             <TaskMovePopover
               task={task}
               workspaceId={workspaceId}
-              triggerClassName="rounded-l-md rounded-r-none border-r-0"
+              triggerClassName="rounded-l-md rounded-r-none border-r-0 pointer-coarse:min-w-11"
             />
           )}
           <TooltipProvider>
@@ -217,7 +217,7 @@ export default function TaskPropertiesSidebar({
                   variant="outline"
                   size="sm"
                   className={cn(
-                    "border-r-0 text-foreground",
+                    "border-r-0 text-foreground pointer-coarse:min-w-11",
                     canMoveTask ? "rounded-none" : "rounded-r-none",
                   )}
                   onClick={handleCopyTaskLink}
@@ -243,7 +243,7 @@ export default function TaskPropertiesSidebar({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="rounded-l-none text-foreground"
+                  className="rounded-l-none text-foreground pointer-coarse:min-w-11"
                   onClick={handleCopyTaskBranch}
                   aria-label={t("tasks:properties.copyTaskBranch")}
                 >
@@ -408,7 +408,7 @@ export default function TaskPropertiesSidebar({
                   >
                     <Badge
                       variant="outline"
-                      className="flex cursor-pointer items-center gap-1 px-1.5 py-0.5 text-[10px] transition-colors hover:bg-accent/50"
+                      className="relative flex cursor-pointer items-center gap-1 px-1.5 py-0.5 text-[10px] transition-colors hover:bg-accent/50 pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11"
                     >
                       <span
                         className="size-1.5 shrink-0 rounded-full"

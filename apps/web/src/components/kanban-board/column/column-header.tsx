@@ -17,7 +17,7 @@ type ColumnHeaderProps = {
 };
 
 const actionClass =
-  "flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground";
+  "flex size-6 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:size-11";
 
 /**
  * The column's name, count and actions. A small dot in the status colour
@@ -65,7 +65,7 @@ export function ColumnHeader({
   return (
     <div
       data-slot="board-column-header"
-      className="flex h-7 items-center justify-between gap-1.5"
+      className="flex h-7 items-center justify-between gap-1.5 pointer-coarse:h-11"
     >
       <div className="flex min-w-0 items-center gap-1.5">
         {column.icon ? (

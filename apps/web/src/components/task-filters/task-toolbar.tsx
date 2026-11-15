@@ -315,7 +315,7 @@ export default function TaskToolbar({
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
-            className="inline-flex h-7 shrink-0 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 font-medium text-foreground text-xs sm:hidden"
+            className="relative inline-flex h-7 shrink-0 items-center gap-1.5 rounded-md border border-border bg-background px-2.5 font-medium text-foreground text-xs sm:hidden focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11"
           >
             <ListFilter className="h-3 w-3" />
             {t("tasks:filters.mobileSummary", { count: conditions.length })}
@@ -389,7 +389,7 @@ export default function TaskToolbar({
       <div
         aria-hidden
         className={cn(
-          "absolute inset-x-0 bottom-0 h-0.5 overflow-hidden",
+          "pointer-events-none absolute inset-x-0 bottom-0 h-0.5 overflow-hidden",
           status?.isFetching ? "bg-primary/10" : "bg-transparent",
         )}
       >

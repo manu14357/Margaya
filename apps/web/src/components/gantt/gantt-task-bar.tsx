@@ -356,7 +356,9 @@ export function GanttTaskBar({
         }}
         className={cn(
           "pointer-events-auto absolute top-1/2 z-30 flex -translate-y-1/2 cursor-crosshair touch-none items-center justify-center rounded-full opacity-0 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/bar:opacity-100 [@media(hover:none)]:opacity-100",
-          isMobile ? "size-11" : "size-5",
+          isMobile
+            ? "size-11"
+            : "size-5 pointer-coarse:after:absolute pointer-coarse:after:-inset-y-3 pointer-coarse:after:left-0 pointer-coarse:after:w-11",
           task.isMilestone ? "left-1/2 ml-1" : "left-full -ml-0.5",
         )}
       >
@@ -389,7 +391,7 @@ export function GanttTaskBar({
             })}
             title={task.title}
             className={cn(
-              "pointer-events-auto relative z-10 flex min-h-[44px] min-w-[44px] touch-manipulation items-center justify-center rounded-sm sm:min-h-7 sm:min-w-7",
+              "pointer-events-auto relative z-10 flex min-h-[44px] min-w-[44px] touch-manipulation items-center justify-center rounded-sm sm:min-h-7 sm:min-w-7 pointer-coarse:min-h-[44px] pointer-coarse:min-w-[44px]",
               canEdit && "cursor-grab active:cursor-grabbing",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
             )}
@@ -477,7 +479,7 @@ export function GanttTaskBar({
       >
         <div
           className={cn(
-            "group pointer-events-auto relative flex min-h-[44px] w-full min-w-0 items-stretch overflow-hidden rounded-md border text-left text-xs font-medium leading-none shadow-xs transition-[box-shadow,border-color] hover:shadow-md sm:h-7 sm:min-h-0",
+            "group pointer-events-auto relative flex min-h-[44px] w-full min-w-0 items-stretch overflow-hidden rounded-md border text-left text-xs font-medium leading-none shadow-xs transition-[box-shadow,border-color] hover:shadow-md sm:h-7 sm:min-h-0 sm:pointer-coarse:overflow-visible",
             done
               ? "border-(color:--tone) bg-(color:--tone) text-(color:--tone-ink)"
               : "border-(color:--tone)/40 bg-(color:--tone-tint) text-(color:--tone-fg) hover:border-(color:--tone)/70",
@@ -492,6 +494,8 @@ export function GanttTaskBar({
             className={cn(
               "relative z-20 shrink-0 cursor-ew-resize touch-none hover:bg-(color:--tone)/25 disabled:cursor-default",
               "min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 sm:w-2",
+              // Touch, wider screens: a 44px hit area reaching outward.
+              "sm:pointer-coarse:rounded-s-[5px] sm:pointer-coarse:after:absolute sm:pointer-coarse:after:-inset-y-[9px] sm:pointer-coarse:after:right-0 sm:pointer-coarse:after:-left-9",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
             )}
           >
@@ -499,7 +503,7 @@ export function GanttTaskBar({
             {done || !startIsVisible ? null : (
               <span
                 aria-hidden="true"
-                className="absolute inset-y-0 left-0 w-1 bg-(color:--tone)"
+                className="absolute inset-y-0 left-0 w-1 bg-(color:--tone) sm:pointer-coarse:rounded-s-[5px]"
               />
             )}
           </button>
@@ -508,7 +512,7 @@ export function GanttTaskBar({
             aria-label={t("tasks:gantt.taskAriaLabel", { title: task.title })}
             title={task.title}
             className={cn(
-              "relative z-10 flex min-h-[44px] min-w-0 flex-1 touch-manipulation items-center gap-1.5 overflow-hidden px-1.5 text-left sm:min-h-0",
+              "relative z-10 flex min-h-[44px] min-w-0 flex-1 touch-manipulation items-center gap-1.5 overflow-hidden px-1.5 text-left sm:min-h-0 sm:pointer-coarse:overflow-visible sm:pointer-coarse:after:absolute sm:pointer-coarse:after:inset-x-0 sm:pointer-coarse:after:-inset-y-[9px]",
               canEdit && "cursor-grab active:cursor-grabbing",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
             )}
@@ -538,6 +542,9 @@ export function GanttTaskBar({
             className={cn(
               "relative z-20 shrink-0 cursor-ew-resize touch-none hover:bg-(color:--tone)/25 disabled:cursor-default",
               "min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 sm:w-2",
+              // Touch, wider screens: a 44px hit area reaching inward, since
+              // the link dot sits just outside the end.
+              "sm:pointer-coarse:rounded-e-[5px] sm:pointer-coarse:after:absolute sm:pointer-coarse:after:-inset-y-[9px] sm:pointer-coarse:after:right-px sm:pointer-coarse:after:w-11",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
             )}
           />

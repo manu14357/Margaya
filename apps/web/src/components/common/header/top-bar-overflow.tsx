@@ -168,7 +168,7 @@ export function TopBarMoreMenu({ items }: { items: TopBarOverflowItem[] }) {
             type="button"
             aria-label={label}
             title={label}
-            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground outline-hidden hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-popup-open:bg-accent data-popup-open:text-foreground"
+            className="relative flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground outline-hidden pointer-coarse:after:absolute pointer-coarse:after:-inset-1.5 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-popup-open:bg-accent data-popup-open:text-foreground"
             data-slot="top-bar-more"
           />
         }

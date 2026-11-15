@@ -379,7 +379,7 @@ export default function TaskSubtasks({
             <CollapsibleTrigger asChild>
               <button
                 type="button"
-                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors pointer-coarse:min-h-11"
               >
                 {isOpen ? (
                   <ChevronDown className="size-4" />
@@ -406,7 +406,7 @@ export default function TaskSubtasks({
               <Button
                 variant="ghost"
                 size="xs"
-                className="text-muted-foreground"
+                className="text-muted-foreground pointer-coarse:min-w-11"
                 aria-label={t("tasks:subtasks.addExisting")}
                 title={t("tasks:subtasks.addExistingTitle")}
                 onClick={() => setIsAddingExisting(true)}
@@ -421,7 +421,7 @@ export default function TaskSubtasks({
               <Button
                 variant="ghost"
                 size="xs"
-                className="text-muted-foreground"
+                className="text-muted-foreground pointer-coarse:min-w-11"
                 aria-label={`${t("tasks:subtasks.addAction")} ${t("tasks:subtasks.title")}`}
                 onClick={() => setIsAdding(true)}
                 disabled={!canCreateSubtask}

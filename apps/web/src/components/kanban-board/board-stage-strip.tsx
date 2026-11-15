@@ -16,13 +16,13 @@ export function BoardStageStrip({
   return (
     <nav
       aria-label={t("tasks:kanban.stages")}
-      className="flex shrink-0 gap-1 overflow-x-auto border-border/60 border-b px-2 py-1.5 [scrollbar-width:none] md:hidden"
+      className="flex shrink-0 gap-1 overflow-x-auto border-border/60 border-b px-2 py-1.5 [scrollbar-width:none] pointer-coarse:py-2.5 md:hidden"
     >
       {columns.map((column) => (
         <button
           key={column.id}
           type="button"
-          className="inline-flex h-7 shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-2.5 text-foreground text-xs"
+          className="relative inline-flex h-7 shrink-0 items-center gap-1.5 rounded-full border border-border bg-background px-2.5 text-foreground text-xs outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:after:absolute pointer-coarse:after:inset-x-0 pointer-coarse:after:-inset-y-[9px]"
           onClick={() =>
             document
               .getElementById(`board-column-${column.id}`)

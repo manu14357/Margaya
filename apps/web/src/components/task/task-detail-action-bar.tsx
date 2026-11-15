@@ -31,7 +31,7 @@ export default function TaskDetailActionBar({
   if (!canUpdateTasks()) return null;
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 pointer-coarse:gap-y-4">
       {canCreateTasks() && (
         <Button variant="outline" size="xs" onClick={onAddSubtask}>
           <ListTree className="size-3.5" />

@@ -9,7 +9,7 @@ export function MargayaBranding() {
       href={PUBLIC_SITE_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="hover:text-foreground transition-colors"
+      className="relative transition-colors hover:text-foreground pointer-coarse:after:absolute pointer-coarse:after:-inset-y-3.5 pointer-coarse:after:inset-x-0"
     >
       {t("publicProject:branding.poweredBy")}{" "}
       <span className="font-medium">{t("common:appName")}</span>

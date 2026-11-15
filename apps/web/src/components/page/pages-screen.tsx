@@ -94,7 +94,7 @@ export default function PagesScreen({
           <Group aria-label={t("pages:list.newPage")}>
             <Button
               size="xs"
-              className="gap-1"
+              className="gap-1 pointer-coarse:min-w-11"
               loading={createPage.isPending && !templatesOpen}
               onClick={() => handleCreate()}
             >
@@ -108,6 +108,7 @@ export default function PagesScreen({
                   <Button
                     size="icon-xs"
                     aria-label={t("pages:templates.moreCreateOptions")}
+                    className="pointer-coarse:min-w-11"
                   />
                 }
               >

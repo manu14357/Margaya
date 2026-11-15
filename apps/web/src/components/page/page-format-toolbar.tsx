@@ -106,7 +106,7 @@ type Item = {
 };
 
 const BUTTON_CLASS =
-  "relative inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors duration-150 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-pressed:bg-accent aria-pressed:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-disabled:opacity-50 pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11";
+  "relative inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors duration-150 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-pressed:bg-accent aria-pressed:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-disabled:opacity-50 pointer-coarse:size-11";
 
 function FormatButton({ item }: { item: Item }) {
   return (
@@ -338,7 +338,7 @@ export default function PageFormatToolbar({
       inert={!open}
     >
       <div>
-        <div className="flex h-11 items-center border-border/80 border-b bg-background pe-3">
+        <div className="flex h-11 items-center border-border/80 border-b bg-background pe-3 pointer-coarse:h-12">
           <div className="margaya-page-format-inner min-w-0 flex-1">
             <TooltipProvider>
               <Toolbar
@@ -350,7 +350,10 @@ export default function PageFormatToolbar({
                     editor={editor}
                     current={active?.style ?? null}
                     trigger={<ToolbarButton />}
-                    className={cn(inCode && "opacity-50")}
+                    className={cn(
+                      "pointer-coarse:h-11",
+                      inCode && "opacity-50",
+                    )}
                   />
                 )}
                 {groups.map((group) => (

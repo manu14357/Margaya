@@ -49,7 +49,7 @@ export default function QuickAdd({
       onClick={() => setOpen(true)}
       onFocus={() => setOpen(true)}
       className={cn(
-        "flex h-8 w-full items-center gap-1.5 rounded-md border border-transparent ps-2 pe-1 text-left text-muted-foreground text-sm transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "flex h-8 w-full items-center gap-1.5 rounded-md border border-transparent ps-2 pe-1 text-left pointer-coarse:h-11 text-muted-foreground text-sm transition-colors hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
     >

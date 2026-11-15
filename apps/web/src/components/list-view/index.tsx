@@ -122,7 +122,7 @@ function ListGroup({
       )}
     >
       <div
-        className="group/header sticky top-0 z-10 flex h-8 items-center justify-between border-border/50 border-b px-2 shadow-[inset_3px_0_0_var(--group-color)] md:px-3"
+        className="group/header sticky top-0 z-10 flex h-8 items-center justify-between border-border/50 border-b px-2 shadow-[inset_3px_0_0_var(--group-color)] pointer-coarse:h-11 md:px-3"
         style={
           {
             "--group-color": hues.color,
@@ -135,7 +135,7 @@ function ListGroup({
           type="button"
           onClick={onToggle}
           aria-expanded={expanded}
-          className="flex min-w-0 items-center gap-1.5 font-medium text-[13px] text-foreground"
+          className="flex min-w-0 items-center gap-1.5 font-medium text-[13px] text-foreground pointer-coarse:self-stretch"
         >
           <ChevronRight
             className={cn(
@@ -166,7 +166,7 @@ function ListGroup({
             <button
               type="button"
               onClick={onAddTask}
-              className="flex size-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-background/70 hover:text-foreground"
+              className="flex size-6 items-center justify-center rounded text-muted-foreground outline-none transition-colors hover:bg-background/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:size-11"
               title={t("tasks:listView.addTask")}
             >
               <Plus className="size-3.5" />
@@ -177,7 +177,7 @@ function ListGroup({
             <button
               type="button"
               onClick={onArchive}
-              className="flex size-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-background/70 hover:text-foreground"
+              className="flex size-6 items-center justify-center rounded text-muted-foreground outline-none transition-colors hover:bg-background/70 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:size-11"
               title={t("tasks:listView.archiveAllTooltip")}
             >
               <Archive className="size-3.5" />

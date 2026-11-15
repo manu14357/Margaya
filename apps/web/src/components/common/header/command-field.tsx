@@ -36,7 +36,7 @@ export function CommandField({
               aria-keyshortcuts="Control+K Meta+K"
               onClick={() => openCommandPalette()}
               className={cn(
-                "flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground outline-hidden hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+                "relative flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted-foreground outline-hidden pointer-coarse:after:absolute pointer-coarse:after:-inset-1.5 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
                 className,
               )}
               data-slot="command-field-icon"
@@ -62,7 +62,8 @@ export function CommandField({
       aria-keyshortcuts="Control+K Meta+K"
       onClick={() => openCommandPalette()}
       className={cn(
-        "flex h-8 w-60 min-w-40 cursor-pointer items-center gap-2 overflow-hidden rounded-full border border-input bg-card ps-3 pe-1.5 text-muted-foreground/80 text-sm outline-hidden transition-colors hover:border-ring/40 hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring lg:w-96",
+        // Touch: reaches 44px tall through an invisible hit area.
+        "relative flex h-8 w-60 min-w-40 cursor-pointer items-center gap-2 overflow-hidden rounded-full border border-input bg-card ps-3 pe-1.5 text-muted-foreground/80 text-sm outline-hidden transition-colors hover:border-ring/40 hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:overflow-visible pointer-coarse:after:absolute pointer-coarse:after:inset-x-0 pointer-coarse:after:-inset-y-[7px] lg:w-96",
         className,
       )}
       data-slot="command-field"

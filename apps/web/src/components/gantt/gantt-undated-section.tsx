@@ -96,7 +96,7 @@ function UndatedRow({
           <button
             type="button"
             onClick={() => onOpenTask(task.id)}
-            className="flex min-h-8 min-w-0 flex-1 items-center gap-2 rounded-sm px-1 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex min-h-8 min-w-0 flex-1 items-center gap-2 rounded-sm px-1 pointer-coarse:min-h-11 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <span
               aria-hidden="true"
@@ -139,7 +139,7 @@ function UndatedRow({
         </div>
       </div>
       <div
-        className="min-h-11 shrink-0 sm:min-h-10"
+        className="min-h-11 shrink-0 sm:min-h-10 pointer-coarse:min-h-11"
         style={{ minWidth: `${timelineMinWidthRem}rem` }}
       />
     </div>

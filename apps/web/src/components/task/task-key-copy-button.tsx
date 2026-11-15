@@ -37,7 +37,9 @@ export default function TaskKeyCopyButton({
           <button
             type="button"
             className={cn(
-              "w-fit cursor-pointer rounded-sm text-left outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+              // Touch: a 44px hit area that grows mostly upward, away from the
+              // title below it.
+              "relative w-fit cursor-pointer rounded-sm text-left outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:after:absolute pointer-coarse:after:-inset-x-1 pointer-coarse:after:-top-[18px] pointer-coarse:after:-bottom-2.5",
               className,
             )}
             onClick={() => void copyTaskKey(key, t)}

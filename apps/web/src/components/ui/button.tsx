@@ -48,6 +48,37 @@ export const buttonVariants = cva(
   },
 );
 
+type ButtonSize = NonNullable<VariantProps<typeof buttonVariants>["size"]>;
+
+// The sm: steps down in buttonVariants are for mouse density. Touch screens
+// keep the phone size at every width, so neighbouring buttons stay far
+// enough apart for their 44px hit areas.
+const TOUCH_SIZE: Record<ButtonSize, string> = {
+  default: "pointer-coarse:h-9",
+  icon: "pointer-coarse:size-9",
+  "icon-lg": "pointer-coarse:size-10",
+  "icon-sm": "pointer-coarse:size-8",
+  "icon-xl": "pointer-coarse:size-11",
+  "icon-xs": "pointer-coarse:size-7",
+  lg: "pointer-coarse:h-10",
+  sm: "pointer-coarse:h-8",
+  xl: "pointer-coarse:h-11",
+  xs: "pointer-coarse:h-7",
+};
+
+// A height or size the caller set, with or without variants (`h-7`,
+// `sm:size-5`, `pointer-coarse:h-11`).
+const OWN_SIZE = /(?:^|\s)(?:[\w-]+:)*!?(?:h|size)-/;
+
+/** The touch-screen size class, unless the caller sizes the button itself. */
+export function touchSizeClass(
+  size: ButtonSize | null | undefined,
+  className?: string,
+): string | undefined {
+  if (className && OWN_SIZE.test(className)) return undefined;
+  return TOUCH_SIZE[size ?? "default"];
+}
+
 export interface ButtonProps extends useRender.ComponentProps<"button"> {
   variant?: VariantProps<typeof buttonVariants>["variant"];
   size?: VariantProps<typeof buttonVariants>["size"];
@@ -80,7 +111,11 @@ export function Button({
         )}
       </>
     ),
-    className: cn(buttonVariants({ className, size, variant })),
+    className: cn(
+      buttonVariants({ size, variant }),
+      touchSizeClass(size, typeof className === "string" ? className : ""),
+      className,
+    ),
     "aria-disabled": loading || undefined,
     "data-loading": loading ? "" : undefined,
     "data-slot": "button",

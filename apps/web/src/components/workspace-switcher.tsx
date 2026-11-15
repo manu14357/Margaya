@@ -165,7 +165,7 @@ export function WorkspaceSwitcher({
                 aria-label={switchLabel}
                 title={workspace.name}
                 className={cn(
-                  "rounded-[28%] outline-hidden transition-transform focus-visible:ring-2 focus-visible:ring-ring active:translate-y-px",
+                  "relative rounded-[28%] outline-hidden pointer-coarse:after:absolute pointer-coarse:after:-inset-1.5 transition-transform focus-visible:ring-2 focus-visible:ring-ring active:translate-y-px",
                   isSwitching && "opacity-50",
                 )}
               />

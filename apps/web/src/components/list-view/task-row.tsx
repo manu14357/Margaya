@@ -225,7 +225,7 @@ function TaskRow({
           <div
             onClick={handleClick}
             className={cn(
-              "group/selectable group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors md:gap-2 md:px-3",
+              "group/selectable group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors pointer-coarse:min-h-11 md:gap-2 md:px-3",
               isTaskSelected
                 ? "bg-accent/45"
                 : "hover:bg-accent/70 hover:shadow-[inset_2px_0_0_var(--primary)]",

@@ -17,16 +17,20 @@ export function FilterBar({ children, trailing, className }: FilterBarProps) {
   return (
     <div
       className={cn(
-        "flex min-h-10 shrink-0 items-center gap-1.5 border-border/80 border-b bg-background px-2 py-1.5 md:px-3",
+        "flex min-h-10 shrink-0 items-center gap-1.5 border-border/80 border-b bg-background px-2 py-1.5 pointer-coarse:py-2 md:px-3",
         className,
       )}
       data-slot="filter-bar"
     >
-      <div className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto [scrollbar-width:none]">
+      {/* On touch the scroller's padding holds the controls' 44px hit areas,
+          which its overflow would otherwise clip. */}
+      <div className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto [scrollbar-width:none] pointer-coarse:-my-2 pointer-coarse:py-2">
         {children}
       </div>
       {trailing && (
-        <div className="flex shrink-0 items-center gap-1.5">{trailing}</div>
+        <div className="flex shrink-0 items-center gap-1.5 pointer-coarse:gap-2">
+          {trailing}
+        </div>
       )}
     </div>
   );

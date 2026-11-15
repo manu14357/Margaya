@@ -88,7 +88,7 @@ export default function InboxHeader({
   const { t } = useTranslation();
 
   return (
-    <div className="flex h-10 shrink-0 items-center gap-1 border-border border-b px-2">
+    <div className="flex h-10 shrink-0 items-center gap-1 border-border border-b px-2 pointer-coarse:h-11">
       <Tabs
         value={tab}
         onValueChange={(value) => onTabChange(value as InboxTab)}
@@ -111,7 +111,8 @@ export default function InboxHeader({
           </TabsTab>
         </TabsList>
       </Tabs>
-      <div className="flex shrink-0 items-center gap-0.5">
+      {/* Touch: far enough apart that the 44px hit areas do not overlap. */}
+      <div className="flex shrink-0 items-center gap-0.5 pointer-coarse:gap-4">
         <IconAction
           label={t("notifications:inbox.toolbar.markAllRead")}
           onClick={onMarkAllRead}

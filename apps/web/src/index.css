@@ -377,6 +377,16 @@ input:-webkit-autofill:active {
       0 4px 16px color-mix(in srgb, var(--background) 68%, transparent);
   }
 
+  /* Touch: a 44px hit area around the 32px button (inset from inside its
+     1px border). */
+  @media (pointer: coarse) {
+    .margaya-editor-quick-attach::after {
+      content: "";
+      position: absolute;
+      inset: -7px;
+    }
+  }
+
   .margaya-codeblock-language {
     position: fixed;
     z-index: 40;

@@ -127,6 +127,7 @@ export default function PageListRow({
                   className="hidden h-4 w-px bg-border min-[480px]:block"
                 />
                 <FavoriteButton
+                  className="pointer-coarse:size-11"
                   workspaceId={workspaceId}
                   entityType="page"
                   entityId={page.id}
@@ -137,7 +138,7 @@ export default function PageListRow({
                     feature: "pages",
                   }}
                 />
-                <span className="-mx-1 inline-flex size-7 items-center justify-center opacity-0 transition-opacity duration-150 group-focus-within/page-row:opacity-100 group-hover/page-row:opacity-100 has-data-popup-open:opacity-100 pointer-coarse:opacity-100">
+                <span className="-mx-1 inline-flex size-7 items-center justify-center pointer-coarse:mx-0 pointer-coarse:size-11 opacity-0 transition-opacity duration-150 group-focus-within/page-row:opacity-100 group-hover/page-row:opacity-100 has-data-popup-open:opacity-100 pointer-coarse:opacity-100">
                   <PageRowActions
                     page={page}
                     workspaceId={workspaceId}

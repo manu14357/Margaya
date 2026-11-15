@@ -617,7 +617,8 @@ export default function ProjectGantt({
     <div className="flex h-full min-h-0 flex-col bg-background">
       {filterBar}
       <div className="shrink-0 border-border/80 border-b px-2 py-1.5 md:px-3">
-        <div className="flex flex-wrap items-center gap-1.5">
+        {/* Touch: wrapped rows sit far enough apart for 44px hit areas. */}
+        <div className="flex flex-wrap items-center gap-1.5 pointer-coarse:gap-y-4">
           <h1 className="sr-only">{t("tasks:gantt.title")}</h1>
 
           <div className="relative w-full sm:w-56">
@@ -631,7 +632,7 @@ export default function ProjectGantt({
           </div>
 
           {timeline && (
-            <div className="flex flex-wrap items-center gap-1.5 sm:ms-auto">
+            <div className="flex flex-wrap items-center gap-1.5 pointer-coarse:gap-y-4 sm:ms-auto">
               {entryColumn ? (
                 <GanttAddMilestone
                   projectId={projectId}
@@ -968,7 +969,7 @@ export default function ProjectGantt({
                             <button
                               type="button"
                               title={`${formatDateMedium(task.scheduleStart)} – ${formatDateMedium(task.scheduleEnd)}${fieldText ? ` · ${fieldText}` : ""}${assigneeSummary}`}
-                              className="flex min-h-[44px] w-full min-w-0 items-center gap-2 px-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset sm:min-h-10 sm:px-3"
+                              className="flex min-h-[44px] w-full min-w-0 items-center gap-2 px-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset sm:min-h-10 sm:px-3 pointer-coarse:min-h-[44px]"
                               onClick={() => onOpenTask(task.id)}
                             >
                               <span
@@ -1039,7 +1040,7 @@ export default function ProjectGantt({
                         ) : null}
 
                         <div
-                          className="relative min-h-11 shrink-0 overflow-x-clip select-none sm:min-h-10"
+                          className="relative min-h-11 shrink-0 overflow-x-clip select-none sm:min-h-10 pointer-coarse:min-h-11"
                           style={{
                             minWidth: `${timeline.timelineMinWidthRem}rem`,
                           }}

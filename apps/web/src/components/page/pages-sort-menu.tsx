@@ -33,7 +33,13 @@ export default function PagesSortMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        render={<Button variant="outline" size="xs" className="gap-1" />}
+        render={
+          <Button
+            variant="outline"
+            size="xs"
+            className="gap-1 pointer-coarse:min-w-11"
+          />
+        }
       >
         <DirectionIcon className="size-3" />
         <span className="sr-only sm:not-sr-only">

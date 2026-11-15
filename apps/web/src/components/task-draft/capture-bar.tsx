@@ -441,7 +441,7 @@ export default function CaptureBar({
         className,
       )}
     >
-      <div className="flex h-8 items-center gap-1.5 ps-2 pe-1">
+      <div className="flex h-8 items-center gap-1.5 ps-2 pe-1 pointer-coarse:h-11">
         <Plus
           aria-hidden
           className={cn(

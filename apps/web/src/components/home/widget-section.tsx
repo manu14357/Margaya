@@ -57,7 +57,9 @@ export default function WidgetSection({
           </h2>
         </div>
         {actions ? (
-          <div className="flex items-center gap-1">{actions}</div>
+          <div className="flex items-center gap-1 pointer-coarse:gap-2">
+            {actions}
+          </div>
         ) : null}
       </div>
       {children}

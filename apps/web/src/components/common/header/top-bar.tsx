@@ -121,8 +121,9 @@ export function TopBar({ title, place, actions, className }: TopBarProps) {
               full
                 ? "lg:min-w-fit"
                 : // The place keeps a little room and clips (its switchers
-                  // truncate) instead of sliding under the actions.
-                  "-m-1 min-w-18 overflow-hidden p-1",
+                  // truncate) instead of sliding under the actions. On touch
+                  // the padding is wide enough not to clip 44px hit areas.
+                  "-m-1 min-w-18 overflow-hidden p-1 pointer-coarse:-m-2 pointer-coarse:p-2",
             )}
           >
             <Tooltip>
@@ -165,8 +166,10 @@ export function TopBar({ title, place, actions, className }: TopBarProps) {
                 ? "shrink-0 justify-end md:min-w-0 md:flex-1 lg:min-w-fit"
                 : // Last resort on the narrowest windows: the actions scroll
                   // sideways (from the start, so none is out of reach) rather
-                  // than slide under the window buttons.
-                  "-my-1 min-w-0 overflow-x-auto py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+                  // than slide under the window buttons. On touch the padding
+                  // keeps 44px hit areas unclipped and the gap (also inside a
+                  // page's own action group) keeps them from overlapping.
+                  "-my-1 min-w-0 overflow-x-auto py-1 [scrollbar-width:none] pointer-coarse:-m-1.5 pointer-coarse:gap-3 pointer-coarse:p-1.5 pointer-coarse:[&>div:not([data-slot=group])]:gap-3 [&::-webkit-scrollbar]:hidden",
             )}
             data-slot="top-bar-actions"
           >

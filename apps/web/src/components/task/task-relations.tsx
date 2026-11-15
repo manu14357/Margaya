@@ -120,7 +120,7 @@ export default function TaskRelations({
             <CollapsibleTrigger asChild>
               <button
                 type="button"
-                className="flex items-center gap-1 text-muted-foreground text-sm transition-colors hover:text-foreground"
+                className="flex items-center gap-1 text-muted-foreground text-sm transition-colors hover:text-foreground pointer-coarse:min-h-11"
               >
                 {isOpen ? (
                   <ChevronDown className="size-4" />

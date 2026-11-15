@@ -700,10 +700,12 @@ export function SettingsInlineNav() {
   const nav = useSettingsNav();
 
   return (
-    <div className="flex shrink-0 flex-col gap-1.5 border-b bg-background px-2 py-1.5 md:px-3">
+    <div className="flex shrink-0 flex-col gap-1.5 border-b bg-background px-2 py-1.5 pointer-coarse:gap-4 md:px-3">
       <nav
         aria-label={t("settings:nav.areas")}
-        className="flex items-center gap-1 overflow-x-auto"
+        // On touch the padding holds the tabs' 44px hit areas, which the
+        // scroller would otherwise clip.
+        className="flex items-center gap-1 overflow-x-auto pointer-coarse:-my-2 pointer-coarse:py-2"
       >
         {nav.areas.map((item) => (
           <AreaTab key={item.id} item={item} />
