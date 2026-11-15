@@ -1932,6 +1932,7 @@
 				"intake": "Intake",
 				"analytics": "Analitik",
 				"page": "Halaman",
+				"whiteboard": "Papan tulis",
 				"audit_log": "Log audit",
 				"ai": "AI"
 			},
@@ -2160,6 +2161,24 @@
 						"label": "Edit halaman"
 					}
 				},
+				"whiteboard": {
+					"read": {
+						"label": "Lihat papan tulis",
+						"description": "Melihat bagian Papan tulis dan membuka papan dalam mode hanya-baca."
+					},
+					"create": {
+						"label": "Buat papan tulis",
+						"description": "Membuat papan, dari templat atau kosong, dan menduplikasinya."
+					},
+					"update": {
+						"label": "Edit papan tulis",
+						"description": "Menggambar dan mengedit di papan, serta mengunci atau mengarsipkan papan milik sendiri."
+					},
+					"delete": {
+						"label": "Kelola semua papan tulis",
+						"description": "Mengunci, mengarsipkan, memublikasikan, dan menghapus papan apa pun yang dapat dilihat, tidak hanya milik sendiri."
+					}
+				},
 				"audit_log": {
 					"read": {
 						"description": "Lihat dan ekspor log audit ruang kerja: siapa yang mengubah anggota, peran, kunci, webhook, integrasi, dan pengaturan.",
@@ -2339,6 +2358,10 @@
 				"updates": {
 					"title": "Pembaruan",
 					"description": "Posting pembaruan status bertanggal dengan nilai kesehatan, yang disusun dari data proyek terkini."
+				},
+				"whiteboards": {
+					"title": "Papan tulis",
+					"description": "Buat sketsa, rencanakan, dan petakan pekerjaan bersama di kanvas bersama, dengan kartu tugas langsung."
 				}
 			},
 			"loadError": "Tidak dapat memuat proyek ini",
@@ -3156,6 +3179,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Membuat papan tulis",
+				"whiteboardRenamed": "Mengganti nama papan tulis",
+				"whiteboardIconChanged": "Mengubah ikon papan tulis",
+				"whiteboardLocked": "Mengunci papan tulis",
+				"whiteboardUnlocked": "Membuka kunci papan tulis",
+				"whiteboardArchived": "Mengarsipkan papan tulis",
+				"whiteboardUnarchived": "Memulihkan papan tulis dari arsip",
+				"whiteboardPublished": "Memublikasikan papan tulis lewat tautan publik",
+				"whiteboardUnpublished": "Mencabut tautan publik papan tulis",
+				"whiteboardTrashed": "Memindahkan papan tulis ke sampah",
+				"whiteboardRestored": "Memulihkan papan tulis dari sampah",
+				"whiteboardPurged": "Menghapus papan tulis secara permanen",
 				"workspaceDeletionScheduled": "Menjadwalkan penghapusan ruang kerja",
 				"workspaceDeletionCancelled": "Membatalkan penghapusan ruang kerja",
 				"workspacePublicPagesChanged": "Mengaktifkan atau menonaktifkan halaman publik",
@@ -3305,6 +3340,7 @@
 			"subtitle": "Siapa yang mengubah anggota, peran, kunci API, webhook, integrasi, pengaturan, dan proyek di ruang kerja ini. Entri disimpan selama {{days}} hari.",
 			"subtitleForever": "Siapa yang mengubah anggota, peran, kunci API, webhook, integrasi, pengaturan, dan proyek di ruang kerja ini. Entri disimpan sampai Anda menghapus ruang kerja.",
 			"targets": {
+				"whiteboard": "Papan tulis",
 				"page": "Halaman",
 				"apiKey": "Kunci API",
 				"export": "Ekspor",
@@ -3423,7 +3459,7 @@
 		},
 		"trash": {
 			"projectTitle": "Baru dihapus",
-			"projectSubtitle": "Tugas dan halaman yang dihapus tetap di sini sampai dihapus permanen. Memulihkan tugas juga mengembalikan subtugas yang ikut terhapus; halaman yang dipulihkan kembali ke Diarsipkan.",
+			"projectSubtitle": "Tugas, halaman, dan papan tulis yang dihapus tetap di sini sampai dihapus permanen. Memulihkan tugas juga mengembalikan subtugas yang ikut terhapus; halaman atau papan tulis yang dipulihkan kembali ke Diarsipkan.",
 			"workspaceTitle": "Proyek yang baru dihapus",
 			"workspaceNav": "Baru dihapus",
 			"workspaceSubtitle": "Proyek yang dihapus tetap di sini beserta tugasnya sampai dihapus permanen.",
@@ -3463,7 +3499,9 @@
 				"emptied_other": "{{count}} tugas dihapus permanen",
 				"purgeError": "Tidak dapat menghapus permanen",
 				"pageRestored": "Halaman dipulihkan ke Diarsipkan",
-				"pagePurged": "Halaman dihapus permanen"
+				"pagePurged": "Halaman dihapus permanen",
+				"whiteboardRestored": "Papan tulis dipulihkan ke Diarsipkan",
+				"whiteboardPurged": "Papan tulis dihapus permanen"
 			},
 			"tasksHeading": "Tugas",
 			"pagesHeading": "Halaman",
@@ -3471,7 +3509,13 @@
 			"emptyPagesTitle": "Tidak ada halaman yang dihapus",
 			"emptyPagesDescription": "Halaman arsip yang Anda hapus dari proyek ini akan muncul di sini.",
 			"purgePageTitle": "Hapus halaman ini secara permanen?",
-			"purgePageDescription": "“{{name}}”, komentar, dan riwayat versinya akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan."
+			"purgePageDescription": "“{{name}}”, komentar, dan riwayat versinya akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan.",
+			"whiteboardsHeading": "Papan tulis",
+			"searchWhiteboards": "Cari papan tulis yang dihapus",
+			"emptyWhiteboardsTitle": "Tidak ada papan tulis yang dihapus",
+			"emptyWhiteboardsDescription": "Papan tulis arsip yang Anda hapus dari proyek ini akan muncul di sini.",
+			"purgeWhiteboardTitle": "Hapus papan tulis ini secara permanen?",
+			"purgeWhiteboardDescription": "“{{name}}”, isinya, dan gambar-gambarnya akan dihapus untuk semua orang. Tindakan ini tidak dapat dibatalkan."
 		},
 		"automationRules": {
 			"title": "Otomatisasi",
@@ -3942,6 +3986,7 @@
 			"label": "Bagian proyek",
 			"modules": "Modul",
 			"pages": "Halaman",
+			"whiteboards": "Papan tulis",
 			"sections": "Bagian",
 			"tasks": "Tugas",
 			"views": "Tampilan",
@@ -3973,6 +4018,9 @@
 			"newTask": "Tugas baru",
 			"newWorkspace": "Ruang kerja baru",
 			"noPagesProjects": "Aktifkan Halaman di fitur proyek untuk menulis dokumen di sana.",
+			"noWhiteboardsProjects": "Aktifkan Papan tulis di fitur proyek untuk menggambar di sana.",
+			"allWhiteboards": "Semua papan tulis",
+			"whiteboards": "Papan tulis",
 			"noRecent": "Halaman dan tugas yang Anda buka akan muncul di sini.",
 			"pages": "Halaman",
 			"panel": "Navigasi bagian",
@@ -5033,6 +5081,19 @@
 			"previousWeek": "Minggu sebelumnya",
 			"rescheduleError": "Gagal menjadwalkan ulang tugas",
 			"showWeekends": "Tampilkan akhir pekan",
+			"touch": {
+				"daysLabel": "Hari-hari di {{month}}",
+				"weekDaysLabel": "Hari dari {{start}} sampai {{end}}",
+				"dayLabel_other": "{{date}}, {{count}} tugas",
+				"dayLabelEmpty": "{{date}}, tidak ada tugas",
+				"taskCount_other": "{{count}} tugas",
+				"addTask": "Tambah tugas",
+				"empty": "Tidak ada tugas pada hari ini.",
+				"moveTask": "Pindahkan {{title}} ke tanggal lain",
+				"moveTitle": "Pindahkan ke tanggal",
+				"moveDescription": "Pilih tenggat baru untuk {{title}}. Tanggal mulai ikut bergeser, sehingga durasi tugas tetap sama.",
+				"moved": "Dipindahkan ke {{date}}"
+			},
 			"viewMode": "Periode kalender",
 			"week": "Minggu",
 			"overdue": "Terlambat"
@@ -9707,6 +9768,290 @@
 			"error": "Tidak dapat mengubah status pantau halaman ini"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Riwayat papan",
+			"description": "Siapa yang mengubah papan ini dan kapan, terbaru lebih dulu. Suntingan muncul sekali per orang setiap 10 menit.",
+			"empty": "Belum ada yang terjadi di papan ini.",
+			"loadError": "Tidak dapat memuat riwayat papan.",
+			"loadMore": "Muat lebih banyak",
+			"someone": "Seseorang",
+			"entries": {
+				"created": "Membuat papan",
+				"renamed": "Mengganti nama papan menjadi “{{title}}”",
+				"iconChanged": "Mengubah ikon",
+				"locked": "Mengunci papan",
+				"unlocked": "Membuka kunci papan",
+				"archived": "Mengarsipkan papan",
+				"unarchived": "Memulihkan papan dari arsip",
+				"published": "Memublikasikan papan ke web",
+				"unpublished": "Menghentikan publikasi papan",
+				"trashed": "Memindahkan papan ke sampah",
+				"restored": "Memulihkan papan dari sampah",
+				"edited": "Menyunting papan"
+			}
+		},
+		"section": {
+			"title": "Papan tulis"
+		},
+		"list": {
+			"documentTitle": "Papan tulis · {{project}}",
+			"newWhiteboard": "Papan tulis baru",
+			"moreCreateOptions": "Cara lain untuk membuat papan tulis",
+			"untitled": "Papan tanpa judul",
+			"searchPlaceholder": "Cari papan",
+			"searchClear": "Hapus pencarian",
+			"tabs": {
+				"active": "Papan",
+				"archived": "Diarsipkan"
+			},
+			"sort": {
+				"lastEdited": "Terakhir diedit",
+				"created": "Dibuat",
+				"name": "Nama"
+			},
+			"edited": "Diedit {{time}}",
+			"editedBy": "Diedit {{time}} oleh {{name}}",
+			"locked": "Terkunci",
+			"published": "Dipublikasikan",
+			"cardActions": "Tindakan untuk {{title}}",
+			"recentlyDeleted": "Baru dihapus",
+			"loadError": "Gagal memuat papan tulis",
+			"retry": "Coba lagi",
+			"unknownUser": "Seseorang",
+			"empty": {
+				"title": "Belum ada papan tulis",
+				"description": "Tuangkan ide, rencanakan sprint, atau petakan pekerjaan bersama tim Anda di kanvas bersama.",
+				"archivedTitle": "Tidak ada papan tulis yang diarsipkan",
+				"archivedDescription": "Papan yang Anda arsipkan muncul di sini.",
+				"noMatchTitle": "Tidak ada papan yang cocok dengan “{{query}}”",
+				"noMatchDescription": "Coba kata lain. Pencarian memeriksa nama papan dan teks di dalam papan.",
+				"clearSearch": "Hapus pencarian"
+			}
+		},
+		"templates": {
+			"title": "Mulai dari templat",
+			"names": {
+				"blank": "Papan kosong",
+				"brainstorm": "Curah gagasan",
+				"retrospective": "Retrospektif",
+				"sprintPlanning": "Perencanaan sprint",
+				"userStoryMap": "Peta cerita pengguna",
+				"roadmap": "Peta jalan",
+				"flowchart": "Diagram alir",
+				"kanban": "Sketsa Kanban"
+			},
+			"descriptions": {
+				"blank": "Kanvas kosong.",
+				"brainstorm": "Satu pertanyaan utama dengan ruang untuk ide di sekelilingnya.",
+				"retrospective": "Apa yang berjalan baik, apa yang perlu diperbaiki, dan tindak lanjutnya.",
+				"sprintPlanning": "Tujuan sprint, backlog, apa yang sudah disepakati, dan risikonya.",
+				"userStoryMap": "Aktivitas di bagian atas, cerita per rilis di bawahnya.",
+				"roadmap": "Sekarang, berikutnya, dan nanti, berdampingan.",
+				"flowchart": "Awal, keputusan, dan langkah-langkah di antaranya.",
+				"kanban": "Kolom akan dikerjakan, sedang dikerjakan, dan selesai untuk catatan tempel."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "Apa yang ingin kita selesaikan?",
+					"ideas": "Ide"
+				},
+				"retrospective": {
+					"title": "Retrospektif",
+					"wentWell": "Berjalan baik",
+					"toImprove": "Perlu diperbaiki",
+					"actions": "Tindak lanjut"
+				},
+				"sprintPlanning": {
+					"title": "Perencanaan sprint",
+					"goal": "Tujuan sprint",
+					"backlog": "Backlog",
+					"committed": "Disepakati",
+					"risks": "Risiko"
+				},
+				"userStoryMap": {
+					"title": "Peta cerita pengguna",
+					"activity": "Aktivitas",
+					"story": "Cerita",
+					"release1": "Rilis 1",
+					"release2": "Rilis 2"
+				},
+				"roadmap": {
+					"title": "Peta jalan",
+					"now": "Sekarang",
+					"next": "Berikutnya",
+					"later": "Nanti"
+				},
+				"flowchart": {
+					"start": "Mulai",
+					"step": "Langkah",
+					"decision": "Keputusan?",
+					"yes": "Ya",
+					"no": "Tidak",
+					"end": "Selesai"
+				},
+				"kanban": {
+					"todo": "Akan dikerjakan",
+					"doing": "Sedang dikerjakan",
+					"done": "Selesai"
+				}
+			}
+		},
+		"actions": {
+			"history": "Riwayat",
+			"open": "Buka",
+			"openInNewTab": "Buka di tab baru",
+			"copyLink": "Salin tautan",
+			"rename": "Ganti nama",
+			"changeIcon": "Ubah ikon",
+			"duplicate": "Duplikat",
+			"publish": "Publikasikan ke web",
+			"managePublicLink": "Tautan publik",
+			"share": "Bagikan",
+			"lock": "Kunci",
+			"unlock": "Buka kunci",
+			"archive": "Arsipkan",
+			"unarchive": "Pulihkan dari arsip",
+			"moveToTrash": "Pindahkan ke sampah",
+			"export": "Ekspor",
+			"exportPng": "Ekspor sebagai PNG",
+			"exportSvg": "Ekspor sebagai SVG",
+			"exportFile": "Unduh berkas papan",
+			"importFile": "Impor berkas papan",
+			"zoomToFit": "Perbesar agar pas",
+			"fullScreen": "Layar penuh",
+			"exitFullScreen": "Keluar dari layar penuh",
+			"more": "Opsi papan lainnya"
+		},
+		"dialogs": {
+			"cancel": "Batal",
+			"rename": {
+				"title": "Ganti nama papan tulis",
+				"label": "Nama",
+				"save": "Simpan"
+			},
+			"icon": {
+				"title": "Pilih ikon",
+				"description": "Emoji ditampilkan di samping nama papan.",
+				"search": "Cari emoji",
+				"noMatches": "Tidak ada emoji yang cocok dengan pencarian Anda",
+				"remove": "Hapus ikon"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (salinan)"
+			},
+			"delete": {
+				"title": "Pindahkan papan ini ke sampah?",
+				"description": "“{{title}}” dipindahkan ke daftar Baru dihapus milik proyek, tempat papan ini dapat dipulihkan sampai dihapus permanen.",
+				"confirm": "Pindahkan ke sampah"
+			}
+		},
+		"toasts": {
+			"createError": "Gagal membuat papan tulis",
+			"renameError": "Gagal mengganti nama papan tulis",
+			"iconError": "Gagal mengubah ikon",
+			"duplicated": "Papan tulis diduplikasi",
+			"duplicateError": "Gagal menduplikasi papan tulis",
+			"open": "Buka",
+			"locked": "Papan tulis dikunci",
+			"unlocked": "Kunci papan tulis dibuka",
+			"lockError": "Gagal mengubah kunci",
+			"archived": "Papan tulis diarsipkan",
+			"unarchived": "Papan tulis dipulihkan",
+			"archiveError": "Gagal mengarsipkan papan tulis",
+			"unarchiveError": "Gagal memulihkan papan tulis",
+			"deleted": "Dipindahkan ke Baru dihapus",
+			"deleteError": "Gagal memindahkan papan tulis ke sampah",
+			"linkCopied": "Tautan disalin",
+			"exportError": "Gagal mengekspor papan",
+			"imported": "Berkas papan ditambahkan",
+			"importError": "Gagal membaca berkas itu",
+			"imageType": "Hanya gambar PNG, JPEG, GIF, dan WebP yang dapat ditambahkan ke papan",
+			"imageUploadError": "Gagal menambahkan gambar"
+		},
+		"share": {
+			"title": "Bagikan papan tulis",
+			"description": "Publikasikan salinan hanya-baca yang dapat dilihat siapa pun yang memiliki tautan. Menonaktifkannya langsung mencabut tautan.",
+			"switchLabel": "Publikasikan ke web",
+			"onHint": "Siapa pun yang memiliki tautan dapat melihat papan ini.",
+			"offHint": "Hanya orang di proyek ini yang dapat membuka papan ini.",
+			"linkLabel": "Tautan publik",
+			"copyLink": "Salin tautan",
+			"copied": "Disalin",
+			"openLink": "Buka tautan publik",
+			"privacyNote": "Pengunjung melihat papan serta judul dan status kartu tugasnya, tidak ada hal lain dari proyek.",
+			"cannotPublish": "Hanya orang yang dapat mengelola semua papan tulis yang bisa memublikasikan.",
+			"archivedHint": "Pulihkan papan dari arsip untuk memublikasikannya.",
+			"publishedToast": "Papan tulis dipublikasikan",
+			"unpublishedToast": "Tautan publik dinonaktifkan",
+			"error": "Tidak dapat mengubah tautan publik",
+			"done": "Selesai"
+		},
+		"screen": {
+			"backToList": "Kembali ke papan tulis",
+			"titleLabel": "Nama papan tulis",
+			"readOnly": "Hanya-baca",
+			"loadError": "Gagal memuat papan tulis ini",
+			"storedCopyError": "Gagal memuat salinan tersimpan papan ini",
+			"notFound": {
+				"title": "Papan tulis tidak ditemukan",
+				"description": "Papan ini mungkin sudah dihapus, atau Anda tidak memiliki akses.",
+				"back": "Kembali ke papan tulis"
+			}
+		},
+		"banners": {
+			"locked": "Papan ini terkunci. Buka kunci untuk membuat perubahan.",
+			"lockedBy": "{{name}} mengunci papan ini. Buka kunci untuk membuat perubahan.",
+			"unlock": "Buka kunci",
+			"archived": "Papan ini diarsipkan dan hanya dapat dibaca.",
+			"restore": "Pulihkan",
+			"readOnly": "Anda dapat melihat papan ini tetapi tidak dapat mengeditnya.",
+			"storedCopy": "Tidak dapat menjangkau papan langsung. Menampilkan salinan tersimpan terakhir, hanya-baca.",
+			"retry": "Coba lagi",
+			"tooLarge": "Papan ini terlalu besar untuk menyimpan perubahan lagi.",
+			"reload": "Muat ulang"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "Papan dikunci saat Anda offline, sehingga perubahan offline Anda tidak tersimpan.",
+				"archived": "Papan diarsipkan saat Anda offline, sehingga perubahan offline Anda tidak tersimpan.",
+				"readOnly": "Anda tidak dapat lagi mengedit papan ini, sehingga perubahan offline Anda tidak tersimpan."
+			},
+			"replacedBy": "{{name}} mengganti isi papan",
+			"deleted": "Papan tulis ini telah dihapus",
+			"signedOut": "Anda telah keluar. Masuk lagi untuk melanjutkan pengeditan.",
+			"roomFull": "Terlalu banyak orang yang membuka papan ini. Coba lagi nanti."
+		},
+		"publicView": {
+			"documentTitle": "Papan tulis yang dibagikan",
+			"unavailableTitle": "Tautan ini tidak tersedia",
+			"unavailableDescription": "Papan mungkin sudah tidak dipublikasikan, atau tautannya salah.",
+			"updated": "Diperbarui {{date}}",
+			"readOnly": "Hanya-baca"
+		},
+		"taskBoards": {
+			"title": "Di papan tulis"
+		},
+		"workspace": {
+			"title": "Papan tulis",
+			"documentTitle": "Semua papan tulis",
+			"chooseProject": "Buat di proyek",
+			"projectFilter": "Proyek",
+			"allProjects": "Semua proyek",
+			"groupByProject": "Kelompokkan menurut proyek",
+			"showAllProjects": "Tampilkan semua proyek",
+			"empty": {
+				"description": "Papan dari setiap proyek yang dapat Anda lihat muncul di sini.",
+				"noProjectsTitle": "Belum ada proyek dengan papan tulis",
+				"noProjectsDescription": "Aktifkan Papan tulis di fitur proyek untuk mulai menggambar."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Papan tulis baru",
+			"goToWhiteboards": "Buka papan tulis",
+			"goToAllWhiteboards": "Buka semua papan tulis"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Simpan",
@@ -12829,7 +13174,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} telah diunduh",
-				"failed": "Tidak dapat mengunduh {{file}}"
+				"failed": "Tidak dapat mengunduh {{file}}",
+				"showInFolder": "Klik untuk menampilkan di folder",
+				"openFolder": "Klik untuk membuka folder Unduhan"
 			},
 			"notifications": {
 				"releasedTitle": "Notifikasi aktif kembali",
@@ -12878,6 +13225,343 @@
 				"retryIn_other": "Mencoba lagi dalam {{count}} detik",
 				"switchServer": "Ganti server"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Kanvas papan tulis",
+			"roleDescription": "papan tulis"
+		},
+		"actions": {
+			"cancel": "Batal",
+			"save": "Simpan"
+		},
+		"tools": {
+			"label": "Alat",
+			"more": "Alat lainnya",
+			"select": "Pilih",
+			"hand": "Tangan (geser)",
+			"rectangle": "Persegi panjang",
+			"diamond": "Belah ketupat",
+			"ellipse": "Elips",
+			"arrow": "Panah",
+			"line": "Garis",
+			"draw": "Pena",
+			"text": "Teks",
+			"sticky": "Catatan tempel",
+			"image": "Gambar",
+			"eraser": "Penghapus",
+			"frame": "Bingkai",
+			"laser": "Penunjuk laser",
+			"task": "Kartu tugas",
+			"lock": "Biarkan alat tetap aktif",
+			"lockTool": "Biarkan alat tetap aktif setelah menggambar",
+			"unlockTool": "Kembali ke Pilih setelah menggambar",
+			"shape": "Bentuk"
+		},
+		"commands": {
+			"undo": "Urungkan",
+			"redo": "Ulangi",
+			"history": "Riwayat",
+			"copy": "Salin",
+			"cut": "Potong",
+			"paste": "Tempel",
+			"duplicate": "Duplikat",
+			"delete": "Hapus",
+			"selectAll": "Pilih semua",
+			"group": "Kelompokkan",
+			"ungroup": "Pisahkan kelompok",
+			"bringForward": "Bawa ke depan",
+			"sendBackward": "Kirim ke belakang",
+			"bringToFront": "Bawa ke paling depan",
+			"sendToBack": "Kirim ke paling belakang",
+			"toggleGrid": "Tempelkan ke kisi",
+			"toggleSnap": "Tempelkan ke objek",
+			"toggleMinimap": "Tampilkan peta mini",
+			"search": "Cari di papan",
+			"help": "Pintasan keyboard",
+			"toggleElementLock": "Kunci atau buka kunci",
+			"lock": "Kunci",
+			"unlock": "Buka kunci",
+			"flipHorizontal": "Balik horizontal",
+			"flipVertical": "Balik vertikal",
+			"copyStyle": "Salin gaya",
+			"pasteStyle": "Tempel gaya",
+			"alignLeft": "Rata kiri",
+			"alignCenter": "Ratakan tengah secara horizontal",
+			"alignRight": "Rata kanan",
+			"alignTop": "Rata atas",
+			"alignMiddle": "Ratakan tengah secara vertikal",
+			"alignBottom": "Rata bawah",
+			"distributeHorizontal": "Sebarkan secara horizontal",
+			"distributeVertical": "Sebarkan secara vertikal",
+			"editText": "Edit teks",
+			"editLink": "Edit tautan"
+		},
+		"zoom": {
+			"label": "Pembesaran",
+			"in": "Perbesar",
+			"out": "Perkecil",
+			"reset": "Atur ulang pembesaran",
+			"resetTo": "Pembesaran {{percent}}%, atur ulang ke 100%",
+			"percent": "{{percent}}%",
+			"fit": "Perbesar agar pas",
+			"selection": "Perbesar ke pilihan"
+		},
+		"panel": {
+			"label": "Gaya",
+			"stroke": "Garis tepi",
+			"textColor": "Warna teks",
+			"stickyColor": "Warna catatan",
+			"fill": "Latar belakang",
+			"fillStyle": "Isian",
+			"fillSolid": "Padat",
+			"fillHatch": "Arsir",
+			"fillCross": "Arsir silang",
+			"fillNone": "Tidak ada",
+			"strokeWidth": "Ketebalan garis",
+			"thin": "Tipis",
+			"medium": "Sedang",
+			"bold": "Tebal",
+			"extraBold": "Sangat tebal",
+			"strokeStyle": "Gaya garis",
+			"solid": "Utuh",
+			"dashed": "Putus-putus",
+			"dotted": "Titik-titik",
+			"sketch": "Kesan sketsa",
+			"sketchClean": "Rapi",
+			"sketchLight": "Ringan",
+			"sketchRough": "Kasar",
+			"corners": "Sudut",
+			"cornersSharp": "Tajam",
+			"cornersRound": "Bulat",
+			"cornersRounder": "Lebih bulat",
+			"font": "Fon",
+			"fontHand": "Tulisan tangan",
+			"fontSans": "Sans-serif",
+			"fontMono": "Monospasi",
+			"fontSize": "Ukuran fon",
+			"sizeSmall": "S",
+			"sizeMedium": "M",
+			"sizeLarge": "L",
+			"sizeHuge": "XL",
+			"align": "Perataan teks",
+			"alignLeft": "Kiri",
+			"alignCenter": "Tengah",
+			"alignRight": "Kanan",
+			"routing": "Jenis garis",
+			"routingStraight": "Lurus",
+			"routingCurved": "Melengkung",
+			"routingElbow": "Siku",
+			"arrowheads": "Ujung panah",
+			"startHead": "Awal",
+			"endHead": "Akhir",
+			"headNone": "Tidak ada",
+			"headArrow": "Panah",
+			"headTriangle": "Segitiga",
+			"headDot": "Titik",
+			"headBar": "Batang",
+			"opacity": "Opasitas",
+			"layers": "Lapisan",
+			"alignment": "Perataan",
+			"actions": "Tindakan"
+		},
+		"colors": {
+			"black": "Hitam",
+			"red": "Merah",
+			"green": "Hijau",
+			"blue": "Biru",
+			"orange": "Oranye",
+			"purple": "Ungu",
+			"teal": "Hijau kebiruan",
+			"grey": "Abu-abu",
+			"yellow": "Kuning",
+			"pink": "Merah muda",
+			"none": "Tanpa warna",
+			"custom": "Warna kustom"
+		},
+		"text": {
+			"label": "Teks",
+			"frameName": "Nama bingkai"
+		},
+		"link": {
+			"title": "Tautan",
+			"description": "Tambahkan alamat web, atau tautkan ke elemen lain dengan #element= dan id-nya.",
+			"label": "Alamat",
+			"invalid": "Masukkan alamat web yang diawali https://, alamat mailto:, atau tautan elemen.",
+			"remove": "Hapus tautan",
+			"open": "Buka tautan",
+			"copyElementLink": "Salin tautan ke elemen"
+		},
+		"search": {
+			"title": "Cari di papan",
+			"placeholder": "Cari teks di papan ini",
+			"noResults": "Tidak ada yang cocok di papan ini.",
+			"results": "Hasil yang cocok"
+		},
+		"tasks": {
+			"pickerTitle": "Tambahkan kartu tugas",
+			"searchPlaceholder": "Cari tugas berdasarkan judul atau kunci",
+			"noResults": "Tidak ada tugas yang cocok.",
+			"results": "Tugas",
+			"onBoard": "Di papan ini",
+			"addCards_other": "Tambahkan {{count}} kartu",
+			"addCardsNone": "Tambahkan kartu",
+			"pickHint": "Pilih satu atau beberapa tugas untuk ditambahkan sebagai kartu.",
+			"openTask": "Buka tugas",
+			"turnIntoTasks_other": "Ubah menjadi {{count}} tugas",
+			"turnIntoTasksTitle": "Ubah catatan menjadi tugas",
+			"turnIntoTasksDescription": "Setiap catatan menjadi tugas di proyek ini dan diganti dengan kartu tugas langsung.",
+			"column": "Kolom",
+			"titles": "Judul tugas",
+			"taskTitle": "Judul tugas {{index}}",
+			"emptyTitle": "Catatan tanpa judul",
+			"skippedEmpty": "Catatan tanpa judul dilewati.",
+			"createTasks_other": "Buat {{count}} tugas",
+			"converted_other": "{{count}} tugas dibuat",
+			"convertPartial_other": "{{count}} catatan tidak dapat dijadikan tugas",
+			"makeDependency": "Jadikan dependensi",
+			"removeDependency": "Hapus dependensi",
+			"removeDependencyPrompt": "Hapus juga dependensi antara {{source}} dan {{target}}?",
+			"removeDependenciesPrompt_other": "Hapus juga {{count}} dependensi antara tugas-tugas ini?",
+			"dependencyPair": "{{source}} memblokir {{target}}",
+			"removeDependencyConfirm": "Hapus",
+			"keepDependency": "Pertahankan",
+			"dependencyPromptLabel": "Dependensi tugas",
+			"dependencyRemoved_other": "{{count}} dependensi dihapus",
+			"dependencyRemoveFailed": "Dependensi tidak dapat dihapus."
+		},
+		"crop": {
+			"section": "Gambar",
+			"start": "Pangkas gambar",
+			"finish": "Selesai memangkas",
+			"reset": "Atur ulang pangkasan"
+		},
+		"presence": {
+			"label": "Orang di papan ini",
+			"follow": "Ikuti {{name}}",
+			"stopFollowing": "Berhenti mengikuti {{name}}",
+			"following": "Mengikuti {{name}}",
+			"stop": "Berhenti"
+		},
+		"minimap": {
+			"label": "Ikhtisar papan"
+		},
+		"contextMenu": {
+			"label": "Tindakan kanvas"
+		},
+		"notices": {
+			"readOnly": "Papan ini hanya dapat dibaca.",
+			"copied": "Disalin",
+			"linkCopied": "Tautan disalin",
+			"pasteEmpty": "Tidak ada yang dapat ditempel",
+			"uploadFailed": "Gambar tidak dapat diunggah.",
+			"uploading": "Mengunggah gambar…",
+			"imagesOff": "Gambar tidak tersedia di papan ini.",
+			"importFailed": "Berkas itu bukan papan Margaya.",
+			"imported": "Papan ditambahkan",
+			"tooManyElements": "Papan ini sudah penuh. Hapus sesuatu sebelum menambahkan lagi.",
+			"dependencyCreated": "Dependensi dibuat",
+			"dependencyFailed": "Dependensi tidak dapat dibuat.",
+			"cropUnavailable": "Gambar masih dimuat. Coba pangkas lagi sebentar lagi."
+		},
+		"help": {
+			"title": "Pintasan keyboard",
+			"or": "atau",
+			"sections": {
+				"tools": "Alat",
+				"view": "Tampilan",
+				"edit": "Pengeditan",
+				"arrange": "Susun",
+				"pointer": "Mouse dan sentuhan"
+			},
+			"pan": "Geser tampilan",
+			"zoomWheel": "Perbesar atau perkecil",
+			"commitText": "Selesai mengedit teks",
+			"finishCrop": "Selesai memangkas",
+			"nudge": "Geser sedikit",
+			"flowchart": "Tambahkan bentuk yang terhubung",
+			"cycle": "Pilih elemen sebelumnya atau berikutnya",
+			"keepAspect": "Pertahankan proporsi atau kunci sudut",
+			"fromCentre": "Ubah ukuran dari tengah",
+			"duplicateDrag": "Duplikat sambil menyeret",
+			"addToSelection": "Tambahkan ke pilihan",
+			"enterGroup": "Edit di dalam grup, atau edit teks",
+			"noSnap": "Pindahkan tanpa menempel",
+			"keys": {
+				"drag": "seret",
+				"wheel": "roda gulir",
+				"click": "klik",
+				"doubleClick": "klik dua kali",
+				"space": "Spasi",
+				"delete": "Delete",
+				"enter": "Enter",
+				"escape": "Esc",
+				"shift": "Shift",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Pustaka bentuk",
+			"label": "Bentuk",
+			"change": "Ubah bentuk",
+			"add": "Tambah bentuk",
+			"search": "Cari bentuk",
+			"noResults": "Tidak ada bentuk yang cocok",
+			"groups": {
+				"basic": "Dasar",
+				"polygons": "Poligon",
+				"arrows": "Panah",
+				"symbols": "Simbol"
+			},
+			"names": {
+				"triangle": "Segitiga",
+				"rightTriangle": "Segitiga siku-siku",
+				"pentagon": "Segi lima",
+				"hexagon": "Segi enam",
+				"octagon": "Segi delapan",
+				"star": "Bintang",
+				"parallelogram": "Jajaran genjang",
+				"trapezoid": "Trapesium",
+				"plus": "Tanda tambah",
+				"cross": "Silang",
+				"heart": "Hati",
+				"cloud": "Awan",
+				"speech": "Balon ucapan",
+				"cylinder": "Tabung",
+				"document": "Dokumen",
+				"arrowRight": "Panah kanan",
+				"arrowLeft": "Panah kiri",
+				"arrowUp": "Panah atas",
+				"arrowDown": "Panah bawah",
+				"arrowDouble": "Panah ganda",
+				"chevron": "Tanda pangkat",
+				"moon": "Bulan"
+			}
+		},
+		"pens": {
+			"label": "Gaya pena",
+			"pen": "Pena",
+			"marker": "Spidol",
+			"highlighter": "Stabilo"
+		},
+		"background": {
+			"label": "Latar belakang",
+			"pattern": "Pola",
+			"plain": "Polos",
+			"dots": "Titik",
+			"grid": "Kisi",
+			"lines": "Garis",
+			"spacing": "Jarak",
+			"small": "Kecil",
+			"medium": "Sedang",
+			"large": "Besar",
+			"paper": "Warna kertas",
+			"white": "Putih",
+			"cream": "Krem",
+			"stone": "Batu",
+			"mist": "Kabut",
+			"mint": "Daun mint"
 		}
 	}
 }

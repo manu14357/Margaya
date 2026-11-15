@@ -2072,6 +2072,7 @@
 				"intake": "İstekler",
 				"analytics": "Analitik",
 				"page": "Sayfalar",
+				"whiteboard": "Beyaz tahtalar",
 				"audit_log": "Denetim günlüğü",
 				"ai": "YZ"
 			},
@@ -2300,6 +2301,24 @@
 						"label": "Sayfaları düzenle"
 					}
 				},
+				"whiteboard": {
+					"read": {
+						"label": "Beyaz tahtaları görüntüle",
+						"description": "Beyaz tahtalar bölümünü görür ve tahtaları salt okunur açar."
+					},
+					"create": {
+						"label": "Beyaz tahta oluştur",
+						"description": "Şablondan veya boş tahtalar oluşturur ve tahtaları çoğaltır."
+					},
+					"update": {
+						"label": "Beyaz tahtaları düzenle",
+						"description": "Tahtalarda çizer ve düzenleme yapar; kendi tahtalarını kilitler veya arşivler."
+					},
+					"delete": {
+						"label": "Tüm beyaz tahtaları yönet",
+						"description": "Yalnızca kendi tahtalarını değil, görebildiği tüm tahtaları kilitler, arşivler, yayınlar ve siler."
+					}
+				},
 				"audit_log": {
 					"read": {
 						"description": "Çalışma alanı denetim günlüğünü görün ve dışa aktarın: üyeleri, rolleri, anahtarları, webhook'ları, entegrasyonları ve ayarları kimin değiştirdiği.",
@@ -2479,6 +2498,10 @@
 				"updates": {
 					"title": "Güncellemeler",
 					"description": "Canlı proje verilerinden hazırlanan, sağlık değeri içeren tarihli durum güncellemeleri yayımlayın."
+				},
+				"whiteboards": {
+					"title": "Beyaz tahtalar",
+					"description": "Paylaşılan tuvallerde canlı görev kartlarıyla birlikte taslak çizin, plan yapın ve işi birlikte haritalayın."
 				}
 			},
 			"loadError": "Bu proje yüklenemedi",
@@ -3311,6 +3334,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Bir beyaz tahta oluşturdu",
+				"whiteboardRenamed": "Bir beyaz tahtayı yeniden adlandırdı",
+				"whiteboardIconChanged": "Bir beyaz tahtanın simgesini değiştirdi",
+				"whiteboardLocked": "Bir beyaz tahtayı kilitledi",
+				"whiteboardUnlocked": "Bir beyaz tahtanın kilidini açtı",
+				"whiteboardArchived": "Bir beyaz tahtayı arşivledi",
+				"whiteboardUnarchived": "Bir beyaz tahtayı arşivden geri yükledi",
+				"whiteboardPublished": "Bir beyaz tahtayı herkese açık bağlantıyla yayınladı",
+				"whiteboardUnpublished": "Bir beyaz tahtanın herkese açık bağlantısını iptal etti",
+				"whiteboardTrashed": "Bir beyaz tahtayı çöp kutusuna taşıdı",
+				"whiteboardRestored": "Bir beyaz tahtayı çöp kutusundan geri yükledi",
+				"whiteboardPurged": "Bir beyaz tahtayı kalıcı olarak sildi",
 				"workspaceDeletionScheduled": "Çalışma alanının silinmesini planladı",
 				"workspaceDeletionCancelled": "Çalışma alanının silinmesini iptal etti",
 				"workspacePublicPagesChanged": "Herkese açık sayfaları açtı veya kapattı",
@@ -3460,6 +3495,7 @@
 			"subtitle": "Bu çalışma alanında üyeleri, rolleri, API anahtarlarını, webhook'ları, entegrasyonları, ayarları ve projeleri kimin değiştirdiği. Kayıtlar {{days}} gün saklanır.",
 			"subtitleForever": "Bu çalışma alanında üyeleri, rolleri, API anahtarlarını, webhook'ları, entegrasyonları, ayarları ve projeleri kimin değiştirdiği. Kayıtlar çalışma alanını silene kadar saklanır.",
 			"targets": {
+				"whiteboard": "Beyaz tahta",
 				"page": "Sayfa",
 				"apiKey": "API anahtarı",
 				"export": "Dışa aktarma",
@@ -3479,7 +3515,7 @@
 		},
 		"trash": {
 			"projectTitle": "Son silinenler",
-			"projectSubtitle": "Silinen görevler ve sayfalar kalıcı olarak silinene kadar burada kalır. Bir görevi geri yüklemek, onunla birlikte silinen alt görevleri de geri getirir; geri yüklenen sayfa Arşivlenmiş bölümüne döner.",
+			"projectSubtitle": "Silinen görevler, sayfalar ve beyaz tahtalar kalıcı olarak silinene kadar burada kalır. Bir görevi geri yüklemek, onunla birlikte silinen alt görevleri de geri getirir; geri yüklenen sayfa veya beyaz tahta Arşivlenmiş bölümüne döner.",
 			"workspaceTitle": "Son silinen projeler",
 			"workspaceNav": "Son silinenler",
 			"workspaceSubtitle": "Silinen projeler, görevleriyle birlikte kalıcı olarak silinene kadar burada kalır.",
@@ -3522,7 +3558,9 @@
 				"emptied_other": "{{count}} görev kalıcı olarak silindi",
 				"purgeError": "Kalıcı olarak silinemedi",
 				"pageRestored": "Sayfa Arşivlenmiş bölümüne geri yüklendi",
-				"pagePurged": "Sayfa kalıcı olarak silindi"
+				"pagePurged": "Sayfa kalıcı olarak silindi",
+				"whiteboardRestored": "Beyaz tahta Arşivlenmiş bölümüne geri yüklendi",
+				"whiteboardPurged": "Beyaz tahta kalıcı olarak silindi"
 			},
 			"tasksHeading": "Görevler",
 			"pagesHeading": "Sayfalar",
@@ -3530,7 +3568,13 @@
 			"emptyPagesTitle": "Silinen sayfa yok",
 			"emptyPagesDescription": "Bu projeden sildiğiniz arşivlenmiş sayfalar burada görünür.",
 			"purgePageTitle": "Bu sayfa kalıcı olarak silinsin mi?",
-			"purgePageDescription": "“{{name}}”, yorumları ve sürüm geçmişi herkes için silinir. Bu işlem geri alınamaz."
+			"purgePageDescription": "“{{name}}”, yorumları ve sürüm geçmişi herkes için silinir. Bu işlem geri alınamaz.",
+			"whiteboardsHeading": "Beyaz tahtalar",
+			"searchWhiteboards": "Silinen beyaz tahtalarda ara",
+			"emptyWhiteboardsTitle": "Silinen beyaz tahta yok",
+			"emptyWhiteboardsDescription": "Bu projeden sildiğiniz arşivlenmiş beyaz tahtalar burada görünür.",
+			"purgeWhiteboardTitle": "Bu beyaz tahta kalıcı olarak silinsin mi?",
+			"purgeWhiteboardDescription": "“{{name}}”, içeriği ve görselleri herkes için silinir. Bu işlem geri alınamaz."
 		},
 		"automationRules": {
 			"title": "Otomasyonlar",
@@ -4002,6 +4046,7 @@
 			"label": "Proje bölümleri",
 			"modules": "Modüller",
 			"pages": "Sayfalar",
+			"whiteboards": "Beyaz tahtalar",
 			"sections": "Bölümler",
 			"tasks": "Görevler",
 			"views": "Görünümler",
@@ -4033,6 +4078,9 @@
 			"newTask": "Yeni görev",
 			"newWorkspace": "Yeni çalışma alanı",
 			"noPagesProjects": "Orada belge yazmak için bir projenin özelliklerinde Sayfalar'ı açın.",
+			"noWhiteboardsProjects": "Orada çizim yapmak için bir projenin özelliklerinde Beyaz tahtalar'ı açın.",
+			"allWhiteboards": "Tüm beyaz tahtalar",
+			"whiteboards": "Beyaz tahtalar",
 			"noRecent": "Açtığınız sayfalar ve görevler burada görünür.",
 			"pages": "Sayfalar",
 			"panel": "Bölüm gezinmesi",
@@ -5112,6 +5160,21 @@
 			"previousWeek": "Önceki hafta",
 			"rescheduleError": "Görev yeniden planlanamadı",
 			"showWeekends": "Hafta sonlarını göster",
+			"touch": {
+				"daysLabel": "{{month}} günleri",
+				"weekDaysLabel": "{{start}} – {{end}} arasındaki günler",
+				"dayLabel_one": "{{date}}, {{count}} görev",
+				"dayLabel_other": "{{date}}, {{count}} görev",
+				"dayLabelEmpty": "{{date}}, görev yok",
+				"taskCount_one": "{{count}} görev",
+				"taskCount_other": "{{count}} görev",
+				"addTask": "Görev ekle",
+				"empty": "Bu günde görev yok.",
+				"moveTask": "{{title}} görevini başka bir tarihe taşı",
+				"moveTitle": "Tarihe taşı",
+				"moveDescription": "{{title}} için yeni bitiş tarihini seçin. Başlangıç tarihi de onunla birlikte kayar, böylece görevin süresi aynı kalır.",
+				"moved": "{{date}} tarihine taşındı"
+			},
 			"viewMode": "Takvim dönemi",
 			"week": "Hafta",
 			"overdue": "Gecikmiş"
@@ -9852,6 +9915,290 @@
 			"error": "Bu sayfanın izleme durumu değiştirilemedi"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Tahta geçmişi",
+			"description": "Bu tahtayı kimin ne zaman değiştirdiği, en yeniden başlayarak. Düzenlemeler kişi başına 10 dakikada bir gösterilir.",
+			"empty": "Bu tahtada henüz bir şey olmadı.",
+			"loadError": "Tahta geçmişi yüklenemedi.",
+			"loadMore": "Daha fazla yükle",
+			"someone": "Biri",
+			"entries": {
+				"created": "Tahtayı oluşturdu",
+				"renamed": "Tahtanın adını “{{title}}” olarak değiştirdi",
+				"iconChanged": "Simgeyi değiştirdi",
+				"locked": "Tahtayı kilitledi",
+				"unlocked": "Tahtanın kilidini açtı",
+				"archived": "Tahtayı arşivledi",
+				"unarchived": "Tahtayı arşivden geri yükledi",
+				"published": "Tahtayı web'de yayınladı",
+				"unpublished": "Tahtanın yayınını kaldırdı",
+				"trashed": "Tahtayı çöp kutusuna taşıdı",
+				"restored": "Tahtayı çöp kutusundan geri yükledi",
+				"edited": "Tahtayı düzenledi"
+			}
+		},
+		"section": {
+			"title": "Beyaz tahtalar"
+		},
+		"list": {
+			"documentTitle": "Beyaz tahtalar · {{project}}",
+			"newWhiteboard": "Yeni beyaz tahta",
+			"moreCreateOptions": "Beyaz tahta oluşturmanın diğer yolları",
+			"untitled": "Adsız tahta",
+			"searchPlaceholder": "Tahtalarda ara",
+			"searchClear": "Aramayı temizle",
+			"tabs": {
+				"active": "Tahtalar",
+				"archived": "Arşivlenmiş"
+			},
+			"sort": {
+				"lastEdited": "Son düzenleme",
+				"created": "Oluşturma",
+				"name": "Ad"
+			},
+			"edited": "{{time}} düzenlendi",
+			"editedBy": "{{name}} tarafından {{time}} düzenlendi",
+			"locked": "Kilitli",
+			"published": "Yayında",
+			"cardActions": "{{title}} için işlemler",
+			"recentlyDeleted": "Son silinenler",
+			"loadError": "Beyaz tahtalar yüklenemedi",
+			"retry": "Tekrar dene",
+			"unknownUser": "Biri",
+			"empty": {
+				"title": "Henüz beyaz tahta yok",
+				"description": "Paylaşılan bir tuvalde ekibinizle fikirlerin taslağını çizin, bir sprint planlayın veya işi haritalayın.",
+				"archivedTitle": "Arşivlenmiş beyaz tahta yok",
+				"archivedDescription": "Arşivlediğiniz tahtalar burada görünür.",
+				"noMatchTitle": "“{{query}}” ile eşleşen tahta yok",
+				"noMatchDescription": "Başka kelimeler deneyin. Arama, tahta adlarına ve tahtalardaki metne bakar.",
+				"clearSearch": "Aramayı temizle"
+			}
+		},
+		"templates": {
+			"title": "Bir şablonla başlayın",
+			"names": {
+				"blank": "Boş tahta",
+				"brainstorm": "Beyin fırtınası",
+				"retrospective": "Retrospektif",
+				"sprintPlanning": "Sprint planlaması",
+				"userStoryMap": "Kullanıcı hikâyesi haritası",
+				"roadmap": "Yol haritası",
+				"flowchart": "Akış şeması",
+				"kanban": "Kanban taslağı"
+			},
+			"descriptions": {
+				"blank": "Boş bir tuval.",
+				"brainstorm": "Ortada bir soru ve etrafında fikirler için yer.",
+				"retrospective": "İyi gidenler, geliştirilecekler ve aksiyonlar.",
+				"sprintPlanning": "Sprint hedefi, bekleyen işler, taahhüt edilenler ve riskler.",
+				"userStoryMap": "Üstte etkinlikler, altında sürümlere göre hikâyeler.",
+				"roadmap": "Şimdi, sırada ve sonra, yan yana.",
+				"flowchart": "Bir başlangıç, bir karar ve aradaki adımlar.",
+				"kanban": "Yapışkan notlar için Yapılacak, Yapılıyor ve Tamamlandı sütunları."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "Neyi çözüyoruz?",
+					"ideas": "Fikirler"
+				},
+				"retrospective": {
+					"title": "Retrospektif",
+					"wentWell": "İyi gidenler",
+					"toImprove": "Geliştirilecekler",
+					"actions": "Aksiyonlar"
+				},
+				"sprintPlanning": {
+					"title": "Sprint planlaması",
+					"goal": "Sprint hedefi",
+					"backlog": "Bekleyen işler",
+					"committed": "Taahhüt edilenler",
+					"risks": "Riskler"
+				},
+				"userStoryMap": {
+					"title": "Kullanıcı hikâyesi haritası",
+					"activity": "Etkinlik",
+					"story": "Hikâye",
+					"release1": "Sürüm 1",
+					"release2": "Sürüm 2"
+				},
+				"roadmap": {
+					"title": "Yol haritası",
+					"now": "Şimdi",
+					"next": "Sırada",
+					"later": "Sonra"
+				},
+				"flowchart": {
+					"start": "Başlangıç",
+					"step": "Adım",
+					"decision": "Karar?",
+					"yes": "Evet",
+					"no": "Hayır",
+					"end": "Bitiş"
+				},
+				"kanban": {
+					"todo": "Yapılacak",
+					"doing": "Yapılıyor",
+					"done": "Tamamlandı"
+				}
+			}
+		},
+		"actions": {
+			"history": "Geçmiş",
+			"open": "Aç",
+			"openInNewTab": "Yeni sekmede aç",
+			"copyLink": "Bağlantıyı kopyala",
+			"rename": "Yeniden adlandır",
+			"changeIcon": "Simgeyi değiştir",
+			"duplicate": "Çoğalt",
+			"publish": "Web'de yayınla",
+			"managePublicLink": "Herkese açık bağlantı",
+			"share": "Paylaş",
+			"lock": "Kilitle",
+			"unlock": "Kilidi aç",
+			"archive": "Arşivle",
+			"unarchive": "Arşivden geri yükle",
+			"moveToTrash": "Çöp kutusuna taşı",
+			"export": "Dışa aktar",
+			"exportPng": "PNG olarak dışa aktar",
+			"exportSvg": "SVG olarak dışa aktar",
+			"exportFile": "Tahta dosyasını indir",
+			"importFile": "Tahta dosyası içe aktar",
+			"zoomToFit": "Sığacak şekilde yakınlaştır",
+			"fullScreen": "Tam ekran",
+			"exitFullScreen": "Tam ekrandan çık",
+			"more": "Diğer tahta seçenekleri"
+		},
+		"dialogs": {
+			"cancel": "İptal",
+			"rename": {
+				"title": "Beyaz tahtayı yeniden adlandır",
+				"label": "Ad",
+				"save": "Kaydet"
+			},
+			"icon": {
+				"title": "Bir simge seçin",
+				"description": "Emoji, tahtanın adının yanında görünür.",
+				"search": "Emoji ara",
+				"noMatches": "Aramanızla eşleşen emoji yok",
+				"remove": "Simgeyi kaldır"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (kopya)"
+			},
+			"delete": {
+				"title": "Bu tahta çöp kutusuna taşınsın mı?",
+				"description": "“{{title}}”, projenin Son silinenler listesine taşınır; kalıcı olarak silinene kadar oradan geri yüklenebilir.",
+				"confirm": "Çöp kutusuna taşı"
+			}
+		},
+		"toasts": {
+			"createError": "Beyaz tahta oluşturulamadı",
+			"renameError": "Beyaz tahta yeniden adlandırılamadı",
+			"iconError": "Simge değiştirilemedi",
+			"duplicated": "Beyaz tahta çoğaltıldı",
+			"duplicateError": "Beyaz tahta çoğaltılamadı",
+			"open": "Aç",
+			"locked": "Beyaz tahta kilitlendi",
+			"unlocked": "Beyaz tahtanın kilidi açıldı",
+			"lockError": "Kilit değiştirilemedi",
+			"archived": "Beyaz tahta arşivlendi",
+			"unarchived": "Beyaz tahta geri yüklendi",
+			"archiveError": "Beyaz tahta arşivlenemedi",
+			"unarchiveError": "Beyaz tahta geri yüklenemedi",
+			"deleted": "Son silinenlere taşındı",
+			"deleteError": "Beyaz tahta çöp kutusuna taşınamadı",
+			"linkCopied": "Bağlantı kopyalandı",
+			"exportError": "Tahta dışa aktarılamadı",
+			"imported": "Tahta dosyası eklendi",
+			"importError": "Bu dosya okunamadı",
+			"imageType": "Tahtaya yalnızca PNG, JPEG, GIF ve WebP görselleri eklenebilir",
+			"imageUploadError": "Görsel eklenemedi"
+		},
+		"share": {
+			"title": "Beyaz tahtayı paylaş",
+			"description": "Bağlantıya sahip herkesin görüntüleyebileceği salt okunur bir kopya yayınlayın. Kapattığınızda bağlantı hemen iptal edilir.",
+			"switchLabel": "Web'de yayınla",
+			"onHint": "Bağlantıya sahip herkes bu tahtayı görüntüleyebilir.",
+			"offHint": "Bu tahtayı yalnızca bu projedeki kişiler açabilir.",
+			"linkLabel": "Herkese açık bağlantı",
+			"copyLink": "Bağlantıyı kopyala",
+			"copied": "Kopyalandı",
+			"openLink": "Herkese açık bağlantıyı aç",
+			"privacyNote": "Görüntüleyenler tahtayı ve üzerindeki görev kartlarının başlıklarını ve durumlarını görür; projeden başka hiçbir şeyi görmez.",
+			"cannotPublish": "Yalnızca tüm beyaz tahtaları yönetebilen kişiler yayınlayabilir.",
+			"archivedHint": "Yayınlamak için tahtayı arşivden geri yükleyin.",
+			"publishedToast": "Beyaz tahta yayınlandı",
+			"unpublishedToast": "Herkese açık bağlantı kapatıldı",
+			"error": "Herkese açık bağlantı değiştirilemedi",
+			"done": "Tamam"
+		},
+		"screen": {
+			"backToList": "Beyaz tahtalara dön",
+			"titleLabel": "Beyaz tahta adı",
+			"readOnly": "Salt okunur",
+			"loadError": "Bu beyaz tahta yüklenemedi",
+			"storedCopyError": "Bu tahtanın kayıtlı kopyası yüklenemedi",
+			"notFound": {
+				"title": "Beyaz tahta bulunamadı",
+				"description": "Silinmiş olabilir veya erişiminiz yok.",
+				"back": "Beyaz tahtalara dön"
+			}
+		},
+		"banners": {
+			"locked": "Bu tahta kilitli. Değişiklik yapmak için kilidi açın.",
+			"lockedBy": "{{name}} bu tahtayı kilitledi. Değişiklik yapmak için kilidi açın.",
+			"unlock": "Kilidi aç",
+			"archived": "Bu tahta arşivlenmiş ve salt okunur.",
+			"restore": "Geri yükle",
+			"readOnly": "Bu tahtayı görüntüleyebilirsiniz ancak düzenleyemezsiniz.",
+			"storedCopy": "Canlı tahtaya ulaşılamıyor. Son kaydedilen kopya salt okunur olarak gösteriliyor.",
+			"retry": "Tekrar dene",
+			"tooLarge": "Bu tahta daha fazla değişiklik kaydedilemeyecek kadar büyük.",
+			"reload": "Yenile"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "Siz çevrimdışıyken tahta kilitlendi, bu yüzden çevrimdışı değişiklikleriniz kaydedilmedi.",
+				"archived": "Siz çevrimdışıyken tahta arşivlendi, bu yüzden çevrimdışı değişiklikleriniz kaydedilmedi.",
+				"readOnly": "Bu tahtayı artık düzenleyemiyorsunuz, bu yüzden çevrimdışı değişiklikleriniz kaydedilmedi."
+			},
+			"replacedBy": "{{name}} tahtanın içeriğini değiştirdi",
+			"deleted": "Bu beyaz tahta silindi",
+			"signedOut": "Oturumunuz kapatıldı. Düzenlemeye devam etmek için yeniden giriş yapın.",
+			"roomFull": "Bu tahtayı açık tutan çok fazla kişi var. Daha sonra tekrar deneyin."
+		},
+		"publicView": {
+			"documentTitle": "Paylaşılan beyaz tahta",
+			"unavailableTitle": "Bu bağlantı kullanılamıyor",
+			"unavailableDescription": "Tahta yayından kaldırılmış olabilir veya bağlantı hatalı.",
+			"updated": "Güncellenme: {{date}}",
+			"readOnly": "Salt okunur"
+		},
+		"taskBoards": {
+			"title": "Beyaz tahtalarda"
+		},
+		"workspace": {
+			"title": "Beyaz tahtalar",
+			"documentTitle": "Tüm beyaz tahtalar",
+			"chooseProject": "Projede oluştur",
+			"projectFilter": "Proje",
+			"allProjects": "Tüm projeler",
+			"groupByProject": "Projeye göre grupla",
+			"showAllProjects": "Tüm projeleri göster",
+			"empty": {
+				"description": "Görebildiğiniz tüm projelerin tahtaları burada görünür.",
+				"noProjectsTitle": "Henüz hiçbir projede beyaz tahta yok",
+				"noProjectsDescription": "Çizmeye başlamak için bir projenin özelliklerinde Beyaz tahtalar'ı açın."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Yeni beyaz tahta",
+			"goToWhiteboards": "Beyaz tahtalara git",
+			"goToAllWhiteboards": "Tüm beyaz tahtalara git"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Kaydet",
@@ -13034,7 +13381,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} indirildi",
-				"failed": "{{file}} indirilemedi"
+				"failed": "{{file}} indirilemedi",
+				"showInFolder": "Klasörde göstermek için tıklayın",
+				"openFolder": "İndirilenler klasörünü açmak için tıklayın"
 			},
 			"notifications": {
 				"releasedTitle": "Bildirimler yeniden açık",
@@ -13084,6 +13433,350 @@
 				"retryIn_other": "{{count}} saniye içinde yeniden denenecek",
 				"switchServer": "Sunucu değiştir"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Beyaz tahta tuvali",
+			"roleDescription": "beyaz tahta"
+		},
+		"actions": {
+			"cancel": "İptal",
+			"save": "Kaydet"
+		},
+		"tools": {
+			"label": "Araçlar",
+			"more": "Diğer araçlar",
+			"select": "Seç",
+			"hand": "El (kaydır)",
+			"rectangle": "Dikdörtgen",
+			"diamond": "Eşkenar dörtgen",
+			"ellipse": "Elips",
+			"arrow": "Ok",
+			"line": "Çizgi",
+			"draw": "Kalem",
+			"text": "Metin",
+			"sticky": "Yapışkan not",
+			"image": "Görsel",
+			"eraser": "Silgi",
+			"frame": "Çerçeve",
+			"laser": "Lazer işaretçi",
+			"task": "Görev kartı",
+			"lock": "Aracı etkin tut",
+			"lockTool": "Çizdikten sonra aracı etkin tut",
+			"unlockTool": "Çizdikten sonra Seç aracına dön",
+			"shape": "Şekiller"
+		},
+		"commands": {
+			"undo": "Geri al",
+			"redo": "Yinele",
+			"history": "Geçmiş",
+			"copy": "Kopyala",
+			"cut": "Kes",
+			"paste": "Yapıştır",
+			"duplicate": "Çoğalt",
+			"delete": "Sil",
+			"selectAll": "Tümünü seç",
+			"group": "Grupla",
+			"ungroup": "Grubu çöz",
+			"bringForward": "Öne getir",
+			"sendBackward": "Geriye gönder",
+			"bringToFront": "En öne getir",
+			"sendToBack": "En arkaya gönder",
+			"toggleGrid": "Izgaraya hizala",
+			"toggleSnap": "Nesnelere hizala",
+			"toggleMinimap": "Mini haritayı göster",
+			"search": "Tahtada bul",
+			"help": "Klavye kısayolları",
+			"toggleElementLock": "Kilitle veya kilidi aç",
+			"lock": "Kilitle",
+			"unlock": "Kilidi aç",
+			"flipHorizontal": "Yatay çevir",
+			"flipVertical": "Dikey çevir",
+			"copyStyle": "Stili kopyala",
+			"pasteStyle": "Stili yapıştır",
+			"alignLeft": "Sola hizala",
+			"alignCenter": "Yatay olarak ortala",
+			"alignRight": "Sağa hizala",
+			"alignTop": "Üste hizala",
+			"alignMiddle": "Dikey olarak ortala",
+			"alignBottom": "Alta hizala",
+			"distributeHorizontal": "Yatay olarak dağıt",
+			"distributeVertical": "Dikey olarak dağıt",
+			"editText": "Metni düzenle",
+			"editLink": "Bağlantıyı düzenle"
+		},
+		"zoom": {
+			"label": "Yakınlaştırma",
+			"in": "Yakınlaştır",
+			"out": "Uzaklaştır",
+			"reset": "Yakınlaştırmayı sıfırla",
+			"resetTo": "Yakınlaştırma %{{percent}}, %100'e sıfırla",
+			"percent": "%{{percent}}",
+			"fit": "Sığacak şekilde yakınlaştır",
+			"selection": "Seçime yakınlaştır"
+		},
+		"panel": {
+			"label": "Stil",
+			"stroke": "Kontur",
+			"textColor": "Metin rengi",
+			"stickyColor": "Not rengi",
+			"fill": "Arka plan",
+			"fillStyle": "Dolgu",
+			"fillSolid": "Düz",
+			"fillHatch": "Tarama",
+			"fillCross": "Çapraz tarama",
+			"fillNone": "Yok",
+			"strokeWidth": "Kontur kalınlığı",
+			"thin": "İnce",
+			"medium": "Orta",
+			"bold": "Kalın",
+			"extraBold": "Çok kalın",
+			"strokeStyle": "Kontur stili",
+			"solid": "Düz",
+			"dashed": "Kesik çizgili",
+			"dotted": "Noktalı",
+			"sketch": "Eskiz etkisi",
+			"sketchClean": "Temiz",
+			"sketchLight": "Hafif",
+			"sketchRough": "Belirgin",
+			"corners": "Köşeler",
+			"cornersSharp": "Keskin",
+			"cornersRound": "Yuvarlak",
+			"cornersRounder": "Daha yuvarlak",
+			"font": "Yazı tipi",
+			"fontHand": "El yazısı",
+			"fontSans": "Tırnaksız",
+			"fontMono": "Eş aralıklı",
+			"fontSize": "Yazı boyutu",
+			"sizeSmall": "Küçük",
+			"sizeMedium": "Orta",
+			"sizeLarge": "Büyük",
+			"sizeHuge": "Çok büyük",
+			"align": "Metin hizalaması",
+			"alignLeft": "Sol",
+			"alignCenter": "Orta",
+			"alignRight": "Sağ",
+			"routing": "Çizgi türü",
+			"routingStraight": "Düz",
+			"routingCurved": "Eğri",
+			"routingElbow": "Dirsekli",
+			"arrowheads": "Ok uçları",
+			"startHead": "Başlangıç",
+			"endHead": "Bitiş",
+			"headNone": "Yok",
+			"headArrow": "Ok",
+			"headTriangle": "Üçgen",
+			"headDot": "Nokta",
+			"headBar": "Çubuk",
+			"opacity": "Opaklık",
+			"layers": "Katmanlar",
+			"alignment": "Hizala",
+			"actions": "İşlemler"
+		},
+		"colors": {
+			"black": "Siyah",
+			"red": "Kırmızı",
+			"green": "Yeşil",
+			"blue": "Mavi",
+			"orange": "Turuncu",
+			"purple": "Mor",
+			"teal": "Camgöbeği",
+			"grey": "Gri",
+			"yellow": "Sarı",
+			"pink": "Pembe",
+			"none": "Renk yok",
+			"custom": "Özel renk"
+		},
+		"text": {
+			"label": "Metin",
+			"frameName": "Çerçeve adı"
+		},
+		"link": {
+			"title": "Öğe bağlantısı",
+			"description": "Bir web adresi ekleyin veya #element= ve kimliğiyle başka bir öğeye bağlantı verin.",
+			"label": "Adres",
+			"invalid": "https:// ile başlayan bir web adresi, bir mailto: adresi veya bir öğe bağlantısı girin.",
+			"remove": "Bağlantıyı kaldır",
+			"open": "Bağlantıyı aç",
+			"copyElementLink": "Öğenin bağlantısını kopyala"
+		},
+		"search": {
+			"title": "Tahtada bul",
+			"placeholder": "Bu tahtadaki metinde ara",
+			"noResults": "Bu tahtada eşleşen bir şey yok.",
+			"results": "Eşleşmeler"
+		},
+		"tasks": {
+			"pickerTitle": "Görev kartları ekle",
+			"searchPlaceholder": "Görevleri başlığa veya anahtara göre ara",
+			"noResults": "Eşleşen görev yok.",
+			"results": "Görevler",
+			"onBoard": "Bu tahtada",
+			"addCards_one": "{{count}} kart ekle",
+			"addCards_other": "{{count}} kart ekle",
+			"addCardsNone": "Kart ekle",
+			"pickHint": "Kart olarak eklemek için bir veya daha fazla görev seçin.",
+			"openTask": "Görevi aç",
+			"turnIntoTasks_one": "Göreve dönüştür",
+			"turnIntoTasks_other": "{{count}} göreve dönüştür",
+			"turnIntoTasksTitle": "Notları görevlere dönüştür",
+			"turnIntoTasksDescription": "Her not bu projede bir göreve dönüşür ve yerini canlı bir görev kartı alır.",
+			"column": "Sütun",
+			"titles": "Görev başlıkları",
+			"taskTitle": "{{index}}. görevin başlığı",
+			"emptyTitle": "Başlıksız not",
+			"skippedEmpty": "Başlığı olmayan notlar atlanır.",
+			"createTasks_one": "{{count}} görev oluştur",
+			"createTasks_other": "{{count}} görev oluştur",
+			"converted_one": "{{count}} görev oluşturuldu",
+			"converted_other": "{{count}} görev oluşturuldu",
+			"convertPartial_one": "{{count}} not göreve dönüştürülemedi",
+			"convertPartial_other": "{{count}} not göreve dönüştürülemedi",
+			"makeDependency": "Bağımlılık oluştur",
+			"removeDependency": "Bağımlılığı kaldır",
+			"removeDependencyPrompt": "{{source}} ile {{target}} arasındaki bağımlılık da kaldırılsın mı?",
+			"removeDependenciesPrompt_one": "Bu görevler arasındaki {{count}} bağımlılık da kaldırılsın mı?",
+			"removeDependenciesPrompt_other": "Bu görevler arasındaki {{count}} bağımlılık da kaldırılsın mı?",
+			"dependencyPair": "{{source}}, {{target}} görevini engelliyor",
+			"removeDependencyConfirm": "Kaldır",
+			"keepDependency": "Koru",
+			"dependencyPromptLabel": "Görev bağımlılığı",
+			"dependencyRemoved_one": "Bağımlılık kaldırıldı",
+			"dependencyRemoved_other": "{{count}} bağımlılık kaldırıldı",
+			"dependencyRemoveFailed": "Bağımlılık kaldırılamadı."
+		},
+		"crop": {
+			"section": "Görsel",
+			"start": "Görseli kırp",
+			"finish": "Kırpmayı bitir",
+			"reset": "Kırpmayı sıfırla"
+		},
+		"presence": {
+			"label": "Bu tahtadaki kişiler",
+			"follow": "{{name}} adlı kişiyi takip et",
+			"stopFollowing": "{{name}} adlı kişiyi takip etmeyi bırak",
+			"following": "{{name}} takip ediliyor",
+			"stop": "Durdur"
+		},
+		"minimap": {
+			"label": "Tahtaya genel bakış"
+		},
+		"contextMenu": {
+			"label": "Tuval işlemleri"
+		},
+		"notices": {
+			"readOnly": "Bu tahta salt okunur.",
+			"copied": "Kopyalandı",
+			"linkCopied": "Bağlantı kopyalandı",
+			"pasteEmpty": "Yapıştırılacak bir şey yok",
+			"uploadFailed": "Görsel yüklenemedi.",
+			"uploading": "Görsel yükleniyor…",
+			"imagesOff": "Bu tahtada görseller kullanılamıyor.",
+			"importFailed": "Bu dosya bir Margaya tahtası değil.",
+			"imported": "Tahta eklendi",
+			"tooManyElements": "Bu tahta dolu. Daha fazla eklemeden önce bir şeyler kaldırın.",
+			"dependencyCreated": "Bağımlılık oluşturuldu",
+			"dependencyFailed": "Bağımlılık oluşturulamadı.",
+			"cropUnavailable": "Görsel hâlâ yükleniyor. Birazdan yeniden kırpmayı deneyin."
+		},
+		"help": {
+			"title": "Klavye kısayolları",
+			"or": "veya",
+			"sections": {
+				"tools": "Araçlar",
+				"view": "Görünüm",
+				"edit": "Düzenleme",
+				"arrange": "Düzenle ve sırala",
+				"pointer": "Fare ve dokunma"
+			},
+			"pan": "Kaydır",
+			"zoomWheel": "Yakınlaştır",
+			"commitText": "Metin düzenlemeyi bitir",
+			"finishCrop": "Kırpmayı bitir",
+			"nudge": "Biraz kaydır",
+			"flowchart": "Bağlı bir şekil ekle",
+			"cycle": "Önceki veya sonraki öğeyi seç",
+			"keepAspect": "Oranları koru veya açıya hizala",
+			"fromCentre": "Merkezden yeniden boyutlandır",
+			"duplicateDrag": "Sürüklerken çoğalt",
+			"addToSelection": "Seçime ekle",
+			"enterGroup": "Grubun içinde düzenle veya metni düzenle",
+			"noSnap": "Hizalamadan taşı",
+			"keys": {
+				"drag": "sürükle",
+				"wheel": "tekerlek",
+				"click": "tıkla",
+				"doubleClick": "çift tıkla",
+				"space": "Boşluk",
+				"delete": "Delete",
+				"enter": "Enter",
+				"escape": "Esc",
+				"shift": "Shift",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Şekil kitaplığı",
+			"label": "Şekil",
+			"change": "Şekli değiştir",
+			"add": "Şekil ekle",
+			"search": "Şekil ara",
+			"noResults": "Eşleşen şekil yok",
+			"groups": {
+				"basic": "Temel",
+				"polygons": "Çokgenler",
+				"arrows": "Oklar",
+				"symbols": "Simgeler"
+			},
+			"names": {
+				"triangle": "Üçgen",
+				"rightTriangle": "Dik üçgen",
+				"pentagon": "Beşgen",
+				"hexagon": "Altıgen",
+				"octagon": "Sekizgen",
+				"star": "Yıldız",
+				"parallelogram": "Paralelkenar",
+				"trapezoid": "Yamuk",
+				"plus": "Artı",
+				"cross": "Çarpı",
+				"heart": "Kalp",
+				"cloud": "Bulut",
+				"speech": "Konuşma balonu",
+				"cylinder": "Silindir",
+				"document": "Belge",
+				"arrowRight": "Sağ ok",
+				"arrowLeft": "Sol ok",
+				"arrowUp": "Yukarı ok",
+				"arrowDown": "Aşağı ok",
+				"arrowDouble": "Çift yönlü ok",
+				"chevron": "Köşeli ok",
+				"moon": "Ay"
+			}
+		},
+		"pens": {
+			"label": "Kalem stili",
+			"pen": "Kalem",
+			"marker": "Keçeli kalem",
+			"highlighter": "Fosforlu kalem"
+		},
+		"background": {
+			"label": "Arka plan",
+			"pattern": "Desen",
+			"plain": "Düz",
+			"dots": "Noktalar",
+			"grid": "Izgara",
+			"lines": "Çizgiler",
+			"spacing": "Aralık",
+			"small": "Küçük",
+			"medium": "Orta",
+			"large": "Büyük",
+			"paper": "Kâğıt rengi",
+			"white": "Beyaz",
+			"cream": "Krem",
+			"stone": "Taş",
+			"mist": "Sis",
+			"mint": "Nane"
 		}
 	}
 }

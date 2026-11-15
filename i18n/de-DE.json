@@ -2072,6 +2072,7 @@
 				"intake": "Eingang",
 				"analytics": "Analytics",
 				"page": "Seiten",
+				"whiteboard": "Whiteboards",
 				"audit_log": "Audit-Log",
 				"ai": "KI"
 			},
@@ -2300,6 +2301,24 @@
 						"label": "Seiten bearbeiten"
 					}
 				},
+				"whiteboard": {
+					"read": {
+						"label": "Whiteboards ansehen",
+						"description": "Den Bereich „Whiteboards“ sehen und Boards schreibgeschützt öffnen."
+					},
+					"create": {
+						"label": "Whiteboards erstellen",
+						"description": "Boards aus einer Vorlage oder leer erstellen und duplizieren."
+					},
+					"update": {
+						"label": "Whiteboards bearbeiten",
+						"description": "Auf Boards zeichnen und sie bearbeiten sowie die eigenen Boards sperren oder archivieren."
+					},
+					"delete": {
+						"label": "Alle Whiteboards verwalten",
+						"description": "Jedes sichtbare Board sperren, archivieren, veröffentlichen und löschen, nicht nur die eigenen."
+					}
+				},
 				"audit_log": {
 					"read": {
 						"description": "Das Audit-Log des Workspace ansehen und exportieren: wer Mitglieder, Rollen, Schlüssel, Webhooks, Integrationen und Einstellungen geändert hat.",
@@ -2479,6 +2498,10 @@
 				"updates": {
 					"title": "Statusupdates",
 					"description": "Veröffentliche datierte Statusupdates mit einem Projektzustand, entworfen aus aktuellen Projektdaten."
+				},
+				"whiteboards": {
+					"title": "Whiteboards",
+					"description": "Skizziere, plane und visualisiere die Arbeit gemeinsam auf geteilten Zeichenflächen, mit Live-Aufgabenkarten."
 				}
 			},
 			"loadError": "Dieses Projekt konnte nicht geladen werden",
@@ -3311,6 +3334,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Hat ein Whiteboard erstellt",
+				"whiteboardRenamed": "Hat ein Whiteboard umbenannt",
+				"whiteboardIconChanged": "Hat das Symbol eines Whiteboards geändert",
+				"whiteboardLocked": "Hat ein Whiteboard gesperrt",
+				"whiteboardUnlocked": "Hat ein Whiteboard entsperrt",
+				"whiteboardArchived": "Hat ein Whiteboard archiviert",
+				"whiteboardUnarchived": "Hat ein Whiteboard aus dem Archiv wiederhergestellt",
+				"whiteboardPublished": "Hat ein Whiteboard über einen öffentlichen Link veröffentlicht",
+				"whiteboardUnpublished": "Hat den öffentlichen Link eines Whiteboards widerrufen",
+				"whiteboardTrashed": "Hat ein Whiteboard in den Papierkorb verschoben",
+				"whiteboardRestored": "Hat ein Whiteboard aus dem Papierkorb wiederhergestellt",
+				"whiteboardPurged": "Hat ein Whiteboard endgültig gelöscht",
 				"workspaceDeletionScheduled": "Hat den Workspace zur Löschung vorgemerkt",
 				"workspaceDeletionCancelled": "Hat die Löschung des Workspace abgebrochen",
 				"workspacePublicPagesChanged": "Hat öffentliche Seiten ein- oder ausgeschaltet",
@@ -3460,6 +3495,7 @@
 			"subtitle": "Wer in diesem Workspace Mitglieder, Rollen, API-Schlüssel, Webhooks, Integrationen, Einstellungen und Projekte geändert hat. Einträge werden {{days}} Tage lang aufbewahrt.",
 			"subtitleForever": "Wer in diesem Workspace Mitglieder, Rollen, API-Schlüssel, Webhooks, Integrationen, Einstellungen und Projekte geändert hat. Einträge werden aufbewahrt, bis du den Workspace löschst.",
 			"targets": {
+				"whiteboard": "Whiteboard",
 				"page": "Seite",
 				"apiKey": "API-Schlüssel",
 				"export": "Export",
@@ -3479,7 +3515,7 @@
 		},
 		"trash": {
 			"projectTitle": "Zuletzt gelöscht",
-			"projectSubtitle": "Gelöschte Aufgaben und Seiten bleiben hier, bis sie endgültig gelöscht werden. Beim Wiederherstellen einer Aufgabe kommen auch die mit ihr gelöschten Teilaufgaben zurück; eine wiederhergestellte Seite kehrt zu „Archiviert“ zurück.",
+			"projectSubtitle": "Gelöschte Aufgaben, Seiten und Whiteboards bleiben hier, bis sie endgültig gelöscht werden. Beim Wiederherstellen einer Aufgabe kommen auch die mit ihr gelöschten Teilaufgaben zurück; eine wiederhergestellte Seite oder ein wiederhergestelltes Whiteboard kehrt zu „Archiviert“ zurück.",
 			"workspaceTitle": "Zuletzt gelöschte Projekte",
 			"workspaceNav": "Zuletzt gelöscht",
 			"workspaceSubtitle": "Gelöschte Projekte bleiben mit ihren Aufgaben hier, bis sie endgültig gelöscht werden.",
@@ -3522,7 +3558,9 @@
 				"emptied_other": "{{count}} Aufgaben endgültig gelöscht",
 				"purgeError": "Endgültiges Löschen fehlgeschlagen",
 				"pageRestored": "Seite unter „Archiviert“ wiederhergestellt",
-				"pagePurged": "Seite endgültig gelöscht"
+				"pagePurged": "Seite endgültig gelöscht",
+				"whiteboardRestored": "Whiteboard unter „Archiviert“ wiederhergestellt",
+				"whiteboardPurged": "Whiteboard endgültig gelöscht"
 			},
 			"tasksHeading": "Aufgaben",
 			"pagesHeading": "Seiten",
@@ -3530,7 +3568,13 @@
 			"emptyPagesTitle": "Keine gelöschten Seiten",
 			"emptyPagesDescription": "Archivierte Seiten, die du aus diesem Projekt löschst, erscheinen hier.",
 			"purgePageTitle": "Diese Seite endgültig löschen?",
-			"purgePageDescription": "„{{name}}“, ihre Kommentare und der Versionsverlauf werden für alle gelöscht. Das kann nicht rückgängig gemacht werden."
+			"purgePageDescription": "„{{name}}“, ihre Kommentare und der Versionsverlauf werden für alle gelöscht. Das kann nicht rückgängig gemacht werden.",
+			"whiteboardsHeading": "Whiteboards",
+			"searchWhiteboards": "Gelöschte Whiteboards durchsuchen",
+			"emptyWhiteboardsTitle": "Keine gelöschten Whiteboards",
+			"emptyWhiteboardsDescription": "Archivierte Whiteboards, die du aus diesem Projekt löschst, erscheinen hier.",
+			"purgeWhiteboardTitle": "Dieses Whiteboard endgültig löschen?",
+			"purgeWhiteboardDescription": "„{{name}}“, sein Inhalt und seine Bilder werden für alle gelöscht. Das kann nicht rückgängig gemacht werden."
 		},
 		"automationRules": {
 			"title": "Automatisierungen",
@@ -4002,6 +4046,7 @@
 			"label": "Projektbereiche",
 			"modules": "Module",
 			"pages": "Seiten",
+			"whiteboards": "Whiteboards",
 			"sections": "Bereiche",
 			"tasks": "Aufgaben",
 			"views": "Ansichten",
@@ -4033,6 +4078,9 @@
 			"newTask": "Neue Aufgabe",
 			"newWorkspace": "Neuer Workspace",
 			"noPagesProjects": "Aktiviere Seiten in den Funktionen eines Projekts, um dort Dokumente zu schreiben.",
+			"noWhiteboardsProjects": "Aktiviere Whiteboards in den Funktionen eines Projekts, um dort zu zeichnen.",
+			"allWhiteboards": "Alle Whiteboards",
+			"whiteboards": "White­boards",
 			"noRecent": "Seiten und Aufgaben, die du öffnest, erscheinen hier.",
 			"pages": "Seiten",
 			"panel": "Bereichsnavigation",
@@ -5112,6 +5160,21 @@
 			"previousWeek": "Vorherige Woche",
 			"rescheduleError": "Aufgabe konnte nicht verschoben werden",
 			"showWeekends": "Wochenenden anzeigen",
+			"touch": {
+				"daysLabel": "Tage im {{month}}",
+				"weekDaysLabel": "Tage vom {{start}} bis {{end}}",
+				"dayLabel_one": "{{date}}, {{count}} Aufgabe",
+				"dayLabel_other": "{{date}}, {{count}} Aufgaben",
+				"dayLabelEmpty": "{{date}}, keine Aufgaben",
+				"taskCount_one": "{{count}} Aufgabe",
+				"taskCount_other": "{{count}} Aufgaben",
+				"addTask": "Aufgabe hinzufügen",
+				"empty": "An diesem Tag gibt es keine Aufgaben.",
+				"moveTask": "{{title}} auf ein anderes Datum verschieben",
+				"moveTitle": "Auf Datum verschieben",
+				"moveDescription": "Wähle das neue Fälligkeitsdatum für {{title}}. Ein Startdatum wird mitverschoben, sodass die Aufgabe ihre Dauer behält.",
+				"moved": "Verschoben auf {{date}}"
+			},
 			"viewMode": "Kalenderzeitraum",
 			"week": "Woche",
 			"overdue": "Überfällig"
@@ -9852,6 +9915,290 @@
 			"error": "Die Beobachtung dieser Seite konnte nicht geändert werden"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Board-Verlauf",
+			"description": "Wer dieses Board wann geändert hat, neueste zuerst. Bearbeitungen erscheinen einmal pro Person alle 10 Minuten.",
+			"empty": "Auf diesem Board ist noch nichts passiert.",
+			"loadError": "Der Board-Verlauf konnte nicht geladen werden.",
+			"loadMore": "Mehr laden",
+			"someone": "Jemand",
+			"entries": {
+				"created": "Hat das Board erstellt",
+				"renamed": "Hat das Board in „{{title}}“ umbenannt",
+				"iconChanged": "Hat das Symbol geändert",
+				"locked": "Hat das Board gesperrt",
+				"unlocked": "Hat das Board entsperrt",
+				"archived": "Hat das Board archiviert",
+				"unarchived": "Hat das Board aus dem Archiv wiederhergestellt",
+				"published": "Hat das Board im Web veröffentlicht",
+				"unpublished": "Hat die Veröffentlichung des Boards beendet",
+				"trashed": "Hat das Board in den Papierkorb verschoben",
+				"restored": "Hat das Board aus dem Papierkorb wiederhergestellt",
+				"edited": "Hat das Board bearbeitet"
+			}
+		},
+		"section": {
+			"title": "Whiteboards"
+		},
+		"list": {
+			"documentTitle": "Whiteboards · {{project}}",
+			"newWhiteboard": "Neues Whiteboard",
+			"moreCreateOptions": "Weitere Möglichkeiten, ein Whiteboard zu erstellen",
+			"untitled": "Unbenanntes Board",
+			"searchPlaceholder": "Boards suchen",
+			"searchClear": "Suche löschen",
+			"tabs": {
+				"active": "Whiteboards",
+				"archived": "Archiviert"
+			},
+			"sort": {
+				"lastEdited": "Zuletzt bearbeitet",
+				"created": "Erstellt",
+				"name": "Name"
+			},
+			"edited": "Bearbeitet {{time}}",
+			"editedBy": "Bearbeitet {{time}} von {{name}}",
+			"locked": "Gesperrt",
+			"published": "Veröffentlicht",
+			"cardActions": "Aktionen für {{title}}",
+			"recentlyDeleted": "Zuletzt gelöscht",
+			"loadError": "Die Whiteboards konnten nicht geladen werden",
+			"retry": "Erneut versuchen",
+			"unknownUser": "Jemand",
+			"empty": {
+				"title": "Noch keine Whiteboards",
+				"description": "Skizziere Ideen, plane einen Sprint oder visualisiere die Arbeit mit deinem Team auf einer gemeinsamen Zeichenfläche.",
+				"archivedTitle": "Keine archivierten Whiteboards",
+				"archivedDescription": "Boards, die du archivierst, erscheinen hier.",
+				"noMatchTitle": "Keine Boards passen zu „{{query}}“",
+				"noMatchDescription": "Versuche andere Begriffe. Die Suche berücksichtigt Board-Namen und den Text auf den Boards.",
+				"clearSearch": "Suche löschen"
+			}
+		},
+		"templates": {
+			"title": "Mit einer Vorlage beginnen",
+			"names": {
+				"blank": "Leeres Board",
+				"brainstorm": "Brainstorming",
+				"retrospective": "Retrospektive",
+				"sprintPlanning": "Sprintplanung",
+				"userStoryMap": "User-Story-Map",
+				"roadmap": "Produkt-Roadmap",
+				"flowchart": "Flussdiagramm",
+				"kanban": "Kanban-Skizze"
+			},
+			"descriptions": {
+				"blank": "Eine leere Zeichenfläche.",
+				"brainstorm": "Eine zentrale Frage mit Platz für Ideen drumherum.",
+				"retrospective": "Was gut lief, was besser werden soll, und die Maßnahmen.",
+				"sprintPlanning": "Das Sprintziel, das Backlog, die Zusagen und die Risiken.",
+				"userStoryMap": "Aktivitäten oben, darunter die Storys nach Release.",
+				"roadmap": "Jetzt, als Nächstes und später, nebeneinander.",
+				"flowchart": "Ein Start, eine Entscheidung und die Schritte dazwischen.",
+				"kanban": "Spalten „Zu erledigen“, „In Arbeit“ und „Erledigt“ für Haftnotizen."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "Was wollen wir lösen?",
+					"ideas": "Ideen"
+				},
+				"retrospective": {
+					"title": "Retrospektive",
+					"wentWell": "Lief gut",
+					"toImprove": "Zu verbessern",
+					"actions": "Maßnahmen"
+				},
+				"sprintPlanning": {
+					"title": "Sprintplanung",
+					"goal": "Sprintziel",
+					"backlog": "Backlog",
+					"committed": "Zugesagt",
+					"risks": "Risiken"
+				},
+				"userStoryMap": {
+					"title": "User-Story-Map",
+					"activity": "Aktivität",
+					"story": "User Story",
+					"release1": "Version 1",
+					"release2": "Version 2"
+				},
+				"roadmap": {
+					"title": "Produkt-Roadmap",
+					"now": "Jetzt",
+					"next": "Als Nächstes",
+					"later": "Später"
+				},
+				"flowchart": {
+					"start": "Beginn",
+					"step": "Schritt",
+					"decision": "Entscheidung?",
+					"yes": "Ja",
+					"no": "Nein",
+					"end": "Ende"
+				},
+				"kanban": {
+					"todo": "Zu erledigen",
+					"doing": "In Arbeit",
+					"done": "Erledigt"
+				}
+			}
+		},
+		"actions": {
+			"history": "Verlauf",
+			"open": "Öffnen",
+			"openInNewTab": "In neuem Tab öffnen",
+			"copyLink": "Link kopieren",
+			"rename": "Umbenennen",
+			"changeIcon": "Icon ändern",
+			"duplicate": "Duplizieren",
+			"publish": "Im Web veröffentlichen",
+			"managePublicLink": "Öffentlicher Link",
+			"share": "Teilen",
+			"lock": "Sperren",
+			"unlock": "Entsperren",
+			"archive": "Archivieren",
+			"unarchive": "Aus dem Archiv wiederherstellen",
+			"moveToTrash": "In den Papierkorb verschieben",
+			"export": "Exportieren",
+			"exportPng": "Als PNG exportieren",
+			"exportSvg": "Als SVG exportieren",
+			"exportFile": "Board-Datei herunterladen",
+			"importFile": "Board-Datei importieren",
+			"zoomToFit": "An Fenster anpassen",
+			"fullScreen": "Vollbild",
+			"exitFullScreen": "Vollbild beenden",
+			"more": "Weitere Board-Optionen"
+		},
+		"dialogs": {
+			"cancel": "Abbrechen",
+			"rename": {
+				"title": "Whiteboard umbenennen",
+				"label": "Name",
+				"save": "Speichern"
+			},
+			"icon": {
+				"title": "Icon auswählen",
+				"description": "Das Emoji wird neben dem Namen des Boards angezeigt.",
+				"search": "Emoji suchen",
+				"noMatches": "Kein Emoji passt zu deiner Suche",
+				"remove": "Icon entfernen"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (Kopie)"
+			},
+			"delete": {
+				"title": "Dieses Board in den Papierkorb verschieben?",
+				"description": "„{{title}}“ wird in die Liste „Zuletzt gelöscht“ des Projekts verschoben und kann dort wiederhergestellt werden, bis es endgültig gelöscht wird.",
+				"confirm": "In den Papierkorb verschieben"
+			}
+		},
+		"toasts": {
+			"createError": "Das Whiteboard konnte nicht erstellt werden",
+			"renameError": "Das Whiteboard konnte nicht umbenannt werden",
+			"iconError": "Das Icon konnte nicht geändert werden",
+			"duplicated": "Whiteboard dupliziert",
+			"duplicateError": "Das Whiteboard konnte nicht dupliziert werden",
+			"open": "Öffnen",
+			"locked": "Whiteboard gesperrt",
+			"unlocked": "Whiteboard entsperrt",
+			"lockError": "Die Sperre konnte nicht geändert werden",
+			"archived": "Whiteboard archiviert",
+			"unarchived": "Whiteboard wiederhergestellt",
+			"archiveError": "Das Whiteboard konnte nicht archiviert werden",
+			"unarchiveError": "Das Whiteboard konnte nicht wiederhergestellt werden",
+			"deleted": "Nach „Zuletzt gelöscht“ verschoben",
+			"deleteError": "Das Whiteboard konnte nicht in den Papierkorb verschoben werden",
+			"linkCopied": "Link kopiert",
+			"exportError": "Das Board konnte nicht exportiert werden",
+			"imported": "Board-Datei hinzugefügt",
+			"importError": "Diese Datei konnte nicht gelesen werden",
+			"imageType": "Auf einem Board sind nur PNG-, JPEG-, GIF- und WebP-Bilder möglich",
+			"imageUploadError": "Das Bild konnte nicht hinzugefügt werden"
+		},
+		"share": {
+			"title": "Whiteboard teilen",
+			"description": "Veröffentliche eine schreibgeschützte Kopie, die jeder mit dem Link ansehen kann. Beim Ausschalten wird der Link sofort widerrufen.",
+			"switchLabel": "Im Web veröffentlichen",
+			"onHint": "Jeder mit dem Link kann dieses Board ansehen.",
+			"offHint": "Nur Personen in diesem Projekt können dieses Board öffnen.",
+			"linkLabel": "Öffentlicher Link",
+			"copyLink": "Link kopieren",
+			"copied": "Kopiert",
+			"openLink": "Öffentlichen Link öffnen",
+			"privacyNote": "Betrachter sehen das Board sowie Titel und Status seiner Aufgabenkarten, sonst nichts aus dem Projekt.",
+			"cannotPublish": "Nur Personen, die alle Whiteboards verwalten dürfen, können veröffentlichen.",
+			"archivedHint": "Stelle das Board aus dem Archiv wieder her, um es zu veröffentlichen.",
+			"publishedToast": "Whiteboard veröffentlicht",
+			"unpublishedToast": "Öffentlicher Link deaktiviert",
+			"error": "Der öffentliche Link konnte nicht geändert werden",
+			"done": "Fertig"
+		},
+		"screen": {
+			"backToList": "Zurück zu den Whiteboards",
+			"titleLabel": "Name des Whiteboards",
+			"readOnly": "Schreibgeschützt",
+			"loadError": "Dieses Whiteboard konnte nicht geladen werden",
+			"storedCopyError": "Die gespeicherte Kopie dieses Boards konnte nicht geladen werden",
+			"notFound": {
+				"title": "Whiteboard nicht gefunden",
+				"description": "Es wurde möglicherweise gelöscht, oder du hast keinen Zugriff darauf.",
+				"back": "Zurück zu den Whiteboards"
+			}
+		},
+		"banners": {
+			"locked": "Dieses Board ist gesperrt. Entsperre es, um Änderungen vorzunehmen.",
+			"lockedBy": "{{name}} hat dieses Board gesperrt. Entsperre es, um Änderungen vorzunehmen.",
+			"unlock": "Entsperren",
+			"archived": "Dieses Board ist archiviert und schreibgeschützt.",
+			"restore": "Wiederherstellen",
+			"readOnly": "Du kannst dieses Board ansehen, aber nicht bearbeiten.",
+			"storedCopy": "Das Live-Board ist nicht erreichbar. Die zuletzt gespeicherte Kopie wird schreibgeschützt angezeigt.",
+			"retry": "Erneut versuchen",
+			"tooLarge": "Dieses Board ist zu groß, um weitere Änderungen zu speichern.",
+			"reload": "Neu laden"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "Das Board wurde gesperrt, während du offline warst, daher wurden deine Offline-Änderungen nicht gespeichert.",
+				"archived": "Das Board wurde archiviert, während du offline warst, daher wurden deine Offline-Änderungen nicht gespeichert.",
+				"readOnly": "Du kannst dieses Board nicht mehr bearbeiten, daher wurden deine Offline-Änderungen nicht gespeichert."
+			},
+			"replacedBy": "{{name}} hat den Inhalt des Boards ersetzt",
+			"deleted": "Dieses Whiteboard wurde gelöscht",
+			"signedOut": "Du wurdest abgemeldet. Melde dich erneut an, um weiter zu bearbeiten.",
+			"roomFull": "Zu viele Personen haben dieses Board geöffnet. Versuche es später erneut."
+		},
+		"publicView": {
+			"documentTitle": "Geteiltes Whiteboard",
+			"unavailableTitle": "Dieser Link ist nicht verfügbar",
+			"unavailableDescription": "Die Veröffentlichung des Boards wurde möglicherweise aufgehoben, oder der Link ist falsch.",
+			"updated": "Aktualisiert am {{date}}",
+			"readOnly": "Schreibgeschützt"
+		},
+		"taskBoards": {
+			"title": "Auf Whiteboards"
+		},
+		"workspace": {
+			"title": "Whiteboards",
+			"documentTitle": "Alle Whiteboards",
+			"chooseProject": "In Projekt erstellen",
+			"projectFilter": "Projekt",
+			"allProjects": "Alle Projekte",
+			"groupByProject": "Nach Projekt gruppieren",
+			"showAllProjects": "Alle Projekte anzeigen",
+			"empty": {
+				"description": "Hier erscheinen die Whiteboards aller Projekte, die du sehen kannst.",
+				"noProjectsTitle": "Noch kein Projekt hat Whiteboards",
+				"noProjectsDescription": "Aktiviere Whiteboards in den Funktionen eines Projekts, um mit dem Zeichnen zu beginnen."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Neues Whiteboard",
+			"goToWhiteboards": "Zu den Whiteboards",
+			"goToAllWhiteboards": "Zu allen Whiteboards"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Speichern",
@@ -13034,7 +13381,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} heruntergeladen",
-				"failed": "{{file}} konnte nicht heruntergeladen werden"
+				"failed": "{{file}} konnte nicht heruntergeladen werden",
+				"showInFolder": "Klicken, um die Datei im Ordner anzuzeigen",
+				"openFolder": "Klicken, um den Download-Ordner zu öffnen"
 			},
 			"notifications": {
 				"releasedTitle": "Benachrichtigungen sind wieder aktiv",
@@ -13084,6 +13433,350 @@
 				"retryIn_other": "Neuer Versuch in {{count}} Sekunden",
 				"switchServer": "Server wechseln"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Whiteboard-Zeichenfläche",
+			"roleDescription": "Zeichenfläche"
+		},
+		"actions": {
+			"cancel": "Abbrechen",
+			"save": "Speichern"
+		},
+		"tools": {
+			"label": "Werkzeuge",
+			"more": "Weitere Werkzeuge",
+			"select": "Auswählen",
+			"hand": "Hand (verschieben)",
+			"rectangle": "Rechteck",
+			"diamond": "Raute",
+			"ellipse": "Ellipse",
+			"arrow": "Pfeil",
+			"line": "Linie",
+			"draw": "Stift",
+			"text": "Textfeld",
+			"sticky": "Haftnotiz",
+			"image": "Bild",
+			"eraser": "Radierer",
+			"frame": "Rahmen",
+			"laser": "Laserpointer",
+			"task": "Aufgabenkarte",
+			"lock": "Werkzeug aktiv lassen",
+			"lockTool": "Werkzeug nach dem Zeichnen aktiv lassen",
+			"unlockTool": "Nach dem Zeichnen zu „Auswählen“ zurückkehren",
+			"shape": "Formen"
+		},
+		"commands": {
+			"undo": "Rückgängig",
+			"redo": "Wiederholen",
+			"history": "Verlauf",
+			"copy": "Kopieren",
+			"cut": "Ausschneiden",
+			"paste": "Einfügen",
+			"duplicate": "Duplizieren",
+			"delete": "Löschen",
+			"selectAll": "Alles auswählen",
+			"group": "Gruppieren",
+			"ungroup": "Gruppierung aufheben",
+			"bringForward": "Eine Ebene nach vorne",
+			"sendBackward": "Eine Ebene nach hinten",
+			"bringToFront": "In den Vordergrund",
+			"sendToBack": "In den Hintergrund",
+			"toggleGrid": "Am Raster ausrichten",
+			"toggleSnap": "An Objekten ausrichten",
+			"toggleMinimap": "Minikarte anzeigen",
+			"search": "Auf dem Board suchen",
+			"help": "Tastenkürzel",
+			"toggleElementLock": "Sperren oder entsperren",
+			"lock": "Sperren",
+			"unlock": "Entsperren",
+			"flipHorizontal": "Horizontal spiegeln",
+			"flipVertical": "Vertikal spiegeln",
+			"copyStyle": "Stil kopieren",
+			"pasteStyle": "Stil einfügen",
+			"alignLeft": "Links ausrichten",
+			"alignCenter": "Horizontal zentrieren",
+			"alignRight": "Rechts ausrichten",
+			"alignTop": "Oben ausrichten",
+			"alignMiddle": "Vertikal zentrieren",
+			"alignBottom": "Unten ausrichten",
+			"distributeHorizontal": "Horizontal verteilen",
+			"distributeVertical": "Vertikal verteilen",
+			"editText": "Text bearbeiten",
+			"editLink": "Link bearbeiten"
+		},
+		"zoom": {
+			"label": "Zoomstufe",
+			"in": "Vergrößern",
+			"out": "Verkleinern",
+			"reset": "Zoom zurücksetzen",
+			"resetTo": "Zoom {{percent}} %, auf 100 % zurücksetzen",
+			"percent": "{{percent}} %",
+			"fit": "An Fenster anpassen",
+			"selection": "Auf Auswahl zoomen"
+		},
+		"panel": {
+			"label": "Stil",
+			"stroke": "Kontur",
+			"textColor": "Textfarbe",
+			"stickyColor": "Notizfarbe",
+			"fill": "Hintergrund",
+			"fillStyle": "Füllung",
+			"fillSolid": "Voll",
+			"fillHatch": "Schraffur",
+			"fillCross": "Kreuzschraffur",
+			"fillNone": "Keine",
+			"strokeWidth": "Konturstärke",
+			"thin": "Dünn",
+			"medium": "Mittel",
+			"bold": "Fett",
+			"extraBold": "Extrafett",
+			"strokeStyle": "Konturstil",
+			"solid": "Durchgezogen",
+			"dashed": "Gestrichelt",
+			"dotted": "Gepunktet",
+			"sketch": "Skizzenstil",
+			"sketchClean": "Sauber",
+			"sketchLight": "Leicht",
+			"sketchRough": "Grob",
+			"corners": "Ecken",
+			"cornersSharp": "Spitz",
+			"cornersRound": "Rund",
+			"cornersRounder": "Runder",
+			"font": "Schriftart",
+			"fontHand": "Handschrift",
+			"fontSans": "Serifenlos",
+			"fontMono": "Monospace",
+			"fontSize": "Schriftgröße",
+			"sizeSmall": "S",
+			"sizeMedium": "M",
+			"sizeLarge": "L",
+			"sizeHuge": "XL",
+			"align": "Textausrichtung",
+			"alignLeft": "Links",
+			"alignCenter": "Mitte",
+			"alignRight": "Rechts",
+			"routing": "Linientyp",
+			"routingStraight": "Gerade",
+			"routingCurved": "Gebogen",
+			"routingElbow": "Gewinkelt",
+			"arrowheads": "Pfeilspitzen",
+			"startHead": "Anfang",
+			"endHead": "Ende",
+			"headNone": "Keine",
+			"headArrow": "Pfeil",
+			"headTriangle": "Dreieck",
+			"headDot": "Punkt",
+			"headBar": "Balken",
+			"opacity": "Deckkraft",
+			"layers": "Ebenen",
+			"alignment": "Ausrichten",
+			"actions": "Aktionen"
+		},
+		"colors": {
+			"black": "Schwarz",
+			"red": "Rot",
+			"green": "Grün",
+			"blue": "Blau",
+			"orange": "Orange",
+			"purple": "Lila",
+			"teal": "Blaugrün",
+			"grey": "Grau",
+			"yellow": "Gelb",
+			"pink": "Rosa",
+			"none": "Keine Farbe",
+			"custom": "Eigene Farbe"
+		},
+		"text": {
+			"label": "Textinhalt",
+			"frameName": "Rahmenname"
+		},
+		"link": {
+			"title": "Verknüpfung",
+			"description": "Füge eine Webadresse hinzu oder verlinke mit #element= und seiner ID auf ein anderes Element.",
+			"label": "Adresse",
+			"invalid": "Gib eine Webadresse ein, die mit https:// beginnt, eine mailto:-Adresse oder einen Element-Link.",
+			"remove": "Link entfernen",
+			"open": "Link öffnen",
+			"copyElementLink": "Link zum Element kopieren"
+		},
+		"search": {
+			"title": "Auf dem Board suchen",
+			"placeholder": "Text auf diesem Board suchen",
+			"noResults": "Nichts auf diesem Board passt.",
+			"results": "Treffer"
+		},
+		"tasks": {
+			"pickerTitle": "Aufgabenkarten hinzufügen",
+			"searchPlaceholder": "Aufgaben nach Titel oder Schlüssel suchen",
+			"noResults": "Keine passenden Aufgaben.",
+			"results": "Aufgaben",
+			"onBoard": "Auf diesem Board",
+			"addCards_one": "{{count}} Karte hinzufügen",
+			"addCards_other": "{{count}} Karten hinzufügen",
+			"addCardsNone": "Karten hinzufügen",
+			"pickHint": "Wähle eine oder mehrere Aufgaben aus, um sie als Karten hinzuzufügen.",
+			"openTask": "Aufgabe öffnen",
+			"turnIntoTasks_one": "In eine Aufgabe umwandeln",
+			"turnIntoTasks_other": "In {{count}} Aufgaben umwandeln",
+			"turnIntoTasksTitle": "Notizen in Aufgaben umwandeln",
+			"turnIntoTasksDescription": "Jede Notiz wird zu einer Aufgabe in diesem Projekt und durch eine Live-Aufgabenkarte ersetzt.",
+			"column": "Spalte",
+			"titles": "Aufgabentitel",
+			"taskTitle": "Titel von Aufgabe {{index}}",
+			"emptyTitle": "Notiz ohne Titel",
+			"skippedEmpty": "Notizen ohne Titel werden übersprungen.",
+			"createTasks_one": "{{count}} Aufgabe erstellen",
+			"createTasks_other": "{{count}} Aufgaben erstellen",
+			"converted_one": "{{count}} Aufgabe erstellt",
+			"converted_other": "{{count}} Aufgaben erstellt",
+			"convertPartial_one": "{{count}} Notiz konnte nicht in eine Aufgabe umgewandelt werden",
+			"convertPartial_other": "{{count}} Notizen konnten nicht in Aufgaben umgewandelt werden",
+			"makeDependency": "Abhängigkeit erstellen",
+			"removeDependency": "Abhängigkeit entfernen",
+			"removeDependencyPrompt": "Auch die Abhängigkeit zwischen {{source}} und {{target}} entfernen?",
+			"removeDependenciesPrompt_one": "Auch {{count}} Abhängigkeit zwischen diesen Aufgaben entfernen?",
+			"removeDependenciesPrompt_other": "Auch {{count}} Abhängigkeiten zwischen diesen Aufgaben entfernen?",
+			"dependencyPair": "{{source}} blockiert {{target}}",
+			"removeDependencyConfirm": "Entfernen",
+			"keepDependency": "Behalten",
+			"dependencyPromptLabel": "Aufgabenabhängigkeit",
+			"dependencyRemoved_one": "Abhängigkeit entfernt",
+			"dependencyRemoved_other": "{{count}} Abhängigkeiten entfernt",
+			"dependencyRemoveFailed": "Die Abhängigkeit konnte nicht entfernt werden."
+		},
+		"crop": {
+			"section": "Bild",
+			"start": "Bild zuschneiden",
+			"finish": "Zuschneiden beenden",
+			"reset": "Zuschnitt zurücksetzen"
+		},
+		"presence": {
+			"label": "Personen auf diesem Board",
+			"follow": "{{name}} folgen",
+			"stopFollowing": "{{name}} nicht mehr folgen",
+			"following": "Du folgst {{name}}",
+			"stop": "Beenden"
+		},
+		"minimap": {
+			"label": "Board-Übersicht"
+		},
+		"contextMenu": {
+			"label": "Aktionen der Zeichenfläche"
+		},
+		"notices": {
+			"readOnly": "Dieses Board ist schreibgeschützt.",
+			"copied": "Kopiert",
+			"linkCopied": "Link kopiert",
+			"pasteEmpty": "Nichts zum Einfügen",
+			"uploadFailed": "Das Bild konnte nicht hochgeladen werden.",
+			"uploading": "Bild wird hochgeladen…",
+			"imagesOff": "Bilder sind auf diesem Board nicht verfügbar.",
+			"importFailed": "Diese Datei ist kein Margaya-Board.",
+			"imported": "Board hinzugefügt",
+			"tooManyElements": "Dieses Board ist voll. Entferne etwas, bevor du mehr hinzufügst.",
+			"dependencyCreated": "Abhängigkeit erstellt",
+			"dependencyFailed": "Die Abhängigkeit konnte nicht erstellt werden.",
+			"cropUnavailable": "Das Bild wird noch geladen. Versuche es gleich noch einmal."
+		},
+		"help": {
+			"title": "Tastenkürzel",
+			"or": "oder",
+			"sections": {
+				"tools": "Werkzeuge",
+				"view": "Ansicht",
+				"edit": "Bearbeiten",
+				"arrange": "Anordnen",
+				"pointer": "Maus und Touch"
+			},
+			"pan": "Ansicht verschieben",
+			"zoomWheel": "Zoomen",
+			"commitText": "Textbearbeitung beenden",
+			"finishCrop": "Zuschneiden beenden",
+			"nudge": "Schrittweise verschieben",
+			"flowchart": "Verbundene Form hinzufügen",
+			"cycle": "Vorheriges oder nächstes Element auswählen",
+			"keepAspect": "Proportionen beibehalten oder Winkel einrasten",
+			"fromCentre": "Von der Mitte aus skalieren",
+			"duplicateDrag": "Beim Ziehen duplizieren",
+			"addToSelection": "Zur Auswahl hinzufügen",
+			"enterGroup": "In einer Gruppe bearbeiten oder Text bearbeiten",
+			"noSnap": "Ohne Einrasten verschieben",
+			"keys": {
+				"drag": "ziehen",
+				"wheel": "Mausrad",
+				"click": "klicken",
+				"doubleClick": "doppelklicken",
+				"space": "Leertaste",
+				"delete": "Entf",
+				"enter": "Eingabe",
+				"escape": "Esc",
+				"shift": "Umschalt",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Formenbibliothek",
+			"label": "Form",
+			"change": "Form ändern",
+			"add": "Form hinzufügen",
+			"search": "Formen suchen",
+			"noResults": "Keine passenden Formen",
+			"groups": {
+				"basic": "Grundformen",
+				"polygons": "Vielecke",
+				"arrows": "Pfeile",
+				"symbols": "Symbole"
+			},
+			"names": {
+				"triangle": "Dreieck",
+				"rightTriangle": "Rechtwinkliges Dreieck",
+				"pentagon": "Fünfeck",
+				"hexagon": "Sechseck",
+				"octagon": "Achteck",
+				"star": "Stern",
+				"parallelogram": "Parallelogramm",
+				"trapezoid": "Trapez",
+				"plus": "Plus",
+				"cross": "Kreuz",
+				"heart": "Herz",
+				"cloud": "Wolke",
+				"speech": "Sprechblase",
+				"cylinder": "Zylinder",
+				"document": "Dokument",
+				"arrowRight": "Pfeil nach rechts",
+				"arrowLeft": "Pfeil nach links",
+				"arrowUp": "Pfeil nach oben",
+				"arrowDown": "Pfeil nach unten",
+				"arrowDouble": "Doppelpfeil",
+				"chevron": "Winkelpfeil",
+				"moon": "Mond"
+			}
+		},
+		"pens": {
+			"label": "Stiftart",
+			"pen": "Stift",
+			"marker": "Marker",
+			"highlighter": "Textmarker"
+		},
+		"background": {
+			"label": "Hintergrund",
+			"pattern": "Muster",
+			"plain": "Ohne",
+			"dots": "Punkte",
+			"grid": "Raster",
+			"lines": "Linien",
+			"spacing": "Abstand",
+			"small": "Klein",
+			"medium": "Mittel",
+			"large": "Groß",
+			"paper": "Papierfarbe",
+			"white": "Weiß",
+			"cream": "Creme",
+			"stone": "Stein",
+			"mist": "Nebel",
+			"mint": "Minze"
 		}
 	}
 }

@@ -1254,6 +1254,7 @@
 				"intake": "Tiếp nhận",
 				"analytics": "Phân tích",
 				"page": "Trang",
+				"whiteboard": "Bảng trắng",
 				"audit_log": "Nhật ký kiểm tra",
 				"ai": "AI"
 			},
@@ -1480,6 +1481,24 @@
 					"update": {
 						"description": "Chỉnh sửa nội dung, khóa, lưu trữ hoặc sắp xếp lại các trang của chính mình.",
 						"label": "Chỉnh sửa trang"
+					}
+				},
+				"whiteboard": {
+					"read": {
+						"label": "Xem bảng trắng",
+						"description": "Xem mục Bảng trắng và mở bảng ở chế độ chỉ đọc."
+					},
+					"create": {
+						"label": "Tạo bảng trắng",
+						"description": "Tạo bảng từ mẫu hoặc bảng trống, và nhân bản bảng."
+					},
+					"update": {
+						"label": "Chỉnh sửa bảng trắng",
+						"description": "Vẽ và chỉnh sửa trên bảng, đồng thời khóa hoặc lưu trữ bảng của chính mình."
+					},
+					"delete": {
+						"label": "Quản lý mọi bảng trắng",
+						"description": "Khóa, lưu trữ, xuất bản và xóa bất kỳ bảng nào họ xem được, không chỉ bảng của chính mình."
 					}
 				},
 				"audit_log": {
@@ -2339,6 +2358,10 @@
 				"updates": {
 					"title": "Cập nhật",
 					"description": "Đăng các cập nhật trạng thái có ngày kèm đánh giá tình trạng, được soạn từ dữ liệu dự án trực tiếp."
+				},
+				"whiteboards": {
+					"title": "Bảng trắng",
+					"description": "Cùng nhau phác thảo, lên kế hoạch và sắp xếp công việc trên các khung vẽ chung, với thẻ công việc cập nhật trực tiếp."
 				}
 			},
 			"loadError": "Không thể tải dự án này",
@@ -3156,6 +3179,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Đã tạo một bảng trắng",
+				"whiteboardRenamed": "Đã đổi tên một bảng trắng",
+				"whiteboardIconChanged": "Đã đổi biểu tượng của một bảng trắng",
+				"whiteboardLocked": "Đã khóa một bảng trắng",
+				"whiteboardUnlocked": "Đã mở khóa một bảng trắng",
+				"whiteboardArchived": "Đã lưu trữ một bảng trắng",
+				"whiteboardUnarchived": "Đã khôi phục một bảng trắng từ kho lưu trữ",
+				"whiteboardPublished": "Đã xuất bản một bảng trắng qua liên kết công khai",
+				"whiteboardUnpublished": "Đã thu hồi liên kết công khai của một bảng trắng",
+				"whiteboardTrashed": "Đã chuyển một bảng trắng vào thùng rác",
+				"whiteboardRestored": "Đã khôi phục một bảng trắng từ thùng rác",
+				"whiteboardPurged": "Đã xóa vĩnh viễn một bảng trắng",
 				"workspaceDeletionScheduled": "Đã lên lịch xóa không gian làm việc",
 				"workspaceDeletionCancelled": "Đã hủy xóa không gian làm việc",
 				"workspacePublicPagesChanged": "Đã bật hoặc tắt trang công khai",
@@ -3305,6 +3340,7 @@
 			"subtitle": "Ai đã thay đổi thành viên, vai trò, khóa API, webhook, tích hợp, cài đặt và dự án trong không gian làm việc này. Các mục được lưu trong {{days}} ngày.",
 			"subtitleForever": "Ai đã thay đổi thành viên, vai trò, khóa API, webhook, tích hợp, cài đặt và dự án trong không gian làm việc này. Các mục được lưu cho đến khi bạn xóa không gian làm việc.",
 			"targets": {
+				"whiteboard": "Bảng trắng",
 				"page": "Trang",
 				"apiKey": "Khóa API",
 				"export": "Bản xuất",
@@ -3423,7 +3459,7 @@
 		},
 		"trash": {
 			"projectTitle": "Đã xóa gần đây",
-			"projectSubtitle": "Công việc và trang đã xóa sẽ nằm ở đây cho đến khi bị xóa vĩnh viễn. Khôi phục một công việc sẽ khôi phục cả các công việc con bị xóa cùng nó; trang được khôi phục sẽ trở về mục Đã lưu trữ.",
+			"projectSubtitle": "Công việc, trang và bảng trắng đã xóa sẽ nằm ở đây cho đến khi bị xóa vĩnh viễn. Khôi phục một công việc sẽ khôi phục cả các công việc con bị xóa cùng nó; trang hoặc bảng trắng được khôi phục sẽ trở về mục Đã lưu trữ.",
 			"workspaceTitle": "Dự án đã xóa gần đây",
 			"workspaceNav": "Đã xóa gần đây",
 			"workspaceSubtitle": "Dự án đã xóa sẽ nằm ở đây cùng công việc của chúng cho đến khi bị xóa vĩnh viễn.",
@@ -3463,7 +3499,9 @@
 				"emptied_other": "Đã xóa vĩnh viễn {{count}} công việc",
 				"purgeError": "Không thể xóa vĩnh viễn",
 				"pageRestored": "Đã khôi phục trang về mục Đã lưu trữ",
-				"pagePurged": "Đã xóa vĩnh viễn trang"
+				"pagePurged": "Đã xóa vĩnh viễn trang",
+				"whiteboardRestored": "Đã khôi phục bảng trắng về mục Đã lưu trữ",
+				"whiteboardPurged": "Đã xóa vĩnh viễn bảng trắng"
 			},
 			"tasksHeading": "Công việc",
 			"pagesHeading": "Trang",
@@ -3471,7 +3509,13 @@
 			"emptyPagesTitle": "Không có trang đã xóa",
 			"emptyPagesDescription": "Các trang đã lưu trữ mà bạn xóa khỏi dự án này sẽ hiển thị ở đây.",
 			"purgePageTitle": "Xóa vĩnh viễn trang này?",
-			"purgePageDescription": "“{{name}}”, các bình luận và lịch sử phiên bản của nó sẽ bị xóa đối với mọi người. Không thể hoàn tác."
+			"purgePageDescription": "“{{name}}”, các bình luận và lịch sử phiên bản của nó sẽ bị xóa đối với mọi người. Không thể hoàn tác.",
+			"whiteboardsHeading": "Bảng trắng",
+			"searchWhiteboards": "Tìm bảng trắng đã xóa",
+			"emptyWhiteboardsTitle": "Không có bảng trắng đã xóa",
+			"emptyWhiteboardsDescription": "Bảng trắng đã lưu trữ mà bạn xóa khỏi dự án này sẽ hiển thị ở đây.",
+			"purgeWhiteboardTitle": "Xóa vĩnh viễn bảng trắng này?",
+			"purgeWhiteboardDescription": "“{{name}}”, nội dung và hình ảnh của nó sẽ bị xóa đối với mọi người. Không thể hoàn tác."
 		},
 		"automationRules": {
 			"title": "Tự động hóa",
@@ -3942,6 +3986,7 @@
 			"label": "Mục của dự án",
 			"modules": "Mô-đun",
 			"pages": "Trang",
+			"whiteboards": "Bảng trắng",
 			"sections": "Mục",
 			"tasks": "Công việc",
 			"views": "Chế độ xem",
@@ -3973,6 +4018,9 @@
 			"newTask": "Công việc mới",
 			"newWorkspace": "Không gian làm việc mới",
 			"noPagesProjects": "Hãy bật Trang trong phần tính năng của dự án để viết tài liệu tại đó.",
+			"noWhiteboardsProjects": "Hãy bật Bảng trắng trong phần tính năng của dự án để vẽ tại đó.",
+			"allWhiteboards": "Tất cả bảng trắng",
+			"whiteboards": "Bảng trắng",
 			"noRecent": "Các trang và công việc bạn mở sẽ hiện ở đây.",
 			"pages": "Trang",
 			"panel": "Điều hướng theo phần",
@@ -5033,6 +5081,19 @@
 			"previousWeek": "Tuần trước",
 			"rescheduleError": "Không thể đổi lịch công việc",
 			"showWeekends": "Hiện cuối tuần",
+			"touch": {
+				"daysLabel": "Các ngày trong {{month}}",
+				"weekDaysLabel": "Các ngày từ {{start}} đến {{end}}",
+				"dayLabel_other": "{{date}}, {{count}} công việc",
+				"dayLabelEmpty": "{{date}}, không có công việc",
+				"taskCount_other": "{{count}} công việc",
+				"addTask": "Thêm công việc",
+				"empty": "Không có công việc nào trong ngày này.",
+				"moveTask": "Chuyển {{title}} sang ngày khác",
+				"moveTitle": "Chuyển sang ngày",
+				"moveDescription": "Chọn ngày đến hạn mới cho {{title}}. Ngày bắt đầu dịch theo, nên thời lượng công việc được giữ nguyên.",
+				"moved": "Đã chuyển sang {{date}}"
+			},
 			"viewMode": "Khoảng thời gian lịch",
 			"week": "Tuần",
 			"overdue": "Quá hạn"
@@ -9707,6 +9768,290 @@
 			"error": "Không thể thay đổi trạng thái theo dõi trang này"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Lịch sử bảng",
+			"description": "Ai đã thay đổi bảng này và khi nào, mới nhất trước. Mỗi người chỉ hiện một lần chỉnh sửa trong mỗi 10 phút.",
+			"empty": "Chưa có hoạt động nào trên bảng này.",
+			"loadError": "Không thể tải lịch sử bảng.",
+			"loadMore": "Tải thêm",
+			"someone": "Ai đó",
+			"entries": {
+				"created": "Đã tạo bảng",
+				"renamed": "Đã đổi tên bảng thành “{{title}}”",
+				"iconChanged": "Đã đổi biểu tượng",
+				"locked": "Đã khóa bảng",
+				"unlocked": "Đã mở khóa bảng",
+				"archived": "Đã lưu trữ bảng",
+				"unarchived": "Đã khôi phục bảng từ kho lưu trữ",
+				"published": "Đã xuất bản bảng lên web",
+				"unpublished": "Đã ngừng xuất bản bảng",
+				"trashed": "Đã chuyển bảng vào thùng rác",
+				"restored": "Đã khôi phục bảng từ thùng rác",
+				"edited": "Đã chỉnh sửa bảng"
+			}
+		},
+		"section": {
+			"title": "Bảng trắng"
+		},
+		"list": {
+			"documentTitle": "Bảng trắng · {{project}}",
+			"newWhiteboard": "Bảng trắng mới",
+			"moreCreateOptions": "Thêm cách tạo bảng trắng",
+			"untitled": "Bảng chưa đặt tên",
+			"searchPlaceholder": "Tìm bảng",
+			"searchClear": "Xóa tìm kiếm",
+			"tabs": {
+				"active": "Bảng",
+				"archived": "Đã lưu trữ"
+			},
+			"sort": {
+				"lastEdited": "Chỉnh sửa gần nhất",
+				"created": "Ngày tạo",
+				"name": "Tên"
+			},
+			"edited": "Chỉnh sửa {{time}}",
+			"editedBy": "{{name}} đã chỉnh sửa {{time}}",
+			"locked": "Đã khóa",
+			"published": "Đã xuất bản",
+			"cardActions": "Thao tác cho {{title}}",
+			"recentlyDeleted": "Đã xóa gần đây",
+			"loadError": "Không thể tải bảng trắng",
+			"retry": "Thử lại",
+			"unknownUser": "Ai đó",
+			"empty": {
+				"title": "Chưa có bảng trắng nào",
+				"description": "Phác thảo ý tưởng, lên kế hoạch sprint hoặc sắp xếp công việc cùng nhóm trên một khung vẽ chung.",
+				"archivedTitle": "Không có bảng trắng đã lưu trữ",
+				"archivedDescription": "Bảng bạn lưu trữ sẽ hiển thị ở đây.",
+				"noMatchTitle": "Không có bảng nào khớp với “{{query}}”",
+				"noMatchDescription": "Hãy thử từ khác. Tìm kiếm dựa trên tên bảng và văn bản trên bảng.",
+				"clearSearch": "Xóa tìm kiếm"
+			}
+		},
+		"templates": {
+			"title": "Bắt đầu từ một mẫu",
+			"names": {
+				"blank": "Bảng trống",
+				"brainstorm": "Động não",
+				"retrospective": "Họp nhìn lại",
+				"sprintPlanning": "Lập kế hoạch sprint",
+				"userStoryMap": "Bản đồ câu chuyện người dùng",
+				"roadmap": "Lộ trình",
+				"flowchart": "Lưu đồ",
+				"kanban": "Phác thảo Kanban"
+			},
+			"descriptions": {
+				"blank": "Một khung vẽ trống.",
+				"brainstorm": "Một câu hỏi trung tâm với chỗ trống cho ý tưởng xung quanh.",
+				"retrospective": "Điều làm tốt, điều cần cải thiện và các hành động.",
+				"sprintPlanning": "Mục tiêu sprint, các mục tồn đọng, những gì đã cam kết và các rủi ro.",
+				"userStoryMap": "Các hoạt động ở hàng trên, câu chuyện theo bản phát hành ở bên dưới.",
+				"roadmap": "Bây giờ, tiếp theo và sau này, đặt cạnh nhau.",
+				"flowchart": "Điểm bắt đầu, một quyết định và các bước ở giữa.",
+				"kanban": "Các cột Cần làm, Đang làm và Hoàn thành cho ghi chú dán."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "Chúng ta đang giải quyết điều gì?",
+					"ideas": "Ý tưởng"
+				},
+				"retrospective": {
+					"title": "Họp nhìn lại",
+					"wentWell": "Điều làm tốt",
+					"toImprove": "Cần cải thiện",
+					"actions": "Hành động"
+				},
+				"sprintPlanning": {
+					"title": "Lập kế hoạch sprint",
+					"goal": "Mục tiêu sprint",
+					"backlog": "Tồn đọng",
+					"committed": "Đã cam kết",
+					"risks": "Rủi ro"
+				},
+				"userStoryMap": {
+					"title": "Bản đồ câu chuyện người dùng",
+					"activity": "Hoạt động",
+					"story": "Câu chuyện",
+					"release1": "Bản phát hành 1",
+					"release2": "Bản phát hành 2"
+				},
+				"roadmap": {
+					"title": "Lộ trình",
+					"now": "Bây giờ",
+					"next": "Tiếp theo",
+					"later": "Sau này"
+				},
+				"flowchart": {
+					"start": "Bắt đầu",
+					"step": "Bước",
+					"decision": "Quyết định?",
+					"yes": "Có",
+					"no": "Không",
+					"end": "Kết thúc"
+				},
+				"kanban": {
+					"todo": "Cần làm",
+					"doing": "Đang làm",
+					"done": "Hoàn thành"
+				}
+			}
+		},
+		"actions": {
+			"history": "Lịch sử",
+			"open": "Mở",
+			"openInNewTab": "Mở trong tab mới",
+			"copyLink": "Sao chép liên kết",
+			"rename": "Đổi tên",
+			"changeIcon": "Đổi biểu tượng",
+			"duplicate": "Nhân bản",
+			"publish": "Xuất bản lên web",
+			"managePublicLink": "Liên kết công khai",
+			"share": "Chia sẻ",
+			"lock": "Khóa",
+			"unlock": "Mở khóa",
+			"archive": "Lưu trữ",
+			"unarchive": "Khôi phục từ lưu trữ",
+			"moveToTrash": "Chuyển vào thùng rác",
+			"export": "Xuất",
+			"exportPng": "Xuất dưới dạng PNG",
+			"exportSvg": "Xuất dưới dạng SVG",
+			"exportFile": "Tải xuống tệp bảng",
+			"importFile": "Nhập tệp bảng",
+			"zoomToFit": "Thu phóng vừa khung",
+			"fullScreen": "Toàn màn hình",
+			"exitFullScreen": "Thoát toàn màn hình",
+			"more": "Tùy chọn khác của bảng"
+		},
+		"dialogs": {
+			"cancel": "Hủy",
+			"rename": {
+				"title": "Đổi tên bảng trắng",
+				"label": "Tên",
+				"save": "Lưu"
+			},
+			"icon": {
+				"title": "Chọn biểu tượng",
+				"description": "Emoji sẽ hiển thị cạnh tên bảng.",
+				"search": "Tìm emoji",
+				"noMatches": "Không có emoji nào khớp với tìm kiếm",
+				"remove": "Gỡ biểu tượng"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (bản sao)"
+			},
+			"delete": {
+				"title": "Chuyển bảng này vào thùng rác?",
+				"description": "“{{title}}” sẽ được chuyển vào danh sách Đã xóa gần đây của dự án, nơi bạn có thể khôi phục nó cho đến khi bị xóa vĩnh viễn.",
+				"confirm": "Chuyển vào thùng rác"
+			}
+		},
+		"toasts": {
+			"createError": "Không thể tạo bảng trắng",
+			"renameError": "Không thể đổi tên bảng trắng",
+			"iconError": "Không thể đổi biểu tượng",
+			"duplicated": "Đã nhân bản bảng trắng",
+			"duplicateError": "Không thể nhân bản bảng trắng",
+			"open": "Mở",
+			"locked": "Đã khóa bảng trắng",
+			"unlocked": "Đã mở khóa bảng trắng",
+			"lockError": "Không thể thay đổi trạng thái khóa",
+			"archived": "Đã lưu trữ bảng trắng",
+			"unarchived": "Đã khôi phục bảng trắng",
+			"archiveError": "Không thể lưu trữ bảng trắng",
+			"unarchiveError": "Không thể khôi phục bảng trắng",
+			"deleted": "Đã chuyển vào mục Đã xóa gần đây",
+			"deleteError": "Không thể chuyển bảng trắng vào thùng rác",
+			"linkCopied": "Đã sao chép liên kết",
+			"exportError": "Không thể xuất bảng",
+			"imported": "Đã thêm tệp bảng",
+			"importError": "Không thể đọc tệp đó",
+			"imageType": "Chỉ có thể đưa ảnh PNG, JPEG, GIF và WebP lên bảng",
+			"imageUploadError": "Không thể thêm hình ảnh"
+		},
+		"share": {
+			"title": "Chia sẻ bảng trắng",
+			"description": "Xuất bản một bản sao chỉ đọc mà bất kỳ ai có liên kết đều xem được. Tắt tùy chọn này sẽ thu hồi liên kết ngay lập tức.",
+			"switchLabel": "Xuất bản lên web",
+			"onHint": "Bất kỳ ai có liên kết đều có thể xem bảng này.",
+			"offHint": "Chỉ những người trong dự án này mới có thể mở bảng này.",
+			"linkLabel": "Liên kết công khai",
+			"copyLink": "Sao chép liên kết",
+			"copied": "Đã sao chép",
+			"openLink": "Mở liên kết công khai",
+			"privacyNote": "Người xem chỉ thấy bảng cùng tiêu đề và trạng thái của các thẻ công việc trên đó, không thấy gì khác từ dự án.",
+			"cannotPublish": "Chỉ những người có quyền quản lý mọi bảng trắng mới có thể xuất bản.",
+			"archivedHint": "Hãy khôi phục bảng từ lưu trữ để xuất bản.",
+			"publishedToast": "Đã xuất bản bảng trắng",
+			"unpublishedToast": "Đã tắt liên kết công khai",
+			"error": "Không thể thay đổi liên kết công khai",
+			"done": "Xong"
+		},
+		"screen": {
+			"backToList": "Quay lại danh sách bảng trắng",
+			"titleLabel": "Tên bảng trắng",
+			"readOnly": "Chỉ đọc",
+			"loadError": "Không thể tải bảng trắng này",
+			"storedCopyError": "Không thể tải bản sao đã lưu của bảng này",
+			"notFound": {
+				"title": "Không tìm thấy bảng trắng",
+				"description": "Bảng có thể đã bị xóa, hoặc bạn không có quyền truy cập.",
+				"back": "Quay lại danh sách bảng trắng"
+			}
+		},
+		"banners": {
+			"locked": "Bảng này đã bị khóa. Hãy mở khóa để thay đổi.",
+			"lockedBy": "{{name}} đã khóa bảng này. Hãy mở khóa để thay đổi.",
+			"unlock": "Mở khóa",
+			"archived": "Bảng này đã được lưu trữ và ở chế độ chỉ đọc.",
+			"restore": "Khôi phục",
+			"readOnly": "Bạn có thể xem bảng này nhưng không thể chỉnh sửa.",
+			"storedCopy": "Không thể kết nối tới bảng trực tiếp. Đang hiển thị bản sao đã lưu gần nhất ở chế độ chỉ đọc.",
+			"retry": "Thử lại",
+			"tooLarge": "Bảng này quá lớn nên không thể lưu thêm thay đổi.",
+			"reload": "Tải lại"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "Bảng đã bị khóa trong lúc bạn ngoại tuyến, nên các thay đổi ngoại tuyến của bạn chưa được lưu.",
+				"archived": "Bảng đã được lưu trữ trong lúc bạn ngoại tuyến, nên các thay đổi ngoại tuyến của bạn chưa được lưu.",
+				"readOnly": "Bạn không còn quyền chỉnh sửa bảng này, nên các thay đổi ngoại tuyến của bạn chưa được lưu."
+			},
+			"replacedBy": "{{name}} đã thay thế nội dung của bảng",
+			"deleted": "Bảng trắng này đã bị xóa",
+			"signedOut": "Bạn đã bị đăng xuất. Hãy đăng nhập lại để tiếp tục chỉnh sửa.",
+			"roomFull": "Có quá nhiều người đang mở bảng này. Hãy thử lại sau."
+		},
+		"publicView": {
+			"documentTitle": "Bảng trắng được chia sẻ",
+			"unavailableTitle": "Liên kết này không khả dụng",
+			"unavailableDescription": "Bảng có thể đã bị hủy xuất bản, hoặc liên kết không đúng.",
+			"updated": "Cập nhật {{date}}",
+			"readOnly": "Chỉ đọc"
+		},
+		"taskBoards": {
+			"title": "Có trên bảng trắng"
+		},
+		"workspace": {
+			"title": "Bảng trắng",
+			"documentTitle": "Tất cả bảng trắng",
+			"chooseProject": "Tạo trong dự án",
+			"projectFilter": "Dự án",
+			"allProjects": "Tất cả dự án",
+			"groupByProject": "Nhóm theo dự án",
+			"showAllProjects": "Hiện tất cả dự án",
+			"empty": {
+				"description": "Bảng từ mọi dự án bạn xem được sẽ hiện ở đây.",
+				"noProjectsTitle": "Chưa có dự án nào bật bảng trắng",
+				"noProjectsDescription": "Hãy bật Bảng trắng trong phần tính năng của dự án để bắt đầu vẽ."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Bảng trắng mới",
+			"goToWhiteboards": "Đi tới bảng trắng",
+			"goToAllWhiteboards": "Đi tới tất cả bảng trắng"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Lưu",
@@ -12829,7 +13174,9 @@
 			},
 			"downloads": {
 				"finished": "Đã tải xuống {{file}}",
-				"failed": "Không thể tải xuống {{file}}"
+				"failed": "Không thể tải xuống {{file}}",
+				"showInFolder": "Nhấp để hiển thị trong thư mục",
+				"openFolder": "Nhấp để mở thư mục Tải xuống"
 			},
 			"notifications": {
 				"releasedTitle": "Thông báo đã bật lại",
@@ -12878,6 +13225,343 @@
 				"retryIn_other": "Thử lại sau {{count}} giây",
 				"switchServer": "Chuyển máy chủ"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Khung vẽ bảng trắng",
+			"roleDescription": "bảng trắng"
+		},
+		"actions": {
+			"cancel": "Hủy",
+			"save": "Lưu"
+		},
+		"tools": {
+			"label": "Công cụ",
+			"more": "Thêm công cụ",
+			"select": "Chọn",
+			"hand": "Bàn tay (di chuyển)",
+			"rectangle": "Hình chữ nhật",
+			"diamond": "Hình thoi",
+			"ellipse": "Hình elip",
+			"arrow": "Mũi tên",
+			"line": "Đường thẳng",
+			"draw": "Bút",
+			"text": "Văn bản",
+			"sticky": "Ghi chú dán",
+			"image": "Hình ảnh",
+			"eraser": "Tẩy",
+			"frame": "Khung",
+			"laser": "Bút laser",
+			"task": "Thẻ công việc",
+			"lock": "Giữ công cụ",
+			"lockTool": "Giữ công cụ sau khi vẽ",
+			"unlockTool": "Quay về công cụ Chọn sau khi vẽ",
+			"shape": "Hình"
+		},
+		"commands": {
+			"undo": "Hoàn tác",
+			"redo": "Làm lại",
+			"history": "Lịch sử",
+			"copy": "Sao chép",
+			"cut": "Cắt",
+			"paste": "Dán",
+			"duplicate": "Nhân bản",
+			"delete": "Xóa",
+			"selectAll": "Chọn tất cả",
+			"group": "Nhóm",
+			"ungroup": "Bỏ nhóm",
+			"bringForward": "Đưa lên một lớp",
+			"sendBackward": "Đưa xuống một lớp",
+			"bringToFront": "Đưa lên trên cùng",
+			"sendToBack": "Đưa xuống dưới cùng",
+			"toggleGrid": "Bắt dính vào lưới",
+			"toggleSnap": "Bắt dính vào đối tượng",
+			"toggleMinimap": "Hiện bản đồ thu nhỏ",
+			"search": "Tìm trên bảng",
+			"help": "Phím tắt",
+			"toggleElementLock": "Khóa hoặc mở khóa",
+			"lock": "Khóa",
+			"unlock": "Mở khóa",
+			"flipHorizontal": "Lật ngang",
+			"flipVertical": "Lật dọc",
+			"copyStyle": "Sao chép kiểu",
+			"pasteStyle": "Dán kiểu",
+			"alignLeft": "Căn trái",
+			"alignCenter": "Căn giữa theo chiều ngang",
+			"alignRight": "Căn phải",
+			"alignTop": "Căn trên",
+			"alignMiddle": "Căn giữa theo chiều dọc",
+			"alignBottom": "Căn dưới",
+			"distributeHorizontal": "Phân bố theo chiều ngang",
+			"distributeVertical": "Phân bố theo chiều dọc",
+			"editText": "Chỉnh sửa văn bản",
+			"editLink": "Chỉnh sửa liên kết"
+		},
+		"zoom": {
+			"label": "Thu phóng",
+			"in": "Phóng to",
+			"out": "Thu nhỏ",
+			"reset": "Đặt lại thu phóng",
+			"resetTo": "Thu phóng {{percent}}%, đặt lại về 100%",
+			"percent": "{{percent}}%",
+			"fit": "Thu phóng vừa khung",
+			"selection": "Thu phóng tới vùng chọn"
+		},
+		"panel": {
+			"label": "Kiểu",
+			"stroke": "Nét viền",
+			"textColor": "Màu chữ",
+			"stickyColor": "Màu ghi chú",
+			"fill": "Nền",
+			"fillStyle": "Tô",
+			"fillSolid": "Đặc",
+			"fillHatch": "Gạch chéo",
+			"fillCross": "Gạch ô",
+			"fillNone": "Không có",
+			"strokeWidth": "Độ dày nét",
+			"thin": "Mảnh",
+			"medium": "Vừa",
+			"bold": "Đậm",
+			"extraBold": "Rất đậm",
+			"strokeStyle": "Kiểu nét",
+			"solid": "Liền",
+			"dashed": "Gạch",
+			"dotted": "Chấm",
+			"sketch": "Độ phác họa",
+			"sketchClean": "Gọn gàng",
+			"sketchLight": "Nhẹ",
+			"sketchRough": "Thô",
+			"corners": "Góc",
+			"cornersSharp": "Nhọn",
+			"cornersRound": "Bo tròn",
+			"cornersRounder": "Bo tròn hơn",
+			"font": "Phông chữ",
+			"fontHand": "Viết tay",
+			"fontSans": "Không chân",
+			"fontMono": "Đơn cách",
+			"fontSize": "Cỡ chữ",
+			"sizeSmall": "Nhỏ",
+			"sizeMedium": "Vừa",
+			"sizeLarge": "Lớn",
+			"sizeHuge": "Rất lớn",
+			"align": "Căn chỉnh văn bản",
+			"alignLeft": "Trái",
+			"alignCenter": "Giữa",
+			"alignRight": "Phải",
+			"routing": "Kiểu đường",
+			"routingStraight": "Thẳng",
+			"routingCurved": "Cong",
+			"routingElbow": "Gấp khúc",
+			"arrowheads": "Đầu mũi tên",
+			"startHead": "Đầu",
+			"endHead": "Cuối",
+			"headNone": "Không có",
+			"headArrow": "Mũi tên",
+			"headTriangle": "Tam giác",
+			"headDot": "Chấm tròn",
+			"headBar": "Thanh ngang",
+			"opacity": "Độ mờ đục",
+			"layers": "Lớp",
+			"alignment": "Căn chỉnh",
+			"actions": "Thao tác"
+		},
+		"colors": {
+			"black": "Đen",
+			"red": "Đỏ",
+			"green": "Xanh lá",
+			"blue": "Xanh dương",
+			"orange": "Cam",
+			"purple": "Tím",
+			"teal": "Xanh mòng két",
+			"grey": "Xám",
+			"yellow": "Vàng",
+			"pink": "Hồng",
+			"none": "Không màu",
+			"custom": "Màu tùy chỉnh"
+		},
+		"text": {
+			"label": "Văn bản",
+			"frameName": "Tên khung"
+		},
+		"link": {
+			"title": "Liên kết",
+			"description": "Thêm địa chỉ web, hoặc liên kết tới một phần tử khác bằng #element= và id của nó.",
+			"label": "Địa chỉ",
+			"invalid": "Nhập địa chỉ web bắt đầu bằng https://, địa chỉ mailto: hoặc liên kết tới phần tử.",
+			"remove": "Gỡ liên kết",
+			"open": "Mở liên kết",
+			"copyElementLink": "Sao chép liên kết tới phần tử"
+		},
+		"search": {
+			"title": "Tìm trên bảng",
+			"placeholder": "Tìm văn bản trên bảng này",
+			"noResults": "Không có gì trên bảng này khớp.",
+			"results": "Kết quả khớp"
+		},
+		"tasks": {
+			"pickerTitle": "Thêm thẻ công việc",
+			"searchPlaceholder": "Tìm công việc theo tiêu đề hoặc mã",
+			"noResults": "Không có công việc nào khớp.",
+			"results": "Công việc",
+			"onBoard": "Đã có trên bảng này",
+			"addCards_other": "Thêm {{count}} thẻ",
+			"addCardsNone": "Thêm thẻ",
+			"pickHint": "Chọn một hoặc nhiều công việc để thêm chúng dưới dạng thẻ.",
+			"openTask": "Mở công việc",
+			"turnIntoTasks_other": "Chuyển thành {{count}} công việc",
+			"turnIntoTasksTitle": "Chuyển ghi chú thành công việc",
+			"turnIntoTasksDescription": "Mỗi ghi chú sẽ trở thành một công việc trong dự án này và được thay bằng một thẻ công việc cập nhật trực tiếp.",
+			"column": "Cột",
+			"titles": "Tiêu đề công việc",
+			"taskTitle": "Tiêu đề của công việc {{index}}",
+			"emptyTitle": "Ghi chú chưa đặt tên",
+			"skippedEmpty": "Các ghi chú không có tiêu đề sẽ bị bỏ qua.",
+			"createTasks_other": "Tạo {{count}} công việc",
+			"converted_other": "Đã tạo {{count}} công việc",
+			"convertPartial_other": "Không thể chuyển {{count}} ghi chú thành công việc",
+			"makeDependency": "Tạo phụ thuộc",
+			"removeDependency": "Gỡ phụ thuộc",
+			"removeDependencyPrompt": "Gỡ luôn phụ thuộc giữa {{source}} và {{target}}?",
+			"removeDependenciesPrompt_other": "Gỡ luôn {{count}} phụ thuộc giữa các công việc này?",
+			"dependencyPair": "{{source}} chặn {{target}}",
+			"removeDependencyConfirm": "Gỡ",
+			"keepDependency": "Giữ lại",
+			"dependencyPromptLabel": "Phụ thuộc công việc",
+			"dependencyRemoved_other": "Đã gỡ {{count}} phụ thuộc",
+			"dependencyRemoveFailed": "Không thể gỡ phụ thuộc."
+		},
+		"crop": {
+			"section": "Hình ảnh",
+			"start": "Cắt hình ảnh",
+			"finish": "Hoàn tất cắt",
+			"reset": "Đặt lại vùng cắt"
+		},
+		"presence": {
+			"label": "Những người đang ở trên bảng này",
+			"follow": "Theo dõi {{name}}",
+			"stopFollowing": "Ngừng theo dõi {{name}}",
+			"following": "Đang theo dõi {{name}}",
+			"stop": "Dừng"
+		},
+		"minimap": {
+			"label": "Tổng quan bảng"
+		},
+		"contextMenu": {
+			"label": "Thao tác với khung vẽ"
+		},
+		"notices": {
+			"readOnly": "Bảng này ở chế độ chỉ đọc.",
+			"copied": "Đã sao chép",
+			"linkCopied": "Đã sao chép liên kết",
+			"pasteEmpty": "Không có gì để dán",
+			"uploadFailed": "Không thể tải hình ảnh lên.",
+			"uploading": "Đang tải hình ảnh lên…",
+			"imagesOff": "Không thể dùng hình ảnh trên bảng này.",
+			"importFailed": "Tệp đó không phải là bảng Margaya.",
+			"imported": "Đã thêm bảng",
+			"tooManyElements": "Bảng này đã đầy. Hãy gỡ bớt nội dung trước khi thêm.",
+			"dependencyCreated": "Đã tạo phụ thuộc",
+			"dependencyFailed": "Không thể tạo phụ thuộc.",
+			"cropUnavailable": "Hình ảnh vẫn đang tải. Hãy thử cắt lại sau giây lát."
+		},
+		"help": {
+			"title": "Phím tắt",
+			"or": "hoặc",
+			"sections": {
+				"tools": "Công cụ",
+				"view": "Hiển thị",
+				"edit": "Chỉnh sửa",
+				"arrange": "Sắp xếp",
+				"pointer": "Chuột và cảm ứng"
+			},
+			"pan": "Di chuyển khung nhìn",
+			"zoomWheel": "Thu phóng",
+			"commitText": "Hoàn tất chỉnh sửa văn bản",
+			"finishCrop": "Hoàn tất cắt",
+			"nudge": "Dịch chuyển nhẹ",
+			"flowchart": "Thêm hình được kết nối",
+			"cycle": "Chọn phần tử trước hoặc sau",
+			"keepAspect": "Giữ tỷ lệ hoặc bắt góc",
+			"fromCentre": "Đổi kích thước từ tâm",
+			"duplicateDrag": "Nhân bản khi kéo",
+			"addToSelection": "Thêm vào vùng chọn",
+			"enterGroup": "Chỉnh sửa bên trong nhóm, hoặc chỉnh sửa văn bản",
+			"noSnap": "Di chuyển không bắt dính",
+			"keys": {
+				"drag": "kéo",
+				"wheel": "con lăn",
+				"click": "nhấp",
+				"doubleClick": "nhấp đúp",
+				"space": "Phím cách",
+				"delete": "Delete",
+				"enter": "Enter",
+				"escape": "Esc",
+				"shift": "Shift",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Thư viện hình",
+			"label": "Hình",
+			"change": "Đổi hình",
+			"add": "Thêm hình",
+			"search": "Tìm hình",
+			"noResults": "Không có hình phù hợp",
+			"groups": {
+				"basic": "Cơ bản",
+				"polygons": "Đa giác",
+				"arrows": "Mũi tên",
+				"symbols": "Biểu tượng"
+			},
+			"names": {
+				"triangle": "Tam giác",
+				"rightTriangle": "Tam giác vuông",
+				"pentagon": "Ngũ giác",
+				"hexagon": "Lục giác",
+				"octagon": "Bát giác",
+				"star": "Ngôi sao",
+				"parallelogram": "Hình bình hành",
+				"trapezoid": "Hình thang",
+				"plus": "Dấu cộng",
+				"cross": "Dấu nhân",
+				"heart": "Trái tim",
+				"cloud": "Đám mây",
+				"speech": "Bong bóng thoại",
+				"cylinder": "Hình trụ",
+				"document": "Tài liệu",
+				"arrowRight": "Mũi tên phải",
+				"arrowLeft": "Mũi tên trái",
+				"arrowUp": "Mũi tên lên",
+				"arrowDown": "Mũi tên xuống",
+				"arrowDouble": "Mũi tên hai chiều",
+				"chevron": "Hình chữ V",
+				"moon": "Mặt trăng"
+			}
+		},
+		"pens": {
+			"label": "Kiểu bút",
+			"pen": "Bút",
+			"marker": "Bút dạ",
+			"highlighter": "Bút dạ quang"
+		},
+		"background": {
+			"label": "Nền",
+			"pattern": "Họa tiết",
+			"plain": "Trơn",
+			"dots": "Chấm",
+			"grid": "Lưới",
+			"lines": "Dòng kẻ",
+			"spacing": "Khoảng cách",
+			"small": "Nhỏ",
+			"medium": "Vừa",
+			"large": "Lớn",
+			"paper": "Màu giấy",
+			"white": "Trắng",
+			"cream": "Kem",
+			"stone": "Đá",
+			"mist": "Sương mù",
+			"mint": "Bạc hà"
 		}
 	}
 }

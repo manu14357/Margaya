@@ -789,6 +789,7 @@
 			"label": "Sekcje projektu",
 			"modules": "Moduły",
 			"pages": "Strony",
+			"whiteboards": "Tablice",
 			"sections": "Sekcje",
 			"tasks": "Zadania",
 			"views": "Widoki",
@@ -820,6 +821,9 @@
 			"newTask": "Nowe zadanie",
 			"newWorkspace": "Nowy obszar roboczy",
 			"noPagesProjects": "Włącz Strony w funkcjach projektu, aby pisać tam dokumentację.",
+			"noWhiteboardsProjects": "Włącz Tablice w funkcjach projektu, aby tam rysować.",
+			"allWhiteboards": "Wszystkie tablice",
+			"whiteboards": "Tablice",
 			"noRecent": "Otwierane strony i zadania pojawią się tutaj.",
 			"pages": "Strony",
 			"panel": "Nawigacja sekcji",
@@ -3708,6 +3712,24 @@
 						"label": "Edycja stron"
 					}
 				},
+				"whiteboard": {
+					"read": {
+						"label": "Wyświetlanie tablic",
+						"description": "Widzi sekcję Tablice i otwiera tablice w trybie tylko do odczytu."
+					},
+					"create": {
+						"label": "Tworzenie tablic",
+						"description": "Tworzy tablice, z szablonu lub puste, i je duplikuje."
+					},
+					"update": {
+						"label": "Edycja tablic",
+						"description": "Rysuje i edytuje na tablicach oraz blokuje i archiwizuje własne tablice."
+					},
+					"delete": {
+						"label": "Zarządzanie wszystkimi tablicami",
+						"description": "Blokuje, archiwizuje, publikuje i usuwa każdą widoczną tablicę, nie tylko własne."
+					}
+				},
 				"audit_log": {
 					"read": {
 						"description": "Przeglądanie i eksportowanie dziennika audytu obszaru roboczego: kto zmieniał członków, role, klucze, webhooki, integracje i ustawienia.",
@@ -3740,6 +3762,7 @@
 				"intake": "Zgłoszenia",
 				"analytics": "Analityka",
 				"page": "Strony",
+				"whiteboard": "Tablice",
 				"audit_log": "Dziennik audytu",
 				"ai": "AI"
 			},
@@ -3880,6 +3903,10 @@
 				"updates": {
 					"title": "Aktualizacje",
 					"description": "Publikuj datowane aktualizacje statusu z oceną stanu projektu, przygotowywane na podstawie bieżących danych projektu."
+				},
+				"whiteboards": {
+					"title": "Tablice",
+					"description": "Szkicujcie, planujcie i rozpisujcie pracę razem na wspólnych tablicach z kartami zadań na żywo."
 				}
 			},
 			"loadError": "Nie udało się wczytać tego projektu",
@@ -4742,6 +4769,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Utworzono tablicę",
+				"whiteboardRenamed": "Zmieniono nazwę tablicy",
+				"whiteboardIconChanged": "Zmieniono ikonę tablicy",
+				"whiteboardLocked": "Zablokowano tablicę",
+				"whiteboardUnlocked": "Odblokowano tablicę",
+				"whiteboardArchived": "Zarchiwizowano tablicę",
+				"whiteboardUnarchived": "Przywrócono tablicę z archiwum",
+				"whiteboardPublished": "Opublikowano tablicę pod publicznym linkiem",
+				"whiteboardUnpublished": "Unieważniono publiczny link do tablicy",
+				"whiteboardTrashed": "Przeniesiono tablicę do kosza",
+				"whiteboardRestored": "Przywrócono tablicę z kosza",
+				"whiteboardPurged": "Trwale usunięto tablicę",
 				"workspaceDeletionScheduled": "Zaplanowano usunięcie obszaru roboczego",
 				"workspaceDeletionCancelled": "Anulowano usunięcie obszaru roboczego",
 				"workspacePublicPagesChanged": "Włączono lub wyłączono strony publiczne",
@@ -4891,6 +4930,7 @@
 			"subtitle": "Kto zmieniał członków, role, klucze API, webhooki, integracje, ustawienia i projekty w tym obszarze roboczym. Wpisy są przechowywane przez {{days}} dni.",
 			"subtitleForever": "Kto zmieniał członków, role, klucze API, webhooki, integracje, ustawienia i projekty w tym obszarze roboczym. Wpisy są przechowywane do momentu usunięcia obszaru roboczego.",
 			"targets": {
+				"whiteboard": "Tablica",
 				"page": "Strona",
 				"apiKey": "Klucz API",
 				"export": "Eksport",
@@ -4910,7 +4950,7 @@
 		},
 		"trash": {
 			"projectTitle": "Ostatnio usunięte",
-			"projectSubtitle": "Usunięte zadania i strony pozostają tutaj, dopóki nie zostaną trwale usunięte. Przywrócenie zadania przywraca też podzadania usunięte razem z nim; przywrócona strona wraca do Zarchiwizowanych.",
+			"projectSubtitle": "Usunięte zadania, strony i tablice pozostają tutaj, dopóki nie zostaną trwale usunięte. Przywrócenie zadania przywraca też podzadania usunięte razem z nim; przywrócona strona lub tablica wraca do Zarchiwizowanych.",
 			"workspaceTitle": "Ostatnio usunięte projekty",
 			"workspaceNav": "Ostatnio usunięte",
 			"workspaceSubtitle": "Usunięte projekty pozostają tutaj razem z zadaniami, dopóki nie zostaną trwale usunięte.",
@@ -4959,7 +4999,9 @@
 				"emptied_other": "Trwale usunięte zadania: {{count}}",
 				"purgeError": "Nie udało się trwale usunąć",
 				"pageRestored": "Przywrócono stronę do Zarchiwizowanych",
-				"pagePurged": "Strona trwale usunięta"
+				"pagePurged": "Strona trwale usunięta",
+				"whiteboardRestored": "Przywrócono tablicę do Zarchiwizowanych",
+				"whiteboardPurged": "Tablica trwale usunięta"
 			},
 			"tasksHeading": "Zadania",
 			"pagesHeading": "Strony",
@@ -4967,7 +5009,13 @@
 			"emptyPagesTitle": "Brak usuniętych stron",
 			"emptyPagesDescription": "Tutaj pojawiają się zarchiwizowane strony usunięte z tego projektu.",
 			"purgePageTitle": "Trwale usunąć tę stronę?",
-			"purgePageDescription": "Strona „{{name}}”, jej komentarze i historia wersji zostaną usunięte dla wszystkich. Tej operacji nie można cofnąć."
+			"purgePageDescription": "Strona „{{name}}”, jej komentarze i historia wersji zostaną usunięte dla wszystkich. Tej operacji nie można cofnąć.",
+			"whiteboardsHeading": "Tablice",
+			"searchWhiteboards": "Szukaj usuniętych tablic",
+			"emptyWhiteboardsTitle": "Brak usuniętych tablic",
+			"emptyWhiteboardsDescription": "Tutaj pojawiają się zarchiwizowane tablice usunięte z tego projektu.",
+			"purgeWhiteboardTitle": "Trwale usunąć tę tablicę?",
+			"purgeWhiteboardDescription": "Tablica „{{name}}”, jej zawartość i obrazy zostaną usunięte dla wszystkich. Tej operacji nie można cofnąć."
 		},
 		"automationRules": {
 			"title": "Automatyzacje",
@@ -5719,6 +5767,25 @@
 			"previousWeek": "Poprzedni tydzień",
 			"rescheduleError": "Nie udało się zmienić terminu zadania",
 			"showWeekends": "Pokaż weekendy",
+			"touch": {
+				"daysLabel": "Dni miesiąca {{month}}",
+				"weekDaysLabel": "Dni od {{start}} do {{end}}",
+				"dayLabel_one": "{{date}}, {{count}} zadanie",
+				"dayLabel_few": "{{date}}, {{count}} zadania",
+				"dayLabel_many": "{{date}}, {{count}} zadań",
+				"dayLabel_other": "{{date}}, {{count}} zadania",
+				"dayLabelEmpty": "{{date}}, brak zadań",
+				"taskCount_one": "{{count}} zadanie",
+				"taskCount_few": "{{count}} zadania",
+				"taskCount_many": "{{count}} zadań",
+				"taskCount_other": "{{count}} zadania",
+				"addTask": "Dodaj zadanie",
+				"empty": "Brak zadań w tym dniu.",
+				"moveTask": "Przenieś {{title}} na inną datę",
+				"moveTitle": "Przenieś na datę",
+				"moveDescription": "Wybierz nowy termin dla {{title}}. Data rozpoczęcia przesuwa się razem z nim, więc zadanie zachowuje swoją długość.",
+				"moved": "Przeniesiono na {{date}}"
+			},
 			"viewMode": "Okres kalendarza",
 			"week": "Tydzień",
 			"overdue": "Po terminie"
@@ -10146,6 +10213,290 @@
 			"error": "Nie udało się zmienić obserwowania tej strony"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Historia tablicy",
+			"description": "Kto i kiedy zmieniał tę tablicę, od najnowszych. Edycje pojawiają się raz na osobę co 10 minut.",
+			"empty": "Na tej tablicy jeszcze nic się nie wydarzyło.",
+			"loadError": "Nie udało się wczytać historii tablicy.",
+			"loadMore": "Wczytaj więcej",
+			"someone": "Ktoś",
+			"entries": {
+				"created": "Utworzono tablicę",
+				"renamed": "Zmieniono nazwę tablicy na „{{title}}”",
+				"iconChanged": "Zmieniono ikonę",
+				"locked": "Zablokowano tablicę",
+				"unlocked": "Odblokowano tablicę",
+				"archived": "Zarchiwizowano tablicę",
+				"unarchived": "Przywrócono tablicę z archiwum",
+				"published": "Opublikowano tablicę w internecie",
+				"unpublished": "Wycofano publikację tablicy",
+				"trashed": "Przeniesiono tablicę do kosza",
+				"restored": "Przywrócono tablicę z kosza",
+				"edited": "Edytowano tablicę"
+			}
+		},
+		"section": {
+			"title": "Tablice"
+		},
+		"list": {
+			"documentTitle": "Tablice · {{project}}",
+			"newWhiteboard": "Nowa tablica",
+			"moreCreateOptions": "Więcej sposobów tworzenia tablicy",
+			"untitled": "Tablica bez nazwy",
+			"searchPlaceholder": "Szukaj tablic",
+			"searchClear": "Wyczyść wyszukiwanie",
+			"tabs": {
+				"active": "Tablice",
+				"archived": "Zarchiwizowane"
+			},
+			"sort": {
+				"lastEdited": "Ostatnio edytowane",
+				"created": "Utworzone",
+				"name": "Nazwa"
+			},
+			"edited": "Edytowano {{time}}",
+			"editedBy": "Edytowano {{time}}, {{name}}",
+			"locked": "Zablokowana",
+			"published": "Opublikowana",
+			"cardActions": "Akcje dla: {{title}}",
+			"recentlyDeleted": "Ostatnio usunięte",
+			"loadError": "Nie udało się wczytać tablic",
+			"retry": "Spróbuj ponownie",
+			"unknownUser": "Ktoś",
+			"empty": {
+				"title": "Nie ma jeszcze tablic",
+				"description": "Szkicuj pomysły, planuj sprint lub rozpisuj pracę z zespołem na wspólnej tablicy.",
+				"archivedTitle": "Brak zarchiwizowanych tablic",
+				"archivedDescription": "Tutaj pojawią się zarchiwizowane przez Ciebie tablice.",
+				"noMatchTitle": "Brak tablic pasujących do „{{query}}”",
+				"noMatchDescription": "Spróbuj innych słów. Wyszukiwanie obejmuje nazwy tablic i tekst na tablicach.",
+				"clearSearch": "Wyczyść wyszukiwanie"
+			}
+		},
+		"templates": {
+			"title": "Zacznij od szablonu",
+			"names": {
+				"blank": "Pusta tablica",
+				"brainstorm": "Burza mózgów",
+				"retrospective": "Retrospektywa",
+				"sprintPlanning": "Planowanie sprintu",
+				"userStoryMap": "Mapa historyjek użytkownika",
+				"roadmap": "Plan rozwoju",
+				"flowchart": "Schemat blokowy",
+				"kanban": "Szkic Kanban"
+			},
+			"descriptions": {
+				"blank": "Puste płótno.",
+				"brainstorm": "Centralne pytanie i miejsce na pomysły wokół niego.",
+				"retrospective": "Co poszło dobrze, co poprawić i działania.",
+				"sprintPlanning": "Cel sprintu, rejestr zadań, zobowiązania i ryzyka.",
+				"userStoryMap": "Aktywności u góry, historyjki według wydań poniżej.",
+				"roadmap": "Teraz, wkrótce i później, obok siebie.",
+				"flowchart": "Początek, decyzja i kroki pomiędzy nimi.",
+				"kanban": "Kolumny Do zrobienia, W toku i Gotowe na karteczki."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "Jaki problem rozwiązujemy?",
+					"ideas": "Pomysły"
+				},
+				"retrospective": {
+					"title": "Retrospektywa",
+					"wentWell": "Poszło dobrze",
+					"toImprove": "Do poprawy",
+					"actions": "Działania"
+				},
+				"sprintPlanning": {
+					"title": "Planowanie sprintu",
+					"goal": "Cel sprintu",
+					"backlog": "Rejestr zadań",
+					"committed": "Zobowiązania",
+					"risks": "Ryzyka"
+				},
+				"userStoryMap": {
+					"title": "Mapa historyjek użytkownika",
+					"activity": "Aktywność",
+					"story": "Historyjka",
+					"release1": "Wydanie 1",
+					"release2": "Wydanie 2"
+				},
+				"roadmap": {
+					"title": "Plan rozwoju",
+					"now": "Teraz",
+					"next": "Wkrótce",
+					"later": "Później"
+				},
+				"flowchart": {
+					"start": "Początek",
+					"step": "Krok",
+					"decision": "Decyzja?",
+					"yes": "Tak",
+					"no": "Nie",
+					"end": "Koniec"
+				},
+				"kanban": {
+					"todo": "Do zrobienia",
+					"doing": "W toku",
+					"done": "Gotowe"
+				}
+			}
+		},
+		"actions": {
+			"history": "Historia",
+			"open": "Otwórz",
+			"openInNewTab": "Otwórz w nowej karcie",
+			"copyLink": "Kopiuj link",
+			"rename": "Zmień nazwę",
+			"changeIcon": "Zmień ikonę",
+			"duplicate": "Duplikuj",
+			"publish": "Opublikuj w internecie",
+			"managePublicLink": "Link publiczny",
+			"share": "Udostępnij",
+			"lock": "Zablokuj",
+			"unlock": "Odblokuj",
+			"archive": "Zarchiwizuj",
+			"unarchive": "Przywróć z archiwum",
+			"moveToTrash": "Przenieś do kosza",
+			"export": "Eksportuj",
+			"exportPng": "Eksportuj jako PNG",
+			"exportSvg": "Eksportuj jako SVG",
+			"exportFile": "Pobierz plik tablicy",
+			"importFile": "Importuj plik tablicy",
+			"zoomToFit": "Dopasuj do widoku",
+			"fullScreen": "Pełny ekran",
+			"exitFullScreen": "Zamknij pełny ekran",
+			"more": "Więcej opcji tablicy"
+		},
+		"dialogs": {
+			"cancel": "Anuluj",
+			"rename": {
+				"title": "Zmień nazwę tablicy",
+				"label": "Nazwa",
+				"save": "Zapisz"
+			},
+			"icon": {
+				"title": "Wybierz ikonę",
+				"description": "Emoji wyświetla się obok nazwy tablicy.",
+				"search": "Szukaj emoji",
+				"noMatches": "Brak emoji pasujących do wyszukiwania",
+				"remove": "Usuń ikonę"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (kopia)"
+			},
+			"delete": {
+				"title": "Przenieść tę tablicę do kosza?",
+				"description": "Tablica „{{title}}” trafi na listę Ostatnio usunięte w projekcie, skąd można ją przywrócić, dopóki nie zostanie trwale usunięta.",
+				"confirm": "Przenieś do kosza"
+			}
+		},
+		"toasts": {
+			"createError": "Nie udało się utworzyć tablicy",
+			"renameError": "Nie udało się zmienić nazwy tablicy",
+			"iconError": "Nie udało się zmienić ikony",
+			"duplicated": "Zduplikowano tablicę",
+			"duplicateError": "Nie udało się zduplikować tablicy",
+			"open": "Otwórz",
+			"locked": "Tablica zablokowana",
+			"unlocked": "Tablica odblokowana",
+			"lockError": "Nie udało się zmienić blokady",
+			"archived": "Tablica zarchiwizowana",
+			"unarchived": "Tablica przywrócona",
+			"archiveError": "Nie udało się zarchiwizować tablicy",
+			"unarchiveError": "Nie udało się przywrócić tablicy",
+			"deleted": "Przeniesiono do Ostatnio usuniętych",
+			"deleteError": "Nie udało się przenieść tablicy do kosza",
+			"linkCopied": "Link skopiowany",
+			"exportError": "Nie udało się wyeksportować tablicy",
+			"imported": "Dodano plik tablicy",
+			"importError": "Nie udało się odczytać tego pliku",
+			"imageType": "Na tablicy można umieszczać tylko obrazy PNG, JPEG, GIF i WebP",
+			"imageUploadError": "Nie udało się dodać obrazu"
+		},
+		"share": {
+			"title": "Udostępnij tablicę",
+			"description": "Opublikuj kopię tylko do odczytu, którą może zobaczyć każdy, kto ma link. Wyłączenie publikacji natychmiast unieważnia link.",
+			"switchLabel": "Opublikuj w internecie",
+			"onHint": "Każdy, kto ma link, może przeglądać tę tablicę.",
+			"offHint": "Tę tablicę mogą otworzyć tylko osoby z tego projektu.",
+			"linkLabel": "Link publiczny",
+			"copyLink": "Kopiuj link",
+			"copied": "Skopiowano",
+			"openLink": "Otwórz link publiczny",
+			"privacyNote": "Oglądający widzą tablicę oraz tytuły i statusy kart zadań na niej, nic więcej z projektu.",
+			"cannotPublish": "Publikować mogą tylko osoby, które mogą zarządzać wszystkimi tablicami.",
+			"archivedHint": "Przywróć tablicę z archiwum, aby ją opublikować.",
+			"publishedToast": "Tablica opublikowana",
+			"unpublishedToast": "Link publiczny wyłączony",
+			"error": "Nie udało się zmienić linku publicznego",
+			"done": "Gotowe"
+		},
+		"screen": {
+			"backToList": "Wróć do tablic",
+			"titleLabel": "Nazwa tablicy",
+			"readOnly": "Tylko do odczytu",
+			"loadError": "Nie udało się wczytać tej tablicy",
+			"storedCopyError": "Nie udało się wczytać zapisanej kopii tej tablicy",
+			"notFound": {
+				"title": "Nie znaleziono tablicy",
+				"description": "Mogła zostać usunięta albo nie masz do niej dostępu.",
+				"back": "Wróć do tablic"
+			}
+		},
+		"banners": {
+			"locked": "Ta tablica jest zablokowana. Odblokuj ją, aby wprowadzać zmiany.",
+			"lockedBy": "{{name}} zablokował(a) tę tablicę. Odblokuj ją, aby wprowadzać zmiany.",
+			"unlock": "Odblokuj",
+			"archived": "Ta tablica jest zarchiwizowana i dostępna tylko do odczytu.",
+			"restore": "Przywróć",
+			"readOnly": "Możesz wyświetlać tę tablicę, ale nie możesz jej edytować.",
+			"storedCopy": "Brak połączenia z tablicą na żywo. Wyświetlana jest ostatnia zapisana kopia, tylko do odczytu.",
+			"retry": "Spróbuj ponownie",
+			"tooLarge": "Ta tablica jest zbyt duża, aby zapisać kolejne zmiany.",
+			"reload": "Odśwież"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "Tablica została zablokowana, gdy nie było Cię online, więc Twoje zmiany offline nie zostały zapisane.",
+				"archived": "Tablica została zarchiwizowana, gdy nie było Cię online, więc Twoje zmiany offline nie zostały zapisane.",
+				"readOnly": "Nie możesz już edytować tej tablicy, więc Twoje zmiany offline nie zostały zapisane."
+			},
+			"replacedBy": "{{name}} zastąpił(a) zawartość tablicy",
+			"deleted": "Ta tablica została usunięta",
+			"signedOut": "Nastąpiło wylogowanie. Zaloguj się ponownie, aby kontynuować edycję.",
+			"roomFull": "Zbyt wiele osób ma otwartą tę tablicę. Spróbuj ponownie później."
+		},
+		"publicView": {
+			"documentTitle": "Udostępniona tablica",
+			"unavailableTitle": "Ten link jest niedostępny",
+			"unavailableDescription": "Publikacja tablicy mogła zostać wycofana albo link jest nieprawidłowy.",
+			"updated": "Zaktualizowano {{date}}",
+			"readOnly": "Tylko do odczytu"
+		},
+		"taskBoards": {
+			"title": "Na tablicach"
+		},
+		"workspace": {
+			"title": "Tablice",
+			"documentTitle": "Wszystkie tablice",
+			"chooseProject": "Utwórz w projekcie",
+			"projectFilter": "Projekt",
+			"allProjects": "Wszystkie projekty",
+			"groupByProject": "Grupuj według projektu",
+			"showAllProjects": "Pokaż wszystkie projekty",
+			"empty": {
+				"description": "Tutaj pojawiają się tablice ze wszystkich projektów, które widzisz.",
+				"noProjectsTitle": "Żaden projekt nie ma jeszcze tablic",
+				"noProjectsDescription": "Włącz Tablice w funkcjach projektu, aby zacząć rysować."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Nowa tablica",
+			"goToWhiteboards": "Przejdź do tablic",
+			"goToAllWhiteboards": "Przejdź do wszystkich tablic"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Zapisz",
@@ -13450,7 +13801,9 @@
 			},
 			"downloads": {
 				"finished": "Pobrano {{file}}",
-				"failed": "Nie udało się pobrać {{file}}"
+				"failed": "Nie udało się pobrać {{file}}",
+				"showInFolder": "Kliknij, aby pokazać w folderze",
+				"openFolder": "Kliknij, aby otworzyć folder Pobrane"
 			},
 			"notifications": {
 				"releasedTitle": "Powiadomienia są znowu włączone",
@@ -13502,6 +13855,364 @@
 				"retryIn_other": "Ponowna próba za {{count}} sekundy",
 				"switchServer": "Zmień serwer"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Obszar tablicy",
+			"roleDescription": "tablica"
+		},
+		"actions": {
+			"cancel": "Anuluj",
+			"save": "Zapisz"
+		},
+		"tools": {
+			"label": "Narzędzia",
+			"more": "Więcej narzędzi",
+			"select": "Zaznaczanie",
+			"hand": "Rączka (przesuwanie)",
+			"rectangle": "Prostokąt",
+			"diamond": "Romb",
+			"ellipse": "Elipsa",
+			"arrow": "Strzałka",
+			"line": "Linia",
+			"draw": "Pióro",
+			"text": "Tekst",
+			"sticky": "Karteczka",
+			"image": "Obraz",
+			"eraser": "Gumka",
+			"frame": "Ramka",
+			"laser": "Wskaźnik laserowy",
+			"task": "Karta zadania",
+			"lock": "Zachowaj aktywne narzędzie",
+			"lockTool": "Zachowaj aktywne narzędzie po rysowaniu",
+			"unlockTool": "Wracaj do zaznaczania po rysowaniu",
+			"shape": "Kształty"
+		},
+		"commands": {
+			"undo": "Cofnij",
+			"redo": "Ponów",
+			"history": "Historia",
+			"copy": "Kopiuj",
+			"cut": "Wytnij",
+			"paste": "Wklej",
+			"duplicate": "Duplikuj",
+			"delete": "Usuń",
+			"selectAll": "Zaznacz wszystko",
+			"group": "Grupuj",
+			"ungroup": "Rozgrupuj",
+			"bringForward": "Przesuń do przodu",
+			"sendBackward": "Przesuń do tyłu",
+			"bringToFront": "Przenieś na wierzch",
+			"sendToBack": "Przenieś na spód",
+			"toggleGrid": "Przyciągaj do siatki",
+			"toggleSnap": "Przyciągaj do obiektów",
+			"toggleMinimap": "Pokaż minimapę",
+			"search": "Znajdź na tablicy",
+			"help": "Skróty klawiszowe",
+			"toggleElementLock": "Zablokuj lub odblokuj",
+			"lock": "Zablokuj",
+			"unlock": "Odblokuj",
+			"flipHorizontal": "Odbij w poziomie",
+			"flipVertical": "Odbij w pionie",
+			"copyStyle": "Kopiuj styl",
+			"pasteStyle": "Wklej styl",
+			"alignLeft": "Wyrównaj do lewej",
+			"alignCenter": "Wyśrodkuj w poziomie",
+			"alignRight": "Wyrównaj do prawej",
+			"alignTop": "Wyrównaj do góry",
+			"alignMiddle": "Wyśrodkuj w pionie",
+			"alignBottom": "Wyrównaj do dołu",
+			"distributeHorizontal": "Rozłóż w poziomie",
+			"distributeVertical": "Rozłóż w pionie",
+			"editText": "Edytuj tekst",
+			"editLink": "Edytuj link"
+		},
+		"zoom": {
+			"label": "Powiększenie",
+			"in": "Powiększ",
+			"out": "Pomniejsz",
+			"reset": "Resetuj powiększenie",
+			"resetTo": "Powiększenie {{percent}}%, przywróć 100%",
+			"percent": "{{percent}}%",
+			"fit": "Dopasuj do widoku",
+			"selection": "Powiększ do zaznaczenia"
+		},
+		"panel": {
+			"label": "Styl",
+			"stroke": "Obrys",
+			"textColor": "Kolor tekstu",
+			"stickyColor": "Kolor karteczki",
+			"fill": "Tło",
+			"fillStyle": "Wypełnienie",
+			"fillSolid": "Pełne",
+			"fillHatch": "Kreskowanie",
+			"fillCross": "Kratka",
+			"fillNone": "Brak",
+			"strokeWidth": "Grubość obrysu",
+			"thin": "Cienki",
+			"medium": "Średni",
+			"bold": "Gruby",
+			"extraBold": "Bardzo gruby",
+			"strokeStyle": "Styl obrysu",
+			"solid": "Ciągły",
+			"dashed": "Kreskowany",
+			"dotted": "Kropkowany",
+			"sketch": "Szkicowość",
+			"sketchClean": "Gładka",
+			"sketchLight": "Lekka",
+			"sketchRough": "Mocna",
+			"corners": "Narożniki",
+			"cornersSharp": "Ostre",
+			"cornersRound": "Zaokrąglone",
+			"cornersRounder": "Bardziej zaokrąglone",
+			"font": "Czcionka",
+			"fontHand": "Odręczna",
+			"fontSans": "Bezszeryfowa",
+			"fontMono": "Maszynowa",
+			"fontSize": "Rozmiar czcionki",
+			"sizeSmall": "Mały",
+			"sizeMedium": "Średni",
+			"sizeLarge": "Duży",
+			"sizeHuge": "Ogromny",
+			"align": "Wyrównanie tekstu",
+			"alignLeft": "Do lewej",
+			"alignCenter": "Do środka",
+			"alignRight": "Do prawej",
+			"routing": "Typ linii",
+			"routingStraight": "Prosta",
+			"routingCurved": "Zakrzywiona",
+			"routingElbow": "Łamana",
+			"arrowheads": "Groty strzałek",
+			"startHead": "Początek",
+			"endHead": "Koniec",
+			"headNone": "Brak",
+			"headArrow": "Strzałka",
+			"headTriangle": "Trójkąt",
+			"headDot": "Kropka",
+			"headBar": "Kreska",
+			"opacity": "Krycie",
+			"layers": "Warstwy",
+			"alignment": "Wyrównanie",
+			"actions": "Działania"
+		},
+		"colors": {
+			"black": "Czarny",
+			"red": "Czerwony",
+			"green": "Zielony",
+			"blue": "Niebieski",
+			"orange": "Pomarańczowy",
+			"purple": "Fioletowy",
+			"teal": "Morski",
+			"grey": "Szary",
+			"yellow": "Żółty",
+			"pink": "Różowy",
+			"none": "Bez koloru",
+			"custom": "Kolor niestandardowy"
+		},
+		"text": {
+			"label": "Tekst",
+			"frameName": "Nazwa ramki"
+		},
+		"link": {
+			"title": "Link elementu",
+			"description": "Dodaj adres internetowy albo link do innego elementu za pomocą #element= i jego identyfikatora.",
+			"label": "Adres",
+			"invalid": "Wpisz adres internetowy zaczynający się od https://, adres mailto: lub link do elementu.",
+			"remove": "Usuń link",
+			"open": "Otwórz link",
+			"copyElementLink": "Kopiuj link do elementu"
+		},
+		"search": {
+			"title": "Znajdź na tablicy",
+			"placeholder": "Szukaj tekstu na tej tablicy",
+			"noResults": "Nic na tej tablicy nie pasuje.",
+			"results": "Wyniki"
+		},
+		"tasks": {
+			"pickerTitle": "Dodaj karty zadań",
+			"searchPlaceholder": "Szukaj zadań po tytule lub kluczu",
+			"noResults": "Brak pasujących zadań.",
+			"results": "Zadania",
+			"onBoard": "Na tej tablicy",
+			"addCards_one": "Dodaj {{count}} kartę",
+			"addCards_few": "Dodaj {{count}} karty",
+			"addCards_many": "Dodaj {{count}} kart",
+			"addCards_other": "Dodaj {{count}} karty",
+			"addCardsNone": "Dodaj karty",
+			"pickHint": "Wybierz jedno lub więcej zadań, aby dodać je jako karty.",
+			"openTask": "Otwórz zadanie",
+			"turnIntoTasks_one": "Zamień w zadanie",
+			"turnIntoTasks_few": "Zamień w {{count}} zadania",
+			"turnIntoTasks_many": "Zamień w {{count}} zadań",
+			"turnIntoTasks_other": "Zamień w {{count}} zadania",
+			"turnIntoTasksTitle": "Zamień notatki w zadania",
+			"turnIntoTasksDescription": "Każda notatka staje się zadaniem w tym projekcie i zostaje zastąpiona kartą zadania na żywo.",
+			"column": "Kolumna",
+			"titles": "Tytuły zadań",
+			"taskTitle": "Tytuł zadania {{index}}",
+			"emptyTitle": "Notatka bez tytułu",
+			"skippedEmpty": "Notatki bez tytułu są pomijane.",
+			"createTasks_one": "Utwórz {{count}} zadanie",
+			"createTasks_few": "Utwórz {{count}} zadania",
+			"createTasks_many": "Utwórz {{count}} zadań",
+			"createTasks_other": "Utwórz {{count}} zadania",
+			"converted_one": "Utworzono {{count}} zadanie",
+			"converted_few": "Utworzono {{count}} zadania",
+			"converted_many": "Utworzono {{count}} zadań",
+			"converted_other": "Utworzono {{count}} zadania",
+			"convertPartial_one": "Nie udało się zamienić {{count}} notatki w zadanie",
+			"convertPartial_few": "Nie udało się zamienić {{count}} notatek w zadania",
+			"convertPartial_many": "Nie udało się zamienić {{count}} notatek w zadania",
+			"convertPartial_other": "Nie udało się zamienić {{count}} notatki w zadania",
+			"makeDependency": "Utwórz zależność",
+			"removeDependency": "Usuń zależność",
+			"removeDependencyPrompt": "Usunąć też zależność między {{source}} a {{target}}?",
+			"removeDependenciesPrompt_one": "Usunąć też {{count}} zależność między tymi zadaniami?",
+			"removeDependenciesPrompt_few": "Usunąć też {{count}} zależności między tymi zadaniami?",
+			"removeDependenciesPrompt_many": "Usunąć też {{count}} zależności między tymi zadaniami?",
+			"removeDependenciesPrompt_other": "Usunąć też {{count}} zależności między tymi zadaniami?",
+			"dependencyPair": "{{source}} blokuje {{target}}",
+			"removeDependencyConfirm": "Usuń",
+			"keepDependency": "Zachowaj",
+			"dependencyPromptLabel": "Zależność zadań",
+			"dependencyRemoved_one": "Usunięto zależność",
+			"dependencyRemoved_few": "Usunięto {{count}} zależności",
+			"dependencyRemoved_many": "Usunięto {{count}} zależności",
+			"dependencyRemoved_other": "Usunięto {{count}} zależności",
+			"dependencyRemoveFailed": "Nie udało się usunąć zależności."
+		},
+		"crop": {
+			"section": "Obraz",
+			"start": "Przytnij obraz",
+			"finish": "Zakończ przycinanie",
+			"reset": "Resetuj przycięcie"
+		},
+		"presence": {
+			"label": "Osoby na tej tablicy",
+			"follow": "Obserwuj: {{name}}",
+			"stopFollowing": "Przestań obserwować: {{name}}",
+			"following": "Obserwujesz: {{name}}",
+			"stop": "Zatrzymaj"
+		},
+		"minimap": {
+			"label": "Podgląd tablicy"
+		},
+		"contextMenu": {
+			"label": "Akcje obszaru tablicy"
+		},
+		"notices": {
+			"readOnly": "Ta tablica jest tylko do odczytu.",
+			"copied": "Skopiowano",
+			"linkCopied": "Link skopiowany",
+			"pasteEmpty": "Nie ma nic do wklejenia",
+			"uploadFailed": "Nie udało się przesłać obrazu.",
+			"uploading": "Przesyłanie obrazu…",
+			"imagesOff": "Obrazy nie są dostępne na tej tablicy.",
+			"importFailed": "Ten plik nie jest tablicą Margaya.",
+			"imported": "Dodano tablicę",
+			"tooManyElements": "Ta tablica jest pełna. Usuń coś, zanim dodasz więcej.",
+			"dependencyCreated": "Utworzono zależność",
+			"dependencyFailed": "Nie udało się utworzyć zależności.",
+			"cropUnavailable": "Obraz wciąż się wczytuje. Spróbuj przyciąć go ponownie za chwilę."
+		},
+		"help": {
+			"title": "Skróty klawiszowe",
+			"or": "lub",
+			"sections": {
+				"tools": "Narzędzia",
+				"view": "Widok",
+				"edit": "Edycja",
+				"arrange": "Rozmieszczanie",
+				"pointer": "Mysz i dotyk"
+			},
+			"pan": "Przesuwanie widoku",
+			"zoomWheel": "Powiększanie",
+			"commitText": "Zakończ edycję tekstu",
+			"finishCrop": "Zakończ przycinanie",
+			"nudge": "Przesuń o odrobinę",
+			"flowchart": "Dodaj połączony kształt",
+			"cycle": "Zaznacz poprzedni lub następny element",
+			"keepAspect": "Zachowaj proporcje lub przyciągaj kąt",
+			"fromCentre": "Zmień rozmiar od środka",
+			"duplicateDrag": "Duplikuj podczas przeciągania",
+			"addToSelection": "Dodaj do zaznaczenia",
+			"enterGroup": "Edytuj wewnątrz grupy lub edytuj tekst",
+			"noSnap": "Przesuwaj bez przyciągania",
+			"keys": {
+				"drag": "przeciągnij",
+				"wheel": "kółko",
+				"click": "kliknij",
+				"doubleClick": "kliknij dwukrotnie",
+				"space": "Spacja",
+				"delete": "Delete",
+				"enter": "Enter",
+				"escape": "Esc",
+				"shift": "Shift",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Biblioteka kształtów",
+			"label": "Kształt",
+			"change": "Zmień kształt",
+			"add": "Dodaj kształt",
+			"search": "Szukaj kształtów",
+			"noResults": "Brak pasujących kształtów",
+			"groups": {
+				"basic": "Podstawowe",
+				"polygons": "Wielokąty",
+				"arrows": "Strzałki",
+				"symbols": "Symbole"
+			},
+			"names": {
+				"triangle": "Trójkąt",
+				"rightTriangle": "Trójkąt prostokątny",
+				"pentagon": "Pięciokąt",
+				"hexagon": "Sześciokąt",
+				"octagon": "Ośmiokąt",
+				"star": "Gwiazda",
+				"parallelogram": "Równoległobok",
+				"trapezoid": "Trapez",
+				"plus": "Plus",
+				"cross": "Krzyżyk",
+				"heart": "Serce",
+				"cloud": "Chmura",
+				"speech": "Dymek",
+				"cylinder": "Walec",
+				"document": "Dokument",
+				"arrowRight": "Strzałka w prawo",
+				"arrowLeft": "Strzałka w lewo",
+				"arrowUp": "Strzałka w górę",
+				"arrowDown": "Strzałka w dół",
+				"arrowDouble": "Strzałka dwustronna",
+				"chevron": "Szewron",
+				"moon": "Księżyc"
+			}
+		},
+		"pens": {
+			"label": "Styl pióra",
+			"pen": "Pióro",
+			"marker": "Marker",
+			"highlighter": "Zakreślacz"
+		},
+		"background": {
+			"label": "Tło",
+			"pattern": "Wzór",
+			"plain": "Gładkie",
+			"dots": "Kropki",
+			"grid": "Siatka",
+			"lines": "Linie",
+			"spacing": "Odstęp",
+			"small": "Mały",
+			"medium": "Średni",
+			"large": "Duży",
+			"paper": "Kolor papieru",
+			"white": "Biały",
+			"cream": "Kremowy",
+			"stone": "Kamienny",
+			"mist": "Mglisty",
+			"mint": "Miętowy"
 		}
 	}
 }

@@ -1267,6 +1267,7 @@
 				"intake": "Entrada",
 				"analytics": "Análises",
 				"page": "Páginas",
+				"whiteboard": "Quadros brancos",
 				"audit_log": "Log de auditoria",
 				"ai": "IA"
 			},
@@ -1493,6 +1494,24 @@
 					"update": {
 						"description": "Edita o conteúdo e bloqueia, arquiva ou reorganiza as próprias páginas.",
 						"label": "Editar páginas"
+					}
+				},
+				"whiteboard": {
+					"read": {
+						"label": "Ver quadros brancos",
+						"description": "Vê a seção Quadros brancos e abre os quadros somente para leitura."
+					},
+					"create": {
+						"label": "Criar quadros brancos",
+						"description": "Cria quadros, a partir de um modelo ou em branco, e os duplica."
+					},
+					"update": {
+						"label": "Editar quadros brancos",
+						"description": "Desenha e edita nos quadros, e bloqueia ou arquiva os próprios quadros."
+					},
+					"delete": {
+						"label": "Gerenciar todos os quadros brancos",
+						"description": "Bloqueia, arquiva, publica e exclui qualquer quadro que consiga ver, não apenas os próprios."
 					}
 				},
 				"audit_log": {
@@ -2520,6 +2539,10 @@
 				"updates": {
 					"title": "Atualizações",
 					"description": "Publique atualizações de status datadas com uma indicação de situação, com rascunho gerado a partir dos dados atuais do projeto."
+				},
+				"whiteboards": {
+					"title": "Quadros brancos",
+					"description": "Esboce, planeje e mapeie o trabalho em conjunto em telas compartilhadas, com cartões de tarefa ao vivo."
 				}
 			},
 			"loadError": "Não foi possível carregar este projeto",
@@ -3367,6 +3390,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Criou um quadro branco",
+				"whiteboardRenamed": "Renomeou um quadro branco",
+				"whiteboardIconChanged": "Alterou o ícone de um quadro branco",
+				"whiteboardLocked": "Bloqueou um quadro branco",
+				"whiteboardUnlocked": "Desbloqueou um quadro branco",
+				"whiteboardArchived": "Arquivou um quadro branco",
+				"whiteboardUnarchived": "Restaurou um quadro branco do arquivo",
+				"whiteboardPublished": "Publicou um quadro branco em um link público",
+				"whiteboardUnpublished": "Revogou o link público de um quadro branco",
+				"whiteboardTrashed": "Moveu um quadro branco para a lixeira",
+				"whiteboardRestored": "Restaurou um quadro branco da lixeira",
+				"whiteboardPurged": "Excluiu permanentemente um quadro branco",
 				"workspaceDeletionScheduled": "Agendou a exclusão do espaço de trabalho",
 				"workspaceDeletionCancelled": "Cancelou a exclusão do espaço de trabalho",
 				"workspacePublicPagesChanged": "Ativou ou desativou as páginas públicas",
@@ -3516,6 +3551,7 @@
 			"subtitle": "Quem alterou membros, funções, chaves de API, webhooks, integrações, configurações e projetos neste espaço de trabalho. Os registros são mantidos por {{days}} dias.",
 			"subtitleForever": "Quem alterou membros, funções, chaves de API, webhooks, integrações, configurações e projetos neste espaço de trabalho. Os registros são mantidos até você excluir o espaço de trabalho.",
 			"targets": {
+				"whiteboard": "Quadro branco",
 				"page": "Página",
 				"apiKey": "Chave de API",
 				"export": "Exportação",
@@ -3535,7 +3571,7 @@
 		},
 		"trash": {
 			"projectTitle": "Excluídos recentemente",
-			"projectSubtitle": "As tarefas e páginas excluídas ficam aqui até serem excluídas permanentemente. Restaurar uma tarefa traz de volta as subtarefas excluídas junto com ela; uma página restaurada volta para Arquivadas.",
+			"projectSubtitle": "As tarefas, páginas e quadros brancos excluídos ficam aqui até serem excluídos permanentemente. Restaurar uma tarefa traz de volta as subtarefas excluídas junto com ela; uma página ou um quadro branco restaurado volta para Arquivadas.",
 			"workspaceTitle": "Projetos excluídos recentemente",
 			"workspaceNav": "Excluídos recentemente",
 			"workspaceSubtitle": "Os projetos excluídos ficam aqui com suas tarefas até serem excluídos permanentemente.",
@@ -3581,7 +3617,9 @@
 				"emptied_other": "{{count}} tarefas excluídas permanentemente",
 				"purgeError": "Não foi possível excluir permanentemente",
 				"pageRestored": "Página restaurada em Arquivadas",
-				"pagePurged": "Página excluída permanentemente"
+				"pagePurged": "Página excluída permanentemente",
+				"whiteboardRestored": "Quadro branco restaurado em Arquivados",
+				"whiteboardPurged": "Quadro branco excluído permanentemente"
 			},
 			"tasksHeading": "Tarefas",
 			"pagesHeading": "Páginas",
@@ -3589,7 +3627,13 @@
 			"emptyPagesTitle": "Nenhuma página excluída",
 			"emptyPagesDescription": "As páginas arquivadas que você excluir deste projeto aparecem aqui.",
 			"purgePageTitle": "Excluir esta página permanentemente?",
-			"purgePageDescription": "“{{name}}”, seus comentários e o histórico de versões são excluídos para todos. Isso não pode ser desfeito."
+			"purgePageDescription": "“{{name}}”, seus comentários e o histórico de versões são excluídos para todos. Isso não pode ser desfeito.",
+			"whiteboardsHeading": "Quadros brancos",
+			"searchWhiteboards": "Pesquisar quadros brancos excluídos",
+			"emptyWhiteboardsTitle": "Nenhum quadro branco excluído",
+			"emptyWhiteboardsDescription": "Os quadros brancos arquivados que você excluir deste projeto aparecem aqui.",
+			"purgeWhiteboardTitle": "Excluir este quadro branco permanentemente?",
+			"purgeWhiteboardDescription": "“{{name}}”, seu conteúdo e suas imagens são excluídos para todos. Isso não pode ser desfeito."
 		},
 		"automationRules": {
 			"title": "Automações",
@@ -4064,6 +4108,7 @@
 			"label": "Seções do projeto",
 			"modules": "Módulos",
 			"pages": "Páginas",
+			"whiteboards": "Quadros brancos",
 			"sections": "Seções",
 			"tasks": "Tarefas",
 			"views": "Visualizações",
@@ -4095,6 +4140,9 @@
 			"newTask": "Nova tarefa",
 			"newWorkspace": "Novo espaço de trabalho",
 			"noPagesProjects": "Ative Páginas nos recursos de um projeto para escrever documentos nele.",
+			"noWhiteboardsProjects": "Ative Quadros brancos nos recursos de um projeto para desenhar nele.",
+			"allWhiteboards": "Todos os quadros brancos",
+			"whiteboards": "Quadros brancos",
 			"noRecent": "As páginas e tarefas que você abrir aparecem aqui.",
 			"pages": "Páginas",
 			"panel": "Navegação da seção",
@@ -5193,6 +5241,23 @@
 			"previousWeek": "Semana anterior",
 			"rescheduleError": "Falha ao reagendar a tarefa",
 			"showWeekends": "Mostrar fins de semana",
+			"touch": {
+				"daysLabel": "Dias de {{month}}",
+				"weekDaysLabel": "Dias de {{start}} a {{end}}",
+				"dayLabel_one": "{{date}}, {{count}} tarefa",
+				"dayLabel_many": "{{date}}, {{count}} de tarefas",
+				"dayLabel_other": "{{date}}, {{count}} tarefas",
+				"dayLabelEmpty": "{{date}}, nenhuma tarefa",
+				"taskCount_one": "{{count}} tarefa",
+				"taskCount_many": "{{count}} de tarefas",
+				"taskCount_other": "{{count}} tarefas",
+				"addTask": "Adicionar tarefa",
+				"empty": "Nenhuma tarefa neste dia.",
+				"moveTask": "Mover {{title}} para outra data",
+				"moveTitle": "Mover para data",
+				"moveDescription": "Escolha o novo vencimento de {{title}}. A data de início acompanha, então a tarefa mantém sua duração.",
+				"moved": "Movida para {{date}}"
+			},
 			"viewMode": "Período do calendário",
 			"week": "Semana",
 			"overdue": "Atrasadas"
@@ -9999,6 +10064,290 @@
 			"error": "Não foi possível alterar o acompanhamento desta página"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Histórico do quadro",
+			"description": "Quem alterou este quadro e quando, do mais recente para o mais antigo. As edições aparecem uma vez por pessoa a cada 10 minutos.",
+			"empty": "Nada aconteceu neste quadro ainda.",
+			"loadError": "Não foi possível carregar o histórico do quadro.",
+			"loadMore": "Carregar mais",
+			"someone": "Alguém",
+			"entries": {
+				"created": "Criou o quadro",
+				"renamed": "Renomeou o quadro para “{{title}}”",
+				"iconChanged": "Alterou o ícone",
+				"locked": "Bloqueou o quadro",
+				"unlocked": "Desbloqueou o quadro",
+				"archived": "Arquivou o quadro",
+				"unarchived": "Restaurou o quadro do arquivo",
+				"published": "Publicou o quadro na web",
+				"unpublished": "Deixou de publicar o quadro",
+				"trashed": "Moveu o quadro para a lixeira",
+				"restored": "Restaurou o quadro da lixeira",
+				"edited": "Editou o quadro"
+			}
+		},
+		"section": {
+			"title": "Quadros brancos"
+		},
+		"list": {
+			"documentTitle": "Quadros brancos · {{project}}",
+			"newWhiteboard": "Novo quadro branco",
+			"moreCreateOptions": "Mais formas de criar um quadro branco",
+			"untitled": "Quadro sem título",
+			"searchPlaceholder": "Buscar quadros",
+			"searchClear": "Limpar busca",
+			"tabs": {
+				"active": "Quadros",
+				"archived": "Arquivados"
+			},
+			"sort": {
+				"lastEdited": "Última edição",
+				"created": "Criação",
+				"name": "Nome"
+			},
+			"edited": "Editado {{time}}",
+			"editedBy": "Editado {{time}} por {{name}}",
+			"locked": "Bloqueado",
+			"published": "Publicado",
+			"cardActions": "Ações de {{title}}",
+			"recentlyDeleted": "Excluídos recentemente",
+			"loadError": "Não foi possível carregar os quadros brancos",
+			"retry": "Tentar novamente",
+			"unknownUser": "Alguém",
+			"empty": {
+				"title": "Nenhum quadro branco ainda",
+				"description": "Esboce ideias, planeje uma sprint ou mapeie o trabalho com sua equipe em uma tela compartilhada.",
+				"archivedTitle": "Nenhum quadro branco arquivado",
+				"archivedDescription": "Os quadros que você arquivar aparecem aqui.",
+				"noMatchTitle": "Nenhum quadro corresponde a “{{query}}”",
+				"noMatchDescription": "Tente outras palavras. A busca considera os nomes dos quadros e o texto neles.",
+				"clearSearch": "Limpar busca"
+			}
+		},
+		"templates": {
+			"title": "Começar com um modelo",
+			"names": {
+				"blank": "Quadro em branco",
+				"brainstorm": "Tempestade de ideias",
+				"retrospective": "Retrospectiva",
+				"sprintPlanning": "Planejamento da sprint",
+				"userStoryMap": "Mapa de histórias de usuário",
+				"roadmap": "Roteiro do produto",
+				"flowchart": "Fluxograma",
+				"kanban": "Esboço de Kanban"
+			},
+			"descriptions": {
+				"blank": "Uma tela vazia.",
+				"brainstorm": "Uma pergunta central com espaço para ideias ao redor.",
+				"retrospective": "O que deu certo, o que melhorar e as ações.",
+				"sprintPlanning": "A meta da sprint, as pendências, o que foi assumido e os riscos.",
+				"userStoryMap": "Atividades no topo, histórias por versão abaixo.",
+				"roadmap": "Agora, a seguir e depois, lado a lado.",
+				"flowchart": "Um início, uma decisão e as etapas entre eles.",
+				"kanban": "Colunas A fazer, Em andamento e Concluído para notas adesivas."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "O que estamos resolvendo?",
+					"ideas": "Ideias"
+				},
+				"retrospective": {
+					"title": "Retrospectiva",
+					"wentWell": "Deu certo",
+					"toImprove": "A melhorar",
+					"actions": "Ações"
+				},
+				"sprintPlanning": {
+					"title": "Planejamento da sprint",
+					"goal": "Meta da sprint",
+					"backlog": "Pendências",
+					"committed": "Assumido",
+					"risks": "Riscos"
+				},
+				"userStoryMap": {
+					"title": "Mapa de histórias de usuário",
+					"activity": "Atividade",
+					"story": "História",
+					"release1": "Versão 1",
+					"release2": "Versão 2"
+				},
+				"roadmap": {
+					"title": "Roteiro do produto",
+					"now": "Agora",
+					"next": "A seguir",
+					"later": "Depois"
+				},
+				"flowchart": {
+					"start": "Início",
+					"step": "Etapa",
+					"decision": "Decisão?",
+					"yes": "Sim",
+					"no": "Não",
+					"end": "Fim"
+				},
+				"kanban": {
+					"todo": "A fazer",
+					"doing": "Em andamento",
+					"done": "Concluído"
+				}
+			}
+		},
+		"actions": {
+			"history": "Histórico",
+			"open": "Abrir",
+			"openInNewTab": "Abrir em nova aba",
+			"copyLink": "Copiar link",
+			"rename": "Renomear",
+			"changeIcon": "Alterar ícone",
+			"duplicate": "Duplicar",
+			"publish": "Publicar na web",
+			"managePublicLink": "Link público",
+			"share": "Compartilhar",
+			"lock": "Bloquear",
+			"unlock": "Desbloquear",
+			"archive": "Arquivar",
+			"unarchive": "Restaurar do arquivo",
+			"moveToTrash": "Mover para a lixeira",
+			"export": "Exportar",
+			"exportPng": "Exportar como PNG",
+			"exportSvg": "Exportar como SVG",
+			"exportFile": "Baixar arquivo do quadro",
+			"importFile": "Importar arquivo de quadro",
+			"zoomToFit": "Ajustar à tela",
+			"fullScreen": "Tela cheia",
+			"exitFullScreen": "Sair da tela cheia",
+			"more": "Mais opções do quadro"
+		},
+		"dialogs": {
+			"cancel": "Cancelar",
+			"rename": {
+				"title": "Renomear quadro branco",
+				"label": "Nome",
+				"save": "Salvar"
+			},
+			"icon": {
+				"title": "Escolha um ícone",
+				"description": "O emoji aparece ao lado do nome do quadro.",
+				"search": "Buscar emoji",
+				"noMatches": "Nenhum emoji corresponde à sua busca",
+				"remove": "Remover ícone"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (cópia)"
+			},
+			"delete": {
+				"title": "Mover este quadro para a lixeira?",
+				"description": "“{{title}}” vai para a lista Excluídos recentemente do projeto, onde pode ser restaurado até ser excluído permanentemente.",
+				"confirm": "Mover para a lixeira"
+			}
+		},
+		"toasts": {
+			"createError": "Não foi possível criar o quadro branco",
+			"renameError": "Não foi possível renomear o quadro branco",
+			"iconError": "Não foi possível alterar o ícone",
+			"duplicated": "Quadro branco duplicado",
+			"duplicateError": "Não foi possível duplicar o quadro branco",
+			"open": "Abrir",
+			"locked": "Quadro branco bloqueado",
+			"unlocked": "Quadro branco desbloqueado",
+			"lockError": "Não foi possível alterar o bloqueio",
+			"archived": "Quadro branco arquivado",
+			"unarchived": "Quadro branco restaurado",
+			"archiveError": "Não foi possível arquivar o quadro branco",
+			"unarchiveError": "Não foi possível restaurar o quadro branco",
+			"deleted": "Movido para Excluídos recentemente",
+			"deleteError": "Não foi possível mover o quadro branco para a lixeira",
+			"linkCopied": "Link copiado",
+			"exportError": "Não foi possível exportar o quadro",
+			"imported": "Arquivo de quadro adicionado",
+			"importError": "Não foi possível ler esse arquivo",
+			"imageType": "Só é possível colocar imagens PNG, JPEG, GIF e WebP em um quadro",
+			"imageUploadError": "Não foi possível adicionar a imagem"
+		},
+		"share": {
+			"title": "Compartilhar quadro branco",
+			"description": "Publique uma cópia somente leitura que qualquer pessoa com o link pode ver. Desativar revoga o link na hora.",
+			"switchLabel": "Publicar na web",
+			"onHint": "Qualquer pessoa com o link pode ver este quadro.",
+			"offHint": "Apenas pessoas deste projeto podem abrir este quadro.",
+			"linkLabel": "Link público",
+			"copyLink": "Copiar link",
+			"copied": "Copiado",
+			"openLink": "Abrir link público",
+			"privacyNote": "Os visitantes veem o quadro e os títulos e status dos cartões de tarefa nele, nada mais do projeto.",
+			"cannotPublish": "Só quem pode gerenciar todos os quadros brancos pode publicar.",
+			"archivedHint": "Restaure o quadro do arquivo para publicá-lo.",
+			"publishedToast": "Quadro branco publicado",
+			"unpublishedToast": "Link público desativado",
+			"error": "Não foi possível alterar o link público",
+			"done": "Concluir"
+		},
+		"screen": {
+			"backToList": "Voltar aos quadros brancos",
+			"titleLabel": "Nome do quadro branco",
+			"readOnly": "Somente leitura",
+			"loadError": "Não foi possível carregar este quadro branco",
+			"storedCopyError": "Não foi possível carregar a cópia salva deste quadro",
+			"notFound": {
+				"title": "Quadro branco não encontrado",
+				"description": "Ele pode ter sido excluído, ou você não tem acesso a ele.",
+				"back": "Voltar aos quadros brancos"
+			}
+		},
+		"banners": {
+			"locked": "Este quadro está bloqueado. Desbloqueie-o para fazer alterações.",
+			"lockedBy": "{{name}} bloqueou este quadro. Desbloqueie-o para fazer alterações.",
+			"unlock": "Desbloquear",
+			"archived": "Este quadro está arquivado e somente leitura.",
+			"restore": "Restaurar",
+			"readOnly": "Você pode ver este quadro, mas não editá-lo.",
+			"storedCopy": "Não é possível acessar o quadro ao vivo. Mostrando a última cópia salva, somente leitura.",
+			"retry": "Tentar novamente",
+			"tooLarge": "Este quadro é grande demais para salvar mais alterações.",
+			"reload": "Recarregar"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "O quadro foi bloqueado enquanto você estava offline, então suas alterações offline não foram salvas.",
+				"archived": "O quadro foi arquivado enquanto você estava offline, então suas alterações offline não foram salvas.",
+				"readOnly": "Você não pode mais editar este quadro, então suas alterações offline não foram salvas."
+			},
+			"replacedBy": "{{name}} substituiu o conteúdo do quadro",
+			"deleted": "Este quadro branco foi excluído",
+			"signedOut": "Sua sessão foi encerrada. Entre novamente para continuar editando.",
+			"roomFull": "Há pessoas demais com este quadro aberto. Tente novamente mais tarde."
+		},
+		"publicView": {
+			"documentTitle": "Quadro branco compartilhado",
+			"unavailableTitle": "Este link não está disponível",
+			"unavailableDescription": "O quadro pode ter sido despublicado, ou o link está errado.",
+			"updated": "Atualizado em {{date}}",
+			"readOnly": "Somente leitura"
+		},
+		"taskBoards": {
+			"title": "Em quadros brancos"
+		},
+		"workspace": {
+			"title": "Quadros brancos",
+			"documentTitle": "Todos os quadros brancos",
+			"chooseProject": "Criar no projeto",
+			"projectFilter": "Projeto",
+			"allProjects": "Todos os projetos",
+			"groupByProject": "Agrupar por projeto",
+			"showAllProjects": "Mostrar todos os projetos",
+			"empty": {
+				"description": "Os quadros de todos os projetos que você pode ver aparecem aqui.",
+				"noProjectsTitle": "Nenhum projeto tem quadros brancos ainda",
+				"noProjectsDescription": "Ative Quadros brancos nos recursos de um projeto para começar a desenhar."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Novo quadro branco",
+			"goToWhiteboards": "Ir para quadros brancos",
+			"goToAllWhiteboards": "Ir para todos os quadros brancos"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Salvar",
@@ -13242,7 +13591,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} baixado",
-				"failed": "Não foi possível baixar {{file}}"
+				"failed": "Não foi possível baixar {{file}}",
+				"showInFolder": "Clique para mostrar na pasta",
+				"openFolder": "Clique para abrir a pasta Downloads"
 			},
 			"notifications": {
 				"releasedTitle": "As notificações voltaram",
@@ -13293,6 +13644,357 @@
 				"retryIn_other": "Nova tentativa em {{count}} segundos",
 				"switchServer": "Trocar de servidor"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Tela do quadro branco",
+			"roleDescription": "quadro branco"
+		},
+		"actions": {
+			"cancel": "Cancelar",
+			"save": "Salvar"
+		},
+		"tools": {
+			"label": "Ferramentas",
+			"more": "Mais ferramentas",
+			"select": "Selecionar",
+			"hand": "Mão (mover a tela)",
+			"rectangle": "Retângulo",
+			"diamond": "Losango",
+			"ellipse": "Elipse",
+			"arrow": "Seta",
+			"line": "Linha",
+			"draw": "Caneta",
+			"text": "Texto",
+			"sticky": "Nota adesiva",
+			"image": "Imagem",
+			"eraser": "Borracha",
+			"frame": "Moldura",
+			"laser": "Ponteiro laser",
+			"task": "Cartão de tarefa",
+			"lock": "Manter ferramenta ativa",
+			"lockTool": "Manter a ferramenta ativa depois de desenhar",
+			"unlockTool": "Voltar para Selecionar depois de desenhar",
+			"shape": "Formas"
+		},
+		"commands": {
+			"undo": "Desfazer",
+			"redo": "Refazer",
+			"history": "Histórico",
+			"copy": "Copiar",
+			"cut": "Recortar",
+			"paste": "Colar",
+			"duplicate": "Duplicar",
+			"delete": "Excluir",
+			"selectAll": "Selecionar tudo",
+			"group": "Agrupar",
+			"ungroup": "Desagrupar",
+			"bringForward": "Trazer para a frente",
+			"sendBackward": "Enviar para trás",
+			"bringToFront": "Trazer para o primeiro plano",
+			"sendToBack": "Enviar para o plano de fundo",
+			"toggleGrid": "Ajustar à grade",
+			"toggleSnap": "Ajustar aos objetos",
+			"toggleMinimap": "Mostrar minimapa",
+			"search": "Localizar no quadro",
+			"help": "Atalhos de teclado",
+			"toggleElementLock": "Bloquear ou desbloquear",
+			"lock": "Bloquear",
+			"unlock": "Desbloquear",
+			"flipHorizontal": "Espelhar horizontalmente",
+			"flipVertical": "Espelhar verticalmente",
+			"copyStyle": "Copiar estilo",
+			"pasteStyle": "Colar estilo",
+			"alignLeft": "Alinhar à esquerda",
+			"alignCenter": "Centralizar horizontalmente",
+			"alignRight": "Alinhar à direita",
+			"alignTop": "Alinhar ao topo",
+			"alignMiddle": "Centralizar verticalmente",
+			"alignBottom": "Alinhar à base",
+			"distributeHorizontal": "Distribuir horizontalmente",
+			"distributeVertical": "Distribuir verticalmente",
+			"editText": "Editar texto",
+			"editLink": "Editar link"
+		},
+		"zoom": {
+			"label": "Nível de zoom",
+			"in": "Aumentar zoom",
+			"out": "Diminuir zoom",
+			"reset": "Redefinir zoom",
+			"resetTo": "Zoom de {{percent}}%, redefinir para 100%",
+			"percent": "{{percent}}%",
+			"fit": "Ajustar à tela",
+			"selection": "Ampliar a seleção"
+		},
+		"panel": {
+			"label": "Estilo",
+			"stroke": "Contorno",
+			"textColor": "Cor do texto",
+			"stickyColor": "Cor da nota",
+			"fill": "Fundo",
+			"fillStyle": "Preenchimento",
+			"fillSolid": "Sólido",
+			"fillHatch": "Hachurado",
+			"fillCross": "Hachura cruzada",
+			"fillNone": "Nenhum",
+			"strokeWidth": "Espessura do contorno",
+			"thin": "Fino",
+			"medium": "Médio",
+			"bold": "Grosso",
+			"extraBold": "Extragrosso",
+			"strokeStyle": "Estilo do contorno",
+			"solid": "Contínuo",
+			"dashed": "Tracejado",
+			"dotted": "Pontilhado",
+			"sketch": "Efeito de esboço",
+			"sketchClean": "Limpo",
+			"sketchLight": "Leve",
+			"sketchRough": "Forte",
+			"corners": "Cantos",
+			"cornersSharp": "Retos",
+			"cornersRound": "Arredondados",
+			"cornersRounder": "Mais arredondados",
+			"font": "Fonte",
+			"fontHand": "Manuscrita",
+			"fontSans": "Sem serifa",
+			"fontMono": "Monoespaçada",
+			"fontSize": "Tamanho da fonte",
+			"sizeSmall": "Pequeno",
+			"sizeMedium": "Médio",
+			"sizeLarge": "Grande",
+			"sizeHuge": "Enorme",
+			"align": "Alinhamento do texto",
+			"alignLeft": "Esquerda",
+			"alignCenter": "Centro",
+			"alignRight": "Direita",
+			"routing": "Tipo de linha",
+			"routingStraight": "Reta",
+			"routingCurved": "Curva",
+			"routingElbow": "Em cotovelo",
+			"arrowheads": "Pontas de seta",
+			"startHead": "Início",
+			"endHead": "Fim",
+			"headNone": "Nenhuma",
+			"headArrow": "Seta",
+			"headTriangle": "Triângulo",
+			"headDot": "Ponto",
+			"headBar": "Barra",
+			"opacity": "Opacidade",
+			"layers": "Camadas",
+			"alignment": "Alinhar",
+			"actions": "Ações"
+		},
+		"colors": {
+			"black": "Preto",
+			"red": "Vermelho",
+			"green": "Verde",
+			"blue": "Azul",
+			"orange": "Laranja",
+			"purple": "Roxo",
+			"teal": "Verde-azulado",
+			"grey": "Cinza",
+			"yellow": "Amarelo",
+			"pink": "Rosa",
+			"none": "Sem cor",
+			"custom": "Cor personalizada"
+		},
+		"text": {
+			"label": "Texto",
+			"frameName": "Nome da moldura"
+		},
+		"link": {
+			"title": "Link do elemento",
+			"description": "Adicione um endereço web, ou crie um link para outro elemento com #element= e o id dele.",
+			"label": "Endereço",
+			"invalid": "Digite um endereço web que comece com https://, um endereço mailto: ou um link de elemento.",
+			"remove": "Remover link",
+			"open": "Abrir link",
+			"copyElementLink": "Copiar link para o elemento"
+		},
+		"search": {
+			"title": "Localizar no quadro",
+			"placeholder": "Buscar texto neste quadro",
+			"noResults": "Nada neste quadro corresponde.",
+			"results": "Resultados"
+		},
+		"tasks": {
+			"pickerTitle": "Adicionar cartões de tarefa",
+			"searchPlaceholder": "Buscar tarefas por título ou chave",
+			"noResults": "Nenhuma tarefa corresponde.",
+			"results": "Tarefas",
+			"onBoard": "Neste quadro",
+			"addCards_one": "Adicionar {{count}} cartão",
+			"addCards_many": "Adicionar {{count}} de cartões",
+			"addCards_other": "Adicionar {{count}} cartões",
+			"addCardsNone": "Adicionar cartões",
+			"pickHint": "Selecione uma ou mais tarefas para adicioná-las como cartões.",
+			"openTask": "Abrir tarefa",
+			"turnIntoTasks_one": "Transformar em tarefa",
+			"turnIntoTasks_many": "Transformar em {{count}} de tarefas",
+			"turnIntoTasks_other": "Transformar em {{count}} tarefas",
+			"turnIntoTasksTitle": "Transformar notas em tarefas",
+			"turnIntoTasksDescription": "Cada nota vira uma tarefa neste projeto e é substituída por um cartão de tarefa ao vivo.",
+			"column": "Coluna",
+			"titles": "Títulos das tarefas",
+			"taskTitle": "Título da tarefa {{index}}",
+			"emptyTitle": "Nota sem título",
+			"skippedEmpty": "Notas sem título são ignoradas.",
+			"createTasks_one": "Criar {{count}} tarefa",
+			"createTasks_many": "Criar {{count}} de tarefas",
+			"createTasks_other": "Criar {{count}} tarefas",
+			"converted_one": "{{count}} tarefa criada",
+			"converted_many": "{{count}} de tarefas criadas",
+			"converted_other": "{{count}} tarefas criadas",
+			"convertPartial_one": "{{count}} nota não pôde virar tarefa",
+			"convertPartial_many": "{{count}} de notas não puderam virar tarefas",
+			"convertPartial_other": "{{count}} notas não puderam virar tarefas",
+			"makeDependency": "Criar dependência",
+			"removeDependency": "Remover dependência",
+			"removeDependencyPrompt": "Remover também a dependência entre {{source}} e {{target}}?",
+			"removeDependenciesPrompt_one": "Remover também {{count}} dependência entre essas tarefas?",
+			"removeDependenciesPrompt_many": "Remover também {{count}} de dependências entre essas tarefas?",
+			"removeDependenciesPrompt_other": "Remover também {{count}} dependências entre essas tarefas?",
+			"dependencyPair": "{{source}} bloqueia {{target}}",
+			"removeDependencyConfirm": "Remover",
+			"keepDependency": "Manter",
+			"dependencyPromptLabel": "Dependência entre tarefas",
+			"dependencyRemoved_one": "Dependência removida",
+			"dependencyRemoved_many": "{{count}} de dependências removidas",
+			"dependencyRemoved_other": "{{count}} dependências removidas",
+			"dependencyRemoveFailed": "Não foi possível remover a dependência."
+		},
+		"crop": {
+			"section": "Imagem",
+			"start": "Cortar imagem",
+			"finish": "Concluir corte",
+			"reset": "Redefinir corte"
+		},
+		"presence": {
+			"label": "Pessoas neste quadro",
+			"follow": "Seguir {{name}}",
+			"stopFollowing": "Parar de seguir {{name}}",
+			"following": "Seguindo {{name}}",
+			"stop": "Parar"
+		},
+		"minimap": {
+			"label": "Visão geral do quadro"
+		},
+		"contextMenu": {
+			"label": "Ações da tela"
+		},
+		"notices": {
+			"readOnly": "Este quadro é somente leitura.",
+			"copied": "Copiado",
+			"linkCopied": "Link copiado",
+			"pasteEmpty": "Nada para colar",
+			"uploadFailed": "Não foi possível enviar a imagem.",
+			"uploading": "Enviando imagem…",
+			"imagesOff": "Imagens não estão disponíveis neste quadro.",
+			"importFailed": "Esse arquivo não é um quadro do Margaya.",
+			"imported": "Quadro adicionado",
+			"tooManyElements": "Este quadro está cheio. Remova algo antes de adicionar mais.",
+			"dependencyCreated": "Dependência criada",
+			"dependencyFailed": "Não foi possível criar a dependência.",
+			"cropUnavailable": "A imagem ainda está carregando. Tente cortar de novo em instantes."
+		},
+		"help": {
+			"title": "Atalhos de teclado",
+			"or": "ou",
+			"sections": {
+				"tools": "Ferramentas",
+				"view": "Visualização",
+				"edit": "Edição",
+				"arrange": "Organizar",
+				"pointer": "Mouse e toque"
+			},
+			"pan": "Mover a tela",
+			"zoomWheel": "Ampliar ou reduzir",
+			"commitText": "Concluir a edição do texto",
+			"finishCrop": "Concluir corte",
+			"nudge": "Mover um pouco",
+			"flowchart": "Adicionar uma forma conectada",
+			"cycle": "Selecionar o elemento anterior ou o próximo",
+			"keepAspect": "Manter as proporções ou ajustar o ângulo",
+			"fromCentre": "Redimensionar a partir do centro",
+			"duplicateDrag": "Duplicar ao arrastar",
+			"addToSelection": "Adicionar à seleção",
+			"enterGroup": "Editar dentro de um grupo, ou editar texto",
+			"noSnap": "Mover sem ajuste automático",
+			"keys": {
+				"drag": "arrastar",
+				"wheel": "roda do mouse",
+				"click": "clicar",
+				"doubleClick": "clicar duas vezes",
+				"space": "Espaço",
+				"delete": "Delete",
+				"enter": "Enter",
+				"escape": "Esc",
+				"shift": "Shift",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Biblioteca de formas",
+			"label": "Forma",
+			"change": "Alterar forma",
+			"add": "Adicionar forma",
+			"search": "Pesquisar formas",
+			"noResults": "Nenhuma forma encontrada",
+			"groups": {
+				"basic": "Básicas",
+				"polygons": "Polígonos",
+				"arrows": "Setas",
+				"symbols": "Símbolos"
+			},
+			"names": {
+				"triangle": "Triângulo",
+				"rightTriangle": "Triângulo retângulo",
+				"pentagon": "Pentágono",
+				"hexagon": "Hexágono",
+				"octagon": "Octógono",
+				"star": "Estrela",
+				"parallelogram": "Paralelogramo",
+				"trapezoid": "Trapézio",
+				"plus": "Mais",
+				"cross": "Cruz",
+				"heart": "Coração",
+				"cloud": "Nuvem",
+				"speech": "Balão de fala",
+				"cylinder": "Cilindro",
+				"document": "Documento",
+				"arrowRight": "Seta para a direita",
+				"arrowLeft": "Seta para a esquerda",
+				"arrowUp": "Seta para cima",
+				"arrowDown": "Seta para baixo",
+				"arrowDouble": "Seta dupla",
+				"chevron": "Divisa",
+				"moon": "Lua"
+			}
+		},
+		"pens": {
+			"label": "Estilo da caneta",
+			"pen": "Caneta",
+			"marker": "Marcador",
+			"highlighter": "Marca-texto"
+		},
+		"background": {
+			"label": "Fundo",
+			"pattern": "Padrão",
+			"plain": "Liso",
+			"dots": "Pontos",
+			"grid": "Grade",
+			"lines": "Linhas",
+			"spacing": "Espaçamento",
+			"small": "Pequeno",
+			"medium": "Médio",
+			"large": "Grande",
+			"paper": "Cor do papel",
+			"white": "Branco",
+			"cream": "Creme",
+			"stone": "Pedra",
+			"mist": "Névoa",
+			"mint": "Menta"
 		}
 	}
 }

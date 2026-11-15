@@ -1254,6 +1254,7 @@
 				"intake": "受付",
 				"analytics": "アナリティクス",
 				"page": "ページ",
+				"whiteboard": "ホワイトボード",
 				"audit_log": "監査ログ",
 				"ai": "AI"
 			},
@@ -1480,6 +1481,24 @@
 					"update": {
 						"description": "コンテンツの編集と、自分のページのロック、アーカイブ、整理ができます。",
 						"label": "ページを編集"
+					}
+				},
+				"whiteboard": {
+					"read": {
+						"label": "ホワイトボードを閲覧",
+						"description": "ホワイトボードのセクションを表示し、ボードを閲覧専用で開けます。"
+					},
+					"create": {
+						"label": "ホワイトボードを作成",
+						"description": "テンプレートまたは空白からボードを作成し、複製できます。"
+					},
+					"update": {
+						"label": "ホワイトボードを編集",
+						"description": "ボード上で描画・編集し、自分のボードをロックまたはアーカイブできます。"
+					},
+					"delete": {
+						"label": "すべてのホワイトボードを管理",
+						"description": "自分のボードだけでなく、表示できるすべてのボードをロック、アーカイブ、公開、削除できます。"
 					}
 				},
 				"audit_log": {
@@ -2438,6 +2457,10 @@
 				"updates": {
 					"title": "進捗報告",
 					"description": "最新のプロジェクトデータから下書きを作成し、状況を添えた日付付きの進捗報告を投稿します。"
+				},
+				"whiteboards": {
+					"title": "ホワイトボード",
+					"description": "共有キャンバスで一緒にスケッチし、計画を立て、作業を整理します。タスクカードはリアルタイムで更新されます。"
 				}
 			},
 			"loadError": "このプロジェクトを読み込めませんでした",
@@ -3255,6 +3278,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "ホワイトボードを作成しました",
+				"whiteboardRenamed": "ホワイトボードの名前を変更しました",
+				"whiteboardIconChanged": "ホワイトボードのアイコンを変更しました",
+				"whiteboardLocked": "ホワイトボードをロックしました",
+				"whiteboardUnlocked": "ホワイトボードのロックを解除しました",
+				"whiteboardArchived": "ホワイトボードをアーカイブしました",
+				"whiteboardUnarchived": "ホワイトボードをアーカイブから復元しました",
+				"whiteboardPublished": "ホワイトボードを公開リンクで公開しました",
+				"whiteboardUnpublished": "ホワイトボードの公開リンクを取り消しました",
+				"whiteboardTrashed": "ホワイトボードをゴミ箱に移動しました",
+				"whiteboardRestored": "ホワイトボードをゴミ箱から復元しました",
+				"whiteboardPurged": "ホワイトボードを完全に削除しました",
 				"workspaceDeletionScheduled": "ワークスペースの削除を予約しました",
 				"workspaceDeletionCancelled": "ワークスペースの削除を取り消しました",
 				"workspacePublicPagesChanged": "公開ページをオンまたはオフにしました",
@@ -3404,6 +3439,7 @@
 			"subtitle": "このワークスペースでメンバー、ロール、API キー、Webhook、連携、設定、プロジェクトを変更したユーザーの記録です。エントリは {{days}} 日間保持されます。",
 			"subtitleForever": "このワークスペースでメンバー、ロール、API キー、Webhook、連携、設定、プロジェクトを変更したユーザーの記録です。エントリはワークスペースを削除するまで保持されます。",
 			"targets": {
+				"whiteboard": "ホワイトボード",
 				"page": "ページ",
 				"apiKey": "API キー",
 				"export": "エクスポート",
@@ -3423,7 +3459,7 @@
 		},
 		"trash": {
 			"projectTitle": "最近削除した項目",
-			"projectSubtitle": "削除したタスクとページは、完全に削除されるまでここに保管されます。タスクを復元すると、一緒に削除されたサブタスクも元に戻ります。復元したページは「アーカイブ済み」に戻ります。",
+			"projectSubtitle": "削除したタスク、ページ、ホワイトボードは、完全に削除されるまでここに保管されます。タスクを復元すると、一緒に削除されたサブタスクも元に戻ります。復元したページやホワイトボードは「アーカイブ済み」に戻ります。",
 			"workspaceTitle": "最近削除したプロジェクト",
 			"workspaceNav": "最近削除した項目",
 			"workspaceSubtitle": "削除したプロジェクトは、完全に削除されるまでタスクとともにここに保管されます。",
@@ -3463,7 +3499,9 @@
 				"emptied_other": "{{count}} 件のタスクを完全に削除しました",
 				"purgeError": "完全に削除できませんでした",
 				"pageRestored": "ページを「アーカイブ済み」に復元しました",
-				"pagePurged": "ページを完全に削除しました"
+				"pagePurged": "ページを完全に削除しました",
+				"whiteboardRestored": "ホワイトボードを「アーカイブ済み」に復元しました",
+				"whiteboardPurged": "ホワイトボードを完全に削除しました"
 			},
 			"tasksHeading": "タスク",
 			"pagesHeading": "ページ",
@@ -3471,7 +3509,13 @@
 			"emptyPagesTitle": "削除したページはありません",
 			"emptyPagesDescription": "このプロジェクトから削除したアーカイブ済みページがここに表示されます。",
 			"purgePageTitle": "このページを完全に削除しますか？",
-			"purgePageDescription": "「{{name}}」とそのコメント、バージョン履歴が全員に対して削除されます。この操作は元に戻せません。"
+			"purgePageDescription": "「{{name}}」とそのコメント、バージョン履歴が全員に対して削除されます。この操作は元に戻せません。",
+			"whiteboardsHeading": "ホワイトボード",
+			"searchWhiteboards": "削除したホワイトボードを検索",
+			"emptyWhiteboardsTitle": "削除したホワイトボードはありません",
+			"emptyWhiteboardsDescription": "このプロジェクトで削除したアーカイブ済みのホワイトボードがここに表示されます。",
+			"purgeWhiteboardTitle": "このホワイトボードを完全に削除しますか？",
+			"purgeWhiteboardDescription": "「{{name}}」とその内容、画像が全員に対して削除されます。この操作は元に戻せません。"
 		},
 		"automationRules": {
 			"title": "自動化",
@@ -3942,6 +3986,7 @@
 			"label": "プロジェクトセクション",
 			"modules": "モジュール",
 			"pages": "ページ",
+			"whiteboards": "ホワイトボード",
 			"sections": "セクション",
 			"tasks": "タスク",
 			"views": "ビュー",
@@ -3973,6 +4018,9 @@
 			"newTask": "新しいタスク",
 			"newWorkspace": "新しいワークスペース",
 			"noPagesProjects": "プロジェクトの機能でページを有効にすると、そこでドキュメントを書けます。",
+			"noWhiteboardsProjects": "プロジェクトの機能でホワイトボードを有効にすると、そこで描画できます。",
+			"allWhiteboards": "すべてのホワイトボード",
+			"whiteboards": "ホワイトボード",
 			"noRecent": "開いたページやタスクがここに表示されます。",
 			"pages": "ページ",
 			"panel": "セクションナビゲーション",
@@ -5033,6 +5081,19 @@
 			"previousWeek": "前週",
 			"rescheduleError": "タスクの日程変更に失敗しました",
 			"showWeekends": "週末を表示",
+			"touch": {
+				"daysLabel": "{{month}} の日付",
+				"weekDaysLabel": "{{start}}〜{{end}} の日付",
+				"dayLabel_other": "{{date}}、{{count}} 件のタスク",
+				"dayLabelEmpty": "{{date}}、タスクなし",
+				"taskCount_other": "{{count}} 件のタスク",
+				"addTask": "タスクを追加",
+				"empty": "この日のタスクはありません。",
+				"moveTask": "{{title}} を別の日付に移動",
+				"moveTitle": "日付を移動",
+				"moveDescription": "{{title}} の新しい期限を選んでください。開始日も一緒に移動するため、タスクの期間は変わりません。",
+				"moved": "{{date}} に移動しました"
+			},
 			"viewMode": "カレンダーの期間",
 			"week": "週",
 			"overdue": "期限切れ"
@@ -9707,6 +9768,290 @@
 			"error": "このページのウォッチ設定を変更できませんでした"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "ボードの履歴",
+			"description": "このボードを誰がいつ変更したかを新しい順に表示します。編集は1人につき10分に1回表示されます。",
+			"empty": "このボードにはまだ何も起きていません。",
+			"loadError": "ボードの履歴を読み込めませんでした。",
+			"loadMore": "さらに読み込む",
+			"someone": "誰か",
+			"entries": {
+				"created": "ボードを作成しました",
+				"renamed": "ボードの名前を「{{title}}」に変更しました",
+				"iconChanged": "アイコンを変更しました",
+				"locked": "ボードをロックしました",
+				"unlocked": "ボードのロックを解除しました",
+				"archived": "ボードをアーカイブしました",
+				"unarchived": "ボードをアーカイブから復元しました",
+				"published": "ボードをWebに公開しました",
+				"unpublished": "ボードの公開を停止しました",
+				"trashed": "ボードをゴミ箱に移動しました",
+				"restored": "ボードをゴミ箱から復元しました",
+				"edited": "ボードを編集しました"
+			}
+		},
+		"section": {
+			"title": "ホワイトボード"
+		},
+		"list": {
+			"documentTitle": "ホワイトボード · {{project}}",
+			"newWhiteboard": "新しいホワイトボード",
+			"moreCreateOptions": "ホワイトボードのその他の作成方法",
+			"untitled": "無題のボード",
+			"searchPlaceholder": "ボードを検索",
+			"searchClear": "検索をクリア",
+			"tabs": {
+				"active": "ボード",
+				"archived": "アーカイブ済み"
+			},
+			"sort": {
+				"lastEdited": "最終編集",
+				"created": "作成日",
+				"name": "名前"
+			},
+			"edited": "{{time}} に編集",
+			"editedBy": "{{name}} さんが {{time}} に編集",
+			"locked": "ロック中",
+			"published": "公開中",
+			"cardActions": "{{title}} の操作",
+			"recentlyDeleted": "最近削除した項目",
+			"loadError": "ホワイトボードを読み込めませんでした",
+			"retry": "再試行",
+			"unknownUser": "誰か",
+			"empty": {
+				"title": "ホワイトボードはまだありません",
+				"description": "共有キャンバスでチームと一緒にアイデアをスケッチしたり、スプリントを計画したり、作業を整理したりできます。",
+				"archivedTitle": "アーカイブ済みのホワイトボードはありません",
+				"archivedDescription": "アーカイブしたボードがここに表示されます。",
+				"noMatchTitle": "「{{query}}」に一致するボードはありません",
+				"noMatchDescription": "別の言葉で試してください。検索ではボード名とボード上のテキストが対象になります。",
+				"clearSearch": "検索をクリア"
+			}
+		},
+		"templates": {
+			"title": "テンプレートから開始",
+			"names": {
+				"blank": "空白のボード",
+				"brainstorm": "ブレインストーミング",
+				"retrospective": "振り返り",
+				"sprintPlanning": "スプリント計画",
+				"userStoryMap": "ユーザーストーリーマップ",
+				"roadmap": "ロードマップ",
+				"flowchart": "フローチャート",
+				"kanban": "かんばんスケッチ"
+			},
+			"descriptions": {
+				"blank": "何もないキャンバス。",
+				"brainstorm": "中心に問いを置き、その周りにアイデアを書き込むスペースがあります。",
+				"retrospective": "良かったこと、改善すること、アクション。",
+				"sprintPlanning": "スプリントゴール、バックログ、確約した内容、リスク。",
+				"userStoryMap": "上段にアクティビティ、その下にリリースごとのストーリー。",
+				"roadmap": "今、次、その後を並べて表示。",
+				"flowchart": "開始、判断、そしてその間のステップ。",
+				"kanban": "付箋用の「未着手」「進行中」「完了」の列。"
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "何を解決しますか？",
+					"ideas": "アイデア"
+				},
+				"retrospective": {
+					"title": "振り返り",
+					"wentWell": "良かったこと",
+					"toImprove": "改善すること",
+					"actions": "アクション"
+				},
+				"sprintPlanning": {
+					"title": "スプリント計画",
+					"goal": "スプリントゴール",
+					"backlog": "バックログ",
+					"committed": "確約済み",
+					"risks": "リスク"
+				},
+				"userStoryMap": {
+					"title": "ユーザーストーリーマップ",
+					"activity": "アクティビティ",
+					"story": "ストーリー",
+					"release1": "リリース 1",
+					"release2": "リリース 2"
+				},
+				"roadmap": {
+					"title": "ロードマップ",
+					"now": "今",
+					"next": "次",
+					"later": "その後"
+				},
+				"flowchart": {
+					"start": "開始",
+					"step": "ステップ",
+					"decision": "判断？",
+					"yes": "はい",
+					"no": "いいえ",
+					"end": "終了"
+				},
+				"kanban": {
+					"todo": "未着手",
+					"doing": "進行中",
+					"done": "完了"
+				}
+			}
+		},
+		"actions": {
+			"history": "履歴",
+			"open": "開く",
+			"openInNewTab": "新しいタブで開く",
+			"copyLink": "リンクをコピー",
+			"rename": "名前を変更",
+			"changeIcon": "アイコンを変更",
+			"duplicate": "複製",
+			"publish": "Web に公開",
+			"managePublicLink": "公開リンク",
+			"share": "共有",
+			"lock": "ロック",
+			"unlock": "ロック解除",
+			"archive": "アーカイブ",
+			"unarchive": "アーカイブから復元",
+			"moveToTrash": "ゴミ箱に移動",
+			"export": "エクスポート",
+			"exportPng": "PNG としてエクスポート",
+			"exportSvg": "SVG としてエクスポート",
+			"exportFile": "ボードファイルをダウンロード",
+			"importFile": "ボードファイルをインポート",
+			"zoomToFit": "全体を表示",
+			"fullScreen": "全画面表示",
+			"exitFullScreen": "全画面表示を終了",
+			"more": "ボードのその他のオプション"
+		},
+		"dialogs": {
+			"cancel": "キャンセル",
+			"rename": {
+				"title": "ホワイトボードの名前を変更",
+				"label": "名前",
+				"save": "保存"
+			},
+			"icon": {
+				"title": "アイコンを選択",
+				"description": "絵文字はボード名の横に表示されます。",
+				"search": "絵文字を検索",
+				"noMatches": "検索に一致する絵文字はありません",
+				"remove": "アイコンを削除"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}}（コピー）"
+			},
+			"delete": {
+				"title": "このボードをゴミ箱に移動しますか？",
+				"description": "「{{title}}」はプロジェクトの「最近削除した項目」に移動し、完全に削除されるまでは復元できます。",
+				"confirm": "ゴミ箱に移動"
+			}
+		},
+		"toasts": {
+			"createError": "ホワイトボードを作成できませんでした",
+			"renameError": "ホワイトボードの名前を変更できませんでした",
+			"iconError": "アイコンを変更できませんでした",
+			"duplicated": "ホワイトボードを複製しました",
+			"duplicateError": "ホワイトボードを複製できませんでした",
+			"open": "開く",
+			"locked": "ホワイトボードをロックしました",
+			"unlocked": "ホワイトボードのロックを解除しました",
+			"lockError": "ロックを変更できませんでした",
+			"archived": "ホワイトボードをアーカイブしました",
+			"unarchived": "ホワイトボードを復元しました",
+			"archiveError": "ホワイトボードをアーカイブできませんでした",
+			"unarchiveError": "ホワイトボードを復元できませんでした",
+			"deleted": "「最近削除した項目」に移動しました",
+			"deleteError": "ホワイトボードをゴミ箱に移動できませんでした",
+			"linkCopied": "リンクをコピーしました",
+			"exportError": "ボードをエクスポートできませんでした",
+			"imported": "ボードファイルを追加しました",
+			"importError": "そのファイルを読み込めませんでした",
+			"imageType": "ボードに配置できる画像は PNG、JPEG、GIF、WebP のみです",
+			"imageUploadError": "画像を追加できませんでした"
+		},
+		"share": {
+			"title": "ホワイトボードを共有",
+			"description": "リンクを知っている人なら誰でも見られる閲覧専用のコピーを公開します。オフにすると、リンクはすぐに無効になります。",
+			"switchLabel": "Web に公開",
+			"onHint": "リンクを知っている人は誰でもこのボードを閲覧できます。",
+			"offHint": "このプロジェクトのメンバーだけがこのボードを開けます。",
+			"linkLabel": "公開リンク",
+			"copyLink": "リンクをコピー",
+			"copied": "コピーしました",
+			"openLink": "公開リンクを開く",
+			"privacyNote": "閲覧者に見えるのはボードと、そのタスクカードのタイトルとステータスだけです。プロジェクトのその他の情報は表示されません。",
+			"cannotPublish": "すべてのホワイトボードを管理できるユーザーのみが公開できます。",
+			"archivedHint": "公開するには、ボードをアーカイブから復元してください。",
+			"publishedToast": "ホワイトボードを公開しました",
+			"unpublishedToast": "公開リンクをオフにしました",
+			"error": "公開リンクを変更できませんでした",
+			"done": "完了"
+		},
+		"screen": {
+			"backToList": "ホワイトボード一覧に戻る",
+			"titleLabel": "ホワイトボード名",
+			"readOnly": "閲覧専用",
+			"loadError": "このホワイトボードを読み込めませんでした",
+			"storedCopyError": "このボードの保存済みコピーを読み込めませんでした",
+			"notFound": {
+				"title": "ホワイトボードが見つかりません",
+				"description": "削除されたか、アクセス権がない可能性があります。",
+				"back": "ホワイトボード一覧に戻る"
+			}
+		},
+		"banners": {
+			"locked": "このボードはロックされています。変更するにはロックを解除してください。",
+			"lockedBy": "{{name}} さんがこのボードをロックしました。変更するにはロックを解除してください。",
+			"unlock": "ロック解除",
+			"archived": "このボードはアーカイブされているため、閲覧専用です。",
+			"restore": "復元",
+			"readOnly": "このボードは表示のみで、編集できません。",
+			"storedCopy": "ライブのボードに接続できません。最後に保存されたコピーを閲覧専用で表示しています。",
+			"retry": "再試行",
+			"tooLarge": "このボードは大きすぎるため、これ以上の変更を保存できません。",
+			"reload": "再読み込み"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "オフライン中にボードがロックされたため、オフライン中の変更は保存されませんでした。",
+				"archived": "オフライン中にボードがアーカイブされたため、オフライン中の変更は保存されませんでした。",
+				"readOnly": "このボードを編集できなくなったため、オフライン中の変更は保存されませんでした。"
+			},
+			"replacedBy": "{{name}} さんがボードの内容を置き換えました",
+			"deleted": "このホワイトボードは削除されました",
+			"signedOut": "サインアウトされました。編集を続けるには、もう一度サインインしてください。",
+			"roomFull": "このボードを開いているユーザーが多すぎます。しばらくしてからもう一度お試しください。"
+		},
+		"publicView": {
+			"documentTitle": "共有ホワイトボード",
+			"unavailableTitle": "このリンクは利用できません",
+			"unavailableDescription": "ボードの公開が停止されたか、リンクが間違っている可能性があります。",
+			"updated": "{{date}} に更新",
+			"readOnly": "閲覧専用"
+		},
+		"taskBoards": {
+			"title": "掲載中のホワイトボード"
+		},
+		"workspace": {
+			"title": "ホワイトボード",
+			"documentTitle": "すべてのホワイトボード",
+			"chooseProject": "作成先のプロジェクト",
+			"projectFilter": "プロジェクト",
+			"allProjects": "すべてのプロジェクト",
+			"groupByProject": "プロジェクトごとにグループ化",
+			"showAllProjects": "すべてのプロジェクトを表示",
+			"empty": {
+				"description": "閲覧できるすべてのプロジェクトのボードがここに表示されます。",
+				"noProjectsTitle": "ホワイトボードが有効なプロジェクトはまだありません",
+				"noProjectsDescription": "描画を始めるには、プロジェクトの機能でホワイトボードを有効にしてください。"
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "新しいホワイトボード",
+			"goToWhiteboards": "ホワイトボードへ移動",
+			"goToAllWhiteboards": "すべてのホワイトボードへ移動"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "保存",
@@ -12829,7 +13174,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} をダウンロードしました",
-				"failed": "{{file}} をダウンロードできませんでした"
+				"failed": "{{file}} をダウンロードできませんでした",
+				"showInFolder": "クリックしてフォルダーに表示",
+				"openFolder": "クリックしてダウンロード フォルダーを開く"
 			},
 			"notifications": {
 				"releasedTitle": "通知を再開しました",
@@ -12878,6 +13225,343 @@
 				"retryIn_other": "{{count}} 秒後に再試行します",
 				"switchServer": "サーバーを切り替え"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "ホワイトボードのキャンバス",
+			"roleDescription": "ホワイトボード"
+		},
+		"actions": {
+			"cancel": "キャンセル",
+			"save": "保存"
+		},
+		"tools": {
+			"label": "ツール",
+			"more": "その他のツール",
+			"select": "選択",
+			"hand": "手のひら（移動）",
+			"rectangle": "長方形",
+			"diamond": "ひし形",
+			"ellipse": "楕円",
+			"arrow": "矢印",
+			"line": "直線",
+			"draw": "ペン",
+			"text": "テキスト",
+			"sticky": "付箋",
+			"image": "画像",
+			"eraser": "消しゴム",
+			"frame": "フレーム",
+			"laser": "レーザーポインター",
+			"task": "タスクカード",
+			"lock": "ツールを固定",
+			"lockTool": "描画後もツールを選択したままにする",
+			"unlockTool": "描画後に選択ツールに戻る",
+			"shape": "図形"
+		},
+		"commands": {
+			"undo": "元に戻す",
+			"redo": "やり直す",
+			"history": "履歴",
+			"copy": "コピー",
+			"cut": "切り取り",
+			"paste": "貼り付け",
+			"duplicate": "複製",
+			"delete": "削除",
+			"selectAll": "すべて選択",
+			"group": "グループ化",
+			"ungroup": "グループ解除",
+			"bringForward": "前面へ移動",
+			"sendBackward": "背面へ移動",
+			"bringToFront": "最前面へ移動",
+			"sendToBack": "最背面へ移動",
+			"toggleGrid": "グリッドにスナップ",
+			"toggleSnap": "オブジェクトにスナップ",
+			"toggleMinimap": "ミニマップを表示",
+			"search": "ボード内を検索",
+			"help": "キーボードショートカット",
+			"toggleElementLock": "ロックまたはロック解除",
+			"lock": "ロック",
+			"unlock": "ロック解除",
+			"flipHorizontal": "左右反転",
+			"flipVertical": "上下反転",
+			"copyStyle": "スタイルをコピー",
+			"pasteStyle": "スタイルを貼り付け",
+			"alignLeft": "左揃え",
+			"alignCenter": "左右中央揃え",
+			"alignRight": "右揃え",
+			"alignTop": "上揃え",
+			"alignMiddle": "上下中央揃え",
+			"alignBottom": "下揃え",
+			"distributeHorizontal": "左右に等間隔で配置",
+			"distributeVertical": "上下に等間隔で配置",
+			"editText": "テキストを編集",
+			"editLink": "リンクを編集"
+		},
+		"zoom": {
+			"label": "ズーム",
+			"in": "拡大",
+			"out": "縮小",
+			"reset": "ズームをリセット",
+			"resetTo": "ズーム {{percent}}%、100% にリセット",
+			"percent": "{{percent}}%",
+			"fit": "全体を表示",
+			"selection": "選択範囲にズーム"
+		},
+		"panel": {
+			"label": "スタイル",
+			"stroke": "線",
+			"textColor": "文字の色",
+			"stickyColor": "付箋の色",
+			"fill": "背景",
+			"fillStyle": "塗りつぶし",
+			"fillSolid": "べた塗り",
+			"fillHatch": "斜線",
+			"fillCross": "網目",
+			"fillNone": "なし",
+			"strokeWidth": "線の太さ",
+			"thin": "細い",
+			"medium": "普通",
+			"bold": "太い",
+			"extraBold": "極太",
+			"strokeStyle": "線のスタイル",
+			"solid": "実線",
+			"dashed": "破線",
+			"dotted": "点線",
+			"sketch": "手描き感",
+			"sketchClean": "なめらか",
+			"sketchLight": "控えめ",
+			"sketchRough": "ラフ",
+			"corners": "角",
+			"cornersSharp": "シャープ",
+			"cornersRound": "丸め",
+			"cornersRounder": "より丸め",
+			"font": "フォント",
+			"fontHand": "手書き",
+			"fontSans": "ゴシック",
+			"fontMono": "等幅",
+			"fontSize": "フォントサイズ",
+			"sizeSmall": "小",
+			"sizeMedium": "中",
+			"sizeLarge": "大",
+			"sizeHuge": "特大",
+			"align": "文字揃え",
+			"alignLeft": "左",
+			"alignCenter": "中央",
+			"alignRight": "右",
+			"routing": "線の種類",
+			"routingStraight": "直線",
+			"routingCurved": "曲線",
+			"routingElbow": "カギ線",
+			"arrowheads": "矢じり",
+			"startHead": "始点",
+			"endHead": "終点",
+			"headNone": "なし",
+			"headArrow": "矢印",
+			"headTriangle": "三角形",
+			"headDot": "円",
+			"headBar": "バー",
+			"opacity": "不透明度",
+			"layers": "レイヤー",
+			"alignment": "整列",
+			"actions": "操作"
+		},
+		"colors": {
+			"black": "黒",
+			"red": "赤",
+			"green": "緑",
+			"blue": "青",
+			"orange": "オレンジ",
+			"purple": "紫",
+			"teal": "青緑",
+			"grey": "グレー",
+			"yellow": "黄",
+			"pink": "ピンク",
+			"none": "色なし",
+			"custom": "カスタムカラー"
+		},
+		"text": {
+			"label": "テキスト",
+			"frameName": "フレーム名"
+		},
+		"link": {
+			"title": "リンク",
+			"description": "Web アドレスを追加するか、#element= とその ID で別の要素にリンクします。",
+			"label": "アドレス",
+			"invalid": "https:// で始まる Web アドレス、mailto: アドレス、または要素へのリンクを入力してください。",
+			"remove": "リンクを削除",
+			"open": "リンクを開く",
+			"copyElementLink": "要素へのリンクをコピー"
+		},
+		"search": {
+			"title": "ボード内を検索",
+			"placeholder": "このボード上のテキストを検索",
+			"noResults": "このボードに一致するものはありません。",
+			"results": "一致"
+		},
+		"tasks": {
+			"pickerTitle": "タスクカードを追加",
+			"searchPlaceholder": "タイトルまたはキーでタスクを検索",
+			"noResults": "一致するタスクはありません。",
+			"results": "タスク",
+			"onBoard": "このボード上",
+			"addCards_other": "{{count}} 枚のカードを追加",
+			"addCardsNone": "カードを追加",
+			"pickHint": "カードとして追加するタスクを 1 つ以上選択してください。",
+			"openTask": "タスクを開く",
+			"turnIntoTasks_other": "{{count}} 件のタスクに変換",
+			"turnIntoTasksTitle": "付箋をタスクに変換",
+			"turnIntoTasksDescription": "各付箋はこのプロジェクトのタスクになり、リアルタイムで更新されるタスクカードに置き換わります。",
+			"column": "列",
+			"titles": "タスクのタイトル",
+			"taskTitle": "タスク {{index}} のタイトル",
+			"emptyTitle": "無題の付箋",
+			"skippedEmpty": "タイトルのない付箋はスキップされます。",
+			"createTasks_other": "{{count}} 件のタスクを作成",
+			"converted_other": "{{count}} 件のタスクを作成しました",
+			"convertPartial_other": "{{count}} 枚の付箋をタスクにできませんでした",
+			"makeDependency": "依存関係にする",
+			"removeDependency": "依存関係を削除",
+			"removeDependencyPrompt": "{{source}} と {{target}} の間の依存関係も削除しますか？",
+			"removeDependenciesPrompt_other": "これらのタスク間の依存関係 {{count}} 件も削除しますか？",
+			"dependencyPair": "{{source}} が {{target}} をブロック",
+			"removeDependencyConfirm": "削除",
+			"keepDependency": "残す",
+			"dependencyPromptLabel": "タスクの依存関係",
+			"dependencyRemoved_other": "{{count}} 件の依存関係を削除しました",
+			"dependencyRemoveFailed": "依存関係を削除できませんでした。"
+		},
+		"crop": {
+			"section": "画像",
+			"start": "画像をトリミング",
+			"finish": "トリミングを終了",
+			"reset": "トリミングをリセット"
+		},
+		"presence": {
+			"label": "このボードにいるユーザー",
+			"follow": "{{name}} さんをフォロー",
+			"stopFollowing": "{{name}} さんのフォローを停止",
+			"following": "{{name}} さんをフォロー中",
+			"stop": "停止"
+		},
+		"minimap": {
+			"label": "ボードの概要"
+		},
+		"contextMenu": {
+			"label": "キャンバスの操作"
+		},
+		"notices": {
+			"readOnly": "このボードは閲覧専用です。",
+			"copied": "コピーしました",
+			"linkCopied": "リンクをコピーしました",
+			"pasteEmpty": "貼り付けるものがありません",
+			"uploadFailed": "画像をアップロードできませんでした。",
+			"uploading": "画像をアップロードしています…",
+			"imagesOff": "このボードでは画像を使用できません。",
+			"importFailed": "そのファイルは Margaya のボードではありません。",
+			"imported": "ボードを追加しました",
+			"tooManyElements": "このボードはいっぱいです。追加する前に何かを削除してください。",
+			"dependencyCreated": "依存関係を作成しました",
+			"dependencyFailed": "依存関係を作成できませんでした。",
+			"cropUnavailable": "画像を読み込み中です。少し待ってからもう一度トリミングしてください。"
+		},
+		"help": {
+			"title": "キーボードショートカット",
+			"or": "または",
+			"sections": {
+				"tools": "ツール",
+				"view": "表示",
+				"edit": "編集",
+				"arrange": "配置",
+				"pointer": "マウスとタッチ"
+			},
+			"pan": "画面を移動",
+			"zoomWheel": "ズーム",
+			"commitText": "テキストの編集を終了",
+			"finishCrop": "トリミングを終了",
+			"nudge": "少しずつ移動",
+			"flowchart": "接続された図形を追加",
+			"cycle": "前または次の要素を選択",
+			"keepAspect": "縦横比を保持、または角度をスナップ",
+			"fromCentre": "中心からサイズを変更",
+			"duplicateDrag": "ドラッグしながら複製",
+			"addToSelection": "選択に追加",
+			"enterGroup": "グループ内を編集、またはテキストを編集",
+			"noSnap": "スナップせずに移動",
+			"keys": {
+				"drag": "ドラッグ",
+				"wheel": "ホイール",
+				"click": "クリック",
+				"doubleClick": "ダブルクリック",
+				"space": "Space",
+				"delete": "Delete",
+				"enter": "Enter",
+				"escape": "Esc",
+				"shift": "Shift",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "図形ライブラリ",
+			"label": "図形",
+			"change": "図形を変更",
+			"add": "図形を追加",
+			"search": "図形を検索",
+			"noResults": "一致する図形はありません",
+			"groups": {
+				"basic": "基本",
+				"polygons": "多角形",
+				"arrows": "矢印",
+				"symbols": "記号"
+			},
+			"names": {
+				"triangle": "三角形",
+				"rightTriangle": "直角三角形",
+				"pentagon": "五角形",
+				"hexagon": "六角形",
+				"octagon": "八角形",
+				"star": "星",
+				"parallelogram": "平行四辺形",
+				"trapezoid": "台形",
+				"plus": "プラス",
+				"cross": "バツ",
+				"heart": "ハート",
+				"cloud": "雲",
+				"speech": "吹き出し",
+				"cylinder": "円柱",
+				"document": "ドキュメント",
+				"arrowRight": "右矢印",
+				"arrowLeft": "左矢印",
+				"arrowUp": "上矢印",
+				"arrowDown": "下矢印",
+				"arrowDouble": "両方向矢印",
+				"chevron": "シェブロン",
+				"moon": "月"
+			}
+		},
+		"pens": {
+			"label": "ペンの種類",
+			"pen": "ペン",
+			"marker": "マーカー",
+			"highlighter": "蛍光ペン"
+		},
+		"background": {
+			"label": "背景",
+			"pattern": "パターン",
+			"plain": "無地",
+			"dots": "ドット",
+			"grid": "方眼",
+			"lines": "罫線",
+			"spacing": "間隔",
+			"small": "小",
+			"medium": "中",
+			"large": "大",
+			"paper": "用紙の色",
+			"white": "白",
+			"cream": "クリーム",
+			"stone": "ストーン",
+			"mist": "ミスト",
+			"mint": "ミント"
 		}
 	}
 }

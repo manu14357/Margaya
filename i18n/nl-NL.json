@@ -1950,6 +1950,7 @@
 				"intake": "Intake",
 				"analytics": "Analyse",
 				"page": "Pagina's",
+				"whiteboard": "Tekenborden",
 				"audit_log": "Auditlog",
 				"ai": "AI"
 			},
@@ -2176,6 +2177,24 @@
 					"update": {
 						"description": "Bewerkt inhoud en vergrendelt, archiveert of herorganiseert de eigen pagina's.",
 						"label": "Pagina's bewerken"
+					}
+				},
+				"whiteboard": {
+					"read": {
+						"label": "Tekenborden bekijken",
+						"description": "Ziet het gedeelte Tekenborden en opent borden alleen-lezen."
+					},
+					"create": {
+						"label": "Tekenborden aanmaken",
+						"description": "Maakt borden aan, vanuit een sjabloon of leeg, en dupliceert ze."
+					},
+					"update": {
+						"label": "Tekenborden bewerken",
+						"description": "Tekent en bewerkt op borden, en vergrendelt of archiveert de eigen borden."
+					},
+					"delete": {
+						"label": "Alle tekenborden beheren",
+						"description": "Vergrendelt, archiveert, publiceert en verwijdert elk bord dat ze kunnen zien, niet alleen de eigen borden."
 					}
 				},
 				"audit_log": {
@@ -2479,6 +2498,10 @@
 				"updates": {
 					"title": "Statusupdates",
 					"description": "Plaats gedateerde statusupdates met een projectstatus, als concept opgesteld uit actuele projectgegevens."
+				},
+				"whiteboards": {
+					"title": "Tekenborden",
+					"description": "Schets, plan en breng werk samen in kaart op gedeelde canvassen, met live taakkaarten."
 				}
 			},
 			"loadError": "Laden van dit project mislukt",
@@ -3311,6 +3334,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Heeft een tekenbord gemaakt",
+				"whiteboardRenamed": "Heeft een tekenbord hernoemd",
+				"whiteboardIconChanged": "Heeft het pictogram van een tekenbord gewijzigd",
+				"whiteboardLocked": "Heeft een tekenbord vergrendeld",
+				"whiteboardUnlocked": "Heeft een tekenbord ontgrendeld",
+				"whiteboardArchived": "Heeft een tekenbord gearchiveerd",
+				"whiteboardUnarchived": "Heeft een tekenbord uit het archief teruggezet",
+				"whiteboardPublished": "Heeft een tekenbord gepubliceerd via een openbare link",
+				"whiteboardUnpublished": "Heeft de openbare link van een tekenbord ingetrokken",
+				"whiteboardTrashed": "Heeft een tekenbord naar de prullenbak verplaatst",
+				"whiteboardRestored": "Heeft een tekenbord uit de prullenbak hersteld",
+				"whiteboardPurged": "Heeft een tekenbord definitief verwijderd",
 				"workspaceDeletionScheduled": "Heeft de werkruimte gepland voor verwijdering",
 				"workspaceDeletionCancelled": "Heeft de verwijdering van de werkruimte geannuleerd",
 				"workspacePublicPagesChanged": "Heeft openbare pagina's in- of uitgeschakeld",
@@ -3460,6 +3495,7 @@
 			"subtitle": "Wie leden, rollen, API-sleutels, webhooks, integraties, instellingen en projecten in deze werkruimte heeft gewijzigd. Items worden {{days}} dagen bewaard.",
 			"subtitleForever": "Wie leden, rollen, API-sleutels, webhooks, integraties, instellingen en projecten in deze werkruimte heeft gewijzigd. Items worden bewaard tot je de werkruimte verwijdert.",
 			"targets": {
+				"whiteboard": "Tekenbord",
 				"page": "Pagina",
 				"apiKey": "API-sleutel",
 				"export": "Export",
@@ -3479,7 +3515,7 @@
 		},
 		"trash": {
 			"projectTitle": "Recent verwijderd",
-			"projectSubtitle": "Verwijderde taken en pagina's blijven hier tot ze permanent worden verwijderd. Als je een taak herstelt, komen de subtaken die ermee zijn verwijderd ook terug; een herstelde pagina gaat terug naar Gearchiveerd.",
+			"projectSubtitle": "Verwijderde taken, pagina's en tekenborden blijven hier tot ze permanent worden verwijderd. Als je een taak herstelt, komen de subtaken die ermee zijn verwijderd ook terug; een herstelde pagina of een hersteld tekenbord gaat terug naar Gearchiveerd.",
 			"workspaceTitle": "Recent verwijderde projecten",
 			"workspaceNav": "Recent verwijderd",
 			"workspaceSubtitle": "Verwijderde projecten blijven hier met hun taken tot ze permanent worden verwijderd.",
@@ -3522,7 +3558,9 @@
 				"emptied_other": "{{count}} taken permanent verwijderd",
 				"purgeError": "Kan niet permanent verwijderen",
 				"pageRestored": "Pagina hersteld naar Gearchiveerd",
-				"pagePurged": "Pagina permanent verwijderd"
+				"pagePurged": "Pagina permanent verwijderd",
+				"whiteboardRestored": "Tekenbord hersteld naar Gearchiveerd",
+				"whiteboardPurged": "Tekenbord permanent verwijderd"
 			},
 			"tasksHeading": "Taken",
 			"pagesHeading": "Pagina's",
@@ -3530,7 +3568,13 @@
 			"emptyPagesTitle": "Geen verwijderde pagina's",
 			"emptyPagesDescription": "Gearchiveerde pagina's die je uit dit project verwijdert, verschijnen hier.",
 			"purgePageTitle": "Deze pagina permanent verwijderen?",
-			"purgePageDescription": "“{{name}}”, de reacties en de versiegeschiedenis worden voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt."
+			"purgePageDescription": "“{{name}}”, de reacties en de versiegeschiedenis worden voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt.",
+			"whiteboardsHeading": "Tekenborden",
+			"searchWhiteboards": "Verwijderde tekenborden zoeken",
+			"emptyWhiteboardsTitle": "Geen verwijderde tekenborden",
+			"emptyWhiteboardsDescription": "Gearchiveerde tekenborden die je uit dit project verwijdert, verschijnen hier.",
+			"purgeWhiteboardTitle": "Dit tekenbord permanent verwijderen?",
+			"purgeWhiteboardDescription": "“{{name}}”, de inhoud en de afbeeldingen worden voor iedereen verwijderd. Dit kan niet ongedaan worden gemaakt."
 		},
 		"automationRules": {
 			"title": "Automatiseringen",
@@ -4002,6 +4046,7 @@
 			"label": "Projectonderdelen",
 			"modules": "Modules",
 			"pages": "Pagina's",
+			"whiteboards": "Tekenborden",
 			"sections": "Onderdelen",
 			"tasks": "Taken",
 			"views": "Weergaven",
@@ -4033,6 +4078,9 @@
 			"newTask": "Nieuwe taak",
 			"newWorkspace": "Nieuwe werkruimte",
 			"noPagesProjects": "Schakel Pagina's in bij de functies van een project om daar documenten te schrijven.",
+			"noWhiteboardsProjects": "Schakel Tekenborden in bij de functies van een project om daar te tekenen.",
+			"allWhiteboards": "Alle tekenborden",
+			"whiteboards": "Teken­borden",
 			"noRecent": "Pagina's en taken die je opent, verschijnen hier.",
 			"pages": "Pagina's",
 			"panel": "Sectienavigatie",
@@ -5112,6 +5160,21 @@
 			"previousWeek": "Vorige week",
 			"rescheduleError": "Kan de taak niet opnieuw plannen",
 			"showWeekends": "Weekenden tonen",
+			"touch": {
+				"daysLabel": "Dagen in {{month}}",
+				"weekDaysLabel": "Dagen van {{start}} tot en met {{end}}",
+				"dayLabel_one": "{{date}}, {{count}} taak",
+				"dayLabel_other": "{{date}}, {{count}} taken",
+				"dayLabelEmpty": "{{date}}, geen taken",
+				"taskCount_one": "{{count}} taak",
+				"taskCount_other": "{{count}} taken",
+				"addTask": "Taak toevoegen",
+				"empty": "Geen taken op deze dag.",
+				"moveTask": "{{title}} naar een andere datum verplaatsen",
+				"moveTitle": "Naar datum verplaatsen",
+				"moveDescription": "Kies de nieuwe einddatum voor {{title}}. Een startdatum schuift mee, zodat de taak even lang blijft.",
+				"moved": "Verplaatst naar {{date}}"
+			},
 			"viewMode": "Kalenderperiode",
 			"week": "Week",
 			"overdue": "Te laat"
@@ -9852,6 +9915,290 @@
 			"error": "Het volgen van deze pagina kon niet worden gewijzigd"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Geschiedenis van het bord",
+			"description": "Wie dit bord wanneer heeft gewijzigd, nieuwste eerst. Bewerkingen verschijnen één keer per persoon per 10 minuten.",
+			"empty": "Er is nog niets gebeurd op dit bord.",
+			"loadError": "De geschiedenis van het bord kon niet worden geladen.",
+			"loadMore": "Meer laden",
+			"someone": "Iemand",
+			"entries": {
+				"created": "Heeft het bord gemaakt",
+				"renamed": "Heeft het bord hernoemd naar ‘{{title}}’",
+				"iconChanged": "Heeft het pictogram gewijzigd",
+				"locked": "Heeft het bord vergrendeld",
+				"unlocked": "Heeft het bord ontgrendeld",
+				"archived": "Heeft het bord gearchiveerd",
+				"unarchived": "Heeft het bord uit het archief teruggezet",
+				"published": "Heeft het bord op het web gepubliceerd",
+				"unpublished": "Heeft de publicatie van het bord stopgezet",
+				"trashed": "Heeft het bord naar de prullenbak verplaatst",
+				"restored": "Heeft het bord uit de prullenbak hersteld",
+				"edited": "Heeft het bord bewerkt"
+			}
+		},
+		"section": {
+			"title": "Tekenborden"
+		},
+		"list": {
+			"documentTitle": "Tekenborden · {{project}}",
+			"newWhiteboard": "Nieuw tekenbord",
+			"moreCreateOptions": "Meer manieren om een tekenbord te maken",
+			"untitled": "Naamloos bord",
+			"searchPlaceholder": "Borden zoeken",
+			"searchClear": "Zoekopdracht wissen",
+			"tabs": {
+				"active": "Borden",
+				"archived": "Gearchiveerd"
+			},
+			"sort": {
+				"lastEdited": "Laatst bewerkt",
+				"created": "Aangemaakt",
+				"name": "Naam"
+			},
+			"edited": "Bewerkt {{time}}",
+			"editedBy": "Bewerkt {{time}} door {{name}}",
+			"locked": "Vergrendeld",
+			"published": "Gepubliceerd",
+			"cardActions": "Acties voor {{title}}",
+			"recentlyDeleted": "Recent verwijderd",
+			"loadError": "De tekenborden konden niet worden geladen",
+			"retry": "Opnieuw proberen",
+			"unknownUser": "Iemand",
+			"empty": {
+				"title": "Nog geen tekenborden",
+				"description": "Schets ideeën, plan een sprint of breng het werk met je team in kaart op een gedeeld canvas.",
+				"archivedTitle": "Geen gearchiveerde tekenborden",
+				"archivedDescription": "Borden die je archiveert, verschijnen hier.",
+				"noMatchTitle": "Geen borden komen overeen met “{{query}}”",
+				"noMatchDescription": "Probeer andere woorden. Er wordt gezocht in bordnamen en in de tekst op borden.",
+				"clearSearch": "Zoekopdracht wissen"
+			}
+		},
+		"templates": {
+			"title": "Beginnen met een sjabloon",
+			"names": {
+				"blank": "Leeg bord",
+				"brainstorm": "Brainstormsessie",
+				"retrospective": "Retrospectief",
+				"sprintPlanning": "Sprintplanning",
+				"userStoryMap": "Kaart met gebruikersverhalen",
+				"roadmap": "Routekaart",
+				"flowchart": "Stroomdiagram",
+				"kanban": "Kanban-schets"
+			},
+			"descriptions": {
+				"blank": "Een leeg canvas.",
+				"brainstorm": "Een centrale vraag met ruimte voor ideeën eromheen.",
+				"retrospective": "Wat ging goed, wat kan beter en de acties.",
+				"sprintPlanning": "Het sprintdoel, de werkvoorraad, wat is toegezegd en de risico's.",
+				"userStoryMap": "Activiteiten bovenaan, verhalen per versie eronder.",
+				"roadmap": "Nu, straks en later, naast elkaar.",
+				"flowchart": "Een begin, een beslissing en de stappen daartussen.",
+				"kanban": "Kolommen Te doen, Bezig en Klaar voor plaknotities."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "Wat lossen we op?",
+					"ideas": "Ideeën"
+				},
+				"retrospective": {
+					"title": "Retrospectief",
+					"wentWell": "Ging goed",
+					"toImprove": "Kan beter",
+					"actions": "Acties"
+				},
+				"sprintPlanning": {
+					"title": "Sprintplanning",
+					"goal": "Sprintdoel",
+					"backlog": "Werkvoorraad",
+					"committed": "Toegezegd",
+					"risks": "Risico's"
+				},
+				"userStoryMap": {
+					"title": "Kaart met gebruikersverhalen",
+					"activity": "Activiteit",
+					"story": "Verhaal",
+					"release1": "Versie 1",
+					"release2": "Versie 2"
+				},
+				"roadmap": {
+					"title": "Routekaart",
+					"now": "Nu",
+					"next": "Straks",
+					"later": "Op termijn"
+				},
+				"flowchart": {
+					"start": "Begin",
+					"step": "Stap",
+					"decision": "Beslissing?",
+					"yes": "Ja",
+					"no": "Nee",
+					"end": "Einde"
+				},
+				"kanban": {
+					"todo": "Te doen",
+					"doing": "Bezig",
+					"done": "Klaar"
+				}
+			}
+		},
+		"actions": {
+			"history": "Geschiedenis",
+			"open": "Openen",
+			"openInNewTab": "Openen in nieuw tabblad",
+			"copyLink": "Link kopiëren",
+			"rename": "Naam wijzigen",
+			"changeIcon": "Pictogram wijzigen",
+			"duplicate": "Dupliceren",
+			"publish": "Publiceren op het web",
+			"managePublicLink": "Openbare link",
+			"share": "Delen",
+			"lock": "Vergrendelen",
+			"unlock": "Ontgrendelen",
+			"archive": "Archiveren",
+			"unarchive": "Terugzetten uit archief",
+			"moveToTrash": "Naar de prullenbak",
+			"export": "Exporteren",
+			"exportPng": "Exporteren als PNG",
+			"exportSvg": "Exporteren als SVG",
+			"exportFile": "Bordbestand downloaden",
+			"importFile": "Bordbestand importeren",
+			"zoomToFit": "Zoomen tot alles past",
+			"fullScreen": "Volledig scherm",
+			"exitFullScreen": "Volledig scherm verlaten",
+			"more": "Meer bordopties"
+		},
+		"dialogs": {
+			"cancel": "Annuleren",
+			"rename": {
+				"title": "Naam van tekenbord wijzigen",
+				"label": "Naam",
+				"save": "Opslaan"
+			},
+			"icon": {
+				"title": "Kies een pictogram",
+				"description": "De emoji staat naast de naam van het bord.",
+				"search": "Emoji zoeken",
+				"noMatches": "Geen emoji gevonden voor je zoekopdracht",
+				"remove": "Pictogram verwijderen"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (kopie)"
+			},
+			"delete": {
+				"title": "Dit bord naar de prullenbak verplaatsen?",
+				"description": "“{{title}}” gaat naar de lijst Recent verwijderd van het project, waar het kan worden hersteld totdat het permanent is verwijderd.",
+				"confirm": "Naar de prullenbak"
+			}
+		},
+		"toasts": {
+			"createError": "Het tekenbord kon niet worden aangemaakt",
+			"renameError": "De naam van het tekenbord kon niet worden gewijzigd",
+			"iconError": "Het pictogram kon niet worden gewijzigd",
+			"duplicated": "Tekenbord gedupliceerd",
+			"duplicateError": "Het tekenbord kon niet worden gedupliceerd",
+			"open": "Openen",
+			"locked": "Tekenbord vergrendeld",
+			"unlocked": "Tekenbord ontgrendeld",
+			"lockError": "De vergrendeling kon niet worden gewijzigd",
+			"archived": "Tekenbord gearchiveerd",
+			"unarchived": "Tekenbord hersteld",
+			"archiveError": "Het tekenbord kon niet worden gearchiveerd",
+			"unarchiveError": "Het tekenbord kon niet worden hersteld",
+			"deleted": "Verplaatst naar Recent verwijderd",
+			"deleteError": "Het tekenbord kon niet naar de prullenbak worden verplaatst",
+			"linkCopied": "Link gekopieerd",
+			"exportError": "Het bord kon niet worden geëxporteerd",
+			"imported": "Bordbestand toegevoegd",
+			"importError": "Dat bestand kon niet worden gelezen",
+			"imageType": "Alleen PNG-, JPEG-, GIF- en WebP-afbeeldingen kunnen op een bord",
+			"imageUploadError": "De afbeelding kon niet worden toegevoegd"
+		},
+		"share": {
+			"title": "Tekenbord delen",
+			"description": "Publiceer een alleen-lezen kopie die iedereen met de link kan bekijken. Als je dit uitzet, wordt de link meteen ingetrokken.",
+			"switchLabel": "Publiceren op het web",
+			"onHint": "Iedereen met de link kan dit bord bekijken.",
+			"offHint": "Alleen mensen in dit project kunnen dit bord openen.",
+			"linkLabel": "Openbare link",
+			"copyLink": "Link kopiëren",
+			"copied": "Gekopieerd",
+			"openLink": "Openbare link openen",
+			"privacyNote": "Kijkers zien het bord en de titels en status van de taakkaarten erop, verder niets uit het project.",
+			"cannotPublish": "Alleen mensen die alle tekenborden mogen beheren, kunnen publiceren.",
+			"archivedHint": "Haal het bord uit het archief om het te publiceren.",
+			"publishedToast": "Tekenbord gepubliceerd",
+			"unpublishedToast": "Openbare link uitgeschakeld",
+			"error": "De openbare link kon niet worden gewijzigd",
+			"done": "Klaar"
+		},
+		"screen": {
+			"backToList": "Terug naar tekenborden",
+			"titleLabel": "Naam van tekenbord",
+			"readOnly": "Alleen-lezen",
+			"loadError": "Dit tekenbord kon niet worden geladen",
+			"storedCopyError": "De opgeslagen kopie van dit bord kon niet worden geladen",
+			"notFound": {
+				"title": "Tekenbord niet gevonden",
+				"description": "Het is misschien verwijderd, of je hebt er geen toegang toe.",
+				"back": "Terug naar tekenborden"
+			}
+		},
+		"banners": {
+			"locked": "Dit bord is vergrendeld. Ontgrendel het om wijzigingen aan te brengen.",
+			"lockedBy": "{{name}} heeft dit bord vergrendeld. Ontgrendel het om wijzigingen aan te brengen.",
+			"unlock": "Ontgrendelen",
+			"archived": "Dit bord is gearchiveerd en alleen-lezen.",
+			"restore": "Herstellen",
+			"readOnly": "Je kunt dit bord bekijken, maar niet bewerken.",
+			"storedCopy": "Het live bord is niet bereikbaar. De laatst opgeslagen kopie wordt alleen-lezen getoond.",
+			"retry": "Opnieuw proberen",
+			"tooLarge": "Dit bord is te groot om nog meer wijzigingen op te slaan.",
+			"reload": "Opnieuw laden"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "Het bord is vergrendeld terwijl je offline was, dus je offline wijzigingen zijn niet opgeslagen.",
+				"archived": "Het bord is gearchiveerd terwijl je offline was, dus je offline wijzigingen zijn niet opgeslagen.",
+				"readOnly": "Je kunt dit bord niet meer bewerken, dus je offline wijzigingen zijn niet opgeslagen."
+			},
+			"replacedBy": "{{name}} heeft de inhoud van het bord vervangen",
+			"deleted": "Dit tekenbord is verwijderd",
+			"signedOut": "Je bent uitgelogd. Log opnieuw in om verder te bewerken.",
+			"roomFull": "Te veel mensen hebben dit bord open. Probeer het later opnieuw."
+		},
+		"publicView": {
+			"documentTitle": "Gedeeld tekenbord",
+			"unavailableTitle": "Deze link is niet beschikbaar",
+			"unavailableDescription": "Het bord is misschien niet meer gepubliceerd, of de link klopt niet.",
+			"updated": "Bijgewerkt op {{date}}",
+			"readOnly": "Alleen-lezen"
+		},
+		"taskBoards": {
+			"title": "Op tekenborden"
+		},
+		"workspace": {
+			"title": "Tekenborden",
+			"documentTitle": "Alle tekenborden",
+			"chooseProject": "Aanmaken in project",
+			"projectFilter": "Project",
+			"allProjects": "Alle projecten",
+			"groupByProject": "Groeperen per project",
+			"showAllProjects": "Alle projecten tonen",
+			"empty": {
+				"description": "Hier verschijnen de borden van elk project dat je kunt zien.",
+				"noProjectsTitle": "Nog geen project heeft tekenborden",
+				"noProjectsDescription": "Schakel Tekenborden in bij de functies van een project om te beginnen met tekenen."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Nieuw tekenbord",
+			"goToWhiteboards": "Naar tekenborden",
+			"goToAllWhiteboards": "Naar alle tekenborden"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Opslaan",
@@ -13034,7 +13381,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} gedownload",
-				"failed": "Kan {{file}} niet downloaden"
+				"failed": "Kan {{file}} niet downloaden",
+				"showInFolder": "Klik om in de map te tonen",
+				"openFolder": "Klik om de map Downloads te openen"
 			},
 			"notifications": {
 				"releasedTitle": "Meldingen staan weer aan",
@@ -13084,6 +13433,350 @@
 				"retryIn_other": "Opnieuw proberen over {{count}} seconden",
 				"switchServer": "Server wisselen"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Canvas van tekenbord",
+			"roleDescription": "tekenbord"
+		},
+		"actions": {
+			"cancel": "Annuleren",
+			"save": "Opslaan"
+		},
+		"tools": {
+			"label": "Gereedschap",
+			"more": "Meer gereedschap",
+			"select": "Selecteren",
+			"hand": "Hand (verschuiven)",
+			"rectangle": "Rechthoek",
+			"diamond": "Ruit",
+			"ellipse": "Ellips",
+			"arrow": "Pijl",
+			"line": "Lijn",
+			"draw": "Tekenpen",
+			"text": "Tekst",
+			"sticky": "Plaknotitie",
+			"image": "Afbeelding",
+			"eraser": "Gum",
+			"frame": "Kader",
+			"laser": "Laseraanwijzer",
+			"task": "Taakkaart",
+			"lock": "Gereedschap actief houden",
+			"lockTool": "Gereedschap actief houden na het tekenen",
+			"unlockTool": "Na het tekenen terug naar Selecteren",
+			"shape": "Vormen"
+		},
+		"commands": {
+			"undo": "Ongedaan maken",
+			"redo": "Opnieuw",
+			"history": "Geschiedenis",
+			"copy": "Kopiëren",
+			"cut": "Knippen",
+			"paste": "Plakken",
+			"duplicate": "Dupliceren",
+			"delete": "Verwijderen",
+			"selectAll": "Alles selecteren",
+			"group": "Groeperen",
+			"ungroup": "Groep opheffen",
+			"bringForward": "Naar voren",
+			"sendBackward": "Naar achteren",
+			"bringToFront": "Naar voorgrond",
+			"sendToBack": "Naar achtergrond",
+			"toggleGrid": "Uitlijnen op raster",
+			"toggleSnap": "Uitlijnen op objecten",
+			"toggleMinimap": "Minikaart tonen",
+			"search": "Zoeken op bord",
+			"help": "Sneltoetsen",
+			"toggleElementLock": "Vergrendelen of ontgrendelen",
+			"lock": "Vergrendelen",
+			"unlock": "Ontgrendelen",
+			"flipHorizontal": "Horizontaal spiegelen",
+			"flipVertical": "Verticaal spiegelen",
+			"copyStyle": "Stijl kopiëren",
+			"pasteStyle": "Stijl plakken",
+			"alignLeft": "Links uitlijnen",
+			"alignCenter": "Horizontaal centreren",
+			"alignRight": "Rechts uitlijnen",
+			"alignTop": "Boven uitlijnen",
+			"alignMiddle": "Verticaal centreren",
+			"alignBottom": "Onder uitlijnen",
+			"distributeHorizontal": "Horizontaal verdelen",
+			"distributeVertical": "Verticaal verdelen",
+			"editText": "Tekst bewerken",
+			"editLink": "Link bewerken"
+		},
+		"zoom": {
+			"label": "Zoomen",
+			"in": "Inzoomen",
+			"out": "Uitzoomen",
+			"reset": "Zoom herstellen",
+			"resetTo": "Zoom {{percent}}%, terugzetten naar 100%",
+			"percent": "{{percent}}%",
+			"fit": "Zoomen tot alles past",
+			"selection": "Inzoomen op selectie"
+		},
+		"panel": {
+			"label": "Stijl",
+			"stroke": "Lijnkleur",
+			"textColor": "Tekstkleur",
+			"stickyColor": "Notitiekleur",
+			"fill": "Achtergrond",
+			"fillStyle": "Vulling",
+			"fillSolid": "Effen",
+			"fillHatch": "Arcering",
+			"fillCross": "Kruisarcering",
+			"fillNone": "Geen",
+			"strokeWidth": "Lijndikte",
+			"thin": "Dun",
+			"medium": "Gemiddeld",
+			"bold": "Dik",
+			"extraBold": "Extra dik",
+			"strokeStyle": "Lijnstijl",
+			"solid": "Doorgetrokken",
+			"dashed": "Gestreept",
+			"dotted": "Gestippeld",
+			"sketch": "Schetsstijl",
+			"sketchClean": "Strak",
+			"sketchLight": "Licht",
+			"sketchRough": "Ruw",
+			"corners": "Hoeken",
+			"cornersSharp": "Scherp",
+			"cornersRound": "Rond",
+			"cornersRounder": "Ronder",
+			"font": "Lettertype",
+			"fontHand": "Handschrift",
+			"fontSans": "Schreefloos",
+			"fontMono": "Vaste breedte",
+			"fontSize": "Tekengrootte",
+			"sizeSmall": "Klein",
+			"sizeMedium": "Middel",
+			"sizeLarge": "Groot",
+			"sizeHuge": "Enorm",
+			"align": "Tekstuitlijning",
+			"alignLeft": "Links",
+			"alignCenter": "Midden",
+			"alignRight": "Rechts",
+			"routing": "Lijntype",
+			"routingStraight": "Recht",
+			"routingCurved": "Gebogen",
+			"routingElbow": "Haaks",
+			"arrowheads": "Pijlpunten",
+			"startHead": "Begin",
+			"endHead": "Einde",
+			"headNone": "Geen",
+			"headArrow": "Pijl",
+			"headTriangle": "Driehoek",
+			"headDot": "Stip",
+			"headBar": "Streep",
+			"opacity": "Dekking",
+			"layers": "Lagen",
+			"alignment": "Uitlijnen",
+			"actions": "Acties"
+		},
+		"colors": {
+			"black": "Zwart",
+			"red": "Rood",
+			"green": "Groen",
+			"blue": "Blauw",
+			"orange": "Oranje",
+			"purple": "Paars",
+			"teal": "Groenblauw",
+			"grey": "Grijs",
+			"yellow": "Geel",
+			"pink": "Roze",
+			"none": "Geen kleur",
+			"custom": "Aangepaste kleur"
+		},
+		"text": {
+			"label": "Tekst",
+			"frameName": "Naam van kader"
+		},
+		"link": {
+			"title": "Link van element",
+			"description": "Voeg een webadres toe, of link naar een ander element met #element= en de id ervan.",
+			"label": "Adres",
+			"invalid": "Voer een webadres in dat begint met https://, een mailto:-adres of een elementlink.",
+			"remove": "Link verwijderen",
+			"open": "Link openen",
+			"copyElementLink": "Link naar element kopiëren"
+		},
+		"search": {
+			"title": "Zoeken op bord",
+			"placeholder": "Tekst op dit bord zoeken",
+			"noResults": "Niets op dit bord komt overeen.",
+			"results": "Resultaten"
+		},
+		"tasks": {
+			"pickerTitle": "Taakkaarten toevoegen",
+			"searchPlaceholder": "Taken zoeken op titel of sleutel",
+			"noResults": "Geen taken gevonden.",
+			"results": "Taken",
+			"onBoard": "Op dit bord",
+			"addCards_one": "{{count}} kaart toevoegen",
+			"addCards_other": "{{count}} kaarten toevoegen",
+			"addCardsNone": "Kaarten toevoegen",
+			"pickHint": "Selecteer een of meer taken om ze als kaarten toe te voegen.",
+			"openTask": "Taak openen",
+			"turnIntoTasks_one": "Omzetten in een taak",
+			"turnIntoTasks_other": "Omzetten in {{count}} taken",
+			"turnIntoTasksTitle": "Notities omzetten in taken",
+			"turnIntoTasksDescription": "Elke notitie wordt een taak in dit project en wordt vervangen door een live taakkaart.",
+			"column": "Kolom",
+			"titles": "Taaktitels",
+			"taskTitle": "Titel van taak {{index}}",
+			"emptyTitle": "Naamloze notitie",
+			"skippedEmpty": "Notities zonder titel worden overgeslagen.",
+			"createTasks_one": "{{count}} taak aanmaken",
+			"createTasks_other": "{{count}} taken aanmaken",
+			"converted_one": "{{count}} taak aangemaakt",
+			"converted_other": "{{count}} taken aangemaakt",
+			"convertPartial_one": "{{count}} notitie kon geen taak worden",
+			"convertPartial_other": "{{count}} notities konden geen taak worden",
+			"makeDependency": "Afhankelijkheid maken",
+			"removeDependency": "Afhankelijkheid verwijderen",
+			"removeDependencyPrompt": "Ook de afhankelijkheid tussen {{source}} en {{target}} verwijderen?",
+			"removeDependenciesPrompt_one": "Ook {{count}} afhankelijkheid tussen deze taken verwijderen?",
+			"removeDependenciesPrompt_other": "Ook {{count}} afhankelijkheden tussen deze taken verwijderen?",
+			"dependencyPair": "{{source}} blokkeert {{target}}",
+			"removeDependencyConfirm": "Verwijderen",
+			"keepDependency": "Behouden",
+			"dependencyPromptLabel": "Taakafhankelijkheid",
+			"dependencyRemoved_one": "Afhankelijkheid verwijderd",
+			"dependencyRemoved_other": "{{count}} afhankelijkheden verwijderd",
+			"dependencyRemoveFailed": "De afhankelijkheid kon niet worden verwijderd."
+		},
+		"crop": {
+			"section": "Afbeelding",
+			"start": "Afbeelding bijsnijden",
+			"finish": "Bijsnijden afronden",
+			"reset": "Bijsnijden herstellen"
+		},
+		"presence": {
+			"label": "Mensen op dit bord",
+			"follow": "{{name}} volgen",
+			"stopFollowing": "Stoppen met {{name}} volgen",
+			"following": "Je volgt {{name}}",
+			"stop": "Stoppen"
+		},
+		"minimap": {
+			"label": "Overzicht van bord"
+		},
+		"contextMenu": {
+			"label": "Canvasacties"
+		},
+		"notices": {
+			"readOnly": "Dit bord is alleen-lezen.",
+			"copied": "Gekopieerd",
+			"linkCopied": "Link gekopieerd",
+			"pasteEmpty": "Niets om te plakken",
+			"uploadFailed": "De afbeelding kon niet worden geüpload.",
+			"uploading": "Afbeelding uploaden…",
+			"imagesOff": "Afbeeldingen zijn niet beschikbaar op dit bord.",
+			"importFailed": "Dat bestand is geen Margaya-bord.",
+			"imported": "Bord toegevoegd",
+			"tooManyElements": "Dit bord is vol. Verwijder iets voordat je meer toevoegt.",
+			"dependencyCreated": "Afhankelijkheid gemaakt",
+			"dependencyFailed": "De afhankelijkheid kon niet worden gemaakt.",
+			"cropUnavailable": "De afbeelding wordt nog geladen. Probeer het zo nog eens."
+		},
+		"help": {
+			"title": "Sneltoetsen",
+			"or": "of",
+			"sections": {
+				"tools": "Gereedschap",
+				"view": "Weergave",
+				"edit": "Bewerken",
+				"arrange": "Schikken",
+				"pointer": "Muis en aanraken"
+			},
+			"pan": "Verschuiven",
+			"zoomWheel": "Zoomen",
+			"commitText": "Tekst bewerken afronden",
+			"finishCrop": "Bijsnijden afronden",
+			"nudge": "Een klein stukje verplaatsen",
+			"flowchart": "Een verbonden vorm toevoegen",
+			"cycle": "Het vorige of volgende element selecteren",
+			"keepAspect": "Verhoudingen behouden of hoek vastzetten",
+			"fromCentre": "Formaat wijzigen vanuit het midden",
+			"duplicateDrag": "Dupliceren tijdens het slepen",
+			"addToSelection": "Aan selectie toevoegen",
+			"enterGroup": "Binnen een groep bewerken, of tekst bewerken",
+			"noSnap": "Verplaatsen zonder uitlijnen",
+			"keys": {
+				"drag": "slepen",
+				"wheel": "scrollwiel",
+				"click": "klikken",
+				"doubleClick": "dubbelklikken",
+				"space": "Spatie",
+				"delete": "Delete",
+				"enter": "Enter",
+				"escape": "Esc",
+				"shift": "Shift",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Vormenbibliotheek",
+			"label": "Vorm",
+			"change": "Vorm wijzigen",
+			"add": "Vorm toevoegen",
+			"search": "Vormen zoeken",
+			"noResults": "Geen vormen gevonden",
+			"groups": {
+				"basic": "Basis",
+				"polygons": "Veelhoeken",
+				"arrows": "Pijlen",
+				"symbols": "Symbolen"
+			},
+			"names": {
+				"triangle": "Driehoek",
+				"rightTriangle": "Rechthoekige driehoek",
+				"pentagon": "Vijfhoek",
+				"hexagon": "Zeshoek",
+				"octagon": "Achthoek",
+				"star": "Ster",
+				"parallelogram": "Parallellogram",
+				"trapezoid": "Trapezium",
+				"plus": "Plusteken",
+				"cross": "Kruis",
+				"heart": "Hart",
+				"cloud": "Wolk",
+				"speech": "Tekstballon",
+				"cylinder": "Cilinder",
+				"document": "Document",
+				"arrowRight": "Pijl naar rechts",
+				"arrowLeft": "Pijl naar links",
+				"arrowUp": "Pijl omhoog",
+				"arrowDown": "Pijl omlaag",
+				"arrowDouble": "Dubbele pijl",
+				"chevron": "Punthaak",
+				"moon": "Maan"
+			}
+		},
+		"pens": {
+			"label": "Penstijl",
+			"pen": "Tekenpen",
+			"marker": "Stift",
+			"highlighter": "Markeerstift"
+		},
+		"background": {
+			"label": "Achtergrond",
+			"pattern": "Patroon",
+			"plain": "Effen",
+			"dots": "Stippen",
+			"grid": "Raster",
+			"lines": "Lijnen",
+			"spacing": "Tussenruimte",
+			"small": "Klein",
+			"medium": "Middel",
+			"large": "Groot",
+			"paper": "Papierkleur",
+			"white": "Wit",
+			"cream": "Crème",
+			"stone": "Steen",
+			"mist": "Nevel",
+			"mint": "Munt"
 		}
 	}
 }

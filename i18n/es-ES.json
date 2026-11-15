@@ -1990,6 +1990,7 @@
 				"intake": "Recepción",
 				"analytics": "Analytics",
 				"page": "Páginas",
+				"whiteboard": "Pizarras",
 				"audit_log": "Registro de auditoría",
 				"ai": "IA"
 			},
@@ -2216,6 +2217,24 @@
 					"update": {
 						"description": "Editar el contenido, y bloquear, archivar o reorganizar sus propias páginas.",
 						"label": "Editar páginas"
+					}
+				},
+				"whiteboard": {
+					"read": {
+						"label": "Ver pizarras",
+						"description": "Ver la sección Pizarras y abrir las pizarras en modo de solo lectura."
+					},
+					"create": {
+						"label": "Crear pizarras",
+						"description": "Crear pizarras, a partir de una plantilla o en blanco, y duplicarlas."
+					},
+					"update": {
+						"label": "Editar pizarras",
+						"description": "Dibujar y editar en las pizarras, y bloquear o archivar sus propias pizarras."
+					},
+					"delete": {
+						"label": "Gestionar todas las pizarras",
+						"description": "Bloquear, archivar, publicar y eliminar cualquier pizarra que puedan ver, no solo las suyas."
 					}
 				},
 				"audit_log": {
@@ -2520,6 +2539,10 @@
 				"updates": {
 					"title": "Actualizaciones",
 					"description": "Publica actualizaciones de estado con fecha y un nivel de salud, redactadas a partir de los datos en vivo del proyecto."
+				},
+				"whiteboards": {
+					"title": "Pizarras",
+					"description": "Haz bocetos, planifica y organiza el trabajo en equipo sobre lienzos compartidos, con tarjetas de tareas en vivo."
 				}
 			},
 			"loadError": "No se ha podido cargar este proyecto",
@@ -3367,6 +3390,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Ha creado una pizarra",
+				"whiteboardRenamed": "Ha cambiado el nombre de una pizarra",
+				"whiteboardIconChanged": "Ha cambiado el icono de una pizarra",
+				"whiteboardLocked": "Ha bloqueado una pizarra",
+				"whiteboardUnlocked": "Ha desbloqueado una pizarra",
+				"whiteboardArchived": "Ha archivado una pizarra",
+				"whiteboardUnarchived": "Ha restaurado una pizarra del archivo",
+				"whiteboardPublished": "Ha publicado una pizarra mediante un enlace público",
+				"whiteboardUnpublished": "Ha revocado el enlace público de una pizarra",
+				"whiteboardTrashed": "Ha movido una pizarra a la papelera",
+				"whiteboardRestored": "Ha restaurado una pizarra de la papelera",
+				"whiteboardPurged": "Ha eliminado una pizarra de forma permanente",
 				"workspaceDeletionScheduled": "Ha programado la eliminación del espacio de trabajo",
 				"workspaceDeletionCancelled": "Ha cancelado la eliminación del espacio de trabajo",
 				"workspacePublicPagesChanged": "Ha activado o desactivado las páginas públicas",
@@ -3516,6 +3551,7 @@
 			"subtitle": "Quién ha cambiado miembros, roles, claves de API, webhooks, integraciones, ajustes y proyectos en este espacio de trabajo. Las entradas se conservan durante {{days}} días.",
 			"subtitleForever": "Quién ha cambiado miembros, roles, claves de API, webhooks, integraciones, ajustes y proyectos en este espacio de trabajo. Las entradas se conservan hasta que elimines el espacio de trabajo.",
 			"targets": {
+				"whiteboard": "Pizarra",
 				"page": "Página",
 				"apiKey": "Clave de API",
 				"export": "Exportación",
@@ -3535,7 +3571,7 @@
 		},
 		"trash": {
 			"projectTitle": "Eliminados recientemente",
-			"projectSubtitle": "Las tareas y páginas eliminadas permanecen aquí hasta que se eliminan permanentemente. Al restaurar una tarea, se recuperan las subtareas eliminadas con ella; una página restaurada vuelve a Archivadas.",
+			"projectSubtitle": "Las tareas, páginas y pizarras eliminadas permanecen aquí hasta que se eliminan permanentemente. Al restaurar una tarea, se recuperan las subtareas eliminadas con ella; una página o pizarra restaurada vuelve a Archivadas.",
 			"workspaceTitle": "Proyectos eliminados recientemente",
 			"workspaceNav": "Eliminados recientemente",
 			"workspaceSubtitle": "Los proyectos eliminados permanecen aquí con sus tareas hasta que se eliminan permanentemente.",
@@ -3581,7 +3617,9 @@
 				"emptied_other": "{{count}} tareas eliminadas permanentemente",
 				"purgeError": "No se ha podido eliminar permanentemente",
 				"pageRestored": "Página restaurada en Archivadas",
-				"pagePurged": "Página eliminada permanentemente"
+				"pagePurged": "Página eliminada permanentemente",
+				"whiteboardRestored": "Pizarra restaurada en Archivadas",
+				"whiteboardPurged": "Pizarra eliminada permanentemente"
 			},
 			"tasksHeading": "Tareas",
 			"pagesHeading": "Páginas",
@@ -3589,7 +3627,13 @@
 			"emptyPagesTitle": "No hay páginas eliminadas",
 			"emptyPagesDescription": "Aquí aparecen las páginas archivadas que eliminas de este proyecto.",
 			"purgePageTitle": "¿Eliminar esta página permanentemente?",
-			"purgePageDescription": "“{{name}}”, sus comentarios y su historial de versiones se eliminan para todos. Esta acción no se puede deshacer."
+			"purgePageDescription": "“{{name}}”, sus comentarios y su historial de versiones se eliminan para todos. Esta acción no se puede deshacer.",
+			"whiteboardsHeading": "Pizarras",
+			"searchWhiteboards": "Buscar pizarras eliminadas",
+			"emptyWhiteboardsTitle": "No hay pizarras eliminadas",
+			"emptyWhiteboardsDescription": "Aquí aparecen las pizarras archivadas que eliminas de este proyecto.",
+			"purgeWhiteboardTitle": "¿Eliminar esta pizarra permanentemente?",
+			"purgeWhiteboardDescription": "“{{name}}”, su contenido y sus imágenes se eliminan para todos. Esta acción no se puede deshacer."
 		},
 		"automationRules": {
 			"title": "Automatizaciones",
@@ -4064,6 +4108,7 @@
 			"label": "Secciones del proyecto",
 			"modules": "Módulos",
 			"pages": "Páginas",
+			"whiteboards": "Pizarras",
 			"sections": "Secciones",
 			"tasks": "Tareas",
 			"views": "Vistas",
@@ -4095,6 +4140,9 @@
 			"newTask": "Nueva tarea",
 			"newWorkspace": "Nuevo espacio de trabajo",
 			"noPagesProjects": "Activa Páginas en las funciones de un proyecto para escribir documentos allí.",
+			"noWhiteboardsProjects": "Activa Pizarras en las funciones de un proyecto para dibujar allí.",
+			"allWhiteboards": "Todas las pizarras",
+			"whiteboards": "Pizarras",
 			"noRecent": "Las páginas y tareas que abras aparecerán aquí.",
 			"pages": "Páginas",
 			"panel": "Navegación de la sección",
@@ -5193,6 +5241,23 @@
 			"previousWeek": "Semana anterior",
 			"rescheduleError": "Error al reprogramar la tarea",
 			"showWeekends": "Mostrar fines de semana",
+			"touch": {
+				"daysLabel": "Días de {{month}}",
+				"weekDaysLabel": "Días del {{start}} al {{end}}",
+				"dayLabel_one": "{{date}}, {{count}} tarea",
+				"dayLabel_many": "{{date}}, {{count}} de tareas",
+				"dayLabel_other": "{{date}}, {{count}} tareas",
+				"dayLabelEmpty": "{{date}}, sin tareas",
+				"taskCount_one": "{{count}} tarea",
+				"taskCount_many": "{{count}} de tareas",
+				"taskCount_other": "{{count}} tareas",
+				"addTask": "Añadir tarea",
+				"empty": "No hay tareas este día.",
+				"moveTask": "Mover {{title}} a otra fecha",
+				"moveTitle": "Mover a una fecha",
+				"moveDescription": "Elige la nueva fecha de vencimiento de {{title}}. La fecha de inicio se mueve con ella, así que la tarea conserva su duración.",
+				"moved": "Movida al {{date}}"
+			},
 			"viewMode": "Periodo del calendario",
 			"week": "Semana",
 			"overdue": "Vencidas"
@@ -9999,6 +10064,290 @@
 			"error": "No se pudo cambiar el seguimiento de esta página"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Historial de la pizarra",
+			"description": "Quién cambió esta pizarra y cuándo, de la más reciente a la más antigua. Las ediciones aparecen una vez por persona cada 10 minutos.",
+			"empty": "Todavía no ha pasado nada en esta pizarra.",
+			"loadError": "No se ha podido cargar el historial de la pizarra.",
+			"loadMore": "Cargar más",
+			"someone": "Alguien",
+			"entries": {
+				"created": "Ha creado la pizarra",
+				"renamed": "Ha cambiado el nombre de la pizarra a «{{title}}»",
+				"iconChanged": "Ha cambiado el icono",
+				"locked": "Ha bloqueado la pizarra",
+				"unlocked": "Ha desbloqueado la pizarra",
+				"archived": "Ha archivado la pizarra",
+				"unarchived": "Ha restaurado la pizarra del archivo",
+				"published": "Ha publicado la pizarra en la web",
+				"unpublished": "Ha dejado de publicar la pizarra",
+				"trashed": "Ha movido la pizarra a la papelera",
+				"restored": "Ha restaurado la pizarra de la papelera",
+				"edited": "Ha editado la pizarra"
+			}
+		},
+		"section": {
+			"title": "Pizarras"
+		},
+		"list": {
+			"documentTitle": "Pizarras · {{project}}",
+			"newWhiteboard": "Nueva pizarra",
+			"moreCreateOptions": "Más formas de crear una pizarra",
+			"untitled": "Pizarra sin título",
+			"searchPlaceholder": "Buscar pizarras",
+			"searchClear": "Borrar búsqueda",
+			"tabs": {
+				"active": "Pizarras",
+				"archived": "Archivadas"
+			},
+			"sort": {
+				"lastEdited": "Última edición",
+				"created": "Creación",
+				"name": "Nombre"
+			},
+			"edited": "Editada {{time}}",
+			"editedBy": "Editada {{time}} por {{name}}",
+			"locked": "Bloqueada",
+			"published": "Publicada",
+			"cardActions": "Acciones para {{title}}",
+			"recentlyDeleted": "Eliminados recientemente",
+			"loadError": "No se pudieron cargar las pizarras",
+			"retry": "Reintentar",
+			"unknownUser": "Alguien",
+			"empty": {
+				"title": "Aún no hay pizarras",
+				"description": "Haz bocetos de ideas, planifica un sprint u organiza el trabajo con tu equipo en un lienzo compartido.",
+				"archivedTitle": "No hay pizarras archivadas",
+				"archivedDescription": "Aquí aparecen las pizarras que archivas.",
+				"noMatchTitle": "Ninguna pizarra coincide con “{{query}}”",
+				"noMatchDescription": "Prueba con otras palabras. La búsqueda revisa los nombres de las pizarras y el texto que contienen.",
+				"clearSearch": "Borrar búsqueda"
+			}
+		},
+		"templates": {
+			"title": "Empezar con una plantilla",
+			"names": {
+				"blank": "Pizarra en blanco",
+				"brainstorm": "Lluvia de ideas",
+				"retrospective": "Retrospectiva",
+				"sprintPlanning": "Planificación del sprint",
+				"userStoryMap": "Mapa de historias de usuario",
+				"roadmap": "Hoja de ruta",
+				"flowchart": "Diagrama de flujo",
+				"kanban": "Boceto Kanban"
+			},
+			"descriptions": {
+				"blank": "Un lienzo vacío.",
+				"brainstorm": "Una pregunta central con espacio para ideas a su alrededor.",
+				"retrospective": "Lo que salió bien, lo que hay que mejorar y las acciones.",
+				"sprintPlanning": "El objetivo del sprint, el backlog, los compromisos y los riesgos.",
+				"userStoryMap": "Actividades en la parte superior e historias por versión debajo.",
+				"roadmap": "Ahora, después y más adelante, en paralelo.",
+				"flowchart": "Un inicio, una decisión y los pasos intermedios.",
+				"kanban": "Columnas Por hacer, En curso y Hecho para notas adhesivas."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "¿Qué estamos resolviendo?",
+					"ideas": "Ideas"
+				},
+				"retrospective": {
+					"title": "Retrospectiva",
+					"wentWell": "Salió bien",
+					"toImprove": "A mejorar",
+					"actions": "Acciones"
+				},
+				"sprintPlanning": {
+					"title": "Planificación del sprint",
+					"goal": "Objetivo del sprint",
+					"backlog": "Trabajo pendiente",
+					"committed": "Comprometido",
+					"risks": "Riesgos"
+				},
+				"userStoryMap": {
+					"title": "Mapa de historias de usuario",
+					"activity": "Actividad",
+					"story": "Historia",
+					"release1": "Versión 1",
+					"release2": "Versión 2"
+				},
+				"roadmap": {
+					"title": "Hoja de ruta",
+					"now": "Ahora",
+					"next": "Después",
+					"later": "Más adelante"
+				},
+				"flowchart": {
+					"start": "Inicio",
+					"step": "Paso",
+					"decision": "¿Decisión?",
+					"yes": "Sí",
+					"no": "No",
+					"end": "Fin"
+				},
+				"kanban": {
+					"todo": "Por hacer",
+					"doing": "En curso",
+					"done": "Hecho"
+				}
+			}
+		},
+		"actions": {
+			"history": "Historial",
+			"open": "Abrir",
+			"openInNewTab": "Abrir en una pestaña nueva",
+			"copyLink": "Copiar enlace",
+			"rename": "Cambiar nombre",
+			"changeIcon": "Cambiar icono",
+			"duplicate": "Duplicar",
+			"publish": "Publicar en la web",
+			"managePublicLink": "Enlace público",
+			"share": "Compartir",
+			"lock": "Bloquear",
+			"unlock": "Desbloquear",
+			"archive": "Archivar",
+			"unarchive": "Restaurar del archivo",
+			"moveToTrash": "Mover a la papelera",
+			"export": "Exportar",
+			"exportPng": "Exportar como PNG",
+			"exportSvg": "Exportar como SVG",
+			"exportFile": "Descargar archivo de la pizarra",
+			"importFile": "Importar archivo de pizarra",
+			"zoomToFit": "Ajustar a la pantalla",
+			"fullScreen": "Pantalla completa",
+			"exitFullScreen": "Salir de pantalla completa",
+			"more": "Más opciones de la pizarra"
+		},
+		"dialogs": {
+			"cancel": "Cancelar",
+			"rename": {
+				"title": "Cambiar nombre de la pizarra",
+				"label": "Nombre",
+				"save": "Guardar"
+			},
+			"icon": {
+				"title": "Elige un icono",
+				"description": "El emoji aparece junto al nombre de la pizarra.",
+				"search": "Buscar emoji",
+				"noMatches": "Ningún emoji coincide con tu búsqueda",
+				"remove": "Quitar icono"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (copia)"
+			},
+			"delete": {
+				"title": "¿Mover esta pizarra a la papelera?",
+				"description": "“{{title}}” se mueve a la lista Eliminados recientemente del proyecto, donde se puede restaurar hasta que se elimine permanentemente.",
+				"confirm": "Mover a la papelera"
+			}
+		},
+		"toasts": {
+			"createError": "No se pudo crear la pizarra",
+			"renameError": "No se pudo cambiar el nombre de la pizarra",
+			"iconError": "No se pudo cambiar el icono",
+			"duplicated": "Pizarra duplicada",
+			"duplicateError": "No se pudo duplicar la pizarra",
+			"open": "Abrir",
+			"locked": "Pizarra bloqueada",
+			"unlocked": "Pizarra desbloqueada",
+			"lockError": "No se pudo cambiar el bloqueo",
+			"archived": "Pizarra archivada",
+			"unarchived": "Pizarra restaurada",
+			"archiveError": "No se pudo archivar la pizarra",
+			"unarchiveError": "No se pudo restaurar la pizarra",
+			"deleted": "Movida a Eliminados recientemente",
+			"deleteError": "No se pudo mover la pizarra a la papelera",
+			"linkCopied": "Enlace copiado",
+			"exportError": "No se pudo exportar la pizarra",
+			"imported": "Archivo de pizarra añadido",
+			"importError": "No se pudo leer ese archivo",
+			"imageType": "Solo se pueden añadir imágenes PNG, JPEG, GIF y WebP a una pizarra",
+			"imageUploadError": "No se pudo añadir la imagen"
+		},
+		"share": {
+			"title": "Compartir pizarra",
+			"description": "Publica una copia de solo lectura que cualquier persona con el enlace puede ver. Al desactivarla, el enlace se revoca al instante.",
+			"switchLabel": "Publicar en la web",
+			"onHint": "Cualquier persona con el enlace puede ver esta pizarra.",
+			"offHint": "Solo las personas de este proyecto pueden abrir esta pizarra.",
+			"linkLabel": "Enlace público",
+			"copyLink": "Copiar enlace",
+			"copied": "Copiado",
+			"openLink": "Abrir enlace público",
+			"privacyNote": "Quienes la visiten verán la pizarra y el título y el estado de sus tarjetas de tareas, nada más del proyecto.",
+			"cannotPublish": "Solo quienes pueden gestionar todas las pizarras pueden publicar.",
+			"archivedHint": "Restaura la pizarra del archivo para publicarla.",
+			"publishedToast": "Pizarra publicada",
+			"unpublishedToast": "Enlace público desactivado",
+			"error": "No se pudo cambiar el enlace público",
+			"done": "Listo"
+		},
+		"screen": {
+			"backToList": "Volver a las pizarras",
+			"titleLabel": "Nombre de la pizarra",
+			"readOnly": "Solo lectura",
+			"loadError": "No se pudo cargar esta pizarra",
+			"storedCopyError": "No se pudo cargar la copia guardada de esta pizarra",
+			"notFound": {
+				"title": "Pizarra no encontrada",
+				"description": "Puede que se haya eliminado o que no tengas acceso.",
+				"back": "Volver a las pizarras"
+			}
+		},
+		"banners": {
+			"locked": "Esta pizarra está bloqueada. Desbloquéala para hacer cambios.",
+			"lockedBy": "{{name}} bloqueó esta pizarra. Desbloquéala para hacer cambios.",
+			"unlock": "Desbloquear",
+			"archived": "Esta pizarra está archivada y es de solo lectura.",
+			"restore": "Restaurar",
+			"readOnly": "Puedes ver esta pizarra, pero no editarla.",
+			"storedCopy": "No se puede acceder a la pizarra en vivo. Se muestra la última copia guardada, en solo lectura.",
+			"retry": "Reintentar",
+			"tooLarge": "Esta pizarra es demasiado grande para guardar más cambios.",
+			"reload": "Recargar"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "La pizarra se bloqueó mientras estabas sin conexión, así que tus cambios sin conexión no se guardaron.",
+				"archived": "La pizarra se archivó mientras estabas sin conexión, así que tus cambios sin conexión no se guardaron.",
+				"readOnly": "Ya no puedes editar esta pizarra, así que tus cambios sin conexión no se guardaron."
+			},
+			"replacedBy": "{{name}} reemplazó el contenido de la pizarra",
+			"deleted": "Esta pizarra se eliminó",
+			"signedOut": "Se cerró tu sesión. Vuelve a iniciar sesión para seguir editando.",
+			"roomFull": "Demasiadas personas tienen abierta esta pizarra. Inténtalo de nuevo más tarde."
+		},
+		"publicView": {
+			"documentTitle": "Pizarra compartida",
+			"unavailableTitle": "Este enlace no está disponible",
+			"unavailableDescription": "Puede que la pizarra se haya dejado de publicar o que el enlace sea incorrecto.",
+			"updated": "Actualizada el {{date}}",
+			"readOnly": "Solo lectura"
+		},
+		"taskBoards": {
+			"title": "En pizarras"
+		},
+		"workspace": {
+			"title": "Pizarras",
+			"documentTitle": "Todas las pizarras",
+			"chooseProject": "Crear en el proyecto",
+			"projectFilter": "Proyecto",
+			"allProjects": "Todos los proyectos",
+			"groupByProject": "Agrupar por proyecto",
+			"showAllProjects": "Mostrar todos los proyectos",
+			"empty": {
+				"description": "Aquí aparecen las pizarras de todos los proyectos que puedes ver.",
+				"noProjectsTitle": "Ningún proyecto tiene pizarras todavía",
+				"noProjectsDescription": "Activa Pizarras en las funciones de un proyecto para empezar a dibujar."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Nueva pizarra",
+			"goToWhiteboards": "Ir a las pizarras",
+			"goToAllWhiteboards": "Ir a todas las pizarras"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Guardar",
@@ -13242,7 +13591,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} descargado",
-				"failed": "No se pudo descargar {{file}}"
+				"failed": "No se pudo descargar {{file}}",
+				"showInFolder": "Haz clic para mostrarlo en la carpeta",
+				"openFolder": "Haz clic para abrir la carpeta de descargas"
 			},
 			"notifications": {
 				"releasedTitle": "Las notificaciones vuelven a estar activas",
@@ -13293,6 +13644,357 @@
 				"retryIn_other": "Nuevo intento en {{count}} segundos",
 				"switchServer": "Cambiar de servidor"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Lienzo de la pizarra",
+			"roleDescription": "pizarra"
+		},
+		"actions": {
+			"cancel": "Cancelar",
+			"save": "Guardar"
+		},
+		"tools": {
+			"label": "Herramientas",
+			"more": "Más herramientas",
+			"select": "Seleccionar",
+			"hand": "Mano (desplazar)",
+			"rectangle": "Rectángulo",
+			"diamond": "Rombo",
+			"ellipse": "Elipse",
+			"arrow": "Flecha",
+			"line": "Línea",
+			"draw": "Lápiz",
+			"text": "Texto",
+			"sticky": "Nota adhesiva",
+			"image": "Imagen",
+			"eraser": "Borrador",
+			"frame": "Marco",
+			"laser": "Puntero láser",
+			"task": "Tarjeta de tarea",
+			"lock": "Mantener la herramienta activa",
+			"lockTool": "Mantener la herramienta activa después de dibujar",
+			"unlockTool": "Volver a Seleccionar después de dibujar",
+			"shape": "Formas"
+		},
+		"commands": {
+			"undo": "Deshacer",
+			"redo": "Rehacer",
+			"history": "Historial",
+			"copy": "Copiar",
+			"cut": "Cortar",
+			"paste": "Pegar",
+			"duplicate": "Duplicar",
+			"delete": "Eliminar",
+			"selectAll": "Seleccionar todo",
+			"group": "Agrupar",
+			"ungroup": "Desagrupar",
+			"bringForward": "Traer hacia delante",
+			"sendBackward": "Enviar hacia atrás",
+			"bringToFront": "Traer al frente",
+			"sendToBack": "Enviar al fondo",
+			"toggleGrid": "Ajustar a la cuadrícula",
+			"toggleSnap": "Ajustar a objetos",
+			"toggleMinimap": "Mostrar minimapa",
+			"search": "Buscar en la pizarra",
+			"help": "Atajos de teclado",
+			"toggleElementLock": "Bloquear o desbloquear",
+			"lock": "Bloquear",
+			"unlock": "Desbloquear",
+			"flipHorizontal": "Voltear horizontalmente",
+			"flipVertical": "Voltear verticalmente",
+			"copyStyle": "Copiar estilo",
+			"pasteStyle": "Pegar estilo",
+			"alignLeft": "Alinear a la izquierda",
+			"alignCenter": "Centrar horizontalmente",
+			"alignRight": "Alinear a la derecha",
+			"alignTop": "Alinear arriba",
+			"alignMiddle": "Centrar verticalmente",
+			"alignBottom": "Alinear abajo",
+			"distributeHorizontal": "Distribuir horizontalmente",
+			"distributeVertical": "Distribuir verticalmente",
+			"editText": "Editar texto",
+			"editLink": "Editar enlace"
+		},
+		"zoom": {
+			"label": "Nivel de zoom",
+			"in": "Acercar",
+			"out": "Alejar",
+			"reset": "Restablecer zoom",
+			"resetTo": "Zoom al {{percent}} %, restablecer al 100 %",
+			"percent": "{{percent}} %",
+			"fit": "Ajustar a la pantalla",
+			"selection": "Ajustar a la selección"
+		},
+		"panel": {
+			"label": "Estilo",
+			"stroke": "Trazo",
+			"textColor": "Color del texto",
+			"stickyColor": "Color de la nota",
+			"fill": "Fondo",
+			"fillStyle": "Relleno",
+			"fillSolid": "Sólido",
+			"fillHatch": "Rayado",
+			"fillCross": "Rayado cruzado",
+			"fillNone": "Ninguno",
+			"strokeWidth": "Grosor del trazo",
+			"thin": "Fino",
+			"medium": "Medio",
+			"bold": "Grueso",
+			"extraBold": "Muy grueso",
+			"strokeStyle": "Estilo del trazo",
+			"solid": "Continuo",
+			"dashed": "Discontinuo",
+			"dotted": "Punteado",
+			"sketch": "Efecto boceto",
+			"sketchClean": "Limpio",
+			"sketchLight": "Ligero",
+			"sketchRough": "Rugoso",
+			"corners": "Esquinas",
+			"cornersSharp": "Rectas",
+			"cornersRound": "Redondeadas",
+			"cornersRounder": "Más redondeadas",
+			"font": "Fuente",
+			"fontHand": "A mano",
+			"fontSans": "Sin serifa",
+			"fontMono": "Monoespaciada",
+			"fontSize": "Tamaño de fuente",
+			"sizeSmall": "S",
+			"sizeMedium": "M",
+			"sizeLarge": "L",
+			"sizeHuge": "XL",
+			"align": "Alineación del texto",
+			"alignLeft": "Izquierda",
+			"alignCenter": "Centro",
+			"alignRight": "Derecha",
+			"routing": "Tipo de línea",
+			"routingStraight": "Recta",
+			"routingCurved": "Curva",
+			"routingElbow": "En codo",
+			"arrowheads": "Puntas de flecha",
+			"startHead": "Inicio",
+			"endHead": "Final",
+			"headNone": "Ninguna",
+			"headArrow": "Flecha",
+			"headTriangle": "Triángulo",
+			"headDot": "Punto",
+			"headBar": "Barra",
+			"opacity": "Opacidad",
+			"layers": "Capas",
+			"alignment": "Alinear",
+			"actions": "Acciones"
+		},
+		"colors": {
+			"black": "Negro",
+			"red": "Rojo",
+			"green": "Verde",
+			"blue": "Azul",
+			"orange": "Naranja",
+			"purple": "Morado",
+			"teal": "Verde azulado",
+			"grey": "Gris",
+			"yellow": "Amarillo",
+			"pink": "Rosa",
+			"none": "Sin color",
+			"custom": "Color personalizado"
+		},
+		"text": {
+			"label": "Texto",
+			"frameName": "Nombre del marco"
+		},
+		"link": {
+			"title": "Enlace",
+			"description": "Añade una dirección web o enlaza a otro elemento con #element= y su id.",
+			"label": "Dirección",
+			"invalid": "Introduce una dirección web que empiece por https://, una dirección mailto: o un enlace a un elemento.",
+			"remove": "Quitar enlace",
+			"open": "Abrir enlace",
+			"copyElementLink": "Copiar enlace al elemento"
+		},
+		"search": {
+			"title": "Buscar en la pizarra",
+			"placeholder": "Buscar texto en esta pizarra",
+			"noResults": "Nada en esta pizarra coincide.",
+			"results": "Coincidencias"
+		},
+		"tasks": {
+			"pickerTitle": "Añadir tarjetas de tareas",
+			"searchPlaceholder": "Buscar tareas por título o clave",
+			"noResults": "Ninguna tarea coincide.",
+			"results": "Tareas",
+			"onBoard": "En esta pizarra",
+			"addCards_one": "Añadir {{count}} tarjeta",
+			"addCards_many": "Añadir {{count}} tarjetas",
+			"addCards_other": "Añadir {{count}} tarjetas",
+			"addCardsNone": "Añadir tarjetas",
+			"pickHint": "Selecciona una o varias tareas para añadirlas como tarjetas.",
+			"openTask": "Abrir tarea",
+			"turnIntoTasks_one": "Convertir en una tarea",
+			"turnIntoTasks_many": "Convertir en {{count}} tareas",
+			"turnIntoTasks_other": "Convertir en {{count}} tareas",
+			"turnIntoTasksTitle": "Convertir notas en tareas",
+			"turnIntoTasksDescription": "Cada nota se convierte en una tarea de este proyecto y se sustituye por una tarjeta de tarea en vivo.",
+			"column": "Columna",
+			"titles": "Títulos de las tareas",
+			"taskTitle": "Título de la tarea {{index}}",
+			"emptyTitle": "Nota sin título",
+			"skippedEmpty": "Las notas sin título se omiten.",
+			"createTasks_one": "Crear {{count}} tarea",
+			"createTasks_many": "Crear {{count}} tareas",
+			"createTasks_other": "Crear {{count}} tareas",
+			"converted_one": "Se creó {{count}} tarea",
+			"converted_many": "Se crearon {{count}} tareas",
+			"converted_other": "Se crearon {{count}} tareas",
+			"convertPartial_one": "{{count}} nota no se pudo convertir en tarea",
+			"convertPartial_many": "{{count}} notas no se pudieron convertir en tareas",
+			"convertPartial_other": "{{count}} notas no se pudieron convertir en tareas",
+			"makeDependency": "Crear dependencia",
+			"removeDependency": "Quitar dependencia",
+			"removeDependencyPrompt": "¿Quitar también la dependencia entre {{source}} y {{target}}?",
+			"removeDependenciesPrompt_one": "¿Quitar también {{count}} dependencia entre estas tareas?",
+			"removeDependenciesPrompt_many": "¿Quitar también {{count}} dependencias entre estas tareas?",
+			"removeDependenciesPrompt_other": "¿Quitar también {{count}} dependencias entre estas tareas?",
+			"dependencyPair": "{{source}} bloquea {{target}}",
+			"removeDependencyConfirm": "Quitar",
+			"keepDependency": "Conservar",
+			"dependencyPromptLabel": "Dependencia entre tareas",
+			"dependencyRemoved_one": "Dependencia quitada",
+			"dependencyRemoved_many": "Se quitaron {{count}} dependencias",
+			"dependencyRemoved_other": "Se quitaron {{count}} dependencias",
+			"dependencyRemoveFailed": "No se pudo quitar la dependencia."
+		},
+		"crop": {
+			"section": "Imagen",
+			"start": "Recortar imagen",
+			"finish": "Terminar el recorte",
+			"reset": "Restablecer recorte"
+		},
+		"presence": {
+			"label": "Personas en esta pizarra",
+			"follow": "Seguir a {{name}}",
+			"stopFollowing": "Dejar de seguir a {{name}}",
+			"following": "Siguiendo a {{name}}",
+			"stop": "Detener"
+		},
+		"minimap": {
+			"label": "Vista general de la pizarra"
+		},
+		"contextMenu": {
+			"label": "Acciones del lienzo"
+		},
+		"notices": {
+			"readOnly": "Esta pizarra es de solo lectura.",
+			"copied": "Copiado",
+			"linkCopied": "Enlace copiado",
+			"pasteEmpty": "No hay nada que pegar",
+			"uploadFailed": "No se pudo subir la imagen.",
+			"uploading": "Subiendo imagen…",
+			"imagesOff": "Las imágenes no están disponibles en esta pizarra.",
+			"importFailed": "Ese archivo no es una pizarra de Margaya.",
+			"imported": "Pizarra añadida",
+			"tooManyElements": "Esta pizarra está llena. Quita algo antes de añadir más.",
+			"dependencyCreated": "Dependencia creada",
+			"dependencyFailed": "No se pudo crear la dependencia.",
+			"cropUnavailable": "La imagen aún se está cargando. Vuelve a intentar recortarla en un momento."
+		},
+		"help": {
+			"title": "Atajos de teclado",
+			"or": "o",
+			"sections": {
+				"tools": "Herramientas",
+				"view": "Vista",
+				"edit": "Edición",
+				"arrange": "Organizar",
+				"pointer": "Ratón y táctil"
+			},
+			"pan": "Desplazar",
+			"zoomWheel": "Hacer zoom",
+			"commitText": "Terminar de editar el texto",
+			"finishCrop": "Terminar el recorte",
+			"nudge": "Mover ligeramente",
+			"flowchart": "Añadir una forma conectada",
+			"cycle": "Seleccionar el elemento anterior o siguiente",
+			"keepAspect": "Mantener las proporciones o ajustar el ángulo",
+			"fromCentre": "Redimensionar desde el centro",
+			"duplicateDrag": "Duplicar al arrastrar",
+			"addToSelection": "Añadir a la selección",
+			"enterGroup": "Editar dentro de un grupo o editar texto",
+			"noSnap": "Mover sin ajuste",
+			"keys": {
+				"drag": "arrastrar",
+				"wheel": "rueda",
+				"click": "clic",
+				"doubleClick": "doble clic",
+				"space": "Espacio",
+				"delete": "Supr",
+				"enter": "Intro",
+				"escape": "Esc",
+				"shift": "Mayús",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Biblioteca de formas",
+			"label": "Forma",
+			"change": "Cambiar forma",
+			"add": "Añadir forma",
+			"search": "Buscar formas",
+			"noResults": "Ninguna forma coincide",
+			"groups": {
+				"basic": "Básicas",
+				"polygons": "Polígonos",
+				"arrows": "Flechas",
+				"symbols": "Símbolos"
+			},
+			"names": {
+				"triangle": "Triángulo",
+				"rightTriangle": "Triángulo rectángulo",
+				"pentagon": "Pentágono",
+				"hexagon": "Hexágono",
+				"octagon": "Octágono",
+				"star": "Estrella",
+				"parallelogram": "Paralelogramo",
+				"trapezoid": "Trapecio",
+				"plus": "Más",
+				"cross": "Cruz",
+				"heart": "Corazón",
+				"cloud": "Nube",
+				"speech": "Bocadillo",
+				"cylinder": "Cilindro",
+				"document": "Documento",
+				"arrowRight": "Flecha a la derecha",
+				"arrowLeft": "Flecha a la izquierda",
+				"arrowUp": "Flecha hacia arriba",
+				"arrowDown": "Flecha hacia abajo",
+				"arrowDouble": "Flecha doble",
+				"chevron": "Galón",
+				"moon": "Luna"
+			}
+		},
+		"pens": {
+			"label": "Estilo de lápiz",
+			"pen": "Lápiz",
+			"marker": "Rotulador",
+			"highlighter": "Subrayador"
+		},
+		"background": {
+			"label": "Fondo",
+			"pattern": "Patrón",
+			"plain": "Liso",
+			"dots": "Puntos",
+			"grid": "Cuadrícula",
+			"lines": "Líneas",
+			"spacing": "Espaciado",
+			"small": "Pequeño",
+			"medium": "Mediano",
+			"large": "Grande",
+			"paper": "Color del papel",
+			"white": "Blanco",
+			"cream": "Crema",
+			"stone": "Piedra",
+			"mist": "Niebla",
+			"mint": "Menta"
 		}
 	}
 }

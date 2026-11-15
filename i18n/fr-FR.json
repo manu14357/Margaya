@@ -2112,6 +2112,7 @@
 				"intake": "Réception",
 				"analytics": "Analytics",
 				"page": "Pages",
+				"whiteboard": "Tableaux blancs",
 				"audit_log": "Journal d'audit",
 				"ai": "IA"
 			},
@@ -2340,6 +2341,24 @@
 						"label": "Modifier les pages"
 					}
 				},
+				"whiteboard": {
+					"read": {
+						"label": "Voir les tableaux blancs",
+						"description": "Voir la section Tableaux blancs et ouvrir les tableaux en lecture seule."
+					},
+					"create": {
+						"label": "Créer des tableaux blancs",
+						"description": "Créer des tableaux, à partir d'un modèle ou vierges, et les dupliquer."
+					},
+					"update": {
+						"label": "Modifier les tableaux blancs",
+						"description": "Dessiner et modifier sur les tableaux, et verrouiller ou archiver ses propres tableaux."
+					},
+					"delete": {
+						"label": "Gérer tous les tableaux blancs",
+						"description": "Verrouiller, archiver, publier et supprimer tout tableau visible, pas seulement les siens."
+					}
+				},
 				"audit_log": {
 					"read": {
 						"description": "Voir et exporter le journal d'audit de l'espace de travail : qui a modifié les membres, rôles, clés, webhooks, intégrations et paramètres.",
@@ -2520,6 +2539,10 @@
 				"updates": {
 					"title": "Points d'avancement",
 					"description": "Publiez des points d'avancement datés avec un état de santé, rédigés à partir des données en direct du projet."
+				},
+				"whiteboards": {
+					"title": "Tableaux blancs",
+					"description": "Esquissez, planifiez et cartographiez le travail ensemble sur des canevas partagés, avec des cartes de tâches en direct."
 				}
 			},
 			"loadError": "Impossible de charger ce projet",
@@ -3367,6 +3390,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "A créé un tableau blanc",
+				"whiteboardRenamed": "A renommé un tableau blanc",
+				"whiteboardIconChanged": "A changé l'icône d'un tableau blanc",
+				"whiteboardLocked": "A verrouillé un tableau blanc",
+				"whiteboardUnlocked": "A déverrouillé un tableau blanc",
+				"whiteboardArchived": "A archivé un tableau blanc",
+				"whiteboardUnarchived": "A restauré un tableau blanc depuis les archives",
+				"whiteboardPublished": "A publié un tableau blanc via un lien public",
+				"whiteboardUnpublished": "A révoqué le lien public d'un tableau blanc",
+				"whiteboardTrashed": "A déplacé un tableau blanc dans la corbeille",
+				"whiteboardRestored": "A restauré un tableau blanc depuis la corbeille",
+				"whiteboardPurged": "A supprimé définitivement un tableau blanc",
 				"workspaceDeletionScheduled": "A programmé la suppression de l'espace de travail",
 				"workspaceDeletionCancelled": "A annulé la suppression de l'espace de travail",
 				"workspacePublicPagesChanged": "A activé ou désactivé les pages publiques",
@@ -3516,6 +3551,7 @@
 			"subtitle": "Qui a modifié les membres, rôles, clés API, webhooks, intégrations, paramètres et projets de cet espace de travail. Les entrées sont conservées {{days}} jours.",
 			"subtitleForever": "Qui a modifié les membres, rôles, clés API, webhooks, intégrations, paramètres et projets de cet espace de travail. Les entrées sont conservées jusqu'à la suppression de l'espace de travail.",
 			"targets": {
+				"whiteboard": "Tableau blanc",
 				"page": "Page",
 				"apiKey": "Clé API",
 				"export": "Export",
@@ -3535,7 +3571,7 @@
 		},
 		"trash": {
 			"projectTitle": "Supprimés récemment",
-			"projectSubtitle": "Les tâches et les pages supprimées restent ici jusqu'à leur suppression définitive. Restaurer une tâche restaure aussi les sous-tâches supprimées avec elle ; une page restaurée retourne dans Archivées.",
+			"projectSubtitle": "Les tâches, les pages et les tableaux blancs supprimés restent ici jusqu'à leur suppression définitive. Restaurer une tâche restaure aussi les sous-tâches supprimées avec elle ; une page ou un tableau blanc restauré retourne dans Archivées.",
 			"workspaceTitle": "Projets supprimés récemment",
 			"workspaceNav": "Supprimés récemment",
 			"workspaceSubtitle": "Les projets supprimés restent ici avec leurs tâches jusqu'à leur suppression définitive.",
@@ -3581,7 +3617,9 @@
 				"emptied_other": "{{count}} tâches supprimées définitivement",
 				"purgeError": "Impossible de supprimer définitivement",
 				"pageRestored": "Page restaurée dans Archivées",
-				"pagePurged": "Page supprimée définitivement"
+				"pagePurged": "Page supprimée définitivement",
+				"whiteboardRestored": "Tableau blanc restauré dans Archivés",
+				"whiteboardPurged": "Tableau blanc supprimé définitivement"
 			},
 			"tasksHeading": "Tâches",
 			"pagesHeading": "Pages",
@@ -3589,7 +3627,13 @@
 			"emptyPagesTitle": "Aucune page supprimée",
 			"emptyPagesDescription": "Les pages archivées que vous supprimez de ce projet apparaissent ici.",
 			"purgePageTitle": "Supprimer définitivement cette page ?",
-			"purgePageDescription": "« {{name}} », ses commentaires et son historique des versions sont supprimés pour tout le monde. Cette action est irréversible."
+			"purgePageDescription": "« {{name}} », ses commentaires et son historique des versions sont supprimés pour tout le monde. Cette action est irréversible.",
+			"whiteboardsHeading": "Tableaux blancs",
+			"searchWhiteboards": "Rechercher des tableaux blancs supprimés",
+			"emptyWhiteboardsTitle": "Aucun tableau blanc supprimé",
+			"emptyWhiteboardsDescription": "Les tableaux blancs archivés que vous supprimez de ce projet apparaissent ici.",
+			"purgeWhiteboardTitle": "Supprimer définitivement ce tableau blanc ?",
+			"purgeWhiteboardDescription": "« {{name}} », son contenu et ses images sont supprimés pour tout le monde. Cette action est irréversible."
 		},
 		"automationRules": {
 			"title": "Automatisations",
@@ -4064,6 +4108,7 @@
 			"label": "Sections du projet",
 			"modules": "Modules",
 			"pages": "Pages",
+			"whiteboards": "Tableaux blancs",
 			"sections": "Sections",
 			"tasks": "Tâches",
 			"views": "Vues",
@@ -4095,6 +4140,9 @@
 			"newTask": "Nouvelle tâche",
 			"newWorkspace": "Nouvel espace de travail",
 			"noPagesProjects": "Activez Pages dans les fonctionnalités d'un projet pour y rédiger des documents.",
+			"noWhiteboardsProjects": "Activez Tableaux blancs dans les fonctionnalités d'un projet pour y dessiner.",
+			"allWhiteboards": "Tous les tableaux blancs",
+			"whiteboards": "Tableaux blancs",
 			"noRecent": "Les pages et tâches que vous ouvrez apparaissent ici.",
 			"pages": "Pages",
 			"panel": "Navigation de la section",
@@ -5193,6 +5241,23 @@
 			"previousWeek": "Semaine précédente",
 			"rescheduleError": "Échec de la replanification de la tâche",
 			"showWeekends": "Afficher les week-ends",
+			"touch": {
+				"daysLabel": "Jours de {{month}}",
+				"weekDaysLabel": "Jours du {{start}} au {{end}}",
+				"dayLabel_one": "{{date}}, {{count}} tâche",
+				"dayLabel_many": "{{date}}, {{count}} de tâches",
+				"dayLabel_other": "{{date}}, {{count}} tâches",
+				"dayLabelEmpty": "{{date}}, aucune tâche",
+				"taskCount_one": "{{count}} tâche",
+				"taskCount_many": "{{count}} de tâches",
+				"taskCount_other": "{{count}} tâches",
+				"addTask": "Ajouter une tâche",
+				"empty": "Aucune tâche ce jour-là.",
+				"moveTask": "Déplacer {{title}} à une autre date",
+				"moveTitle": "Déplacer à une date",
+				"moveDescription": "Choisissez la nouvelle échéance de {{title}}. La date de début suit, donc la tâche garde sa durée.",
+				"moved": "Déplacée au {{date}}"
+			},
 			"viewMode": "Période du calendrier",
 			"week": "Semaine",
 			"overdue": "En retard"
@@ -9999,6 +10064,290 @@
 			"error": "Impossible de modifier le suivi de cette page"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Historique du tableau",
+			"description": "Qui a modifié ce tableau et quand, du plus récent au plus ancien. Les modifications apparaissent une fois par personne toutes les 10 minutes.",
+			"empty": "Rien ne s'est encore passé sur ce tableau.",
+			"loadError": "Impossible de charger l'historique du tableau.",
+			"loadMore": "Charger plus",
+			"someone": "Quelqu'un",
+			"entries": {
+				"created": "A créé le tableau",
+				"renamed": "A renommé le tableau en « {{title}} »",
+				"iconChanged": "A changé l'icône",
+				"locked": "A verrouillé le tableau",
+				"unlocked": "A déverrouillé le tableau",
+				"archived": "A archivé le tableau",
+				"unarchived": "A restauré le tableau depuis les archives",
+				"published": "A publié le tableau sur le web",
+				"unpublished": "A retiré la publication du tableau",
+				"trashed": "A déplacé le tableau dans la corbeille",
+				"restored": "A restauré le tableau depuis la corbeille",
+				"edited": "A modifié le tableau"
+			}
+		},
+		"section": {
+			"title": "Tableaux blancs"
+		},
+		"list": {
+			"documentTitle": "Tableaux blancs · {{project}}",
+			"newWhiteboard": "Nouveau tableau blanc",
+			"moreCreateOptions": "Autres façons de créer un tableau blanc",
+			"untitled": "Tableau sans titre",
+			"searchPlaceholder": "Rechercher des tableaux",
+			"searchClear": "Effacer la recherche",
+			"tabs": {
+				"active": "Tableaux",
+				"archived": "Archivés"
+			},
+			"sort": {
+				"lastEdited": "Dernière modification",
+				"created": "Création",
+				"name": "Nom"
+			},
+			"edited": "Modifié {{time}}",
+			"editedBy": "Modifié {{time}} par {{name}}",
+			"locked": "Verrouillé",
+			"published": "Publié",
+			"cardActions": "Actions pour {{title}}",
+			"recentlyDeleted": "Supprimés récemment",
+			"loadError": "Impossible de charger les tableaux blancs",
+			"retry": "Réessayer",
+			"unknownUser": "Quelqu'un",
+			"empty": {
+				"title": "Aucun tableau blanc pour l'instant",
+				"description": "Esquissez des idées, planifiez un sprint ou cartographiez le travail avec votre équipe sur un canevas partagé.",
+				"archivedTitle": "Aucun tableau blanc archivé",
+				"archivedDescription": "Les tableaux que vous archivez apparaissent ici.",
+				"noMatchTitle": "Aucun tableau ne correspond à « {{query}} »",
+				"noMatchDescription": "Essayez d'autres mots. La recherche porte sur le nom des tableaux et le texte qu'ils contiennent.",
+				"clearSearch": "Effacer la recherche"
+			}
+		},
+		"templates": {
+			"title": "Partir d'un modèle",
+			"names": {
+				"blank": "Tableau vierge",
+				"brainstorm": "Remue-méninges",
+				"retrospective": "Rétrospective",
+				"sprintPlanning": "Planification de sprint",
+				"userStoryMap": "Carte des user stories",
+				"roadmap": "Feuille de route",
+				"flowchart": "Logigramme",
+				"kanban": "Esquisse Kanban"
+			},
+			"descriptions": {
+				"blank": "Un canevas vide.",
+				"brainstorm": "Une question centrale entourée d'espace pour les idées.",
+				"retrospective": "Ce qui a bien marché, ce qu'il faut améliorer et les actions.",
+				"sprintPlanning": "L'objectif du sprint, le backlog, les engagements et les risques.",
+				"userStoryMap": "Les activités en haut, les stories par version en dessous.",
+				"roadmap": "Maintenant, ensuite et plus tard, côte à côte.",
+				"flowchart": "Un début, une décision et les étapes entre les deux.",
+				"kanban": "Des colonnes À faire, En cours et Terminé pour les pense-bêtes."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "Que cherchons-nous à résoudre ?",
+					"ideas": "Idées"
+				},
+				"retrospective": {
+					"title": "Rétrospective",
+					"wentWell": "Ce qui a bien marché",
+					"toImprove": "À améliorer",
+					"actions": "Plan d'action"
+				},
+				"sprintPlanning": {
+					"title": "Planification de sprint",
+					"goal": "Objectif du sprint",
+					"backlog": "Backlog produit",
+					"committed": "Engagé",
+					"risks": "Risques"
+				},
+				"userStoryMap": {
+					"title": "Carte des user stories",
+					"activity": "Activité",
+					"story": "User story",
+					"release1": "Version 1",
+					"release2": "Version 2"
+				},
+				"roadmap": {
+					"title": "Feuille de route",
+					"now": "Maintenant",
+					"next": "Ensuite",
+					"later": "Plus tard"
+				},
+				"flowchart": {
+					"start": "Début",
+					"step": "Étape",
+					"decision": "Décision ?",
+					"yes": "Oui",
+					"no": "Non",
+					"end": "Fin"
+				},
+				"kanban": {
+					"todo": "À faire",
+					"doing": "En cours",
+					"done": "Terminé"
+				}
+			}
+		},
+		"actions": {
+			"history": "Historique",
+			"open": "Ouvrir",
+			"openInNewTab": "Ouvrir dans un nouvel onglet",
+			"copyLink": "Copier le lien",
+			"rename": "Renommer",
+			"changeIcon": "Changer l'icône",
+			"duplicate": "Dupliquer",
+			"publish": "Publier sur le web",
+			"managePublicLink": "Lien public",
+			"share": "Partager",
+			"lock": "Verrouiller",
+			"unlock": "Déverrouiller",
+			"archive": "Archiver",
+			"unarchive": "Restaurer depuis l'archive",
+			"moveToTrash": "Déplacer dans la corbeille",
+			"export": "Exporter",
+			"exportPng": "Exporter en PNG",
+			"exportSvg": "Exporter en SVG",
+			"exportFile": "Télécharger le fichier du tableau",
+			"importFile": "Importer un fichier de tableau",
+			"zoomToFit": "Ajuster à l'écran",
+			"fullScreen": "Plein écran",
+			"exitFullScreen": "Quitter le plein écran",
+			"more": "Autres options du tableau"
+		},
+		"dialogs": {
+			"cancel": "Annuler",
+			"rename": {
+				"title": "Renommer le tableau blanc",
+				"label": "Nom",
+				"save": "Enregistrer"
+			},
+			"icon": {
+				"title": "Choisir une icône",
+				"description": "L'emoji s'affiche à côté du nom du tableau.",
+				"search": "Rechercher un emoji",
+				"noMatches": "Aucun emoji ne correspond à votre recherche",
+				"remove": "Supprimer l'icône"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (copie)"
+			},
+			"delete": {
+				"title": "Déplacer ce tableau dans la corbeille ?",
+				"description": "« {{title}} » est déplacé dans la liste Supprimés récemment du projet, où il peut être restauré jusqu'à sa suppression définitive.",
+				"confirm": "Déplacer dans la corbeille"
+			}
+		},
+		"toasts": {
+			"createError": "Impossible de créer le tableau blanc",
+			"renameError": "Impossible de renommer le tableau blanc",
+			"iconError": "Impossible de changer l'icône",
+			"duplicated": "Tableau blanc dupliqué",
+			"duplicateError": "Impossible de dupliquer le tableau blanc",
+			"open": "Ouvrir",
+			"locked": "Tableau blanc verrouillé",
+			"unlocked": "Tableau blanc déverrouillé",
+			"lockError": "Impossible de modifier le verrou",
+			"archived": "Tableau blanc archivé",
+			"unarchived": "Tableau blanc restauré",
+			"archiveError": "Impossible d'archiver le tableau blanc",
+			"unarchiveError": "Impossible de restaurer le tableau blanc",
+			"deleted": "Déplacé dans Supprimés récemment",
+			"deleteError": "Impossible de déplacer le tableau blanc dans la corbeille",
+			"linkCopied": "Lien copié",
+			"exportError": "Impossible d'exporter le tableau",
+			"imported": "Fichier de tableau ajouté",
+			"importError": "Impossible de lire ce fichier",
+			"imageType": "Seules les images PNG, JPEG, GIF et WebP peuvent être ajoutées à un tableau",
+			"imageUploadError": "Impossible d'ajouter l'image"
+		},
+		"share": {
+			"title": "Partager le tableau blanc",
+			"description": "Publiez une copie en lecture seule que toute personne disposant du lien peut consulter. La désactivation révoque immédiatement le lien.",
+			"switchLabel": "Publier sur le web",
+			"onHint": "Toute personne disposant du lien peut consulter ce tableau.",
+			"offHint": "Seules les personnes de ce projet peuvent ouvrir ce tableau.",
+			"linkLabel": "Lien public",
+			"copyLink": "Copier le lien",
+			"copied": "Copié",
+			"openLink": "Ouvrir le lien public",
+			"privacyNote": "Les visiteurs voient le tableau ainsi que le titre et le statut de ses cartes de tâches, rien d'autre du projet.",
+			"cannotPublish": "Seules les personnes pouvant gérer tous les tableaux blancs peuvent publier.",
+			"archivedHint": "Restaurez le tableau depuis l'archive pour le publier.",
+			"publishedToast": "Tableau blanc publié",
+			"unpublishedToast": "Lien public désactivé",
+			"error": "Impossible de modifier le lien public",
+			"done": "Terminé"
+		},
+		"screen": {
+			"backToList": "Retour aux tableaux blancs",
+			"titleLabel": "Nom du tableau blanc",
+			"readOnly": "Lecture seule",
+			"loadError": "Impossible de charger ce tableau blanc",
+			"storedCopyError": "Impossible de charger la copie enregistrée de ce tableau",
+			"notFound": {
+				"title": "Tableau blanc introuvable",
+				"description": "Il a peut-être été supprimé, ou vous n'y avez pas accès.",
+				"back": "Retour aux tableaux blancs"
+			}
+		},
+		"banners": {
+			"locked": "Ce tableau est verrouillé. Déverrouillez-le pour le modifier.",
+			"lockedBy": "{{name}} a verrouillé ce tableau. Déverrouillez-le pour le modifier.",
+			"unlock": "Déverrouiller",
+			"archived": "Ce tableau est archivé et en lecture seule.",
+			"restore": "Restaurer",
+			"readOnly": "Vous pouvez consulter ce tableau, mais pas le modifier.",
+			"storedCopy": "Impossible de joindre le tableau en direct. Affichage de la dernière copie enregistrée, en lecture seule.",
+			"retry": "Réessayer",
+			"tooLarge": "Ce tableau est trop volumineux pour enregistrer d'autres modifications.",
+			"reload": "Recharger"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "Le tableau a été verrouillé pendant que vous étiez hors ligne, vos modifications hors ligne n'ont donc pas été enregistrées.",
+				"archived": "Le tableau a été archivé pendant que vous étiez hors ligne, vos modifications hors ligne n'ont donc pas été enregistrées.",
+				"readOnly": "Vous ne pouvez plus modifier ce tableau, vos modifications hors ligne n'ont donc pas été enregistrées."
+			},
+			"replacedBy": "{{name}} a remplacé le contenu du tableau",
+			"deleted": "Ce tableau blanc a été supprimé",
+			"signedOut": "Vous avez été déconnecté. Reconnectez-vous pour continuer à modifier.",
+			"roomFull": "Trop de personnes ont ouvert ce tableau. Réessayez plus tard."
+		},
+		"publicView": {
+			"documentTitle": "Tableau blanc partagé",
+			"unavailableTitle": "Ce lien n'est pas disponible",
+			"unavailableDescription": "Le tableau a peut-être été dépublié, ou le lien est incorrect.",
+			"updated": "Mis à jour le {{date}}",
+			"readOnly": "Lecture seule"
+		},
+		"taskBoards": {
+			"title": "Sur des tableaux blancs"
+		},
+		"workspace": {
+			"title": "Tableaux blancs",
+			"documentTitle": "Tous les tableaux blancs",
+			"chooseProject": "Créer dans le projet",
+			"projectFilter": "Projet",
+			"allProjects": "Tous les projets",
+			"groupByProject": "Regrouper par projet",
+			"showAllProjects": "Afficher tous les projets",
+			"empty": {
+				"description": "Les tableaux de tous les projets que vous pouvez voir apparaissent ici.",
+				"noProjectsTitle": "Aucun projet n'a encore de tableaux blancs",
+				"noProjectsDescription": "Activez Tableaux blancs dans les fonctionnalités d'un projet pour commencer à dessiner."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Nouveau tableau blanc",
+			"goToWhiteboards": "Aller aux tableaux blancs",
+			"goToAllWhiteboards": "Aller à tous les tableaux blancs"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Enregistrer",
@@ -13242,7 +13591,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} téléchargé",
-				"failed": "Impossible de télécharger {{file}}"
+				"failed": "Impossible de télécharger {{file}}",
+				"showInFolder": "Cliquez pour l'afficher dans le dossier",
+				"openFolder": "Cliquez pour ouvrir le dossier Téléchargements"
 			},
 			"notifications": {
 				"releasedTitle": "Les notifications sont réactivées",
@@ -13293,6 +13644,357 @@
 				"retryIn_other": "Nouvelle tentative dans {{count}} secondes",
 				"switchServer": "Changer de serveur"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Canevas du tableau blanc",
+			"roleDescription": "tableau blanc"
+		},
+		"actions": {
+			"cancel": "Annuler",
+			"save": "Enregistrer"
+		},
+		"tools": {
+			"label": "Outils",
+			"more": "Plus d'outils",
+			"select": "Sélectionner",
+			"hand": "Main (déplacer la vue)",
+			"rectangle": "Rectangle",
+			"diamond": "Losange",
+			"ellipse": "Ellipse",
+			"arrow": "Flèche",
+			"line": "Ligne",
+			"draw": "Stylo",
+			"text": "Texte",
+			"sticky": "Pense-bête",
+			"image": "Image",
+			"eraser": "Gomme",
+			"frame": "Cadre",
+			"laser": "Pointeur laser",
+			"task": "Carte de tâche",
+			"lock": "Garder l'outil actif",
+			"lockTool": "Garder l'outil actif après le dessin",
+			"unlockTool": "Revenir à Sélectionner après le dessin",
+			"shape": "Formes"
+		},
+		"commands": {
+			"undo": "Annuler",
+			"redo": "Rétablir",
+			"history": "Historique",
+			"copy": "Copier",
+			"cut": "Couper",
+			"paste": "Coller",
+			"duplicate": "Dupliquer",
+			"delete": "Supprimer",
+			"selectAll": "Tout sélectionner",
+			"group": "Grouper",
+			"ungroup": "Dégrouper",
+			"bringForward": "Avancer",
+			"sendBackward": "Reculer",
+			"bringToFront": "Mettre au premier plan",
+			"sendToBack": "Mettre à l'arrière-plan",
+			"toggleGrid": "Aligner sur la grille",
+			"toggleSnap": "Aligner sur les objets",
+			"toggleMinimap": "Afficher la minicarte",
+			"search": "Rechercher dans le tableau",
+			"help": "Raccourcis clavier",
+			"toggleElementLock": "Verrouiller ou déverrouiller",
+			"lock": "Verrouiller",
+			"unlock": "Déverrouiller",
+			"flipHorizontal": "Retourner horizontalement",
+			"flipVertical": "Retourner verticalement",
+			"copyStyle": "Copier le style",
+			"pasteStyle": "Coller le style",
+			"alignLeft": "Aligner à gauche",
+			"alignCenter": "Centrer horizontalement",
+			"alignRight": "Aligner à droite",
+			"alignTop": "Aligner en haut",
+			"alignMiddle": "Centrer verticalement",
+			"alignBottom": "Aligner en bas",
+			"distributeHorizontal": "Répartir horizontalement",
+			"distributeVertical": "Répartir verticalement",
+			"editText": "Modifier le texte",
+			"editLink": "Modifier le lien"
+		},
+		"zoom": {
+			"label": "Niveau de zoom",
+			"in": "Zoom avant",
+			"out": "Zoom arrière",
+			"reset": "Réinitialiser le zoom",
+			"resetTo": "Zoom {{percent}} %, réinitialiser à 100 %",
+			"percent": "{{percent}} %",
+			"fit": "Ajuster à l'écran",
+			"selection": "Zoomer sur la sélection"
+		},
+		"panel": {
+			"label": "Mise en forme",
+			"stroke": "Contour",
+			"textColor": "Couleur du texte",
+			"stickyColor": "Couleur de la note",
+			"fill": "Arrière-plan",
+			"fillStyle": "Remplissage",
+			"fillSolid": "Plein",
+			"fillHatch": "Hachures",
+			"fillCross": "Hachures croisées",
+			"fillNone": "Aucun",
+			"strokeWidth": "Épaisseur du contour",
+			"thin": "Fin",
+			"medium": "Moyen",
+			"bold": "Épais",
+			"extraBold": "Très épais",
+			"strokeStyle": "Style de contour",
+			"solid": "Continu",
+			"dashed": "Tirets",
+			"dotted": "Pointillés",
+			"sketch": "Effet croquis",
+			"sketchClean": "Net",
+			"sketchLight": "Léger",
+			"sketchRough": "Brut",
+			"corners": "Coins",
+			"cornersSharp": "Droits",
+			"cornersRound": "Arrondis",
+			"cornersRounder": "Très arrondis",
+			"font": "Police",
+			"fontHand": "Manuscrite",
+			"fontSans": "Sans empattement",
+			"fontMono": "Chasse fixe",
+			"fontSize": "Taille de police",
+			"sizeSmall": "S",
+			"sizeMedium": "M",
+			"sizeLarge": "L",
+			"sizeHuge": "XL",
+			"align": "Alignement du texte",
+			"alignLeft": "Gauche",
+			"alignCenter": "Centre",
+			"alignRight": "Droite",
+			"routing": "Type de ligne",
+			"routingStraight": "Rectiligne",
+			"routingCurved": "Courbe",
+			"routingElbow": "Coudée",
+			"arrowheads": "Pointes de flèche",
+			"startHead": "Début",
+			"endHead": "Fin",
+			"headNone": "Aucune",
+			"headArrow": "Flèche",
+			"headTriangle": "Triangle",
+			"headDot": "Point",
+			"headBar": "Barre",
+			"opacity": "Opacité",
+			"layers": "Calques",
+			"alignment": "Aligner",
+			"actions": "Actions"
+		},
+		"colors": {
+			"black": "Noir",
+			"red": "Rouge",
+			"green": "Vert",
+			"blue": "Bleu",
+			"orange": "Orange",
+			"purple": "Violet",
+			"teal": "Bleu canard",
+			"grey": "Gris",
+			"yellow": "Jaune",
+			"pink": "Rose",
+			"none": "Aucune couleur",
+			"custom": "Couleur personnalisée"
+		},
+		"text": {
+			"label": "Texte",
+			"frameName": "Nom du cadre"
+		},
+		"link": {
+			"title": "Lien",
+			"description": "Ajoutez une adresse web, ou créez un lien vers un autre élément avec #element= suivi de son identifiant.",
+			"label": "Adresse",
+			"invalid": "Saisissez une adresse web commençant par https://, une adresse mailto: ou un lien vers un élément.",
+			"remove": "Supprimer le lien",
+			"open": "Ouvrir le lien",
+			"copyElementLink": "Copier le lien vers l'élément"
+		},
+		"search": {
+			"title": "Rechercher dans le tableau",
+			"placeholder": "Rechercher du texte dans ce tableau",
+			"noResults": "Aucun résultat dans ce tableau.",
+			"results": "Résultats"
+		},
+		"tasks": {
+			"pickerTitle": "Ajouter des cartes de tâches",
+			"searchPlaceholder": "Rechercher des tâches par titre ou clé",
+			"noResults": "Aucune tâche ne correspond.",
+			"results": "Tâches",
+			"onBoard": "Sur ce tableau",
+			"addCards_one": "Ajouter {{count}} carte",
+			"addCards_many": "Ajouter {{count}} cartes",
+			"addCards_other": "Ajouter {{count}} cartes",
+			"addCardsNone": "Ajouter des cartes",
+			"pickHint": "Sélectionnez une ou plusieurs tâches pour les ajouter sous forme de cartes.",
+			"openTask": "Ouvrir la tâche",
+			"turnIntoTasks_one": "Transformer en tâche",
+			"turnIntoTasks_many": "Transformer en {{count}} tâches",
+			"turnIntoTasks_other": "Transformer en {{count}} tâches",
+			"turnIntoTasksTitle": "Transformer les notes en tâches",
+			"turnIntoTasksDescription": "Chaque note devient une tâche de ce projet et est remplacée par une carte de tâche en direct.",
+			"column": "Colonne",
+			"titles": "Titres des tâches",
+			"taskTitle": "Titre de la tâche {{index}}",
+			"emptyTitle": "Note sans titre",
+			"skippedEmpty": "Les notes sans titre sont ignorées.",
+			"createTasks_one": "Créer {{count}} tâche",
+			"createTasks_many": "Créer {{count}} tâches",
+			"createTasks_other": "Créer {{count}} tâches",
+			"converted_one": "{{count}} tâche créée",
+			"converted_many": "{{count}} tâches créées",
+			"converted_other": "{{count}} tâches créées",
+			"convertPartial_one": "{{count}} note n'a pas pu devenir une tâche",
+			"convertPartial_many": "{{count}} notes n'ont pas pu devenir des tâches",
+			"convertPartial_other": "{{count}} notes n'ont pas pu devenir des tâches",
+			"makeDependency": "Créer une dépendance",
+			"removeDependency": "Supprimer la dépendance",
+			"removeDependencyPrompt": "Supprimer aussi la dépendance entre {{source}} et {{target}} ?",
+			"removeDependenciesPrompt_one": "Supprimer aussi {{count}} dépendance entre ces tâches ?",
+			"removeDependenciesPrompt_many": "Supprimer aussi {{count}} dépendances entre ces tâches ?",
+			"removeDependenciesPrompt_other": "Supprimer aussi {{count}} dépendances entre ces tâches ?",
+			"dependencyPair": "{{source}} bloque {{target}}",
+			"removeDependencyConfirm": "Supprimer",
+			"keepDependency": "Conserver",
+			"dependencyPromptLabel": "Dépendance entre tâches",
+			"dependencyRemoved_one": "Dépendance supprimée",
+			"dependencyRemoved_many": "{{count}} dépendances supprimées",
+			"dependencyRemoved_other": "{{count}} dépendances supprimées",
+			"dependencyRemoveFailed": "La dépendance n'a pas pu être supprimée."
+		},
+		"crop": {
+			"section": "Image",
+			"start": "Recadrer l'image",
+			"finish": "Terminer le recadrage",
+			"reset": "Réinitialiser le recadrage"
+		},
+		"presence": {
+			"label": "Personnes sur ce tableau",
+			"follow": "Suivre {{name}}",
+			"stopFollowing": "Ne plus suivre {{name}}",
+			"following": "Vous suivez {{name}}",
+			"stop": "Arrêter"
+		},
+		"minimap": {
+			"label": "Vue d'ensemble du tableau"
+		},
+		"contextMenu": {
+			"label": "Actions du canevas"
+		},
+		"notices": {
+			"readOnly": "Ce tableau est en lecture seule.",
+			"copied": "Copié",
+			"linkCopied": "Lien copié",
+			"pasteEmpty": "Rien à coller",
+			"uploadFailed": "L'image n'a pas pu être téléversée.",
+			"uploading": "Téléversement de l'image…",
+			"imagesOff": "Les images ne sont pas disponibles sur ce tableau.",
+			"importFailed": "Ce fichier n'est pas un tableau Margaya.",
+			"imported": "Tableau ajouté",
+			"tooManyElements": "Ce tableau est plein. Supprimez un élément avant d'en ajouter d'autres.",
+			"dependencyCreated": "Dépendance créée",
+			"dependencyFailed": "La dépendance n'a pas pu être créée.",
+			"cropUnavailable": "L'image est encore en cours de chargement. Réessayez de la recadrer dans un instant."
+		},
+		"help": {
+			"title": "Raccourcis clavier",
+			"or": "ou",
+			"sections": {
+				"tools": "Outils",
+				"view": "Affichage",
+				"edit": "Édition",
+				"arrange": "Disposition",
+				"pointer": "Souris et tactile"
+			},
+			"pan": "Déplacer la vue",
+			"zoomWheel": "Zoomer",
+			"commitText": "Terminer la modification du texte",
+			"finishCrop": "Terminer le recadrage",
+			"nudge": "Déplacer légèrement",
+			"flowchart": "Ajouter une forme reliée",
+			"cycle": "Sélectionner l'élément précédent ou suivant",
+			"keepAspect": "Conserver les proportions ou aligner l'angle",
+			"fromCentre": "Redimensionner depuis le centre",
+			"duplicateDrag": "Dupliquer en faisant glisser",
+			"addToSelection": "Ajouter à la sélection",
+			"enterGroup": "Modifier à l'intérieur d'un groupe, ou modifier le texte",
+			"noSnap": "Déplacer sans magnétisme",
+			"keys": {
+				"drag": "glisser",
+				"wheel": "molette",
+				"click": "clic",
+				"doubleClick": "double-clic",
+				"space": "Espace",
+				"delete": "Suppr",
+				"enter": "Entrée",
+				"escape": "Échap",
+				"shift": "Maj",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Bibliothèque de formes",
+			"label": "Forme",
+			"change": "Changer de forme",
+			"add": "Ajouter une forme",
+			"search": "Rechercher des formes",
+			"noResults": "Aucune forme ne correspond",
+			"groups": {
+				"basic": "De base",
+				"polygons": "Polygones",
+				"arrows": "Flèches",
+				"symbols": "Symboles"
+			},
+			"names": {
+				"triangle": "Triangle",
+				"rightTriangle": "Triangle rectangle",
+				"pentagon": "Pentagone",
+				"hexagon": "Hexagone",
+				"octagon": "Octogone",
+				"star": "Étoile",
+				"parallelogram": "Parallélogramme",
+				"trapezoid": "Trapèze",
+				"plus": "Signe plus",
+				"cross": "Croix",
+				"heart": "Cœur",
+				"cloud": "Nuage",
+				"speech": "Bulle de dialogue",
+				"cylinder": "Cylindre",
+				"document": "Document",
+				"arrowRight": "Flèche vers la droite",
+				"arrowLeft": "Flèche vers la gauche",
+				"arrowUp": "Flèche vers le haut",
+				"arrowDown": "Flèche vers le bas",
+				"arrowDouble": "Double flèche",
+				"chevron": "Chevron",
+				"moon": "Lune"
+			}
+		},
+		"pens": {
+			"label": "Style de stylo",
+			"pen": "Stylo",
+			"marker": "Marqueur",
+			"highlighter": "Surligneur"
+		},
+		"background": {
+			"label": "Arrière-plan",
+			"pattern": "Motif",
+			"plain": "Uni",
+			"dots": "Points",
+			"grid": "Grille",
+			"lines": "Lignes",
+			"spacing": "Espacement",
+			"small": "Petit",
+			"medium": "Moyen",
+			"large": "Grand",
+			"paper": "Couleur du papier",
+			"white": "Blanc",
+			"cream": "Crème",
+			"stone": "Pierre",
+			"mist": "Brume",
+			"mint": "Menthe"
 		}
 	}
 }

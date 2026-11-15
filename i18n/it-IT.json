@@ -1267,6 +1267,7 @@
 				"intake": "Richieste",
 				"analytics": "Analisi",
 				"page": "Pagine",
+				"whiteboard": "Lavagne",
 				"audit_log": "Registro di audit",
 				"ai": "IA"
 			},
@@ -1493,6 +1494,24 @@
 					"update": {
 						"description": "Modifica i contenuti e blocca, archivia o riorganizza le proprie pagine.",
 						"label": "Modificare le pagine"
+					}
+				},
+				"whiteboard": {
+					"read": {
+						"label": "Visualizzare le lavagne",
+						"description": "Vede la sezione Lavagne e apre le lavagne in sola lettura."
+					},
+					"create": {
+						"label": "Creare lavagne",
+						"description": "Crea lavagne, da un modello o vuote, e le duplica."
+					},
+					"update": {
+						"label": "Modificare le lavagne",
+						"description": "Disegna e modifica sulle lavagne, e blocca o archivia le proprie lavagne."
+					},
+					"delete": {
+						"label": "Gestire tutte le lavagne",
+						"description": "Blocca, archivia, pubblica ed elimina qualsiasi lavagna che può vedere, non solo le proprie."
 					}
 				},
 				"audit_log": {
@@ -2520,6 +2539,10 @@
 				"updates": {
 					"title": "Aggiornamenti",
 					"description": "Pubblica aggiornamenti di stato datati con un indicatore di andamento, preparati a partire dai dati in tempo reale del progetto."
+				},
+				"whiteboards": {
+					"title": "Lavagne",
+					"description": "Abbozza, pianifica e mappa il lavoro insieme su lavagne condivise, con schede attività in tempo reale."
 				}
 			},
 			"loadError": "Impossibile caricare questo progetto",
@@ -3367,6 +3390,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Ha creato una lavagna",
+				"whiteboardRenamed": "Ha rinominato una lavagna",
+				"whiteboardIconChanged": "Ha cambiato l'icona di una lavagna",
+				"whiteboardLocked": "Ha bloccato una lavagna",
+				"whiteboardUnlocked": "Ha sbloccato una lavagna",
+				"whiteboardArchived": "Ha archiviato una lavagna",
+				"whiteboardUnarchived": "Ha ripristinato una lavagna dall'archivio",
+				"whiteboardPublished": "Ha pubblicato una lavagna tramite un link pubblico",
+				"whiteboardUnpublished": "Ha revocato il link pubblico di una lavagna",
+				"whiteboardTrashed": "Ha spostato una lavagna nel cestino",
+				"whiteboardRestored": "Ha ripristinato una lavagna dal cestino",
+				"whiteboardPurged": "Ha eliminato definitivamente una lavagna",
 				"workspaceDeletionScheduled": "Ha programmato l'eliminazione del workspace",
 				"workspaceDeletionCancelled": "Ha annullato l'eliminazione del workspace",
 				"workspacePublicPagesChanged": "Ha attivato o disattivato le pagine pubbliche",
@@ -3516,6 +3551,7 @@
 			"subtitle": "Chi ha modificato membri, ruoli, chiavi API, webhook, integrazioni, impostazioni e progetti in questo workspace. Le voci vengono conservate per {{days}} giorni.",
 			"subtitleForever": "Chi ha modificato membri, ruoli, chiavi API, webhook, integrazioni, impostazioni e progetti in questo workspace. Le voci vengono conservate finché non elimini il workspace.",
 			"targets": {
+				"whiteboard": "Lavagna",
 				"page": "Pagina",
 				"apiKey": "Chiave API",
 				"export": "Esportazione",
@@ -3535,7 +3571,7 @@
 		},
 		"trash": {
 			"projectTitle": "Eliminati di recente",
-			"projectSubtitle": "Le attività e le pagine eliminate restano qui finché non vengono eliminate definitivamente. Ripristinando un'attività si recuperano anche le sotto-attività eliminate insieme a essa; una pagina ripristinata torna in Archiviate.",
+			"projectSubtitle": "Le attività, le pagine e le lavagne eliminate restano qui finché non vengono eliminate definitivamente. Ripristinando un'attività si recuperano anche le sotto-attività eliminate insieme a essa; una pagina o una lavagna ripristinata torna in Archiviate.",
 			"workspaceTitle": "Progetti eliminati di recente",
 			"workspaceNav": "Eliminati di recente",
 			"workspaceSubtitle": "I progetti eliminati restano qui con le loro attività finché non vengono eliminati definitivamente.",
@@ -3581,7 +3617,9 @@
 				"emptied_other": "{{count}} attività eliminate definitivamente",
 				"purgeError": "Impossibile eliminare definitivamente",
 				"pageRestored": "Pagina ripristinata in Archiviate",
-				"pagePurged": "Pagina eliminata definitivamente"
+				"pagePurged": "Pagina eliminata definitivamente",
+				"whiteboardRestored": "Lavagna ripristinata in Archiviate",
+				"whiteboardPurged": "Lavagna eliminata definitivamente"
 			},
 			"tasksHeading": "Attività",
 			"pagesHeading": "Pagine",
@@ -3589,7 +3627,13 @@
 			"emptyPagesTitle": "Nessuna pagina eliminata",
 			"emptyPagesDescription": "Le pagine archiviate che elimini da questo progetto compaiono qui.",
 			"purgePageTitle": "Eliminare definitivamente questa pagina?",
-			"purgePageDescription": "“{{name}}”, i suoi commenti e la cronologia delle versioni vengono eliminati per tutti. Questa azione non può essere annullata."
+			"purgePageDescription": "“{{name}}”, i suoi commenti e la cronologia delle versioni vengono eliminati per tutti. Questa azione non può essere annullata.",
+			"whiteboardsHeading": "Lavagne",
+			"searchWhiteboards": "Cerca lavagne eliminate",
+			"emptyWhiteboardsTitle": "Nessuna lavagna eliminata",
+			"emptyWhiteboardsDescription": "Le lavagne archiviate che elimini da questo progetto compaiono qui.",
+			"purgeWhiteboardTitle": "Eliminare definitivamente questa lavagna?",
+			"purgeWhiteboardDescription": "“{{name}}”, il suo contenuto e le sue immagini vengono eliminati per tutti. Questa azione non può essere annullata."
 		},
 		"automationRules": {
 			"title": "Automazioni",
@@ -4064,6 +4108,7 @@
 			"label": "Sezioni progetto",
 			"modules": "Moduli",
 			"pages": "Pagine",
+			"whiteboards": "Lavagne",
 			"sections": "Sezioni",
 			"tasks": "Attività",
 			"views": "Viste",
@@ -4095,6 +4140,9 @@
 			"newTask": "Nuova attività",
 			"newWorkspace": "Nuovo workspace",
 			"noPagesProjects": "Attiva Pagine nelle funzionalità di un progetto per scriverci dei documenti.",
+			"noWhiteboardsProjects": "Attiva Lavagne nelle funzionalità di un progetto per disegnarci.",
+			"allWhiteboards": "Tutte le lavagne",
+			"whiteboards": "Lavagne",
 			"noRecent": "Le pagine e le attività che apri compaiono qui.",
 			"pages": "Pagine",
 			"panel": "Navigazione della sezione",
@@ -5193,6 +5241,23 @@
 			"previousWeek": "Settimana precedente",
 			"rescheduleError": "Impossibile ripianificare l'attività",
 			"showWeekends": "Mostra i fine settimana",
+			"touch": {
+				"daysLabel": "Giorni di {{month}}",
+				"weekDaysLabel": "Giorni dal {{start}} al {{end}}",
+				"dayLabel_one": "{{date}}, {{count}} attività",
+				"dayLabel_many": "{{date}}, {{count}} attività",
+				"dayLabel_other": "{{date}}, {{count}} attività",
+				"dayLabelEmpty": "{{date}}, nessuna attività",
+				"taskCount_one": "{{count}} attività",
+				"taskCount_many": "{{count}} attività",
+				"taskCount_other": "{{count}} attività",
+				"addTask": "Aggiungi attività",
+				"empty": "Nessuna attività in questo giorno.",
+				"moveTask": "Sposta {{title}} a un'altra data",
+				"moveTitle": "Sposta a una data",
+				"moveDescription": "Scegli la nuova scadenza di {{title}}. La data di inizio si sposta insieme, così l'attività mantiene la sua durata.",
+				"moved": "Spostata al {{date}}"
+			},
 			"viewMode": "Periodo del calendario",
 			"week": "Settimana",
 			"overdue": "In ritardo"
@@ -9999,6 +10064,290 @@
 			"error": "Impossibile aggiornare lo stato di «Segui» per questa pagina"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Cronologia della lavagna",
+			"description": "Chi ha modificato questa lavagna e quando, dalla più recente. Le modifiche compaiono una volta per persona ogni 10 minuti.",
+			"empty": "Su questa lavagna non è ancora successo nulla.",
+			"loadError": "Impossibile caricare la cronologia della lavagna.",
+			"loadMore": "Carica altro",
+			"someone": "Qualcuno",
+			"entries": {
+				"created": "Ha creato la lavagna",
+				"renamed": "Ha rinominato la lavagna in «{{title}}»",
+				"iconChanged": "Ha cambiato l'icona",
+				"locked": "Ha bloccato la lavagna",
+				"unlocked": "Ha sbloccato la lavagna",
+				"archived": "Ha archiviato la lavagna",
+				"unarchived": "Ha ripristinato la lavagna dall'archivio",
+				"published": "Ha pubblicato la lavagna sul web",
+				"unpublished": "Ha annullato la pubblicazione della lavagna",
+				"trashed": "Ha spostato la lavagna nel cestino",
+				"restored": "Ha ripristinato la lavagna dal cestino",
+				"edited": "Ha modificato la lavagna"
+			}
+		},
+		"section": {
+			"title": "Lavagne"
+		},
+		"list": {
+			"documentTitle": "Lavagne · {{project}}",
+			"newWhiteboard": "Nuova lavagna",
+			"moreCreateOptions": "Altri modi per creare una lavagna",
+			"untitled": "Lavagna senza titolo",
+			"searchPlaceholder": "Cerca lavagne",
+			"searchClear": "Cancella ricerca",
+			"tabs": {
+				"active": "Lavagne",
+				"archived": "Archiviate"
+			},
+			"sort": {
+				"lastEdited": "Ultima modifica",
+				"created": "Creazione",
+				"name": "Nome"
+			},
+			"edited": "Modificata {{time}}",
+			"editedBy": "Modificata {{time}} da {{name}}",
+			"locked": "Bloccata",
+			"published": "Pubblicata",
+			"cardActions": "Azioni per {{title}}",
+			"recentlyDeleted": "Eliminati di recente",
+			"loadError": "Impossibile caricare le lavagne",
+			"retry": "Riprova",
+			"unknownUser": "Qualcuno",
+			"empty": {
+				"title": "Ancora nessuna lavagna",
+				"description": "Abbozza idee, pianifica uno sprint o mappa il lavoro con il tuo team su una lavagna condivisa.",
+				"archivedTitle": "Nessuna lavagna archiviata",
+				"archivedDescription": "Le lavagne che archivi compaiono qui.",
+				"noMatchTitle": "Nessuna lavagna corrisponde a “{{query}}”",
+				"noMatchDescription": "Prova altre parole. La ricerca esamina i nomi delle lavagne e il testo che contengono.",
+				"clearSearch": "Cancella ricerca"
+			}
+		},
+		"templates": {
+			"title": "Inizia da un modello",
+			"names": {
+				"blank": "Lavagna vuota",
+				"brainstorm": "Brainstorming",
+				"retrospective": "Retrospettiva",
+				"sprintPlanning": "Pianificazione dello sprint",
+				"userStoryMap": "Mappa delle user story",
+				"roadmap": "Piano di sviluppo",
+				"flowchart": "Diagramma di flusso",
+				"kanban": "Schizzo Kanban"
+			},
+			"descriptions": {
+				"blank": "Una lavagna vuota.",
+				"brainstorm": "Una domanda centrale con spazio per le idee intorno.",
+				"retrospective": "Cosa è andato bene, cosa migliorare e le azioni.",
+				"sprintPlanning": "L'obiettivo dello sprint, il backlog, gli impegni e i rischi.",
+				"userStoryMap": "Attività in alto, storie per versione sotto.",
+				"roadmap": "Ora, dopo e più avanti, affiancati.",
+				"flowchart": "Un inizio, una decisione e i passaggi intermedi.",
+				"kanban": "Colonne Da fare, In corso e Fatto per le note adesive."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "Cosa stiamo risolvendo?",
+					"ideas": "Idee"
+				},
+				"retrospective": {
+					"title": "Retrospettiva",
+					"wentWell": "Cosa è andato bene",
+					"toImprove": "Da migliorare",
+					"actions": "Azioni"
+				},
+				"sprintPlanning": {
+					"title": "Pianificazione dello sprint",
+					"goal": "Obiettivo dello sprint",
+					"backlog": "Backlog di prodotto",
+					"committed": "Impegni",
+					"risks": "Rischi"
+				},
+				"userStoryMap": {
+					"title": "Mappa delle user story",
+					"activity": "Attività",
+					"story": "Storia",
+					"release1": "Versione 1",
+					"release2": "Versione 2"
+				},
+				"roadmap": {
+					"title": "Piano di sviluppo",
+					"now": "Ora",
+					"next": "Dopo",
+					"later": "Più avanti"
+				},
+				"flowchart": {
+					"start": "Inizio",
+					"step": "Passaggio",
+					"decision": "Decisione?",
+					"yes": "Sì",
+					"no": "No",
+					"end": "Fine"
+				},
+				"kanban": {
+					"todo": "Da fare",
+					"doing": "In corso",
+					"done": "Fatto"
+				}
+			}
+		},
+		"actions": {
+			"history": "Cronologia",
+			"open": "Apri",
+			"openInNewTab": "Apri in una nuova scheda",
+			"copyLink": "Copia link",
+			"rename": "Rinomina",
+			"changeIcon": "Cambia icona",
+			"duplicate": "Duplica",
+			"publish": "Pubblica sul web",
+			"managePublicLink": "Link pubblico",
+			"share": "Condividi",
+			"lock": "Blocca",
+			"unlock": "Sblocca",
+			"archive": "Archivia",
+			"unarchive": "Ripristina dall'archivio",
+			"moveToTrash": "Sposta nel cestino",
+			"export": "Esporta",
+			"exportPng": "Esporta come PNG",
+			"exportSvg": "Esporta come SVG",
+			"exportFile": "Scarica il file della lavagna",
+			"importFile": "Importa un file di lavagna",
+			"zoomToFit": "Adatta alla finestra",
+			"fullScreen": "Schermo intero",
+			"exitFullScreen": "Esci da schermo intero",
+			"more": "Altre opzioni della lavagna"
+		},
+		"dialogs": {
+			"cancel": "Annulla",
+			"rename": {
+				"title": "Rinomina lavagna",
+				"label": "Nome",
+				"save": "Salva"
+			},
+			"icon": {
+				"title": "Scegli un'icona",
+				"description": "L'emoji appare accanto al nome della lavagna.",
+				"search": "Cerca emoji",
+				"noMatches": "Nessuna emoji corrisponde alla ricerca",
+				"remove": "Rimuovi icona"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (copia)"
+			},
+			"delete": {
+				"title": "Spostare questa lavagna nel cestino?",
+				"description": "“{{title}}” viene spostata nell'elenco Eliminati di recente del progetto, dove può essere ripristinata finché non viene eliminata definitivamente.",
+				"confirm": "Sposta nel cestino"
+			}
+		},
+		"toasts": {
+			"createError": "Impossibile creare la lavagna",
+			"renameError": "Impossibile rinominare la lavagna",
+			"iconError": "Impossibile cambiare l'icona",
+			"duplicated": "Lavagna duplicata",
+			"duplicateError": "Impossibile duplicare la lavagna",
+			"open": "Apri",
+			"locked": "Lavagna bloccata",
+			"unlocked": "Lavagna sbloccata",
+			"lockError": "Impossibile cambiare il blocco",
+			"archived": "Lavagna archiviata",
+			"unarchived": "Lavagna ripristinata",
+			"archiveError": "Impossibile archiviare la lavagna",
+			"unarchiveError": "Impossibile ripristinare la lavagna",
+			"deleted": "Spostata in Eliminati di recente",
+			"deleteError": "Impossibile spostare la lavagna nel cestino",
+			"linkCopied": "Link copiato",
+			"exportError": "Impossibile esportare la lavagna",
+			"imported": "File della lavagna aggiunto",
+			"importError": "Impossibile leggere il file",
+			"imageType": "Su una lavagna si possono inserire solo immagini PNG, JPEG, GIF e WebP",
+			"imageUploadError": "Impossibile aggiungere l'immagine"
+		},
+		"share": {
+			"title": "Condividi lavagna",
+			"description": "Pubblica una copia in sola lettura visibile a chiunque abbia il link. Disattivandola, il link viene revocato subito.",
+			"switchLabel": "Pubblica sul web",
+			"onHint": "Chiunque abbia il link può vedere questa lavagna.",
+			"offHint": "Solo le persone di questo progetto possono aprire questa lavagna.",
+			"linkLabel": "Link pubblico",
+			"copyLink": "Copia link",
+			"copied": "Copiato",
+			"openLink": "Apri link pubblico",
+			"privacyNote": "Chi la visualizza vede la lavagna e il titolo e lo stato delle sue schede attività, nient'altro del progetto.",
+			"cannotPublish": "Solo chi può gestire tutte le lavagne può pubblicare.",
+			"archivedHint": "Ripristina la lavagna dall'archivio per pubblicarla.",
+			"publishedToast": "Lavagna pubblicata",
+			"unpublishedToast": "Link pubblico disattivato",
+			"error": "Impossibile cambiare il link pubblico",
+			"done": "Fatto"
+		},
+		"screen": {
+			"backToList": "Torna alle lavagne",
+			"titleLabel": "Nome della lavagna",
+			"readOnly": "Sola lettura",
+			"loadError": "Impossibile caricare questa lavagna",
+			"storedCopyError": "Impossibile caricare la copia salvata di questa lavagna",
+			"notFound": {
+				"title": "Lavagna non trovata",
+				"description": "Potrebbe essere stata eliminata, oppure non hai accesso.",
+				"back": "Torna alle lavagne"
+			}
+		},
+		"banners": {
+			"locked": "Questa lavagna è bloccata. Sbloccala per apportare modifiche.",
+			"lockedBy": "{{name}} ha bloccato questa lavagna. Sbloccala per apportare modifiche.",
+			"unlock": "Sblocca",
+			"archived": "Questa lavagna è archiviata e in sola lettura.",
+			"restore": "Ripristina",
+			"readOnly": "Puoi vedere questa lavagna ma non modificarla.",
+			"storedCopy": "Impossibile raggiungere la lavagna in tempo reale. Viene mostrata l'ultima copia salvata, in sola lettura.",
+			"retry": "Riprova",
+			"tooLarge": "Questa lavagna è troppo grande per salvare altre modifiche.",
+			"reload": "Ricarica"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "La lavagna è stata bloccata mentre eri offline, quindi le modifiche offline non sono state salvate.",
+				"archived": "La lavagna è stata archiviata mentre eri offline, quindi le modifiche offline non sono state salvate.",
+				"readOnly": "Non puoi più modificare questa lavagna, quindi le modifiche offline non sono state salvate."
+			},
+			"replacedBy": "{{name}} ha sostituito il contenuto della lavagna",
+			"deleted": "Questa lavagna è stata eliminata",
+			"signedOut": "Sei stato disconnesso. Accedi di nuovo per continuare a modificare.",
+			"roomFull": "Troppe persone hanno aperto questa lavagna. Riprova più tardi."
+		},
+		"publicView": {
+			"documentTitle": "Lavagna condivisa",
+			"unavailableTitle": "Questo link non è disponibile",
+			"unavailableDescription": "La lavagna potrebbe non essere più pubblicata, oppure il link è errato.",
+			"updated": "Aggiornata il {{date}}",
+			"readOnly": "Sola lettura"
+		},
+		"taskBoards": {
+			"title": "Sulle lavagne"
+		},
+		"workspace": {
+			"title": "Lavagne",
+			"documentTitle": "Tutte le lavagne",
+			"chooseProject": "Crea nel progetto",
+			"projectFilter": "Progetto",
+			"allProjects": "Tutti i progetti",
+			"groupByProject": "Raggruppa per progetto",
+			"showAllProjects": "Mostra tutti i progetti",
+			"empty": {
+				"description": "Qui compaiono le lavagne di tutti i progetti che puoi vedere.",
+				"noProjectsTitle": "Nessun progetto ha ancora lavagne",
+				"noProjectsDescription": "Attiva Lavagne nelle funzionalità di un progetto per iniziare a disegnare."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Nuova lavagna",
+			"goToWhiteboards": "Vai alle lavagne",
+			"goToAllWhiteboards": "Vai a tutte le lavagne"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Salva",
@@ -13242,7 +13591,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} scaricato",
-				"failed": "Impossibile scaricare {{file}}"
+				"failed": "Impossibile scaricare {{file}}",
+				"showInFolder": "Fai clic per mostrarlo nella cartella",
+				"openFolder": "Fai clic per aprire la cartella Download"
 			},
 			"notifications": {
 				"releasedTitle": "Le notifiche sono di nuovo attive",
@@ -13293,6 +13644,357 @@
 				"retryIn_other": "Nuovo tentativo tra {{count}} secondi",
 				"switchServer": "Cambia server"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Area di disegno della lavagna",
+			"roleDescription": "lavagna"
+		},
+		"actions": {
+			"cancel": "Annulla",
+			"save": "Salva"
+		},
+		"tools": {
+			"label": "Strumenti",
+			"more": "Altri strumenti",
+			"select": "Seleziona",
+			"hand": "Mano (sposta la vista)",
+			"rectangle": "Rettangolo",
+			"diamond": "Rombo",
+			"ellipse": "Ellisse",
+			"arrow": "Freccia",
+			"line": "Linea",
+			"draw": "Penna",
+			"text": "Testo",
+			"sticky": "Nota adesiva",
+			"image": "Immagine",
+			"eraser": "Gomma",
+			"frame": "Riquadro",
+			"laser": "Puntatore laser",
+			"task": "Scheda attività",
+			"lock": "Mantieni attivo lo strumento",
+			"lockTool": "Mantieni attivo lo strumento dopo aver disegnato",
+			"unlockTool": "Torna a Seleziona dopo aver disegnato",
+			"shape": "Forme"
+		},
+		"commands": {
+			"undo": "Annulla",
+			"redo": "Ripeti",
+			"history": "Cronologia",
+			"copy": "Copia",
+			"cut": "Taglia",
+			"paste": "Incolla",
+			"duplicate": "Duplica",
+			"delete": "Elimina",
+			"selectAll": "Seleziona tutto",
+			"group": "Raggruppa",
+			"ungroup": "Separa",
+			"bringForward": "Porta avanti",
+			"sendBackward": "Porta indietro",
+			"bringToFront": "Porta in primo piano",
+			"sendToBack": "Porta in fondo",
+			"toggleGrid": "Aggancia alla griglia",
+			"toggleSnap": "Aggancia agli oggetti",
+			"toggleMinimap": "Mostra minimappa",
+			"search": "Trova nella lavagna",
+			"help": "Scorciatoie da tastiera",
+			"toggleElementLock": "Blocca o sblocca",
+			"lock": "Blocca",
+			"unlock": "Sblocca",
+			"flipHorizontal": "Rifletti orizzontalmente",
+			"flipVertical": "Rifletti verticalmente",
+			"copyStyle": "Copia stile",
+			"pasteStyle": "Incolla stile",
+			"alignLeft": "Allinea a sinistra",
+			"alignCenter": "Centra orizzontalmente",
+			"alignRight": "Allinea a destra",
+			"alignTop": "Allinea in alto",
+			"alignMiddle": "Centra verticalmente",
+			"alignBottom": "Allinea in basso",
+			"distributeHorizontal": "Distribuisci orizzontalmente",
+			"distributeVertical": "Distribuisci verticalmente",
+			"editText": "Modifica testo",
+			"editLink": "Modifica link"
+		},
+		"zoom": {
+			"label": "Livello di zoom",
+			"in": "Ingrandisci",
+			"out": "Riduci",
+			"reset": "Reimposta zoom",
+			"resetTo": "Zoom al {{percent}}%, reimposta al 100%",
+			"percent": "{{percent}}%",
+			"fit": "Adatta alla finestra",
+			"selection": "Zoom sulla selezione"
+		},
+		"panel": {
+			"label": "Stile",
+			"stroke": "Contorno",
+			"textColor": "Colore del testo",
+			"stickyColor": "Colore della nota",
+			"fill": "Sfondo",
+			"fillStyle": "Riempimento",
+			"fillSolid": "Pieno",
+			"fillHatch": "Tratteggio",
+			"fillCross": "Tratteggio incrociato",
+			"fillNone": "Nessuno",
+			"strokeWidth": "Spessore del contorno",
+			"thin": "Sottile",
+			"medium": "Medio",
+			"bold": "Spesso",
+			"extraBold": "Molto spesso",
+			"strokeStyle": "Stile del contorno",
+			"solid": "Continuo",
+			"dashed": "Tratteggiato",
+			"dotted": "Punteggiato",
+			"sketch": "Effetto schizzo",
+			"sketchClean": "Pulito",
+			"sketchLight": "Leggero",
+			"sketchRough": "Grezzo",
+			"corners": "Angoli",
+			"cornersSharp": "Vivi",
+			"cornersRound": "Arrotondati",
+			"cornersRounder": "Più arrotondati",
+			"font": "Carattere",
+			"fontHand": "A mano",
+			"fontSans": "Senza grazie",
+			"fontMono": "Monospaziato",
+			"fontSize": "Dimensione carattere",
+			"sizeSmall": "S",
+			"sizeMedium": "M",
+			"sizeLarge": "L",
+			"sizeHuge": "XL",
+			"align": "Allineamento testo",
+			"alignLeft": "Sinistra",
+			"alignCenter": "Centro",
+			"alignRight": "Destra",
+			"routing": "Tipo di linea",
+			"routingStraight": "Dritta",
+			"routingCurved": "Curva",
+			"routingElbow": "A gomito",
+			"arrowheads": "Punte di freccia",
+			"startHead": "Inizio",
+			"endHead": "Fine",
+			"headNone": "Nessuna",
+			"headArrow": "Freccia",
+			"headTriangle": "Triangolo",
+			"headDot": "Punto",
+			"headBar": "Barra",
+			"opacity": "Opacità",
+			"layers": "Livelli",
+			"alignment": "Allinea",
+			"actions": "Azioni"
+		},
+		"colors": {
+			"black": "Nero",
+			"red": "Rosso",
+			"green": "Verde",
+			"blue": "Blu",
+			"orange": "Arancione",
+			"purple": "Viola",
+			"teal": "Verde acqua",
+			"grey": "Grigio",
+			"yellow": "Giallo",
+			"pink": "Rosa",
+			"none": "Nessun colore",
+			"custom": "Colore personalizzato"
+		},
+		"text": {
+			"label": "Testo",
+			"frameName": "Nome del riquadro"
+		},
+		"link": {
+			"title": "Collegamento",
+			"description": "Aggiungi un indirizzo web o collega un altro elemento con #element= e il suo id.",
+			"label": "Indirizzo",
+			"invalid": "Inserisci un indirizzo web che inizia con https://, un indirizzo mailto: o un link a un elemento.",
+			"remove": "Rimuovi link",
+			"open": "Apri link",
+			"copyElementLink": "Copia link all'elemento"
+		},
+		"search": {
+			"title": "Trova nella lavagna",
+			"placeholder": "Cerca testo in questa lavagna",
+			"noResults": "Nessun risultato in questa lavagna.",
+			"results": "Risultati"
+		},
+		"tasks": {
+			"pickerTitle": "Aggiungi schede attività",
+			"searchPlaceholder": "Cerca attività per titolo o chiave",
+			"noResults": "Nessuna attività corrispondente.",
+			"results": "Attività",
+			"onBoard": "Su questa lavagna",
+			"addCards_one": "Aggiungi {{count}} scheda",
+			"addCards_many": "Aggiungi {{count}} schede",
+			"addCards_other": "Aggiungi {{count}} schede",
+			"addCardsNone": "Aggiungi schede",
+			"pickHint": "Seleziona una o più attività da aggiungere come schede.",
+			"openTask": "Apri attività",
+			"turnIntoTasks_one": "Trasforma in attività",
+			"turnIntoTasks_many": "Trasforma in {{count}} attività",
+			"turnIntoTasks_other": "Trasforma in {{count}} attività",
+			"turnIntoTasksTitle": "Trasforma le note in attività",
+			"turnIntoTasksDescription": "Ogni nota diventa un'attività di questo progetto e viene sostituita da una scheda attività in tempo reale.",
+			"column": "Colonna",
+			"titles": "Titoli delle attività",
+			"taskTitle": "Titolo dell'attività {{index}}",
+			"emptyTitle": "Nota senza titolo",
+			"skippedEmpty": "Le note senza titolo vengono saltate.",
+			"createTasks_one": "Crea {{count}} attività",
+			"createTasks_many": "Crea {{count}} attività",
+			"createTasks_other": "Crea {{count}} attività",
+			"converted_one": "{{count}} attività creata",
+			"converted_many": "{{count}} attività create",
+			"converted_other": "{{count}} attività create",
+			"convertPartial_one": "{{count}} nota non è potuta diventare un'attività",
+			"convertPartial_many": "{{count}} note non sono potute diventare attività",
+			"convertPartial_other": "{{count}} note non sono potute diventare attività",
+			"makeDependency": "Crea dipendenza",
+			"removeDependency": "Rimuovi dipendenza",
+			"removeDependencyPrompt": "Rimuovere anche la dipendenza tra {{source}} e {{target}}?",
+			"removeDependenciesPrompt_one": "Rimuovere anche {{count}} dipendenza tra queste attività?",
+			"removeDependenciesPrompt_many": "Rimuovere anche {{count}} dipendenze tra queste attività?",
+			"removeDependenciesPrompt_other": "Rimuovere anche {{count}} dipendenze tra queste attività?",
+			"dependencyPair": "{{source}} blocca {{target}}",
+			"removeDependencyConfirm": "Rimuovi",
+			"keepDependency": "Mantieni",
+			"dependencyPromptLabel": "Dipendenza tra attività",
+			"dependencyRemoved_one": "Dipendenza rimossa",
+			"dependencyRemoved_many": "{{count}} dipendenze rimosse",
+			"dependencyRemoved_other": "{{count}} dipendenze rimosse",
+			"dependencyRemoveFailed": "Impossibile rimuovere la dipendenza."
+		},
+		"crop": {
+			"section": "Immagine",
+			"start": "Ritaglia immagine",
+			"finish": "Termina il ritaglio",
+			"reset": "Reimposta ritaglio"
+		},
+		"presence": {
+			"label": "Persone su questa lavagna",
+			"follow": "Segui {{name}}",
+			"stopFollowing": "Smetti di seguire {{name}}",
+			"following": "Stai seguendo {{name}}",
+			"stop": "Interrompi"
+		},
+		"minimap": {
+			"label": "Panoramica della lavagna"
+		},
+		"contextMenu": {
+			"label": "Azioni dell'area di disegno"
+		},
+		"notices": {
+			"readOnly": "Questa lavagna è in sola lettura.",
+			"copied": "Copiato",
+			"linkCopied": "Link copiato",
+			"pasteEmpty": "Niente da incollare",
+			"uploadFailed": "Impossibile caricare l'immagine.",
+			"uploading": "Caricamento dell'immagine…",
+			"imagesOff": "Le immagini non sono disponibili su questa lavagna.",
+			"importFailed": "Questo file non è una lavagna Margaya.",
+			"imported": "Lavagna aggiunta",
+			"tooManyElements": "Questa lavagna è piena. Rimuovi qualcosa prima di aggiungere altro.",
+			"dependencyCreated": "Dipendenza creata",
+			"dependencyFailed": "Impossibile creare la dipendenza.",
+			"cropUnavailable": "L'immagine si sta ancora caricando. Riprova a ritagliarla tra un attimo."
+		},
+		"help": {
+			"title": "Scorciatoie da tastiera",
+			"or": "o",
+			"sections": {
+				"tools": "Strumenti",
+				"view": "Vista",
+				"edit": "Modifica",
+				"arrange": "Disponi",
+				"pointer": "Mouse e touch"
+			},
+			"pan": "Sposta la vista",
+			"zoomWheel": "Ingrandisci o riduci",
+			"commitText": "Termina la modifica del testo",
+			"finishCrop": "Termina il ritaglio",
+			"nudge": "Sposta di poco",
+			"flowchart": "Aggiungi una forma collegata",
+			"cycle": "Seleziona l'elemento precedente o successivo",
+			"keepAspect": "Mantieni le proporzioni o blocca l'angolo",
+			"fromCentre": "Ridimensiona dal centro",
+			"duplicateDrag": "Duplica trascinando",
+			"addToSelection": "Aggiungi alla selezione",
+			"enterGroup": "Modifica all'interno di un gruppo o modifica il testo",
+			"noSnap": "Sposta senza aggancio",
+			"keys": {
+				"drag": "trascina",
+				"wheel": "rotellina",
+				"click": "clic",
+				"doubleClick": "doppio clic",
+				"space": "Spazio",
+				"delete": "Canc",
+				"enter": "Invio",
+				"escape": "Esc",
+				"shift": "Maiusc",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Libreria di forme",
+			"label": "Forma",
+			"change": "Cambia forma",
+			"add": "Aggiungi forma",
+			"search": "Cerca forme",
+			"noResults": "Nessuna forma corrispondente",
+			"groups": {
+				"basic": "Di base",
+				"polygons": "Poligoni",
+				"arrows": "Frecce",
+				"symbols": "Simboli"
+			},
+			"names": {
+				"triangle": "Triangolo",
+				"rightTriangle": "Triangolo rettangolo",
+				"pentagon": "Pentagono",
+				"hexagon": "Esagono",
+				"octagon": "Ottagono",
+				"star": "Stella",
+				"parallelogram": "Parallelogramma",
+				"trapezoid": "Trapezio",
+				"plus": "Più",
+				"cross": "Croce",
+				"heart": "Cuore",
+				"cloud": "Nuvola",
+				"speech": "Fumetto",
+				"cylinder": "Cilindro",
+				"document": "Documento",
+				"arrowRight": "Freccia a destra",
+				"arrowLeft": "Freccia a sinistra",
+				"arrowUp": "Freccia in su",
+				"arrowDown": "Freccia in giù",
+				"arrowDouble": "Freccia doppia",
+				"chevron": "Gallone",
+				"moon": "Luna"
+			}
+		},
+		"pens": {
+			"label": "Stile penna",
+			"pen": "Penna",
+			"marker": "Pennarello",
+			"highlighter": "Evidenziatore"
+		},
+		"background": {
+			"label": "Sfondo",
+			"pattern": "Motivo",
+			"plain": "Tinta unita",
+			"dots": "Punti",
+			"grid": "Griglia",
+			"lines": "Linee",
+			"spacing": "Spaziatura",
+			"small": "Piccola",
+			"medium": "Media",
+			"large": "Grande",
+			"paper": "Colore della carta",
+			"white": "Bianco",
+			"cream": "Crema",
+			"stone": "Pietra",
+			"mist": "Nebbia",
+			"mint": "Menta"
 		}
 	}
 }

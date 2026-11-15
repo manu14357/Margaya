@@ -1261,6 +1261,7 @@
 				"intake": "Sorğular",
 				"analytics": "Analitika",
 				"page": "Səhifələr",
+				"whiteboard": "Ağ lövhələr",
 				"audit_log": "Audit jurnalı",
 				"ai": "Sİ"
 			},
@@ -1487,6 +1488,24 @@
 					"update": {
 						"description": "Məzmunu redaktə edir; öz səhifələrini kilidləyir, arxivləyir və ya yenidən təşkil edir.",
 						"label": "Səhifələri redaktə et"
+					}
+				},
+				"whiteboard": {
+					"read": {
+						"label": "Ağ lövhələrə bax",
+						"description": "Ağ lövhələr bölməsini görür və lövhələri yalnız oxumaq üçün açır."
+					},
+					"create": {
+						"label": "Ağ lövhə yarat",
+						"description": "Şablondan və ya boş lövhələr yaradır və onları dublikat edir."
+					},
+					"update": {
+						"label": "Ağ lövhələri redaktə et",
+						"description": "Lövhələrdə çəkir və redaktə edir; öz lövhələrini kilidləyir və ya arxivləyir."
+					},
+					"delete": {
+						"label": "Bütün ağ lövhələri idarə et",
+						"description": "Yalnız öz lövhələrini yox, gördüyü hər hansı lövhəni kilidləyir, arxivləyir, dərc edir və silir."
 					}
 				},
 				"audit_log": {
@@ -2479,6 +2498,10 @@
 				"updates": {
 					"title": "Yeniləmələr",
 					"description": "Canlı layihə məlumatlarından hazırlanan, vəziyyət dəyəri olan tarixli status yeniləmələri dərc edin."
+				},
+				"whiteboards": {
+					"title": "Ağ lövhələr",
+					"description": "Ortaq kətanlarda canlı tapşırıq kartları ilə birlikdə eskiz çəkin, planlaşdırın və işin xəritəsini qurun."
 				}
 			},
 			"loadError": "Bu layihəni yükləmək mümkün olmadı",
@@ -3311,6 +3334,18 @@
 		},
 		"workspaceAuditLog": {
 			"actions": {
+				"whiteboardCreated": "Ağ lövhə yaratdı",
+				"whiteboardRenamed": "Ağ lövhənin adını dəyişdi",
+				"whiteboardIconChanged": "Ağ lövhənin ikonunu dəyişdi",
+				"whiteboardLocked": "Ağ lövhəni kilidlədi",
+				"whiteboardUnlocked": "Ağ lövhənin kilidini açdı",
+				"whiteboardArchived": "Ağ lövhəni arxivlədi",
+				"whiteboardUnarchived": "Ağ lövhəni arxivdən bərpa etdi",
+				"whiteboardPublished": "Ağ lövhəni ictimai keçidlə dərc etdi",
+				"whiteboardUnpublished": "Ağ lövhənin ictimai keçidini ləğv etdi",
+				"whiteboardTrashed": "Ağ lövhəni zibil qutusuna köçürdü",
+				"whiteboardRestored": "Ağ lövhəni zibil qutusundan bərpa etdi",
+				"whiteboardPurged": "Ağ lövhəni həmişəlik sildi",
 				"workspaceDeletionScheduled": "İş sahəsinin silinməsini planlaşdırdı",
 				"workspaceDeletionCancelled": "İş sahəsinin silinməsini ləğv etdi",
 				"workspacePublicPagesChanged": "İctimai səhifələri aktiv və ya deaktiv etdi",
@@ -3460,6 +3495,7 @@
 			"subtitle": "Bu iş sahəsində üzvləri, rolları, API açarlarını, webhook-ları, inteqrasiyaları, parametrləri və layihələri kim dəyişib. Qeydlər {{days}} gün saxlanılır.",
 			"subtitleForever": "Bu iş sahəsində üzvləri, rolları, API açarlarını, webhook-ları, inteqrasiyaları, parametrləri və layihələri kim dəyişib. Qeydlər iş sahəsini silənə qədər saxlanılır.",
 			"targets": {
+				"whiteboard": "Ağ lövhə",
 				"page": "Səhifə",
 				"apiKey": "API açarı",
 				"export": "İxrac",
@@ -3479,7 +3515,7 @@
 		},
 		"trash": {
 			"projectTitle": "Son silinənlər",
-			"projectSubtitle": "Silinmiş tapşırıqlar və səhifələr həmişəlik silinənə qədər burada qalır. Tapşırığı bərpa etdikdə onunla birlikdə silinmiş alt tapşırıqlar da geri qayıdır; bərpa edilmiş səhifə Arxivlənmiş bölməsinə qayıdır.",
+			"projectSubtitle": "Silinmiş tapşırıqlar, səhifələr və ağ lövhələr həmişəlik silinənə qədər burada qalır. Tapşırığı bərpa etdikdə onunla birlikdə silinmiş alt tapşırıqlar da geri qayıdır; bərpa edilmiş səhifə və ya ağ lövhə Arxivlənmiş bölməsinə qayıdır.",
 			"workspaceTitle": "Son silinən layihələr",
 			"workspaceNav": "Son silinənlər",
 			"workspaceSubtitle": "Silinmiş layihələr tapşırıqları ilə birlikdə həmişəlik silinənə qədər burada qalır.",
@@ -3522,7 +3558,9 @@
 				"emptied_other": "{{count}} tapşırıq həmişəlik silindi",
 				"purgeError": "Həmişəlik silmək mümkün olmadı",
 				"pageRestored": "Səhifə Arxivlənmiş bölməsinə bərpa edildi",
-				"pagePurged": "Səhifə həmişəlik silindi"
+				"pagePurged": "Səhifə həmişəlik silindi",
+				"whiteboardRestored": "Ağ lövhə Arxivlənmiş bölməsinə bərpa edildi",
+				"whiteboardPurged": "Ağ lövhə həmişəlik silindi"
 			},
 			"tasksHeading": "Tapşırıqlar",
 			"pagesHeading": "Səhifələr",
@@ -3530,7 +3568,13 @@
 			"emptyPagesTitle": "Silinmiş səhifə yoxdur",
 			"emptyPagesDescription": "Bu layihədən sildiyiniz arxivlənmiş səhifələr burada görünür.",
 			"purgePageTitle": "Bu səhifə həmişəlik silinsin?",
-			"purgePageDescription": "“{{name}}”, onun şərhləri və versiya tarixçəsi hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz."
+			"purgePageDescription": "“{{name}}”, onun şərhləri və versiya tarixçəsi hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz.",
+			"whiteboardsHeading": "Ağ lövhələr",
+			"searchWhiteboards": "Silinmiş ağ lövhələrdə axtar",
+			"emptyWhiteboardsTitle": "Silinmiş ağ lövhə yoxdur",
+			"emptyWhiteboardsDescription": "Bu layihədən sildiyiniz arxivlənmiş ağ lövhələr burada görünür.",
+			"purgeWhiteboardTitle": "Bu ağ lövhə həmişəlik silinsin?",
+			"purgeWhiteboardDescription": "“{{name}}”, onun məzmunu və şəkilləri hamı üçün silinir. Bu əməliyyat geri qaytarıla bilməz."
 		},
 		"automationRules": {
 			"title": "Avtomatlaşdırmalar",
@@ -4002,6 +4046,7 @@
 			"label": "Layihə bölmələri",
 			"modules": "Modullar",
 			"pages": "Səhifələr",
+			"whiteboards": "Ağ lövhələr",
 			"sections": "Bölmələr",
 			"tasks": "Tapşırıqlar",
 			"views": "Görünüşlər",
@@ -4033,6 +4078,9 @@
 			"newTask": "Yeni tapşırıq",
 			"newWorkspace": "Yeni iş sahəsi",
 			"noPagesProjects": "Orada sənəd yazmaq üçün layihənin imkanlarında Səhifələri aktiv edin.",
+			"noWhiteboardsProjects": "Orada çəkmək üçün layihənin imkanlarında Ağ lövhələri aktiv edin.",
+			"allWhiteboards": "Bütün ağ lövhələr",
+			"whiteboards": "Ağ lövhələr",
 			"noRecent": "Açdığınız səhifələr və tapşırıqlar burada görünür.",
 			"pages": "Səhifələr",
 			"panel": "Bölmə naviqasiyası",
@@ -5112,6 +5160,21 @@
 			"previousWeek": "Əvvəlki həftə",
 			"rescheduleError": "Tapşırığın vaxtını dəyişmək alınmadı",
 			"showWeekends": "Həftə sonlarını göstər",
+			"touch": {
+				"daysLabel": "{{month}} ayının günləri",
+				"weekDaysLabel": "{{start}} – {{end}} arası günlər",
+				"dayLabel_one": "{{date}}, {{count}} tapşırıq",
+				"dayLabel_other": "{{date}}, {{count}} tapşırıq",
+				"dayLabelEmpty": "{{date}}, tapşırıq yoxdur",
+				"taskCount_one": "{{count}} tapşırıq",
+				"taskCount_other": "{{count}} tapşırıq",
+				"addTask": "Tapşırıq əlavə et",
+				"empty": "Bu gün üçün tapşırıq yoxdur.",
+				"moveTask": "{{title}} tapşırığını başqa tarixə köçür",
+				"moveTitle": "Tarixə köçür",
+				"moveDescription": "{{title}} üçün yeni son tarixi seçin. Başlama tarixi də onunla birlikdə dəyişir, beləliklə tapşırığın müddəti eyni qalır.",
+				"moved": "{{date}} tarixinə köçürüldü"
+			},
 			"viewMode": "Təqvim dövrü",
 			"week": "Həftə",
 			"overdue": "Gecikmiş"
@@ -9852,6 +9915,290 @@
 			"error": "Bu səhifənin izlənmə vəziyyətini dəyişmək mümkün olmadı"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Lövhənin tarixçəsi",
+			"description": "Bu lövhəni kimin və nə vaxt dəyişdiyi, ən yenisi əvvəldə. Redaktələr hər şəxs üçün 10 dəqiqədə bir dəfə göstərilir.",
+			"empty": "Bu lövhədə hələ heç nə baş verməyib.",
+			"loadError": "Lövhənin tarixçəsini yükləmək mümkün olmadı.",
+			"loadMore": "Daha çox yüklə",
+			"someone": "Kimsə",
+			"entries": {
+				"created": "Lövhəni yaratdı",
+				"renamed": "Lövhənin adını “{{title}}” olaraq dəyişdi",
+				"iconChanged": "İkonu dəyişdi",
+				"locked": "Lövhəni kilidlədi",
+				"unlocked": "Lövhənin kilidini açdı",
+				"archived": "Lövhəni arxivlədi",
+				"unarchived": "Lövhəni arxivdən bərpa etdi",
+				"published": "Lövhəni internetdə dərc etdi",
+				"unpublished": "Lövhənin dərcini dayandırdı",
+				"trashed": "Lövhəni zibil qutusuna köçürdü",
+				"restored": "Lövhəni zibil qutusundan bərpa etdi",
+				"edited": "Lövhəni redaktə etdi"
+			}
+		},
+		"section": {
+			"title": "Ağ lövhələr"
+		},
+		"list": {
+			"documentTitle": "Ağ lövhələr · {{project}}",
+			"newWhiteboard": "Yeni ağ lövhə",
+			"moreCreateOptions": "Ağ lövhə yaratmağın digər yolları",
+			"untitled": "Adsız lövhə",
+			"searchPlaceholder": "Lövhələri axtar",
+			"searchClear": "Axtarışı təmizlə",
+			"tabs": {
+				"active": "Lövhələr",
+				"archived": "Arxivlənmiş"
+			},
+			"sort": {
+				"lastEdited": "Son redaktə",
+				"created": "Yaradılma",
+				"name": "Ad"
+			},
+			"edited": "Redaktə edilib {{time}}",
+			"editedBy": "{{name}} tərəfindən redaktə edilib, {{time}}",
+			"locked": "Kilidlənib",
+			"published": "Dərc edilib",
+			"cardActions": "{{title}} üçün əməliyyatlar",
+			"recentlyDeleted": "Son silinənlər",
+			"loadError": "Ağ lövhələri yükləmək mümkün olmadı",
+			"retry": "Yenidən cəhd et",
+			"unknownUser": "Kimsə",
+			"empty": {
+				"title": "Hələ ağ lövhə yoxdur",
+				"description": "Komandanızla ortaq kətanda ideyaların eskizini çəkin, sprinti planlaşdırın və ya işin xəritəsini qurun.",
+				"archivedTitle": "Arxivlənmiş ağ lövhə yoxdur",
+				"archivedDescription": "Arxivlədiyiniz lövhələr burada görünür.",
+				"noMatchTitle": "“{{query}}” sorğusuna uyğun lövhə yoxdur",
+				"noMatchDescription": "Başqa sözlər yoxlayın. Axtarış lövhə adlarına və lövhələrdəki mətnə baxır.",
+				"clearSearch": "Axtarışı təmizlə"
+			}
+		},
+		"templates": {
+			"title": "Şablondan başla",
+			"names": {
+				"blank": "Boş lövhə",
+				"brainstorm": "Beyin həmləsi",
+				"retrospective": "Retrospektiv",
+				"sprintPlanning": "Sprint planlaması",
+				"userStoryMap": "İstifadəçi hekayələri xəritəsi",
+				"roadmap": "Yol xəritəsi",
+				"flowchart": "Blok-sxem",
+				"kanban": "Kanban eskizi"
+			},
+			"descriptions": {
+				"blank": "Boş kətan.",
+				"brainstorm": "Mərkəzdə bir sual və ətrafında ideyalar üçün yer.",
+				"retrospective": "Nə yaxşı alındı, nəyi yaxşılaşdırmaq lazımdır və görüləcək işlər.",
+				"sprintPlanning": "Sprint məqsədi, gözləyən tapşırıqlar, öhdəlik götürülənlər və risklər.",
+				"userStoryMap": "Yuxarıda fəaliyyətlər, aşağıda buraxılışlara görə hekayələr.",
+				"roadmap": "İndi, sonra və daha sonra, yan-yana.",
+				"flowchart": "Başlanğıc, qərar və aradakı addımlar.",
+				"kanban": "Yapışqan qeydlər üçün görüləcək, icrada və hazır sütunları."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "Nəyi həll edirik?",
+					"ideas": "İdeyalar"
+				},
+				"retrospective": {
+					"title": "Retrospektiv",
+					"wentWell": "Yaxşı alındı",
+					"toImprove": "Yaxşılaşdırılmalı",
+					"actions": "Görüləcək işlər"
+				},
+				"sprintPlanning": {
+					"title": "Sprint planlaması",
+					"goal": "Sprint məqsədi",
+					"backlog": "Gözləyən tapşırıqlar",
+					"committed": "Öhdəlik götürülüb",
+					"risks": "Risklər"
+				},
+				"userStoryMap": {
+					"title": "İstifadəçi hekayələri xəritəsi",
+					"activity": "Fəaliyyət",
+					"story": "Hekayə",
+					"release1": "Buraxılış 1",
+					"release2": "Buraxılış 2"
+				},
+				"roadmap": {
+					"title": "Yol xəritəsi",
+					"now": "İndi",
+					"next": "Sonra",
+					"later": "Daha sonra"
+				},
+				"flowchart": {
+					"start": "Başlanğıc",
+					"step": "Addım",
+					"decision": "Qərar?",
+					"yes": "Bəli",
+					"no": "Xeyr",
+					"end": "Son"
+				},
+				"kanban": {
+					"todo": "Görüləcək",
+					"doing": "İcrada",
+					"done": "Hazır"
+				}
+			}
+		},
+		"actions": {
+			"history": "Tarixçə",
+			"open": "Aç",
+			"openInNewTab": "Yeni tabda aç",
+			"copyLink": "Keçidi kopyala",
+			"rename": "Adını dəyiş",
+			"changeIcon": "Nişanı dəyiş",
+			"duplicate": "Dublikat et",
+			"publish": "Vebdə dərc et",
+			"managePublicLink": "İctimai keçid",
+			"share": "Paylaş",
+			"lock": "Kilidlə",
+			"unlock": "Kilidi aç",
+			"archive": "Arxivlə",
+			"unarchive": "Arxivdən bərpa et",
+			"moveToTrash": "Zibil qutusuna köçür",
+			"export": "İxrac et",
+			"exportPng": "PNG kimi ixrac et",
+			"exportSvg": "SVG kimi ixrac et",
+			"exportFile": "Lövhə faylını endir",
+			"importFile": "Lövhə faylını idxal et",
+			"zoomToFit": "Ekrana sığdır",
+			"fullScreen": "Tam ekran",
+			"exitFullScreen": "Tam ekrandan çıx",
+			"more": "Digər lövhə seçimləri"
+		},
+		"dialogs": {
+			"cancel": "Ləğv et",
+			"rename": {
+				"title": "Ağ lövhənin adını dəyiş",
+				"label": "Ad",
+				"save": "Yadda saxla"
+			},
+			"icon": {
+				"title": "Nişan seçin",
+				"description": "Emoji lövhənin adının yanında görünür.",
+				"search": "Emoji axtar",
+				"noMatches": "Axtarışınıza uyğun emoji yoxdur",
+				"remove": "Nişanı sil"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (surət)"
+			},
+			"delete": {
+				"title": "Bu lövhə zibil qutusuna köçürülsün?",
+				"description": "“{{title}}” layihənin Son silinənlər siyahısına köçürülür və həmişəlik silinənə qədər orada bərpa oluna bilər.",
+				"confirm": "Zibil qutusuna köçür"
+			}
+		},
+		"toasts": {
+			"createError": "Ağ lövhə yaradıla bilmədi",
+			"renameError": "Ağ lövhənin adı dəyişdirilə bilmədi",
+			"iconError": "Nişan dəyişdirilə bilmədi",
+			"duplicated": "Ağ lövhə dublikat edildi",
+			"duplicateError": "Ağ lövhə dublikat edilə bilmədi",
+			"open": "Aç",
+			"locked": "Ağ lövhə kilidləndi",
+			"unlocked": "Ağ lövhənin kilidi açıldı",
+			"lockError": "Kilid dəyişdirilə bilmədi",
+			"archived": "Ağ lövhə arxivləndi",
+			"unarchived": "Ağ lövhə bərpa edildi",
+			"archiveError": "Ağ lövhə arxivlənə bilmədi",
+			"unarchiveError": "Ağ lövhə bərpa edilə bilmədi",
+			"deleted": "Son silinənlərə köçürüldü",
+			"deleteError": "Ağ lövhə zibil qutusuna köçürülə bilmədi",
+			"linkCopied": "Keçid kopyalandı",
+			"exportError": "Lövhə ixrac edilə bilmədi",
+			"imported": "Lövhə faylı əlavə edildi",
+			"importError": "Həmin faylı oxumaq mümkün olmadı",
+			"imageType": "Lövhəyə yalnız PNG, JPEG, GIF və WebP şəkilləri əlavə etmək olar",
+			"imageUploadError": "Şəkil əlavə edilə bilmədi"
+		},
+		"share": {
+			"title": "Ağ lövhəni paylaş",
+			"description": "Keçidi olan hər kəsin baxa biləcəyi, yalnız oxumaq üçün surət dərc edin. Söndürmək keçidi dərhal ləğv edir.",
+			"switchLabel": "Vebdə dərc et",
+			"onHint": "Keçidi olan hər kəs bu lövhəyə baxa bilər.",
+			"offHint": "Bu lövhəni yalnız bu layihənin üzvləri aça bilər.",
+			"linkLabel": "İctimai keçid",
+			"copyLink": "Keçidi kopyala",
+			"copied": "Kopyalandı",
+			"openLink": "İctimai keçidi aç",
+			"privacyNote": "Baxanlar lövhəni və onun tapşırıq kartlarının başlıqlarını və statusunu görür, layihədən başqa heç nə görmür.",
+			"cannotPublish": "Yalnız bütün ağ lövhələri idarə edə bilən şəxslər dərc edə bilər.",
+			"archivedHint": "Dərc etmək üçün lövhəni arxivdən bərpa edin.",
+			"publishedToast": "Ağ lövhə dərc edildi",
+			"unpublishedToast": "İctimai keçid söndürüldü",
+			"error": "İctimai keçidi dəyişmək mümkün olmadı",
+			"done": "Hazırdır"
+		},
+		"screen": {
+			"backToList": "Ağ lövhələrə qayıt",
+			"titleLabel": "Ağ lövhənin adı",
+			"readOnly": "Yalnız oxumaq üçün",
+			"loadError": "Bu ağ lövhəni yükləmək mümkün olmadı",
+			"storedCopyError": "Bu lövhənin saxlanılmış surətini yükləmək mümkün olmadı",
+			"notFound": {
+				"title": "Ağ lövhə tapılmadı",
+				"description": "O silinmiş ola bilər və ya ona girişiniz yoxdur.",
+				"back": "Ağ lövhələrə qayıt"
+			}
+		},
+		"banners": {
+			"locked": "Bu lövhə kilidlənib. Dəyişiklik etmək üçün kilidi açın.",
+			"lockedBy": "Bu lövhəni {{name}} kilidləyib. Dəyişiklik etmək üçün kilidi açın.",
+			"unlock": "Kilidi aç",
+			"archived": "Bu lövhə arxivlənib və yalnız oxumaq üçündür.",
+			"restore": "Bərpa et",
+			"readOnly": "Bu lövhəyə baxa bilərsiniz, lakin redaktə edə bilməzsiniz.",
+			"storedCopy": "Canlı lövhəyə qoşulmaq mümkün deyil. Son saxlanılmış surət yalnız oxumaq üçün göstərilir.",
+			"retry": "Yenidən cəhd et",
+			"tooLarge": "Bu lövhə daha çox dəyişiklik saxlamaq üçün çox böyükdür.",
+			"reload": "Yenilə"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "Siz oflayn olarkən lövhə kilidləndi, ona görə oflayn dəyişiklikləriniz saxlanılmadı.",
+				"archived": "Siz oflayn olarkən lövhə arxivləndi, ona görə oflayn dəyişiklikləriniz saxlanılmadı.",
+				"readOnly": "Artıq bu lövhəni redaktə edə bilməzsiniz, ona görə oflayn dəyişiklikləriniz saxlanılmadı."
+			},
+			"replacedBy": "{{name}} lövhənin məzmununu əvəz etdi",
+			"deleted": "Bu ağ lövhə silindi",
+			"signedOut": "Hesabdan çıxdınız. Redaktəni davam etdirmək üçün yenidən daxil olun.",
+			"roomFull": "Bu lövhəni həddən artıq çox adam açıb. Bir az sonra yenidən cəhd edin."
+		},
+		"publicView": {
+			"documentTitle": "Paylaşılan ağ lövhə",
+			"unavailableTitle": "Bu keçid əlçatan deyil",
+			"unavailableDescription": "Lövhənin dərci dayandırılmış ola bilər və ya keçid səhvdir.",
+			"updated": "Yenilənib: {{date}}",
+			"readOnly": "Yalnız oxumaq üçün"
+		},
+		"taskBoards": {
+			"title": "Ağ lövhələrdə"
+		},
+		"workspace": {
+			"title": "Ağ lövhələr",
+			"documentTitle": "Bütün ağ lövhələr",
+			"chooseProject": "Layihədə yarat",
+			"projectFilter": "Layihə",
+			"allProjects": "Bütün layihələr",
+			"groupByProject": "Layihəyə görə qruplaşdır",
+			"showAllProjects": "Bütün layihələri göstər",
+			"empty": {
+				"description": "Görə bildiyiniz bütün layihələrin lövhələri burada görünür.",
+				"noProjectsTitle": "Hələ heç bir layihədə ağ lövhə yoxdur",
+				"noProjectsDescription": "Çəkməyə başlamaq üçün layihənin imkanlarında Ağ lövhələri aktiv edin."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "Yeni ağ lövhə",
+			"goToWhiteboards": "Ağ lövhələrə keç",
+			"goToAllWhiteboards": "Bütün ağ lövhələrə keç"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Yadda saxla",
@@ -13034,7 +13381,9 @@
 			},
 			"downloads": {
 				"finished": "{{file}} yükləndi",
-				"failed": "{{file}} yüklənə bilmədi"
+				"failed": "{{file}} yüklənə bilmədi",
+				"showInFolder": "Qovluqda göstərmək üçün klikləyin",
+				"openFolder": "Yükləmələr qovluğunu açmaq üçün klikləyin"
 			},
 			"notifications": {
 				"releasedTitle": "Bildirişlər yenidən aktivdir",
@@ -13084,6 +13433,350 @@
 				"retryIn_other": "{{count}} saniyə sonra yenidən cəhd ediləcək",
 				"switchServer": "Serveri dəyiş"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Ağ lövhə kətanı",
+			"roleDescription": "ağ lövhə"
+		},
+		"actions": {
+			"cancel": "Ləğv et",
+			"save": "Yadda saxla"
+		},
+		"tools": {
+			"label": "Alətlər",
+			"more": "Digər alətlər",
+			"select": "Seç",
+			"hand": "Əl (sürüşdür)",
+			"rectangle": "Düzbucaqlı",
+			"diamond": "Romb",
+			"ellipse": "Ellips",
+			"arrow": "Ox",
+			"line": "Xətt",
+			"draw": "Qələm",
+			"text": "Mətn",
+			"sticky": "Yapışqan qeyd",
+			"image": "Şəkil",
+			"eraser": "Pozan",
+			"frame": "Çərçivə",
+			"laser": "Lazer göstərici",
+			"task": "Tapşırıq kartı",
+			"lock": "Aləti aktiv saxla",
+			"lockTool": "Çəkdikdən sonra aləti aktiv saxla",
+			"unlockTool": "Çəkdikdən sonra Seç alətinə qayıt",
+			"shape": "Fiqurlar"
+		},
+		"commands": {
+			"undo": "Geri al",
+			"redo": "Təkrarla",
+			"history": "Tarixçə",
+			"copy": "Kopyala",
+			"cut": "Kəs",
+			"paste": "Yapışdır",
+			"duplicate": "Dublikat et",
+			"delete": "Sil",
+			"selectAll": "Hamısını seç",
+			"group": "Qrupla",
+			"ungroup": "Qrupu ayır",
+			"bringForward": "Bir qat önə gətir",
+			"sendBackward": "Bir qat arxaya göndər",
+			"bringToFront": "Ən önə gətir",
+			"sendToBack": "Ən arxaya göndər",
+			"toggleGrid": "Şəbəkəyə yapışdır",
+			"toggleSnap": "Obyektlərə yapışdır",
+			"toggleMinimap": "Mini xəritəni göstər",
+			"search": "Lövhədə tap",
+			"help": "Klaviatura qısayolları",
+			"toggleElementLock": "Kilidlə və ya kilidi aç",
+			"lock": "Kilidlə",
+			"unlock": "Kilidi aç",
+			"flipHorizontal": "Üfüqi çevir",
+			"flipVertical": "Şaquli çevir",
+			"copyStyle": "Üslubu kopyala",
+			"pasteStyle": "Üslubu yapışdır",
+			"alignLeft": "Sola düzləndir",
+			"alignCenter": "Mərkəzləri üfüqi düzləndir",
+			"alignRight": "Sağa düzləndir",
+			"alignTop": "Yuxarı düzləndir",
+			"alignMiddle": "Mərkəzləri şaquli düzləndir",
+			"alignBottom": "Aşağı düzləndir",
+			"distributeHorizontal": "Üfüqi bərabər payla",
+			"distributeVertical": "Şaquli bərabər payla",
+			"editText": "Mətni redaktə et",
+			"editLink": "Keçidi redaktə et"
+		},
+		"zoom": {
+			"label": "Miqyas",
+			"in": "Yaxınlaşdır",
+			"out": "Uzaqlaşdır",
+			"reset": "Miqyası sıfırla",
+			"resetTo": "Miqyas {{percent}}%, 100%-ə sıfırla",
+			"percent": "{{percent}}%",
+			"fit": "Ekrana sığdır",
+			"selection": "Seçimə yaxınlaşdır"
+		},
+		"panel": {
+			"label": "Üslub",
+			"stroke": "Kontur",
+			"textColor": "Mətn rəngi",
+			"stickyColor": "Qeyd rəngi",
+			"fill": "Fon",
+			"fillStyle": "Doldurma",
+			"fillSolid": "Bütöv",
+			"fillHatch": "Ştrix",
+			"fillCross": "Çarpaz ştrix",
+			"fillNone": "Yoxdur",
+			"strokeWidth": "Kontur qalınlığı",
+			"thin": "Nazik",
+			"medium": "Orta",
+			"bold": "Qalın",
+			"extraBold": "Çox qalın",
+			"strokeStyle": "Kontur üslubu",
+			"solid": "Bütöv",
+			"dashed": "Qırıq xətt",
+			"dotted": "Nöqtəli",
+			"sketch": "Eskiz effekti",
+			"sketchClean": "Səliqəli",
+			"sketchLight": "Yüngül",
+			"sketchRough": "Kobud",
+			"corners": "Künclər",
+			"cornersSharp": "İti",
+			"cornersRound": "Yumru",
+			"cornersRounder": "Daha yumru",
+			"font": "Şrift",
+			"fontHand": "Əl yazısı",
+			"fontSans": "Sans-serif",
+			"fontMono": "Bərabərenli",
+			"fontSize": "Şrift ölçüsü",
+			"sizeSmall": "S",
+			"sizeMedium": "M",
+			"sizeLarge": "L",
+			"sizeHuge": "XL",
+			"align": "Mətnin düzlənməsi",
+			"alignLeft": "Sol",
+			"alignCenter": "Mərkəz",
+			"alignRight": "Sağ",
+			"routing": "Xəttin növü",
+			"routingStraight": "Düz",
+			"routingCurved": "Əyri",
+			"routingElbow": "Bucaqlı",
+			"arrowheads": "Ox ucları",
+			"startHead": "Başlanğıc",
+			"endHead": "Son",
+			"headNone": "Yoxdur",
+			"headArrow": "Ox",
+			"headTriangle": "Üçbucaq",
+			"headDot": "Nöqtə",
+			"headBar": "Xətt",
+			"opacity": "Qeyri-şəffaflıq",
+			"layers": "Qatlar",
+			"alignment": "Düzləndir",
+			"actions": "Əməliyyatlar"
+		},
+		"colors": {
+			"black": "Qara",
+			"red": "Qırmızı",
+			"green": "Yaşıl",
+			"blue": "Mavi",
+			"orange": "Narıncı",
+			"purple": "Bənövşəyi",
+			"teal": "Firuzəyi",
+			"grey": "Boz",
+			"yellow": "Sarı",
+			"pink": "Çəhrayı",
+			"none": "Rəngsiz",
+			"custom": "Fərdi rəng"
+		},
+		"text": {
+			"label": "Mətn",
+			"frameName": "Çərçivənin adı"
+		},
+		"link": {
+			"title": "Keçid",
+			"description": "Veb ünvan əlavə edin və ya #element= və id vasitəsilə başqa elementə keçid verin.",
+			"label": "Ünvan",
+			"invalid": "https:// ilə başlayan veb ünvan, mailto: ünvanı və ya element keçidi daxil edin.",
+			"remove": "Keçidi sil",
+			"open": "Keçidi aç",
+			"copyElementLink": "Elementə keçidi kopyala"
+		},
+		"search": {
+			"title": "Lövhədə tap",
+			"placeholder": "Bu lövhədəki mətndə axtar",
+			"noResults": "Bu lövhədə uyğun heç nə yoxdur.",
+			"results": "Uyğunluqlar"
+		},
+		"tasks": {
+			"pickerTitle": "Tapşırıq kartları əlavə et",
+			"searchPlaceholder": "Tapşırıqları başlığa və ya açara görə axtar",
+			"noResults": "Uyğun tapşırıq yoxdur.",
+			"results": "Tapşırıqlar",
+			"onBoard": "Bu lövhədə",
+			"addCards_one": "{{count}} kart əlavə et",
+			"addCards_other": "{{count}} kart əlavə et",
+			"addCardsNone": "Kart əlavə et",
+			"pickHint": "Kart kimi əlavə etmək üçün bir və ya bir neçə tapşırıq seçin.",
+			"openTask": "Tapşırığı aç",
+			"turnIntoTasks_one": "Tapşırığa çevir",
+			"turnIntoTasks_other": "{{count}} tapşırığa çevir",
+			"turnIntoTasksTitle": "Qeydləri tapşırıqlara çevir",
+			"turnIntoTasksDescription": "Hər qeyd bu layihədə tapşırığa çevrilir və canlı tapşırıq kartı ilə əvəz olunur.",
+			"column": "Sütun",
+			"titles": "Tapşırıq başlıqları",
+			"taskTitle": "{{index}} nömrəli tapşırığın başlığı",
+			"emptyTitle": "Başlıqsız qeyd",
+			"skippedEmpty": "Başlığı olmayan qeydlər buraxılır.",
+			"createTasks_one": "{{count}} tapşırıq yarat",
+			"createTasks_other": "{{count}} tapşırıq yarat",
+			"converted_one": "{{count}} tapşırıq yaradıldı",
+			"converted_other": "{{count}} tapşırıq yaradıldı",
+			"convertPartial_one": "{{count}} qeyd tapşırığa çevrilə bilmədi",
+			"convertPartial_other": "{{count}} qeyd tapşırığa çevrilə bilmədi",
+			"makeDependency": "Asılılıq yarat",
+			"removeDependency": "Asılılığı sil",
+			"removeDependencyPrompt": "{{source}} və {{target}} arasındakı asılılıq da silinsin?",
+			"removeDependenciesPrompt_one": "Bu tapşırıqlar arasındakı {{count}} asılılıq da silinsin?",
+			"removeDependenciesPrompt_other": "Bu tapşırıqlar arasındakı {{count}} asılılıq da silinsin?",
+			"dependencyPair": "{{source}} {{target}} tapşırığını bloklayır",
+			"removeDependencyConfirm": "Sil",
+			"keepDependency": "Saxla",
+			"dependencyPromptLabel": "Tapşırıq asılılığı",
+			"dependencyRemoved_one": "Asılılıq silindi",
+			"dependencyRemoved_other": "{{count}} asılılıq silindi",
+			"dependencyRemoveFailed": "Asılılığı silmək mümkün olmadı."
+		},
+		"crop": {
+			"section": "Şəkil",
+			"start": "Şəkli kəs",
+			"finish": "Kəsməni bitir",
+			"reset": "Kəsməni sıfırla"
+		},
+		"presence": {
+			"label": "Bu lövhədə olanlar",
+			"follow": "{{name}} istifadəçisini izlə",
+			"stopFollowing": "{{name}} istifadəçisini izləməyi dayandır",
+			"following": "{{name}} izlənilir",
+			"stop": "Dayandır"
+		},
+		"minimap": {
+			"label": "Lövhənin icmalı"
+		},
+		"contextMenu": {
+			"label": "Kətan əməliyyatları"
+		},
+		"notices": {
+			"readOnly": "Bu lövhə yalnız oxumaq üçündür.",
+			"copied": "Kopyalandı",
+			"linkCopied": "Keçid kopyalandı",
+			"pasteEmpty": "Yapışdırmaq üçün heç nə yoxdur",
+			"uploadFailed": "Şəkli yükləmək mümkün olmadı.",
+			"uploading": "Şəkil yüklənir…",
+			"imagesOff": "Bu lövhədə şəkillər əlçatan deyil.",
+			"importFailed": "Həmin fayl Margaya lövhəsi deyil.",
+			"imported": "Lövhə əlavə edildi",
+			"tooManyElements": "Bu lövhə doludur. Daha çox əlavə etməzdən əvvəl nəyisə silin.",
+			"dependencyCreated": "Asılılıq yaradıldı",
+			"dependencyFailed": "Asılılığı yaratmaq mümkün olmadı.",
+			"cropUnavailable": "Şəkil hələ yüklənir. Bir azdan yenidən kəsməyə çalışın."
+		},
+		"help": {
+			"title": "Klaviatura qısayolları",
+			"or": "və ya",
+			"sections": {
+				"tools": "Alətlər",
+				"view": "Görünüş",
+				"edit": "Redaktə",
+				"arrange": "Yerləşdirmə",
+				"pointer": "Siçan və toxunma"
+			},
+			"pan": "Görünüşü sürüşdür",
+			"zoomWheel": "Miqyas",
+			"commitText": "Mətnin redaktəsini bitir",
+			"finishCrop": "Kəsməni bitir",
+			"nudge": "Azacıq sürüşdür",
+			"flowchart": "Əlaqəli fiqur əlavə et",
+			"cycle": "Əvvəlki və ya növbəti elementi seç",
+			"keepAspect": "Nisbətləri saxla və ya bucağı sabitlə",
+			"fromCentre": "Mərkəzdən ölçünü dəyiş",
+			"duplicateDrag": "Sürükləyərkən dublikat et",
+			"addToSelection": "Seçimə əlavə et",
+			"enterGroup": "Qrupun içində redaktə et və ya mətni redaktə et",
+			"noSnap": "Yapışdırmadan köçür",
+			"keys": {
+				"drag": "sürüklə",
+				"wheel": "təkər",
+				"click": "klik",
+				"doubleClick": "iki dəfə klik",
+				"space": "Boşluq",
+				"delete": "Delete",
+				"enter": "Enter",
+				"escape": "Esc",
+				"shift": "Shift",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Fiqur kitabxanası",
+			"label": "Fiqur",
+			"change": "Fiquru dəyiş",
+			"add": "Fiqur əlavə et",
+			"search": "Fiqurları axtar",
+			"noResults": "Uyğun fiqur yoxdur",
+			"groups": {
+				"basic": "Əsas",
+				"polygons": "Çoxbucaqlılar",
+				"arrows": "Oxlar",
+				"symbols": "Simvollar"
+			},
+			"names": {
+				"triangle": "Üçbucaq",
+				"rightTriangle": "Düzbucaqlı üçbucaq",
+				"pentagon": "Beşbucaq",
+				"hexagon": "Altıbucaq",
+				"octagon": "Səkkizbucaq",
+				"star": "Ulduz",
+				"parallelogram": "Paraleloqram",
+				"trapezoid": "Trapesiya",
+				"plus": "Üstəgəl",
+				"cross": "Çarpaz",
+				"heart": "Ürək",
+				"cloud": "Bulud",
+				"speech": "Danışıq balonu",
+				"cylinder": "Silindr",
+				"document": "Sənəd",
+				"arrowRight": "Sağa ox",
+				"arrowLeft": "Sola ox",
+				"arrowUp": "Yuxarı ox",
+				"arrowDown": "Aşağı ox",
+				"arrowDouble": "İkitərəfli ox",
+				"chevron": "Şevron",
+				"moon": "Ay"
+			}
+		},
+		"pens": {
+			"label": "Qələm üslubu",
+			"pen": "Qələm",
+			"marker": "Marker",
+			"highlighter": "Vurğulayıcı"
+		},
+		"background": {
+			"label": "Fon",
+			"pattern": "Naxış",
+			"plain": "Sadə",
+			"dots": "Nöqtələr",
+			"grid": "Şəbəkə",
+			"lines": "Xətlər",
+			"spacing": "Aralıq",
+			"small": "Kiçik",
+			"medium": "Orta",
+			"large": "Böyük",
+			"paper": "Kağız rəngi",
+			"white": "Ağ",
+			"cream": "Krem",
+			"stone": "Daş",
+			"mist": "Duman",
+			"mint": "Nanə"
 		}
 	}
 }

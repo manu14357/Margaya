@@ -1308,6 +1308,7 @@
 				"intake": "Intake",
 				"analytics": "Analytics",
 				"page": "Pages",
+				"whiteboard": "Whiteboards",
 				"audit_log": "Audit log",
 				"ai": "AI"
 			},
@@ -1534,6 +1535,24 @@
 					"delete": {
 						"label": "Manage all pages",
 						"description": "Lock, archive, move and delete any page they can see, not only their own."
+					}
+				},
+				"whiteboard": {
+					"read": {
+						"label": "View whiteboards",
+						"description": "See the Whiteboards section and open boards read-only."
+					},
+					"create": {
+						"label": "Create whiteboards",
+						"description": "Create boards, from a template or blank, and duplicate them."
+					},
+					"update": {
+						"label": "Edit whiteboards",
+						"description": "Draw and edit on boards, and lock or archive their own boards."
+					},
+					"delete": {
+						"label": "Manage all whiteboards",
+						"description": "Lock, archive, publish and delete any board they can see, not only their own."
 					}
 				},
 				"audit_log": {
@@ -1795,6 +1814,7 @@
 				"hiddenValue": "Changed (value hidden)"
 			},
 			"targets": {
+				"whiteboard": "Whiteboard",
 				"invitation": "Invitation",
 				"user": "Member",
 				"role": "Role",
@@ -1828,6 +1848,18 @@
 				"automation": "Automations"
 			},
 			"actions": {
+				"whiteboardCreated": "Created a whiteboard",
+				"whiteboardRenamed": "Renamed a whiteboard",
+				"whiteboardIconChanged": "Changed a whiteboard's icon",
+				"whiteboardLocked": "Locked a whiteboard",
+				"whiteboardUnlocked": "Unlocked a whiteboard",
+				"whiteboardArchived": "Archived a whiteboard",
+				"whiteboardUnarchived": "Restored a whiteboard from the archive",
+				"whiteboardPublished": "Published a whiteboard to a public link",
+				"whiteboardUnpublished": "Revoked a whiteboard's public link",
+				"whiteboardTrashed": "Moved a whiteboard to the trash",
+				"whiteboardRestored": "Restored a whiteboard from the trash",
+				"whiteboardPurged": "Permanently deleted a whiteboard",
 				"workspaceDeletionScheduled": "Scheduled the workspace for deletion",
 				"workspaceDeletionCancelled": "Cancelled the workspace deletion",
 				"workspacePublicPagesChanged": "Turned public pages on or off",
@@ -2244,6 +2276,10 @@
 				"updates": {
 					"title": "Updates",
 					"description": "Post dated status updates with a health value, drafted from live project data."
+				},
+				"whiteboards": {
+					"title": "Whiteboards",
+					"description": "Sketch, plan and map work together on shared canvases, with live task cards."
 				}
 			}
 		},
@@ -3479,7 +3515,7 @@
 		},
 		"trash": {
 			"projectTitle": "Recently deleted",
-			"projectSubtitle": "Deleted tasks and pages stay here until they are deleted permanently. Restoring a task brings back the sub-tasks deleted with it; a restored page goes back to Archived.",
+			"projectSubtitle": "Deleted tasks, pages and whiteboards stay here until they are deleted permanently. Restoring a task brings back the sub-tasks deleted with it; a restored page or whiteboard goes back to Archived.",
 			"workspaceTitle": "Recently deleted projects",
 			"workspaceNav": "Recently deleted",
 			"workspaceSubtitle": "Deleted projects stay here with their tasks until they are deleted permanently.",
@@ -3522,7 +3558,9 @@
 				"emptied_other": "{{count}} tasks deleted permanently",
 				"purgeError": "Couldn't delete it permanently",
 				"pageRestored": "Page restored to Archived",
-				"pagePurged": "Page deleted permanently"
+				"pagePurged": "Page deleted permanently",
+				"whiteboardRestored": "Whiteboard restored to Archived",
+				"whiteboardPurged": "Whiteboard deleted permanently"
 			},
 			"tasksHeading": "Tasks",
 			"pagesHeading": "Pages",
@@ -3530,7 +3568,13 @@
 			"emptyPagesTitle": "No deleted pages",
 			"emptyPagesDescription": "Archived pages you delete from this project appear here.",
 			"purgePageTitle": "Delete this page permanently?",
-			"purgePageDescription": "“{{name}}”, its comments and version history are deleted for everyone. This can't be undone."
+			"purgePageDescription": "“{{name}}”, its comments and version history are deleted for everyone. This can't be undone.",
+			"whiteboardsHeading": "Whiteboards",
+			"searchWhiteboards": "Search deleted whiteboards",
+			"emptyWhiteboardsTitle": "No deleted whiteboards",
+			"emptyWhiteboardsDescription": "Archived whiteboards you delete from this project appear here.",
+			"purgeWhiteboardTitle": "Delete this whiteboard permanently?",
+			"purgeWhiteboardDescription": "“{{name}}”, its content and its images are deleted for everyone. This can't be undone."
 		},
 		"automationRules": {
 			"title": "Automations",
@@ -3907,6 +3951,7 @@
 			"modules": "Modules",
 			"views": "Views",
 			"pages": "Pages",
+			"whiteboards": "Whiteboards",
 			"intake": "Intake",
 			"updates": "Updates",
 			"analytics": "Analytics"
@@ -4023,6 +4068,7 @@
 			"myWork": "Your work",
 			"projects": "Projects",
 			"pages": "Pages",
+			"whiteboards": "White­boards",
 			"analytics": "Analytics",
 			"settings": "Settings",
 			"create": "Create",
@@ -4045,6 +4091,8 @@
 			"noRecent": "Pages and tasks you open show up here.",
 			"filterProjects": "Filter projects",
 			"noPagesProjects": "Turn on Pages in a project's features to write docs there.",
+			"noWhiteboardsProjects": "Turn on Whiteboards in a project's features to draw there.",
+			"allWhiteboards": "All whiteboards",
 			"filters": "Filters",
 			"unreadOnly": "Unread only",
 			"workspaceAnalytics": "Workspace",
@@ -5114,7 +5162,22 @@
 			"nextWeek": "Next week",
 			"addTaskOn": "Add a task due {{date}}",
 			"rescheduleError": "Failed to reschedule the task",
-			"overdue": "Overdue"
+			"overdue": "Overdue",
+			"touch": {
+				"daysLabel": "Days of {{month}}",
+				"weekDaysLabel": "Days from {{start}} to {{end}}",
+				"dayLabel_one": "{{date}}, {{count}} task",
+				"dayLabel_other": "{{date}}, {{count}} tasks",
+				"dayLabelEmpty": "{{date}}, no tasks",
+				"taskCount_one": "{{count}} task",
+				"taskCount_other": "{{count}} tasks",
+				"addTask": "Add task",
+				"empty": "No tasks on this day.",
+				"moveTask": "Move {{title}} to another date",
+				"moveTitle": "Move to date",
+				"moveDescription": "Pick the new due date for {{title}}. A start date moves with it, so the task keeps its length.",
+				"moved": "Moved to {{date}}"
+			}
 		},
 		"gantt": {
 			"pageTitle": "{{name}} – Gantt",
@@ -10010,6 +10073,290 @@
 			"error": "Couldn't change watching for this page"
 		}
 	},
+	"whiteboards": {
+		"history": {
+			"title": "Board history",
+			"description": "Who changed this board and when, newest first. Edits show once per person every 10 minutes.",
+			"empty": "Nothing has happened on this board yet.",
+			"loadError": "Couldn't load the board history.",
+			"loadMore": "Load more",
+			"someone": "Someone",
+			"entries": {
+				"created": "Created the board",
+				"renamed": "Renamed the board to “{{title}}”",
+				"iconChanged": "Changed the icon",
+				"locked": "Locked the board",
+				"unlocked": "Unlocked the board",
+				"archived": "Archived the board",
+				"unarchived": "Restored the board from the archive",
+				"published": "Published the board to the web",
+				"unpublished": "Stopped publishing the board",
+				"trashed": "Moved the board to the trash",
+				"restored": "Restored the board from the trash",
+				"edited": "Edited the board"
+			}
+		},
+		"section": {
+			"title": "Whiteboards"
+		},
+		"list": {
+			"documentTitle": "Whiteboards · {{project}}",
+			"newWhiteboard": "New whiteboard",
+			"moreCreateOptions": "More ways to create a whiteboard",
+			"untitled": "Untitled board",
+			"searchPlaceholder": "Search boards",
+			"searchClear": "Clear search",
+			"tabs": {
+				"active": "Boards",
+				"archived": "Archived"
+			},
+			"sort": {
+				"lastEdited": "Last edited",
+				"created": "Created",
+				"name": "Name"
+			},
+			"edited": "Edited {{time}}",
+			"editedBy": "Edited {{time}} by {{name}}",
+			"locked": "Locked",
+			"published": "Published",
+			"cardActions": "Actions for {{title}}",
+			"recentlyDeleted": "Recently deleted",
+			"loadError": "Couldn't load the whiteboards",
+			"retry": "Retry",
+			"unknownUser": "Someone",
+			"empty": {
+				"title": "No whiteboards yet",
+				"description": "Sketch ideas, plan a sprint or map the work with your team on a shared canvas.",
+				"archivedTitle": "No archived whiteboards",
+				"archivedDescription": "Boards you archive appear here.",
+				"noMatchTitle": "No boards match “{{query}}”",
+				"noMatchDescription": "Try other words. Search looks at board names and the text on boards.",
+				"clearSearch": "Clear search"
+			}
+		},
+		"templates": {
+			"title": "Start from a template",
+			"names": {
+				"blank": "Blank board",
+				"brainstorm": "Brainstorm",
+				"retrospective": "Retrospective",
+				"sprintPlanning": "Sprint planning",
+				"userStoryMap": "User story map",
+				"roadmap": "Roadmap",
+				"flowchart": "Flowchart",
+				"kanban": "Kanban sketch"
+			},
+			"descriptions": {
+				"blank": "An empty canvas.",
+				"brainstorm": "A central question with room for ideas around it.",
+				"retrospective": "What went well, what to improve and the actions.",
+				"sprintPlanning": "The sprint goal, the backlog, what's committed and the risks.",
+				"userStoryMap": "Activities across the top, stories by release below.",
+				"roadmap": "Now, next and later, side by side.",
+				"flowchart": "A start, a decision and the steps in between.",
+				"kanban": "To do, doing and done columns for sticky notes."
+			},
+			"labels": {
+				"brainstorm": {
+					"topic": "What are we solving?",
+					"ideas": "Ideas"
+				},
+				"retrospective": {
+					"title": "Retrospective",
+					"wentWell": "Went well",
+					"toImprove": "To improve",
+					"actions": "Actions"
+				},
+				"sprintPlanning": {
+					"title": "Sprint planning",
+					"goal": "Sprint goal",
+					"backlog": "Backlog",
+					"committed": "Committed",
+					"risks": "Risks"
+				},
+				"userStoryMap": {
+					"title": "User story map",
+					"activity": "Activity",
+					"story": "Story",
+					"release1": "Release 1",
+					"release2": "Release 2"
+				},
+				"roadmap": {
+					"title": "Roadmap",
+					"now": "Now",
+					"next": "Next",
+					"later": "Later"
+				},
+				"flowchart": {
+					"start": "Start",
+					"step": "Step",
+					"decision": "Decision?",
+					"yes": "Yes",
+					"no": "No",
+					"end": "End"
+				},
+				"kanban": {
+					"todo": "To do",
+					"doing": "Doing",
+					"done": "Done"
+				}
+			}
+		},
+		"actions": {
+			"history": "History",
+			"open": "Open",
+			"openInNewTab": "Open in new tab",
+			"copyLink": "Copy link",
+			"rename": "Rename",
+			"changeIcon": "Change icon",
+			"duplicate": "Duplicate",
+			"publish": "Publish to the web",
+			"managePublicLink": "Public link",
+			"share": "Share",
+			"lock": "Lock",
+			"unlock": "Unlock",
+			"archive": "Archive",
+			"unarchive": "Restore from archive",
+			"moveToTrash": "Move to trash",
+			"export": "Export",
+			"exportPng": "Export as PNG",
+			"exportSvg": "Export as SVG",
+			"exportFile": "Download board file",
+			"importFile": "Import board file",
+			"zoomToFit": "Zoom to fit",
+			"fullScreen": "Full screen",
+			"exitFullScreen": "Exit full screen",
+			"more": "More board options"
+		},
+		"dialogs": {
+			"cancel": "Cancel",
+			"rename": {
+				"title": "Rename whiteboard",
+				"label": "Name",
+				"save": "Save"
+			},
+			"icon": {
+				"title": "Choose an icon",
+				"description": "The emoji shows next to the board's name.",
+				"search": "Search emoji",
+				"noMatches": "No emoji match your search",
+				"remove": "Remove icon"
+			},
+			"duplicate": {
+				"copyTitle": "{{title}} (copy)"
+			},
+			"delete": {
+				"title": "Move this board to the trash?",
+				"description": "“{{title}}” moves to the project's Recently deleted list, where it can be restored until it is deleted permanently.",
+				"confirm": "Move to trash"
+			}
+		},
+		"toasts": {
+			"createError": "Couldn't create the whiteboard",
+			"renameError": "Couldn't rename the whiteboard",
+			"iconError": "Couldn't change the icon",
+			"duplicated": "Whiteboard duplicated",
+			"duplicateError": "Couldn't duplicate the whiteboard",
+			"open": "Open",
+			"locked": "Whiteboard locked",
+			"unlocked": "Whiteboard unlocked",
+			"lockError": "Couldn't change the lock",
+			"archived": "Whiteboard archived",
+			"unarchived": "Whiteboard restored",
+			"archiveError": "Couldn't archive the whiteboard",
+			"unarchiveError": "Couldn't restore the whiteboard",
+			"deleted": "Moved to Recently deleted",
+			"deleteError": "Couldn't move the whiteboard to the trash",
+			"linkCopied": "Link copied",
+			"exportError": "Couldn't export the board",
+			"imported": "Board file added",
+			"importError": "Couldn't read that file",
+			"imageType": "Only PNG, JPEG, GIF and WebP images can go on a board",
+			"imageUploadError": "Couldn't add the image"
+		},
+		"share": {
+			"title": "Share whiteboard",
+			"description": "Publish a read-only copy that anyone with the link can view. Turning it off revokes the link at once.",
+			"switchLabel": "Publish to the web",
+			"onHint": "Anyone with the link can view this board.",
+			"offHint": "Only people in this project can open this board.",
+			"linkLabel": "Public link",
+			"copyLink": "Copy link",
+			"copied": "Copied",
+			"openLink": "Open public link",
+			"privacyNote": "Viewers see the board and the titles and status of its task cards, nothing else from the project.",
+			"cannotPublish": "Only people who can manage all whiteboards can publish.",
+			"archivedHint": "Restore the board from the archive to publish it.",
+			"publishedToast": "Whiteboard published",
+			"unpublishedToast": "Public link turned off",
+			"error": "Couldn't change the public link",
+			"done": "Done"
+		},
+		"screen": {
+			"backToList": "Back to whiteboards",
+			"titleLabel": "Whiteboard name",
+			"readOnly": "Read-only",
+			"loadError": "Couldn't load this whiteboard",
+			"storedCopyError": "Couldn't load the saved copy of this board",
+			"notFound": {
+				"title": "Whiteboard not found",
+				"description": "It may have been deleted, or you don't have access to it.",
+				"back": "Back to whiteboards"
+			}
+		},
+		"banners": {
+			"locked": "This board is locked. Unlock it to make changes.",
+			"lockedBy": "{{name}} locked this board. Unlock it to make changes.",
+			"unlock": "Unlock",
+			"archived": "This board is archived and read-only.",
+			"restore": "Restore",
+			"readOnly": "You can view this board but not edit it.",
+			"storedCopy": "Can't reach the live board. Showing the last saved copy, read-only.",
+			"retry": "Retry",
+			"tooLarge": "This board is too large to save more changes.",
+			"reload": "Reload"
+		},
+		"collab": {
+			"offlineRejected": {
+				"locked": "The board was locked while you were offline, so your offline changes weren't saved.",
+				"archived": "The board was archived while you were offline, so your offline changes weren't saved.",
+				"readOnly": "You can't edit this board any more, so your offline changes weren't saved."
+			},
+			"replacedBy": "{{name}} replaced the board's content",
+			"deleted": "This whiteboard was deleted",
+			"signedOut": "You were signed out. Sign in again to keep editing.",
+			"roomFull": "Too many people have this board open. Try again later."
+		},
+		"publicView": {
+			"documentTitle": "Shared whiteboard",
+			"unavailableTitle": "This link isn't available",
+			"unavailableDescription": "The board may have been unpublished, or the link is wrong.",
+			"updated": "Updated {{date}}",
+			"readOnly": "Read-only"
+		},
+		"taskBoards": {
+			"title": "On whiteboards"
+		},
+		"workspace": {
+			"title": "Whiteboards",
+			"documentTitle": "All whiteboards",
+			"chooseProject": "Create in project",
+			"projectFilter": "Project",
+			"allProjects": "All projects",
+			"groupByProject": "Group by project",
+			"showAllProjects": "Show all projects",
+			"empty": {
+				"description": "Boards from every project you can see appear here.",
+				"noProjectsTitle": "No project has whiteboards yet",
+				"noProjectsDescription": "Turn on Whiteboards in a project's features to start drawing."
+			}
+		},
+		"commandPalette": {
+			"newWhiteboard": "New whiteboard",
+			"goToWhiteboards": "Go to whiteboards",
+			"goToAllWhiteboards": "Go to all whiteboards"
+		}
+	},
 	"accountSecurity": {
 		"platform": {
 			"save": "Save",
@@ -13034,7 +13381,9 @@
 			},
 			"downloads": {
 				"finished": "Downloaded {{file}}",
-				"failed": "Couldn't download {{file}}"
+				"failed": "Couldn't download {{file}}",
+				"showInFolder": "Click to show in folder",
+				"openFolder": "Click to open the Downloads folder"
 			},
 			"notifications": {
 				"releasedTitle": "Notifications are back on",
@@ -13084,6 +13433,350 @@
 				"retryIn_other": "Trying again in {{count}} seconds",
 				"switchServer": "Switch server"
 			}
+		}
+	},
+	"whiteboardEditor": {
+		"canvas": {
+			"label": "Whiteboard canvas",
+			"roleDescription": "whiteboard"
+		},
+		"actions": {
+			"cancel": "Cancel",
+			"save": "Save"
+		},
+		"tools": {
+			"label": "Tools",
+			"more": "More tools",
+			"select": "Select",
+			"hand": "Hand (pan)",
+			"rectangle": "Rectangle",
+			"diamond": "Diamond",
+			"ellipse": "Ellipse",
+			"arrow": "Arrow",
+			"line": "Line",
+			"draw": "Pen",
+			"text": "Text",
+			"sticky": "Sticky note",
+			"image": "Image",
+			"eraser": "Eraser",
+			"frame": "Frame",
+			"laser": "Laser pointer",
+			"task": "Task card",
+			"lock": "Keep tool active",
+			"lockTool": "Keep the tool active after drawing",
+			"unlockTool": "Return to Select after drawing",
+			"shape": "Shapes"
+		},
+		"commands": {
+			"undo": "Undo",
+			"redo": "Redo",
+			"history": "History",
+			"copy": "Copy",
+			"cut": "Cut",
+			"paste": "Paste",
+			"duplicate": "Duplicate",
+			"delete": "Delete",
+			"selectAll": "Select all",
+			"group": "Group",
+			"ungroup": "Ungroup",
+			"bringForward": "Bring forward",
+			"sendBackward": "Send backward",
+			"bringToFront": "Bring to front",
+			"sendToBack": "Send to back",
+			"toggleGrid": "Snap to grid",
+			"toggleSnap": "Snap to objects",
+			"toggleMinimap": "Show minimap",
+			"search": "Find on board",
+			"help": "Keyboard shortcuts",
+			"toggleElementLock": "Lock or unlock",
+			"lock": "Lock",
+			"unlock": "Unlock",
+			"flipHorizontal": "Flip horizontally",
+			"flipVertical": "Flip vertically",
+			"copyStyle": "Copy style",
+			"pasteStyle": "Paste style",
+			"alignLeft": "Align left",
+			"alignCenter": "Align centers horizontally",
+			"alignRight": "Align right",
+			"alignTop": "Align top",
+			"alignMiddle": "Align centers vertically",
+			"alignBottom": "Align bottom",
+			"distributeHorizontal": "Distribute horizontally",
+			"distributeVertical": "Distribute vertically",
+			"editText": "Edit text",
+			"editLink": "Edit link"
+		},
+		"zoom": {
+			"label": "Zoom",
+			"in": "Zoom in",
+			"out": "Zoom out",
+			"reset": "Reset zoom",
+			"resetTo": "Zoom {{percent}}%, reset to 100%",
+			"percent": "{{percent}}%",
+			"fit": "Zoom to fit",
+			"selection": "Zoom to selection"
+		},
+		"panel": {
+			"label": "Style",
+			"stroke": "Stroke",
+			"textColor": "Text color",
+			"stickyColor": "Note color",
+			"fill": "Background",
+			"fillStyle": "Fill",
+			"fillSolid": "Solid",
+			"fillHatch": "Hatch",
+			"fillCross": "Cross-hatch",
+			"fillNone": "None",
+			"strokeWidth": "Stroke width",
+			"thin": "Thin",
+			"medium": "Medium",
+			"bold": "Bold",
+			"extraBold": "Extra bold",
+			"strokeStyle": "Stroke style",
+			"solid": "Solid",
+			"dashed": "Dashed",
+			"dotted": "Dotted",
+			"sketch": "Sketchiness",
+			"sketchClean": "Clean",
+			"sketchLight": "Light",
+			"sketchRough": "Rough",
+			"corners": "Corners",
+			"cornersSharp": "Sharp",
+			"cornersRound": "Round",
+			"cornersRounder": "Rounder",
+			"font": "Font",
+			"fontHand": "Hand",
+			"fontSans": "Sans",
+			"fontMono": "Mono",
+			"fontSize": "Font size",
+			"sizeSmall": "S",
+			"sizeMedium": "M",
+			"sizeLarge": "L",
+			"sizeHuge": "XL",
+			"align": "Text align",
+			"alignLeft": "Left",
+			"alignCenter": "Center",
+			"alignRight": "Right",
+			"routing": "Line type",
+			"routingStraight": "Straight",
+			"routingCurved": "Curved",
+			"routingElbow": "Elbow",
+			"arrowheads": "Arrowheads",
+			"startHead": "Start",
+			"endHead": "End",
+			"headNone": "None",
+			"headArrow": "Arrow",
+			"headTriangle": "Triangle",
+			"headDot": "Dot",
+			"headBar": "Bar",
+			"opacity": "Opacity",
+			"layers": "Layers",
+			"alignment": "Align",
+			"actions": "Actions"
+		},
+		"colors": {
+			"black": "Black",
+			"red": "Red",
+			"green": "Green",
+			"blue": "Blue",
+			"orange": "Orange",
+			"purple": "Purple",
+			"teal": "Teal",
+			"grey": "Gray",
+			"yellow": "Yellow",
+			"pink": "Pink",
+			"none": "No color",
+			"custom": "Custom color"
+		},
+		"text": {
+			"label": "Text",
+			"frameName": "Frame name"
+		},
+		"link": {
+			"title": "Link",
+			"description": "Add a web address, or link to another element with #element= and its id.",
+			"label": "Address",
+			"invalid": "Enter a web address starting with https://, a mailto: address or an element link.",
+			"remove": "Remove link",
+			"open": "Open link",
+			"copyElementLink": "Copy link to element"
+		},
+		"search": {
+			"title": "Find on board",
+			"placeholder": "Search text on this board",
+			"noResults": "Nothing on this board matches.",
+			"results": "Matches"
+		},
+		"tasks": {
+			"pickerTitle": "Add task cards",
+			"searchPlaceholder": "Search tasks by title or key",
+			"noResults": "No tasks match.",
+			"results": "Tasks",
+			"onBoard": "On this board",
+			"addCards_one": "Add {{count}} card",
+			"addCards_other": "Add {{count}} cards",
+			"addCardsNone": "Add cards",
+			"pickHint": "Select one or more tasks to add them as cards.",
+			"openTask": "Open task",
+			"turnIntoTasks_one": "Turn into a task",
+			"turnIntoTasks_other": "Turn into {{count}} tasks",
+			"turnIntoTasksTitle": "Turn notes into tasks",
+			"turnIntoTasksDescription": "Each note becomes a task in this project and is replaced by a live task card.",
+			"column": "Column",
+			"titles": "Task titles",
+			"taskTitle": "Title of task {{index}}",
+			"emptyTitle": "Untitled note",
+			"skippedEmpty": "Notes without a title are skipped.",
+			"createTasks_one": "Create {{count}} task",
+			"createTasks_other": "Create {{count}} tasks",
+			"converted_one": "Created {{count}} task",
+			"converted_other": "Created {{count}} tasks",
+			"convertPartial_one": "{{count}} note could not become a task",
+			"convertPartial_other": "{{count}} notes could not become tasks",
+			"makeDependency": "Make dependency",
+			"removeDependency": "Remove dependency",
+			"removeDependencyPrompt": "Also remove the dependency between {{source}} and {{target}}?",
+			"removeDependenciesPrompt_one": "Also remove {{count}} dependency between these tasks?",
+			"removeDependenciesPrompt_other": "Also remove {{count}} dependencies between these tasks?",
+			"dependencyPair": "{{source}} blocks {{target}}",
+			"removeDependencyConfirm": "Remove",
+			"keepDependency": "Keep",
+			"dependencyPromptLabel": "Task dependency",
+			"dependencyRemoved_one": "Dependency removed",
+			"dependencyRemoved_other": "{{count}} dependencies removed",
+			"dependencyRemoveFailed": "The dependency could not be removed."
+		},
+		"crop": {
+			"section": "Image",
+			"start": "Crop image",
+			"finish": "Done cropping",
+			"reset": "Reset crop"
+		},
+		"presence": {
+			"label": "People on this board",
+			"follow": "Follow {{name}}",
+			"stopFollowing": "Stop following {{name}}",
+			"following": "Following {{name}}",
+			"stop": "Stop"
+		},
+		"minimap": {
+			"label": "Board overview"
+		},
+		"contextMenu": {
+			"label": "Canvas actions"
+		},
+		"notices": {
+			"readOnly": "This board is read-only.",
+			"copied": "Copied",
+			"linkCopied": "Link copied",
+			"pasteEmpty": "Nothing to paste",
+			"uploadFailed": "The image could not be uploaded.",
+			"uploading": "Uploading image…",
+			"imagesOff": "Images are not available on this board.",
+			"importFailed": "That file is not a Margaya board.",
+			"imported": "Board added",
+			"tooManyElements": "This board is full. Remove something before adding more.",
+			"dependencyCreated": "Dependency created",
+			"dependencyFailed": "The dependency could not be created.",
+			"cropUnavailable": "The image is still loading. Try cropping it again in a moment."
+		},
+		"help": {
+			"title": "Keyboard shortcuts",
+			"or": "or",
+			"sections": {
+				"tools": "Tools",
+				"view": "View",
+				"edit": "Edit",
+				"arrange": "Arrange",
+				"pointer": "Mouse and touch"
+			},
+			"pan": "Pan",
+			"zoomWheel": "Zoom",
+			"commitText": "Finish editing text",
+			"finishCrop": "Finish cropping",
+			"nudge": "Nudge",
+			"flowchart": "Add a connected shape",
+			"cycle": "Select the previous or next element",
+			"keepAspect": "Keep proportions or snap angle",
+			"fromCentre": "Resize from the center",
+			"duplicateDrag": "Duplicate while dragging",
+			"addToSelection": "Add to selection",
+			"enterGroup": "Edit inside a group, or edit text",
+			"noSnap": "Move without snapping",
+			"keys": {
+				"drag": "drag",
+				"wheel": "wheel",
+				"click": "click",
+				"doubleClick": "double-click",
+				"space": "Space",
+				"delete": "Delete",
+				"enter": "Enter",
+				"escape": "Esc",
+				"shift": "Shift",
+				"alt": "Alt"
+			}
+		},
+		"shapes": {
+			"library": "Shape library",
+			"label": "Shape",
+			"change": "Change shape",
+			"add": "Add shape",
+			"search": "Search shapes",
+			"noResults": "No shapes match",
+			"groups": {
+				"basic": "Basic",
+				"polygons": "Polygons",
+				"arrows": "Arrows",
+				"symbols": "Symbols"
+			},
+			"names": {
+				"triangle": "Triangle",
+				"rightTriangle": "Right triangle",
+				"pentagon": "Pentagon",
+				"hexagon": "Hexagon",
+				"octagon": "Octagon",
+				"star": "Star",
+				"parallelogram": "Parallelogram",
+				"trapezoid": "Trapezoid",
+				"plus": "Plus",
+				"cross": "Cross",
+				"heart": "Heart",
+				"cloud": "Cloud",
+				"speech": "Speech bubble",
+				"cylinder": "Cylinder",
+				"document": "Document",
+				"arrowRight": "Right arrow",
+				"arrowLeft": "Left arrow",
+				"arrowUp": "Up arrow",
+				"arrowDown": "Down arrow",
+				"arrowDouble": "Double arrow",
+				"chevron": "Chevron",
+				"moon": "Moon"
+			}
+		},
+		"pens": {
+			"label": "Pen style",
+			"pen": "Pen",
+			"marker": "Marker",
+			"highlighter": "Highlighter"
+		},
+		"background": {
+			"label": "Background",
+			"pattern": "Pattern",
+			"plain": "Plain",
+			"dots": "Dots",
+			"grid": "Grid",
+			"lines": "Lines",
+			"spacing": "Spacing",
+			"small": "Small",
+			"medium": "Medium",
+			"large": "Large",
+			"paper": "Paper color",
+			"white": "White",
+			"cream": "Cream",
+			"stone": "Stone",
+			"mist": "Mist",
+			"mint": "Mint"
 		}
 	}
 }
