@@ -48,7 +48,7 @@ function requests() {
 describe("MCP planning tools (cycles, modules, intake)", () => {
   it("registers all 33 tools, identical to the stdio package's file", () => {
     for (const name of PLANNING_TOOL_NAMES) expect(tools.has(name)).toBe(true);
-    expect(PLANNING_TOOL_NAMES).toHaveLength(44);
+    expect(PLANNING_TOOL_NAMES).toHaveLength(47);
 
     const root = resolve(__dirname, "../..");
     expect(

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// Cycle, module, page, intake, task template and task repeat tools (B13 K27). This file is kept byte-identical
+// Cycle, module, page, intake, task template, task repeat and whiteboard tools (B13 K27). This file is kept byte-identical
 // in apps/api/src/mcp/planning-tools.ts (the HTTP MCP server) and
 // packages/mcp/src/tools/planning-tools.ts (the stdio package); it depends on
 // zod only, and each catalog adapts its own registrar, client and results.
@@ -1227,6 +1227,215 @@ function registerProjectUpdateTools<Result>({
   );
 }
 
+type BoardElementJson = {
+  id?: unknown;
+  type?: unknown;
+  text?: unknown;
+  name?: unknown;
+  deleted?: unknown;
+  order?: unknown;
+  x?: unknown;
+  y?: unknown;
+  width?: unknown;
+  height?: unknown;
+};
+
+/** Sticky colours by name; any #rrggbb value works too. */
+const STICKY_COLORS: Record<string, string> = {
+  yellow: "#fff3bf",
+  orange: "#ffd8a8",
+  pink: "#fcc2d7",
+  purple: "#e5dbff",
+  blue: "#d0ebff",
+  green: "#d3f9d8",
+  gray: "#e9ecef",
+};
+
+const stickyColorSchema = z
+  .string()
+  .trim()
+  .refine(
+    (value) =>
+      Object.hasOwn(STICKY_COLORS, value) || /^#[0-9a-fA-F]{6}$/.test(value),
+    `Use ${Object.keys(STICKY_COLORS).join(", ")} or a #rrggbb colour`,
+  );
+
+/** 21 url-safe random characters, like the editor's element ids. */
+function newElementId(): string {
+  const alphabet =
+    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-";
+  const bytes = new Uint8Array(21);
+  globalThis.crypto.getRandomValues(bytes);
+  return [...bytes].map((byte) => alphabet[byte & 63]).join("");
+}
+
+function randomInt(): number {
+  const bytes = new Uint32Array(1);
+  globalThis.crypto.getRandomValues(bytes);
+  return (bytes[0] ?? 0) & 0x7fffffff;
+}
+
+function finiteNumber(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+/** The words on a board: text, sticky and shape labels, frame names. */
+function boardText(elements: readonly BoardElementJson[]): string {
+  const parts: string[] = [];
+  for (const element of elements) {
+    if (element.deleted === true) continue;
+    const words = element.type === "frame" ? element.name : element.text;
+    if (typeof words === "string" && words.trim()) parts.push(words.trim());
+  }
+  return parts.join("\n").slice(0, 100_000);
+}
+
+function registerWhiteboardTools<Result>({
+  register,
+  client,
+  run,
+}: PlanningToolAdapters<Result>) {
+  register(
+    "list_whiteboards",
+    {
+      description:
+        "List a project's whiteboards (title, icon, lock and archive state, element count, who updated them and when), most recently updated first, without their content. archived lists archived boards instead; query matches titles and the text on the boards. Needs the project's Whiteboards feature on.",
+      inputSchema: z.object({
+        projectId: nonEmptyString,
+        archived: z.boolean().optional(),
+        query: z.string().trim().max(200).optional(),
+      }),
+    },
+    async (args) =>
+      run(() =>
+        client.json(
+          withQuery("/api/whiteboard", {
+            projectId: args.projectId,
+            archived: args.archived ? "true" : undefined,
+            q: args.query,
+          }),
+        ),
+      ),
+  );
+
+  register(
+    "get_whiteboard",
+    {
+      description:
+        "Read a whiteboard: its title and state, the text on it (text, stickies, shape labels and frame names, one per line) and how many elements of each type it holds. Unsaved live edits are included when the board is open on the same server.",
+      inputSchema: z.object({ id: nonEmptyString }),
+    },
+    async (args) =>
+      run(async () => {
+        const board = (await client.json(
+          `/api/whiteboard/${id(args.id)}`,
+        )) as Record<string, unknown>;
+        const content = (await client.json(
+          `/api/whiteboard/${id(args.id)}/content`,
+        )) as { elements?: BoardElementJson[] };
+        const elements = (content.elements ?? []).filter(
+          (element) => element.deleted !== true,
+        );
+        const elementCounts: Record<string, number> = {};
+        for (const element of elements) {
+          const type =
+            typeof element.type === "string" ? element.type : "other";
+          elementCounts[type] = (elementCounts[type] ?? 0) + 1;
+        }
+        return {
+          id: board.id,
+          projectId: board.projectId,
+          title: board.title,
+          icon: board.icon,
+          isLocked: board.isLocked,
+          archivedAt: board.archivedAt,
+          updatedAt: board.updatedAt,
+          contentVersion: board.contentVersion,
+          elementCount: elements.length,
+          elementCounts,
+          text: boardText(elements),
+        };
+      }),
+  );
+
+  register(
+    "add_whiteboard_sticky",
+    {
+      description:
+        "Add a sticky note with text to a whiteboard; people with the board open see it at once. x and y are board coordinates of its top-left corner; without them it goes to the right of everything on the board. color is yellow (default), orange, pink, purple, blue, green, gray or a #rrggbb value. Needs whiteboard:update on a board that is not locked or archived.",
+      inputSchema: z.object({
+        id: nonEmptyString,
+        text: z.string().trim().min(1).max(20_000),
+        x: z.number().finite().min(-10_000_000).max(10_000_000).optional(),
+        y: z.number().finite().min(-10_000_000).max(10_000_000).optional(),
+        color: stickyColorSchema.optional(),
+      }),
+    },
+    async (args) =>
+      run(async () => {
+        const content = (await client.json(
+          `/api/whiteboard/${id(args.id)}/content`,
+        )) as { elements?: BoardElementJson[] };
+        const elements = (content.elements ?? []).filter(
+          (element) => element.deleted !== true,
+        );
+        // On top of everything, and to the right of it when not placed.
+        let topOrder = "";
+        let right: number | null = null;
+        let top: number | null = null;
+        for (const element of elements) {
+          if (typeof element.order === "string" && element.order > topOrder) {
+            topOrder = element.order;
+          }
+          const x = finiteNumber(element.x);
+          const y = finiteNumber(element.y);
+          const width = finiteNumber(element.width) ?? 0;
+          if (x !== null) right = Math.max(right ?? x + width, x + width);
+          if (y !== null) top = Math.min(top ?? y, y);
+        }
+        const order =
+          topOrder && topOrder.length < 60 ? `${topOrder}V` : topOrder || "a0";
+        const color = args.color ?? "yellow";
+        const sticky = {
+          id: newElementId(),
+          type: "sticky",
+          x: args.x ?? (right === null ? 0 : right + 40),
+          y: args.y ?? top ?? 0,
+          width: 200,
+          height: 200,
+          angle: 0,
+          strokeColor: "#1e1e1e",
+          fillColor: STICKY_COLORS[color] ?? color,
+          fillStyle: "solid",
+          strokeWidth: 1,
+          strokeStyle: "solid",
+          sketch: 1,
+          opacity: 100,
+          order,
+          groupIds: [],
+          frameId: null,
+          locked: false,
+          link: null,
+          seed: randomInt(),
+          version: 1,
+          nonce: randomInt(),
+          deleted: false,
+          updatedAt: Date.now(),
+          updatedBy: null,
+          text: args.text,
+          fontSize: 20,
+          fontFamily: "hand",
+          textAlign: "center",
+          verticalAlign: "middle",
+        };
+        return client.json(
+          `/api/whiteboard/${id(args.id)}/elements`,
+          jsonBody("POST", { elements: [sticky] }),
+        );
+      }),
+  );
+}
+
 /** The tools this module registers, in order (for tests and docs). */
 export const PLANNING_TOOL_NAMES = [
   "list_cycles",
@@ -1273,12 +1482,15 @@ export const PLANNING_TOOL_NAMES = [
   "get_project_update",
   "draft_project_update",
   "create_project_update",
+  "list_whiteboards",
+  "get_whiteboard",
+  "add_whiteboard_sticky",
 ] as const;
 
 /**
  * Registers the cycle (9), module (11), page (7), intake (6), task
- * template (2), task repeat (3), automation rule (2) and project update (4)
- * tools.
+ * template (2), task repeat (3), automation rule (2), project update (4)
+ * and whiteboard (3) tools.
  */
 export function registerPlanningTools<Result>(
   adapters: PlanningToolAdapters<Result>,
@@ -1291,4 +1503,5 @@ export function registerPlanningTools<Result>(
   registerRecurrenceTools(adapters);
   registerAutomationTools(adapters);
   registerProjectUpdateTools(adapters);
+  registerWhiteboardTools(adapters);
 }

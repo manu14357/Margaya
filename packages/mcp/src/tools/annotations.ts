@@ -45,6 +45,8 @@ const READ_ONLY = new Set([
   "get_project_update",
   // Computes a draft; saves nothing.
   "draft_project_update",
+  "list_whiteboards",
+  "get_whiteboard",
   "list_agents",
   "get_agent_run",
 ]);
@@ -73,11 +75,15 @@ const DESTRUCTIVE = new Set([
   "remove_task_recurrence",
 ]);
 
+// Writes whose names do not start with a known write verb.
+const ADDITIVE = new Set(["add_whiteboard_sticky"]);
+
 /** The annotations of a tool; unknown names are treated as destructive. */
 export function mcpToolAnnotations(name: string): McpToolAnnotations {
   const known =
     READ_ONLY.has(name) ||
     DESTRUCTIVE.has(name) ||
+    ADDITIVE.has(name) ||
     /^(create|update|set|move|attach|detach|restore|submit|run)_/.test(name);
   const readOnly = READ_ONLY.has(name);
   return {

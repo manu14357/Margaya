@@ -128,6 +128,7 @@ For headless or sandboxed environments where opening a browser is impractical, s
 - Pages: `list_pages`, `get_page`, `create_page`, `update_page`, `replace_page_content`, `set_page_archived`, `delete_page`
 - Intake: `list_intake_items`, `get_intake_item`, `submit_intake_item`, `update_intake_item`, `triage_intake_item`, `delete_intake_item`
 - Project updates: `list_project_updates`, `get_project_update`, `draft_project_update`, `create_project_update`
+- Whiteboards: `list_whiteboards`, `get_whiteboard`, `add_whiteboard_sticky`
 - Agents: `list_agents`, `run_agent`, `get_agent_run`
 
 Call `list_project_columns` before setting a status: the column slugs it
@@ -144,7 +145,9 @@ feature turned off. `triage_intake_item` checks what each action needs
 before calling the API: `accept` needs `status`, `snooze` needs a future
 `until`, and `duplicate` needs `duplicateOfTaskId`. Page content is markdown:
 `get_page` returns it as `contentMarkdown`, and `replace_page_content` replaces
-the whole document. `search` also finds pages.
+the whole document. `search` also finds pages. `get_whiteboard` returns a
+board's text and how many elements of each type it holds, not its drawing;
+`add_whiteboard_sticky` places a sticky note on top of the board.
 
 `run_agent` starts one of the workspace's Margaya agents on a task and returns
 the run's `id` and `status`; follow it with `get_agent_run`. Approve held
