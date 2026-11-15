@@ -61,7 +61,7 @@ export default function CalendarDayCell({
             }),
           })}
           onClick={(event) => onCreateTask(day, event.currentTarget)}
-          className="absolute top-1 left-1 z-20 flex size-5 items-center justify-center rounded-sm text-primary opacity-0 transition-opacity hover:bg-primary hover:text-primary-foreground focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/day:opacity-100 [@media(hover:none)]:opacity-100"
+          className="absolute top-1 left-1 z-20 flex size-5 items-center justify-center rounded-sm text-primary opacity-0 transition-opacity hover:bg-primary hover:text-primary-foreground focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-hover/day:opacity-100 pointer-coarse:top-0 pointer-coarse:left-0 pointer-coarse:size-11 [@media(hover:none)]:opacity-100"
         >
           <Plus className="size-3.5" />
         </button>

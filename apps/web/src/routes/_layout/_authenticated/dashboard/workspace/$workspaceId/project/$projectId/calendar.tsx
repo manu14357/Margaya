@@ -14,7 +14,11 @@ import { useUserPreferencesStore } from "@/store/user-preferences";
 
 type CalendarSearchParams = {
   taskId?: string;
+  /** The day selected in the touch month or week view, `yyyy-MM-dd`. */
+  day?: string;
 };
+
+const DAY_PARAM = /^\d{4}-\d{2}-\d{2}$/;
 
 export const Route = createFileRoute(
   "/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/calendar",
@@ -22,13 +26,17 @@ export const Route = createFileRoute(
   component: RouteComponent,
   validateSearch: (search: Record<string, unknown>): CalendarSearchParams => ({
     taskId: typeof search.taskId === "string" ? search.taskId : undefined,
+    day:
+      typeof search.day === "string" && DAY_PARAM.test(search.day)
+        ? search.day
+        : undefined,
   }),
 });
 
 function RouteComponent() {
   const { t } = useTranslation();
   const { projectId, workspaceId } = Route.useParams();
-  const { taskId } = Route.useSearch();
+  const { taskId, day } = Route.useSearch();
   const navigate = useNavigate();
   const { data: loadedProject, isLoading, isError } = useGetTasks(projectId);
   const {
@@ -44,14 +52,42 @@ function RouteComponent() {
 
   const handleOpenTask = useCallback(
     (nextTaskId: string) => {
-      navigate({ to: ".", search: { taskId: nextTaskId }, replace: true });
+      navigate({
+        to: ".",
+        search: (previous: CalendarSearchParams) => ({
+          ...previous,
+          taskId: nextTaskId,
+        }),
+        replace: true,
+      });
     },
     [navigate],
   );
 
   const handleCloseTaskSheet = useCallback(() => {
-    navigate({ to: ".", search: {}, replace: true });
+    navigate({
+      to: ".",
+      search: (previous: CalendarSearchParams) => ({
+        ...previous,
+        taskId: undefined,
+      }),
+      replace: true,
+    });
   }, [navigate]);
+
+  const handleSelectedDayChange = useCallback(
+    (nextDay: string | undefined) => {
+      navigate({
+        to: ".",
+        search: (previous: CalendarSearchParams) => ({
+          ...previous,
+          day: nextDay,
+        }),
+        replace: true,
+      });
+    },
+    [navigate],
+  );
 
   useRegisterShortcuts({
     sequentialShortcuts: {
@@ -105,6 +141,8 @@ function RouteComponent() {
         isLoading={isLoading}
         isError={isError}
         onOpenTask={handleOpenTask}
+        selectedDay={day}
+        onSelectedDayChange={handleSelectedDayChange}
         renderToolbar={(calendarToolbar) => (
           <ProjectFilterBar
             workspaceId={workspaceId}

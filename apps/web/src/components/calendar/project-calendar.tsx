@@ -1,7 +1,16 @@
-import { addMonths, addWeeks, startOfMonth } from "date-fns";
+import { addMonths, addWeeks, isSameDay, startOfMonth } from "date-fns";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { CalendarTask } from "@/components/calendar/calendar-task-bar";
 import CalendarToolbar from "@/components/calendar/calendar-toolbar";
+import CompactMonthGrid from "@/components/calendar/compact-month-grid";
+import {
+  effectiveSelectedDay,
+  groupTasksByDay,
+  parseDayKey,
+  toDayKey,
+} from "@/components/calendar/compact-month-model";
+import DayAgenda from "@/components/calendar/day-agenda";
 import DayCapturePopover, {
   type DayCaptureTarget,
 } from "@/components/calendar/day-capture-popover";
@@ -9,20 +18,28 @@ import MonthGrid from "@/components/calendar/month-grid";
 import {
   buildMonthWeeks,
   buildWeekDays,
+  visibleDayIndexes,
 } from "@/components/calendar/month-grid-model";
+import MoveToDateDialog from "@/components/calendar/move-to-date-dialog";
 import {
   ScheduleFieldPicker,
   useScheduleField,
 } from "@/components/calendar/schedule-field";
-import { buildStatusTones } from "@/components/calendar/status-tone";
+import {
+  buildStatusTones,
+  isClosedTone,
+  toneOf,
+} from "@/components/calendar/status-tone";
 import CreateTaskModal, {
   type CreateTaskPrefill,
 } from "@/components/shared/modals/create-task-modal";
 import { useUpdateTaskDates } from "@/hooks/mutations/task/use-update-task-dates";
 import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { getEntryColumn, withoutTriage } from "@/lib/column-groups";
+import { formatDate } from "@/lib/format";
 import { rescheduleTaskDates } from "@/lib/schedule-dates";
 import { toScheduledTasks } from "@/lib/task-schedule";
 import { toast } from "@/lib/toast";
@@ -38,6 +55,14 @@ const MAX_LANES_MOBILE = 2;
 const WEEK_LANES_DESKTOP = 10;
 const WEEK_LANES_MOBILE = 6;
 
+// Touch screens, and phones whatever the pointer, get the month (or the week,
+// as a strip of seven days) as a compact overview plus a day agenda: bars a
+// finger can hit would not fit in a day.
+const COMPACT_QUERY = "(pointer: coarse), (max-width: 639px)";
+// Below `sm` the toolbar takes a row of its own instead of crowding the
+// filter bar.
+const PHONE_QUERY = "(max-width: 639px)";
+
 type ProjectCalendarProps = {
   workspaceId: string;
   projectId: string;
@@ -50,6 +75,13 @@ type ProjectCalendarProps = {
   /** Places the calendar's own toolbar (period, mode) in the page's bar. */
   renderToolbar: (calendarToolbar: ReactNode) => ReactNode;
   onOpenTask: (taskId: string) => void;
+  /**
+   * The compact month or week's selected day (`yyyy-MM-dd`), when the page
+   * keeps it in its URL. Without `onSelectedDayChange` the calendar keeps it
+   * itself.
+   */
+  selectedDay?: string;
+  onSelectedDayChange?: (day: string | undefined) => void;
 };
 
 /**
@@ -66,10 +98,14 @@ export default function ProjectCalendar({
   isError,
   renderToolbar,
   onOpenTask,
+  selectedDay: selectedDayProp,
+  onSelectedDayChange,
 }: ProjectCalendarProps) {
   const { t } = useTranslation();
   const weekStartsOn = useUserPreferencesStore((state) => state.weekStartsOn);
   const isMobile = useIsMobile();
+  const isCompact = useMediaQuery(COMPACT_QUERY);
+  const isPhone = useMediaQuery(PHONE_QUERY);
   const mode = useScheduleViewPreferences((state) => state.calendarMode);
   const setMode = useScheduleViewPreferences((state) => state.setCalendarMode);
   const showWeekends = useScheduleViewPreferences(
@@ -84,7 +120,15 @@ export default function ProjectCalendar({
   const canCreate = Boolean(canCreateTasks());
   const { mutate: updateTaskDates } = useUpdateTaskDates();
   // Any day of the visible period: the month or week that contains it shows.
-  const [anchorDate, setAnchorDate] = useState(() => new Date());
+  const [anchorDate, setAnchorDate] = useState(
+    () => parseDayKey(selectedDayProp) ?? new Date(),
+  );
+  const [localSelectedDay, setLocalSelectedDay] = useState<string>();
+  const selectedDayKey = onSelectedDayChange
+    ? selectedDayProp
+    : localSelectedDay;
+  const setSelectedDayKey = onSelectedDayChange ?? setLocalSelectedDay;
+  const [moveTarget, setMoveTarget] = useState<CalendarTask | null>(null);
   const [captureTarget, setCaptureTarget] = useState<DayCaptureTarget | null>(
     null,
   );
@@ -130,21 +174,64 @@ export default function ProjectCalendar({
     [anchorDate, isWeek, weekStartsOn],
   );
 
+  // A new period starts with the default day (today, or the 1st) selected.
+  const clearSelectedDay = useCallback(() => {
+    if (selectedDayKey) setSelectedDayKey(undefined);
+  }, [selectedDayKey, setSelectedDayKey]);
+
   const handlePrevious = useCallback(() => {
+    clearSelectedDay();
     setAnchorDate((current) =>
       isWeek ? addWeeks(current, -1) : startOfMonth(addMonths(current, -1)),
     );
-  }, [isWeek]);
+  }, [isWeek, clearSelectedDay]);
 
   const handleNext = useCallback(() => {
+    clearSelectedDay();
     setAnchorDate((current) =>
       isWeek ? addWeeks(current, 1) : startOfMonth(addMonths(current, 1)),
     );
-  }, [isWeek]);
+  }, [isWeek, clearSelectedDay]);
 
   const handleToday = useCallback(() => {
+    clearSelectedDay();
     setAnchorDate(new Date());
-  }, []);
+  }, [clearSelectedDay]);
+
+  const visibleDays = useMemo(() => {
+    const indexes = visibleDayIndexes(weeks[0] ?? [], showWeekends);
+    return weeks.flatMap((week) => indexes.map((index) => week[index]));
+  }, [weeks, showWeekends]);
+  const tasksByDay = useMemo(
+    () =>
+      isCompact
+        ? groupTasksByDay(visibleDays, scheduledTasks, (task) =>
+            isClosedTone(toneOf(task.status, tones).tone),
+          )
+        : new Map<string, typeof scheduledTasks>(),
+    [isCompact, visibleDays, scheduledTasks, tones],
+  );
+  const selectedDay = effectiveSelectedDay(
+    parseDayKey(selectedDayKey),
+    visibleDays,
+    isWeek ? undefined : visibleMonth,
+  );
+
+  // Switching between month and week keeps the selected day in view.
+  const handleModeChange = useCallback(
+    (nextMode: typeof mode) => {
+      if (isCompact) setAnchorDate(selectedDay);
+      setMode(nextMode);
+    },
+    [isCompact, selectedDay, setMode],
+  );
+  const statusNames = useMemo(
+    () =>
+      new Map(
+        loadedProject?.columns.map((column) => [column.slug, column.name]),
+      ),
+    [loadedProject?.columns],
+  );
 
   const handleReschedule = useCallback(
     (movedTaskId: string, grabbedDay: Date, dropDay: Date) => {
@@ -164,12 +251,43 @@ export default function ProjectCalendar({
     [project, updateTaskDates, t],
   );
 
+  const handleMoveTask = useCallback(
+    (moved: CalendarTask, day: Date) => {
+      setMoveTarget(null);
+      if (isSameDay(moved.scheduleEnd, day)) return;
+      const task = [
+        ...(project?.columns.flatMap((column) => column.tasks) ?? []),
+        ...(project?.plannedTasks ?? []),
+      ].find((candidate) => candidate.id === moved.id);
+      if (!task) return;
+      // The picked day becomes the last day; a start date keeps the span.
+      updateTaskDates(
+        { task, ...rescheduleTaskDates(task, moved.scheduleEnd, day) },
+        {
+          onSuccess: () =>
+            toast.success(
+              t("tasks:calendar.touch.moved", {
+                date: formatDate(day, {
+                  weekday: "long",
+                  month: "long",
+                  day: "numeric",
+                }),
+              }),
+            ),
+          onError: (error) =>
+            toast.error(error.message || t("tasks:calendar.rescheduleError")),
+        },
+      );
+    },
+    [project, updateTaskDates, t],
+  );
+
   const calendarToolbar = (
     <CalendarToolbar
       visibleDate={isWeek ? (weeks[0]?.[0] ?? anchorDate) : visibleMonth}
       visibleEnd={isWeek ? weeks[0]?.[6] : undefined}
       mode={mode}
-      onModeChange={setMode}
+      onModeChange={handleModeChange}
       showWeekends={showWeekends}
       onShowWeekendsChange={setShowWeekends}
       onPrevious={handlePrevious}
@@ -187,7 +305,12 @@ export default function ProjectCalendar({
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-background">
-      {renderToolbar(calendarToolbar)}
+      {renderToolbar(isPhone ? null : calendarToolbar)}
+      {isPhone ? (
+        <div className="shrink-0 border-border/80 border-b px-2 py-1.5 pointer-coarse:py-2">
+          {calendarToolbar}
+        </div>
+      ) : null}
 
       {isLoading ? (
         <div className="border-border/80 border-b px-4 py-2 text-center">
@@ -212,27 +335,61 @@ export default function ProjectCalendar({
         </div>
       ) : null}
 
-      <MonthGrid
-        weeks={weeks}
-        tasks={scheduledTasks}
-        visibleMonth={isWeek ? undefined : visibleMonth}
-        maxLanes={
-          isWeek
-            ? isMobile
-              ? WEEK_LANES_MOBILE
-              : WEEK_LANES_DESKTOP
-            : isMobile
-              ? MAX_LANES_MOBILE
-              : MAX_LANES_DESKTOP
-        }
-        projectSlug={project?.slug}
-        onOpenTask={onOpenTask}
-        showWeekends={showWeekends}
-        canEditDates={canEditDates}
-        onReschedule={handleReschedule}
-        onCreateTask={canCreate ? handleCreateTask : undefined}
-        tones={tones}
-        field={scheduleField.display}
+      {isCompact ? (
+        <div className="flex min-h-0 flex-1 flex-col overflow-auto overscroll-contain lg:flex-row lg:overflow-hidden">
+          <div className="shrink-0 lg:min-h-0 lg:flex-1 lg:overflow-auto">
+            <CompactMonthGrid
+              weeks={weeks}
+              visibleMonth={isWeek ? undefined : visibleMonth}
+              tasksByDay={tasksByDay}
+              selectedDay={selectedDay}
+              onSelectDay={(day) => setSelectedDayKey(toDayKey(day))}
+              showWeekends={showWeekends}
+              tones={tones}
+            />
+          </div>
+          <DayAgenda
+            day={selectedDay}
+            tasks={tasksByDay.get(toDayKey(selectedDay)) ?? []}
+            projectSlug={project?.slug}
+            tones={tones}
+            statusNames={statusNames}
+            isLoading={isLoading}
+            onOpenTask={onOpenTask}
+            onCreateTask={canCreate ? handleCreateTask : undefined}
+            onMoveTask={canEditDates ? setMoveTarget : undefined}
+            className="border-border/80 border-t lg:w-80 lg:shrink-0 lg:overflow-auto lg:border-t-0 lg:border-l xl:w-96"
+          />
+        </div>
+      ) : (
+        <MonthGrid
+          weeks={weeks}
+          tasks={scheduledTasks}
+          visibleMonth={isWeek ? undefined : visibleMonth}
+          maxLanes={
+            isWeek
+              ? isMobile
+                ? WEEK_LANES_MOBILE
+                : WEEK_LANES_DESKTOP
+              : isMobile
+                ? MAX_LANES_MOBILE
+                : MAX_LANES_DESKTOP
+          }
+          projectSlug={project?.slug}
+          onOpenTask={onOpenTask}
+          showWeekends={showWeekends}
+          canEditDates={canEditDates}
+          onReschedule={handleReschedule}
+          onCreateTask={canCreate ? handleCreateTask : undefined}
+          tones={tones}
+          field={scheduleField.display}
+        />
+      )}
+
+      <MoveToDateDialog
+        task={moveTarget}
+        onClose={() => setMoveTarget(null)}
+        onMove={handleMoveTask}
       />
 
       {entryColumn ? (

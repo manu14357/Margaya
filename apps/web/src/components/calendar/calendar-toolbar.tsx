@@ -77,8 +77,9 @@ export default function CalendarToolbar({
       >
         {periodLabel}
       </span>
-      {/* The wider gap on touch keeps the 44px hit areas from overlapping. */}
-      <div className="flex shrink-0 items-center gap-1 pointer-coarse:gap-2">
+      {/* The wider gap on touch keeps the 44px hit areas, which extend past
+          the 28px buttons, from overlapping. */}
+      <div className="flex shrink-0 items-center gap-1 pointer-coarse:gap-4">
         <Button
           variant="outline"
           size="icon-xs"

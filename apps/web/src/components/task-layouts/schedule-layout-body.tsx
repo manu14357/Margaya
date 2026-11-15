@@ -61,11 +61,14 @@ export default function ScheduleLayoutBody({
         isLoading={isLoading}
         isError={isError}
         onOpenTask={openTask}
-        renderToolbar={(calendarToolbar) => (
-          <div className="flex shrink-0 items-center justify-end border-border/80 border-b px-2 py-1.5 md:px-3">
-            {calendarToolbar}
-          </div>
-        )}
+        renderToolbar={(calendarToolbar) =>
+          // On phones the calendar draws its toolbar on a row of its own.
+          calendarToolbar ? (
+            <div className="flex shrink-0 items-center justify-end border-border/80 border-b px-2 py-1.5 md:px-3">
+              {calendarToolbar}
+            </div>
+          ) : null
+        }
       />
     );
   }

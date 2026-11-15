@@ -225,7 +225,7 @@ export default function MonthGrid({
                     <div
                       key={`number-${day.toISOString()}`}
                       style={{ gridColumn: position + 1, gridRow: 1 }}
-                      className="pointer-events-none z-10 flex h-7 justify-end px-1 py-1"
+                      className="pointer-events-none z-10 flex h-7 justify-end px-1 py-1 pointer-coarse:h-11"
                     >
                       {/* The week view shows its dates in the column headers. */}
                       {visibleMonth ? (
