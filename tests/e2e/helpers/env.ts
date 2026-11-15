@@ -39,8 +39,12 @@ export const E2E_DATABASE_URL =
   process.env.E2E_DATABASE_URL ??
   `postgresql://margaya:margaya@127.0.0.1:55432/${E2E_DATABASE_NAME}`;
 
-export const MAILPIT_URL = "http://127.0.0.1:8025";
-export const MAILPIT_SMTP_PORT = 1025;
+// E2E_MAILPIT_URL and E2E_MAILPIT_SMTP_PORT point a second suite at its own
+// MailPit.
+export const MAILPIT_URL =
+  process.env.E2E_MAILPIT_URL ?? "http://127.0.0.1:8025";
+export const MAILPIT_SMTP_PORT =
+  Number(process.env.E2E_MAILPIT_SMTP_PORT) || 1025;
 
 export const DEV_API_URL = process.env.SEED_API_URL ?? "http://localhost:1337";
 export const DEV_WEB_URL =
