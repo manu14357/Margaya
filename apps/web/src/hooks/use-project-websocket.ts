@@ -13,6 +13,7 @@ import { pageQueryKeys } from "@/hooks/queries/page/page-query-keys";
 import { projectUpdateKeys } from "@/hooks/queries/project-update/use-project-updates";
 import { descriptionVersionKeys } from "@/hooks/queries/task-description-version/keys";
 import { trashQueryKeys } from "@/hooks/queries/trash/trash-query-keys";
+import { whiteboardQueryKeys } from "@/hooks/queries/whiteboard/whiteboard-query-keys";
 import { authClient } from "@/lib/auth-client";
 import { handlePageHint } from "@/lib/pages/page-realtime";
 import {
@@ -22,6 +23,7 @@ import {
 import { onWake, reconnectDelay } from "@/lib/realtime-reconnect";
 import { onSignOut } from "@/lib/sign-out";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
+import { handleWhiteboardHint } from "@/lib/whiteboards/whiteboard-realtime";
 
 export function getWsUrl(projectId: string) {
   const base = getApiUrl("ws");
@@ -95,6 +97,9 @@ function catchUpProject(
     pageQueryKeys.list(projectId),
     pageQueryKeys.taskReferences(),
     projectUpdateKeys.project(projectId),
+    whiteboardQueryKeys.projectLists(projectId),
+    whiteboardQueryKeys.taskBoards(),
+    whiteboardQueryKeys.activities(),
   ]) {
     queryClient.invalidateQueries({ queryKey });
   }
@@ -239,6 +244,9 @@ export function useProjectWebSocket(projectId: string) {
           // Pages changed (lists, trees, headers, favorites); open editors
           // get content over their own page socket.
           if (handlePageHint(queryClient, message)) return;
+          // A board was created, renamed, saved, locked, archived, published
+          // or trashed; open boards get content over their own socket.
+          if (handleWhiteboardHint(queryClient, message)) return;
           // Column and project-setting changes are refetch hints; statistics
           // live on the project queries, so those refresh too.
           if (message.type === "COLUMNS_UPDATED") {

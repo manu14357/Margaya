@@ -24,6 +24,9 @@ describe("resolveDestination", () => {
     [`${ws}/project/p1/cycles/c1`, "projects"],
     [`${ws}/project/p1/pages`, "pages"],
     [`${ws}/project/p1/pages/pg1`, "pages"],
+    [`${ws}/whiteboards`, "whiteboards"],
+    [`${ws}/project/p1/whiteboards`, "whiteboards"],
+    [`${ws}/project/p1/whiteboards/wb1`, "whiteboards"],
     [`${ws}/analytics`, "analytics"],
     [`${ws}/project/p1/analytics`, "projects"],
     [`${ws}/members`, "settings"],
@@ -41,6 +44,7 @@ describe("destinationPath", () => {
     expect(destinationPath("my-work", "w1")).toBe(`${ws}/my-work`);
     expect(destinationPath("projects", "w1")).toBe(`${ws}/projects`);
     expect(destinationPath("analytics", "w1")).toBe(`${ws}/analytics`);
+    expect(destinationPath("whiteboards", "w1")).toBe(`${ws}/whiteboards`);
     expect(destinationPath("settings", "w1")).toBe(
       "/dashboard/settings/account/information",
     );

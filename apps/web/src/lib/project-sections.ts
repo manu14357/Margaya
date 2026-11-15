@@ -4,7 +4,7 @@ import type { ProjectFeatureKey } from "@/constants/project-features";
 
 /**
  * Project sections: the tabs under the project header (Tasks, Cycles,
- * Modules, Views, Pages, Intake).
+ * Modules, Views, Pages, Whiteboards, Intake).
  *
  * Tasks is built in. A feature slice registers its section from its own file:
  *
@@ -35,6 +35,7 @@ export const PROJECT_SECTION_ORDER = [
   "modules",
   "views",
   "pages",
+  "whiteboards",
   "intake",
   "updates",
   "analytics",

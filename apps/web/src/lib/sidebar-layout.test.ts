@@ -18,6 +18,7 @@ describe("sidebar layout", () => {
       "my-work",
       "projects",
       "pages",
+      "whiteboards",
       "analytics",
     ]);
     expect(visiblePanelSections(undefined)).toEqual([
@@ -48,6 +49,7 @@ describe("sidebar layout", () => {
       "home",
       "my-work",
       "pages",
+      "whiteboards",
     ]);
     expect(visiblePanelSections(layout)).toEqual(["projects", "favorites"]);
   });

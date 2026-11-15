@@ -29,6 +29,7 @@ import { Route as DeviceApproveRouteImport } from './routes/device/approve'
 import { Route as McpAuthorizeRouteImport } from './routes/mcp.authorize'
 import { Route as PublicPageTokenRouteImport } from './routes/public-page.$token'
 import { Route as PublicProjectTokenRouteImport } from './routes/public-project.$token'
+import { Route as PublicWhiteboardTokenRouteImport } from './routes/public-whiteboard.$token'
 import { Route as RequestFormTokenRouteImport } from './routes/request-form.$token'
 import { Route as LayoutAuthenticatedDashboardRouteImport } from './routes/_layout/_authenticated/dashboard'
 import { Route as LayoutAuthenticatedInvitationsRouteImport } from './routes/_layout/_authenticated/invitations'
@@ -85,6 +86,7 @@ import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdMyWorkRouteImp
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectsRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/projects'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdSearchRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/search'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/stickies'
+import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/whiteboards'
 import { Route as LayoutAuthenticatedDashboardSettingsProjectsProjectIdEstimatesRouteImport } from './routes/_layout/_authenticated/dashboard/settings/projects/$projectId/estimates'
 import { Route as LayoutAuthenticatedDashboardSettingsProjectsProjectIdFeaturesRouteImport } from './routes/_layout/_authenticated/dashboard/settings/projects/$projectId/features'
 import { Route as LayoutAuthenticatedDashboardSettingsProjectsProjectIdGeneralRouteImport } from './routes/_layout/_authenticated/dashboard/settings/projects/$projectId/general'
@@ -118,6 +120,8 @@ import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProject
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdTaskTaskIdRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId_'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsIndexRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/views/index'
 import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewIdRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/views/$viewId'
+import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/index'
+import { Route as LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRouteImport } from './routes/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -215,6 +219,11 @@ const PublicPageTokenRoute = PublicPageTokenRouteImport.update({
 const PublicProjectTokenRoute = PublicProjectTokenRouteImport.update({
   id: '/public-project/$token',
   path: '/public-project/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicWhiteboardTokenRoute = PublicWhiteboardTokenRouteImport.update({
+  id: '/public-whiteboard/$token',
+  path: '/public-whiteboard/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RequestFormTokenRoute = RequestFormTokenRouteImport.update({
@@ -552,6 +561,15 @@ const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRoute =
     path: '/stickies',
     getParentRoute: () => LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute,
   } as any)
+const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRoute =
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRouteImport.update(
+    {
+      id: '/whiteboards',
+      path: '/whiteboards',
+      getParentRoute: () =>
+        LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute,
+    } as any,
+  )
 const LayoutAuthenticatedDashboardSettingsProjectsProjectIdEstimatesRoute =
   LayoutAuthenticatedDashboardSettingsProjectsProjectIdEstimatesRouteImport.update(
     {
@@ -832,6 +850,24 @@ const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewI
         LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute,
     } as any,
   )
+const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRoute =
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRouteImport.update(
+    {
+      id: '/project/$projectId/whiteboards/',
+      path: '/project/$projectId/whiteboards/',
+      getParentRoute: () =>
+        LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute,
+    } as any,
+  )
+const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRoute =
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRouteImport.update(
+    {
+      id: '/project/$projectId/whiteboards/$whiteboardId',
+      path: '/project/$projectId/whiteboards/$whiteboardId',
+      getParentRoute: () =>
+        LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute,
+    } as any,
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -851,6 +887,7 @@ export interface FileRoutesByFullPath {
   '/mcp/authorize': typeof McpAuthorizeRoute
   '/public-page/$token': typeof PublicPageTokenRoute
   '/public-project/$token': typeof PublicProjectTokenRoute
+  '/public-whiteboard/$token': typeof PublicWhiteboardTokenRoute
   '/request-form/$token': typeof RequestFormTokenRoute
   '/device/': typeof DeviceIndexRoute
   '/dashboard': typeof LayoutAuthenticatedDashboardRouteWithChildren
@@ -906,6 +943,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/workspace/$workspaceId/projects': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectsRoute
   '/dashboard/workspace/$workspaceId/search': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdSearchRoute
   '/dashboard/workspace/$workspaceId/stickies': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRoute
+  '/dashboard/workspace/$workspaceId/whiteboards': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRoute
   '/dashboard/settings/instance/': typeof LayoutAuthenticatedDashboardSettingsInstanceIndexRoute
   '/dashboard/workspace/$workspaceId/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRoute
   '/dashboard/settings/projects/$projectId/estimates': typeof LayoutAuthenticatedDashboardSettingsProjectsProjectIdEstimatesRoute
@@ -936,11 +974,13 @@ export interface FileRoutesByFullPath {
   '/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesPageIdRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdTaskTaskIdRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/views/$viewId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewIdRoute
+  '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/cycles/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdCyclesIndexRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/intake/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdIntakeIndexRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/modules/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdModulesIndexRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/pages/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesIndexRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/views/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsIndexRoute
+  '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -959,6 +999,7 @@ export interface FileRoutesByTo {
   '/mcp/authorize': typeof McpAuthorizeRoute
   '/public-page/$token': typeof PublicPageTokenRoute
   '/public-project/$token': typeof PublicProjectTokenRoute
+  '/public-whiteboard/$token': typeof PublicWhiteboardTokenRoute
   '/request-form/$token': typeof RequestFormTokenRoute
   '/device': typeof DeviceIndexRoute
   '/invitations': typeof LayoutAuthenticatedInvitationsRoute
@@ -1011,6 +1052,7 @@ export interface FileRoutesByTo {
   '/dashboard/workspace/$workspaceId/projects': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectsRoute
   '/dashboard/workspace/$workspaceId/search': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdSearchRoute
   '/dashboard/workspace/$workspaceId/stickies': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRoute
+  '/dashboard/workspace/$workspaceId/whiteboards': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRoute
   '/dashboard/settings/instance': typeof LayoutAuthenticatedDashboardSettingsInstanceIndexRoute
   '/dashboard/workspace/$workspaceId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRoute
   '/dashboard/settings/projects/$projectId/estimates': typeof LayoutAuthenticatedDashboardSettingsProjectsProjectIdEstimatesRoute
@@ -1041,11 +1083,13 @@ export interface FileRoutesByTo {
   '/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesPageIdRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdTaskTaskIdRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/views/$viewId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewIdRoute
+  '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/cycles': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdCyclesIndexRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/intake': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdIntakeIndexRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/modules': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdModulesIndexRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/pages': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesIndexRoute
   '/dashboard/workspace/$workspaceId/project/$projectId/views': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsIndexRoute
+  '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -1068,6 +1112,7 @@ export interface FileRoutesById {
   '/mcp/authorize': typeof McpAuthorizeRoute
   '/public-page/$token': typeof PublicPageTokenRoute
   '/public-project/$token': typeof PublicProjectTokenRoute
+  '/public-whiteboard/$token': typeof PublicWhiteboardTokenRoute
   '/request-form/$token': typeof RequestFormTokenRoute
   '/device/': typeof DeviceIndexRoute
   '/_layout/_authenticated/dashboard': typeof LayoutAuthenticatedDashboardRouteWithChildren
@@ -1123,6 +1168,7 @@ export interface FileRoutesById {
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/projects': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectsRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/search': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdSearchRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/stickies': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRoute
+  '/_layout/_authenticated/dashboard/workspace/$workspaceId/whiteboards': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRoute
   '/_layout/_authenticated/dashboard/settings/instance/': typeof LayoutAuthenticatedDashboardSettingsInstanceIndexRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRoute
   '/_layout/_authenticated/dashboard/settings/projects/$projectId/estimates': typeof LayoutAuthenticatedDashboardSettingsProjectsProjectIdEstimatesRoute
@@ -1153,11 +1199,13 @@ export interface FileRoutesById {
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesPageIdRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId_': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdTaskTaskIdRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/views/$viewId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewIdRoute
+  '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/cycles/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdCyclesIndexRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/intake/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdIntakeIndexRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/modules/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdModulesIndexRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/pages/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesIndexRoute
   '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/views/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsIndexRoute
+  '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/': typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -1179,6 +1227,7 @@ export interface FileRouteTypes {
     | '/mcp/authorize'
     | '/public-page/$token'
     | '/public-project/$token'
+    | '/public-whiteboard/$token'
     | '/request-form/$token'
     | '/device/'
     | '/dashboard'
@@ -1234,6 +1283,7 @@ export interface FileRouteTypes {
     | '/dashboard/workspace/$workspaceId/projects'
     | '/dashboard/workspace/$workspaceId/search'
     | '/dashboard/workspace/$workspaceId/stickies'
+    | '/dashboard/workspace/$workspaceId/whiteboards'
     | '/dashboard/settings/instance/'
     | '/dashboard/workspace/$workspaceId/'
     | '/dashboard/settings/projects/$projectId/estimates'
@@ -1264,11 +1314,13 @@ export interface FileRouteTypes {
     | '/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId'
     | '/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId'
     | '/dashboard/workspace/$workspaceId/project/$projectId/views/$viewId'
+    | '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId'
     | '/dashboard/workspace/$workspaceId/project/$projectId/cycles/'
     | '/dashboard/workspace/$workspaceId/project/$projectId/intake/'
     | '/dashboard/workspace/$workspaceId/project/$projectId/modules/'
     | '/dashboard/workspace/$workspaceId/project/$projectId/pages/'
     | '/dashboard/workspace/$workspaceId/project/$projectId/views/'
+    | '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -1287,6 +1339,7 @@ export interface FileRouteTypes {
     | '/mcp/authorize'
     | '/public-page/$token'
     | '/public-project/$token'
+    | '/public-whiteboard/$token'
     | '/request-form/$token'
     | '/device'
     | '/invitations'
@@ -1339,6 +1392,7 @@ export interface FileRouteTypes {
     | '/dashboard/workspace/$workspaceId/projects'
     | '/dashboard/workspace/$workspaceId/search'
     | '/dashboard/workspace/$workspaceId/stickies'
+    | '/dashboard/workspace/$workspaceId/whiteboards'
     | '/dashboard/settings/instance'
     | '/dashboard/workspace/$workspaceId'
     | '/dashboard/settings/projects/$projectId/estimates'
@@ -1369,11 +1423,13 @@ export interface FileRouteTypes {
     | '/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId'
     | '/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId'
     | '/dashboard/workspace/$workspaceId/project/$projectId/views/$viewId'
+    | '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId'
     | '/dashboard/workspace/$workspaceId/project/$projectId/cycles'
     | '/dashboard/workspace/$workspaceId/project/$projectId/intake'
     | '/dashboard/workspace/$workspaceId/project/$projectId/modules'
     | '/dashboard/workspace/$workspaceId/project/$projectId/pages'
     | '/dashboard/workspace/$workspaceId/project/$projectId/views'
+    | '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards'
   id:
     | '__root__'
     | '/'
@@ -1395,6 +1451,7 @@ export interface FileRouteTypes {
     | '/mcp/authorize'
     | '/public-page/$token'
     | '/public-project/$token'
+    | '/public-whiteboard/$token'
     | '/request-form/$token'
     | '/device/'
     | '/_layout/_authenticated/dashboard'
@@ -1450,6 +1507,7 @@ export interface FileRouteTypes {
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/projects'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/search'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/stickies'
+    | '/_layout/_authenticated/dashboard/workspace/$workspaceId/whiteboards'
     | '/_layout/_authenticated/dashboard/settings/instance/'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/'
     | '/_layout/_authenticated/dashboard/settings/projects/$projectId/estimates'
@@ -1480,11 +1538,13 @@ export interface FileRouteTypes {
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/pages/$pageId'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId_'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/views/$viewId'
+    | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/cycles/'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/intake/'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/modules/'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/pages/'
     | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/views/'
+    | '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1498,6 +1558,7 @@ export interface RootRouteChildren {
   McpAuthorizeRoute: typeof McpAuthorizeRoute
   PublicPageTokenRoute: typeof PublicPageTokenRoute
   PublicProjectTokenRoute: typeof PublicProjectTokenRoute
+  PublicWhiteboardTokenRoute: typeof PublicWhiteboardTokenRoute
   RequestFormTokenRoute: typeof RequestFormTokenRoute
   InvitationAcceptInviteIdRoute: typeof InvitationAcceptInviteIdRoute
 }
@@ -1642,6 +1703,13 @@ declare module '@tanstack/react-router' {
       path: '/public-project/$token'
       fullPath: '/public-project/$token'
       preLoaderRoute: typeof PublicProjectTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/public-whiteboard/$token': {
+      id: '/public-whiteboard/$token'
+      path: '/public-whiteboard/$token'
+      fullPath: '/public-whiteboard/$token'
+      preLoaderRoute: typeof PublicWhiteboardTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/request-form/$token': {
@@ -2036,6 +2104,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute
     }
+    '/_layout/_authenticated/dashboard/workspace/$workspaceId/whiteboards': {
+      id: '/_layout/_authenticated/dashboard/workspace/$workspaceId/whiteboards'
+      path: '/whiteboards'
+      fullPath: '/dashboard/workspace/$workspaceId/whiteboards'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute
+    }
     '/_layout/_authenticated/dashboard/settings/projects/$projectId/estimates': {
       id: '/_layout/_authenticated/dashboard/settings/projects/$projectId/estimates'
       path: '/$projectId/estimates'
@@ -2267,6 +2342,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewIdRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute
     }
+    '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/': {
+      id: '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/'
+      path: '/project/$projectId/whiteboards'
+      fullPath: '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute
+    }
+    '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId': {
+      id: '/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId'
+      path: '/project/$projectId/whiteboards/$whiteboardId'
+      fullPath: '/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRoute
+    }
   }
 }
 
@@ -2471,6 +2560,7 @@ interface LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren {
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectsRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectsRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdSearchRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdSearchRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRoute
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProfileUserIdRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProfileUserIdRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdTaskTaskKeyRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdTaskTaskKeyRoute
@@ -2490,11 +2580,13 @@ interface LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren {
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesPageIdRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesPageIdRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdTaskTaskIdRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdTaskTaskIdRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewIdRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewIdRoute
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdCyclesIndexRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdCyclesIndexRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdIntakeIndexRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdIntakeIndexRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdModulesIndexRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdModulesIndexRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesIndexRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesIndexRoute
   LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsIndexRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsIndexRoute
+  LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRoute: typeof LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRoute
 }
 
 const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren: LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren =
@@ -2521,6 +2613,8 @@ const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren: LayoutAuthe
       LayoutAuthenticatedDashboardWorkspaceWorkspaceIdSearchRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRoute:
       LayoutAuthenticatedDashboardWorkspaceWorkspaceIdStickiesRoute,
+    LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRoute:
+      LayoutAuthenticatedDashboardWorkspaceWorkspaceIdWhiteboardsRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRoute:
       LayoutAuthenticatedDashboardWorkspaceWorkspaceIdIndexRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProfileUserIdRoute:
@@ -2559,6 +2653,8 @@ const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren: LayoutAuthe
       LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdTaskTaskIdRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewIdRoute:
       LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsViewIdRoute,
+    LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRoute:
+      LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsWhiteboardIdRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdCyclesIndexRoute:
       LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdCyclesIndexRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdIntakeIndexRoute:
@@ -2569,6 +2665,8 @@ const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteChildren: LayoutAuthe
       LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdPagesIndexRoute,
     LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsIndexRoute:
       LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdViewsIndexRoute,
+    LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRoute:
+      LayoutAuthenticatedDashboardWorkspaceWorkspaceIdProjectProjectIdWhiteboardsIndexRoute,
   }
 
 const LayoutAuthenticatedDashboardWorkspaceWorkspaceIdRouteWithChildren =
@@ -2678,6 +2776,7 @@ const rootRouteChildren: RootRouteChildren = {
   McpAuthorizeRoute: McpAuthorizeRoute,
   PublicPageTokenRoute: PublicPageTokenRoute,
   PublicProjectTokenRoute: PublicProjectTokenRoute,
+  PublicWhiteboardTokenRoute: PublicWhiteboardTokenRoute,
   RequestFormTokenRoute: RequestFormTokenRoute,
   InvitationAcceptInviteIdRoute: InvitationAcceptInviteIdRoute,
 }

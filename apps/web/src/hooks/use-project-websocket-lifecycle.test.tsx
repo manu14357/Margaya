@@ -765,4 +765,47 @@ describe("project WebSocket lifecycle", () => {
     }
     unmount();
   });
+
+  it("refreshes a project's boards, the board and task lists on whiteboard.changed", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    act(() => {
+      socket.open();
+      socket.onmessage?.({
+        data: JSON.stringify({
+          type: "whiteboard.changed",
+          projectId: "project-a",
+          whiteboardId: "wb1",
+        }),
+      });
+    });
+    expect(client.invalidateQueries.mock.calls.map(([arg]) => arg)).toEqual([
+      { queryKey: ["whiteboards", "project-a"] },
+      // The workspace-wide list (All whiteboards) shows this project's boards too.
+      { queryKey: ["whiteboards", "workspace"] },
+      { queryKey: ["whiteboard", "wb1"] },
+      { queryKey: ["whiteboard-content", "wb1"] },
+      { queryKey: ["whiteboard-activity", "wb1"] },
+      { queryKey: ["trash"] },
+      { queryKey: ["task-whiteboards"] },
+    ]);
+    unmount();
+  });
+
+  it("catches up on the project's boards when its socket opens again", () => {
+    const first = renderHook(() => useProjectWebSocket("project-a"));
+    act(() => TestSocket.instances[0]?.open());
+    first.unmount();
+    renderHook(() => useProjectWebSocket("project-a"));
+    act(() => TestSocket.instances[1]?.open());
+    expect(client.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["whiteboards", "project-a"],
+    });
+    expect(client.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["task-whiteboards"],
+    });
+    expect(client.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["whiteboard-activity"],
+    });
+  });
 });

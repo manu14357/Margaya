@@ -20,10 +20,13 @@ import {
 } from "@/components/desktop/desktop-title-bar";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 import { shortcuts } from "@/constants/shortcuts";
+import useGetProjects from "@/hooks/queries/project/use-get-projects";
+import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
 import { GUEST_DESTINATIONS } from "@/lib/guest-access";
 import { visibleRailItems } from "@/lib/sidebar-layout";
+import { showWhiteboardsDestination } from "@/lib/whiteboards/workspace-whiteboards";
 import { useUserPreferencesStore } from "@/store/user-preferences";
 
 /**
@@ -31,16 +34,34 @@ import { useUserPreferencesStore } from "@/store/user-preferences";
  * without the ones they hid (Settings sits at the foot).
  */
 export function useRailDestinations(): ShellDestination[] {
-  const { canReadAnalytics, isCheckingPermissions, isGuest } =
-    useWorkspacePermission();
+  const {
+    canReadAnalytics,
+    canReadWhiteboards,
+    isCheckingPermissions,
+    isGuest,
+  } = useWorkspacePermission();
+  const { data: workspace } = useActiveWorkspace();
+  const { data: projects } = useGetProjects({
+    workspaceId: workspace?.id ?? "",
+  });
   const sidebarLayout = useUserPreferencesStore((state) => state.sidebarLayout);
   // Shown once the permission check settles, so it never flashes.
   const showAnalytics = !isCheckingPermissions && canReadAnalytics();
-  return visibleRailItems(sidebarLayout).filter((item) =>
-    isGuest
-      ? (GUEST_DESTINATIONS as readonly ShellDestination[]).includes(item)
-      : item !== "analytics" || showAnalytics,
-  );
+  // Whiteboards also wait for a project that has them on.
+  const showWhiteboards = showWhiteboardsDestination({
+    isGuest,
+    isCheckingPermissions,
+    canRead: canReadWhiteboards(),
+    projects,
+  });
+  return visibleRailItems(sidebarLayout).filter((item) => {
+    if (isGuest) {
+      return (GUEST_DESTINATIONS as readonly ShellDestination[]).includes(item);
+    }
+    if (item === "analytics") return showAnalytics;
+    if (item === "whiteboards") return showWhiteboards;
+    return true;
+  });
 }
 
 export function RailBadge({
@@ -109,7 +130,9 @@ function RailItem({
         <Icon strokeWidth={active ? 2 : 1.75} />
         {badge}
       </span>
-      <span className="max-w-full truncate px-0.5">{t(meta.labelKey)}</span>
+      <span className="line-clamp-2 max-w-full hyphens-auto px-0.5 text-center [overflow-wrap:anywhere]">
+        {t(meta.labelKey)}
+      </span>
     </button>
   );
 }
@@ -120,7 +143,7 @@ function RailIconButton(props: ComponentProps<"button">) {
       type="button"
       {...props}
       className={cn(
-        "group/rail flex size-10 cursor-pointer items-center justify-center rounded-lg text-sidebar-foreground outline-hidden transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-popup-open:bg-sidebar-accent [&>svg]:size-[18px]",
+        "group/rail relative flex size-10 pointer-coarse:after:absolute pointer-coarse:after:-inset-1.5 cursor-pointer items-center justify-center rounded-lg text-sidebar-foreground outline-hidden transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-popup-open:bg-sidebar-accent [&>svg]:size-[18px]",
         props.className,
       )}
     />
@@ -189,7 +212,7 @@ export function AppRail() {
             type="button"
             aria-label={t("navigation:shell.create")}
             title={`${t("navigation:shell.create")} (${shortcuts.task.prefix} ${shortcuts.task.create})`}
-            className="mb-1 flex size-10 cursor-pointer items-center justify-center rounded-xl bg-primary text-primary-foreground outline-hidden transition-transform hover:-translate-y-px focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar active:translate-y-0"
+            className="relative mb-1 flex size-10 pointer-coarse:after:absolute pointer-coarse:after:-inset-1.5 cursor-pointer items-center justify-center rounded-xl bg-primary text-primary-foreground outline-hidden transition-transform hover:-translate-y-px focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar active:translate-y-0"
           >
             <Plus className="size-5" />
           </button>
@@ -216,7 +239,7 @@ export function AppRail() {
             <button
               type="button"
               aria-label={t("navigation:shell.account")}
-              className="mt-1 cursor-pointer rounded-full outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+              className="relative mt-1 cursor-pointer rounded-full pointer-coarse:after:absolute pointer-coarse:after:-inset-1.5 outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
             >
               <ShellUserAvatar />
             </button>

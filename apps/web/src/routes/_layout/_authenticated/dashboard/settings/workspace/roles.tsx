@@ -71,6 +71,7 @@ const RESOURCE_LABELS: Record<string, string> = {
   intake: "Intake",
   analytics: "Analytics",
   page: "Pages",
+  whiteboard: "Whiteboards",
   audit_log: "Audit log",
   ai: "AI",
   workspace: "Workspace",
@@ -279,6 +280,24 @@ const PERMISSION_LABELS: Record<
     label: "Manage all pages",
     description:
       "Lock, archive, move and delete any page they can see, not only their own.",
+  },
+  "whiteboard:read": {
+    label: "View whiteboards",
+    description: "See the Whiteboards section and open boards read-only.",
+  },
+  "whiteboard:create": {
+    label: "Create whiteboards",
+    description: "Create boards, from a template or blank, and duplicate them.",
+  },
+  "whiteboard:update": {
+    label: "Edit whiteboards",
+    description:
+      "Draw and edit on boards, and lock or archive their own boards.",
+  },
+  "whiteboard:delete": {
+    label: "Manage all whiteboards",
+    description:
+      "Lock, archive, publish and delete any board they can see, not only their own.",
   },
   "workspace:read": {
     label: "Access workspace",

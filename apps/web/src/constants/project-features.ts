@@ -6,6 +6,7 @@ import {
   IterationCw,
   Layers,
   Megaphone,
+  PenTool,
   Ruler,
   Sparkles,
   Timer,
@@ -21,6 +22,7 @@ export const PROJECT_FEATURE_KEYS = [
   "modules",
   "views",
   "pages",
+  "whiteboards",
   "intake",
   "estimates",
   "timeTracking",
@@ -35,6 +37,7 @@ export type ProjectFeatureField =
   | "modulesEnabled"
   | "viewsEnabled"
   | "pagesEnabled"
+  | "whiteboardsEnabled"
   | "intakeEnabled"
   | "estimatesEnabled"
   | "timeTrackingEnabled"
@@ -83,6 +86,14 @@ export const PROJECT_FEATURES: readonly ProjectFeatureDefinition[] = [
     titleKey: "settings:projectFeatures.items.pages.title",
     descriptionKey: "settings:projectFeatures.items.pages.description",
     icon: FileText,
+    isAvailable: true,
+  },
+  {
+    key: "whiteboards",
+    field: "whiteboardsEnabled",
+    titleKey: "settings:projectFeatures.items.whiteboards.title",
+    descriptionKey: "settings:projectFeatures.items.whiteboards.description",
+    icon: PenTool,
     isAvailable: true,
   },
   {

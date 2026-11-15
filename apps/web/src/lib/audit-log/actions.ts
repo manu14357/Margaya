@@ -63,6 +63,25 @@ export const AUDIT_ACTION_KEYS = {
     "settings:workspaceAuditLog.actions.publicBoardSettingsChanged",
   "page.published": "settings:workspaceAuditLog.actions.pagePublished",
   "page.unpublished": "settings:workspaceAuditLog.actions.pageUnpublished",
+  "whiteboard.created": "settings:workspaceAuditLog.actions.whiteboardCreated",
+  "whiteboard.renamed": "settings:workspaceAuditLog.actions.whiteboardRenamed",
+  "whiteboard.icon_changed":
+    "settings:workspaceAuditLog.actions.whiteboardIconChanged",
+  "whiteboard.locked": "settings:workspaceAuditLog.actions.whiteboardLocked",
+  "whiteboard.unlocked":
+    "settings:workspaceAuditLog.actions.whiteboardUnlocked",
+  "whiteboard.archived":
+    "settings:workspaceAuditLog.actions.whiteboardArchived",
+  "whiteboard.unarchived":
+    "settings:workspaceAuditLog.actions.whiteboardUnarchived",
+  "whiteboard.published":
+    "settings:workspaceAuditLog.actions.whiteboardPublished",
+  "whiteboard.unpublished":
+    "settings:workspaceAuditLog.actions.whiteboardUnpublished",
+  "whiteboard.trashed": "settings:workspaceAuditLog.actions.whiteboardTrashed",
+  "whiteboard.restored":
+    "settings:workspaceAuditLog.actions.whiteboardRestored",
+  "whiteboard.purged": "settings:workspaceAuditLog.actions.whiteboardPurged",
   "export.created": "settings:workspaceAuditLog.actions.exportCreated",
   "export.downloaded": "settings:workspaceAuditLog.actions.exportDownloaded",
   "import.run": "settings:workspaceAuditLog.actions.importRun",
@@ -133,6 +152,8 @@ export const AUDIT_CATEGORY_KEYS = {
   public_board: "settings:workspaceAuditLog.categories.publicBoard",
   // Reuses the roles screen's "Pages" label.
   page: "settings:workspaceRoles.resources.page",
+  // Reuses the roles screen's "Whiteboards" label.
+  whiteboard: "settings:workspaceRoles.resources.whiteboard",
   export: "settings:workspaceAuditLog.categories.export",
   import: "settings:workspaceAuditLog.categories.import",
   trash: "settings:workspaceAuditLog.categories.trash",

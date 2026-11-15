@@ -26,6 +26,7 @@ const TARGET_TYPE_KEYS: Record<string, string> = {
   project: "settings:workspaceAuditLog.targets.project",
   export: "settings:workspaceAuditLog.targets.export",
   page: "settings:workspaceAuditLog.targets.page",
+  whiteboard: "settings:workspaceAuditLog.targets.whiteboard",
   agent: "settings:workspaceAuditLog.targets.agent",
   agent_run: "settings:workspaceAuditLog.targets.agentRun",
   task: "settings:workspaceAuditLog.targets.task",

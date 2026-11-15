@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { SettingsPage, SettingsSection } from "@/components/settings-layout";
 import PageTrashView from "@/components/trash/page-trash-view";
 import TaskTrashView from "@/components/trash/task-trash-view";
+import WhiteboardTrashView from "@/components/trash/whiteboard-trash-view";
 import useGetProject from "@/hooks/queries/project/use-get-project";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -13,7 +14,7 @@ export const Route = createFileRoute(
   component: RouteComponent,
 });
 
-/** Settings → Project → Recently deleted: its tasks and pages (C7). */
+/** Settings → Project → Recently deleted: its tasks, pages and whiteboards. */
 function RouteComponent() {
   const { t } = useTranslation();
   const { projectId } = Route.useParams();
@@ -42,6 +43,11 @@ function RouteComponent() {
       {project?.pagesEnabled && (
         <SettingsSection title={t("settings:trash.pagesHeading")}>
           <PageTrashView projectId={projectId} />
+        </SettingsSection>
+      )}
+      {project?.whiteboardsEnabled && (
+        <SettingsSection title={t("settings:trash.whiteboardsHeading")}>
+          <WhiteboardTrashView projectId={projectId} />
         </SettingsSection>
       )}
     </SettingsPage>

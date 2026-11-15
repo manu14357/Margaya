@@ -64,6 +64,7 @@ import { useBuildWithAiCommand } from "../ai-build/use-build-with-ai-command";
 import { useFeedbackCommand } from "../feedback/use-feedback-command";
 import { usePageCommands } from "../page/use-page-commands";
 import CreateProjectModal from "../shared/modals/create-project-modal";
+import { useWhiteboardCommands } from "../whiteboard/use-whiteboard-commands";
 import { EntityCommandsSource } from "./entity-commands";
 import {
   isPalettePrefix,
@@ -121,6 +122,8 @@ const PLACE_VALUES = new Set([
   "members",
   "analytics",
   "project-analytics",
+  "whiteboards",
+  "all-whiteboards",
   "my-work",
   "all-tasks",
   "settings",
@@ -289,6 +292,10 @@ function CommandPalette() {
   });
   const buildWithAi = useBuildWithAiCommand(projectIdFromRoute);
   const pageCommands = usePageCommands({
+    workspaceId,
+    projectId: projectIdFromRoute,
+  });
+  const whiteboardCommands = useWhiteboardCommands({
     workspaceId,
     projectId: projectIdFromRoute,
   });
@@ -537,6 +544,7 @@ function CommandPalette() {
               ]
             : []),
           ...pageCommands,
+          ...whiteboardCommands,
           {
             value: "create-project",
             label: t("navigation:commandPalette.createProject"),
@@ -636,6 +644,7 @@ function CommandPalette() {
       viewCommands.label,
       buildWithAi.items,
       pageCommands,
+      whiteboardCommands,
       preferenceCommands,
       askCommands.items,
       feedbackCommand,

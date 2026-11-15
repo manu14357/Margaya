@@ -20,6 +20,7 @@ import { MyWorkPanel } from "@/components/context-panel/my-work-panel";
 import { PagesPanel } from "@/components/context-panel/pages-panel";
 import { ProjectsPanel } from "@/components/context-panel/projects-panel";
 import { SettingsPanel } from "@/components/context-panel/settings-panel";
+import { WhiteboardsPanel } from "@/components/context-panel/whiteboards-panel";
 import { useDesktopDragRegion } from "@/components/desktop/desktop-title-bar";
 import { TrialCard } from "@/components/trial-card";
 import { Button } from "@/components/ui/button";
@@ -60,6 +61,8 @@ function DestinationBody({
       return <ProjectsPanel workspaceId={workspaceId} />;
     case "pages":
       return <PagesPanel workspaceId={workspaceId} />;
+    case "whiteboards":
+      return <WhiteboardsPanel workspaceId={workspaceId} />;
     case "analytics":
       return <AnalyticsPanel workspaceId={workspaceId} />;
     case "settings":

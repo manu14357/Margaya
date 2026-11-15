@@ -17,3 +17,4 @@ import "@/components/project-update/project-update-registrations";
 import "@/components/task/register-task-parent-slot";
 import "@/components/time-entry/time-entry-registrations";
 import "@/components/view/view-registrations";
+import "@/components/whiteboard/whiteboard-registrations";

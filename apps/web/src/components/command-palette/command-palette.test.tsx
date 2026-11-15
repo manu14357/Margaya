@@ -35,6 +35,10 @@ vi.mock("../page/use-page-commands", () => ({
   usePageCommands: () => [],
 }));
 
+vi.mock("../whiteboard/use-whiteboard-commands", () => ({
+  useWhiteboardCommands: () => [],
+}));
+
 vi.mock("../ai/ask/use-ask-commands", () => ({
   useAskCommands: ({ term }: { term: string }) => ({
     items: [{ value: "ask-ai", label: "Ask AI…", onRun: m.openAsk }],

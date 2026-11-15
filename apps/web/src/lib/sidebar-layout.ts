@@ -12,6 +12,7 @@ export const RAIL_ITEMS = [
   "my-work",
   "projects",
   "pages",
+  "whiteboards",
   "analytics",
 ] as const satisfies readonly ShellDestination[];
 export type RailItem = (typeof RAIL_ITEMS)[number];

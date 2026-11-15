@@ -56,6 +56,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Timeline } from "@/components/ui/timeline";
+import { TaskWhiteboards } from "@/components/whiteboard/task-whiteboards";
 import useSetCustomFieldValue from "@/hooks/mutations/custom-field/use-set-custom-field-value";
 import useGetActivitiesByTaskId from "@/hooks/queries/activity/use-get-activities-by-task-id";
 import useGetCustomFieldValuesByTask from "@/hooks/queries/custom-field/use-get-custom-field-values-by-task";
@@ -663,6 +664,12 @@ export default function TaskDetailsContent({
         <TaskAttachments ref={attachmentsRef} taskId={taskId} />
 
         <TaskPageReferences
+          taskId={taskId}
+          projectId={task?.projectId ?? projectId}
+          workspaceId={workspaceId}
+        />
+
+        <TaskWhiteboards
           taskId={taskId}
           projectId={task?.projectId ?? projectId}
           workspaceId={workspaceId}

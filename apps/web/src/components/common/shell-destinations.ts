@@ -5,6 +5,7 @@ import {
   FolderKanban,
   House,
   Inbox,
+  PenTool,
   Settings,
   UserRoundCheck,
 } from "lucide-react";
@@ -19,6 +20,7 @@ export const SHELL_DESTINATIONS = [
   "my-work",
   "projects",
   "pages",
+  "whiteboards",
   "analytics",
   "settings",
 ] as const;
@@ -65,6 +67,12 @@ export const DESTINATION_META: Record<ShellDestination, ShellDestinationMeta> =
       icon: FileText,
       color: "var(--area-pages)",
     },
+    whiteboards: {
+      id: "whiteboards",
+      labelKey: "navigation:shell.whiteboards",
+      icon: PenTool,
+      color: "var(--area-whiteboards)",
+    },
     analytics: {
       id: "analytics",
       labelKey: "navigation:shell.analytics",
@@ -100,10 +108,13 @@ export function resolveDestination(pathname: string): ShellDestination {
       return "my-work";
     case "analytics":
       return "analytics";
+    case "whiteboards":
+      return "whiteboards";
     case "members":
       return "settings";
     case "project":
-      return third === "pages" ? "pages" : "projects";
+      if (third === "pages") return "pages";
+      return third === "whiteboards" ? "whiteboards" : "projects";
     case "projects":
     case "views":
     case "archives":
@@ -131,6 +142,8 @@ export function destinationPath(
       return `${base}/projects`;
     case "analytics":
       return `${base}/analytics`;
+    case "whiteboards":
+      return `${base}/whiteboards`;
     case "settings":
       return "/dashboard/settings/account/information";
   }

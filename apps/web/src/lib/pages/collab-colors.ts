@@ -44,6 +44,11 @@ export function collabColorKey(userId: string): CollabColorKey {
   return COLLAB_COLOR_KEYS[(hash >>> 0) % COLLAB_COLOR_KEYS.length];
 }
 
+/** The palette colour as hex, for surfaces without CSS variables (canvas). */
+export function collabColorHex(key: CollabColorKey): string {
+  return FALLBACKS[key];
+}
+
 export function collabColorValue(key: CollabColorKey): string {
   return `var(--color-${key}-500, ${FALLBACKS[key]})`;
 }

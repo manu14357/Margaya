@@ -46,6 +46,11 @@ const CAPABILITIES = {
   createPages: { page: ["create"] },
   updatePages: { page: ["update"] },
   deletePages: { page: ["delete"] },
+  readWhiteboards: { whiteboard: ["read"] },
+  createWhiteboards: { whiteboard: ["create"] },
+  updateWhiteboards: { whiteboard: ["update"] },
+  // Manage any board: lock, archive, trash, delete and publish it.
+  deleteWhiteboards: { whiteboard: ["delete"] },
   manageWorkspace: { workspace: ["update", "manage_settings"] },
   // workspace:manage_settings alone: workspace webhooks, and everyone's
   // exports in the Exports history.
@@ -229,6 +234,10 @@ export function useWorkspacePermission() {
       canCreatePages: () => can.createPages,
       canUpdatePages: () => can.updatePages,
       canDeletePages: () => can.deletePages,
+      canReadWhiteboards: () => can.readWhiteboards,
+      canCreateWhiteboards: () => can.createWhiteboards,
+      canUpdateWhiteboards: () => can.updateWhiteboards,
+      canDeleteWhiteboards: () => can.deleteWhiteboards,
       canManageWorkspace: () => can.manageWorkspace,
       canManageWebhooks: () => can.manageWebhooks,
       canDeleteWorkspace: () => can.deleteWorkspace,
