@@ -472,6 +472,7 @@ describe("API integration: inviting a guest straight into projects", () => {
           module: ["read"],
           view: ["read"],
           page: ["read"],
+          whiteboard: ["read"],
           invitation: ["create"],
         }),
       });
