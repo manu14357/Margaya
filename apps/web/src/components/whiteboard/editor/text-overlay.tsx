@@ -13,6 +13,8 @@ import {
   shapeTextBox,
   type TextualElement,
   themeColor,
+  updateBoundLines,
+  updateElement,
 } from "@margaya/whiteboard";
 import {
   type CSSProperties,
@@ -174,12 +176,111 @@ export function measureTextElement(
   };
 }
 
+/** Elements whose label wraps inside them and can outgrow them. */
+const LABEL_CONTAINERS: ReadonlySet<string> = new Set([
+  "rectangle",
+  "ellipse",
+  "diamond",
+  "shape",
+  "sticky",
+]);
+
+/**
+ * The element made tall enough to hold its label. A label that outgrows its
+ * shape or note makes it taller (never shorter, never wider) instead of
+ * spilling over its edges.
+ */
+export function fitLabel(element: BoardElement): BoardElement {
+  if (
+    !LABEL_CONTAINERS.has(element.type) ||
+    !("text" in element) ||
+    !element.text.trim()
+  )
+    return element;
+  let next = element;
+  // The label box grows in step with the height (by a factor that depends
+  // on the outline), so a couple of rounds settle it.
+  for (let round = 0; round < 3; round++) {
+    const label = labelBox(next);
+    const layout = layoutText(
+      element.text,
+      {
+        fontSize: element.fontSize,
+        fontFamily: element.fontFamily,
+        maxWidth: label.maxWidth,
+      },
+      measureText,
+    );
+    const missing = layout.height - label.height;
+    if (missing <= 0.5) break;
+    const taller = labelBox({ ...next, height: next.height + 100 });
+    const perUnit = (taller.height - label.height) / 100;
+    if (perUnit <= 0) break;
+    next = { ...next, height: Math.ceil(next.height + missing / perUnit) };
+  }
+  return next;
+}
+
+/** Writes a changed label, with the lines bound to an element that grew. */
+function commitLabel(
+  c: BoardController,
+  before: BoardElement,
+  next: BoardElement,
+) {
+  if (next.height === before.height) {
+    c.commit([next]);
+    return;
+  }
+  const all = c.scene.elements.map((element) =>
+    element.id === next.id ? next : element,
+  );
+  const lines = updateBoundLines(all as BoardElement[], [next.id], {
+    userId: c.userId,
+  }).filter((line) => line.id !== next.id);
+  c.commit([next, ...lines]);
+}
+
 /** A key press that an input method (Japanese, Chinese, ...) is handling. */
 export function isComposingKey(event: {
   nativeEvent?: { isComposing?: boolean };
   keyCode?: number;
 }): boolean {
   return Boolean(event.nativeEvent?.isComposing) || event.keyCode === 229;
+}
+
+/**
+ * The words being edited, for the properties panel: it shows their style
+ * and restyles them while the editor stays open. The style is written with
+ * the words when the editor closes, in the same undo step.
+ */
+export type TextEditSession = {
+  elementId: string;
+  /** The element as it will be written, words typed so far included. */
+  element: () => BoardElement | undefined;
+  restyle: (patch: Record<string, unknown>) => void;
+};
+
+const sessions = new WeakMap<BoardController, TextEditSession>();
+
+/** The open text editor's session, or null when no words are being edited. */
+export function textEditSession(c: BoardController): TextEditSession | null {
+  const session = sessions.get(c);
+  return session && session.elementId === c.state.editingTextId
+    ? session
+    : null;
+}
+
+/** The element as the canvas shows it under the editor: without its words. */
+function hiddenLabel(element: BoardElement, text: string): BoardElement {
+  if (element.type === "frame") return { ...element, name: "" };
+  if (element.type === "text")
+    return {
+      ...element,
+      text: "",
+      ...measureTextElement(element, text),
+    } as BoardElement;
+  if ("text" in element) return { ...element, text: "" } as BoardElement;
+  return element;
 }
 
 type TextOverlayProps = {
@@ -197,7 +298,13 @@ export function TextOverlay({
 }: TextOverlayProps) {
   const { t } = useTranslation();
   const original = useRef<BoardElement | undefined>(c.get(elementId));
-  const element = original.current;
+  // Style picked in the panel while the editor is open.
+  const restyled = useRef<Record<string, unknown>>({});
+  const styled = (): BoardElement | undefined =>
+    original.current
+      ? ({ ...original.current, ...restyled.current } as BoardElement)
+      : undefined;
+  const element = styled();
   const isFrame = element?.type === "frame";
   const initial = element
     ? element.type === "frame"
@@ -207,9 +314,38 @@ export function TextOverlay({
         : ""
     : "";
   const [value, setValue] = useState(initial);
+  const typed = useRef(initial);
   const [, setTick] = useState(0);
   const ref = useRef<HTMLTextAreaElement | HTMLInputElement | null>(null);
   const done = useRef(false);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reads refs only
+  useLayoutEffect(() => {
+    const session: TextEditSession = {
+      elementId,
+      element: () => {
+        const current = styled();
+        if (!current) return undefined;
+        if (current.type === "frame")
+          return { ...current, name: typed.current };
+        return "text" in current
+          ? ({ ...current, text: typed.current } as BoardElement)
+          : current;
+      },
+      restyle: (patch) => {
+        if (done.current || Object.keys(patch).length === 0) return;
+        restyled.current = { ...restyled.current, ...patch };
+        const current = styled();
+        if (current)
+          c.setPreview([hiddenLabel(current, typed.current)], { live: false });
+        setTick((tick) => tick + 1);
+      },
+    };
+    sessions.set(c, session);
+    return () => {
+      if (sessions.get(c) === session) sessions.delete(c);
+    };
+  }, [c, elementId]);
 
   // Follow pans and zooms while typing.
   useEffect(
@@ -250,6 +386,8 @@ export function TextOverlay({
     if (done.current) return;
     done.current = true;
     const base = original.current;
+    const style = restyled.current;
+    const changedStyle = Object.keys(style).length > 0;
     c.cancelPreview();
     if (!base) {
       onDone();
@@ -257,22 +395,36 @@ export function TextOverlay({
     }
     if (base.type === "frame") {
       const name = value.trim().slice(0, 200);
-      if (name !== base.name) c.patch([base], { name });
+      if (name !== base.name || changedStyle)
+        c.patch([base], { ...style, name });
     } else if ("text" in base) {
       const text = value.slice(0, 20_000);
+      // The words and any style picked meanwhile are one undo step.
+      const styledBase = { ...base, ...style } as typeof base;
       if (base.type === "text") {
         if (text.trim() === "") {
           if (!isNew) c.remove([base.id]);
         } else {
-          const size = measureTextElement(base, text);
-          const next = { ...base, text, ...size } as BoardElement;
+          const size = measureTextElement(
+            styledBase as typeof base & { type: "text" },
+            text,
+          );
+          const next = { ...styledBase, text, ...size } as BoardElement;
           if (isNew) {
             c.insert([next]);
             c.dispatchTool({ type: "created" });
-          } else if (text !== base.text) c.commit([next]);
+          } else if (text !== base.text || changedStyle) c.commit([next]);
         }
-      } else if (text !== base.text) {
-        c.patch([base], { text });
+      } else if (isNew) {
+        // A new note is written only now, words and all, in one undo step.
+        c.insert([fitLabel({ ...styledBase, text } as BoardElement)]);
+      } else if (text !== base.text || changedStyle) {
+        const next = fitLabel(
+          updateElement(base, { ...style, text } as never, {
+            userId: c.userId,
+          }),
+        );
+        commitLabel(c, base, next);
       }
     }
     onDone();
@@ -365,22 +517,11 @@ export function TextOverlay({
 
   const onChange = (next: string) => {
     setValue(next);
-    const base = original.current;
-    if (base?.type === "text") {
-      // Keep the selection box in step with the text as it grows.
-      c.setPreview(
-        [
-          {
-            ...base,
-            text: "",
-            ...measureTextElement(base, next),
-          } as BoardElement,
-        ],
-        {
-          live: false,
-        },
-      );
-    }
+    typed.current = next;
+    const current = styled();
+    // Keep the selection box in step with the text as it grows.
+    if (current?.type === "text")
+      c.setPreview([hiddenLabel(current, next)], { live: false });
   };
 
   const shared = {

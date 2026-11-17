@@ -57807,6 +57807,9 @@
 						},
 						"actions": {
 							"type": "string"
+						},
+						"renameFrame": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -57865,7 +57868,8 @@
 						"opacity",
 						"layers",
 						"alignment",
-						"actions"
+						"actions",
+						"renameFrame"
 					]
 				},
 				"colors": {
@@ -58660,6 +58664,42 @@
 						"penOnlyHint"
 					]
 				},
+				"eraser": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"label": {
+							"type": "string"
+						},
+						"size": {
+							"type": "string"
+						},
+						"mode": {
+							"type": "string"
+						},
+						"parts": {
+							"type": "string"
+						},
+						"whole": {
+							"type": "string"
+						},
+						"partsHint": {
+							"type": "string"
+						},
+						"wholeHint": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"label",
+						"size",
+						"mode",
+						"parts",
+						"whole",
+						"partsHint",
+						"wholeHint"
+					]
+				},
 				"background": {
 					"type": "object",
 					"additionalProperties": false,
@@ -58753,6 +58793,7 @@
 				"help",
 				"shapes",
 				"pens",
+				"eraser",
 				"background"
 			]
 		},

@@ -49,7 +49,7 @@ import {
   Ungroup,
   Unlink,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverPopup, PopoverTrigger } from "@/components/ui/popover";
@@ -65,6 +65,7 @@ import { BackgroundSettings } from "./background-control";
 import {
   align,
   changeShape,
+  commitWithLines,
   croppableImage,
   distribute,
   duplicateSelection,
@@ -75,8 +76,14 @@ import {
   setLocked,
 } from "./commands";
 import type { BoardController } from "./controller";
+import { EraserOptions } from "./eraser-options";
 import { isLinear } from "./interaction";
 import { PenOnlySwitch } from "./pen-only-switch";
+import {
+  editingProperties,
+  type PanelProperty,
+  panelProperties,
+} from "./property-capabilities";
 import {
   describeSelection,
   type SelectionInfo,
@@ -87,7 +94,8 @@ import {
 import { ShapeIcon } from "./shape-icon";
 import { ShapePicker } from "./shape-picker";
 import { type ItemStyle, patchStyle } from "./store";
-import { isClassicShape, type ShapeChoice, type ToolId } from "./tools";
+import { fitLabel, textEditSession } from "./text-overlay";
+import type { ShapeChoice } from "./tools";
 import { useController, useEditorState } from "./use-editor";
 
 // Element colours are board content, not app chrome, so they are concrete
@@ -177,19 +185,6 @@ const PEN_STYLE_OPTIONS: {
   },
 ];
 
-/** Element types a creation tool makes, for the panel before anything exists. */
-const TOOL_TYPES: Partial<Record<ToolId, BoardElement["type"]>> = {
-  rectangle: "rectangle",
-  diamond: "diamond",
-  ellipse: "ellipse",
-  shape: "shape",
-  arrow: "arrow",
-  line: "line",
-  draw: "draw",
-  text: "text",
-  sticky: "sticky",
-};
-
 export type PanelActions = {
   onTurnIntoTasks: () => void;
   onMakeDependency: (link: {
@@ -200,6 +195,8 @@ export type PanelActions = {
   dependencyExists: boolean;
   onRemoveDependency: () => void;
   onEditLink: () => void;
+  /** Opens the name editor of a frame (or the text of another element). */
+  onEditText?: (elementId: string) => void;
   tasksEnabled: boolean;
 };
 
@@ -256,6 +253,12 @@ function Segmented<T extends string>({
   );
 }
 
+/**
+ * A swatch's edge. The dark ink is almost the colour of a dark panel and its
+ * border, so in dark themes the edge is drawn from the text colour instead.
+ */
+export const SWATCH_EDGE = "border-border dark:border-foreground/40";
+
 function Swatches({
   label,
   colors,
@@ -287,7 +290,8 @@ function Swatches({
             )}
             onClick={() => onChange(color)}
             className={cn(
-              "relative size-6 shrink-0 rounded-md border border-border outline-none transition-shadow duration-150 focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:size-11 motion-reduce:transition-none",
+              "relative size-6 shrink-0 rounded-md border outline-none transition-shadow duration-150 focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:size-11 motion-reduce:transition-none",
+              SWATCH_EDGE,
               selected &&
                 "ring-2 ring-ring ring-offset-1 ring-offset-background",
             )}
@@ -304,7 +308,8 @@ function Swatches({
       })}
       <label
         className={cn(
-          "relative size-6 shrink-0 cursor-pointer overflow-hidden rounded-md border border-border focus-within:ring-2 focus-within:ring-ring pointer-coarse:size-11",
+          "relative size-6 shrink-0 cursor-pointer overflow-hidden rounded-md border focus-within:ring-2 focus-within:ring-ring pointer-coarse:size-11",
+          SWATCH_EDGE,
           custom && "ring-2 ring-ring ring-offset-1 ring-offset-background",
         )}
         title={t("whiteboardEditor:colors.custom")}
@@ -363,31 +368,68 @@ function IconAction({
   );
 }
 
-/** Applies a style change to the selection and remembers it for new elements. */
+/** The part of a style change that applies to `element`. */
+function ownStyle(
+  element: BoardElement,
+  patch: Partial<ItemStyle>,
+): Record<string, unknown> {
+  const { stickyColor, ...rest } = patch as Partial<ItemStyle> & {
+    stickyColor?: string;
+  };
+  // Stickies keep their colour in the fill.
+  const own =
+    element.type === "sticky" && stickyColor !== undefined
+      ? { ...stylePatchFor(element, rest), fillColor: stickyColor }
+      : stylePatchFor(element, rest);
+  // A frame's fill is its background: a picked colour always shows.
+  if (
+    element.type === "frame" &&
+    "fillColor" in own &&
+    element.fillStyle !== "solid"
+  )
+    own.fillStyle = "solid";
+  return own;
+}
+
+/**
+ * Applies a style change to the selection and remembers it for new
+ * elements, in one undo step. A bigger or wider font makes a shape or note
+ * taller where its label would no longer fit, and its lines follow.
+ */
 function applyStyle(
   c: BoardController,
   patch: Partial<ItemStyle>,
   elements: readonly BoardElement[],
 ) {
   c.update((state) => patchStyle(state, patch));
-  const { stickyColor, ...rest } = patch as Partial<ItemStyle> & {
-    stickyColor?: string;
-  };
   const next: BoardElement[] = [];
+  const grown: string[] = [];
   for (const element of elements) {
     if (element.locked) continue;
-    // Stickies keep their colour in the fill.
-    const own =
-      element.type === "sticky" && stickyColor !== undefined
-        ? { ...stylePatchFor(element, rest), fillColor: stickyColor }
-        : stylePatchFor(element, rest);
+    const own = ownStyle(element, patch);
     if (Object.keys(own).length === 0) continue;
-    next.push(
-      refitText(updateElement(element, own as never, { userId: c.userId })),
+    let changed = refitText(
+      updateElement(element, own as never, { userId: c.userId }),
     );
+    if ("fontFamily" in own || "fontSize" in own) changed = fitLabel(changed);
+    if (changed.height !== element.height) grown.push(element.id);
+    next.push(changed);
   }
-  if (next.length > 0) c.commit(next);
+  if (next.length === 0) return;
+  if (grown.length > 0) commitWithLines(c, next, grown);
+  else c.commit(next);
 }
+
+/** A press on the panel must not take the focus from the open text editor. */
+function keepEditorFocus(event: MouseEvent) {
+  const target = event.target;
+  // The colour input needs its press to open the picker.
+  if (target instanceof Element && target.closest("input")) return;
+  event.preventDefault();
+}
+
+const PANEL_CLASS =
+  "flex w-60 flex-col gap-3 overflow-y-auto rounded-xl border bg-card p-3 text-card-foreground shadow-lg/5";
 
 export function PropertiesPanel({
   actions,
@@ -406,16 +448,34 @@ export function PropertiesPanel({
   const tool = useEditorState((state) => state.tool);
   const style = useEditorState((state) => state.style);
   const penStyle = useEditorState((state) => state.penStyle);
-  const shapeKind = useEditorState((state) => state.shapeKind);
   const croppingId = useEditorState((state) => state.croppingId);
+  const editingTextId = useEditorState((state) => state.editingTextId);
   const readOnly = c.readOnly;
 
-  const selected = selectedIds
+  const selection = selectedIds
     .map((id) => c.get(id))
     .filter((e): e is BoardElement => Boolean(e));
-  const toolType = TOOL_TYPES[tool];
   if (readOnly) return null;
-  if (selected.length === 0 && !toolType) {
+  if (tool === "eraser") return <EraserOptions className={className} />;
+  // While words are being edited, the panel styles them: the open editor
+  // writes the style with the words.
+  const edited = editingTextId
+    ? (textEditSession(c)?.element() ?? c.get(editingTextId))
+    : undefined;
+  const editing = edited && !edited.locked ? edited : null;
+  const selected = editing ? [editing] : selection;
+  const isSelection = selected.length > 0;
+  // With a selection the panel edits it; otherwise the style of the next
+  // element the tool makes.
+  const properties = editing
+    ? editingProperties(editing)
+    : panelProperties(tool, selected);
+  const show = (property: PanelProperty) => properties.has(property);
+  // A frame's name keeps its own style: nothing to offer while renaming.
+  if (editing && properties.size === 0) return null;
+
+  if (!isSelection && properties.size === 0) {
+    // Select, hand and laser have no style (the eraser has its own options).
     if (!showBoard) return null;
     return (
       <section
@@ -430,39 +490,40 @@ export function PropertiesPanel({
     );
   }
 
-  // Before anything is selected, the panel edits the style of the next element.
-  const subjects: BoardElement[] =
-    selected.length > 0
-      ? selected
-      : [
-          toolType === "shape"
-            ? isClassicShape(shapeKind)
-              ? c.newElement(shapeKind, {})
-              : c.newElement("shape", { shape: shapeKind })
-            : c.newElement(toolType as BoardElement["type"], {}),
-        ];
-  const info: SelectionInfo = describeSelection(subjects, (id) => c.get(id));
-  const isSelection = selected.length > 0;
+  const info: SelectionInfo = describeSelection(selected, (id) => c.get(id));
   const value = <T,>(key: keyof ItemStyle & string, fallback: T): T | null =>
     isSelection
-      ? sharedStyle<T>(subjects, key)
+      ? sharedStyle<T>(selected, key)
       : ((style[key] as unknown as T) ?? fallback);
-  const set = (patch: Partial<ItemStyle>) =>
-    applyStyle(c, patch, isSelection ? selected : []);
+  const set = (patch: Partial<ItemStyle>) => {
+    if (!editing) {
+      applyStyle(c, patch, isSelection ? selected : []);
+      return;
+    }
+    c.update((state) => patchStyle(state, patch));
+    textEditSession(c)?.restyle(ownStyle(editing, patch));
+  };
 
-  const cropTarget = isSelection ? croppableImage(c) : null;
+  const cropTarget = isSelection && show("crop") ? croppableImage(c) : null;
   const cropping = Boolean(cropTarget) && croppingId === cropTarget?.id;
+  const frame =
+    show("frameName") && selected[0]?.type === "frame" ? selected[0] : null;
 
-  const onlyStickies =
-    info.hasSticky && subjects.every((element) => element.type === "sticky");
-  const strokeLabel = subjects.every((element) => element.type === "text")
+  const strokeLabel = (
+    isSelection
+      ? selected.every((element) => element.type === "text")
+      : tool === "text"
+  )
     ? t("whiteboardEditor:panel.textColor")
     : t("whiteboardEditor:panel.stroke");
   // Highlighters have their own inks and widths, remembered apart from the
   // stroke of everything else.
-  const highlighting = subjects.every(
-    (element) => element.type === "draw" && element.penStyle === "highlighter",
-  );
+  const highlighting = isSelection
+    ? selected.every(
+        (element) =>
+          element.type === "draw" && element.penStyle === "highlighter",
+      )
+    : tool === "draw" && penStyle === "highlighter";
   const setStroke = (patch: { strokeColor?: string; strokeWidth?: number }) => {
     if (!highlighting) {
       set(patch);
@@ -483,12 +544,12 @@ export function PropertiesPanel({
   };
   const strokeColor = highlighting
     ? isSelection
-      ? sharedValue<string>(subjects, "strokeColor")
+      ? sharedValue<string>(selected, "strokeColor")
       : style.highlighterColor
     : value<string>("strokeColor", "#1e1e1e");
   const strokeWidth = highlighting
     ? isSelection
-      ? sharedValue<number>(subjects, "strokeWidth")
+      ? sharedValue<number>(selected, "strokeWidth")
       : style.highlighterWidth
     : value<number>("strokeWidth", 2);
   const setPenStyle = (next: PenStyle) => {
@@ -498,17 +559,21 @@ export function PropertiesPanel({
     );
     if (drawings.length > 0) c.patch(drawings, { penStyle: next });
   };
+  const fillLabel = t("whiteboardEditor:panel.fill");
+  const showTasks =
+    isSelection &&
+    !editing &&
+    actions.tasksEnabled &&
+    (info.stickies.length > 0 || Boolean(info.dependency));
 
   return (
     <section
-      className={cn(
-        "flex w-60 flex-col gap-3 overflow-y-auto rounded-xl border bg-card p-3 text-card-foreground shadow-lg/5",
-        className,
-      )}
+      className={cn(PANEL_CLASS, className)}
       aria-label={t("whiteboardEditor:panel.label")}
       data-testid="whiteboard-properties"
+      onMouseDown={editing ? keepEditorFocus : undefined}
     >
-      {info.hasDraw && subjects.every((element) => element.type === "draw") && (
+      {show("penStyle") && (
         <Section label={t("whiteboardEditor:pens.label")}>
           <Segmented<PenStyle>
             label={t("whiteboardEditor:pens.label")}
@@ -523,7 +588,7 @@ export function PropertiesPanel({
           {!isSelection && <PenOnlySwitch />}
         </Section>
       )}
-      {isSelection && info.allShapes && (
+      {isSelection && show("shape") && (
         <Section label={t("whiteboardEditor:shapes.label")}>
           <ChangeShapeButton
             value={info.shapeChoice}
@@ -531,7 +596,7 @@ export function PropertiesPanel({
           />
         </Section>
       )}
-      {info.hasStroke && !onlyStickies && (
+      {show("strokeColor") && (
         <Section label={strokeLabel}>
           <Swatches
             label={strokeLabel}
@@ -541,127 +606,112 @@ export function PropertiesPanel({
           />
         </Section>
       )}
-      {info.hasSticky && (
+      {show("stickyColor") && (
         <Section label={t("whiteboardEditor:panel.stickyColor")}>
           <Swatches
             label={t("whiteboardEditor:panel.stickyColor")}
             colors={STICKY_COLORS}
             value={
               isSelection
-                ? sharedValue<string>(
-                    subjects.filter((element) => element.type === "sticky"),
-                    "fillColor",
-                  )
+                ? sharedValue<string>(info.stickies, "fillColor")
                 : style.stickyColor
             }
             onChange={(stickyColor) => set({ stickyColor })}
           />
         </Section>
       )}
-      {info.hasFill && (
-        <>
-          <Section label={t("whiteboardEditor:panel.fill")}>
-            <Swatches
-              label={t("whiteboardEditor:panel.fill")}
-              colors={FILL_COLORS}
-              value={value<string>("fillColor", "transparent")}
-              onChange={(fillColor) =>
-                // A colour picked for shapes without fill must show.
-                set(
-                  fillColor !== "transparent" &&
-                    value<FillStyle>("fillStyle", "solid") === "none"
-                    ? { fillColor, fillStyle: "solid" }
-                    : { fillColor },
-                )
-              }
-            />
-          </Section>
-          <Section label={t("whiteboardEditor:panel.fillStyle")}>
-            <Segmented<FillStyle>
-              label={t("whiteboardEditor:panel.fillStyle")}
-              value={value<FillStyle>("fillStyle", "solid")}
-              onChange={(fillStyle) => set({ fillStyle })}
-              options={[
-                {
-                  value: "solid",
-                  label: t("whiteboardEditor:panel.fillSolid"),
-                },
-                {
-                  value: "hatch",
-                  label: t("whiteboardEditor:panel.fillHatch"),
-                },
-                {
-                  value: "cross",
-                  label: t("whiteboardEditor:panel.fillCross"),
-                },
-                { value: "none", label: t("whiteboardEditor:panel.fillNone") },
-              ]}
-            />
-          </Section>
-        </>
+      {show("fill") && (
+        <Section label={fillLabel}>
+          <Swatches
+            label={fillLabel}
+            colors={FILL_COLORS}
+            value={value<string>("fillColor", "transparent")}
+            onChange={(fillColor) =>
+              // A colour picked for shapes without fill must show.
+              set(
+                fillColor !== "transparent" &&
+                  show("fillStyle") &&
+                  value<FillStyle>("fillStyle", "solid") === "none"
+                  ? { fillColor, fillStyle: "solid" }
+                  : { fillColor },
+              )
+            }
+          />
+        </Section>
       )}
-      {info.hasStroke &&
-        !onlyStickies &&
-        subjects.some((element) => element.type !== "text") && (
-          <>
-            <Section label={t("whiteboardEditor:panel.strokeWidth")}>
-              <Segmented<string>
-                label={t("whiteboardEditor:panel.strokeWidth")}
-                value={String(strokeWidth ?? "")}
-                onChange={(width) => setStroke({ strokeWidth: Number(width) })}
-                options={[
-                  {
-                    value: "1",
-                    label: t("whiteboardEditor:panel.thin"),
-                    icon: <StrokeIcon width={1} />,
-                  },
-                  {
-                    value: "2",
-                    label: t("whiteboardEditor:panel.medium"),
-                    icon: <StrokeIcon width={2} />,
-                  },
-                  {
-                    value: "4",
-                    label: t("whiteboardEditor:panel.bold"),
-                    icon: <StrokeIcon width={3.5} />,
-                  },
-                  {
-                    value: "8",
-                    label: t("whiteboardEditor:panel.extraBold"),
-                    icon: <StrokeIcon width={5} />,
-                  },
-                ]}
-              />
-            </Section>
-            {subjects.some((element) => element.type !== "draw") && (
-              <Section label={t("whiteboardEditor:panel.strokeStyle")}>
-                <Segmented<StrokeStyle>
-                  label={t("whiteboardEditor:panel.strokeStyle")}
-                  value={value<StrokeStyle>("strokeStyle", "solid")}
-                  onChange={(strokeStyle) => set({ strokeStyle })}
-                  options={[
-                    {
-                      value: "solid",
-                      label: t("whiteboardEditor:panel.solid"),
-                      icon: <DashIcon dash="" />,
-                    },
-                    {
-                      value: "dashed",
-                      label: t("whiteboardEditor:panel.dashed"),
-                      icon: <DashIcon dash="5 3" />,
-                    },
-                    {
-                      value: "dotted",
-                      label: t("whiteboardEditor:panel.dotted"),
-                      icon: <DashIcon dash="1.5 2.5" />,
-                    },
-                  ]}
-                />
-              </Section>
-            )}
-          </>
-        )}
-      {info.hasSketch && (
+      {show("fillStyle") && (
+        <Section label={t("whiteboardEditor:panel.fillStyle")}>
+          <Segmented<FillStyle>
+            label={t("whiteboardEditor:panel.fillStyle")}
+            value={value<FillStyle>("fillStyle", "solid")}
+            onChange={(fillStyle) => set({ fillStyle })}
+            options={[
+              { value: "solid", label: t("whiteboardEditor:panel.fillSolid") },
+              { value: "hatch", label: t("whiteboardEditor:panel.fillHatch") },
+              { value: "cross", label: t("whiteboardEditor:panel.fillCross") },
+              { value: "none", label: t("whiteboardEditor:panel.fillNone") },
+            ]}
+          />
+        </Section>
+      )}
+      {show("strokeWidth") && (
+        <Section label={t("whiteboardEditor:panel.strokeWidth")}>
+          <Segmented<string>
+            label={t("whiteboardEditor:panel.strokeWidth")}
+            value={String(strokeWidth ?? "")}
+            onChange={(width) => setStroke({ strokeWidth: Number(width) })}
+            options={[
+              {
+                value: "1",
+                label: t("whiteboardEditor:panel.thin"),
+                icon: <StrokeIcon width={1} />,
+              },
+              {
+                value: "2",
+                label: t("whiteboardEditor:panel.medium"),
+                icon: <StrokeIcon width={2} />,
+              },
+              {
+                value: "4",
+                label: t("whiteboardEditor:panel.bold"),
+                icon: <StrokeIcon width={3.5} />,
+              },
+              {
+                value: "8",
+                label: t("whiteboardEditor:panel.extraBold"),
+                icon: <StrokeIcon width={5} />,
+              },
+            ]}
+          />
+        </Section>
+      )}
+      {show("strokeStyle") && (
+        <Section label={t("whiteboardEditor:panel.strokeStyle")}>
+          <Segmented<StrokeStyle>
+            label={t("whiteboardEditor:panel.strokeStyle")}
+            value={value<StrokeStyle>("strokeStyle", "solid")}
+            onChange={(strokeStyle) => set({ strokeStyle })}
+            options={[
+              {
+                value: "solid",
+                label: t("whiteboardEditor:panel.solid"),
+                icon: <DashIcon dash="" />,
+              },
+              {
+                value: "dashed",
+                label: t("whiteboardEditor:panel.dashed"),
+                icon: <DashIcon dash="5 3" />,
+              },
+              {
+                value: "dotted",
+                label: t("whiteboardEditor:panel.dotted"),
+                icon: <DashIcon dash="1.5 2.5" />,
+              },
+            ]}
+          />
+        </Section>
+      )}
+      {show("sketch") && (
         <Section label={t("whiteboardEditor:panel.sketch")}>
           <Segmented<string>
             label={t("whiteboardEditor:panel.sketch")}
@@ -675,7 +725,7 @@ export function PropertiesPanel({
           />
         </Section>
       )}
-      {info.hasRectangle && (
+      {show("corners") && (
         <Section label={t("whiteboardEditor:panel.corners")}>
           <Segmented<string>
             label={t("whiteboardEditor:panel.corners")}
@@ -692,108 +742,192 @@ export function PropertiesPanel({
           />
         </Section>
       )}
-      {info.hasText && (
-        <>
-          <Section label={t("whiteboardEditor:panel.font")}>
-            <Segmented<FontFamily>
-              label={t("whiteboardEditor:panel.font")}
-              value={value<FontFamily>("fontFamily", "hand")}
-              onChange={(fontFamily) => set({ fontFamily })}
-              options={[
-                { value: "hand", label: t("whiteboardEditor:panel.fontHand") },
-                { value: "sans", label: t("whiteboardEditor:panel.fontSans") },
-                { value: "mono", label: t("whiteboardEditor:panel.fontMono") },
-              ]}
-            />
-          </Section>
-          <Section label={t("whiteboardEditor:panel.fontSize")}>
-            <Segmented<string>
-              label={t("whiteboardEditor:panel.fontSize")}
-              value={String(value<number>("fontSize", 20) ?? "")}
-              onChange={(size) => set({ fontSize: Number(size) })}
-              options={[
-                { value: "16", label: t("whiteboardEditor:panel.sizeSmall") },
-                { value: "20", label: t("whiteboardEditor:panel.sizeMedium") },
-                { value: "28", label: t("whiteboardEditor:panel.sizeLarge") },
-                { value: "40", label: t("whiteboardEditor:panel.sizeHuge") },
-              ]}
-            />
-          </Section>
-          <Section label={t("whiteboardEditor:panel.align")}>
-            <Segmented<TextAlign>
-              label={t("whiteboardEditor:panel.align")}
-              value={value<TextAlign>("textAlign", "left")}
-              onChange={(textAlign) => set({ textAlign })}
-              options={[
-                { value: "left", label: t("whiteboardEditor:panel.alignLeft") },
-                {
-                  value: "center",
-                  label: t("whiteboardEditor:panel.alignCenter"),
-                },
-                {
-                  value: "right",
-                  label: t("whiteboardEditor:panel.alignRight"),
-                },
-              ]}
-            />
-          </Section>
-        </>
+      {show("font") && (
+        <Section label={t("whiteboardEditor:panel.font")}>
+          <Segmented<FontFamily>
+            label={t("whiteboardEditor:panel.font")}
+            value={value<FontFamily>("fontFamily", "hand")}
+            onChange={(fontFamily) => set({ fontFamily })}
+            options={[
+              { value: "hand", label: t("whiteboardEditor:panel.fontHand") },
+              { value: "sans", label: t("whiteboardEditor:panel.fontSans") },
+              { value: "mono", label: t("whiteboardEditor:panel.fontMono") },
+            ]}
+          />
+        </Section>
       )}
-      {info.hasLinear && (
-        <>
-          <Section label={t("whiteboardEditor:panel.routing")}>
-            <Segmented<LineRouting>
-              label={t("whiteboardEditor:panel.routing")}
-              value={value<LineRouting>("routing", "straight")}
-              onChange={(routing) =>
-                setRouting(c, routing, isSelection ? selected : [])
+      {show("fontSize") && (
+        <Section label={t("whiteboardEditor:panel.fontSize")}>
+          <Segmented<string>
+            label={t("whiteboardEditor:panel.fontSize")}
+            value={String(value<number>("fontSize", 20) ?? "")}
+            onChange={(size) => set({ fontSize: Number(size) })}
+            options={[
+              { value: "16", label: t("whiteboardEditor:panel.sizeSmall") },
+              { value: "20", label: t("whiteboardEditor:panel.sizeMedium") },
+              { value: "28", label: t("whiteboardEditor:panel.sizeLarge") },
+              { value: "40", label: t("whiteboardEditor:panel.sizeHuge") },
+            ]}
+          />
+        </Section>
+      )}
+      {show("textAlign") && (
+        <Section label={t("whiteboardEditor:panel.align")}>
+          <Segmented<TextAlign>
+            label={t("whiteboardEditor:panel.align")}
+            value={value<TextAlign>("textAlign", "left")}
+            onChange={(textAlign) => set({ textAlign })}
+            options={[
+              { value: "left", label: t("whiteboardEditor:panel.alignLeft") },
+              {
+                value: "center",
+                label: t("whiteboardEditor:panel.alignCenter"),
+              },
+              { value: "right", label: t("whiteboardEditor:panel.alignRight") },
+            ]}
+          />
+        </Section>
+      )}
+      {show("routing") && (
+        <Section label={t("whiteboardEditor:panel.routing")}>
+          <Segmented<LineRouting>
+            label={t("whiteboardEditor:panel.routing")}
+            value={value<LineRouting>("routing", "straight")}
+            onChange={(routing) =>
+              setRouting(c, routing, isSelection ? selected : [])
+            }
+            options={[
+              {
+                value: "straight",
+                label: t("whiteboardEditor:panel.routingStraight"),
+              },
+              {
+                value: "curved",
+                label: t("whiteboardEditor:panel.routingCurved"),
+              },
+              {
+                value: "elbow",
+                label: t("whiteboardEditor:panel.routingElbow"),
+              },
+            ]}
+          />
+        </Section>
+      )}
+      {show("arrowheads") && (
+        <Section label={t("whiteboardEditor:panel.arrowheads")}>
+          <HeadChoice
+            label={t("whiteboardEditor:panel.startHead")}
+            value={value<ArrowHead>("startHead", "none")}
+            onChange={(startHead) => set({ startHead })}
+          />
+          <HeadChoice
+            label={t("whiteboardEditor:panel.endHead")}
+            value={value<ArrowHead>("endHead", "arrow")}
+            onChange={(endHead) => set({ endHead })}
+          />
+        </Section>
+      )}
+      {show("opacity") && (
+        <Section label={t("whiteboardEditor:panel.opacity")}>
+          <Slider
+            aria-label={t("whiteboardEditor:panel.opacity")}
+            min={10}
+            max={100}
+            step={10}
+            value={value<number>("opacity", 100) ?? 100}
+            onValueChange={(next) => {
+              const opacity = Array.isArray(next) ? next[0] : next;
+              if (typeof opacity === "number") set({ opacity });
+            }}
+            // A taller press area on touch screens.
+            className="[&_[data-slot=slider-control]]:items-center pointer-coarse:[&_[data-slot=slider-control]]:min-h-11"
+          />
+        </Section>
+      )}
+      {frame && actions.onEditText && (
+        <Section label={t("whiteboardEditor:text.frameName")}>
+          <Button
+            size="sm"
+            variant="outline"
+            className="justify-start"
+            disabled={frame.locked}
+            onClick={() => actions.onEditText?.(frame.id)}
+          >
+            <Pencil aria-hidden="true" />
+            {t("whiteboardEditor:panel.renameFrame")}
+          </Button>
+        </Section>
+      )}
+      {cropTarget && (
+        <Section label={t("whiteboardEditor:crop.section")}>
+          <div className="flex flex-wrap gap-1.5">
+            <Button
+              size="sm"
+              variant="outline"
+              aria-pressed={cropping}
+              onClick={() =>
+                cropping ? c.endCrop() : c.startCrop(cropTarget.id)
               }
-              options={[
-                {
-                  value: "straight",
-                  label: t("whiteboardEditor:panel.routingStraight"),
-                },
-                {
-                  value: "curved",
-                  label: t("whiteboardEditor:panel.routingCurved"),
-                },
-                {
-                  value: "elbow",
-                  label: t("whiteboardEditor:panel.routingElbow"),
-                },
-              ]}
-            />
-          </Section>
-          <Section label={t("whiteboardEditor:panel.arrowheads")}>
-            <HeadChoice
-              label={t("whiteboardEditor:panel.startHead")}
-              value={value<ArrowHead>("startHead", "none")}
-              onChange={(startHead) => set({ startHead })}
-            />
-            <HeadChoice
-              label={t("whiteboardEditor:panel.endHead")}
-              value={value<ArrowHead>("endHead", "arrow")}
-              onChange={(endHead) => set({ endHead })}
-            />
-          </Section>
-        </>
+            >
+              <Crop aria-hidden="true" />
+              {cropping
+                ? t("whiteboardEditor:crop.finish")
+                : t("whiteboardEditor:crop.start")}
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              disabled={!cropTarget.crop}
+              onClick={() => resetCrop(c)}
+            >
+              <RotateCcw aria-hidden="true" />
+              {t("whiteboardEditor:crop.reset")}
+            </Button>
+          </div>
+        </Section>
       )}
-      <Section label={t("whiteboardEditor:panel.opacity")}>
-        <Slider
-          aria-label={t("whiteboardEditor:panel.opacity")}
-          min={10}
-          max={100}
-          step={10}
-          value={value<number>("opacity", 100) ?? 100}
-          onValueChange={(next) => {
-            const opacity = Array.isArray(next) ? next[0] : next;
-            if (typeof opacity === "number") set({ opacity });
-          }}
-        />
-      </Section>
+      {showTasks && (
+        <div className="flex flex-col gap-1.5">
+          {info.stickies.length > 0 && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={actions.onTurnIntoTasks}
+            >
+              <ListTodo aria-hidden="true" />
+              {t("whiteboardEditor:tasks.turnIntoTasks", {
+                count: info.stickies.length,
+              })}
+            </Button>
+          )}
+          {info.dependency &&
+            (actions.dependencyExists ? (
+              <Button
+                size="sm"
+                variant="destructive-outline"
+                onClick={actions.onRemoveDependency}
+              >
+                <Unlink aria-hidden="true" />
+                {t("whiteboardEditor:tasks.removeDependency")}
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  info.dependency && actions.onMakeDependency(info.dependency)
+                }
+              >
+                <GitBranch aria-hidden="true" />
+                {t("whiteboardEditor:tasks.makeDependency")}
+              </Button>
+            ))}
+        </div>
+      )}
 
-      {isSelection && (
-        <>
+      {isSelection && !editing && (
+        // Arranging, set apart from the style above.
+        <div className="flex flex-col gap-3 border-t pt-3">
           <Section label={t("whiteboardEditor:panel.layers")}>
             <div className="flex items-center gap-0.5">
               <IconAction
@@ -908,75 +1042,7 @@ export function PropertiesPanel({
               </IconAction>
             </div>
           </Section>
-          {cropTarget && (
-            <Section label={t("whiteboardEditor:crop.section")}>
-              <div className="flex flex-wrap gap-1.5">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  aria-pressed={cropping}
-                  onClick={() =>
-                    cropping ? c.endCrop() : c.startCrop(cropTarget.id)
-                  }
-                >
-                  <Crop aria-hidden="true" />
-                  {cropping
-                    ? t("whiteboardEditor:crop.finish")
-                    : t("whiteboardEditor:crop.start")}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  disabled={!cropTarget.crop}
-                  onClick={() => resetCrop(c)}
-                >
-                  <RotateCcw aria-hidden="true" />
-                  {t("whiteboardEditor:crop.reset")}
-                </Button>
-              </div>
-            </Section>
-          )}
-          {actions.tasksEnabled &&
-            (info.stickies.length > 0 || info.dependency) && (
-              <div className="flex flex-col gap-1.5">
-                {info.stickies.length > 0 && (
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={actions.onTurnIntoTasks}
-                  >
-                    <ListTodo aria-hidden="true" />
-                    {t("whiteboardEditor:tasks.turnIntoTasks", {
-                      count: info.stickies.length,
-                    })}
-                  </Button>
-                )}
-                {info.dependency &&
-                  (actions.dependencyExists ? (
-                    <Button
-                      size="sm"
-                      variant="destructive-outline"
-                      onClick={actions.onRemoveDependency}
-                    >
-                      <Unlink aria-hidden="true" />
-                      {t("whiteboardEditor:tasks.removeDependency")}
-                    </Button>
-                  ) : (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() =>
-                        info.dependency &&
-                        actions.onMakeDependency(info.dependency)
-                      }
-                    >
-                      <GitBranch aria-hidden="true" />
-                      {t("whiteboardEditor:tasks.makeDependency")}
-                    </Button>
-                  ))}
-              </div>
-            )}
-        </>
+        </div>
       )}
     </section>
   );

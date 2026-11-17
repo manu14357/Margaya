@@ -13956,7 +13956,8 @@
 			"opacity": "Dekking",
 			"layers": "Lagen",
 			"alignment": "Uitlijnen",
-			"actions": "Acties"
+			"actions": "Acties",
+			"renameFrame": "Kader hernoemen"
 		},
 		"colors": {
 			"black": "Zwart",
@@ -14145,6 +14146,15 @@
 			"highlighter": "Markeerstift",
 			"penOnly": "Alleen met pen tekenen",
 			"penOnlyHint": "Met je vingers kun je alleen schuiven en zoomen."
+		},
+		"eraser": {
+			"label": "Gum",
+			"size": "Grootte",
+			"mode": "Gummen",
+			"parts": "Delen",
+			"whole": "Hele objecten",
+			"partsHint": "Gumt alleen het deel van een penstreek onder de gum weg. Andere objecten verdwijnen in hun geheel.",
+			"wholeHint": "Gumt elk object dat je raakt helemaal weg."
 		},
 		"background": {
 			"label": "Achtergrond",

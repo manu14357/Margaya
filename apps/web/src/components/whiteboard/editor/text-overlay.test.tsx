@@ -15,7 +15,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import * as Y from "yjs";
 import { refitText } from "./commands";
 import { BoardController } from "./controller";
-import { isComposingKey, TextOverlay } from "./text-overlay";
+import { fitLabel, isComposingKey, TextOverlay } from "./text-overlay";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
@@ -131,5 +131,96 @@ describe("refitting text", () => {
   it("leaves other elements alone", () => {
     const rect = createElement("rectangle", { width: 10 });
     expect(refitText(rect)).toBe(rect);
+  });
+});
+
+describe("labels that outgrow their shape", () => {
+  it("makes a shape taller to hold a long label, keeping its width", () => {
+    const rect = createElement("rectangle", {
+      width: 100,
+      height: 80,
+      fontSize: 20,
+      text: "Start here with a long label that wraps over many lines",
+    } as never);
+    const fitted = fitLabel(rect);
+    expect(fitted.width).toBe(100);
+    expect(fitted.height).toBeGreaterThan(80);
+    // Tall enough now: fitting again changes nothing.
+    expect(fitLabel(fitted).height).toBe(fitted.height);
+  });
+
+  it("never shrinks a shape whose label fits", () => {
+    const rect = createElement("rectangle", {
+      width: 200,
+      height: 200,
+      fontSize: 20,
+      text: "Short",
+    } as never);
+    expect(fitLabel(rect)).toBe(rect);
+  });
+
+  it("grows an ellipse enough for its smaller label box", () => {
+    const ellipse = createElement("ellipse", {
+      width: 120,
+      height: 60,
+      fontSize: 20,
+      text: "a label that needs several lines inside an ellipse",
+    } as never);
+    const fitted = fitLabel(ellipse);
+    expect(fitted.height).toBeGreaterThan(60);
+    expect(fitLabel(fitted).height).toBe(fitted.height);
+  });
+
+  it("grows a shape on commit and keeps it one undo step", () => {
+    const rect = createElement("rectangle", {
+      width: 100,
+      height: 80,
+      fontSize: 20,
+      text: "",
+    } as never);
+    const { doc, controller } = setup([rect]);
+    render(
+      <TextOverlay
+        controller={controller}
+        elementId={rect.id}
+        isNew={false}
+        onDone={vi.fn()}
+      />,
+    );
+    const field = screen.getByTestId("whiteboard-text-editor");
+    fireEvent.change(field, {
+      target: { value: "Start here with a long label that wraps" },
+    });
+    act(() => {
+      fireEvent.keyDown(field, { key: "Escape" });
+    });
+    expect(readElement(doc, rect.id)?.height).toBeGreaterThan(80);
+    controller.undo();
+    expect(readElement(doc, rect.id)).toMatchObject({ height: 80, text: "" });
+  });
+
+  it("writes a new note with its words when the editor closes", () => {
+    const { doc, controller } = setup([]);
+    const note = createElement("sticky", { x: 0, y: 0, text: "" });
+    controller.setPreview([note], { live: false });
+    render(
+      <TextOverlay
+        controller={controller}
+        elementId={note.id}
+        isNew
+        onDone={vi.fn()}
+      />,
+    );
+    const field = screen.getByTestId("whiteboard-text-editor");
+    fireEvent.change(field, { target: { value: "Idea" } });
+    act(() => {
+      fireEvent.keyDown(field, { key: "Escape" });
+    });
+    expect(readElement(doc, note.id)).toMatchObject({
+      type: "sticky",
+      text: "Idea",
+    });
+    controller.undo();
+    expect(readElement(doc, note.id)?.deleted ?? true).toBe(true);
   });
 });

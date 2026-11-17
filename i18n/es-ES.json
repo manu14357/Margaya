@@ -14179,7 +14179,8 @@
 			"opacity": "Opacidad",
 			"layers": "Capas",
 			"alignment": "Alinear",
-			"actions": "Acciones"
+			"actions": "Acciones",
+			"renameFrame": "Cambiar nombre del marco"
 		},
 		"colors": {
 			"black": "Negro",
@@ -14375,6 +14376,15 @@
 			"highlighter": "Subrayador",
 			"penOnly": "Dibujar solo con el lápiz",
 			"penOnlyHint": "Los dedos solo desplazan y hacen zoom."
+		},
+		"eraser": {
+			"label": "Borrador",
+			"size": "Tamaño",
+			"mode": "Borrar",
+			"parts": "Partes",
+			"whole": "Objetos completos",
+			"partsHint": "Borra solo la parte del trazo que queda bajo el borrador. Los demás objetos se borran completos.",
+			"wholeHint": "Borra por completo cada objeto que toca."
 		},
 		"background": {
 			"label": "Fondo",

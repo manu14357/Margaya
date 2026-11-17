@@ -1,4 +1,5 @@
 import {
+  assignFrames,
   type BoardElement,
   BoardHistory,
   type BoardSettings,
@@ -81,7 +82,11 @@ export type NoticeKind =
 
 export type ControllerCallbacks = {
   openTask?: (taskId: string) => void;
-  notice?: (kind: NoticeKind) => void;
+  /**
+   * Shows a notice. A progress notice ("uploading") returns a function that
+   * takes it down once the work is done.
+   */
+  notice?: (kind: NoticeKind) => (() => void) | undefined;
   openLink?: (url: string) => void;
   /** Deleted arrows that joined two task cards (start card first). */
   dependencyArrowsRemoved?: (links: DependencyLink[]) => void;
@@ -99,6 +104,8 @@ export type ControllerOptions = {
     file: File,
   ) => Promise<{ assetId: string; width: number; height: number }>;
   isPublic: boolean;
+  /** Title of frames without a name, in the viewer's language. */
+  frameTitle?: string;
 };
 
 /** Things the interactive layer draws on top of the scene. */
@@ -230,7 +237,9 @@ export class BoardController {
           state.style !== lastPrefs.style ||
           state.snapToObjects !== lastPrefs.snapToObjects ||
           state.showMinimap !== lastPrefs.showMinimap ||
-          state.penOnly !== lastPrefs.penOnly
+          state.penOnly !== lastPrefs.penOnly ||
+          state.eraserSize !== lastPrefs.eraserSize ||
+          state.eraserMode !== lastPrefs.eraserMode
         ) {
           savePrefs(state);
         }
@@ -292,7 +301,10 @@ export class BoardController {
     ) {
       this.presence.set({ user: next }, true);
     }
-    if (patch.theme !== undefined && patch.theme !== before.theme)
+    if (
+      (patch.theme !== undefined && patch.theme !== before.theme) ||
+      this.options.frameTitle !== before.frameTitle
+    )
       this.requestRender();
   }
 
@@ -435,10 +447,13 @@ export class BoardController {
       null,
       ordered.length,
     );
-    const placed = ordered.map((element, index) => ({
-      ...element,
-      order: keys[index] ?? element.order,
-    }));
+    const placed = adoptIntoFrames(
+      this.scene.elements,
+      ordered.map((element, index) => ({
+        ...element,
+        order: keys[index] ?? element.order,
+      })),
+    );
     const ok = this.commit(placed);
     if (ok && options.select !== false) {
       this.update((state) =>
@@ -524,9 +539,16 @@ export class BoardController {
     return this.commit(next);
   }
 
-  /** Deletes elements, the children of deleted frames and bound text. */
-  remove(ids: readonly string[]): boolean {
-    if (ids.length === 0) return true;
+  /**
+   * Deletes elements, the children of deleted frames and bound text. `also`
+   * goes out in the same write and undo step (the eraser's cut strokes);
+   * anything in it that the delete takes is left out.
+   */
+  remove(
+    ids: readonly string[],
+    options: { also?: readonly BoardElement[] } = {},
+  ): boolean {
+    if (ids.length === 0 && !options.also?.length) return true;
     if (!this.canWrite()) return false;
     const all = this.scene.elements;
     const targets = new Set(ids);
@@ -570,7 +592,12 @@ export class BoardController {
         );
       }
     }
-    const ok = this.commit([...deleted, ...unbound]);
+    const also = (options.also ?? []).filter(
+      (element) =>
+        !targets.has(element.id) &&
+        !(element.frameId && targets.has(element.frameId)),
+    );
+    const ok = this.commit([...deleted, ...unbound, ...also]);
     if (ok) {
       this.update((state) => ({
         ...state,
@@ -1037,6 +1064,7 @@ export class BoardController {
           ...visiblePattern(this.settings),
           resolveImage: (assetId: string) => this.images.get(assetId),
           resolveTask: (taskId: string) => this.getTaskCard(taskId),
+          frameTitle: this.options.frameTitle,
           measureText,
           cache: this.renderCache,
         });
@@ -1098,6 +1126,37 @@ export function visiblePattern(settings: BoardSettings): {
     pattern: settings.pattern ?? "plain",
     patternSize: settings.patternSize,
   };
+}
+
+/**
+ * New elements that land inside a frame belong to it, so they move with it
+ * (a shape drawn, a note stuck or a picture pasted onto a frame). Elements
+ * that already name a frame, and frames themselves, are left as they are.
+ */
+export function adoptIntoFrames(
+  existing: readonly BoardElement[],
+  added: readonly BoardElement[],
+): BoardElement[] {
+  const loose = added
+    .filter((element) => element.type !== "frame" && !element.frameId)
+    .map((element) => element.id);
+  if (loose.length === 0) return [...added];
+  const hasFrame = (element: BoardElement) => element.type === "frame";
+  if (!existing.some(hasFrame) && !added.some(hasFrame)) return [...added];
+  const framed = new Map(
+    assignFrames([...existing, ...added], loose).map((element) => [
+      element.id,
+      element.frameId,
+    ]),
+  );
+  return added.map((element) =>
+    framed.has(element.id)
+      ? ({
+          ...element,
+          frameId: framed.get(element.id) ?? null,
+        } as BoardElement)
+      : element,
+  );
 }
 
 /** The rotated bounds of elements, joined. */

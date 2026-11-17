@@ -257,6 +257,7 @@ export async function rehomeImages(
   }
   const moved = new Map<string, string>();
   let announced = false;
+  let uploaded: (() => void) | undefined;
   let missing = false;
   for (const assetId of assetIds) {
     const embedded = source.images?.[assetId];
@@ -270,7 +271,7 @@ export async function rehomeImages(
       continue;
     }
     if (!announced) {
-      c.callbacks.notice?.("uploading");
+      uploaded = c.callbacks.notice?.("uploading");
       announced = true;
     }
     try {
@@ -282,6 +283,7 @@ export async function rehomeImages(
       missing = true;
     }
   }
+  uploaded?.();
   // The elements still come; their pictures show as placeholders.
   if (missing) c.callbacks.notice?.("imageMissing");
   if (moved.size === 0) return elements;
@@ -308,9 +310,10 @@ export async function insertImage(
     c.callbacks.notice?.("imageType");
     return false;
   }
-  c.callbacks.notice?.("uploading");
+  const uploaded = c.callbacks.notice?.("uploading");
   try {
     const result = await upload(file);
+    uploaded?.();
     const max = 600;
     const scale = Math.min(
       1,
@@ -327,6 +330,8 @@ export async function insertImage(
     });
     return c.insert([element]);
   } catch (error) {
+    // The failure takes the place of the progress notice.
+    uploaded?.();
     c.callbacks.notice?.(
       error instanceof UnsupportedWhiteboardImageError
         ? "imageType"
@@ -385,21 +390,23 @@ export function flip(c: BoardController, axis: FlipAxis): boolean {
   return commitWithLines(c, flipElements(selected, axis, { userId: c.userId }));
 }
 
-/** Commits moved elements together with the lines bound to them. */
+/**
+ * Commits moved elements together with the lines bound to them (to those
+ * in `moved`, when only some of them changed shape or place).
+ */
 export function commitWithLines(
   c: BoardController,
   next: BoardElement[],
+  moved: readonly string[] = next.map((element) => element.id),
 ): boolean {
   if (next.length === 0) return false;
   const byId = new Map(next.map((element) => [element.id, element]));
   const all = (c.scene.elements as BoardElement[]).map(
     (element) => byId.get(element.id) ?? element,
   );
-  const lines = updateBoundLines(
-    all,
-    next.map((element) => element.id),
-    { userId: c.userId },
-  ).filter((line) => !byId.has(line.id));
+  const lines = updateBoundLines(all, moved, { userId: c.userId }).filter(
+    (line) => !byId.has(line.id),
+  );
   return c.commit([...next, ...lines]);
 }
 

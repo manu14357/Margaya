@@ -8,7 +8,7 @@ import type { BoardController } from "./controller";
 import { pictureFrame } from "./crop";
 import { rotateAround } from "./handles";
 import { type Interaction, isLinear } from "./interaction";
-import { chromeColors, withAlpha } from "./theme-colors";
+import { type ChromeColors, chromeColors, withAlpha } from "./theme-colors";
 import { toScreen } from "./viewport";
 
 // The interactive layer: selection, handles, guides, binding highlights and
@@ -196,6 +196,12 @@ export function paintOverlay(
     ctx.restore();
   }
 
+  // The eraser ring: its real size, in screen pixels at every zoom.
+  if (interaction.showsRing() && interaction.ringAt) {
+    const centre = project(interaction.ringAt.x, interaction.ringAt.y);
+    paintEraserRing(ctx, centre.x, centre.y, state.eraserSize / 2, colors);
+  }
+
   // Laser trails: ours, then everyone else's.
   const now = performance.now();
   if (c.laser.length > 0) {
@@ -237,6 +243,32 @@ export function paintOverlay(
   }
 
   return animating;
+}
+
+/**
+ * A ring in the foreground colour on a halo of the background colour, so it
+ * reads on light and dark boards and over any ink.
+ */
+function paintEraserRing(
+  ctx: Ctx,
+  x: number,
+  y: number,
+  radius: number,
+  colors: ChromeColors,
+): void {
+  const r = Math.max(1, radius);
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fillStyle = withAlpha(colors.foreground, 0.06);
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = withAlpha(colors.background, 0.9);
+  ctx.stroke();
+  ctx.lineWidth = 1.25;
+  ctx.strokeStyle = colors.foreground;
+  ctx.stroke();
+  ctx.restore();
 }
 
 /** Shade laid over the part of a picture that the crop leaves out. */

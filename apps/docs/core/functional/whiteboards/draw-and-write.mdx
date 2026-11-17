@@ -27,7 +27,7 @@ The toolbar sits at the top of the canvas. Pick a tool, then click or drag on th
 | **Task card** | | Add cards of the project's tasks. See [Work with tasks](/core/functional/whiteboards/tasks). |
 | **Image** | `9` | Pick a PNG, JPEG, GIF or WebP image to place on the board. |
 | **Frame** | `F` | Drag to draw a frame that holds other elements. |
-| **Eraser** | `E` or `0` | Click or drag over elements to remove them. |
+| **Eraser** | `E` or `0` | Drag over pen strokes to rub out the part you touch, or over other elements to remove them. |
 | **Laser pointer** | `K` | Point at something. The trail fades, and everyone on the board sees it. |
 | **Keep tool active** | `Q` | Keep the current tool after you draw, instead of going back to **Select**. |
 
@@ -83,7 +83,8 @@ On a touch screen, the **Pen style** row also has **Draw with pen only**, so fin
 
 ## Eraser and laser pointer
 
-- **Eraser** (`E`): click an element, or drag across several. Elements fade as you pass over them and are removed when you let go. Erasing part of a group removes the whole group, and [locked elements](#lock-elements) are skipped. Undo brings them back. A stylus's eraser end erases the same way, whatever tool is picked.
+- **Eraser** (`E`): drag across the board. A ring under the pointer shows the eraser's size. Pen strokes lose only the part under the ring and split into separate strokes where they are cut; shapes, text, sticky notes, images, frames, task cards, lines and arrows fade as you pass over them and are removed whole when you let go. Removing an element of a group removes the whole group (a pen stroke in a group is only cut), and [locked elements](#lock-elements) are skipped. One undo brings back everything a drag erased. A stylus's eraser end erases the same way, whatever tool is picked.
+  - While the eraser is picked, the panel on the left sets its **Size** and what to **Erase**: **Parts** (the default) or **Whole objects**, which removes pen strokes whole too. Both are remembered on this device.
 - **Laser pointer** (`K`): drag to draw a short red trail that fades after a second. Everyone on the board sees it, so it's the way to point at something during a call. Viewers can use it too, and it never changes the board.
 
 ## Images

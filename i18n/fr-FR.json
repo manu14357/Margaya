@@ -14179,7 +14179,8 @@
 			"opacity": "Opacité",
 			"layers": "Calques",
 			"alignment": "Aligner",
-			"actions": "Actions"
+			"actions": "Actions",
+			"renameFrame": "Renommer le cadre"
 		},
 		"colors": {
 			"black": "Noir",
@@ -14375,6 +14376,15 @@
 			"highlighter": "Surligneur",
 			"penOnly": "Dessiner uniquement au stylet",
 			"penOnlyHint": "Les doigts servent seulement à se déplacer et à zoomer."
+		},
+		"eraser": {
+			"label": "Gomme",
+			"size": "Taille",
+			"mode": "Effacer",
+			"parts": "Parties",
+			"whole": "Objets entiers",
+			"partsHint": "Efface seulement la partie du trait sous la gomme. Les autres objets sont effacés en entier.",
+			"wholeHint": "Efface en entier chaque objet touché."
 		},
 		"background": {
 			"label": "Arrière-plan",

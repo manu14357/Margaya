@@ -13736,7 +13736,8 @@
 			"opacity": "Opasitas",
 			"layers": "Lapisan",
 			"alignment": "Perataan",
-			"actions": "Tindakan"
+			"actions": "Tindakan",
+			"renameFrame": "Ganti nama bingkai"
 		},
 		"colors": {
 			"black": "Hitam",
@@ -13918,6 +13919,15 @@
 			"highlighter": "Stabilo",
 			"penOnly": "Gambar hanya dengan pena",
 			"penOnlyHint": "Jari hanya untuk menggeser dan memperbesar."
+		},
+		"eraser": {
+			"label": "Penghapus",
+			"size": "Ukuran",
+			"mode": "Hapus",
+			"parts": "Bagian",
+			"whole": "Seluruh objek",
+			"partsHint": "Hanya menghapus bagian goresan pena di bawah penghapus. Objek lain terhapus seluruhnya.",
+			"wholeHint": "Menghapus seluruh objek yang tersentuh."
 		},
 		"background": {
 			"label": "Latar belakang",

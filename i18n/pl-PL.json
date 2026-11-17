@@ -14402,7 +14402,8 @@
 			"opacity": "Krycie",
 			"layers": "Warstwy",
 			"alignment": "Wyrównanie",
-			"actions": "Działania"
+			"actions": "Działania",
+			"renameFrame": "Zmień nazwę ramki"
 		},
 		"colors": {
 			"black": "Czarny",
@@ -14605,6 +14606,15 @@
 			"highlighter": "Zakreślacz",
 			"penOnly": "Rysuj tylko piórem",
 			"penOnlyHint": "Palcami można tylko przesuwać i powiększać."
+		},
+		"eraser": {
+			"label": "Gumka",
+			"size": "Rozmiar",
+			"mode": "Wymazywanie",
+			"parts": "Fragmenty",
+			"whole": "Całe obiekty",
+			"partsHint": "Wymazuje tylko fragment pociągnięcia pod gumką. Inne obiekty znikają w całości.",
+			"wholeHint": "Wymazuje w całości każdy dotknięty obiekt."
 		},
 		"background": {
 			"label": "Tło",

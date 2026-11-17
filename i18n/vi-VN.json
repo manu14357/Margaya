@@ -13736,7 +13736,8 @@
 			"opacity": "Độ mờ đục",
 			"layers": "Lớp",
 			"alignment": "Căn chỉnh",
-			"actions": "Thao tác"
+			"actions": "Thao tác",
+			"renameFrame": "Đổi tên khung"
 		},
 		"colors": {
 			"black": "Đen",
@@ -13918,6 +13919,15 @@
 			"highlighter": "Bút dạ quang",
 			"penOnly": "Chỉ vẽ bằng bút",
 			"penOnlyHint": "Ngón tay chỉ dùng để kéo và thu phóng."
+		},
+		"eraser": {
+			"label": "Tẩy",
+			"size": "Kích thước",
+			"mode": "Xóa",
+			"parts": "Từng phần",
+			"whole": "Cả đối tượng",
+			"partsHint": "Chỉ xóa phần nét bút nằm dưới cục tẩy. Các đối tượng khác bị xóa toàn bộ.",
+			"wholeHint": "Xóa toàn bộ mọi đối tượng mà nó chạm vào."
 		},
 		"background": {
 			"label": "Nền",

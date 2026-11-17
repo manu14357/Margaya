@@ -99,8 +99,11 @@ const ERROR_NOTICES = new Set<NoticeKind>([
 /** How long a "read-only" notice keeps the next one from showing. */
 const READ_ONLY_NOTICE_GAP_MS = 4000;
 
-/** Notices that report progress or nothing at all, not a success. */
-const INFO_NOTICES = new Set<NoticeKind>(["uploading", "pasteEmpty"]);
+/** Notices that report nothing at all, not a success. */
+const INFO_NOTICES = new Set<NoticeKind>(["pasteEmpty"]);
+
+/** Notices that report work in progress, shown until the work ends. */
+const PROGRESS_NOTICES = new Set<NoticeKind>(["uploading"]);
 
 /** Whether a key event belongs to a text field rather than the canvas. */
 function isTypingTarget(target: EventTarget | null): boolean {
@@ -175,6 +178,7 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
     isPublic = false,
     presenting = false,
     onExitPresent,
+    synced = false,
   } = props;
   // Present mode shows the board read-only, whatever the viewer may do.
   const readOnly = boardReadOnly || presenting;
@@ -194,6 +198,7 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
         imageUrl,
         uploadImage,
         isPublic,
+        frameTitle: t("whiteboardEditor:tools.frame"),
       }),
   );
   const c = controller;
@@ -212,6 +217,9 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
     c.connect();
     return () => c.dispose();
   }, [c]);
+  // An unnamed frame shows the word "Frame" so its title strip can be seen
+  // and grabbed, on the board, in exports and on public boards alike.
+  const frameTitle = t("whiteboardEditor:tools.frame");
   useEffect(() => {
     c.setOptions({
       readOnly,
@@ -221,8 +229,19 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
       uploadImage,
       isPublic,
       whiteboardId,
+      frameTitle,
     });
-  }, [c, readOnly, user, theme, imageUrl, uploadImage, isPublic, whiteboardId]);
+  }, [
+    c,
+    readOnly,
+    user,
+    theme,
+    imageUrl,
+    uploadImage,
+    isPublic,
+    whiteboardId,
+    frameTitle,
+  ]);
 
   const editText = useCallback(
     (id: string, options: { isNew?: boolean } = {}) => {
@@ -280,6 +299,12 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
     c.select([]);
     c.update((state) => ({ ...state, contextMenu: null, dialog: null }));
   }, [c, interaction, presenting]);
+  // Write access and the theme live in the controller's options, not the
+  // store: the canvas cursor follows them here (after setOptions above).
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run on these changes
+  useEffect(() => {
+    interaction.refreshCursor();
+  }, [interaction, readOnly, theme]);
 
   // Every refused key press on a read-only board would stack another copy
   // of the same message; one at a time is enough.
@@ -288,13 +313,20 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
     (kind: NoticeKind) => {
       if (kind === "readOnly") {
         const now = Date.now();
-        if (now - lastReadOnlyNotice.current < READ_ONLY_NOTICE_GAP_MS) return;
+        if (now - lastReadOnlyNotice.current < READ_ONLY_NOTICE_GAP_MS)
+          return undefined;
         lastReadOnlyNotice.current = now;
       }
       const message = t(NOTICE_KEYS[kind]);
+      if (PROGRESS_NOTICES.has(kind)) {
+        // Stays up while the work runs; the caller takes it down.
+        const id = toast.loading(message);
+        return () => toast.dismiss(id);
+      }
       if (ERROR_NOTICES.has(kind)) toast.error(message);
       else if (INFO_NOTICES.has(kind)) toast.info(message);
       else if (kind !== "copied") toast.success(message);
+      return undefined;
     },
     [t],
   );
@@ -340,6 +372,7 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
     const overlay = overlayRef.current;
     if (!root || !staticCanvas || !overlay) return;
     c.attach(staticCanvas, overlay);
+    const stopCursor = interaction.watchCursor();
     const reducedMotion =
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -363,6 +396,7 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
       c.requestRender();
     });
     return () => {
+      stopCursor();
       observer?.disconnect();
       window.removeEventListener("resize", measure);
       c.detach();
@@ -370,9 +404,17 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
   }, [c, interaction]);
 
   // First view: the linked element, or the whole board once it has content.
+  const syncedRef = useRef(synced);
+  syncedRef.current = synced;
+  const settleFirstView = useRef<() => void>(() => undefined);
   useEffect(() => {
     let done = false;
     const startViewport = c.state.viewport;
+    // A board that is still empty once it has synced stays as it is: a
+    // collaborator's first shape must not move this viewer's view.
+    settleFirstView.current = () => {
+      if (c.scene.elements.length === 0) done = true;
+    };
     const place = (change?: { remote: boolean }) => {
       if (done) return;
       // Only content that arrives (stored or synced) is framed. Someone who
@@ -381,7 +423,11 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
         done = true;
         return;
       }
-      if (c.state.width === 0 || c.scene.elements.length === 0) return;
+      if (c.scene.elements.length === 0) {
+        if (syncedRef.current) done = true;
+        return;
+      }
+      if (c.state.width === 0) return;
       done = true;
       if (initialElementId && c.scene.get(initialElementId))
         c.scrollToElement(initialElementId);
@@ -400,6 +446,9 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
       stopStore();
     };
   }, [c, initialElementId]);
+  useEffect(() => {
+    if (synced) settleFirstView.current();
+  }, [synced]);
 
   // ----- handle -------------------------------------------------------------
   useEffect(() => {
@@ -703,6 +752,7 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
       ]);
     },
     onEditLink: () => c.update((state) => openDialog(state, "link")),
+    onEditText: (id: string) => editTextRef.current(id),
     tasksEnabled,
   };
 

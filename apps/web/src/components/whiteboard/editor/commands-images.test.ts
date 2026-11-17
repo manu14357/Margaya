@@ -93,6 +93,33 @@ describe("pictures on a board", () => {
     expect(otherNotice).toHaveBeenLastCalledWith("uploadFailed");
   });
 
+  it("takes the uploading notice down when the upload ends, and reports a failure in its place", async () => {
+    const { controller, doc, notice } = setup();
+    const events: string[] = [];
+    notice.mockImplementation((kind: string) => {
+      events.push(kind);
+      return kind === "uploading" ? () => events.push("dismissed") : undefined;
+    });
+    expect(await insertImage(controller, png(), { x: 0, y: 0 })).toBe(true);
+    expect(events).toEqual(["uploading", "dismissed"]);
+    expect(readElements(doc).map((element) => element.type)).toEqual(["image"]);
+
+    const failing = setup({
+      uploadImage: vi.fn(async () => {
+        throw new Error("storage down");
+      }),
+    });
+    const failed: string[] = [];
+    failing.notice.mockImplementation((kind: string) => {
+      failed.push(kind);
+      return kind === "uploading" ? () => failed.push("dismissed") : undefined;
+    });
+    expect(await insertImage(failing.controller, png(), { x: 0, y: 0 })).toBe(
+      false,
+    );
+    expect(failed).toEqual(["uploading", "dismissed", "uploadFailed"]);
+  });
+
   it("uploads pictures pasted from another board here, and keeps this board's own", async () => {
     const fetchMock = vi.fn(
       async () =>

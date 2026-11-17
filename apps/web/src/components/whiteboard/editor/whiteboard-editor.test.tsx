@@ -32,6 +32,8 @@ const toast = vi.hoisted(() => ({
   success: vi.fn(),
   error: vi.fn(),
   info: vi.fn(),
+  loading: vi.fn(() => "loading-toast"),
+  dismiss: vi.fn(),
 }));
 vi.mock("@/lib/toast", () => ({ toast }));
 vi.mock("@/fetchers/task/get-tasks", () => ({
@@ -76,6 +78,8 @@ afterEach(() => {
   toast.success.mockClear();
   toast.error.mockClear();
   toast.info.mockClear();
+  toast.loading.mockClear();
+  toast.dismiss.mockClear();
 });
 
 function mount(
@@ -122,6 +126,22 @@ describe("WhiteboardEditor", () => {
     expect(screen.getByTestId("whiteboard-tool-sticky")).toBeTruthy();
     const file = await handle()?.exportFile();
     expect(file && parseBoardFile(file)?.elements).toHaveLength(1);
+  });
+
+  it("titles unnamed frames in the viewer's language, in exports and on public boards too", async () => {
+    const unnamed = createElement("frame", { name: "" });
+    const named = createElement("frame", { name: "Sprint", x: 600 });
+    const title = ">whiteboardEditor:tools.frame</text>";
+    const { handle } = mount({}, [unnamed, named]);
+    const svg = (await handle()?.exportSvg()) ?? "";
+    expect(svg).toContain(title);
+    expect(svg).toContain(">Sprint</text>");
+    expect(svg.split(title)).toHaveLength(2);
+    cleanup();
+    const { handle: publicHandle } = mount({ readOnly: true, isPublic: true }, [
+      unnamed,
+    ]);
+    expect((await publicHandle()?.exportSvg()) ?? "").toContain(title);
   });
 
   it("offers only viewing tools on a read-only board", () => {
@@ -243,6 +263,60 @@ describe("WhiteboardEditor", () => {
     expect(toast.error).not.toHaveBeenCalled();
   });
 
+  it("takes the uploading toast down when the upload ends, and shows an error when it fails", async () => {
+    const png = () =>
+      new File([new Uint8Array([137, 80, 78, 71])], "photo.png", {
+        type: "image/png",
+      });
+    const drop = async (file: File) => {
+      await act(async () => {
+        fireEvent.drop(screen.getByTestId("whiteboard-editor"), {
+          dataTransfer: { files: [file], getData: () => "" },
+        });
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+    };
+    const { doc } = mount(
+      {
+        uploadImage: vi.fn(async () => ({
+          assetId: "a1",
+          width: 10,
+          height: 10,
+        })),
+      },
+      [],
+    );
+    await drop(png());
+    await vi.waitFor(() => expect(readElements(doc)).toHaveLength(1));
+    expect(toast.loading).toHaveBeenCalledWith(
+      "whiteboardEditor:notices.uploading",
+    );
+    expect(toast.dismiss).toHaveBeenCalledWith("loading-toast");
+    expect(toast.error).not.toHaveBeenCalled();
+
+    cleanup();
+    toast.loading.mockClear();
+    toast.dismiss.mockClear();
+    mount(
+      {
+        uploadImage: vi.fn(async () => {
+          throw new Error("storage down");
+        }),
+      },
+      [],
+    );
+    await drop(png());
+    await vi.waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith(
+        "whiteboardEditor:notices.uploadFailed",
+      ),
+    );
+    expect(toast.dismiss).toHaveBeenCalledWith("loading-toast");
+    expect(toast.dismiss.mock.invocationCallOrder[0]).toBeLessThan(
+      toast.error.mock.invocationCallOrder[0] ?? 0,
+    );
+  });
+
   it("refuses a dropped file that is not a picture the board can hold", async () => {
     const uploadImage = vi.fn();
     const { doc } = mount({ uploadImage }, []);
@@ -297,6 +371,21 @@ describe("WhiteboardEditor", () => {
         writeElements(doc, [createElement("ellipse")], "remote");
       });
       expect(fit).not.toHaveBeenCalled();
+    });
+
+    it("leaves the view alone when a collaborator draws on a board that synced empty", () => {
+      const fit = withSize();
+      const { doc } = mount({ synced: true }, []);
+      act(() => {
+        writeElements(doc, [createElement("rectangle")], "remote");
+      });
+      expect(fit).not.toHaveBeenCalled();
+    });
+
+    it("still frames content that is already there once synced", () => {
+      const fit = withSize();
+      mount({ synced: true }, [createElement("rectangle")]);
+      expect(fit).toHaveBeenCalledTimes(1);
     });
   });
 

@@ -14179,7 +14179,8 @@
 			"opacity": "Opacità",
 			"layers": "Livelli",
 			"alignment": "Allinea",
-			"actions": "Azioni"
+			"actions": "Azioni",
+			"renameFrame": "Rinomina riquadro"
 		},
 		"colors": {
 			"black": "Nero",
@@ -14375,6 +14376,15 @@
 			"highlighter": "Evidenziatore",
 			"penOnly": "Disegna solo con la penna",
 			"penOnlyHint": "Con le dita puoi solo spostarti e zoomare."
+		},
+		"eraser": {
+			"label": "Gomma",
+			"size": "Dimensione",
+			"mode": "Cancella",
+			"parts": "Parti",
+			"whole": "Oggetti interi",
+			"partsHint": "Cancella solo la parte del tratto sotto la gomma. Gli altri oggetti vengono cancellati per intero.",
+			"wholeHint": "Cancella per intero ogni oggetto che tocca."
 		},
 		"background": {
 			"label": "Sfondo",

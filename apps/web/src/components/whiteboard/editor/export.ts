@@ -133,6 +133,7 @@ export async function exportPng(
     cache: new RenderCache(),
     resolveImage: (assetId) => assets.get(assetId)?.image ?? null,
     resolveTask: (taskId) => c.getTaskCard(taskId),
+    frameTitle: c.options.frameTitle,
   });
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob((result) => resolve(result), "image/png"),
@@ -161,6 +162,7 @@ export async function exportSvg(
     theme: options.theme ?? "light",
     resolveTask: (taskId) => c.getTaskCard(taskId),
     imageHref: (assetId) => assets.get(assetId)?.dataUrl ?? null,
+    frameTitle: c.options.frameTitle,
     measureText,
   });
 }

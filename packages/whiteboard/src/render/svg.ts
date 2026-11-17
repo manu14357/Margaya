@@ -36,6 +36,8 @@ export type SvgRenderOptions = {
   /** URL of an uploaded image, or null to draw the placeholder. */
   imageHref?: (assetId: string) => string | null;
   measureText?: MeasureText;
+  /** Title of frames without a name, in the viewer's language. */
+  frameTitle?: string;
   /** Background pattern behind the drawing; default "plain" (none). */
   pattern?: BackgroundPattern;
   /** Pattern spacing in board units (default 24). */
@@ -344,6 +346,7 @@ export function renderToSvg(
       measure,
       background,
       task,
+      frameTitle: options.frameTitle,
     });
     if (drawing.items.length === 0) continue;
     const content = itemsMarkup(state, drawing.items);

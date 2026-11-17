@@ -3,6 +3,7 @@
 // identity never changes, so compiler memoisation would freeze those reads.
 "use no memo";
 
+import type { BoardElement } from "@margaya/whiteboard";
 import {
   CircleHelp,
   Map as MapIcon,
@@ -292,6 +293,43 @@ export function FollowFrame() {
 
 const MINIMAP = { width: 200, height: 140 };
 
+/**
+ * One element in the overview: lines and drawings as their strokes, frames
+ * as outlines (a filled frame would hide what it holds), the rest as their
+ * filled bounds.
+ */
+export function paintMinimapElement(
+  ctx: Pick<
+    CanvasRenderingContext2D,
+    "beginPath" | "moveTo" | "lineTo" | "stroke" | "strokeRect" | "fillRect"
+  >,
+  element: BoardElement,
+  layout: { x: number; y: number; scale: number },
+): void {
+  const { x: ox, y: oy, scale } = layout;
+  if ("points" in element && element.points.length > 0 && !element.angle) {
+    ctx.beginPath();
+    element.points.forEach(([px, py], index) => {
+      const sx = ox + (element.x + px) * scale;
+      const sy = oy + (element.y + py) * scale;
+      if (index === 0) ctx.moveTo(sx, sy);
+      else ctx.lineTo(sx, sy);
+    });
+    ctx.stroke();
+    return;
+  }
+  const bounds = unionBounds([element]);
+  if (!bounds) return;
+  const rect: [number, number, number, number] = [
+    ox + bounds.x * scale,
+    oy + bounds.y * scale,
+    Math.max(1, bounds.width * scale),
+    Math.max(1, bounds.height * scale),
+  ];
+  if (element.type === "frame") ctx.strokeRect(...rect);
+  else ctx.fillRect(...rect);
+}
+
 /** A small overview of the board; click or drag it to move the view. */
 export function Minimap({ controller: c }: { controller: BoardController }) {
   const { t } = useTranslation();
@@ -335,16 +373,11 @@ export function Minimap({ controller: c }: { controller: BoardController }) {
     layout.current = { x: ox, y: oy, scale };
     const colors = chromeColors(c.options.theme);
     ctx.fillStyle = colors.foreground;
+    ctx.strokeStyle = colors.foreground;
+    ctx.lineWidth = 1;
     ctx.globalAlpha = 0.28;
     for (const element of c.scene.elements) {
-      const bounds = unionBounds([element]);
-      if (!bounds) continue;
-      ctx.fillRect(
-        ox + bounds.x * scale,
-        oy + bounds.y * scale,
-        Math.max(1, bounds.width * scale),
-        Math.max(1, bounds.height * scale),
-      );
+      paintMinimapElement(ctx, element, { x: ox, y: oy, scale });
     }
     ctx.globalAlpha = 1;
     ctx.strokeStyle = colors.selection;
@@ -379,12 +412,15 @@ export function Minimap({ controller: c }: { controller: BoardController }) {
       className="pointer-events-auto cursor-pointer rounded-xl border bg-card shadow-lg/5"
       style={{ width: MINIMAP.width, height: MINIMAP.height }}
       onPointerDown={(event) => {
+        // Only the main button (or a touch) moves the view.
+        if (event.button !== 0) return;
         event.currentTarget.setPointerCapture(event.pointerId);
         moveTo(event);
       }}
       onPointerMove={(event) => {
-        if (event.buttons) moveTo(event);
+        if (event.buttons & 1) moveTo(event);
       }}
+      onContextMenu={(event) => event.preventDefault()}
     />
   );
 }

@@ -68,6 +68,13 @@ export const DEFAULT_ITEM_STYLE: ItemStyle = {
   highlighterWidth: 4,
 };
 
+/** "parts" erases only what the eraser covers of a stroke; "whole" takes whole objects. */
+export const ERASER_MODES = ["parts", "whole"] as const;
+export type EraserMode = (typeof ERASER_MODES)[number];
+
+/** Eraser diameter in screen pixels: it feels the same at every zoom. */
+export const ERASER_SIZE = { min: 4, max: 64, default: 16 } as const;
+
 export type DialogId =
   | "help"
   | "search"
@@ -107,6 +114,10 @@ export type EditorState = ToolState & {
   showMinimap: boolean;
   /** "Draw with pen only": touch pans and zooms but never draws. Per device. */
   penOnly: boolean;
+  /** Eraser diameter in screen pixels. Per device. */
+  eraserSize: number;
+  /** What the eraser takes from a pen stroke. Per device. */
+  eraserMode: EraserMode;
   dialog: DialogId;
   contextMenu: ContextMenuState;
   /** Awareness client id being followed. */
@@ -130,6 +141,8 @@ export const INITIAL_EDITOR_STATE: EditorState = {
   snapToObjects: true,
   showMinimap: false,
   penOnly: false,
+  eraserSize: ERASER_SIZE.default,
+  eraserMode: "parts",
   dialog: null,
   contextMenu: null,
   followingClientId: null,
@@ -279,6 +292,8 @@ type StoredPrefs = Pick<
   | "shapeKind"
   | "penStyle"
   | "penOnly"
+  | "eraserSize"
+  | "eraserMode"
 >;
 
 const SHAPE_CHOICES: readonly unknown[] = [
@@ -302,6 +317,13 @@ export function loadPrefs(): Partial<EditorState> {
     if (typeof parsed.showMinimap === "boolean")
       prefs.showMinimap = parsed.showMinimap;
     if (typeof parsed.penOnly === "boolean") prefs.penOnly = parsed.penOnly;
+    if (
+      typeof parsed.eraserSize === "number" &&
+      Number.isFinite(parsed.eraserSize)
+    )
+      prefs.eraserSize = clampEraserSize(parsed.eraserSize);
+    if ((ERASER_MODES as readonly unknown[]).includes(parsed.eraserMode))
+      prefs.eraserMode = parsed.eraserMode as EraserMode;
     if (SHAPE_CHOICES.includes(parsed.shapeKind))
       prefs.shapeKind = parsed.shapeKind as ShapeChoice;
     if ((PEN_STYLES as readonly unknown[]).includes(parsed.penStyle))
@@ -321,11 +343,17 @@ export function savePrefs(state: EditorState): void {
       shapeKind: state.shapeKind,
       penStyle: state.penStyle,
       penOnly: state.penOnly,
+      eraserSize: state.eraserSize,
+      eraserMode: state.eraserMode,
     };
     window.localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
   } catch {
     // Storage may be blocked; the defaults still work.
   }
+}
+
+export function clampEraserSize(size: number): number {
+  return Math.round(Math.min(ERASER_SIZE.max, Math.max(ERASER_SIZE.min, size)));
 }
 
 const COLOR = /^(#[0-9a-f]{3}|#[0-9a-f]{6}|#[0-9a-f]{8}|transparent)$/i;

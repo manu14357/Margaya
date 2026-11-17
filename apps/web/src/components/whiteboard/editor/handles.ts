@@ -49,7 +49,16 @@ export function rotateAround(
 export function layoutHandles(
   frame: SelectionFrame,
   zoom: number,
-  options: { coarse?: boolean; rotatable?: boolean; resizable?: boolean } = {},
+  options: {
+    coarse?: boolean;
+    rotatable?: boolean;
+    resizable?: boolean;
+    /**
+     * Keep the left and right handles on a short box: a one-line text is
+     * only ever as tall as its line, and those handles set its wrap width.
+     */
+    stretchable?: boolean;
+  } = {},
 ): HandleLayout[] {
   const screenSize = options.coarse ? HANDLE_SIZE_TOUCH : HANDLE_SIZE_MOUSE;
   const size = screenSize / zoom;
@@ -78,7 +87,7 @@ export function layoutHandles(
       push("n", cx, top);
       push("s", cx, bottom);
     }
-    if (height * zoom > minSide) {
+    if (height * zoom > minSide || options.stretchable) {
       push("w", left, cy);
       push("e", right, cy);
     }
@@ -147,8 +156,9 @@ export function snapAngle(angle: number, step = Math.PI / 12): number {
 }
 
 /**
- * Whether a resize keeps the selection's proportions. One image or text keeps
- * them unless Shift is held. Several elements stretch freely, except that a
+ * Whether a resize keeps the selection's proportions. One image, or a text
+ * from a corner, keeps them unless Shift is held. Several elements stretch
+ * freely, except that a
  * group, text or an image scales like a picture from a corner, and rotated
  * elements always scale evenly: stretching a turned box along the screen
  * axes would shear it, which a box cannot show. Shift always keeps them.
@@ -160,7 +170,9 @@ export function resizeKeepsAspect(
 ): boolean {
   if (elements.length === 1) {
     const only = elements[0];
-    const natural = only?.type === "image" || only?.type === "text";
+    // A text's side handles set its wrap width; only its corners scale it.
+    const natural =
+      only?.type === "image" || (only?.type === "text" && handle.length === 2);
     return shift !== natural;
   }
   if (shift) return true;

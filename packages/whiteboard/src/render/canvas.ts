@@ -42,6 +42,8 @@ export type ElementRenderOptions = {
   background?: string;
   resolveImage?: (assetId: string) => CanvasImageLike | null;
   resolveTask?: (taskId: string) => TaskCardData | null;
+  /** Title of frames without a name, in the viewer's language. */
+  frameTitle?: string;
   cache?: RenderCache;
   /** Set false to always trace commands instead of building `Path2D`s. */
   usePath2D?: boolean;
@@ -245,8 +247,12 @@ export class RenderCache {
     background: string,
     task: TaskCardData | null | undefined,
     build: () => ElementDrawing,
+    /** Anything else outside the element that its drawing shows. */
+    variant = "",
   ): CacheEntry {
-    const signature = taskSignature(task);
+    const signature = variant
+      ? `${taskSignature(task)}|${variant}`
+      : taskSignature(task);
     const context = `${theme}|${background}|${signature}`;
     const found = this.entries.get(el.id);
     // The same element object in the same context: nothing to compare.
@@ -438,13 +444,22 @@ export function renderElement(
   const task =
     el.type === "task" ? (options.resolveTask?.(el.taskId) ?? null) : undefined;
   const cache = options.cache ?? sharedCache;
-  const entry = cache.entry(el, theme, background, task, () =>
-    buildElementDrawing(el, {
-      theme,
-      measure: options.measureText,
-      background,
-      task,
-    }),
+  const frameTitle =
+    el.type === "frame" && !el.name.trim() ? (options.frameTitle ?? "") : "";
+  const entry = cache.entry(
+    el,
+    theme,
+    background,
+    task,
+    () =>
+      buildElementDrawing(el, {
+        theme,
+        measure: options.measureText,
+        background,
+        task,
+        frameTitle,
+      }),
+    frameTitle,
   );
   const { drawing } = entry;
   if (drawing.items.length === 0) return;

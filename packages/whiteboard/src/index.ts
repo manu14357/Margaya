@@ -1,5 +1,6 @@
 export * from "./create.js";
 export * from "./elements.js";
+export * from "./erase.js";
 export * from "./file.js";
 export * from "./geometry.js";
 export * from "./groups.js";

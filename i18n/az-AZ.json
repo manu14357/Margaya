@@ -13956,7 +13956,8 @@
 			"opacity": "Qeyri-şəffaflıq",
 			"layers": "Qatlar",
 			"alignment": "Düzləndir",
-			"actions": "Əməliyyatlar"
+			"actions": "Əməliyyatlar",
+			"renameFrame": "Çərçivənin adını dəyiş"
 		},
 		"colors": {
 			"black": "Qara",
@@ -14145,6 +14146,15 @@
 			"highlighter": "Vurğulayıcı",
 			"penOnly": "Yalnız qələmlə çək",
 			"penOnlyHint": "Barmaqlar yalnız sürüşdürür və miqyası dəyişir."
+		},
+		"eraser": {
+			"label": "Pozan",
+			"size": "Ölçü",
+			"mode": "Silmə",
+			"parts": "Hissələr",
+			"whole": "Bütöv obyektlər",
+			"partsHint": "Qələm xəttinin yalnız pozanın altındakı hissəsini silir. Digər obyektlər bütöv silinir.",
+			"wholeHint": "Toxunduğu hər obyekti bütöv silir."
 		},
 		"background": {
 			"label": "Fon",

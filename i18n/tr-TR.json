@@ -13956,7 +13956,8 @@
 			"opacity": "Opaklık",
 			"layers": "Katmanlar",
 			"alignment": "Hizala",
-			"actions": "İşlemler"
+			"actions": "İşlemler",
+			"renameFrame": "Çerçeveyi yeniden adlandır"
 		},
 		"colors": {
 			"black": "Siyah",
@@ -14145,6 +14146,15 @@
 			"highlighter": "Fosforlu kalem",
 			"penOnly": "Yalnızca kalemle çiz",
 			"penOnlyHint": "Parmaklar yalnızca kaydırır ve yakınlaştırır."
+		},
+		"eraser": {
+			"label": "Silgi",
+			"size": "Boyut",
+			"mode": "Silme",
+			"parts": "Parçalar",
+			"whole": "Nesnenin tamamı",
+			"partsHint": "Kalem çiziminin yalnızca silginin altındaki kısmını siler. Diğer nesneler tümüyle silinir.",
+			"wholeHint": "Dokunduğu her nesneyi tümüyle siler."
 		},
 		"background": {
 			"label": "Arka plan",

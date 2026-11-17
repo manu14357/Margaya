@@ -13956,7 +13956,8 @@
 			"opacity": "Opacity",
 			"layers": "Layers",
 			"alignment": "Align",
-			"actions": "Actions"
+			"actions": "Actions",
+			"renameFrame": "Rename frame"
 		},
 		"colors": {
 			"black": "Black",
@@ -14145,6 +14146,15 @@
 			"highlighter": "Highlighter",
 			"penOnly": "Draw with pen only",
 			"penOnlyHint": "Fingers only pan and zoom."
+		},
+		"eraser": {
+			"label": "Eraser",
+			"size": "Size",
+			"mode": "Erase",
+			"parts": "Parts",
+			"whole": "Whole objects",
+			"partsHint": "Removes only the part of a pen stroke under the eraser. Other objects go whole.",
+			"wholeHint": "Removes every object it touches, whole."
 		},
 		"background": {
 			"label": "Background",

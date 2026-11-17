@@ -140,6 +140,12 @@ export type DrawingOptions = {
   background: string;
   /** Live data for a task card; null draws the loading card. */
   task?: TaskCardData | null;
+  /**
+   * Title drawn, muted, over a frame without a name, so its title strip
+   * shows where to grab it. The renderer has no translations, so the caller
+   * passes it in its own language; without it an unnamed frame has no title.
+   */
+  frameTitle?: string;
 };
 
 const LABEL_PADDING = 8;
@@ -1065,12 +1071,13 @@ function frameItems(el: FrameElement, options: DrawingOptions): DrawItem[] {
     lineWidth: clamp(strokeWidthOf(el), 1, 2),
   });
   const name = el.name.replace(/\s+/g, " ").trim();
-  if (name) {
+  const title = name || (options.frameTitle ?? "").replace(/\s+/g, " ").trim();
+  if (title) {
     const font = fontCss("sans", FRAME_LABEL_SIZE, 500);
     const lineHeight = FRAME_LABEL_SIZE * 1.25;
     items.push({
       kind: "text",
-      lines: [truncateText(name, Math.max(24, w), font, options.measure)],
+      lines: [truncateText(title, Math.max(24, w), font, options.measure)],
       x: 0,
       y: -lineHeight - FRAME_LABEL_GAP,
       width: Math.max(24, w),
@@ -1080,7 +1087,8 @@ function frameItems(el: FrameElement, options: DrawingOptions): DrawItem[] {
       fontSize: FRAME_LABEL_SIZE,
       fontWeight: 500,
       lineHeight,
-      color: withAlpha(strokeOf(el, options.theme), 0.75),
+      // A stand-in title is fainter than a real name.
+      color: withAlpha(strokeOf(el, options.theme), name ? 0.75 : 0.5),
     });
   }
   return items;

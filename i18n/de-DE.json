@@ -13956,7 +13956,8 @@
 			"opacity": "Deckkraft",
 			"layers": "Ebenen",
 			"alignment": "Ausrichten",
-			"actions": "Aktionen"
+			"actions": "Aktionen",
+			"renameFrame": "Rahmen umbenennen"
 		},
 		"colors": {
 			"black": "Schwarz",
@@ -14145,6 +14146,15 @@
 			"highlighter": "Textmarker",
 			"penOnly": "Nur mit Stift zeichnen",
 			"penOnlyHint": "Finger verschieben und zoomen nur."
+		},
+		"eraser": {
+			"label": "Radierer",
+			"size": "Größe",
+			"mode": "Radieren",
+			"parts": "Teile",
+			"whole": "Ganze Objekte",
+			"partsHint": "Entfernt nur den Teil eines Stiftstrichs unter dem Radierer. Andere Objekte werden ganz entfernt.",
+			"wholeHint": "Entfernt jedes berührte Objekt vollständig."
 		},
 		"background": {
 			"label": "Hintergrund",

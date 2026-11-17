@@ -14179,7 +14179,8 @@
 			"opacity": "Opacidade",
 			"layers": "Camadas",
 			"alignment": "Alinhar",
-			"actions": "Ações"
+			"actions": "Ações",
+			"renameFrame": "Renomear moldura"
 		},
 		"colors": {
 			"black": "Preto",
@@ -14375,6 +14376,15 @@
 			"highlighter": "Marca-texto",
 			"penOnly": "Desenhar só com a caneta",
 			"penOnlyHint": "Os dedos só movem e dão zoom."
+		},
+		"eraser": {
+			"label": "Borracha",
+			"size": "Tamanho",
+			"mode": "Apagar",
+			"parts": "Partes",
+			"whole": "Objetos inteiros",
+			"partsHint": "Apaga só a parte do traço que fica sob a borracha. Os outros objetos são apagados inteiros.",
+			"wholeHint": "Apaga por inteiro cada objeto que tocar."
 		},
 		"background": {
 			"label": "Fundo",

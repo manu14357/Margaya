@@ -11,12 +11,16 @@ import {
   type ImageElement,
   type LinearElement,
   type LocalPoint,
+  ordersBetween,
   resizeElements,
   rotateElements,
   routeElbow,
   type SnapGuide,
   snapToElements,
   snapToGrid,
+  splitStroke,
+  sweepTouches,
+  topOrder,
   translateElements,
   updateBoundLines,
 } from "@margaya/whiteboard";
@@ -30,7 +34,13 @@ import {
   toPictureFrame,
 } from "./crop";
 import {
-  cursorForHandle,
+  cursorForHandleHover,
+  cursorForSelectHover,
+  cursorForTool,
+  PANNING_CURSOR,
+  rotateCursor,
+} from "./cursors";
+import {
   draggedEdges,
   frameContains,
   type HandleId,
@@ -43,7 +53,13 @@ import {
 } from "./handles";
 import { isPenEraser, touchPolicy } from "./pen-input";
 import { defaultShapeSize, shapeChoiceOf } from "./shapes";
-import { applyToolEvent, setSelection, toggleInSelection } from "./store";
+import {
+  applyToolEvent,
+  type EditorState,
+  setSelection,
+  toggleInSelection,
+} from "./store";
+import { measureTextElement } from "./text-overlay";
 import {
   type BoxTool,
   clearsSelection,
@@ -142,7 +158,20 @@ type Gesture =
       pressures: number[];
       pen: boolean;
     }
-  | { kind: "erase"; pointerId: number; hits: Set<string> }
+  | {
+      kind: "erase";
+      pointerId: number;
+      /** Objects erased whole on release (shown faded meanwhile). */
+      hits: Set<string>;
+      /** Cut strokes as they now are, by id: originals and new pieces. */
+      strokes: Map<string, BoardElement>;
+      /** Pieces this gesture made; they do not exist on the board yet. */
+      created: Set<string>;
+      /** Cut strokes apart (the "Parts" mode) instead of erasing them whole. */
+      parts: boolean;
+      /** The previous pointer sample: each move sweeps from there. */
+      last: P | null;
+    }
   | { kind: "laser"; pointerId: number }
   | {
       kind: "crop";
@@ -205,6 +234,25 @@ export class Interaction {
   private modifiers = { shift: false, alt: false, mod: false };
   /** Board point of the pointer, for paste and the polyline preview. */
   pointer: P | null = null;
+  /**
+   * Whether the overlay draws a ring the size of the eraser. The ring is then
+   * the eraser's cursor and the canvas hides its own.
+   */
+  eraserRing = true;
+  /** Board point where the eraser ring is drawn, or null to hide it. */
+  ringAt: P | null = null;
+  /** The cursor last put on the canvas, so unchanged moves touch no styles. */
+  private appliedCursor: { canvas: HTMLElement; cursor: string } | null = null;
+  /** The tool cursor and the inputs it was built from. */
+  private toolCursorFor: {
+    tool: EditorState["tool"];
+    penStyle: EditorState["penStyle"];
+    style: EditorState["style"];
+    readOnly: boolean;
+    theme: "light" | "dark";
+    eraserRing: boolean;
+    cursor: string;
+  } | null = null;
 
   constructor(
     private readonly c: BoardController,
@@ -264,7 +312,8 @@ export class Interaction {
     const rotatable =
       !this.c.state.croppingId &&
       !selected.every((element) => element.type === "frame");
-    return layoutHandles(frame, this.zoom, { coarse, rotatable });
+    const stretchable = selected.length === 1 && selected[0]?.type === "text";
+    return layoutHandles(frame, this.zoom, { coarse, rotatable, stretchable });
   }
 
   /** The selected line, when exactly one line or arrow is selected. */
@@ -329,12 +378,7 @@ export class Interaction {
     // The pen's eraser end (or eraser button) erases while held, whatever the tool.
     if (isPenEraser(event)) {
       if (!c.canWrite()) return;
-      this.gesture = {
-        kind: "erase",
-        pointerId: event.pointerId,
-        hits: new Set(),
-      };
-      this.eraseAt(point);
+      this.startErase(event.pointerId, point);
       return;
     }
 
@@ -347,7 +391,7 @@ export class Interaction {
         lastX: screen.x,
         lastY: screen.y,
       };
-      this.setCursor("grabbing");
+      this.setCursor(PANNING_CURSOR);
       return;
     }
 
@@ -414,14 +458,7 @@ export class Interaction {
       this.createText(point);
       return;
     }
-    if (tool === "eraser") {
-      this.gesture = {
-        kind: "erase",
-        pointerId: event.pointerId,
-        hits: new Set(),
-      };
-      this.eraseAt(point);
-    }
+    if (tool === "eraser") this.startErase(event.pointerId, point);
   }
 
   pointerMove(event: PointerEvent): void {
@@ -449,6 +486,7 @@ export class Interaction {
       }
     }
     if (event.pointerType !== "touch") c.publishCursor(point);
+    this.moveRing(point, event);
 
     const gesture = this.gesture;
     if (gesture.kind === "none") {
@@ -564,7 +602,7 @@ export class Interaction {
         return;
       case "pan":
         this.gesture = { kind: "none" };
-        this.setCursor(c.state.tool === "hand" ? "grab" : "default");
+        this.refreshCursor();
         return;
       case "press": {
         this.gesture = { kind: "none" };
@@ -624,14 +662,9 @@ export class Interaction {
       case "draw":
         this.finishDraw(gesture);
         return;
-      case "erase": {
-        this.gesture = { kind: "none" };
-        const ids = [...gesture.hits];
-        c.cancelPreview();
-        c.remove(ids);
-        c.resetOverlay();
+      case "erase":
+        this.finishErase(gesture);
         return;
-      }
       case "laser":
         this.gesture = { kind: "none" };
         return;
@@ -675,6 +708,10 @@ export class Interaction {
 
   pointerLeave(): void {
     if (this.gesture.kind === "none") this.c.publishCursor(null);
+    if (this.ringAt) {
+      this.ringAt = null;
+      this.c.requestRender(false);
+    }
     if (this.c.overlay.hoverId) this.c.setOverlay({ hoverId: null });
   }
 
@@ -694,6 +731,7 @@ export class Interaction {
     this.gesture = { kind: "none" };
     this.c.cancelPreview();
     this.c.resetOverlay();
+    if (gesture.kind === "pan") this.refreshCursor();
     return true;
   }
 
@@ -768,7 +806,7 @@ export class Interaction {
     const c = this.c;
     const tool = c.state.tool;
     if (tool !== "select") {
-      this.setCursor(cursorForTool(tool));
+      this.setCursor(this.toolCursor());
       if (c.overlay.hoverId) c.setOverlay({ hoverId: null });
       if (this.gesture.kind === "none" && isLinearTool(tool)) {
         const target = this.bindTargetAt(point, null);
@@ -781,26 +819,106 @@ export class Interaction {
     const handle = handleAt(handles, point.x, point.y);
     if (handle) {
       this.setCursor(
-        cursorForHandle(handle, this.selectionFrame()?.angle ?? 0),
+        cursorForHandleHover(handle, this.selectionFrame()?.angle ?? 0),
       );
       return;
     }
     const line = this.editableLine();
     if (line && this.linePointAt(line, point) !== null) {
-      this.setCursor("pointer");
+      this.setCursor(cursorForSelectHover("linePoint", c.readOnly));
       return;
     }
+    // Locked elements are skipped here, so they never offer a move.
     const hit = this.hitAt(point);
     const hoverId = hit?.id ?? null;
     if (hoverId !== c.overlay.hoverId) c.setOverlay({ hoverId });
     this.setCursor(
-      hit ? (hit.link && this.modifiers.mod ? "pointer" : "move") : "default",
+      cursorForSelectHover(
+        hit ? (hit.link && this.modifiers.mod ? "link" : "element") : "canvas",
+        c.readOnly,
+      ),
     );
+  }
+
+  /**
+   * The cursor the current tool shows. Rebuilt only when the tool, the pen,
+   * the style, the theme or write access changed; otherwise every pointer
+   * move reuses the same string.
+   */
+  private toolCursor(): string {
+    const { tool, penStyle, style } = this.c.state;
+    const readOnly = this.c.readOnly;
+    const theme = this.c.options.theme;
+    const last = this.toolCursorFor;
+    if (
+      last &&
+      last.tool === tool &&
+      last.penStyle === penStyle &&
+      last.style === style &&
+      last.readOnly === readOnly &&
+      last.theme === theme &&
+      last.eraserRing === this.eraserRing
+    )
+      return last.cursor;
+    const cursor = cursorForTool({
+      tool,
+      readOnly,
+      penStyle,
+      strokeColor: style.strokeColor,
+      highlighterColor: style.highlighterColor,
+      theme,
+      eraserRing: this.eraserRing,
+    });
+    this.toolCursorFor = {
+      tool,
+      penStyle,
+      style,
+      readOnly,
+      theme,
+      eraserRing: this.eraserRing,
+      cursor,
+    };
+    return cursor;
+  }
+
+  /**
+   * Puts the current tool's cursor back on the canvas: after a pan, or when
+   * the tool, pen style, colour, theme or write access changed. A running
+   * gesture keeps the cursor it set.
+   */
+  refreshCursor(): void {
+    const kind = this.gesture.kind;
+    if (kind === "pan") this.setCursor(PANNING_CURSOR);
+    else if (kind === "none") this.setCursor(this.toolCursor());
+  }
+
+  /**
+   * Keeps the canvas cursor in step with the tool and the pen without
+   * waiting for the pointer to move. Returns the unsubscribe.
+   */
+  watchCursor(): () => void {
+    this.refreshCursor();
+    return this.c.store.subscribe((state, previous) => {
+      if (
+        state.tool !== previous.tool ||
+        state.penStyle !== previous.penStyle ||
+        state.style.strokeColor !== previous.style.strokeColor ||
+        state.style.highlighterColor !== previous.style.highlighterColor
+      )
+        this.refreshCursor();
+    });
   }
 
   private setCursor(cursor: string): void {
     const canvas = this.c.overlayElement;
-    if (canvas && canvas.style.cursor !== cursor) canvas.style.cursor = cursor;
+    if (!canvas) return;
+    const applied = this.appliedCursor;
+    if (applied && applied.canvas === canvas && applied.cursor === cursor)
+      return;
+    // Browsers rewrite data URIs when they read the style back, so the last
+    // value is remembered here rather than compared with the style.
+    canvas.style.cursor = cursor;
+    this.appliedCursor = { canvas, cursor };
   }
 
   private screenPoint(event: { clientX: number; clientY: number }): P {
@@ -904,6 +1022,7 @@ export class Interaction {
         lastX: screen.x,
         lastY: screen.y,
       };
+      this.setCursor(PANNING_CURSOR);
       return;
     }
     let selected = c.selectedElements().filter((element) => !element.locked);
@@ -1058,7 +1177,7 @@ export class Interaction {
         baseAngle: frame.angle,
         originals,
       };
-      this.setCursor("grabbing");
+      this.setCursor(rotateCursor());
       return;
     }
     const frame = this.selectionFrame();
@@ -1092,6 +1211,16 @@ export class Interaction {
         ),
         fromCenter: this.modifiers.alt,
       },
+    ).map((element) =>
+      // A text given a wrap width grows or shrinks to its wrapped lines.
+      gesture.originals.length === 1 &&
+      element.type === "text" &&
+      !element.autoSize
+        ? {
+            ...element,
+            height: measureTextElement(element, element.text).height,
+          }
+        : element,
     );
     c.setPreview(next);
     this.keepOutsideBindings(next);
@@ -1349,23 +1478,41 @@ export class Interaction {
       } as BoardElement;
     }
     c.cancelPreview();
-    if (!c.insert([element])) return;
-    if (element.type === "frame") {
-      // A new frame adopts what it was drawn around.
-      const inside = elementsInBox(
-        c.elements() as BoardElement[],
-        elementBox(element),
-        {
-          fullyInside: true,
-        },
-      )
-        .filter((other) => other.id !== element.id && other.type !== "frame")
-        .map((other) => other.id);
-      const framed = assignFrames(c.elements() as BoardElement[], inside);
-      if (framed.length > 0) c.commit(framed);
+    if (element.type === "sticky") {
+      // A note and its first words are one undo step: like a new text, it
+      // is written when its editor closes. Until then it shows on top.
+      if (!c.canWrite()) return;
+      const [order] = ordersBetween(topOrder(c.scene.elements), null, 1);
+      c.setPreview([{ ...element, order: order ?? element.order }], {
+        live: false,
+      });
+      c.select([element.id]);
+      c.dispatchTool({ type: "created" });
+      this.hooks.editText(element.id, { isNew: true });
+      return;
+    }
+    // A new frame and the elements it adopts are one undo step.
+    c.history.beginBatch();
+    try {
+      if (!c.insert([element])) return;
+      if (element.type === "frame") {
+        // A new frame adopts what it was drawn around.
+        const inside = elementsInBox(
+          c.elements() as BoardElement[],
+          elementBox(element),
+          {
+            fullyInside: true,
+          },
+        )
+          .filter((other) => other.id !== element.id && other.type !== "frame")
+          .map((other) => other.id);
+        const framed = assignFrames(c.elements() as BoardElement[], inside);
+        if (framed.length > 0) c.commit(framed);
+      }
+    } finally {
+      c.history.commitBatch();
     }
     c.dispatchTool({ type: "created" });
-    if (element.type === "sticky") this.hooks.editText(element.id);
   }
 
   /** The element whose words a click with the Text tool edits. */
@@ -1697,31 +1844,117 @@ export class Interaction {
 
   // ----- eraser and laser -------------------------------------------------
 
+  /** The eraser's reach in board units: its size is in screen pixels. */
+  eraserRadius(): number {
+    return this.c.state.eraserSize / 2 / this.zoom;
+  }
+
+  /** Whether the overlay shows the eraser ring under the pointer. */
+  showsRing(): boolean {
+    if (!this.eraserRing || !this.ringAt || this.c.readOnly) return false;
+    return this.gesture.kind === "erase" || this.c.state.tool === "eraser";
+  }
+
+  /**
+   * The ring follows the pointer while erasing, and while the eraser tool
+   * hovers (a finger has no hover, so it shows only during its drag).
+   */
+  private moveRing(point: P, event: PointerEvent): void {
+    const kind = this.gesture.kind;
+    const hovering =
+      kind === "none" &&
+      this.c.state.tool === "eraser" &&
+      event.pointerType !== "touch";
+    const next = kind === "erase" || hovering ? point : null;
+    if (next === null && this.ringAt === null) return;
+    this.ringAt = next;
+    this.c.requestRender(false);
+  }
+
+  private startErase(pointerId: number, point: P): void {
+    this.gesture = {
+      kind: "erase",
+      pointerId,
+      hits: new Set(),
+      strokes: new Map(),
+      created: new Set(),
+      parts: this.c.state.eraserMode === "parts",
+      last: null,
+    };
+    this.ringAt = point;
+    this.eraseAt(point);
+  }
+
+  /**
+   * Sweeps the eraser from the last pointer sample to `point`. Strokes lose
+   * the part under it (in "Parts" mode); other objects, and strokes in
+   * "Whole objects" mode, fade and go whole on release. Nothing reaches the
+   * document or collaborators until then.
+   */
   private eraseAt(point: P): void {
     const gesture = this.gesture;
     if (gesture.kind !== "erase") return;
     const c = this.c;
-    const reach = this.tolerance(8);
-    const fresh: BoardElement[] = [];
-    for (const element of c.scene.elements) {
+    const sweep = {
+      from: gesture.last ?? point,
+      to: point,
+      radius: this.eraserRadius(),
+    };
+    gesture.last = point;
+    const changed: BoardElement[] = [];
+    const list = c.elements();
+    for (let index = 0; index < list.length; index++) {
+      const element = list[index] as BoardElement;
       if (gesture.hits.has(element.id) || element.locked) continue;
-      if (!hitTest(element, point, reach)) continue;
+      if (gesture.parts && element.type === "draw") {
+        const pieces = splitStroke(element, sweep, {
+          // Crumbs under two screen pixels are not worth keeping.
+          minLength: this.tolerance(2),
+          above: list[index + 1]?.order ?? null,
+          userId: c.userId,
+        });
+        if (!pieces) continue;
+        for (const piece of pieces) {
+          if (piece.id !== element.id) gesture.created.add(piece.id);
+          gesture.strokes.set(piece.id, piece);
+          changed.push(piece);
+        }
+        continue;
+      }
+      if (!sweepTouches(element, sweep)) continue;
       for (const id of c.expandToGroups([element.id])) {
         if (gesture.hits.has(id)) continue;
+        const target = c.get(id);
+        if (!target || target.locked) continue;
         gesture.hits.add(id);
-        const target = c.scene.get(id);
-        if (target)
-          fresh.push({
-            ...target,
-            opacity: Math.max(10, target.opacity * 0.25),
-          });
+        changed.push({
+          ...target,
+          opacity: Math.max(10, target.opacity * 0.25),
+        });
       }
     }
-    if (fresh.length > 0) c.setPreview(fresh, { live: false });
+    if (changed.length > 0) c.setPreview(changed, { live: false });
     const trail = [...c.overlay.eraserTrail, [point.x, point.y] as const].slice(
       -24,
     );
     c.setOverlay({ eraserTrail: trail, erasing: gesture.hits });
+  }
+
+  /** One write and one undo step for everything the drag erased. */
+  private finishErase(gesture: Extract<Gesture, { kind: "erase" }>): void {
+    const c = this.c;
+    this.gesture = { kind: "none" };
+    const strokes: BoardElement[] = [];
+    for (const element of gesture.strokes.values()) {
+      // Taken whole with its group, or a piece that came and went.
+      if (gesture.hits.has(element.id)) continue;
+      if (gesture.created.has(element.id) && element.deleted) continue;
+      strokes.push(element);
+    }
+    const ids = [...gesture.hits].filter((id) => !gesture.created.has(id));
+    c.cancelPreview();
+    c.remove(ids, { also: strokes });
+    c.resetOverlay();
   }
 
   private addLaserPoint(point: P): void {
@@ -2012,19 +2245,4 @@ function snapToAngle(
     from[0] + Math.cos(angle) * length,
     from[1] + Math.sin(angle) * length,
   ];
-}
-
-function cursorForTool(tool: string): string {
-  switch (tool) {
-    case "hand":
-      return "grab";
-    case "text":
-      return "text";
-    case "eraser":
-      return "cell";
-    case "laser":
-      return "crosshair";
-    default:
-      return "crosshair";
-  }
 }

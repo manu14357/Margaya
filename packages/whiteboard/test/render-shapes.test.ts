@@ -467,3 +467,70 @@ describe("SVG output for shapes, pens and patterns", () => {
     );
   });
 });
+
+describe("frame titles", () => {
+  const texts = (frame: BoardElement, frameTitle?: string) => {
+    const drawing = buildElementDrawing(frame, {
+      theme: "light",
+      measure: fakeMeasure,
+      background: "#ffffff",
+      frameTitle,
+    });
+    return drawing.items.flatMap((item) =>
+      item.kind === "text" ? item.lines : [],
+    );
+  };
+  const filled = (ctx: ReturnType<typeof recordingContext>) =>
+    ctx.calls
+      .filter((call) => call.name === "fillText")
+      .map((call) => call.args[0]);
+
+  it("titles an unnamed frame with the caller's default, fainter than a name", () => {
+    const unnamed = makeElement("frame", { name: "  " });
+    expect(texts(unnamed)).toEqual([]);
+    expect(texts(unnamed, "Rahmen")).toEqual(["Rahmen"]);
+    expect(texts(makeElement("frame", { name: "Ideas" }), "Rahmen")).toEqual([
+      "Ideas",
+    ]);
+    const color = (frame: BoardElement) =>
+      buildElementDrawing(frame, {
+        theme: "light",
+        measure: fakeMeasure,
+        background: "#ffffff",
+        frameTitle: "Frame",
+      }).items.find((item) => item.kind === "text");
+    const stand = color(unnamed);
+    const real = color(makeElement("frame", { name: "Ideas" }));
+    expect(stand?.kind === "text" && stand.color).toMatch(/0\.5\)$/);
+    expect(real?.kind === "text" && real.color).toMatch(/0\.75\)$/);
+  });
+
+  it("draws the default title on the canvas and redraws when it changes", () => {
+    const frame = makeElement("frame", { name: "" });
+    const cache = new RenderCache();
+    const first = recordingContext();
+    renderElement(first, frame, {
+      theme: "light",
+      measureText: fakeMeasure,
+      cache,
+      frameTitle: "Frame",
+    });
+    expect(filled(first)).toEqual(["Frame"]);
+    const second = recordingContext();
+    renderElement(second, frame, {
+      theme: "light",
+      measureText: fakeMeasure,
+      cache,
+      frameTitle: "Cadre",
+    });
+    expect(filled(second)).toEqual(["Cadre"]);
+  });
+
+  it("shows the same default title in SVG exports", () => {
+    const frame = makeElement("frame", { name: "" });
+    expect(renderToSvg([frame], { frameTitle: "Frame" })).toContain(
+      ">Frame</text>",
+    );
+    expect(renderToSvg([frame])).not.toContain("<text");
+  });
+});

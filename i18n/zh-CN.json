@@ -13736,7 +13736,8 @@
 			"opacity": "不透明度",
 			"layers": "图层",
 			"alignment": "对齐",
-			"actions": "操作"
+			"actions": "操作",
+			"renameFrame": "重命名框架"
 		},
 		"colors": {
 			"black": "黑色",
@@ -13918,6 +13919,15 @@
 			"highlighter": "荧光笔",
 			"penOnly": "仅用触控笔绘制",
 			"penOnlyHint": "手指只能平移和缩放。"
+		},
+		"eraser": {
+			"label": "橡皮擦",
+			"size": "大小",
+			"mode": "擦除",
+			"parts": "局部",
+			"whole": "整个对象",
+			"partsHint": "只擦除笔迹在橡皮擦下的部分。其他对象会被整个擦除。",
+			"wholeHint": "整个擦除碰到的每个对象。"
 		},
 		"background": {
 			"label": "背景",

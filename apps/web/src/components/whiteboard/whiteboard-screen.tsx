@@ -506,6 +506,7 @@ export default function WhiteboardScreen({
         initialElementId={elementId ?? null}
         presenting={presenting}
         onExitPresent={stopPresenting}
+        synced={collab.fallback || collab.hasSynced}
       />
     );
   };

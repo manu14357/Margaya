@@ -13736,7 +13736,8 @@
 			"opacity": "不透明度",
 			"layers": "レイヤー",
 			"alignment": "整列",
-			"actions": "操作"
+			"actions": "操作",
+			"renameFrame": "フレーム名を変更"
 		},
 		"colors": {
 			"black": "黒",
@@ -13918,6 +13919,15 @@
 			"highlighter": "蛍光ペン",
 			"penOnly": "ペンでのみ描画",
 			"penOnlyHint": "指ではスクロールとズームだけを行います。"
+		},
+		"eraser": {
+			"label": "消しゴム",
+			"size": "サイズ",
+			"mode": "消去",
+			"parts": "部分",
+			"whole": "オブジェクト全体",
+			"partsHint": "ペンの線は消しゴムの下の部分だけを消します。ほかのオブジェクトは丸ごと消えます。",
+			"wholeHint": "触れたオブジェクトを丸ごと消します。"
 		},
 		"background": {
 			"label": "背景",

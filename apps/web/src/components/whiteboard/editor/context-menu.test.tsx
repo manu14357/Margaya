@@ -1,4 +1,8 @@
-import { readElements } from "@margaya/whiteboard";
+import {
+  createElement,
+  readElements,
+  writeElements,
+} from "@margaya/whiteboard";
 import {
   act,
   cleanup,
@@ -86,5 +90,43 @@ describe("EditorContextMenu", () => {
     expect(readElements(doc)).toMatchObject([
       { type: "shape", shape: "triangle" },
     ]);
+  });
+
+  it("offers neither Edit text nor Cut for a locked element", async () => {
+    const { controller, doc } = renderMenu();
+    const shape = createElement("rectangle", {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 80,
+      text: "Fixed",
+      locked: true,
+    } as never);
+    writeElements(doc, [shape], "seed");
+    act(() => {
+      controller.select([shape.id]);
+      controller.update((state) => ({
+        ...state,
+        contextMenu: { clientX: 20, clientY: 20, targetId: shape.id },
+      }));
+    });
+    await screen.findByRole("menu", {
+      name: "whiteboardEditor:contextMenu.label",
+    });
+    expect(
+      screen.queryByRole("menuitem", {
+        name: /whiteboardEditor:commands\.editText/,
+      }),
+    ).toBeNull();
+    expect(
+      screen.queryByRole("menuitem", {
+        name: /whiteboardEditor:commands\.cut/,
+      }),
+    ).toBeNull();
+    expect(
+      screen.getByRole("menuitem", {
+        name: /^whiteboardEditor:commands\.copy(?!Style)/,
+      }),
+    ).toBeInTheDocument();
   });
 });

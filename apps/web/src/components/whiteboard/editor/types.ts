@@ -77,4 +77,10 @@ export type WhiteboardEditorProps = {
    */
   presenting?: boolean;
   onExitPresent?: () => void;
+  /**
+   * The document holds the stored board (the first sync finished, or it is
+   * the stored copy). From then on the first view is settled: content a
+   * collaborator draws later never moves this viewer's view.
+   */
+  synced?: boolean;
 };

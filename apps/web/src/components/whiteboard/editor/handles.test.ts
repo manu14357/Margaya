@@ -14,6 +14,13 @@ describe("resizeKeepsAspect", () => {
     expect(resizeKeepsAspect([rect()], "se", true)).toBe(true);
   });
 
+  it("scales a text from a corner but lets its sides set the wrap width", () => {
+    const text = [createElement("text", { text: "Hello" }) as BoardElement];
+    expect(resizeKeepsAspect(text, "se", false)).toBe(true);
+    expect(resizeKeepsAspect(text, "e", false)).toBe(false);
+    expect(resizeKeepsAspect(text, "w", false)).toBe(false);
+  });
+
   it("scales a group like a picture from a corner but stretches it from a side", () => {
     const group = [rect({ groupIds: ["g"] }), rect({ groupIds: ["g"] })];
     expect(resizeKeepsAspect(group, "se", false)).toBe(true);

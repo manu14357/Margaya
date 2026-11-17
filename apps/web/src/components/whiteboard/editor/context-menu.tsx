@@ -94,7 +94,8 @@ export function EditorContextMenu({
   const groups: React.ReactNode[][] = [];
   if (selected.length > 0) {
     const edit: React.ReactNode[] = [];
-    if (!readOnly)
+    // Cutting a locked element would only copy it: delete skips it.
+    if (!readOnly && !info.allLocked)
       edit.push(
         item(t("whiteboardEditor:commands.cut"), run("cut"), `${mod}+X`),
       );
@@ -195,6 +196,8 @@ export function EditorContextMenu({
     if (
       !readOnly &&
       only &&
+      // A locked element's words are locked too.
+      !only.locked &&
       only.type !== "image" &&
       only.type !== "draw" &&
       only.type !== "task"
