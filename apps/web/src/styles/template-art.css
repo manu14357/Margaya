@@ -1,0 +1,112 @@
+/*
+ * Tokens for the project-template gallery illustrations
+ * (components/project-templates/art). The art is the one place in the app
+ * where colour is decorative, so it keeps its own small palette instead of
+ * borrowing status or priority hues, and the art components use these
+ * variables only.
+ *
+ *   --art-bg              the card's illustration well
+ *   --art-surface         the "app window" panels drawn on the well
+ *   --art-line            the hairline around a panel
+ *   --art-skeleton        grey UI placeholder shapes
+ *   --art-skeleton-strong headers, text lines and outlines in the skeleton
+ *   --art-ink / -fg       the badge square and its pictogram
+ *   --art-shadow          the flat offset shadow under lifted shapes
+ *   --art-accent-1..8     the template accents (1 is Canopy green)
+ *   --art-on-accent       lines drawn on an accent fill
+ *
+ * <ArtFrame accent={n}> sets --art-accent to one of the eight; --art-accent-soft
+ * is derived from it here, so every primitive can say "accent" or "soft".
+ */
+
+:root {
+  --art-bg: #edf2ee;
+  --art-surface: #ffffff;
+  --art-line: #dfe6e2;
+  --art-skeleton: #e3e9e5;
+  --art-skeleton-strong: #c8d2cc;
+  --art-ink: #17201b;
+  --art-ink-fg: #ffffff;
+  --art-shadow: rgb(23 32 27 / 0.1);
+  --art-on-accent: #ffffff;
+  --art-soft-mix: 22%;
+
+  --art-accent-1: #059669;
+  --art-accent-2: #3b82f6;
+  --art-accent-3: #8b5cf6;
+  --art-accent-4: #ec4899;
+  --art-accent-5: #f59e0b;
+  --art-accent-6: #0d9488;
+  --art-accent-7: #f43f5e;
+  --art-accent-8: #6366f1;
+}
+
+.dark {
+  --art-bg: #141716;
+  --art-surface: #1c201f;
+  --art-line: #2a302e;
+  --art-skeleton: #2a2f2d;
+  --art-skeleton-strong: #3d4542;
+  --art-ink: #e9efeb;
+  --art-ink-fg: #0c0d0d;
+  --art-shadow: rgb(0 0 0 / 0.35);
+  --art-on-accent: #0c0d0d;
+  --art-soft-mix: 26%;
+
+  --art-accent-1: #34d399;
+  --art-accent-2: #60a5fa;
+  --art-accent-3: #a78bfa;
+  --art-accent-4: #f472b6;
+  --art-accent-5: #fbbf24;
+  --art-accent-6: #2dd4bf;
+  --art-accent-7: #fb7185;
+  --art-accent-8: #818cf8;
+}
+
+/* High contrast: outlines and skeletons step up so every shape keeps an edge. */
+.contrast:not(.dark) {
+  --art-bg: #f3f5f4;
+  --art-line: #6b7570;
+  --art-skeleton: #d5ddd8;
+  --art-skeleton-strong: #6b7570;
+  --art-ink: #0a0d0b;
+  --art-shadow: rgb(10 13 11 / 0.18);
+
+  --art-accent-1: #047857;
+  --art-accent-2: #1d4ed8;
+  --art-accent-3: #6d28d9;
+  --art-accent-4: #be185d;
+  --art-accent-5: #b45309;
+  --art-accent-6: #0f766e;
+  --art-accent-7: #be123c;
+  --art-accent-8: #4338ca;
+}
+
+.dark.contrast {
+  --art-bg: #000000;
+  --art-surface: #0a0a0a;
+  --art-line: #8c8c8c;
+  --art-skeleton: #2e2e2e;
+  --art-skeleton-strong: #8c8c8c;
+  --art-ink: #ffffff;
+  --art-ink-fg: #000000;
+  --art-shadow: rgb(0 0 0 / 0.6);
+  --art-soft-mix: 32%;
+
+  --art-accent-1: #6ee7b7;
+  --art-accent-2: #93c5fd;
+  --art-accent-3: #c4b5fd;
+  --art-accent-4: #f9a8d4;
+  --art-accent-5: #fcd34d;
+  --art-accent-6: #5eead4;
+  --art-accent-7: #fda4af;
+  --art-accent-8: #a5b4fc;
+}
+
+[data-template-art] {
+  --art-accent-soft: color-mix(
+    in srgb,
+    var(--art-accent) var(--art-soft-mix),
+    var(--art-surface)
+  );
+}

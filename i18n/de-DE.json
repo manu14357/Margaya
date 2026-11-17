@@ -67,26 +67,158 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "Neues Projekt erstellen",
-				"breadcrumbNew": "Neues Projekt erstellen",
-				"workspaceFallback": "WORKSPACE",
-				"description": "Erstelle ein neues Projekt in deinem Workspace, indem du einen Namen, einen Schlüssel und ein Symbol auswählst.",
 				"pickIcon": "Symbol auswählen",
 				"searchIcons": "Symbole suchen...",
 				"projectName": "Projektname",
-				"keyLabel": "Schlüssel:",
-				"keyHint": "Wird für Ticket-IDs verwendet (z. B. {{example}}-123)",
-				"createButton": "Projekt erstellen",
-				"errorToast": "Projekt konnte nicht erstellt werden",
-				"keyTaken": "In diesem Workspace existiert bereits ein Projekt mit dem Schlüssel {{key}}",
-				"blankProject": "Leeres Projekt",
 				"copyHint": "Status, benutzerdefinierte Felder, Schätzungen, Einstellungen und Automatisierungen werden kopiert. Mitglieder, Integrationen und öffentliche Boards nicht.",
 				"includeOpenTasks": "Offene Aufgaben übernehmen",
 				"includeTemplates": "Aufgabenvorlagen übernehmen",
 				"openTasksHint": "Bis zu 500 offene Aufgaben mit ihren Teilaufgaben, Labels und Schätzungen. Kommentare und Verlauf werden nicht kopiert.",
-				"restricted": "Eingeschränkt",
-				"restrictedHint": "Nur Mitglieder können dieses Projekt sehen. Du wirst sein erstes Mitglied; Workspace-Eigentümer und Admins sehen es immer.",
-				"startFrom": "Ausgangspunkt"
+				"stepPrefix": "Schritt {{current}} von {{total}}:",
+				"stepLabel": "Schritt {{current}} von {{total}} · {{name}}",
+				"stepAnnouncement": "Schritt {{current}} von {{total}}: {{title}}",
+				"back": "Zurück",
+				"tryAgain": "Erneut versuchen",
+				"restored": "Dein unfertiges Projekt wurde wiederhergestellt.",
+				"startOver": "Neu beginnen",
+				"choose": {
+					"title": "Projekt erstellen",
+					"subtitle": "Ein Projekt enthält die Aufgaben, Status und Ansichten für einen Arbeitsstrang, fortlaufend oder mit Enddatum.",
+					"stepName": "Auswählen",
+					"search": "Vorlagen suchen",
+					"categories": "Vorlagenkategorien",
+					"recommended": "Empfohlen",
+					"all": "Alle Vorlagen",
+					"searchResults": "Suchergebnisse",
+					"fromWorkspace": "Aus deinem Workspace",
+					"import": "Aus einem anderen Tool oder einer CSV-Datei importieren",
+					"groups": {
+						"product": "Produkt und Technik",
+						"service": "Service und Support",
+						"growth": "Wachstum",
+						"everyday": "Alltagsarbeit"
+					},
+					"blankName": "Leeres Projekt",
+					"blankNote": "Zu erledigen, In Bearbeitung, In Prüfung und Erledigt. Den Rest später ergänzen.",
+					"existingName": "Mit einem bestehenden Projekt beginnen",
+					"existingNote": "Übernimm Status, Felder und Einstellungen eines Projekts, das du schon hast.",
+					"guidedTour": "Oder ein Projekt mit geführter Tour erkunden",
+					"resultCount_one": "{{count}} Vorlage",
+					"resultCount_other": "{{count}} Vorlagen",
+					"noResultsTitle": "Keine Vorlagen passen zu „{{query}}“",
+					"noResultsBody": "Versuche ein anderes Wort oder beginne mit einem leeren Projekt.",
+					"clearSearch": "Suche löschen",
+					"loadError": "Die Vorlagen konnten nicht geladen werden.",
+					"useTemplate": "Vorlage verwenden",
+					"startBlank": "Leer beginnen",
+					"useProject": "Dieses Projekt verwenden"
+				},
+				"preview": {
+					"region": "Vorschau: {{template}}",
+					"goodFor": "Geeignet für: {{categories}}",
+					"restricted": "Startet eingeschränkt, damit seine Details bei den Personen bleiben, die du hinzufügst.",
+					"statuses": "Status",
+					"views": "Ansichten",
+					"fields": "Felder",
+					"features": "Enthalten",
+					"noFeatures": "Nur Board und Liste. Funktionen kannst du jederzeit einschalten.",
+					"examples": "Beispielaufgaben",
+					"noExamples": "Keine Beispielaufgaben",
+					"more_one": "+ {{count}} weitere",
+					"more_other": "+ {{count}} weitere",
+					"loadError": "Diese Vorschau konnte nicht geladen werden.",
+					"fieldTypes": {
+						"text": "Text",
+						"number": "Zahl",
+						"date": "Datum",
+						"dropdown": "Auswahlliste",
+						"boolean": "Ja oder Nein"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "Zu erledigen",
+						"inProgress": "In Bearbeitung",
+						"inReview": "In Prüfung",
+						"done": "Erledigt"
+					}
+				},
+				"setup": {
+					"title": "Projekt einrichten",
+					"subtitle": "Nur der Name ist nötig. Alles andere kannst du später in den Projekteinstellungen ändern.",
+					"stepName": "Einrichten",
+					"namePlaceholder": "z. B. Website-Relaunch",
+					"nameRequired": "Gib deinem Projekt einen Namen.",
+					"nameTooLong": "Der Name darf höchstens 80 Zeichen lang sein.",
+					"keyChip": "Aufgaben-IDs: {{key}}-1",
+					"keyChange": "Ändern",
+					"keyLabel": "Präfix der Aufgaben-IDs",
+					"keyInvalid": "Verwende 1 bis 8 Buchstaben oder Ziffern.",
+					"keyTaken": "{{key}} wird in diesem Workspace bereits verwendet. Versuche einen anderen.",
+					"examples": "Beispielaufgaben hinzufügen",
+					"examplesHint_one": "{{count}} Aufgabe, die zeigt, wie dieses Projekt funktioniert. Du kannst sie mit einem Klick entfernen.",
+					"examplesHint_other": "{{count}} Aufgaben, die zeigen, wie dieses Projekt funktioniert. Du kannst sie alle mit einem Klick entfernen.",
+					"labelsSkipped": "Einige Labels werden nicht hinzugefügt: Du darfst keine Workspace-Labels erstellen.",
+					"featuresTitle": "Funktionen, die eingeschaltet bleiben",
+					"included": "Enthalten: {{list}}",
+					"includedNone": "Nur Board und Liste",
+					"moreOptions": "Weitere Optionen (Funktionen, Datenschutz)",
+					"privacy": "Datenschutz",
+					"privacyOpen": "Offen",
+					"privacyOpenHint": "Alle im Workspace können es finden, mit den Rechten ihrer Rolle.",
+					"privacyRestricted": "Eingeschränkt",
+					"privacyRestrictedHint": "Nur Personen, die du hinzufügst, sowie Workspace-Inhaber und -Admins.",
+					"privacySuggested": "Diese Vorlage empfiehlt ein eingeschränktes Projekt. Du kannst das ändern.",
+					"summary": "Deine Auswahl",
+					"yourChoice": "Deine Auswahl",
+					"change": "Ändern",
+					"statusCount_one": "{{count}} Status",
+					"statusCount_other": "{{count}} Status",
+					"exampleCount_one": "{{count}} Beispielaufgabe",
+					"exampleCount_other": "{{count}} Beispielaufgaben",
+					"create": "Projekt erstellen"
+				},
+				"status": {
+					"creating": "{{name}} wird erstellt …",
+					"created": "{{name}} erstellt. Die ersten Schritte stehen über dem Board.",
+					"createdShort": "{{name}} erstellt"
+				},
+				"error": {
+					"generic": "Das Projekt konnte nicht erstellt werden. Deine Auswahl bleibt erhalten, versuche es erneut.",
+					"template": "Diese Vorlage ist auf diesem Server nicht mehr verfügbar. Wähle eine andere.",
+					"forbidden": "Du darfst hier keine Projekte mehr erstellen.",
+					"backToTemplates": "Zurück zu den Vorlagen"
+				},
+				"firstSteps": {
+					"label": "Erste Schritte",
+					"title": "{{name}} ist bereit.",
+					"progress": "Erste Schritte · {{done}} von {{total}}",
+					"show": "Anzeigen",
+					"hide": "Ausblenden",
+					"dismiss": "Schließen",
+					"doneLabel": "Erledigt:",
+					"todoLabel": "Offen:",
+					"moveExample": "Verschiebe eine Beispielaufgabe, um den Ablauf zu sehen",
+					"markDone": "Als erledigt markieren",
+					"addTask": "Füge deine erste echte Aufgabe hinzu",
+					"addTaskAction": "Aufgabe hinzufügen",
+					"invite": "Lade Personen zu diesem Projekt ein",
+					"inviteAction": "Personen einladen",
+					"removeExamplesItem": "Entferne die Beispiele",
+					"removeExamples": "Beispiele entfernen",
+					"labelsSkipped": "Einige Labels wurden nicht hinzugefügt, weil du keine Workspace-Labels erstellen darfst."
+				},
+				"examples": {
+					"banner": "Dieses Projekt enthält Beispielaufgaben.",
+					"dismissBanner": "Diese Meldung ausblenden",
+					"confirmTitle": "Beispielaufgaben entfernen?",
+					"confirmBody": "Sie kommen in den Papierkorb, du kannst sie dort wiederherstellen.",
+					"removed_one": "{{count}} Beispielaufgabe in den Papierkorb verschoben",
+					"removed_other": "{{count}} Beispielaufgaben in den Papierkorb verschoben",
+					"restoreHint": "Du kannst sie aus dem Papierkorb des Projekts wiederherstellen.",
+					"openTrash": "Papierkorb öffnen",
+					"removeFailed": "Die Beispielaufgaben konnten nicht entfernt werden"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -96,7 +228,16 @@
 				"descriptionPlaceholder": "Beschreibung hinzufügen...",
 				"createButton": "Workspace erstellen",
 				"successToast": "Workspace erfolgreich erstellt",
-				"errorToast": "Workspace konnte nicht erstellt werden"
+				"restored": "Dein Entwurf wurde wiederhergestellt.",
+				"ready": {
+					"title": "{{name}} ist bereit",
+					"body": "Beginne mit einem Projekt oder hole zuerst deine Leute dazu.",
+					"project": "Projekt starten",
+					"projectNote": "Wähle eine Vorlage oder beginne leer.",
+					"invite": "Personen einladen",
+					"inviteNote": "Füge Teammitglieder per E-Mail oder Link hinzu.",
+					"goToWorkspace": "Zum Workspace"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "AUFGABE",
@@ -382,17 +523,12 @@
 			"createWorkspace": "Workspace erstellen",
 			"workspaceCreatedTitle": "Workspace erstellt",
 			"toast": {
-				"workspaceCreated": "Workspace erfolgreich erstellt",
-				"createFailed": "Workspace konnte nicht erstellt werden",
-				"inviteFailed": "Die Einladung konnte nicht gesendet werden",
-				"projectFailed": "Das Projekt konnte nicht erstellt werden",
-				"taskFailed": "Die Aufgabe konnte nicht hinzugefügt werden",
-				"templateFailed": "Das Projekt wurde erstellt, aber die Vorlageneinstellungen wurden nicht angewendet."
+				"inviteFailed": "Die Einladung konnte nicht gesendet werden"
 			},
 			"validation": {
-				"workspaceNameRequired": "Workspace-Name ist erforderlich"
+				"workspaceNameRequired": "Workspace-Name ist erforderlich",
+				"workspaceNameTooLong": "Höchstens 80 Zeichen."
 			},
-			"addTask": "Aufgabe hinzufügen",
 			"back": "Zurück",
 			"continue": "Weiter",
 			"createProject": "Projekt erstellen",
@@ -405,35 +541,93 @@
 			"inviting": "Wird eingeladen …",
 			"joinDescription": "Du wurdest eingeladen. Tritt einem Team bei, das schon loslegt, oder erstelle unten dein eigenes.",
 			"joinTitle": "Einem Workspace beitreten",
-			"openBoard": "Board öffnen",
 			"progress": "Schritt {{current}} von {{total}}",
 			"projectCreated": "Projekt erstellt",
-			"projectKey": "Kürzel",
-			"projectKeyHint": "Aufgaben-IDs beginnen mit dem Kürzel, z. B. {{example}}-1.",
-			"projectName": "Projektname",
-			"projectNamePlaceholder": "z. B. Website-Relaunch",
-			"projectSubtitle": "Nur der Name ist nötig. Alles andere kannst du später ändern.",
 			"projectTitle": "Starte dein erstes Projekt",
 			"sendInvite": "Einladen",
 			"skip": "Vorerst überspringen",
-			"taskLabel": "Aufgabentitel",
-			"taskPlaceholder": "z. B. Launch-Plan entwerfen",
-			"tasksSubtitle": "Tippe eine Aufgabe ein und drücke Enter. Jede landet in To Do in {{project}}.",
-			"tasksTitle": "Füge deine ersten Aufgaben hinzu",
-			"templateLabel": "Wie arbeitet dieses Team?",
-			"templates": {
-				"board": {
-					"name": "Einfaches Board",
-					"note": "Spalten von To Do bis Done"
-				},
-				"cycles": {
-					"name": "Zyklen",
-					"note": "Zeitlich begrenzte Zyklen mit Schätzungen"
-				},
-				"intake": {
-					"name": "Eingang",
-					"note": "Eine Warteschlange für eingehende Anfragen"
-				}
+			"stepPrefix": "Schritt {{current}} von {{total}}:",
+			"stepNames": {
+				"workspace": "Name",
+				"project": "Erstes Projekt",
+				"invite": "Einladen",
+				"done": "Fertig"
+			},
+			"nameWorkspaceTitle": "Benenne deinen Workspace",
+			"nameWorkspaceSubtitle": "Hier leben deine Projekte und Personen. Du kannst ihn jederzeit umbenennen.",
+			"addDescription": "+ Beschreibung hinzufügen",
+			"tryAgain": "Erneut versuchen",
+			"intent": {
+				"legend": "Was möchtest du zuerst verfolgen? (optional)",
+				"hint": "Wir schlagen passende Vorlagen vor. Es schränkt nichts ein.",
+				"more": "Weitere Arten von Arbeit",
+				"team": "Teamaufgaben",
+				"software": "Software",
+				"product": "Produkt",
+				"marketing": "Marketing",
+				"service": "Servicedesk",
+				"it": "IT",
+				"hr": "Personal",
+				"personal": "Persönlich",
+				"sales": "Vertrieb",
+				"support": "Kundensupport",
+				"finance": "Finanzen",
+				"design": "Design",
+				"operations": "Betrieb",
+				"legal": "Recht",
+				"facilities": "Gebäudemanagement",
+				"analytics": "Analysen",
+				"nonprofit": "Gemeinnützig"
+			},
+			"waiting": {
+				"title": "Warten auf eine Einladung",
+				"body": "Auf diesem Margaya-Server erstellen Admins die Workspaces. Bitte einen, dich einzuladen, dann erscheint die Einladung hier.",
+				"checkAgain": "Erneut prüfen"
+			},
+			"errors": {
+				"workspace": "Dein Workspace konnte nicht erstellt werden. Prüfe deine Verbindung und versuche es erneut.",
+				"template": "Diese Vorlage ist nicht mehr verfügbar. Wähle eine andere."
+			},
+			"status": {
+				"creatingWorkspace": "Dein Workspace wird erstellt …",
+				"workspaceCreated": "{{name}} erstellt",
+				"projectCreated": "{{name}} erstellt",
+				"creatingStarter": "Deine Projekte werden erstellt …"
+			},
+			"firstProjectSubtitle": "Ein Projekt enthält die Aufgaben, Status und Ansichten für einen Arbeitsstrang, fortlaufend oder mit Enddatum.",
+			"recommended": "Für dich empfohlen",
+			"browseAll": "Alle Vorlagen durchsuchen",
+			"showRecommended": "Nur Empfehlungen anzeigen",
+			"guidedTour": "Oder ein Projekt mit geführter Tour erkunden",
+			"setUpPanel": "Einrichten",
+			"creatingProject": "Projekt wird erstellt …",
+			"createProjects_one": "{{count}} Projekt erstellen",
+			"createProjects_other": "{{count}} Projekte erstellen",
+			"projectCreatedWithExamples_one": "Projekt erstellt · {{count}} Beispielaufgabe",
+			"projectCreatedWithExamples_other": "Projekt erstellt · {{count}} Beispielaufgaben",
+			"starters": {
+				"title": "Mit einem Set beginnen",
+				"hint": "Mehrere Projekte für ein Team, das seine Arbeitsstränge schon kennt.",
+				"projectCount_one": "{{count}} Projekt",
+				"projectCount_other": "{{count}} Projekte",
+				"examplesHint": "Bis zu vier Beispielaufgaben pro Projekt, die du mit einem Klick entfernen kannst."
+			},
+			"inviteSubtitlePersonal": "Arbeitest du allein? Überspringe diesen Schritt. Du kannst jederzeit über Team Personen einladen.",
+			"finish": "Fertigstellen",
+			"done": {
+				"title": "Alles bereit",
+				"workspace": "Workspace {{name}}",
+				"project": "Projekt {{name}}",
+				"blankProject": "Leeres Projekt {{name}}",
+				"projectWithExamples_one": "Projekt {{name}} mit {{count}} Beispielaufgabe",
+				"projectWithExamples_other": "Projekt {{name}} mit {{count}} Beispielaufgaben",
+				"projects_one": "{{count}} Projekt, beginnend mit {{name}}",
+				"projects_other": "{{count}} Projekte, beginnend mit {{name}}",
+				"invited_one": "{{count}} Person eingeladen",
+				"invited_other": "{{count}} Personen eingeladen",
+				"open": "{{name}} öffnen",
+				"goToWorkspace": "Zu deinem Workspace",
+				"hint": "Dein Board hat eine kurze Checkliste für den Start."
 			}
 		},
 		"profileSetup": {
@@ -3906,7 +4100,9 @@
 			},
 			"recent": "Zuletzt verwendet",
 			"removeScope": "Überall suchen",
-			"scope": "In"
+			"scope": "In",
+			"newBlankProject": "Neues leeres Projekt",
+			"newProjectFromTemplate": "Neues Projekt aus Vorlage …"
 		},
 		"notifications": "Benachrichtigungen",
 		"sidebar": {

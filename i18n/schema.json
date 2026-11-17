@@ -417,18 +417,6 @@
 							"type": "object",
 							"additionalProperties": false,
 							"properties": {
-								"title": {
-									"type": "string"
-								},
-								"breadcrumbNew": {
-									"type": "string"
-								},
-								"workspaceFallback": {
-									"type": "string"
-								},
-								"description": {
-									"type": "string"
-								},
 								"pickIcon": {
 									"type": "string"
 								},
@@ -436,27 +424,6 @@
 									"type": "string"
 								},
 								"projectName": {
-									"type": "string"
-								},
-								"keyLabel": {
-									"type": "string"
-								},
-								"keyHint": {
-									"type": "string"
-								},
-								"createButton": {
-									"type": "string"
-								},
-								"errorToast": {
-									"type": "string"
-								},
-								"keyTaken": {
-									"type": "string"
-								},
-								"startFrom": {
-									"type": "string"
-								},
-								"blankProject": {
 									"type": "string"
 								},
 								"copyHint": {
@@ -471,34 +438,650 @@
 								"openTasksHint": {
 									"type": "string"
 								},
-								"restricted": {
+								"stepPrefix": {
 									"type": "string"
 								},
-								"restrictedHint": {
+								"stepLabel": {
 									"type": "string"
+								},
+								"stepAnnouncement": {
+									"type": "string"
+								},
+								"back": {
+									"type": "string"
+								},
+								"tryAgain": {
+									"type": "string"
+								},
+								"restored": {
+									"type": "string"
+								},
+								"startOver": {
+									"type": "string"
+								},
+								"choose": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"title": {
+											"type": "string"
+										},
+										"subtitle": {
+											"type": "string"
+										},
+										"stepName": {
+											"type": "string"
+										},
+										"search": {
+											"type": "string"
+										},
+										"categories": {
+											"type": "string"
+										},
+										"recommended": {
+											"type": "string"
+										},
+										"all": {
+											"type": "string"
+										},
+										"searchResults": {
+											"type": "string"
+										},
+										"fromWorkspace": {
+											"type": "string"
+										},
+										"import": {
+											"type": "string"
+										},
+										"groups": {
+											"type": "object",
+											"additionalProperties": false,
+											"properties": {
+												"product": {
+													"type": "string"
+												},
+												"service": {
+													"type": "string"
+												},
+												"growth": {
+													"type": "string"
+												},
+												"everyday": {
+													"type": "string"
+												}
+											},
+											"required": ["product", "service", "growth", "everyday"]
+										},
+										"blankName": {
+											"type": "string"
+										},
+										"blankNote": {
+											"type": "string"
+										},
+										"existingName": {
+											"type": "string"
+										},
+										"existingNote": {
+											"type": "string"
+										},
+										"guidedTour": {
+											"type": "string"
+										},
+										"resultCount_one": {
+											"type": "string"
+										},
+										"resultCount_zero": {
+											"type": "string"
+										},
+										"resultCount_two": {
+											"type": "string"
+										},
+										"resultCount_few": {
+											"type": "string"
+										},
+										"resultCount_many": {
+											"type": "string"
+										},
+										"resultCount_other": {
+											"type": "string"
+										},
+										"noResultsTitle": {
+											"type": "string"
+										},
+										"noResultsBody": {
+											"type": "string"
+										},
+										"clearSearch": {
+											"type": "string"
+										},
+										"loadError": {
+											"type": "string"
+										},
+										"useTemplate": {
+											"type": "string"
+										},
+										"startBlank": {
+											"type": "string"
+										},
+										"useProject": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"title",
+										"subtitle",
+										"stepName",
+										"search",
+										"categories",
+										"recommended",
+										"all",
+										"searchResults",
+										"fromWorkspace",
+										"import",
+										"groups",
+										"blankName",
+										"blankNote",
+										"existingName",
+										"existingNote",
+										"guidedTour",
+										"noResultsTitle",
+										"noResultsBody",
+										"clearSearch",
+										"loadError",
+										"useTemplate",
+										"startBlank",
+										"useProject"
+									]
+								},
+								"preview": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"region": {
+											"type": "string"
+										},
+										"goodFor": {
+											"type": "string"
+										},
+										"restricted": {
+											"type": "string"
+										},
+										"statuses": {
+											"type": "string"
+										},
+										"views": {
+											"type": "string"
+										},
+										"fields": {
+											"type": "string"
+										},
+										"features": {
+											"type": "string"
+										},
+										"noFeatures": {
+											"type": "string"
+										},
+										"examples": {
+											"type": "string"
+										},
+										"noExamples": {
+											"type": "string"
+										},
+										"more_one": {
+											"type": "string"
+										},
+										"more_zero": {
+											"type": "string"
+										},
+										"more_two": {
+											"type": "string"
+										},
+										"more_few": {
+											"type": "string"
+										},
+										"more_many": {
+											"type": "string"
+										},
+										"more_other": {
+											"type": "string"
+										},
+										"loadError": {
+											"type": "string"
+										},
+										"fieldTypes": {
+											"type": "object",
+											"additionalProperties": false,
+											"properties": {
+												"text": {
+													"type": "string"
+												},
+												"number": {
+													"type": "string"
+												},
+												"date": {
+													"type": "string"
+												},
+												"dropdown": {
+													"type": "string"
+												},
+												"boolean": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"text",
+												"number",
+												"date",
+												"dropdown",
+												"boolean"
+											]
+										}
+									},
+									"required": [
+										"region",
+										"goodFor",
+										"restricted",
+										"statuses",
+										"views",
+										"fields",
+										"features",
+										"noFeatures",
+										"examples",
+										"noExamples",
+										"loadError",
+										"fieldTypes"
+									]
+								},
+								"blank": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"statuses": {
+											"type": "object",
+											"additionalProperties": false,
+											"properties": {
+												"todo": {
+													"type": "string"
+												},
+												"inProgress": {
+													"type": "string"
+												},
+												"inReview": {
+													"type": "string"
+												},
+												"done": {
+													"type": "string"
+												}
+											},
+											"required": ["todo", "inProgress", "inReview", "done"]
+										}
+									},
+									"required": ["statuses"]
+								},
+								"setup": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"title": {
+											"type": "string"
+										},
+										"subtitle": {
+											"type": "string"
+										},
+										"stepName": {
+											"type": "string"
+										},
+										"namePlaceholder": {
+											"type": "string"
+										},
+										"nameRequired": {
+											"type": "string"
+										},
+										"nameTooLong": {
+											"type": "string"
+										},
+										"keyChip": {
+											"type": "string"
+										},
+										"keyChange": {
+											"type": "string"
+										},
+										"keyLabel": {
+											"type": "string"
+										},
+										"keyInvalid": {
+											"type": "string"
+										},
+										"keyTaken": {
+											"type": "string"
+										},
+										"examples": {
+											"type": "string"
+										},
+										"examplesHint_one": {
+											"type": "string"
+										},
+										"examplesHint_zero": {
+											"type": "string"
+										},
+										"examplesHint_two": {
+											"type": "string"
+										},
+										"examplesHint_few": {
+											"type": "string"
+										},
+										"examplesHint_many": {
+											"type": "string"
+										},
+										"examplesHint_other": {
+											"type": "string"
+										},
+										"labelsSkipped": {
+											"type": "string"
+										},
+										"featuresTitle": {
+											"type": "string"
+										},
+										"included": {
+											"type": "string"
+										},
+										"includedNone": {
+											"type": "string"
+										},
+										"moreOptions": {
+											"type": "string"
+										},
+										"privacy": {
+											"type": "string"
+										},
+										"privacyOpen": {
+											"type": "string"
+										},
+										"privacyOpenHint": {
+											"type": "string"
+										},
+										"privacyRestricted": {
+											"type": "string"
+										},
+										"privacyRestrictedHint": {
+											"type": "string"
+										},
+										"privacySuggested": {
+											"type": "string"
+										},
+										"summary": {
+											"type": "string"
+										},
+										"yourChoice": {
+											"type": "string"
+										},
+										"change": {
+											"type": "string"
+										},
+										"statusCount_one": {
+											"type": "string"
+										},
+										"statusCount_zero": {
+											"type": "string"
+										},
+										"statusCount_two": {
+											"type": "string"
+										},
+										"statusCount_few": {
+											"type": "string"
+										},
+										"statusCount_many": {
+											"type": "string"
+										},
+										"statusCount_other": {
+											"type": "string"
+										},
+										"exampleCount_one": {
+											"type": "string"
+										},
+										"exampleCount_zero": {
+											"type": "string"
+										},
+										"exampleCount_two": {
+											"type": "string"
+										},
+										"exampleCount_few": {
+											"type": "string"
+										},
+										"exampleCount_many": {
+											"type": "string"
+										},
+										"exampleCount_other": {
+											"type": "string"
+										},
+										"create": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"title",
+										"subtitle",
+										"stepName",
+										"namePlaceholder",
+										"nameRequired",
+										"nameTooLong",
+										"keyChip",
+										"keyChange",
+										"keyLabel",
+										"keyInvalid",
+										"keyTaken",
+										"examples",
+										"labelsSkipped",
+										"featuresTitle",
+										"included",
+										"includedNone",
+										"moreOptions",
+										"privacy",
+										"privacyOpen",
+										"privacyOpenHint",
+										"privacyRestricted",
+										"privacyRestrictedHint",
+										"privacySuggested",
+										"summary",
+										"yourChoice",
+										"change",
+										"create"
+									]
+								},
+								"status": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"creating": {
+											"type": "string"
+										},
+										"created": {
+											"type": "string"
+										},
+										"createdShort": {
+											"type": "string"
+										}
+									},
+									"required": ["creating", "created", "createdShort"]
+								},
+								"error": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"generic": {
+											"type": "string"
+										},
+										"template": {
+											"type": "string"
+										},
+										"forbidden": {
+											"type": "string"
+										},
+										"backToTemplates": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"generic",
+										"template",
+										"forbidden",
+										"backToTemplates"
+									]
+								},
+								"firstSteps": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"label": {
+											"type": "string"
+										},
+										"title": {
+											"type": "string"
+										},
+										"progress": {
+											"type": "string"
+										},
+										"show": {
+											"type": "string"
+										},
+										"hide": {
+											"type": "string"
+										},
+										"dismiss": {
+											"type": "string"
+										},
+										"doneLabel": {
+											"type": "string"
+										},
+										"todoLabel": {
+											"type": "string"
+										},
+										"moveExample": {
+											"type": "string"
+										},
+										"markDone": {
+											"type": "string"
+										},
+										"addTask": {
+											"type": "string"
+										},
+										"addTaskAction": {
+											"type": "string"
+										},
+										"invite": {
+											"type": "string"
+										},
+										"inviteAction": {
+											"type": "string"
+										},
+										"removeExamplesItem": {
+											"type": "string"
+										},
+										"removeExamples": {
+											"type": "string"
+										},
+										"labelsSkipped": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"label",
+										"title",
+										"progress",
+										"show",
+										"hide",
+										"dismiss",
+										"doneLabel",
+										"todoLabel",
+										"moveExample",
+										"markDone",
+										"addTask",
+										"addTaskAction",
+										"invite",
+										"inviteAction",
+										"removeExamplesItem",
+										"removeExamples",
+										"labelsSkipped"
+									]
+								},
+								"examples": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"banner": {
+											"type": "string"
+										},
+										"dismissBanner": {
+											"type": "string"
+										},
+										"confirmTitle": {
+											"type": "string"
+										},
+										"confirmBody": {
+											"type": "string"
+										},
+										"removed_one": {
+											"type": "string"
+										},
+										"removed_zero": {
+											"type": "string"
+										},
+										"removed_two": {
+											"type": "string"
+										},
+										"removed_few": {
+											"type": "string"
+										},
+										"removed_many": {
+											"type": "string"
+										},
+										"removed_other": {
+											"type": "string"
+										},
+										"restoreHint": {
+											"type": "string"
+										},
+										"openTrash": {
+											"type": "string"
+										},
+										"removeFailed": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"banner",
+										"dismissBanner",
+										"confirmTitle",
+										"confirmBody",
+										"restoreHint",
+										"openTrash",
+										"removeFailed"
+									]
 								}
 							},
 							"required": [
-								"title",
-								"breadcrumbNew",
-								"workspaceFallback",
-								"description",
 								"pickIcon",
 								"searchIcons",
 								"projectName",
-								"keyLabel",
-								"keyHint",
-								"createButton",
-								"errorToast",
-								"keyTaken",
-								"startFrom",
-								"blankProject",
 								"copyHint",
 								"includeTemplates",
 								"includeOpenTasks",
 								"openTasksHint",
-								"restricted",
-								"restrictedHint"
+								"stepPrefix",
+								"stepLabel",
+								"stepAnnouncement",
+								"back",
+								"tryAgain",
+								"restored",
+								"startOver",
+								"choose",
+								"preview",
+								"blank",
+								"setup",
+								"status",
+								"error",
+								"firstSteps",
+								"examples"
 							]
 						},
 						"createWorkspace": {
@@ -526,8 +1109,44 @@
 								"successToast": {
 									"type": "string"
 								},
-								"errorToast": {
+								"restored": {
 									"type": "string"
+								},
+								"ready": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"title": {
+											"type": "string"
+										},
+										"body": {
+											"type": "string"
+										},
+										"project": {
+											"type": "string"
+										},
+										"projectNote": {
+											"type": "string"
+										},
+										"invite": {
+											"type": "string"
+										},
+										"inviteNote": {
+											"type": "string"
+										},
+										"goToWorkspace": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"title",
+										"body",
+										"project",
+										"projectNote",
+										"invite",
+										"inviteNote",
+										"goToWorkspace"
+									]
 								}
 							},
 							"required": [
@@ -538,7 +1157,8 @@
 								"descriptionPlaceholder",
 								"createButton",
 								"successToast",
-								"errorToast"
+								"restored",
+								"ready"
 							]
 						},
 						"createTask": {
@@ -1485,33 +2105,11 @@
 							"type": "object",
 							"additionalProperties": false,
 							"properties": {
-								"workspaceCreated": {
-									"type": "string"
-								},
-								"createFailed": {
-									"type": "string"
-								},
-								"projectFailed": {
-									"type": "string"
-								},
-								"templateFailed": {
-									"type": "string"
-								},
 								"inviteFailed": {
-									"type": "string"
-								},
-								"taskFailed": {
 									"type": "string"
 								}
 							},
-							"required": [
-								"workspaceCreated",
-								"createFailed",
-								"projectFailed",
-								"templateFailed",
-								"inviteFailed",
-								"taskFailed"
-							]
+							"required": ["inviteFailed"]
 						},
 						"validation": {
 							"type": "object",
@@ -1519,9 +2117,12 @@
 							"properties": {
 								"workspaceNameRequired": {
 									"type": "string"
+								},
+								"workspaceNameTooLong": {
+									"type": "string"
 								}
 							},
-							"required": ["workspaceNameRequired"]
+							"required": ["workspaceNameRequired", "workspaceNameTooLong"]
 						},
 						"progress": {
 							"type": "string"
@@ -1544,72 +2145,8 @@
 						"projectTitle": {
 							"type": "string"
 						},
-						"projectSubtitle": {
-							"type": "string"
-						},
-						"projectName": {
-							"type": "string"
-						},
-						"projectNamePlaceholder": {
-							"type": "string"
-						},
-						"projectKey": {
-							"type": "string"
-						},
-						"projectKeyHint": {
-							"type": "string"
-						},
 						"projectCreated": {
 							"type": "string"
-						},
-						"templateLabel": {
-							"type": "string"
-						},
-						"templates": {
-							"type": "object",
-							"additionalProperties": false,
-							"properties": {
-								"board": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"name": {
-											"type": "string"
-										},
-										"note": {
-											"type": "string"
-										}
-									},
-									"required": ["name", "note"]
-								},
-								"cycles": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"name": {
-											"type": "string"
-										},
-										"note": {
-											"type": "string"
-										}
-									},
-									"required": ["name", "note"]
-								},
-								"intake": {
-									"type": "object",
-									"additionalProperties": false,
-									"properties": {
-										"name": {
-											"type": "string"
-										},
-										"note": {
-											"type": "string"
-										}
-									},
-									"required": ["name", "note"]
-								}
-							},
-							"required": ["board", "cycles", "intake"]
 						},
 						"createProject": {
 							"type": "string"
@@ -1638,23 +2175,367 @@
 						"inviteLinkHint": {
 							"type": "string"
 						},
-						"tasksTitle": {
+						"stepPrefix": {
 							"type": "string"
 						},
-						"tasksSubtitle": {
+						"stepNames": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"workspace": {
+									"type": "string"
+								},
+								"project": {
+									"type": "string"
+								},
+								"invite": {
+									"type": "string"
+								},
+								"done": {
+									"type": "string"
+								}
+							},
+							"required": ["workspace", "project", "invite", "done"]
+						},
+						"nameWorkspaceTitle": {
 							"type": "string"
 						},
-						"taskLabel": {
+						"nameWorkspaceSubtitle": {
 							"type": "string"
 						},
-						"taskPlaceholder": {
+						"addDescription": {
 							"type": "string"
 						},
-						"addTask": {
+						"tryAgain": {
 							"type": "string"
 						},
-						"openBoard": {
+						"intent": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"legend": {
+									"type": "string"
+								},
+								"hint": {
+									"type": "string"
+								},
+								"more": {
+									"type": "string"
+								},
+								"team": {
+									"type": "string"
+								},
+								"software": {
+									"type": "string"
+								},
+								"product": {
+									"type": "string"
+								},
+								"marketing": {
+									"type": "string"
+								},
+								"service": {
+									"type": "string"
+								},
+								"it": {
+									"type": "string"
+								},
+								"hr": {
+									"type": "string"
+								},
+								"personal": {
+									"type": "string"
+								},
+								"sales": {
+									"type": "string"
+								},
+								"support": {
+									"type": "string"
+								},
+								"finance": {
+									"type": "string"
+								},
+								"design": {
+									"type": "string"
+								},
+								"operations": {
+									"type": "string"
+								},
+								"legal": {
+									"type": "string"
+								},
+								"facilities": {
+									"type": "string"
+								},
+								"analytics": {
+									"type": "string"
+								},
+								"nonprofit": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"legend",
+								"hint",
+								"more",
+								"team",
+								"software",
+								"product",
+								"marketing",
+								"service",
+								"it",
+								"hr",
+								"personal",
+								"sales",
+								"support",
+								"finance",
+								"design",
+								"operations",
+								"legal",
+								"facilities",
+								"analytics",
+								"nonprofit"
+							]
+						},
+						"waiting": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"body": {
+									"type": "string"
+								},
+								"checkAgain": {
+									"type": "string"
+								}
+							},
+							"required": ["title", "body", "checkAgain"]
+						},
+						"errors": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"workspace": {
+									"type": "string"
+								},
+								"template": {
+									"type": "string"
+								}
+							},
+							"required": ["workspace", "template"]
+						},
+						"status": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"creatingWorkspace": {
+									"type": "string"
+								},
+								"workspaceCreated": {
+									"type": "string"
+								},
+								"projectCreated": {
+									"type": "string"
+								},
+								"creatingStarter": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"creatingWorkspace",
+								"workspaceCreated",
+								"projectCreated",
+								"creatingStarter"
+							]
+						},
+						"firstProjectSubtitle": {
 							"type": "string"
+						},
+						"recommended": {
+							"type": "string"
+						},
+						"browseAll": {
+							"type": "string"
+						},
+						"showRecommended": {
+							"type": "string"
+						},
+						"guidedTour": {
+							"type": "string"
+						},
+						"setUpPanel": {
+							"type": "string"
+						},
+						"creatingProject": {
+							"type": "string"
+						},
+						"createProjects_one": {
+							"type": "string"
+						},
+						"createProjects_zero": {
+							"type": "string"
+						},
+						"createProjects_two": {
+							"type": "string"
+						},
+						"createProjects_few": {
+							"type": "string"
+						},
+						"createProjects_many": {
+							"type": "string"
+						},
+						"createProjects_other": {
+							"type": "string"
+						},
+						"projectCreatedWithExamples_one": {
+							"type": "string"
+						},
+						"projectCreatedWithExamples_zero": {
+							"type": "string"
+						},
+						"projectCreatedWithExamples_two": {
+							"type": "string"
+						},
+						"projectCreatedWithExamples_few": {
+							"type": "string"
+						},
+						"projectCreatedWithExamples_many": {
+							"type": "string"
+						},
+						"projectCreatedWithExamples_other": {
+							"type": "string"
+						},
+						"starters": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"hint": {
+									"type": "string"
+								},
+								"projectCount_one": {
+									"type": "string"
+								},
+								"projectCount_zero": {
+									"type": "string"
+								},
+								"projectCount_two": {
+									"type": "string"
+								},
+								"projectCount_few": {
+									"type": "string"
+								},
+								"projectCount_many": {
+									"type": "string"
+								},
+								"projectCount_other": {
+									"type": "string"
+								},
+								"examplesHint": {
+									"type": "string"
+								}
+							},
+							"required": ["title", "hint", "examplesHint"]
+						},
+						"inviteSubtitlePersonal": {
+							"type": "string"
+						},
+						"finish": {
+							"type": "string"
+						},
+						"done": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"workspace": {
+									"type": "string"
+								},
+								"project": {
+									"type": "string"
+								},
+								"blankProject": {
+									"type": "string"
+								},
+								"projectWithExamples_one": {
+									"type": "string"
+								},
+								"projectWithExamples_zero": {
+									"type": "string"
+								},
+								"projectWithExamples_two": {
+									"type": "string"
+								},
+								"projectWithExamples_few": {
+									"type": "string"
+								},
+								"projectWithExamples_many": {
+									"type": "string"
+								},
+								"projectWithExamples_other": {
+									"type": "string"
+								},
+								"projects_one": {
+									"type": "string"
+								},
+								"projects_zero": {
+									"type": "string"
+								},
+								"projects_two": {
+									"type": "string"
+								},
+								"projects_few": {
+									"type": "string"
+								},
+								"projects_many": {
+									"type": "string"
+								},
+								"projects_other": {
+									"type": "string"
+								},
+								"invited_one": {
+									"type": "string"
+								},
+								"invited_zero": {
+									"type": "string"
+								},
+								"invited_two": {
+									"type": "string"
+								},
+								"invited_few": {
+									"type": "string"
+								},
+								"invited_many": {
+									"type": "string"
+								},
+								"invited_other": {
+									"type": "string"
+								},
+								"open": {
+									"type": "string"
+								},
+								"goToWorkspace": {
+									"type": "string"
+								},
+								"hint": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"title",
+								"workspace",
+								"project",
+								"blankProject",
+								"open",
+								"goToWorkspace",
+								"hint"
+							]
 						}
 					},
 					"required": [
@@ -1678,14 +2559,7 @@
 						"joinTitle",
 						"joinDescription",
 						"projectTitle",
-						"projectSubtitle",
-						"projectName",
-						"projectNamePlaceholder",
-						"projectKey",
-						"projectKeyHint",
 						"projectCreated",
-						"templateLabel",
-						"templates",
 						"createProject",
 						"inviteTitle",
 						"inviteSubtitle",
@@ -1695,12 +2569,27 @@
 						"inviting",
 						"invalidEmail",
 						"inviteLinkHint",
-						"tasksTitle",
-						"tasksSubtitle",
-						"taskLabel",
-						"taskPlaceholder",
-						"addTask",
-						"openBoard"
+						"stepPrefix",
+						"stepNames",
+						"nameWorkspaceTitle",
+						"nameWorkspaceSubtitle",
+						"addDescription",
+						"tryAgain",
+						"intent",
+						"waiting",
+						"errors",
+						"status",
+						"firstProjectSubtitle",
+						"recommended",
+						"browseAll",
+						"showRecommended",
+						"guidedTour",
+						"setUpPanel",
+						"creatingProject",
+						"starters",
+						"inviteSubtitlePersonal",
+						"finish",
+						"done"
 					]
 				},
 				"profileSetup": {
@@ -16029,6 +16918,12 @@
 								}
 							},
 							"required": ["actions", "tasks", "people", "places"]
+						},
+						"newBlankProject": {
+							"type": "string"
+						},
+						"newProjectFromTemplate": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -16064,7 +16959,9 @@
 						"scope",
 						"removeScope",
 						"prefixes",
-						"placeholders"
+						"placeholders",
+						"newBlankProject",
+						"newProjectFromTemplate"
 					]
 				},
 				"notifications": {

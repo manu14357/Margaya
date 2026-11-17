@@ -80,7 +80,9 @@ import {
   resolveActiveSection,
 } from "@/lib/project-sections";
 import { toast } from "@/lib/toast";
-import CreateProjectModal from "./shared/modals/create-project-modal";
+import CreateProjectModal, {
+  usePreloadCreateProject,
+} from "./shared/modals/create-project-modal";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -258,6 +260,7 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
 
   const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] =
     useState(false);
+  const preloadCreateProject = usePreloadCreateProject();
   const [isDeleteProjectModalOpen, setIsDeleteProjectModalOpen] =
     useState(false);
   const [projectToDeleteId, setProjectToDeleteID] = useState<string | null>(
@@ -363,6 +366,8 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
               aria-label={t("navigation:projectList.addProject")}
               title={t("navigation:projectList.addProject")}
               onClick={() => setIsCreateProjectModalOpen(true)}
+              onPointerEnter={preloadCreateProject}
+              onFocus={preloadCreateProject}
               className="flex size-6 items-center justify-center rounded-md text-sidebar-foreground outline-hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring"
             >
               <Plus className="size-3.5" />

@@ -86,7 +86,7 @@ test.describe("sign up", () => {
     await expect(page.getByText("Account created successfully")).toBeVisible();
     await expect(page).toHaveURL(/\/onboarding/);
     await expect(
-      page.getByRole("heading", { name: "Create workspace" }),
+      page.getByRole("heading", { name: /Name your workspace/ }),
     ).toBeVisible();
   });
 

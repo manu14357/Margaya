@@ -226,7 +226,7 @@ test.describe("command palette", () => {
       .first()
       .getByRole("option", { name: /^Create project/ })
       .click();
-    const create = page.getByRole("dialog", { name: "Create a new project" });
+    const create = page.getByRole("dialog", { name: /Create a project/ });
     await expect(create).toBeVisible();
     await create.getByRole("button", { name: "Cancel" }).click();
     await expect(create).toBeHidden();

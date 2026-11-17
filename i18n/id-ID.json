@@ -67,26 +67,152 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "Buat proyek baru",
-				"breadcrumbNew": "Buat proyek baru",
-				"workspaceFallback": "RUANG KERJA",
-				"description": "Buat proyek baru di ruang kerja Anda dengan memberikan nama, key, dan memilih ikon.",
 				"pickIcon": "Pilih ikon",
 				"searchIcons": "Cari ikon...",
 				"projectName": "Nama proyek",
-				"keyLabel": "Kunci:",
-				"keyHint": "Digunakan untuk ID tiket (contoh, {{example}}-123)",
-				"createButton": "Buat proyek",
-				"errorToast": "Gagal membuat proyek",
-				"keyTaken": "Proyek dengan key {{key}} sudah ada di ruang kerja ini",
-				"blankProject": "Proyek kosong",
 				"copyHint": "Status, field kustom, estimasi, pengaturan, dan otomatisasi akan disalin. Anggota, integrasi, dan papan publik tidak disalin.",
 				"includeOpenTasks": "Sertakan tugas yang terbuka",
 				"includeTemplates": "Sertakan templat tugas",
 				"openTasksHint": "Hingga 500 tugas terbuka beserta subtugas, label, dan estimasinya. Komentar dan riwayat tidak disalin.",
-				"restricted": "Terbatas",
-				"restrictedHint": "Hanya anggota yang dapat melihat proyek ini. Anda akan menjadi anggota pertamanya; pemilik dan admin workspace selalu dapat melihatnya.",
-				"startFrom": "Mulai dari"
+				"stepPrefix": "Langkah {{current}} dari {{total}}:",
+				"stepLabel": "Langkah {{current}} dari {{total}} · {{name}}",
+				"stepAnnouncement": "Langkah {{current}} dari {{total}}: {{title}}",
+				"back": "Kembali",
+				"tryAgain": "Coba lagi",
+				"restored": "Proyek Anda yang belum selesai telah dipulihkan.",
+				"startOver": "Mulai dari awal",
+				"choose": {
+					"title": "Buat proyek",
+					"subtitle": "Proyek menampung tugas, status, dan tampilan untuk satu alur kerja, baik yang berkelanjutan maupun yang memiliki tanggal akhir.",
+					"stepName": "Pilih",
+					"search": "Cari templat",
+					"categories": "Kategori templat",
+					"recommended": "Direkomendasikan",
+					"all": "Semua templat",
+					"searchResults": "Hasil pencarian",
+					"fromWorkspace": "Dari ruang kerja Anda",
+					"import": "Impor dari alat lain atau file CSV",
+					"groups": {
+						"product": "Produk dan teknologi",
+						"service": "Layanan dan dukungan",
+						"growth": "Pertumbuhan",
+						"everyday": "Pekerjaan sehari-hari"
+					},
+					"blankName": "Proyek kosong",
+					"blankNote": "Perlu Dikerjakan, Sedang Berjalan, Dalam Review, dan Selesai. Tambahkan sisanya nanti.",
+					"existingName": "Mulai dari proyek yang ada",
+					"existingNote": "Salin status, field, dan pengaturan dari proyek yang sudah Anda miliki.",
+					"guidedTour": "Atau jelajahi proyek tur terpandu",
+					"resultCount_other": "{{count}} templat",
+					"noResultsTitle": "Tidak ada templat yang cocok dengan \"{{query}}\"",
+					"noResultsBody": "Coba kata lain, atau mulai dengan proyek kosong.",
+					"clearSearch": "Hapus pencarian",
+					"loadError": "Kami tidak dapat memuat templat.",
+					"useTemplate": "Gunakan templat",
+					"startBlank": "Mulai dari kosong",
+					"useProject": "Gunakan proyek ini"
+				},
+				"preview": {
+					"region": "Pratinjau: {{template}}",
+					"goodFor": "Cocok untuk: {{categories}}",
+					"restricted": "Dimulai sebagai proyek terbatas, sehingga detailnya hanya untuk orang yang Anda tambahkan.",
+					"statuses": "Status",
+					"views": "Tampilan",
+					"fields": "Field",
+					"features": "Disertakan",
+					"noFeatures": "Hanya papan dan daftar. Aktifkan fitur kapan saja.",
+					"examples": "Contoh tugas",
+					"noExamples": "Tidak ada contoh tugas",
+					"more_other": "+ {{count}} lainnya",
+					"loadError": "Kami tidak dapat memuat pratinjau ini.",
+					"fieldTypes": {
+						"text": "teks",
+						"number": "angka",
+						"date": "tanggal",
+						"dropdown": "daftar pilihan",
+						"boolean": "ya atau tidak"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "Perlu Dikerjakan",
+						"inProgress": "Sedang Berjalan",
+						"inReview": "Dalam Review",
+						"done": "Selesai"
+					}
+				},
+				"setup": {
+					"title": "Siapkan proyek Anda",
+					"subtitle": "Hanya nama yang wajib diisi. Anda dapat mengubah semuanya nanti di pengaturan proyek.",
+					"stepName": "Siapkan",
+					"namePlaceholder": "mis. Peluncuran ulang situs web",
+					"nameRequired": "Beri nama proyek Anda.",
+					"nameTooLong": "Gunakan nama kurang dari 80 karakter.",
+					"keyChip": "ID tugas: {{key}}-1",
+					"keyChange": "Ubah",
+					"keyLabel": "Awalan ID tugas",
+					"keyInvalid": "Gunakan 1 hingga 8 huruf atau angka.",
+					"keyTaken": "{{key}} sudah digunakan di ruang kerja ini. Coba yang lain.",
+					"examples": "Tambahkan contoh tugas",
+					"examplesHint_other": "{{count}} tugas yang menunjukkan cara kerja proyek ini. Anda dapat menghapus semuanya sekaligus.",
+					"labelsSkipped": "Beberapa label tidak akan ditambahkan: Anda tidak dapat membuat label ruang kerja.",
+					"featuresTitle": "Fitur yang tetap aktif",
+					"included": "Yang disertakan: {{list}}",
+					"includedNone": "Hanya papan dan daftar",
+					"moreOptions": "Opsi lainnya (fitur, privasi)",
+					"privacy": "Privasi",
+					"privacyOpen": "Terbuka",
+					"privacyOpenHint": "Semua orang di ruang kerja dapat menemukannya, sesuai hak peran mereka.",
+					"privacyRestricted": "Terbatas",
+					"privacyRestrictedHint": "Hanya orang yang Anda tambahkan, serta pemilik dan admin ruang kerja.",
+					"privacySuggested": "Templat ini menyarankan proyek terbatas. Anda dapat mengubahnya.",
+					"summary": "Pilihan Anda",
+					"yourChoice": "Pilihan Anda",
+					"change": "Ubah",
+					"statusCount_other": "{{count}} status",
+					"exampleCount_other": "{{count}} contoh tugas",
+					"create": "Buat proyek"
+				},
+				"status": {
+					"creating": "Membuat {{name}}…",
+					"created": "{{name}} dibuat. Langkah pertama ada di atas papan.",
+					"createdShort": "{{name}} dibuat"
+				},
+				"error": {
+					"generic": "Kami tidak dapat membuat proyek. Pilihan Anda tetap tersimpan, jadi silakan coba lagi.",
+					"template": "Templat ini tidak lagi tersedia di server ini. Pilih yang lain.",
+					"forbidden": "Anda tidak lagi memiliki izin untuk membuat proyek di sini.",
+					"backToTemplates": "Kembali ke templat"
+				},
+				"firstSteps": {
+					"label": "Langkah pertama",
+					"title": "{{name}} sudah siap.",
+					"progress": "Langkah pertama · {{done}} dari {{total}}",
+					"show": "Tampilkan",
+					"hide": "Sembunyikan",
+					"dismiss": "Tutup",
+					"doneLabel": "Selesai:",
+					"todoLabel": "Perlu dikerjakan:",
+					"moveExample": "Pindahkan contoh tugas untuk melihat alurnya",
+					"markDone": "Tandai selesai",
+					"addTask": "Tambahkan tugas nyata pertama Anda",
+					"addTaskAction": "Tambah tugas",
+					"invite": "Undang orang ke proyek ini",
+					"inviteAction": "Undang orang",
+					"removeExamplesItem": "Hapus contoh",
+					"removeExamples": "Hapus contoh",
+					"labelsSkipped": "Beberapa label tidak ditambahkan, karena Anda tidak dapat membuat label ruang kerja."
+				},
+				"examples": {
+					"banner": "Proyek ini memiliki contoh tugas.",
+					"dismissBanner": "Sembunyikan pesan ini",
+					"confirmTitle": "Hapus contoh tugas?",
+					"confirmBody": "Tugas tersebut dipindahkan ke sampah, sehingga Anda dapat memulihkannya dari sana.",
+					"removed_other": "{{count}} contoh tugas dipindahkan ke sampah",
+					"restoreHint": "Anda dapat memulihkannya dari sampah proyek.",
+					"openTrash": "Buka sampah",
+					"removeFailed": "Tidak dapat menghapus contoh tugas"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -96,7 +222,16 @@
 				"descriptionPlaceholder": "Tambahkan deskripsi...",
 				"createButton": "Buat ruang kerja",
 				"successToast": "Ruang kerja berhasil dibuat",
-				"errorToast": "Gagal membuat ruang kerja"
+				"restored": "Draf Anda telah dipulihkan.",
+				"ready": {
+					"title": "{{name}} sudah siap",
+					"body": "Mulai dengan proyek, atau ajak orang-orang Anda terlebih dahulu.",
+					"project": "Mulai proyek",
+					"projectNote": "Pilih templat atau mulai dari kosong.",
+					"invite": "Undang orang",
+					"inviteNote": "Tambahkan rekan tim lewat email atau tautan.",
+					"goToWorkspace": "Buka ruang kerja"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "TUGAS",
@@ -382,17 +517,12 @@
 			"createWorkspace": "Buat ruang kerja",
 			"workspaceCreatedTitle": "Ruang kerja dibuat",
 			"toast": {
-				"workspaceCreated": "Ruang kerja berhasil dibuat",
-				"createFailed": "Gagal membuat ruang kerja",
-				"inviteFailed": "Tidak dapat mengirim undangan",
-				"projectFailed": "Tidak dapat membuat proyek",
-				"taskFailed": "Tidak dapat menambahkan tugas",
-				"templateFailed": "Proyek telah dibuat, tetapi pengaturan templatenya tidak diterapkan."
+				"inviteFailed": "Tidak dapat mengirim undangan"
 			},
 			"validation": {
-				"workspaceNameRequired": "Nama ruang kerja wajib diisi"
+				"workspaceNameRequired": "Nama ruang kerja wajib diisi",
+				"workspaceNameTooLong": "Gunakan kurang dari 80 karakter."
 			},
-			"addTask": "Tambah tugas",
 			"back": "Kembali",
 			"continue": "Lanjutkan",
 			"createProject": "Buat proyek",
@@ -405,35 +535,87 @@
 			"inviting": "Mengundang…",
 			"joinDescription": "Anda telah diundang. Bergabunglah dengan tim yang sudah aktif, atau buat sendiri di bawah.",
 			"joinTitle": "Bergabung ke ruang kerja",
-			"openBoard": "Buka papan",
 			"progress": "Langkah {{current}} dari {{total}}",
 			"projectCreated": "Proyek dibuat",
-			"projectKey": "Kunci",
-			"projectKeyHint": "ID tugas diawali dengan kunci, seperti {{example}}-1.",
-			"projectName": "Nama proyek",
-			"projectNamePlaceholder": "mis. Peluncuran ulang situs web",
-			"projectSubtitle": "Cukup nama saja. Yang lainnya bisa diubah nanti.",
 			"projectTitle": "Mulai proyek pertama Anda",
 			"sendInvite": "Undang",
 			"skip": "Lewati untuk sekarang",
-			"taskLabel": "Judul tugas",
-			"taskPlaceholder": "mis. Susun rencana peluncuran",
-			"tasksSubtitle": "Ketik tugas lalu tekan Enter. Setiap tugas masuk ke To Do di {{project}}.",
-			"tasksTitle": "Tambahkan tugas pertama Anda",
-			"templateLabel": "Bagaimana tim ini bekerja?",
-			"templates": {
-				"board": {
-					"name": "Papan sederhana",
-					"note": "Kolom dari To Do hingga Done"
-				},
-				"cycles": {
-					"name": "Siklus",
-					"note": "Siklus berbatas waktu dengan estimasi"
-				},
-				"intake": {
-					"name": "Intake",
-					"note": "Antrean untuk permintaan masuk"
-				}
+			"stepPrefix": "Langkah {{current}} dari {{total}}:",
+			"stepNames": {
+				"workspace": "Nama",
+				"project": "Proyek pertama",
+				"invite": "Undang",
+				"done": "Selesai"
+			},
+			"nameWorkspaceTitle": "Beri nama ruang kerja Anda",
+			"nameWorkspaceSubtitle": "Di sinilah proyek dan orang-orang Anda berada. Anda dapat mengganti namanya kapan saja.",
+			"addDescription": "+ Tambahkan deskripsi",
+			"tryAgain": "Coba lagi",
+			"intent": {
+				"legend": "Apa yang akan Anda lacak lebih dulu? (opsional)",
+				"hint": "Kami akan menyarankan templat yang sesuai. Ini tidak membatasi apa pun.",
+				"more": "Jenis pekerjaan lainnya",
+				"team": "Tugas tim",
+				"software": "Perangkat lunak",
+				"product": "Produk",
+				"marketing": "Pemasaran",
+				"service": "Layanan bantuan",
+				"it": "TI",
+				"hr": "SDM",
+				"personal": "Pribadi",
+				"sales": "Penjualan",
+				"support": "Dukungan pelanggan",
+				"finance": "Keuangan",
+				"design": "Desain",
+				"operations": "Operasional",
+				"legal": "Hukum",
+				"facilities": "Fasilitas",
+				"analytics": "Analitik",
+				"nonprofit": "Nirlaba"
+			},
+			"waiting": {
+				"title": "Menunggu undangan",
+				"body": "Di server Margaya ini, admin yang membuat ruang kerja. Minta salah satu admin untuk mengundang Anda, dan undangannya akan muncul di sini.",
+				"checkAgain": "Periksa lagi"
+			},
+			"errors": {
+				"workspace": "Kami tidak dapat membuat ruang kerja Anda. Periksa koneksi Anda dan coba lagi.",
+				"template": "Templat ini tidak lagi tersedia. Pilih yang lain."
+			},
+			"status": {
+				"creatingWorkspace": "Membuat ruang kerja Anda…",
+				"workspaceCreated": "{{name}} dibuat",
+				"projectCreated": "{{name}} dibuat",
+				"creatingStarter": "Membuat proyek Anda…"
+			},
+			"firstProjectSubtitle": "Proyek menampung tugas, status, dan tampilan untuk satu alur kerja, baik yang berkelanjutan maupun yang memiliki tanggal akhir.",
+			"recommended": "Direkomendasikan untuk Anda",
+			"browseAll": "Jelajahi semua templat",
+			"showRecommended": "Tampilkan rekomendasi saja",
+			"guidedTour": "Atau jelajahi proyek tur terpandu",
+			"setUpPanel": "Siapkan",
+			"creatingProject": "Membuat proyek…",
+			"createProjects_other": "Buat {{count}} proyek",
+			"projectCreatedWithExamples_other": "Proyek dibuat · {{count}} contoh tugas",
+			"starters": {
+				"title": "Mulai dengan satu set",
+				"hint": "Beberapa proyek untuk tim yang sudah mengenal alur kerjanya.",
+				"projectCount_other": "{{count}} proyek",
+				"examplesHint": "Hingga empat contoh tugas per proyek, yang dapat Anda hapus sekaligus."
+			},
+			"inviteSubtitlePersonal": "Bekerja sendiri? Lewati langkah ini. Anda dapat mengundang orang kapan saja dari Tim.",
+			"finish": "Selesai",
+			"done": {
+				"title": "Semua sudah siap",
+				"workspace": "Ruang kerja {{name}}",
+				"project": "Proyek {{name}}",
+				"blankProject": "Proyek kosong {{name}}",
+				"projectWithExamples_other": "Proyek {{name}}, dengan {{count}} contoh tugas",
+				"projects_other": "{{count}} proyek, dimulai dengan {{name}}",
+				"invited_other": "{{count}} orang diundang",
+				"open": "Buka {{name}}",
+				"goToWorkspace": "Buka ruang kerja Anda",
+				"hint": "Papan Anda memiliki daftar periksa singkat untuk membantu Anda memulai."
 			}
 		},
 		"profileSetup": {
@@ -3846,7 +4028,9 @@
 			},
 			"recent": "Terbaru",
 			"removeScope": "Cari di mana saja",
-			"scope": "Di"
+			"scope": "Di",
+			"newBlankProject": "Proyek kosong baru",
+			"newProjectFromTemplate": "Proyek baru dari templat…"
 		},
 		"notifications": "Notifikasi",
 		"sidebar": {

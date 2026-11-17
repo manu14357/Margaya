@@ -67,26 +67,158 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "Yeni proje oluştur",
-				"breadcrumbNew": "Yeni proje oluştur",
-				"workspaceFallback": "ÇALIŞMA ALANI",
-				"description": "Bir ad, anahtar ve simge girerek çalışma alanınızda yeni bir proje oluşturun.",
 				"pickIcon": "Simge seç",
 				"searchIcons": "Simge ara...",
 				"projectName": "Proje adı",
-				"keyLabel": "Anahtar:",
-				"keyHint": "Talep kimlikleri için kullanılır (örn. {{example}}-123)",
-				"createButton": "Proje oluştur",
-				"errorToast": "Proje oluşturulamadı",
-				"keyTaken": "{{key}} anahtarına sahip bir proje bu çalışma alanında zaten var",
-				"blankProject": "Boş proje",
 				"copyHint": "Durumlar, özel alanlar, tahminler, ayarlar ve otomasyonlar kopyalanır. Üyeler, entegrasyonlar ve herkese açık panolar kopyalanmaz.",
 				"includeOpenTasks": "Açık görevleri dahil et",
 				"includeTemplates": "Görev şablonlarını dahil et",
 				"openTasksHint": "Alt görevleri, etiketleri ve tahminleriyle birlikte en fazla 500 açık görev. Yorumlar ve geçmiş kopyalanmaz.",
-				"restricted": "Kısıtlı",
-				"restrictedHint": "Bu projeyi yalnızca üyeler görebilir. İlk üyesi siz olacaksınız; çalışma alanı sahipleri ve yöneticileri her zaman görebilir.",
-				"startFrom": "Başlangıç noktası"
+				"stepPrefix": "Adım {{current}} / {{total}}:",
+				"stepLabel": "Adım {{current}} / {{total}} · {{name}}",
+				"stepAnnouncement": "Adım {{current}} / {{total}}: {{title}}",
+				"back": "Geri",
+				"tryAgain": "Tekrar dene",
+				"restored": "Yarım kalan projeniz geri yüklendi.",
+				"startOver": "Baştan başla",
+				"choose": {
+					"title": "Proje oluştur",
+					"subtitle": "Bir proje, sürekli ya da bitiş tarihli tek bir iş akışının görevlerini, durumlarını ve görünümlerini barındırır.",
+					"stepName": "Seç",
+					"search": "Şablon ara",
+					"categories": "Şablon kategorileri",
+					"recommended": "Önerilenler",
+					"all": "Tüm şablonlar",
+					"searchResults": "Arama sonuçları",
+					"fromWorkspace": "Çalışma alanınızdan",
+					"import": "Başka bir araçtan veya CSV dosyasından içe aktar",
+					"groups": {
+						"product": "Ürün ve teknoloji",
+						"service": "Hizmet ve destek",
+						"growth": "Büyüme",
+						"everyday": "Günlük işler"
+					},
+					"blankName": "Boş proje",
+					"blankNote": "Yapılacak, Devam Ediyor, İncelemede ve Tamamlandı. Gerisini sonra ekleyin.",
+					"existingName": "Mevcut bir projeden başla",
+					"existingNote": "Zaten sahip olduğunuz bir projenin durumlarını, alanlarını ve ayarlarını kopyalayın.",
+					"guidedTour": "Ya da rehberli tur projesini keşfedin",
+					"resultCount_one": "{{count}} şablon",
+					"resultCount_other": "{{count}} şablon",
+					"noResultsTitle": "\"{{query}}\" ile eşleşen şablon yok",
+					"noResultsBody": "Başka bir kelime deneyin ya da boş bir projeyle başlayın.",
+					"clearSearch": "Aramayı temizle",
+					"loadError": "Şablonlar yüklenemedi.",
+					"useTemplate": "Şablonu kullan",
+					"startBlank": "Boş başla",
+					"useProject": "Bu projeyi kullan"
+				},
+				"preview": {
+					"region": "Önizleme: {{template}}",
+					"goodFor": "Uygun olduğu alanlar: {{categories}}",
+					"restricted": "Kısıtlı olarak başlar, böylece ayrıntıları yalnızca eklediğiniz kişilerde kalır.",
+					"statuses": "Durumlar",
+					"views": "Görünümler",
+					"fields": "Alanlar",
+					"features": "Dahil olanlar",
+					"noFeatures": "Yalnızca pano ve liste. Özellikleri istediğiniz zaman açın.",
+					"examples": "Örnek görevler",
+					"noExamples": "Örnek görev yok",
+					"more_one": "+ {{count}} tane daha",
+					"more_other": "+ {{count}} tane daha",
+					"loadError": "Bu önizleme yüklenemedi.",
+					"fieldTypes": {
+						"text": "metin",
+						"number": "sayı",
+						"date": "tarih",
+						"dropdown": "açılır liste",
+						"boolean": "evet veya hayır"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "Yapılacak",
+						"inProgress": "Devam Ediyor",
+						"inReview": "İncelemede",
+						"done": "Tamamlandı"
+					}
+				},
+				"setup": {
+					"title": "Projenizi kurun",
+					"subtitle": "Yalnızca ad gereklidir. Her şeyi daha sonra proje ayarlarından değiştirebilirsiniz.",
+					"stepName": "Kur",
+					"namePlaceholder": "örn. Web sitesinin yenilenmesi",
+					"nameRequired": "Projenize bir ad verin.",
+					"nameTooLong": "Ad 80 karakterden kısa olmalıdır.",
+					"keyChip": "Görev kimlikleri: {{key}}-1",
+					"keyChange": "Değiştir",
+					"keyLabel": "Görev kimliği ön eki",
+					"keyInvalid": "1 ile 8 arasında harf veya rakam kullanın.",
+					"keyTaken": "{{key}} bu çalışma alanında zaten kullanılıyor. Başka bir tane deneyin.",
+					"examples": "Örnek görevler ekle",
+					"examplesHint_one": "Bu projenin nasıl çalıştığını gösteren {{count}} görev. Tek seferde kaldırabilirsiniz.",
+					"examplesHint_other": "Bu projenin nasıl çalıştığını gösteren {{count}} görev. Hepsini tek seferde kaldırabilirsiniz.",
+					"labelsSkipped": "Bazı etiketler eklenmeyecek: çalışma alanı etiketi oluşturamazsınız.",
+					"featuresTitle": "Açık kalacak özellikler",
+					"included": "Dahil olanlar: {{list}}",
+					"includedNone": "Yalnızca pano ve liste",
+					"moreOptions": "Diğer seçenekler (özellikler, gizlilik)",
+					"privacy": "Gizlilik",
+					"privacyOpen": "Açık",
+					"privacyOpenHint": "Çalışma alanındaki herkes, rolünün verdiği haklarla projeyi bulabilir.",
+					"privacyRestricted": "Kısıtlı",
+					"privacyRestrictedHint": "Yalnızca eklediğiniz kişiler ile çalışma alanı sahipleri ve yöneticileri.",
+					"privacySuggested": "Bu şablon kısıtlı bir proje öneriyor. Bunu değiştirebilirsiniz.",
+					"summary": "Seçiminiz",
+					"yourChoice": "Seçiminiz",
+					"change": "Değiştir",
+					"statusCount_one": "{{count}} durum",
+					"statusCount_other": "{{count}} durum",
+					"exampleCount_one": "{{count}} örnek görev",
+					"exampleCount_other": "{{count}} örnek görev",
+					"create": "Proje oluştur"
+				},
+				"status": {
+					"creating": "{{name}} oluşturuluyor…",
+					"created": "{{name}} oluşturuldu. İlk adımlar panonun üstünde.",
+					"createdShort": "{{name}} oluşturuldu"
+				},
+				"error": {
+					"generic": "Proje oluşturulamadı. Seçimleriniz korundu, tekrar deneyin.",
+					"template": "Bu şablon artık bu sunucuda kullanılamıyor. Başka bir tane seçin.",
+					"forbidden": "Artık burada proje oluşturma izniniz yok.",
+					"backToTemplates": "Şablonlara dön"
+				},
+				"firstSteps": {
+					"label": "İlk adımlar",
+					"title": "{{name}} hazır.",
+					"progress": "İlk adımlar · {{done}} / {{total}}",
+					"show": "Göster",
+					"hide": "Gizle",
+					"dismiss": "Kapat",
+					"doneLabel": "Yapıldı:",
+					"todoLabel": "Yapılacak:",
+					"moveExample": "Akışı görmek için bir örnek görevi taşıyın",
+					"markDone": "Yapıldı olarak işaretle",
+					"addTask": "İlk gerçek görevinizi ekleyin",
+					"addTaskAction": "Görev ekle",
+					"invite": "Bu projeye kişileri davet edin",
+					"inviteAction": "Kişileri davet et",
+					"removeExamplesItem": "Örnekleri kaldırın",
+					"removeExamples": "Örnekleri kaldır",
+					"labelsSkipped": "Çalışma alanı etiketi oluşturamadığınız için bazı etiketler eklenmedi."
+				},
+				"examples": {
+					"banner": "Bu projede örnek görevler var.",
+					"dismissBanner": "Bu mesajı gizle",
+					"confirmTitle": "Örnek görevler kaldırılsın mı?",
+					"confirmBody": "Çöp kutusuna taşınırlar, böylece oradan geri yükleyebilirsiniz.",
+					"removed_one": "{{count}} örnek görev çöp kutusuna taşındı",
+					"removed_other": "{{count}} örnek görev çöp kutusuna taşındı",
+					"restoreHint": "Bunları projenin çöp kutusundan geri yükleyebilirsiniz.",
+					"openTrash": "Çöp kutusunu aç",
+					"removeFailed": "Örnek görevler kaldırılamadı"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -96,7 +228,16 @@
 				"descriptionPlaceholder": "Açıklama ekle...",
 				"createButton": "Çalışma alanı oluştur",
 				"successToast": "Çalışma alanı başarıyla oluşturuldu",
-				"errorToast": "Çalışma alanı oluşturulamadı"
+				"restored": "Taslağınız geri yüklendi.",
+				"ready": {
+					"title": "{{name}} hazır",
+					"body": "Bir projeyle başlayın ya da önce ekibinizi davet edin.",
+					"project": "Proje başlat",
+					"projectNote": "Bir şablon seçin ya da boş başlayın.",
+					"invite": "Kişileri davet et",
+					"inviteNote": "Ekip arkadaşlarınızı e-postayla veya bağlantıyla ekleyin.",
+					"goToWorkspace": "Çalışma alanına git"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "TALEP",
@@ -382,17 +523,12 @@
 			"createWorkspace": "Çalışma alanı oluştur",
 			"workspaceCreatedTitle": "Çalışma alanı oluşturuldu",
 			"toast": {
-				"workspaceCreated": "Çalışma alanı başarıyla oluşturuldu",
-				"createFailed": "Çalışma alanı oluşturulamadı",
-				"inviteFailed": "Davet gönderilemedi",
-				"projectFailed": "Proje oluşturulamadı",
-				"taskFailed": "Görev eklenemedi",
-				"templateFailed": "Proje oluşturuldu ancak şablon ayarları uygulanamadı."
+				"inviteFailed": "Davet gönderilemedi"
 			},
 			"validation": {
-				"workspaceNameRequired": "Çalışma alanı adı gereklidir"
+				"workspaceNameRequired": "Çalışma alanı adı gereklidir",
+				"workspaceNameTooLong": "80 karakterden kısa tutun."
 			},
-			"addTask": "Görev ekle",
 			"back": "Geri",
 			"continue": "Devam et",
 			"createProject": "Proje oluştur",
@@ -405,35 +541,93 @@
 			"inviting": "Davet ediliyor…",
 			"joinDescription": "Davet edildiniz. Zaten çalışan bir ekibe katılın ya da aşağıdan kendi ekibinizi oluşturun.",
 			"joinTitle": "Bir çalışma alanına katıl",
-			"openBoard": "Panoyu aç",
 			"progress": "Adım {{current}} / {{total}}",
 			"projectCreated": "Proje oluşturuldu",
-			"projectKey": "Anahtar",
-			"projectKeyHint": "Görev kimlikleri anahtarla başlar, örneğin {{example}}-1.",
-			"projectName": "Proje adı",
-			"projectNamePlaceholder": "örn. Web sitesi yenileme",
-			"projectSubtitle": "Yalnızca ad gerekli. Diğer her şey sonra değiştirilebilir.",
 			"projectTitle": "İlk projenizi başlatın",
 			"sendInvite": "Davet et",
 			"skip": "Şimdilik atla",
-			"taskLabel": "Görev başlığı",
-			"taskPlaceholder": "örn. Lansman planını taslakla",
-			"tasksSubtitle": "Bir görev yazıp Enter'a basın. Her biri {{project}} içinde Yapılacak'a düşer.",
-			"tasksTitle": "İlk görevlerinizi ekleyin",
-			"templateLabel": "Bu ekip nasıl çalışıyor?",
-			"templates": {
-				"board": {
-					"name": "Basit pano",
-					"note": "Yapılacak'tan Bitti'ye sütunlar"
-				},
-				"cycles": {
-					"name": "Döngüler",
-					"note": "Tahminli, zaman kutulu döngüler"
-				},
-				"intake": {
-					"name": "İstekler",
-					"note": "Gelen istekler için bir kuyruk"
-				}
+			"stepPrefix": "Adım {{current}} / {{total}}:",
+			"stepNames": {
+				"workspace": "Ad",
+				"project": "İlk proje",
+				"invite": "Davet",
+				"done": "Bitti"
+			},
+			"nameWorkspaceTitle": "Çalışma alanınıza bir ad verin",
+			"nameWorkspaceSubtitle": "Projeleriniz ve ekibiniz burada bulunur. Adını istediğiniz zaman değiştirebilirsiniz.",
+			"addDescription": "+ Açıklama ekle",
+			"tryAgain": "Tekrar dene",
+			"intent": {
+				"legend": "İlk olarak neyi takip edeceksiniz? (isteğe bağlı)",
+				"hint": "Uygun şablonlar önereceğiz. Hiçbir şeyi sınırlamaz.",
+				"more": "Diğer iş türleri",
+				"team": "Ekip görevleri",
+				"software": "Yazılım",
+				"product": "Ürün",
+				"marketing": "Pazarlama",
+				"service": "Hizmet masası",
+				"it": "BT",
+				"hr": "İK",
+				"personal": "Kişisel",
+				"sales": "Satış",
+				"support": "Müşteri desteği",
+				"finance": "Finans",
+				"design": "Tasarım",
+				"operations": "Operasyon",
+				"legal": "Hukuk",
+				"facilities": "Tesis yönetimi",
+				"analytics": "Analitik",
+				"nonprofit": "Kâr amacı gütmeyen"
+			},
+			"waiting": {
+				"title": "Davet bekleniyor",
+				"body": "Bu Margaya sunucusunda çalışma alanlarını yöneticiler oluşturur. Bir yöneticiden sizi davet etmesini isteyin; davet burada görünecek.",
+				"checkAgain": "Tekrar kontrol et"
+			},
+			"errors": {
+				"workspace": "Çalışma alanınız oluşturulamadı. Bağlantınızı kontrol edip tekrar deneyin.",
+				"template": "Bu şablon artık kullanılamıyor. Başka bir tane seçin."
+			},
+			"status": {
+				"creatingWorkspace": "Çalışma alanınız oluşturuluyor…",
+				"workspaceCreated": "{{name}} oluşturuldu",
+				"projectCreated": "{{name}} oluşturuldu",
+				"creatingStarter": "Projeleriniz oluşturuluyor…"
+			},
+			"firstProjectSubtitle": "Bir proje, sürekli ya da bitiş tarihli tek bir iş akışının görevlerini, durumlarını ve görünümlerini barındırır.",
+			"recommended": "Size önerilenler",
+			"browseAll": "Tüm şablonlara göz at",
+			"showRecommended": "Yalnızca önerilenleri göster",
+			"guidedTour": "Ya da rehberli tur projesini keşfedin",
+			"setUpPanel": "Kur",
+			"creatingProject": "Proje oluşturuluyor…",
+			"createProjects_one": "{{count}} proje oluştur",
+			"createProjects_other": "{{count}} proje oluştur",
+			"projectCreatedWithExamples_one": "Proje oluşturuldu · {{count}} örnek görev",
+			"projectCreatedWithExamples_other": "Proje oluşturuldu · {{count}} örnek görev",
+			"starters": {
+				"title": "Bir setle başlayın",
+				"hint": "İş akışlarını zaten bilen bir ekip için birkaç proje.",
+				"projectCount_one": "{{count}} proje",
+				"projectCount_other": "{{count}} proje",
+				"examplesHint": "Proje başına en fazla dört örnek görev; hepsini tek seferde kaldırabilirsiniz."
+			},
+			"inviteSubtitlePersonal": "Tek başınıza mı çalışıyorsunuz? Bu adımı atlayın. Kişileri istediğiniz zaman Ekip bölümünden davet edebilirsiniz.",
+			"finish": "Bitir",
+			"done": {
+				"title": "Her şey hazır",
+				"workspace": "Çalışma alanı: {{name}}",
+				"project": "Proje: {{name}}",
+				"blankProject": "Boş proje: {{name}}",
+				"projectWithExamples_one": "Proje: {{name}}, {{count}} örnek görevle",
+				"projectWithExamples_other": "Proje: {{name}}, {{count}} örnek görevle",
+				"projects_one": "{{count}} proje, ilki {{name}}",
+				"projects_other": "{{count}} proje, ilki {{name}}",
+				"invited_one": "{{count}} kişi davet edildi",
+				"invited_other": "{{count}} kişi davet edildi",
+				"open": "Aç: {{name}}",
+				"goToWorkspace": "Çalışma alanınıza gidin",
+				"hint": "Panonuzda başlamanıza yardımcı olacak kısa bir kontrol listesi var."
 			}
 		},
 		"profileSetup": {
@@ -3906,7 +4100,9 @@
 			},
 			"recent": "Son kullanılanlar",
 			"removeScope": "Her yerde ara",
-			"scope": "Kapsam:"
+			"scope": "Kapsam:",
+			"newBlankProject": "Yeni boş proje",
+			"newProjectFromTemplate": "Şablondan yeni proje…"
 		},
 		"notifications": "Bildirimler",
 		"sidebar": {

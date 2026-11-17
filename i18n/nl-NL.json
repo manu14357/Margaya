@@ -67,26 +67,158 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "Een nieuw project aanmaken",
-				"breadcrumbNew": "Een nieuw project aanmaken",
-				"workspaceFallback": "WERKRUIMTE",
-				"description": "Maak een nieuw project aan in uw werkruimte door een naam en sleutel op te geven en een pictogram te kiezen.",
 				"pickIcon": "Pictogram kiezen",
 				"searchIcons": "Pictogrammen zoeken...",
 				"projectName": "Projectnaam",
-				"keyLabel": "Sleutel:",
-				"keyHint": "Gebruikt voor ticket-ID's (bijv. {{example}}-123)",
-				"createButton": "Project aanmaken",
-				"errorToast": "Aanmaken van project mislukt",
-				"keyTaken": "Er bestaat al een project met de sleutel {{key}} in deze werkruimte",
-				"blankProject": "Leeg project",
 				"copyHint": "Statussen, aangepaste velden, inschattingen, instellingen en automatiseringen worden gekopieerd. Leden, integraties en openbare borden niet.",
 				"includeOpenTasks": "Open taken meenemen",
 				"includeTemplates": "Taaksjablonen meenemen",
 				"openTasksHint": "Maximaal 500 open taken met hun subtaken, labels en inschattingen. Reacties en geschiedenis worden niet gekopieerd.",
-				"restricted": "Beperkt",
-				"restrictedHint": "Alleen leden kunnen dit project zien. Je wordt het eerste lid; eigenaren en beheerders van de workspace kunnen het altijd zien.",
-				"startFrom": "Beginnen vanaf"
+				"stepPrefix": "Stap {{current}} van {{total}}:",
+				"stepLabel": "Stap {{current}} van {{total}} · {{name}}",
+				"stepAnnouncement": "Stap {{current}} van {{total}}: {{title}}",
+				"back": "Terug",
+				"tryAgain": "Opnieuw proberen",
+				"restored": "Je onafgemaakte project is hersteld.",
+				"startOver": "Opnieuw beginnen",
+				"choose": {
+					"title": "Een project aanmaken",
+					"subtitle": "Een project bevat de taken, statussen en weergaven voor één werkstroom, doorlopend of met een einddatum.",
+					"stepName": "Kiezen",
+					"search": "Sjablonen zoeken",
+					"categories": "Sjablooncategorieën",
+					"recommended": "Aanbevolen",
+					"all": "Alle sjablonen",
+					"searchResults": "Zoekresultaten",
+					"fromWorkspace": "Uit je werkruimte",
+					"import": "Importeren uit een andere tool of een CSV-bestand",
+					"groups": {
+						"product": "Product en techniek",
+						"service": "Service en support",
+						"growth": "Groei",
+						"everyday": "Dagelijks werk"
+					},
+					"blankName": "Leeg project",
+					"blankNote": "Te doen, In behandeling, Ter beoordeling en Gereed. Voeg de rest later toe.",
+					"existingName": "Beginnen vanuit een bestaand project",
+					"existingNote": "Kopieer de statussen, velden en instellingen van een project dat je al hebt.",
+					"guidedTour": "Of verken een project met rondleiding",
+					"resultCount_one": "{{count}} sjabloon",
+					"resultCount_other": "{{count}} sjablonen",
+					"noResultsTitle": "Geen sjablonen gevonden voor \"{{query}}\"",
+					"noResultsBody": "Probeer een ander woord, of begin met een leeg project.",
+					"clearSearch": "Zoekopdracht wissen",
+					"loadError": "We konden de sjablonen niet laden.",
+					"useTemplate": "Sjabloon gebruiken",
+					"startBlank": "Leeg beginnen",
+					"useProject": "Dit project gebruiken"
+				},
+				"preview": {
+					"region": "Voorbeeld: {{template}}",
+					"goodFor": "Geschikt voor: {{categories}}",
+					"restricted": "Begint als beperkt, zodat de details alleen zichtbaar zijn voor de mensen die je toevoegt.",
+					"statuses": "Statussen",
+					"views": "Weergaven",
+					"fields": "Velden",
+					"features": "Inbegrepen",
+					"noFeatures": "Alleen het bord en de lijst. Schakel functies op elk moment in.",
+					"examples": "Voorbeeldtaken",
+					"noExamples": "Geen voorbeeldtaken",
+					"more_one": "+ nog {{count}}",
+					"more_other": "+ nog {{count}}",
+					"loadError": "We konden dit voorbeeld niet laden.",
+					"fieldTypes": {
+						"text": "tekst",
+						"number": "getal",
+						"date": "datum",
+						"dropdown": "keuzelijst",
+						"boolean": "ja of nee"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "Te doen",
+						"inProgress": "In behandeling",
+						"inReview": "Ter beoordeling",
+						"done": "Gereed"
+					}
+				},
+				"setup": {
+					"title": "Je project instellen",
+					"subtitle": "Alleen de naam is nodig. Je kunt alles later wijzigen in de projectinstellingen.",
+					"stepName": "Instellen",
+					"namePlaceholder": "bijv. Relaunch van de website",
+					"nameRequired": "Geef je project een naam.",
+					"nameTooLong": "Houd de naam korter dan 80 tekens.",
+					"keyChip": "Taak-ID's: {{key}}-1",
+					"keyChange": "Wijzigen",
+					"keyLabel": "Voorvoegsel voor taak-ID's",
+					"keyInvalid": "Gebruik 1 tot 8 letters of cijfers.",
+					"keyTaken": "{{key}} wordt al gebruikt in deze werkruimte. Probeer een andere.",
+					"examples": "Voorbeeldtaken toevoegen",
+					"examplesHint_one": "{{count}} taak die laat zien hoe dit project werkt. Je kunt hem in één keer verwijderen.",
+					"examplesHint_other": "{{count}} taken die laten zien hoe dit project werkt. Je kunt ze allemaal in één keer verwijderen.",
+					"labelsSkipped": "Sommige labels worden niet toegevoegd: je kunt geen werkruimtelabels aanmaken.",
+					"featuresTitle": "Functies die aan blijven",
+					"included": "Inbegrepen: {{list}}",
+					"includedNone": "Alleen het bord en de lijst",
+					"moreOptions": "Meer opties (functies, privacy)",
+					"privacy": "Privacy",
+					"privacyOpen": "Open",
+					"privacyOpenHint": "Iedereen in de werkruimte kan het vinden, met de rechten van hun rol.",
+					"privacyRestricted": "Beperkt",
+					"privacyRestrictedHint": "Alleen mensen die je toevoegt, plus eigenaren en beheerders van de werkruimte.",
+					"privacySuggested": "Dit sjabloon stelt een beperkt project voor. Je kunt dat wijzigen.",
+					"summary": "Jouw keuze",
+					"yourChoice": "Jouw keuze",
+					"change": "Wijzigen",
+					"statusCount_one": "{{count}} status",
+					"statusCount_other": "{{count}} statussen",
+					"exampleCount_one": "{{count}} voorbeeldtaak",
+					"exampleCount_other": "{{count}} voorbeeldtaken",
+					"create": "Project aanmaken"
+				},
+				"status": {
+					"creating": "{{name}} wordt aangemaakt…",
+					"created": "{{name}} aangemaakt. De eerste stappen staan boven het bord.",
+					"createdShort": "{{name}} aangemaakt"
+				},
+				"error": {
+					"generic": "We konden het project niet aanmaken. Je keuzes zijn bewaard, dus probeer het opnieuw.",
+					"template": "Dit sjabloon is niet meer beschikbaar op deze server. Kies een ander.",
+					"forbidden": "Je hebt hier geen toestemming meer om projecten aan te maken.",
+					"backToTemplates": "Terug naar sjablonen"
+				},
+				"firstSteps": {
+					"label": "Eerste stappen",
+					"title": "{{name}} is klaar.",
+					"progress": "Eerste stappen · {{done}} van {{total}}",
+					"show": "Tonen",
+					"hide": "Verbergen",
+					"dismiss": "Sluiten",
+					"doneLabel": "Gedaan:",
+					"todoLabel": "Te doen:",
+					"moveExample": "Verplaats een voorbeeldtaak om de werkstroom te zien",
+					"markDone": "Markeren als gedaan",
+					"addTask": "Voeg je eerste echte taak toe",
+					"addTaskAction": "Taak toevoegen",
+					"invite": "Nodig mensen uit voor dit project",
+					"inviteAction": "Mensen uitnodigen",
+					"removeExamplesItem": "Verwijder de voorbeelden",
+					"removeExamples": "Voorbeelden verwijderen",
+					"labelsSkipped": "Sommige labels zijn niet toegevoegd, omdat je geen werkruimtelabels kunt aanmaken."
+				},
+				"examples": {
+					"banner": "Dit project bevat voorbeeldtaken.",
+					"dismissBanner": "Dit bericht verbergen",
+					"confirmTitle": "De voorbeeldtaken verwijderen?",
+					"confirmBody": "Ze gaan naar de prullenbak, dus je kunt ze daar herstellen.",
+					"removed_one": "{{count}} voorbeeldtaak naar de prullenbak verplaatst",
+					"removed_other": "{{count}} voorbeeldtaken naar de prullenbak verplaatst",
+					"restoreHint": "Je kunt ze herstellen vanuit de prullenbak van het project.",
+					"openTrash": "Prullenbak openen",
+					"removeFailed": "De voorbeeldtaken konden niet worden verwijderd"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -96,7 +228,16 @@
 				"descriptionPlaceholder": "Beschrijving toevoegen...",
 				"createButton": "Werkruimte aanmaken",
 				"successToast": "Werkruimte succesvol aangemaakt",
-				"errorToast": "Aanmaken van werkruimte mislukt"
+				"restored": "Je concept is hersteld.",
+				"ready": {
+					"title": "{{name}} is klaar",
+					"body": "Begin met een project, of haal eerst je mensen erbij.",
+					"project": "Een project starten",
+					"projectNote": "Kies een sjabloon of begin leeg.",
+					"invite": "Mensen uitnodigen",
+					"inviteNote": "Voeg teamgenoten toe via e-mail of een link.",
+					"goToWorkspace": "Naar de werkruimte"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "TAAK",
@@ -382,17 +523,12 @@
 			"createWorkspace": "Werkruimte maken",
 			"workspaceCreatedTitle": "Werkruimte aangemaakt",
 			"toast": {
-				"workspaceCreated": "Werkruimte succesvol aangemaakt",
-				"createFailed": "Aanmaken werkruimte mislukt",
-				"inviteFailed": "De uitnodiging kon niet worden verzonden",
-				"projectFailed": "Het project kon niet worden aangemaakt",
-				"taskFailed": "De taak kon niet worden toegevoegd",
-				"templateFailed": "Het project is aangemaakt, maar de sjabloninstellingen zijn niet toegepast."
+				"inviteFailed": "De uitnodiging kon niet worden verzonden"
 			},
 			"validation": {
-				"workspaceNameRequired": "Werkruimtenaam is verplicht"
+				"workspaceNameRequired": "Werkruimtenaam is verplicht",
+				"workspaceNameTooLong": "Houd het korter dan 80 tekens."
 			},
-			"addTask": "Taak toevoegen",
 			"back": "Terug",
 			"continue": "Doorgaan",
 			"createProject": "Project aanmaken",
@@ -405,35 +541,93 @@
 			"inviting": "Uitnodigen…",
 			"joinDescription": "Je bent uitgenodigd. Sluit je aan bij een team dat al aan de slag is, of maak hieronder je eigen werkruimte.",
 			"joinTitle": "Word lid van een werkruimte",
-			"openBoard": "Bord openen",
 			"progress": "Stap {{current}} van {{total}}",
 			"projectCreated": "Project aangemaakt",
-			"projectKey": "Sleutel",
-			"projectKeyHint": "Taak-ID's beginnen met de sleutel, zoals {{example}}-1.",
-			"projectName": "Projectnaam",
-			"projectNamePlaceholder": "bijv. Website-relaunch",
-			"projectSubtitle": "Alleen de naam is nodig. Al het andere kun je later wijzigen.",
 			"projectTitle": "Start je eerste project",
 			"sendInvite": "Uitnodigen",
 			"skip": "Nu overslaan",
-			"taskLabel": "Taaktitel",
-			"taskPlaceholder": "bijv. Lanceringsplan opstellen",
-			"tasksSubtitle": "Typ een taak en druk op Enter. Elke taak komt in To do in {{project}}.",
-			"tasksTitle": "Voeg je eerste taken toe",
-			"templateLabel": "Hoe werkt dit team?",
-			"templates": {
-				"board": {
-					"name": "Eenvoudig bord",
-					"note": "Kolommen van To do tot Klaar"
-				},
-				"cycles": {
-					"name": "Cyclussen",
-					"note": "Tijdgebonden cyclussen met inschattingen"
-				},
-				"intake": {
-					"name": "Intake",
-					"note": "Een wachtrij voor binnenkomende verzoeken"
-				}
+			"stepPrefix": "Stap {{current}} van {{total}}:",
+			"stepNames": {
+				"workspace": "Naam",
+				"project": "Eerste project",
+				"invite": "Uitnodigen",
+				"done": "Klaar"
+			},
+			"nameWorkspaceTitle": "Geef je werkruimte een naam",
+			"nameWorkspaceSubtitle": "Hier staan je projecten en je mensen. Je kunt de naam op elk moment wijzigen.",
+			"addDescription": "+ Een beschrijving toevoegen",
+			"tryAgain": "Opnieuw proberen",
+			"intent": {
+				"legend": "Wat ga je als eerste bijhouden? (optioneel)",
+				"hint": "We stellen passende sjablonen voor. Het beperkt niets.",
+				"more": "Meer soorten werk",
+				"team": "Teamtaken",
+				"software": "Software",
+				"product": "Product",
+				"marketing": "Marketing",
+				"service": "Servicedesk",
+				"it": "IT",
+				"hr": "HR",
+				"personal": "Persoonlijk",
+				"sales": "Verkoop",
+				"support": "Klantenservice",
+				"finance": "Financiën",
+				"design": "Ontwerp",
+				"operations": "Operaties",
+				"legal": "Juridisch",
+				"facilities": "Facilitair",
+				"analytics": "Data-analyse",
+				"nonprofit": "Non-profit"
+			},
+			"waiting": {
+				"title": "Wachten op een uitnodiging",
+				"body": "Op deze Margaya-server maken beheerders de werkruimten aan. Vraag een van hen om je uit te nodigen, dan verschijnt de uitnodiging hier.",
+				"checkAgain": "Opnieuw controleren"
+			},
+			"errors": {
+				"workspace": "We konden je werkruimte niet aanmaken. Controleer je verbinding en probeer het opnieuw.",
+				"template": "Dit sjabloon is niet meer beschikbaar. Kies een ander."
+			},
+			"status": {
+				"creatingWorkspace": "Je werkruimte wordt aangemaakt…",
+				"workspaceCreated": "{{name}} aangemaakt",
+				"projectCreated": "{{name}} aangemaakt",
+				"creatingStarter": "Je projecten worden aangemaakt…"
+			},
+			"firstProjectSubtitle": "Een project bevat de taken, statussen en weergaven voor één werkstroom, doorlopend of met een einddatum.",
+			"recommended": "Aanbevolen voor jou",
+			"browseAll": "Alle sjablonen bekijken",
+			"showRecommended": "Alleen aanbevelingen tonen",
+			"guidedTour": "Of verken een project met rondleiding",
+			"setUpPanel": "Instellen",
+			"creatingProject": "Project wordt aangemaakt…",
+			"createProjects_one": "{{count}} project aanmaken",
+			"createProjects_other": "{{count}} projecten aanmaken",
+			"projectCreatedWithExamples_one": "Project aangemaakt · {{count}} voorbeeldtaak",
+			"projectCreatedWithExamples_other": "Project aangemaakt · {{count}} voorbeeldtaken",
+			"starters": {
+				"title": "Begin met een set",
+				"hint": "Meerdere projecten voor een team dat zijn werkstromen al kent.",
+				"projectCount_one": "{{count}} project",
+				"projectCount_other": "{{count}} projecten",
+				"examplesHint": "Maximaal vier voorbeeldtaken per project, die je in één keer kunt verwijderen."
+			},
+			"inviteSubtitlePersonal": "Werk je alleen? Sla dit over. Je kunt op elk moment mensen uitnodigen via Team.",
+			"finish": "Afronden",
+			"done": {
+				"title": "Alles staat klaar",
+				"workspace": "Werkruimte {{name}}",
+				"project": "Project {{name}}",
+				"blankProject": "Leeg project {{name}}",
+				"projectWithExamples_one": "Project {{name}}, met {{count}} voorbeeldtaak",
+				"projectWithExamples_other": "Project {{name}}, met {{count}} voorbeeldtaken",
+				"projects_one": "{{count}} project, te beginnen met {{name}}",
+				"projects_other": "{{count}} projecten, te beginnen met {{name}}",
+				"invited_one": "{{count}} persoon uitgenodigd",
+				"invited_other": "{{count}} mensen uitgenodigd",
+				"open": "{{name}} openen",
+				"goToWorkspace": "Naar je werkruimte",
+				"hint": "Je bord heeft een korte checklist om je op weg te helpen."
 			}
 		},
 		"profileSetup": {
@@ -3906,7 +4100,9 @@
 			},
 			"recent": "Recent",
 			"removeScope": "Overal zoeken",
-			"scope": "In"
+			"scope": "In",
+			"newBlankProject": "Nieuw leeg project",
+			"newProjectFromTemplate": "Nieuw project op basis van sjabloon…"
 		},
 		"notifications": "Meldingen",
 		"sidebar": {

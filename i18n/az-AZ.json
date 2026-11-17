@@ -67,26 +67,158 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "Yeni layihə yarat",
-				"breadcrumbNew": "Yeni layihə yarat",
-				"workspaceFallback": "İş sahəsi",
-				"description": "Ad və açar daxil edib nişan seçməklə iş sahənizdə yeni layihə yaradın.",
 				"pickIcon": "Nişan seç",
 				"searchIcons": "Nişanları axtar...",
 				"projectName": "Layihənin adı",
-				"keyLabel": "Açar:",
-				"keyHint": "Tapşırıq identifikatorları üçün istifadə olunur (məs., {{example}}-123)",
-				"createButton": "Layihə yarat",
-				"errorToast": "Layihəni yaratmaq alınmadı",
-				"keyTaken": "Bu iş sahəsində {{key}} açarına malik layihə artıq mövcuddur",
-				"blankProject": "Boş layihə",
 				"copyHint": "Statuslar, fərdi sahələr, qiymətləndirmələr, parametrlər və avtomatlaşdırmalar kopyalanır. Üzvlər, inteqrasiyalar və ictimai lövhələr kopyalanmır.",
 				"includeOpenTasks": "Açıq tapşırıqları daxil et",
 				"includeTemplates": "Tapşırıq şablonlarını daxil et",
 				"openTasksHint": "Alt tapşırıqları, etiketləri və qiymətləndirmələri ilə birlikdə 500-ə qədər açıq tapşırıq. Şərhlər və tarixçə kopyalanmır.",
-				"restricted": "Məhdud",
-				"restrictedHint": "Bu layihəni yalnız üzvlər görə bilər. Siz onun ilk üzvü olacaqsınız; iş sahəsinin sahibləri və adminləri onu həmişə görə bilər.",
-				"startFrom": "Başlanğıc nöqtəsi"
+				"stepPrefix": "Addım {{current}}/{{total}}:",
+				"stepLabel": "Addım {{current}}/{{total}} · {{name}}",
+				"stepAnnouncement": "Addım {{current}}/{{total}}: {{title}}",
+				"back": "Geri",
+				"tryAgain": "Yenidən cəhd et",
+				"restored": "Yarımçıq layihəniz bərpa edildi.",
+				"startOver": "Yenidən başla",
+				"choose": {
+					"title": "Layihə yarat",
+					"subtitle": "Layihə davamlı və ya bitmə tarixi olan bir iş axınının tapşırıqlarını, statuslarını və görünüşlərini saxlayır.",
+					"stepName": "Seçim",
+					"search": "Şablonları axtar",
+					"categories": "Şablon kateqoriyaları",
+					"recommended": "Tövsiyə olunur",
+					"all": "Bütün şablonlar",
+					"searchResults": "Axtarış nəticələri",
+					"fromWorkspace": "İş sahənizdən",
+					"import": "Başqa alətdən və ya CSV faylından idxal et",
+					"groups": {
+						"product": "Məhsul və texnologiya",
+						"service": "Xidmət və dəstək",
+						"growth": "Böyümə",
+						"everyday": "Gündəlik iş"
+					},
+					"blankName": "Boş layihə",
+					"blankNote": "Görüləcək, İcra olunur, Yoxlanılır və Hazırdır. Qalanını sonra əlavə edin.",
+					"existingName": "Mövcud layihədən başla",
+					"existingNote": "Artıq olan layihənizin statuslarını, sahələrini və parametrlərini kopyalayın.",
+					"guidedTour": "Və ya bələdçili tur layihəsini kəşf edin",
+					"resultCount_one": "{{count}} şablon",
+					"resultCount_other": "{{count}} şablon",
+					"noResultsTitle": "\"{{query}}\" sorğusuna uyğun şablon yoxdur",
+					"noResultsBody": "Başqa söz yoxlayın və ya boş layihə ilə başlayın.",
+					"clearSearch": "Axtarışı təmizlə",
+					"loadError": "Şablonları yükləyə bilmədik.",
+					"useTemplate": "Şablondan istifadə et",
+					"startBlank": "Boş başla",
+					"useProject": "Bu layihədən istifadə et"
+				},
+				"preview": {
+					"region": "Önizləmə: {{template}}",
+					"goodFor": "Uyğundur: {{categories}}",
+					"restricted": "Məhdud olaraq başlayır, ona görə də təfərrüatları yalnız əlavə etdiyiniz şəxslərdə qalır.",
+					"statuses": "Statuslar",
+					"views": "Görünüşlər",
+					"fields": "Sahələr",
+					"features": "Daxildir",
+					"noFeatures": "Yalnız lövhə və siyahı. Xüsusiyyətləri istənilən vaxt aktivləşdirin.",
+					"examples": "Nümunə tapşırıqlar",
+					"noExamples": "Nümunə tapşırıq yoxdur",
+					"more_one": "+ daha {{count}}",
+					"more_other": "+ daha {{count}}",
+					"loadError": "Bu önizləməni yükləyə bilmədik.",
+					"fieldTypes": {
+						"text": "mətn",
+						"number": "rəqəm",
+						"date": "tarix",
+						"dropdown": "açılan siyahı",
+						"boolean": "bəli və ya xeyr"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "Görüləcək",
+						"inProgress": "İcra olunur",
+						"inReview": "Yoxlanılır",
+						"done": "Hazırdır"
+					}
+				},
+				"setup": {
+					"title": "Layihənizi qurun",
+					"subtitle": "Yalnız ad lazımdır. Hər şeyi sonra layihə parametrlərində dəyişə bilərsiniz.",
+					"stepName": "Quraşdırma",
+					"namePlaceholder": "məs. Veb saytın yenilənməsi",
+					"nameRequired": "Layihənizə ad verin.",
+					"nameTooLong": "Adı 80 simvoldan qısa saxlayın.",
+					"keyChip": "Tapşırıq ID-ləri: {{key}}-1",
+					"keyChange": "Dəyiş",
+					"keyLabel": "Tapşırıq ID prefiksi",
+					"keyInvalid": "1-dən 8-ə qədər hərf və ya rəqəm istifadə edin.",
+					"keyTaken": "{{key}} bu iş sahəsində artıq istifadə olunur. Başqasını yoxlayın.",
+					"examples": "Nümunə tapşırıqlar əlavə et",
+					"examplesHint_one": "Bu layihənin necə işlədiyini göstərən {{count}} tapşırıq. Onu bir dəfəyə silə bilərsiniz.",
+					"examplesHint_other": "Bu layihənin necə işlədiyini göstərən {{count}} tapşırıq. Hamısını bir dəfəyə silə bilərsiniz.",
+					"labelsSkipped": "Bəzi etiketlər əlavə edilməyəcək: siz iş sahəsi etiketləri yarada bilməzsiniz.",
+					"featuresTitle": "Aktiv qalan xüsusiyyətlər",
+					"included": "Daxildir: {{list}}",
+					"includedNone": "Yalnız lövhə və siyahı",
+					"moreOptions": "Əlavə seçimlər (xüsusiyyətlər, məxfilik)",
+					"privacy": "Məxfilik",
+					"privacyOpen": "Açıq",
+					"privacyOpenHint": "İş sahəsindəki hər kəs onu tapa bilər, öz rolunun hüquqları ilə.",
+					"privacyRestricted": "Məhdud",
+					"privacyRestrictedHint": "Yalnız əlavə etdiyiniz şəxslər, həmçinin iş sahəsinin sahibləri və adminləri.",
+					"privacySuggested": "Bu şablon məhdud layihə təklif edir. Bunu dəyişə bilərsiniz.",
+					"summary": "Seçiminiz",
+					"yourChoice": "Seçiminiz",
+					"change": "Dəyiş",
+					"statusCount_one": "{{count}} status",
+					"statusCount_other": "{{count}} status",
+					"exampleCount_one": "{{count}} nümunə tapşırıq",
+					"exampleCount_other": "{{count}} nümunə tapşırıq",
+					"create": "Layihə yarat"
+				},
+				"status": {
+					"creating": "{{name}} yaradılır…",
+					"created": "{{name}} yaradıldı. İlk addımlar lövhənin üstündədir.",
+					"createdShort": "{{name}} yaradıldı"
+				},
+				"error": {
+					"generic": "Layihəni yarada bilmədik. Seçimləriniz saxlanılıb, yenidən cəhd edin.",
+					"template": "Bu şablon artıq bu serverdə mövcud deyil. Başqasını seçin.",
+					"forbidden": "Artıq burada layihə yaratmaq icazəniz yoxdur.",
+					"backToTemplates": "Şablonlara qayıt"
+				},
+				"firstSteps": {
+					"label": "İlk addımlar",
+					"title": "{{name}} hazırdır.",
+					"progress": "İlk addımlar · {{done}}/{{total}}",
+					"show": "Göstər",
+					"hide": "Gizlət",
+					"dismiss": "Bağla",
+					"doneLabel": "Hazırdır:",
+					"todoLabel": "Görüləcək:",
+					"moveExample": "Axını görmək üçün nümunə tapşırığı köçürün",
+					"markDone": "Hazır kimi qeyd et",
+					"addTask": "İlk real tapşırığınızı əlavə edin",
+					"addTaskAction": "Tapşırıq əlavə et",
+					"invite": "Bu layihəyə insanları dəvət edin",
+					"inviteAction": "İnsanları dəvət et",
+					"removeExamplesItem": "Nümunələri silin",
+					"removeExamples": "Nümunələri sil",
+					"labelsSkipped": "Bəzi etiketlər əlavə edilmədi, çünki siz iş sahəsi etiketləri yarada bilməzsiniz."
+				},
+				"examples": {
+					"banner": "Bu layihədə nümunə tapşırıqlar var.",
+					"dismissBanner": "Bu mesajı gizlət",
+					"confirmTitle": "Nümunə tapşırıqlar silinsin?",
+					"confirmBody": "Onlar zibil qutusuna köçürülür, ona görə də onları oradan bərpa edə bilərsiniz.",
+					"removed_one": "{{count}} nümunə tapşırıq zibil qutusuna köçürüldü",
+					"removed_other": "{{count}} nümunə tapşırıq zibil qutusuna köçürüldü",
+					"restoreHint": "Onları layihənin zibil qutusundan bərpa edə bilərsiniz.",
+					"openTrash": "Zibil qutusunu aç",
+					"removeFailed": "Nümunə tapşırıqları silmək alınmadı"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -96,7 +228,16 @@
 				"descriptionPlaceholder": "Təsvir əlavə et...",
 				"createButton": "İş sahəsi yarat",
 				"successToast": "İş sahəsi uğurla yaradıldı",
-				"errorToast": "İş sahəsini yaratmaq alınmadı"
+				"restored": "Qaralamanız bərpa edildi.",
+				"ready": {
+					"title": "{{name}} hazırdır",
+					"body": "Layihə ilə başlayın və ya əvvəlcə komandanızı dəvət edin.",
+					"project": "Layihəyə başla",
+					"projectNote": "Şablon seçin və ya boş başlayın.",
+					"invite": "İnsanları dəvət et",
+					"inviteNote": "Komanda yoldaşlarını e-poçt və ya keçid ilə əlavə edin.",
+					"goToWorkspace": "İş sahəsinə keç"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "Tapşırıq",
@@ -382,17 +523,12 @@
 			"createWorkspace": "İş sahəsi yarat",
 			"workspaceCreatedTitle": "İş sahəsi yaradıldı",
 			"toast": {
-				"workspaceCreated": "İş sahəsi uğurla yaradıldı",
-				"createFailed": "İş sahəsini yaratmaq alınmadı",
-				"inviteFailed": "Dəvət göndərilə bilmədi",
-				"projectFailed": "Layihə yaradıla bilmədi",
-				"taskFailed": "Tapşırıq əlavə edilə bilmədi",
-				"templateFailed": "Layihə yaradıldı, lakin şablon parametrləri tətbiq olunmadı."
+				"inviteFailed": "Dəvət göndərilə bilmədi"
 			},
 			"validation": {
-				"workspaceNameRequired": "İş sahəsinin adı tələb olunur"
+				"workspaceNameRequired": "İş sahəsinin adı tələb olunur",
+				"workspaceNameTooLong": "80 simvoldan qısa saxlayın."
 			},
-			"addTask": "Tapşırıq əlavə et",
 			"back": "Geri",
 			"continue": "Davam et",
 			"createProject": "Layihə yarat",
@@ -405,35 +541,93 @@
 			"inviting": "Dəvət edilir…",
 			"joinDescription": "Sizi dəvət ediblər. Artıq işləyən komandaya qoşulun və ya aşağıda öz komandanızı yaradın.",
 			"joinTitle": "İş sahəsinə qoşul",
-			"openBoard": "Lövhəni aç",
 			"progress": "Addım {{current}}/{{total}}",
 			"projectCreated": "Layihə yaradıldı",
-			"projectKey": "Açar",
-			"projectKeyHint": "Tapşırıq ID-ləri açarla başlayır, məsələn {{example}}-1.",
-			"projectName": "Layihənin adı",
-			"projectNamePlaceholder": "məs. Vebsaytın yenilənməsi",
-			"projectSubtitle": "Yalnız ad lazımdır. Qalan hər şeyi sonra dəyişmək olar.",
 			"projectTitle": "İlk layihənizə başlayın",
 			"sendInvite": "Dəvət et",
 			"skip": "Hələlik keç",
-			"taskLabel": "Tapşırığın başlığı",
-			"taskPlaceholder": "məs. Lansman planının layihəsini hazırla",
-			"tasksSubtitle": "Tapşırığı yazıb Enter düyməsini basın. Hər biri {{project}} layihəsində “Görüləcək” sütununa düşür.",
-			"tasksTitle": "İlk tapşırıqlarınızı əlavə edin",
-			"templateLabel": "Bu komanda necə işləyir?",
-			"templates": {
-				"board": {
-					"name": "Sadə lövhə",
-					"note": "“Görüləcək”dən “Hazırdır”a qədər sütunlar"
-				},
-				"cycles": {
-					"name": "Dövrlər",
-					"note": "Qiymətləndirmələri olan vaxt çərçivəli dövrlər"
-				},
-				"intake": {
-					"name": "Sorğular",
-					"note": "Daxil olan sorğular üçün növbə"
-				}
+			"stepPrefix": "Addım {{current}}/{{total}}:",
+			"stepNames": {
+				"workspace": "Ad",
+				"project": "İlk layihə",
+				"invite": "Dəvət",
+				"done": "Hazırdır"
+			},
+			"nameWorkspaceTitle": "İş sahənizə ad verin",
+			"nameWorkspaceSubtitle": "Layihələriniz və insanlarınız burada olur. Adını istənilən vaxt dəyişə bilərsiniz.",
+			"addDescription": "+ Təsvir əlavə et",
+			"tryAgain": "Yenidən cəhd et",
+			"intent": {
+				"legend": "İlk olaraq nəyi izləyəcəksiniz? (istəyə bağlı)",
+				"hint": "Uyğun şablonlar təklif edəcəyik. Bu heç nəyi məhdudlaşdırmır.",
+				"more": "Digər iş növləri",
+				"team": "Komanda tapşırıqları",
+				"software": "Proqram təminatı",
+				"product": "Məhsul",
+				"marketing": "Marketinq",
+				"service": "Xidmət masası",
+				"it": "İT",
+				"hr": "İnsan resursları",
+				"personal": "Şəxsi",
+				"sales": "Satış",
+				"support": "Müştəri dəstəyi",
+				"finance": "Maliyyə",
+				"design": "Dizayn",
+				"operations": "Əməliyyatlar",
+				"legal": "Hüquq",
+				"facilities": "Təsərrüfat",
+				"analytics": "Analitika",
+				"nonprofit": "Qeyri-kommersiya"
+			},
+			"waiting": {
+				"title": "Dəvət gözlənilir",
+				"body": "Bu Margaya serverində iş sahələrini adminlər yaradır. Onlardan birinə sizi dəvət etməsini xahiş edin, dəvət burada görünəcək.",
+				"checkAgain": "Yenidən yoxla"
+			},
+			"errors": {
+				"workspace": "İş sahənizi yarada bilmədik. Bağlantınızı yoxlayın və yenidən cəhd edin.",
+				"template": "Bu şablon artıq mövcud deyil. Başqasını seçin."
+			},
+			"status": {
+				"creatingWorkspace": "İş sahəniz yaradılır…",
+				"workspaceCreated": "{{name}} yaradıldı",
+				"projectCreated": "{{name}} yaradıldı",
+				"creatingStarter": "Layihələriniz yaradılır…"
+			},
+			"firstProjectSubtitle": "Layihə davamlı və ya bitmə tarixi olan bir iş axınının tapşırıqlarını, statuslarını və görünüşlərini saxlayır.",
+			"recommended": "Sizin üçün tövsiyə olunur",
+			"browseAll": "Bütün şablonlara bax",
+			"showRecommended": "Yalnız tövsiyələri göstər",
+			"guidedTour": "Və ya bələdçili tur layihəsini kəşf edin",
+			"setUpPanel": "Quraşdırma",
+			"creatingProject": "Layihə yaradılır…",
+			"createProjects_one": "{{count}} layihə yarat",
+			"createProjects_other": "{{count}} layihə yarat",
+			"projectCreatedWithExamples_one": "Layihə yaradıldı · {{count}} nümunə tapşırıq",
+			"projectCreatedWithExamples_other": "Layihə yaradıldı · {{count}} nümunə tapşırıq",
+			"starters": {
+				"title": "Dəstlə başla",
+				"hint": "İş axınlarını artıq bilən komanda üçün bir neçə layihə.",
+				"projectCount_one": "{{count}} layihə",
+				"projectCount_other": "{{count}} layihə",
+				"examplesHint": "Hər layihədə dördə qədər nümunə tapşırıq, onları bir dəfəyə silə bilərsiniz."
+			},
+			"inviteSubtitlePersonal": "Tək işləyirsiniz? Bunu keçin. İnsanları istənilən vaxt Komanda bölməsindən dəvət edə bilərsiniz.",
+			"finish": "Bitir",
+			"done": {
+				"title": "Hər şey hazırdır",
+				"workspace": "İş sahəsi {{name}}",
+				"project": "Layihə {{name}}",
+				"blankProject": "Boş layihə {{name}}",
+				"projectWithExamples_one": "Layihə {{name}}, {{count}} nümunə tapşırıqla",
+				"projectWithExamples_other": "Layihə {{name}}, {{count}} nümunə tapşırıqla",
+				"projects_one": "{{count}} layihə, {{name}} ilə başlayaraq",
+				"projects_other": "{{count}} layihə, {{name}} ilə başlayaraq",
+				"invited_one": "{{count}} nəfər dəvət edildi",
+				"invited_other": "{{count}} nəfər dəvət edildi",
+				"open": "{{name}} aç",
+				"goToWorkspace": "İş sahənizə keçin",
+				"hint": "Lövhənizdə başlamağınıza kömək edən qısa yoxlama siyahısı var."
 			}
 		},
 		"profileSetup": {
@@ -3906,7 +4100,9 @@
 			},
 			"recent": "Son",
 			"removeScope": "Hər yerdə axtar",
-			"scope": "Layihə:"
+			"scope": "Layihə:",
+			"newBlankProject": "Yeni boş layihə",
+			"newProjectFromTemplate": "Şablondan yeni layihə…"
 		},
 		"notifications": "Bildirişlər",
 		"sidebar": {

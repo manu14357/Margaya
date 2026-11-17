@@ -9,6 +9,7 @@ import "@/index.css";
 import "@/styles/editor.css";
 import "@/styles/editor-blocks.css";
 import "@/styles/semantic-colors.css";
+import "@/styles/template-art.css";
 import "@/styles/desktop.css";
 import "./feature-registrations";
 import "./lib/zod-locale";

@@ -114,26 +114,158 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "Create a new project",
-				"breadcrumbNew": "Create a new project",
-				"workspaceFallback": "WORKSPACE",
-				"description": "Create a new project in your workspace by providing a name, key, and selecting an icon.",
 				"pickIcon": "Pick icon",
 				"searchIcons": "Search icons...",
 				"projectName": "Project name",
-				"keyLabel": "Key:",
-				"keyHint": "Used for ticket IDs (e.g., {{example}}-123)",
-				"createButton": "Create project",
-				"errorToast": "Failed to create project",
-				"keyTaken": "A project with the key {{key}} already exists in this workspace",
-				"startFrom": "Start from",
-				"blankProject": "Blank project",
 				"copyHint": "Statuses, custom fields, estimates, settings and automations are copied. Members, integrations and public boards are not.",
 				"includeTemplates": "Include task templates",
 				"includeOpenTasks": "Include open tasks",
 				"openTasksHint": "Up to 500 open tasks with their sub-tasks, labels and estimates. Comments and history are not copied.",
-				"restricted": "Restricted",
-				"restrictedHint": "Only members can see this project. You'll be its first member; workspace owners and admins can always see it."
+				"stepPrefix": "Step {{current}} of {{total}}:",
+				"stepLabel": "Step {{current}} of {{total}} · {{name}}",
+				"stepAnnouncement": "Step {{current}} of {{total}}: {{title}}",
+				"back": "Back",
+				"tryAgain": "Try again",
+				"restored": "Restored your unfinished project.",
+				"startOver": "Start over",
+				"choose": {
+					"title": "Create a project",
+					"subtitle": "A project holds the tasks, statuses and views for one stream of work, ongoing or with an end date.",
+					"stepName": "Choose",
+					"search": "Search templates",
+					"categories": "Template categories",
+					"recommended": "Recommended",
+					"all": "All templates",
+					"searchResults": "Search results",
+					"fromWorkspace": "From your workspace",
+					"import": "Import from another tool or a CSV file",
+					"groups": {
+						"product": "Product and tech",
+						"service": "Service and support",
+						"growth": "Growth",
+						"everyday": "Everyday work"
+					},
+					"blankName": "Blank project",
+					"blankNote": "To Do, In Progress, In Review and Done. Add the rest later.",
+					"existingName": "Start from an existing project",
+					"existingNote": "Copy the statuses, fields and settings of a project you already have.",
+					"guidedTour": "Or explore a guided tour project",
+					"resultCount_one": "{{count}} template",
+					"resultCount_other": "{{count}} templates",
+					"noResultsTitle": "No templates match \"{{query}}\"",
+					"noResultsBody": "Try another word, or start with a blank project.",
+					"clearSearch": "Clear search",
+					"loadError": "We couldn't load the templates.",
+					"useTemplate": "Use template",
+					"startBlank": "Start blank",
+					"useProject": "Use this project"
+				},
+				"preview": {
+					"region": "Preview: {{template}}",
+					"goodFor": "Good for: {{categories}}",
+					"restricted": "Starts restricted, so its details stay with the people you add.",
+					"statuses": "Statuses",
+					"views": "Views",
+					"fields": "Fields",
+					"features": "Included",
+					"noFeatures": "Only the board and list. Turn features on any time.",
+					"examples": "Example tasks",
+					"noExamples": "No example tasks",
+					"more_one": "+ {{count}} more",
+					"more_other": "+ {{count}} more",
+					"loadError": "We couldn't load this preview.",
+					"fieldTypes": {
+						"text": "text",
+						"number": "number",
+						"date": "date",
+						"dropdown": "dropdown",
+						"boolean": "yes or no"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "To Do",
+						"inProgress": "In Progress",
+						"inReview": "In Review",
+						"done": "Done"
+					}
+				},
+				"setup": {
+					"title": "Set up your project",
+					"subtitle": "Only the name is needed. You can change everything later in project settings.",
+					"stepName": "Set up",
+					"namePlaceholder": "e.g. Website relaunch",
+					"nameRequired": "Give your project a name.",
+					"nameTooLong": "Keep the name under 80 characters.",
+					"keyChip": "Task IDs: {{key}}-1",
+					"keyChange": "Change",
+					"keyLabel": "Task ID prefix",
+					"keyInvalid": "Use 1 to 8 letters or digits.",
+					"keyTaken": "{{key}} is already used in this workspace. Try another.",
+					"examples": "Add example tasks",
+					"examplesHint_one": "{{count}} task that shows how this project works. You can remove it in one go.",
+					"examplesHint_other": "{{count}} tasks that show how this project works. You can remove them all in one go.",
+					"labelsSkipped": "Some labels won't be added: you can't create workspace labels.",
+					"featuresTitle": "Features that stay on",
+					"included": "What's included: {{list}}",
+					"includedNone": "Only the board and list",
+					"moreOptions": "More options (features, privacy)",
+					"privacy": "Privacy",
+					"privacyOpen": "Open",
+					"privacyOpenHint": "Everyone in the workspace can find it, with their role's rights.",
+					"privacyRestricted": "Restricted",
+					"privacyRestrictedHint": "Only people you add, plus workspace owners and admins.",
+					"privacySuggested": "This template suggests a restricted project. You can change it.",
+					"summary": "Your choice",
+					"yourChoice": "Your choice",
+					"change": "Change",
+					"statusCount_one": "{{count}} status",
+					"statusCount_other": "{{count}} statuses",
+					"exampleCount_one": "{{count}} example task",
+					"exampleCount_other": "{{count}} example tasks",
+					"create": "Create project"
+				},
+				"status": {
+					"creating": "Creating {{name}}…",
+					"created": "{{name}} created. First steps are above the board.",
+					"createdShort": "{{name}} created"
+				},
+				"error": {
+					"generic": "We couldn't create the project. Your choices are kept, so try again.",
+					"template": "This template isn't available on this server any more. Choose another.",
+					"forbidden": "You no longer have permission to create projects here.",
+					"backToTemplates": "Back to templates"
+				},
+				"firstSteps": {
+					"label": "First steps",
+					"title": "{{name}} is ready.",
+					"progress": "First steps · {{done}} of {{total}}",
+					"show": "Show",
+					"hide": "Hide",
+					"dismiss": "Dismiss",
+					"doneLabel": "Done:",
+					"todoLabel": "To do:",
+					"moveExample": "Move an example task to see the flow",
+					"markDone": "Mark as done",
+					"addTask": "Add your first real task",
+					"addTaskAction": "Add task",
+					"invite": "Invite people to this project",
+					"inviteAction": "Invite people",
+					"removeExamplesItem": "Remove the examples",
+					"removeExamples": "Remove examples",
+					"labelsSkipped": "Some labels weren't added, because you can't create workspace labels."
+				},
+				"examples": {
+					"banner": "This project has example tasks.",
+					"dismissBanner": "Hide this message",
+					"confirmTitle": "Remove the example tasks?",
+					"confirmBody": "They move to the trash, so you can restore them from there.",
+					"removed_one": "{{count}} example task moved to the trash",
+					"removed_other": "{{count}} example tasks moved to the trash",
+					"restoreHint": "You can restore them from the project's trash.",
+					"openTrash": "Open trash",
+					"removeFailed": "Couldn't remove the example tasks"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -143,7 +275,16 @@
 				"descriptionPlaceholder": "Add description...",
 				"createButton": "Create workspace",
 				"successToast": "Workspace created successfully",
-				"errorToast": "Failed to create workspace"
+				"restored": "Restored your draft.",
+				"ready": {
+					"title": "{{name}} is ready",
+					"body": "Start with a project, or bring your people in first.",
+					"project": "Start a project",
+					"projectNote": "Pick a template or start blank.",
+					"invite": "Invite people",
+					"inviteNote": "Add teammates by email or link.",
+					"goToWorkspace": "Go to workspace"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "TASK",
@@ -382,15 +523,11 @@
 			"createWorkspace": "Create workspace",
 			"workspaceCreatedTitle": "Workspace created",
 			"toast": {
-				"workspaceCreated": "Workspace created successfully",
-				"createFailed": "Failed to create workspace",
-				"projectFailed": "Couldn't create the project",
-				"templateFailed": "The project was created, but its template settings weren't applied.",
-				"inviteFailed": "Couldn't send the invitation",
-				"taskFailed": "Couldn't add the task"
+				"inviteFailed": "Couldn't send the invitation"
 			},
 			"validation": {
-				"workspaceNameRequired": "Workspace name is required"
+				"workspaceNameRequired": "Workspace name is required",
+				"workspaceNameTooLong": "Keep it under 80 characters."
 			},
 			"progress": "Step {{current}} of {{total}}",
 			"back": "Back",
@@ -399,27 +536,7 @@
 			"joinTitle": "Join a workspace",
 			"joinDescription": "You've been invited. Join a team that's already working, or create your own below.",
 			"projectTitle": "Start your first project",
-			"projectSubtitle": "Only the name is needed. Everything else can change later.",
-			"projectName": "Project name",
-			"projectNamePlaceholder": "e.g. Website relaunch",
-			"projectKey": "Key",
-			"projectKeyHint": "Task IDs start with the key, like {{example}}-1.",
 			"projectCreated": "Project created",
-			"templateLabel": "How does this team work?",
-			"templates": {
-				"board": {
-					"name": "Simple board",
-					"note": "Columns from To Do to Done"
-				},
-				"cycles": {
-					"name": "Cycles",
-					"note": "Time-boxed cycles with estimates"
-				},
-				"intake": {
-					"name": "Intake",
-					"note": "A queue for incoming requests"
-				}
-			},
 			"createProject": "Create project",
 			"inviteTitle": "Invite people",
 			"inviteSubtitle": "Invite by email, or share each invitation's link. You can also do this later.",
@@ -429,12 +546,89 @@
 			"inviting": "Inviting…",
 			"invalidEmail": "Enter a valid email address.",
 			"inviteLinkHint": "Invited. Share the link if the email doesn't arrive.",
-			"tasksTitle": "Add your first tasks",
-			"tasksSubtitle": "Type a task and press Enter. Each one lands in To Do in {{project}}.",
-			"taskLabel": "Task title",
-			"taskPlaceholder": "e.g. Draft the launch plan",
-			"addTask": "Add task",
-			"openBoard": "Open board"
+			"stepPrefix": "Step {{current}} of {{total}}:",
+			"stepNames": {
+				"workspace": "Name",
+				"project": "First project",
+				"invite": "Invite",
+				"done": "Done"
+			},
+			"nameWorkspaceTitle": "Name your workspace",
+			"nameWorkspaceSubtitle": "This is where your projects and people live. You can rename it any time.",
+			"addDescription": "+ Add a description",
+			"tryAgain": "Try again",
+			"intent": {
+				"legend": "What will you track first? (optional)",
+				"hint": "We'll suggest templates that fit. It doesn't limit anything.",
+				"more": "More kinds of work",
+				"team": "Team tasks",
+				"software": "Software",
+				"product": "Product",
+				"marketing": "Marketing",
+				"service": "Service desk",
+				"it": "IT",
+				"hr": "HR",
+				"personal": "Personal",
+				"sales": "Sales",
+				"support": "Customer support",
+				"finance": "Finance",
+				"design": "Design",
+				"operations": "Operations",
+				"legal": "Legal",
+				"facilities": "Facilities",
+				"analytics": "Analytics",
+				"nonprofit": "Nonprofit"
+			},
+			"waiting": {
+				"title": "Waiting for an invitation",
+				"body": "On this Margaya server, admins create workspaces. Ask one to invite you, and the invitation will appear here.",
+				"checkAgain": "Check again"
+			},
+			"errors": {
+				"workspace": "We couldn't create your workspace. Check your connection and try again.",
+				"template": "This template isn't available any more. Pick another one."
+			},
+			"status": {
+				"creatingWorkspace": "Creating your workspace…",
+				"workspaceCreated": "{{name}} created",
+				"projectCreated": "{{name}} created",
+				"creatingStarter": "Creating your projects…"
+			},
+			"firstProjectSubtitle": "A project holds the tasks, statuses and views for one stream of work, ongoing or with an end date.",
+			"recommended": "Recommended for you",
+			"browseAll": "Browse all templates",
+			"showRecommended": "Show recommendations only",
+			"guidedTour": "Or explore a guided tour project",
+			"setUpPanel": "Set up",
+			"creatingProject": "Creating project…",
+			"createProjects_one": "Create {{count}} project",
+			"createProjects_other": "Create {{count}} projects",
+			"projectCreatedWithExamples_one": "Project created · {{count}} example task",
+			"projectCreatedWithExamples_other": "Project created · {{count}} example tasks",
+			"starters": {
+				"title": "Start with a set",
+				"hint": "Several projects for a team that already knows its streams of work.",
+				"projectCount_one": "{{count}} project",
+				"projectCount_other": "{{count}} projects",
+				"examplesHint": "Up to four example tasks per project, which you can remove in one go."
+			},
+			"inviteSubtitlePersonal": "Working on your own? Skip this. You can invite people any time from Team.",
+			"finish": "Finish",
+			"done": {
+				"title": "You're all set",
+				"workspace": "Workspace {{name}}",
+				"project": "Project {{name}}",
+				"blankProject": "Blank project {{name}}",
+				"projectWithExamples_one": "Project {{name}}, with {{count}} example task",
+				"projectWithExamples_other": "Project {{name}}, with {{count}} example tasks",
+				"projects_one": "{{count}} project, starting with {{name}}",
+				"projects_other": "{{count}} projects, starting with {{name}}",
+				"invited_one": "{{count}} person invited",
+				"invited_other": "{{count}} people invited",
+				"open": "Open {{name}}",
+				"goToWorkspace": "Go to your workspace",
+				"hint": "Your board has a short checklist to help you start."
+			}
 		},
 		"profileSetup": {
 			"pageTitle": "Complete profile",
@@ -3906,7 +4100,9 @@
 				"tasks": "Find a task by key or title…",
 				"people": "Find a person…",
 				"places": "Jump to a place…"
-			}
+			},
+			"newBlankProject": "New blank project",
+			"newProjectFromTemplate": "New project from template…"
 		},
 		"notifications": "Notifications",
 		"sidebar": {

@@ -3,26 +3,18 @@ import createProject, {
   type CreateProjectRequest,
 } from "@/fetchers/project/create-project";
 
-function useCreateProject({
-  name,
-  slug,
-  workspaceId,
-  icon,
-  fromProjectId,
-  copy,
-  visibility,
-}: CreateProjectRequest) {
+/**
+ * Creates a project. The request comes either from the hook's argument (the
+ * older call sites) or from `mutate(request)`.
+ */
+function useCreateProject(defaults?: CreateProjectRequest) {
   return useMutation({
-    mutationFn: () =>
-      createProject({
-        name,
-        slug,
-        workspaceId,
-        icon,
-        fromProjectId,
-        copy,
-        visibility,
-      }),
+    mutationFn: (request?: CreateProjectRequest) => {
+      const body = request ?? defaults;
+      if (!body) throw new Error("Missing project request");
+      return createProject(body);
+    },
+    meta: { refreshTaskQueries: false },
   });
 }
 

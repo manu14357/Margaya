@@ -155,6 +155,18 @@ function CommandPalette() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  // Which way the project flow opens: the gallery, Set up for a blank
+  // project, or the gallery with its search focused.
+  const [createProjectEntry, setCreateProjectEntry] = useState<
+    "default" | "newBlank" | "fromTemplate"
+  >("default");
+  const openCreateProject = useCallback(
+    (entry: "default" | "newBlank" | "fromTemplate" = "default") => {
+      setCreateProjectEntry(entry);
+      setIsCreateProjectOpen(true);
+    },
+    [],
+  );
   const [isCreateWorkspaceOpen, setIsCreateWorkspaceOpen] = useState(false);
   const projectIdFromRoute =
     location.pathname.match(/\/project\/([^/]+)/)?.[1] ?? undefined;
@@ -168,8 +180,13 @@ function CommandPalette() {
     projectId: projectIdFromRoute ?? "",
     workspaceId: workspaceId ?? "",
   });
-  const { canCreateIntake, canReadAnalytics, isCheckingPermissions } =
-    useWorkspacePermission();
+  const {
+    canCreateIntake,
+    canReadAnalytics,
+    canCreateProjects,
+    isCheckingPermissions,
+  } = useWorkspacePermission();
+  const canNewProject = !isCheckingPermissions && canCreateProjects();
   const canNewRequest =
     Boolean(projectIdFromRoute) &&
     !isCheckingPermissions &&
@@ -232,11 +249,11 @@ function CommandPalette() {
       return;
     handledRequest.current.create = createRequest.id;
     if (createRequest.kind === "task") setIsCreateTaskOpen(true);
-    if (createRequest.kind === "project") setIsCreateProjectOpen(true);
+    if (createRequest.kind === "project") openCreateProject();
     if (createRequest.kind === "workspace" && canCreateWorkspace) {
       setIsCreateWorkspaceOpen(true);
     }
-  }, [createRequest, canCreateWorkspace]);
+  }, [createRequest, canCreateWorkspace, openCreateProject]);
 
   useRegisterShortcuts({
     shortcuts: {
@@ -264,7 +281,7 @@ function CommandPalette() {
             params: { workspaceId },
           });
         },
-        [shortcuts.project.create]: () => setIsCreateProjectOpen(true),
+        [shortcuts.project.create]: () => openCreateProject(),
       },
       [shortcuts.task.prefix]: {
         [shortcuts.task.create]: () => setIsCreateTaskOpen(true),
@@ -565,8 +582,22 @@ function CommandPalette() {
             value: "create-project",
             label: t("navigation:commandPalette.createProject"),
             shortcut: `${shortcuts.project.prefix} ${shortcuts.project.create}`,
-            onRun: () => setIsCreateProjectOpen(true),
+            onRun: () => openCreateProject(),
           },
+          ...(canNewProject
+            ? [
+                {
+                  value: "new-blank-project",
+                  label: t("navigation:commandPalette.newBlankProject"),
+                  onRun: () => openCreateProject("newBlank"),
+                },
+                {
+                  value: "new-project-from-template",
+                  label: t("navigation:commandPalette.newProjectFromTemplate"),
+                  onRun: () => openCreateProject("fromTemplate"),
+                },
+              ]
+            : []),
           ...buildWithAi.items,
         ],
       },
@@ -655,6 +686,8 @@ function CommandPalette() {
       canCreateWorkspace,
       canNewRequest,
       canOpenAnalytics,
+      canNewProject,
+      openCreateProject,
       projectIdFromRoute,
       viewCommands.items,
       viewCommands.label,
@@ -1144,6 +1177,7 @@ function CommandPalette() {
       />
       <CreateProjectModal
         open={isCreateProjectOpen}
+        entry={createProjectEntry}
         onClose={() => setIsCreateProjectOpen(false)}
       />
       {viewCommands.dialog}

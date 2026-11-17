@@ -62,7 +62,7 @@ test.describe("onboarding", () => {
     await page.goto("/dashboard");
     await expect(page).toHaveURL(/\/onboarding/);
     await expect(
-      page.getByRole("heading", { name: "Create workspace" }),
+      page.getByRole("heading", { name: /Name your workspace/ }),
     ).toBeVisible();
 
     // An empty name is refused before anything is sent.
@@ -71,20 +71,25 @@ test.describe("onboarding", () => {
 
     const name = uniqueName("Onboarded WS");
     await page.getByLabel("Workspace name").fill(name);
+    await page.getByRole("button", { name: "+ Add a description" }).click();
     await page.getByLabel("Description (optional)").fill("Built by e2e");
     await page.getByRole("button", { name: "Create workspace" }).click();
-    await expect(page.getByText("Step 2 of 4")).toBeVisible();
+    await expect(page.getByText("Step 2 of 3")).toBeVisible();
 
     // The project and invite steps are optional; skipping both finishes
     // the flow in the new workspace.
     await expect(
-      page.getByRole("heading", { name: "Start your first project" }),
+      page.getByRole("heading", { name: /Start your first project/ }),
     ).toBeVisible();
     await page.getByRole("button", { name: "Skip for now" }).click();
     await expect(
-      page.getByRole("heading", { name: "Invite people" }),
+      page.getByRole("heading", { name: /Invite people/ }),
     ).toBeVisible();
     await page.getByRole("button", { name: "Skip for now" }).click();
+    await expect(
+      page.getByRole("heading", { name: "You're all set" }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Go to your workspace" }).click();
 
     await expect(page).toHaveURL(/\/dashboard\/workspace\/[^/]+$/, {
       timeout: 15_000,
@@ -155,9 +160,14 @@ test.describe("workspace switcher", () => {
     await dialog.getByPlaceholder("Workspace name").fill(name);
     await dialog.getByRole("button", { name: "Create workspace" }).click();
 
+    // The dialog turns into "{{name}} is ready" with the next steps.
+    const ready = page.getByRole("dialog", { name: `${name} is ready` });
+    await expect(ready).toBeVisible();
     await expect(
-      page.getByText("Workspace created successfully"),
+      ready.getByRole("button", { name: /Start a project/ }),
     ).toBeVisible();
+    await ready.getByRole("button", { name: "Go to workspace" }).click();
+    await expect(ready).toBeHidden();
     await expect(workspaceSwitcher(page, name)).toBeVisible();
     const created = (await listWorkspaces(page)).find(
       (candidate) => candidate.name === name,

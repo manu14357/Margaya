@@ -92,6 +92,7 @@ function RouteComponent() {
       </InstanceSection>
 
       <CreateWorkspaceModal
+        simple
         open={createOpen}
         onClose={() => {
           setCreateOpen(false);

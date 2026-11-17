@@ -75,6 +75,7 @@ vi.mock("@/components/favorite/favorite-button", () => ({
 }));
 vi.mock("./shared/modals/create-project-modal", () => ({
   default: () => null,
+  usePreloadCreateProject: () => () => {},
 }));
 
 // Cycles' availability flag decides whether its section can show at all.

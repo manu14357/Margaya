@@ -142,6 +142,7 @@ vi.mock("@/hooks/use-workspace-permission", () => ({
   useWorkspacePermission: () => ({
     canCreateIntake: () => false,
     canReadAnalytics: () => true,
+    canCreateProjects: () => true,
     isCheckingPermissions: false,
   }),
 }));

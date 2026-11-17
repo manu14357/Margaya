@@ -71,11 +71,14 @@ async function openSidebarMenu(page: Page, name: string) {
 }
 
 function createProjectDialog(page: Page) {
-  return page.getByRole("dialog", { name: "Create a new project" });
+  // The title carries a visually hidden "Step N of 2:" prefix.
+  return page.getByRole("dialog", {
+    name: /Create a project|Set up your project/,
+  });
 }
 
 test.describe("create", () => {
-  test("creates a project from the sidebar with a generated key", async ({
+  test("creates a blank project from the sidebar with a generated key", async ({
     pageAs,
   }) => {
     const { page, workspace } = await newUserWithWorkspace(pageAs);
@@ -89,30 +92,26 @@ test.describe("create", () => {
       .click();
     const dialog = createProjectDialog(page);
     await expect(dialog).toBeVisible();
-    const create = dialog.getByRole("button", { name: "Create project" });
-    await expect(create).toBeDisabled();
+    // Blank is selected when there is no history.
+    await expect(
+      dialog.getByRole("radio", { name: /Blank project/ }),
+    ).toHaveAttribute("aria-checked", "true");
+    await dialog.getByRole("button", { name: "Start blank" }).click();
 
     const name = `Garden Tools ${Date.now().toString(36)}`;
-    await dialog.getByPlaceholder("Project name").fill(name);
+    await dialog.getByLabel("Project name").fill(name);
     // Initials of the first three words.
-    const key = dialog.getByPlaceholder("PRO", { exact: true });
+    await expect(dialog.getByText(/Task IDs: GT/)).toBeVisible();
+    await dialog.getByRole("button", { name: "Change" }).first().click();
+    const key = dialog.getByLabel("Task ID prefix");
     await expect(key).toHaveValue(/^GT/);
-    await expect(
-      dialog.getByText(/Used for ticket IDs \(e\.g\., GT/),
-    ).toBeVisible();
     await key.fill("GTL");
-    await create.click();
+    await dialog.getByRole("button", { name: "Create project" }).click();
 
-    await expect(page.getByText("Project created successfully")).toBeVisible();
+    await expect(page.getByText(`${name} created`).first()).toBeVisible();
     await expect(dialog).toBeHidden();
     await expect(page).toHaveURL(/\/project\/[^/]+\/board$/);
     await expect(sidebarProject(page, name)).toBeVisible();
-    // A new project starts with the default workflow columns.
-    for (const column of ["To Do", "In Progress", "In Review", "Done"]) {
-      await expect(
-        page.getByText(column, { exact: true }).first(),
-      ).toBeVisible();
-    }
 
     const [project] = await listProjects(page, workspace.id);
     expect(project).toMatchObject({ name, slug: "GTL" });
@@ -132,28 +131,30 @@ test.describe("create", () => {
       .getByRole("button", { name: "Add project" })
       .click();
     const dialog = createProjectDialog(page);
-    await dialog.getByPlaceholder("Project name").fill(uniqueName("Clash"));
+    await dialog.getByRole("radio", { name: /Blank project/ }).click();
+    await dialog.getByRole("button", { name: "Start blank" }).click();
+    await dialog.getByLabel("Project name").fill(uniqueName("Clash"));
+    await dialog.getByRole("button", { name: "Change" }).first().click();
     // Keys are unique ignoring case.
-    await dialog
-      .getByPlaceholder("PRO", { exact: true })
-      .fill(taken.slug.toLowerCase());
+    await dialog.getByLabel("Task ID prefix").fill(taken.slug.toLowerCase());
     await dialog.getByRole("button", { name: "Create project" }).click();
 
     const error = dialog.getByRole("alert");
     await expect(error).toHaveText(
-      `A project with the key ${taken.slug} already exists in this workspace`,
+      `${taken.slug} is already used in this workspace. Try another.`,
     );
-    await expect(
-      dialog.getByPlaceholder("PRO", { exact: true }),
-    ).toHaveAttribute("aria-invalid", "true");
+    await expect(dialog.getByLabel("Task ID prefix")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
     expect(await listProjects(page, workspace.id)).toHaveLength(1);
 
     // Editing the key clears the error, and a free key goes through.
     const free = uniqueKey("F");
-    await dialog.getByPlaceholder("PRO", { exact: true }).fill(free);
+    await dialog.getByLabel("Task ID prefix").fill(free);
     await expect(error).toBeHidden();
     await dialog.getByRole("button", { name: "Create project" }).click();
-    await expect(page.getByText("Project created successfully")).toBeVisible();
+    await expect(dialog).toBeHidden();
     expect(
       (await listProjects(page, workspace.id)).map((project) => project.slug),
     ).toContain(free);

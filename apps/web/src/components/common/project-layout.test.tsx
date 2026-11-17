@@ -81,6 +81,9 @@ vi.mock("@/components/publication/project-public-badge", () => ({
 vi.mock("@/components/shared/modals/create-project-modal", () => ({
   default: () => null,
 }));
+vi.mock("@/components/create-project/project-first-steps", () => ({
+  default: () => null,
+}));
 vi.mock("@/hooks/mutations/recent-visit/use-record-visit", () => ({
   useRecordVisit: () => {},
   visitArchiveState: () => undefined,

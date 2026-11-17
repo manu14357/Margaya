@@ -67,26 +67,152 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "创建新项目",
-				"breadcrumbNew": "创建新项目",
-				"workspaceFallback": "工作区",
-				"description": "通过提供名称、标识和选择图标，在你的工作区中创建一个新项目。",
 				"pickIcon": "选择图标",
 				"searchIcons": "搜索图标…",
 				"projectName": "项目名称",
-				"keyLabel": "标识：",
-				"keyHint": "用于工单 ID（例如 {{example}}-123）",
-				"createButton": "创建项目",
-				"errorToast": "项目创建失败",
-				"keyTaken": "此工作区中已存在标识为 {{key}} 的项目",
-				"blankProject": "空白项目",
 				"copyHint": "将复制状态、自定义字段、预估、设置和自动化。成员、集成和公开看板不会被复制。",
 				"includeOpenTasks": "包含未完成的任务",
 				"includeTemplates": "包含任务模板",
 				"openTasksHint": "最多 500 个未完成的任务，连同其子任务、标签和预估。评论和历史记录不会被复制。",
-				"restricted": "受限",
-				"restrictedHint": "只有成员才能看到此项目。你将成为第一位成员；工作区所有者和管理员始终可以看到它。",
-				"startFrom": "起点"
+				"stepPrefix": "第 {{current}} 步，共 {{total}} 步：",
+				"stepLabel": "第 {{current}} 步，共 {{total}} 步 · {{name}}",
+				"stepAnnouncement": "第 {{current}} 步，共 {{total}} 步：{{title}}",
+				"back": "返回",
+				"tryAgain": "重试",
+				"restored": "已恢复你未完成的项目。",
+				"startOver": "重新开始",
+				"choose": {
+					"title": "创建项目",
+					"subtitle": "项目包含一条工作流的任务、状态和视图，可以是长期进行的，也可以有结束日期。",
+					"stepName": "选择",
+					"search": "搜索模板",
+					"categories": "模板分类",
+					"recommended": "推荐",
+					"all": "全部模板",
+					"searchResults": "搜索结果",
+					"fromWorkspace": "来自你的工作区",
+					"import": "从其他工具或 CSV 文件导入",
+					"groups": {
+						"product": "产品与技术",
+						"service": "服务与支持",
+						"growth": "增长",
+						"everyday": "日常工作"
+					},
+					"blankName": "空白项目",
+					"blankNote": "待办、进行中、审核中和已完成。其余的以后再添加。",
+					"existingName": "从现有项目开始",
+					"existingNote": "复制你已有项目的状态、字段和设置。",
+					"guidedTour": "或者看看导览项目",
+					"resultCount_other": "{{count}} 个模板",
+					"noResultsTitle": "没有与“{{query}}”匹配的模板",
+					"noResultsBody": "换个关键词试试，或从空白项目开始。",
+					"clearSearch": "清除搜索",
+					"loadError": "无法加载模板。",
+					"useTemplate": "使用模板",
+					"startBlank": "从空白开始",
+					"useProject": "使用此项目"
+				},
+				"preview": {
+					"region": "预览：{{template}}",
+					"goodFor": "适用于：{{categories}}",
+					"restricted": "创建时即为受限项目，其详情只对你添加的人可见。",
+					"statuses": "状态",
+					"views": "视图",
+					"fields": "字段",
+					"features": "包含功能",
+					"noFeatures": "只有看板和列表。功能可随时开启。",
+					"examples": "示例任务",
+					"noExamples": "没有示例任务",
+					"more_other": "+ 另外 {{count}} 个",
+					"loadError": "无法加载此预览。",
+					"fieldTypes": {
+						"text": "文本",
+						"number": "数字",
+						"date": "日期",
+						"dropdown": "下拉列表",
+						"boolean": "是或否"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "待办",
+						"inProgress": "进行中",
+						"inReview": "审核中",
+						"done": "已完成"
+					}
+				},
+				"setup": {
+					"title": "设置你的项目",
+					"subtitle": "只需填写名称。其他内容都可以稍后在项目设置中更改。",
+					"stepName": "设置",
+					"namePlaceholder": "例如：网站改版",
+					"nameRequired": "请为项目命名。",
+					"nameTooLong": "名称请少于 80 个字符。",
+					"keyChip": "任务 ID：{{key}}-1",
+					"keyChange": "更改",
+					"keyLabel": "任务 ID 前缀",
+					"keyInvalid": "请使用 1 到 8 个字母或数字。",
+					"keyTaken": "{{key}} 已在此工作区中使用，请换一个。",
+					"examples": "添加示例任务",
+					"examplesHint_other": "{{count}} 个任务，演示此项目的工作方式。你可以一次性全部删除。",
+					"labelsSkipped": "部分标签不会被添加：你无权创建工作区标签。",
+					"featuresTitle": "保持开启的功能",
+					"included": "包含：{{list}}",
+					"includedNone": "只有看板和列表",
+					"moreOptions": "更多选项（功能、隐私）",
+					"privacy": "隐私",
+					"privacyOpen": "公开",
+					"privacyOpenHint": "工作区中的所有人都能找到它，并按各自角色的权限使用。",
+					"privacyRestricted": "受限",
+					"privacyRestrictedHint": "仅限你添加的人，以及工作区所有者和管理员。",
+					"privacySuggested": "此模板建议使用受限项目。你可以更改。",
+					"summary": "你的选择",
+					"yourChoice": "你的选择",
+					"change": "更改",
+					"statusCount_other": "{{count}} 个状态",
+					"exampleCount_other": "{{count}} 个示例任务",
+					"create": "创建项目"
+				},
+				"status": {
+					"creating": "正在创建 {{name}}…",
+					"created": "{{name}} 已创建。入门步骤位于看板上方。",
+					"createdShort": "{{name}} 已创建"
+				},
+				"error": {
+					"generic": "无法创建项目。你的选择已保留，请重试。",
+					"template": "此模板在此服务器上已不可用，请选择其他模板。",
+					"forbidden": "你已无权在此处创建项目。",
+					"backToTemplates": "返回模板"
+				},
+				"firstSteps": {
+					"label": "入门步骤",
+					"title": "{{name}} 已就绪。",
+					"progress": "入门步骤 · {{done}}/{{total}}",
+					"show": "显示",
+					"hide": "隐藏",
+					"dismiss": "关闭",
+					"doneLabel": "已完成：",
+					"todoLabel": "待完成：",
+					"moveExample": "移动一个示例任务，了解工作流程",
+					"markDone": "标记为完成",
+					"addTask": "添加你的第一个真实任务",
+					"addTaskAction": "添加任务",
+					"invite": "邀请成员加入此项目",
+					"inviteAction": "邀请成员",
+					"removeExamplesItem": "删除示例",
+					"removeExamples": "删除示例",
+					"labelsSkipped": "由于你无权创建工作区标签，部分标签未被添加。"
+				},
+				"examples": {
+					"banner": "此项目包含示例任务。",
+					"dismissBanner": "隐藏此消息",
+					"confirmTitle": "删除示例任务？",
+					"confirmBody": "它们会被移到回收站，你可以从那里恢复。",
+					"removed_other": "已将 {{count}} 个示例任务移到回收站",
+					"restoreHint": "你可以从项目的回收站中恢复它们。",
+					"openTrash": "打开回收站",
+					"removeFailed": "无法删除示例任务"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -96,7 +222,16 @@
 				"descriptionPlaceholder": "添加描述…",
 				"createButton": "创建工作区",
 				"successToast": "工作区创建成功",
-				"errorToast": "工作区创建失败"
+				"restored": "已恢复你的草稿。",
+				"ready": {
+					"title": "{{name}} 已就绪",
+					"body": "从一个项目开始，或者先邀请成员加入。",
+					"project": "开始一个项目",
+					"projectNote": "选择一个模板，或从空白开始。",
+					"invite": "邀请成员",
+					"inviteNote": "通过邮箱或链接添加团队成员。",
+					"goToWorkspace": "前往工作区"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "任务",
@@ -382,17 +517,12 @@
 			"createWorkspace": "创建工作区",
 			"workspaceCreatedTitle": "工作区已创建",
 			"toast": {
-				"workspaceCreated": "工作区创建成功",
-				"createFailed": "工作区创建失败",
-				"inviteFailed": "无法发送邀请",
-				"projectFailed": "无法创建项目",
-				"taskFailed": "无法添加任务",
-				"templateFailed": "项目已创建，但模板设置未能应用。"
+				"inviteFailed": "无法发送邀请"
 			},
 			"validation": {
-				"workspaceNameRequired": "工作区名称不能为空"
+				"workspaceNameRequired": "工作区名称不能为空",
+				"workspaceNameTooLong": "请少于 80 个字符。"
 			},
-			"addTask": "添加任务",
 			"back": "返回",
 			"continue": "继续",
 			"createProject": "创建项目",
@@ -405,35 +535,87 @@
 			"inviting": "正在邀请…",
 			"joinDescription": "你收到了邀请。可以加入已经在协作的团队，也可以在下方创建自己的工作区。",
 			"joinTitle": "加入工作区",
-			"openBoard": "打开看板",
 			"progress": "第 {{current}} 步，共 {{total}} 步",
 			"projectCreated": "项目已创建",
-			"projectKey": "标识",
-			"projectKeyHint": "任务 ID 以标识开头，例如 {{example}}-1。",
-			"projectName": "项目名称",
-			"projectNamePlaceholder": "例如：网站改版",
-			"projectSubtitle": "只需填写名称，其他内容之后都可以修改。",
 			"projectTitle": "开始你的第一个项目",
 			"sendInvite": "邀请",
 			"skip": "暂时跳过",
-			"taskLabel": "任务标题",
-			"taskPlaceholder": "例如：起草发布计划",
-			"tasksSubtitle": "输入任务并按 Enter。每个任务都会进入 {{project}} 的 To Do 列。",
-			"tasksTitle": "添加你的第一批任务",
-			"templateLabel": "这个团队是怎么工作的？",
-			"templates": {
-				"board": {
-					"name": "简单看板",
-					"note": "从 To Do 到 Done 的列"
-				},
-				"cycles": {
-					"name": "迭代",
-					"note": "带估算的限时迭代"
-				},
-				"intake": {
-					"name": "收集箱",
-					"note": "接收传入请求的队列"
-				}
+			"stepPrefix": "第 {{current}} 步，共 {{total}} 步：",
+			"stepNames": {
+				"workspace": "名称",
+				"project": "第一个项目",
+				"invite": "邀请",
+				"done": "完成"
+			},
+			"nameWorkspaceTitle": "为你的工作区命名",
+			"nameWorkspaceSubtitle": "这里汇集你的项目和成员。你可以随时重命名。",
+			"addDescription": "+ 添加描述",
+			"tryAgain": "重试",
+			"intent": {
+				"legend": "你首先要跟踪什么？（可选）",
+				"hint": "我们会推荐合适的模板，不会限制任何功能。",
+				"more": "更多工作类型",
+				"team": "团队任务",
+				"software": "软件",
+				"product": "产品",
+				"marketing": "市场营销",
+				"service": "服务台",
+				"it": "IT",
+				"hr": "人力资源",
+				"personal": "个人",
+				"sales": "销售",
+				"support": "客户支持",
+				"finance": "财务",
+				"design": "设计",
+				"operations": "运营",
+				"legal": "法务",
+				"facilities": "设施管理",
+				"analytics": "数据分析",
+				"nonprofit": "非营利"
+			},
+			"waiting": {
+				"title": "等待邀请",
+				"body": "在此 Margaya 服务器上，工作区由管理员创建。请管理员邀请你，邀请会显示在这里。",
+				"checkAgain": "再次检查"
+			},
+			"errors": {
+				"workspace": "无法创建你的工作区。请检查网络连接后重试。",
+				"template": "此模板已不可用，请选择其他模板。"
+			},
+			"status": {
+				"creatingWorkspace": "正在创建你的工作区…",
+				"workspaceCreated": "{{name}} 已创建",
+				"projectCreated": "{{name}} 已创建",
+				"creatingStarter": "正在创建你的项目…"
+			},
+			"firstProjectSubtitle": "项目包含一条工作流的任务、状态和视图，可以是长期进行的，也可以有结束日期。",
+			"recommended": "为你推荐",
+			"browseAll": "浏览全部模板",
+			"showRecommended": "仅显示推荐",
+			"guidedTour": "或者看看导览项目",
+			"setUpPanel": "设置",
+			"creatingProject": "正在创建项目…",
+			"createProjects_other": "创建 {{count}} 个项目",
+			"projectCreatedWithExamples_other": "项目已创建 · {{count}} 个示例任务",
+			"starters": {
+				"title": "从一组项目开始",
+				"hint": "适合已经明确各条工作流的团队的多个项目。",
+				"projectCount_other": "{{count}} 个项目",
+				"examplesHint": "每个项目最多 4 个示例任务，可以一次性全部删除。"
+			},
+			"inviteSubtitlePersonal": "自己一个人用？那就跳过这一步。你可以随时在“团队”中邀请成员。",
+			"finish": "完成",
+			"done": {
+				"title": "一切就绪",
+				"workspace": "工作区 {{name}}",
+				"project": "项目 {{name}}",
+				"blankProject": "空白项目 {{name}}",
+				"projectWithExamples_other": "项目 {{name}}，含 {{count}} 个示例任务",
+				"projects_other": "{{count}} 个项目，从 {{name}} 开始",
+				"invited_other": "已邀请 {{count}} 人",
+				"open": "打开 {{name}}",
+				"goToWorkspace": "前往你的工作区",
+				"hint": "你的看板上有一份简短的清单，帮助你上手。"
 			}
 		},
 		"profileSetup": {
@@ -3846,7 +4028,9 @@
 			},
 			"recent": "最近",
 			"removeScope": "搜索全部",
-			"scope": "范围"
+			"scope": "范围",
+			"newBlankProject": "新建空白项目",
+			"newProjectFromTemplate": "从模板新建项目…"
 		},
 		"notifications": "通知",
 		"sidebar": {

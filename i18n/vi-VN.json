@@ -67,26 +67,152 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "Tạo dự án mới",
-				"breadcrumbNew": "Tạo dự án mới",
-				"workspaceFallback": "KHÔNG GIAN LÀM VIỆC",
-				"description": "Tạo một dự án mới trong không gian làm việc của bạn bằng cách cung cấp tên, mã và chọn biểu tượng.",
 				"pickIcon": "Chọn biểu tượng",
 				"searchIcons": "Tìm biểu tượng...",
 				"projectName": "Tên dự án",
-				"keyLabel": "Mã:",
-				"keyHint": "Dùng cho mã số phiếu (ví dụ: {{example}}-123)",
-				"createButton": "Tạo dự án",
-				"errorToast": "Không thể tạo dự án",
-				"keyTaken": "Đã có một dự án với mã {{key}} trong không gian làm việc này",
-				"blankProject": "Dự án trống",
 				"copyHint": "Trạng thái, trường tùy chỉnh, ước tính, cài đặt và tự động hóa sẽ được sao chép. Thành viên, tích hợp và bảng công khai thì không.",
 				"includeOpenTasks": "Bao gồm công việc đang mở",
 				"includeTemplates": "Bao gồm mẫu công việc",
 				"openTasksHint": "Tối đa 500 công việc đang mở cùng với công việc con, nhãn và ước tính của chúng. Bình luận và lịch sử không được sao chép.",
-				"restricted": "Hạn chế",
-				"restrictedHint": "Chỉ thành viên mới xem được dự án này. Bạn sẽ là thành viên đầu tiên; chủ sở hữu và quản trị viên không gian làm việc luôn xem được dự án.",
-				"startFrom": "Bắt đầu từ"
+				"stepPrefix": "Bước {{current}}/{{total}}:",
+				"stepLabel": "Bước {{current}}/{{total}} · {{name}}",
+				"stepAnnouncement": "Bước {{current}}/{{total}}: {{title}}",
+				"back": "Quay lại",
+				"tryAgain": "Thử lại",
+				"restored": "Đã khôi phục dự án bạn đang tạo dở.",
+				"startOver": "Bắt đầu lại",
+				"choose": {
+					"title": "Tạo dự án",
+					"subtitle": "Một dự án chứa công việc, trạng thái và chế độ xem cho một luồng công việc, diễn ra liên tục hoặc có ngày kết thúc.",
+					"stepName": "Chọn",
+					"search": "Tìm mẫu",
+					"categories": "Danh mục mẫu",
+					"recommended": "Đề xuất",
+					"all": "Tất cả mẫu",
+					"searchResults": "Kết quả tìm kiếm",
+					"fromWorkspace": "Từ không gian làm việc của bạn",
+					"import": "Nhập từ công cụ khác hoặc tệp CSV",
+					"groups": {
+						"product": "Sản phẩm và công nghệ",
+						"service": "Dịch vụ và hỗ trợ",
+						"growth": "Tăng trưởng",
+						"everyday": "Công việc hằng ngày"
+					},
+					"blankName": "Dự án trống",
+					"blankNote": "Cần làm, Đang thực hiện, Đang xem xét và Xong. Thêm phần còn lại sau.",
+					"existingName": "Bắt đầu từ một dự án hiện có",
+					"existingNote": "Sao chép trạng thái, trường và cài đặt của một dự án bạn đã có.",
+					"guidedTour": "Hoặc khám phá một dự án hướng dẫn",
+					"resultCount_other": "{{count}} mẫu",
+					"noResultsTitle": "Không có mẫu nào khớp với \"{{query}}\"",
+					"noResultsBody": "Hãy thử từ khác, hoặc bắt đầu với một dự án trống.",
+					"clearSearch": "Xóa tìm kiếm",
+					"loadError": "Không thể tải các mẫu.",
+					"useTemplate": "Dùng mẫu",
+					"startBlank": "Bắt đầu trống",
+					"useProject": "Dùng dự án này"
+				},
+				"preview": {
+					"region": "Xem trước: {{template}}",
+					"goodFor": "Phù hợp cho: {{categories}}",
+					"restricted": "Bắt đầu ở chế độ hạn chế, nên thông tin chi tiết chỉ dành cho những người bạn thêm vào.",
+					"statuses": "Trạng thái",
+					"views": "Chế độ xem",
+					"fields": "Trường",
+					"features": "Bao gồm",
+					"noFeatures": "Chỉ có bảng và danh sách. Bạn có thể bật tính năng bất cứ lúc nào.",
+					"examples": "Công việc mẫu",
+					"noExamples": "Không có công việc mẫu",
+					"more_other": "+ {{count}} mục khác",
+					"loadError": "Không thể tải bản xem trước này.",
+					"fieldTypes": {
+						"text": "văn bản",
+						"number": "số",
+						"date": "ngày",
+						"dropdown": "danh sách thả xuống",
+						"boolean": "có hoặc không"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "Cần làm",
+						"inProgress": "Đang thực hiện",
+						"inReview": "Đang xem xét",
+						"done": "Xong"
+					}
+				},
+				"setup": {
+					"title": "Thiết lập dự án",
+					"subtitle": "Chỉ cần đặt tên. Bạn có thể thay đổi mọi thứ sau trong cài đặt dự án.",
+					"stepName": "Thiết lập",
+					"namePlaceholder": "ví dụ: Ra mắt lại trang web",
+					"nameRequired": "Hãy đặt tên cho dự án.",
+					"nameTooLong": "Tên phải dưới 80 ký tự.",
+					"keyChip": "Mã công việc: {{key}}-1",
+					"keyChange": "Đổi",
+					"keyLabel": "Tiền tố mã công việc",
+					"keyInvalid": "Dùng từ 1 đến 8 chữ cái hoặc chữ số.",
+					"keyTaken": "{{key}} đã được dùng trong không gian làm việc này. Hãy thử mã khác.",
+					"examples": "Thêm công việc mẫu",
+					"examplesHint_other": "{{count}} công việc cho thấy cách dự án này vận hành. Bạn có thể xóa tất cả cùng lúc.",
+					"labelsSkipped": "Một số nhãn sẽ không được thêm: bạn không có quyền tạo nhãn của không gian làm việc.",
+					"featuresTitle": "Tính năng luôn bật",
+					"included": "Bao gồm: {{list}}",
+					"includedNone": "Chỉ có bảng và danh sách",
+					"moreOptions": "Tùy chọn khác (tính năng, quyền riêng tư)",
+					"privacy": "Quyền riêng tư",
+					"privacyOpen": "Mở",
+					"privacyOpenHint": "Mọi người trong không gian làm việc đều tìm thấy được, với quyền theo vai trò của họ.",
+					"privacyRestricted": "Hạn chế",
+					"privacyRestrictedHint": "Chỉ những người bạn thêm vào, cùng chủ sở hữu và quản trị viên của không gian làm việc.",
+					"privacySuggested": "Mẫu này đề xuất một dự án hạn chế. Bạn có thể thay đổi.",
+					"summary": "Lựa chọn của bạn",
+					"yourChoice": "Lựa chọn của bạn",
+					"change": "Đổi",
+					"statusCount_other": "{{count}} trạng thái",
+					"exampleCount_other": "{{count}} công việc mẫu",
+					"create": "Tạo dự án"
+				},
+				"status": {
+					"creating": "Đang tạo {{name}}…",
+					"created": "Đã tạo {{name}}. Các bước đầu tiên nằm phía trên bảng.",
+					"createdShort": "Đã tạo {{name}}"
+				},
+				"error": {
+					"generic": "Không thể tạo dự án. Các lựa chọn của bạn vẫn được giữ lại, hãy thử lại.",
+					"template": "Mẫu này không còn khả dụng trên máy chủ này. Hãy chọn mẫu khác.",
+					"forbidden": "Bạn không còn quyền tạo dự án ở đây.",
+					"backToTemplates": "Quay lại danh sách mẫu"
+				},
+				"firstSteps": {
+					"label": "Các bước đầu tiên",
+					"title": "{{name}} đã sẵn sàng.",
+					"progress": "Các bước đầu tiên · {{done}}/{{total}}",
+					"show": "Hiện",
+					"hide": "Ẩn",
+					"dismiss": "Đóng",
+					"doneLabel": "Đã xong:",
+					"todoLabel": "Cần làm:",
+					"moveExample": "Di chuyển một công việc mẫu để xem quy trình",
+					"markDone": "Đánh dấu là xong",
+					"addTask": "Thêm công việc thực tế đầu tiên",
+					"addTaskAction": "Thêm công việc",
+					"invite": "Mời mọi người vào dự án này",
+					"inviteAction": "Mời mọi người",
+					"removeExamplesItem": "Xóa các công việc mẫu",
+					"removeExamples": "Xóa mẫu",
+					"labelsSkipped": "Một số nhãn chưa được thêm vì bạn không có quyền tạo nhãn của không gian làm việc."
+				},
+				"examples": {
+					"banner": "Dự án này có công việc mẫu.",
+					"dismissBanner": "Ẩn thông báo này",
+					"confirmTitle": "Xóa các công việc mẫu?",
+					"confirmBody": "Chúng sẽ được chuyển vào thùng rác, nên bạn có thể khôi phục từ đó.",
+					"removed_other": "Đã chuyển {{count}} công việc mẫu vào thùng rác",
+					"restoreHint": "Bạn có thể khôi phục chúng từ thùng rác của dự án.",
+					"openTrash": "Mở thùng rác",
+					"removeFailed": "Không thể xóa các công việc mẫu"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -96,7 +222,16 @@
 				"descriptionPlaceholder": "Thêm mô tả...",
 				"createButton": "Tạo không gian làm việc",
 				"successToast": "Tạo không gian làm việc thành công",
-				"errorToast": "Không thể tạo không gian làm việc"
+				"restored": "Đã khôi phục bản nháp của bạn.",
+				"ready": {
+					"title": "{{name}} đã sẵn sàng",
+					"body": "Bắt đầu với một dự án, hoặc mời mọi người vào trước.",
+					"project": "Bắt đầu một dự án",
+					"projectNote": "Chọn một mẫu hoặc bắt đầu trống.",
+					"invite": "Mời mọi người",
+					"inviteNote": "Thêm đồng đội qua email hoặc liên kết.",
+					"goToWorkspace": "Đi tới không gian làm việc"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "CÔNG VIỆC",
@@ -382,17 +517,12 @@
 			"createWorkspace": "Tạo không gian làm việc",
 			"workspaceCreatedTitle": "Đã tạo không gian làm việc",
 			"toast": {
-				"workspaceCreated": "Tạo không gian làm việc thành công",
-				"createFailed": "Không thể tạo không gian làm việc",
-				"inviteFailed": "Không thể gửi lời mời",
-				"projectFailed": "Không thể tạo dự án",
-				"taskFailed": "Không thể thêm công việc",
-				"templateFailed": "Dự án đã được tạo, nhưng cài đặt mẫu chưa được áp dụng."
+				"inviteFailed": "Không thể gửi lời mời"
 			},
 			"validation": {
-				"workspaceNameRequired": "Cần có tên không gian làm việc"
+				"workspaceNameRequired": "Cần có tên không gian làm việc",
+				"workspaceNameTooLong": "Tên phải dưới 80 ký tự."
 			},
-			"addTask": "Thêm công việc",
 			"back": "Quay lại",
 			"continue": "Tiếp tục",
 			"createProject": "Tạo dự án",
@@ -405,35 +535,87 @@
 			"inviting": "Đang mời…",
 			"joinDescription": "Bạn đã được mời. Hãy tham gia một nhóm đang làm việc, hoặc tự tạo nhóm của riêng bạn bên dưới.",
 			"joinTitle": "Tham gia một không gian làm việc",
-			"openBoard": "Mở bảng",
 			"progress": "Bước {{current}}/{{total}}",
 			"projectCreated": "Đã tạo dự án",
-			"projectKey": "Khóa",
-			"projectKeyHint": "ID công việc bắt đầu bằng khóa, chẳng hạn {{example}}-1.",
-			"projectName": "Tên dự án",
-			"projectNamePlaceholder": "VD: Ra mắt lại website",
-			"projectSubtitle": "Chỉ cần tên là đủ. Mọi thứ khác có thể thay đổi sau.",
 			"projectTitle": "Bắt đầu dự án đầu tiên của bạn",
 			"sendInvite": "Mời",
 			"skip": "Bỏ qua lúc này",
-			"taskLabel": "Tiêu đề công việc",
-			"taskPlaceholder": "VD: Soạn kế hoạch ra mắt",
-			"tasksSubtitle": "Nhập một công việc rồi nhấn Enter. Mỗi công việc sẽ vào cột To Do trong {{project}}.",
-			"tasksTitle": "Thêm những công việc đầu tiên",
-			"templateLabel": "Nhóm này làm việc như thế nào?",
-			"templates": {
-				"board": {
-					"name": "Bảng đơn giản",
-					"note": "Các cột từ To Do đến Done"
-				},
-				"cycles": {
-					"name": "Chu kỳ",
-					"note": "Chu kỳ có thời hạn, kèm ước lượng"
-				},
-				"intake": {
-					"name": "Tiếp nhận",
-					"note": "Hàng đợi cho các yêu cầu gửi đến"
-				}
+			"stepPrefix": "Bước {{current}}/{{total}}:",
+			"stepNames": {
+				"workspace": "Tên",
+				"project": "Dự án đầu tiên",
+				"invite": "Mời",
+				"done": "Xong"
+			},
+			"nameWorkspaceTitle": "Đặt tên cho không gian làm việc",
+			"nameWorkspaceSubtitle": "Đây là nơi chứa các dự án và thành viên của bạn. Bạn có thể đổi tên bất cứ lúc nào.",
+			"addDescription": "+ Thêm mô tả",
+			"tryAgain": "Thử lại",
+			"intent": {
+				"legend": "Bạn sẽ theo dõi gì trước tiên? (không bắt buộc)",
+				"hint": "Chúng tôi sẽ đề xuất các mẫu phù hợp. Điều này không giới hạn bất cứ thứ gì.",
+				"more": "Các loại công việc khác",
+				"team": "Công việc của nhóm",
+				"software": "Phần mềm",
+				"product": "Sản phẩm",
+				"marketing": "Tiếp thị",
+				"service": "Bộ phận dịch vụ",
+				"it": "CNTT",
+				"hr": "Nhân sự",
+				"personal": "Cá nhân",
+				"sales": "Bán hàng",
+				"support": "Hỗ trợ khách hàng",
+				"finance": "Tài chính",
+				"design": "Thiết kế",
+				"operations": "Vận hành",
+				"legal": "Pháp lý",
+				"facilities": "Cơ sở vật chất",
+				"analytics": "Phân tích",
+				"nonprofit": "Phi lợi nhuận"
+			},
+			"waiting": {
+				"title": "Đang chờ lời mời",
+				"body": "Trên máy chủ Margaya này, quản trị viên là người tạo không gian làm việc. Hãy nhờ một quản trị viên mời bạn, lời mời sẽ xuất hiện ở đây.",
+				"checkAgain": "Kiểm tra lại"
+			},
+			"errors": {
+				"workspace": "Không thể tạo không gian làm việc của bạn. Hãy kiểm tra kết nối và thử lại.",
+				"template": "Mẫu này không còn khả dụng. Hãy chọn mẫu khác."
+			},
+			"status": {
+				"creatingWorkspace": "Đang tạo không gian làm việc của bạn…",
+				"workspaceCreated": "Đã tạo {{name}}",
+				"projectCreated": "Đã tạo {{name}}",
+				"creatingStarter": "Đang tạo các dự án của bạn…"
+			},
+			"firstProjectSubtitle": "Một dự án chứa công việc, trạng thái và chế độ xem cho một luồng công việc, diễn ra liên tục hoặc có ngày kết thúc.",
+			"recommended": "Đề xuất cho bạn",
+			"browseAll": "Xem tất cả mẫu",
+			"showRecommended": "Chỉ hiện đề xuất",
+			"guidedTour": "Hoặc khám phá một dự án hướng dẫn",
+			"setUpPanel": "Thiết lập",
+			"creatingProject": "Đang tạo dự án…",
+			"createProjects_other": "Tạo {{count}} dự án",
+			"projectCreatedWithExamples_other": "Đã tạo dự án · {{count}} công việc mẫu",
+			"starters": {
+				"title": "Bắt đầu với một bộ dự án",
+				"hint": "Nhiều dự án dành cho nhóm đã xác định rõ các luồng công việc của mình.",
+				"projectCount_other": "{{count}} dự án",
+				"examplesHint": "Tối đa bốn công việc mẫu cho mỗi dự án, có thể xóa tất cả cùng lúc."
+			},
+			"inviteSubtitlePersonal": "Bạn làm việc một mình? Hãy bỏ qua bước này. Bạn có thể mời mọi người bất cứ lúc nào từ mục Nhóm.",
+			"finish": "Hoàn tất",
+			"done": {
+				"title": "Mọi thứ đã sẵn sàng",
+				"workspace": "Không gian làm việc {{name}}",
+				"project": "Dự án {{name}}",
+				"blankProject": "Dự án trống {{name}}",
+				"projectWithExamples_other": "Dự án {{name}}, với {{count}} công việc mẫu",
+				"projects_other": "{{count}} dự án, bắt đầu với {{name}}",
+				"invited_other": "Đã mời {{count}} người",
+				"open": "Mở {{name}}",
+				"goToWorkspace": "Đi tới không gian làm việc của bạn",
+				"hint": "Bảng của bạn có một danh sách kiểm tra ngắn để giúp bạn bắt đầu."
 			}
 		},
 		"profileSetup": {
@@ -3846,7 +4028,9 @@
 			},
 			"recent": "Gần đây",
 			"removeScope": "Tìm kiếm ở mọi nơi",
-			"scope": "Trong"
+			"scope": "Trong",
+			"newBlankProject": "Dự án trống mới",
+			"newProjectFromTemplate": "Dự án mới từ mẫu…"
 		},
 		"notifications": "Thông báo",
 		"sidebar": {

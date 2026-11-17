@@ -67,26 +67,164 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "Créer un nouveau projet",
-				"breadcrumbNew": "Créer un nouveau projet",
-				"workspaceFallback": "ESPACE DE TRAVAIL",
-				"description": "Créez un nouveau projet dans votre espace de travail en fournissant un nom, une clé et en sélectionnant une icône.",
 				"pickIcon": "Choisir une icône",
 				"searchIcons": "Rechercher des icônes...",
 				"projectName": "Nom du projet",
-				"keyLabel": "Clé :",
-				"keyHint": "Utilisée pour les ID de tickets (par ex. {{example}}-123)",
-				"createButton": "Créer le projet",
-				"errorToast": "Échec de la création du projet",
-				"keyTaken": "Un projet avec la clé {{key}} existe déjà dans cet espace de travail",
-				"blankProject": "Projet vierge",
 				"copyHint": "Les statuts, champs personnalisés, estimations, paramètres et automatisations sont copiés. Les membres, intégrations et tableaux publics ne le sont pas.",
 				"includeOpenTasks": "Inclure les tâches ouvertes",
 				"includeTemplates": "Inclure les modèles de tâches",
 				"openTasksHint": "Jusqu'à 500 tâches ouvertes avec leurs sous-tâches, labels et estimations. Les commentaires et l'historique ne sont pas copiés.",
-				"restricted": "Restreint",
-				"restrictedHint": "Seuls les membres peuvent voir ce projet. Vous en serez le premier membre ; les propriétaires et administrateurs de l'espace de travail peuvent toujours le voir.",
-				"startFrom": "Partir de"
+				"stepPrefix": "Étape {{current}} sur {{total}} :",
+				"stepLabel": "Étape {{current}} sur {{total}} · {{name}}",
+				"stepAnnouncement": "Étape {{current}} sur {{total}} : {{title}}",
+				"back": "Retour",
+				"tryAgain": "Réessayer",
+				"restored": "Votre projet inachevé a été restauré.",
+				"startOver": "Recommencer",
+				"choose": {
+					"title": "Créer un projet",
+					"subtitle": "Un projet regroupe les tâches, statuts et vues d'un flux de travail, continu ou avec une date de fin.",
+					"stepName": "Choisir",
+					"search": "Rechercher des modèles",
+					"categories": "Catégories de modèles",
+					"recommended": "Recommandés",
+					"all": "Tous les modèles",
+					"searchResults": "Résultats de recherche",
+					"fromWorkspace": "De votre espace de travail",
+					"import": "Importer depuis un autre outil ou un fichier CSV",
+					"groups": {
+						"product": "Produit et technique",
+						"service": "Service et support",
+						"growth": "Croissance",
+						"everyday": "Travail quotidien"
+					},
+					"blankName": "Projet vierge",
+					"blankNote": "À faire, En cours, En revue et Fait. Ajoutez le reste plus tard.",
+					"existingName": "Partir d'un projet existant",
+					"existingNote": "Copiez les statuts, champs et paramètres d'un projet que vous avez déjà.",
+					"guidedTour": "Ou découvrez un projet de visite guidée",
+					"resultCount_one": "{{count}} modèle",
+					"resultCount_many": "{{count}} modèles",
+					"resultCount_other": "{{count}} modèles",
+					"noResultsTitle": "Aucun modèle ne correspond à « {{query}} »",
+					"noResultsBody": "Essayez un autre mot ou commencez par un projet vierge.",
+					"clearSearch": "Effacer la recherche",
+					"loadError": "Impossible de charger les modèles.",
+					"useTemplate": "Utiliser le modèle",
+					"startBlank": "Partir de zéro",
+					"useProject": "Utiliser ce projet"
+				},
+				"preview": {
+					"region": "Aperçu : {{template}}",
+					"goodFor": "Idéal pour : {{categories}}",
+					"restricted": "Démarre en accès restreint : ses détails restent entre les personnes que vous ajoutez.",
+					"statuses": "Statuts",
+					"views": "Vues",
+					"fields": "Champs",
+					"features": "Inclus",
+					"noFeatures": "Seulement le tableau et la liste. Activez des fonctionnalités à tout moment.",
+					"examples": "Tâches d'exemple",
+					"noExamples": "Aucune tâche d'exemple",
+					"more_one": "+ {{count}} autre",
+					"more_many": "+ {{count}} autres",
+					"more_other": "+ {{count}} autres",
+					"loadError": "Impossible de charger cet aperçu.",
+					"fieldTypes": {
+						"text": "texte",
+						"number": "nombre",
+						"date": "date",
+						"dropdown": "liste déroulante",
+						"boolean": "oui ou non"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "À faire",
+						"inProgress": "En cours",
+						"inReview": "En revue",
+						"done": "Fait"
+					}
+				},
+				"setup": {
+					"title": "Configurer votre projet",
+					"subtitle": "Seul le nom est requis. Vous pourrez tout modifier plus tard dans les paramètres du projet.",
+					"stepName": "Configurer",
+					"namePlaceholder": "ex. Refonte du site web",
+					"nameRequired": "Donnez un nom à votre projet.",
+					"nameTooLong": "Le nom doit faire moins de 80 caractères.",
+					"keyChip": "ID des tâches : {{key}}-1",
+					"keyChange": "Modifier",
+					"keyLabel": "Préfixe des ID de tâche",
+					"keyInvalid": "Utilisez de 1 à 8 lettres ou chiffres.",
+					"keyTaken": "{{key}} est déjà utilisé dans cet espace de travail. Essayez-en un autre.",
+					"examples": "Ajouter des tâches d'exemple",
+					"examplesHint_one": "{{count}} tâche qui montre le fonctionnement de ce projet. Vous pouvez la retirer en une fois.",
+					"examplesHint_many": "{{count}} tâches qui montrent le fonctionnement de ce projet. Vous pouvez toutes les retirer en une fois.",
+					"examplesHint_other": "{{count}} tâches qui montrent le fonctionnement de ce projet. Vous pouvez toutes les retirer en une fois.",
+					"labelsSkipped": "Certaines étiquettes ne seront pas ajoutées : vous ne pouvez pas créer d'étiquettes d'espace de travail.",
+					"featuresTitle": "Fonctionnalités qui restent activées",
+					"included": "Inclus : {{list}}",
+					"includedNone": "Seulement le tableau et la liste",
+					"moreOptions": "Plus d'options (fonctionnalités, confidentialité)",
+					"privacy": "Confidentialité",
+					"privacyOpen": "Ouvert",
+					"privacyOpenHint": "Tout l'espace de travail peut le trouver, avec les droits de son rôle.",
+					"privacyRestricted": "Restreint",
+					"privacyRestrictedHint": "Seulement les personnes que vous ajoutez, plus les propriétaires et admins de l'espace de travail.",
+					"privacySuggested": "Ce modèle suggère un projet restreint. Vous pouvez le changer.",
+					"summary": "Votre choix",
+					"yourChoice": "Votre choix",
+					"change": "Modifier",
+					"statusCount_one": "{{count}} statut",
+					"statusCount_many": "{{count}} statuts",
+					"statusCount_other": "{{count}} statuts",
+					"exampleCount_one": "{{count}} tâche d'exemple",
+					"exampleCount_many": "{{count}} tâches d'exemple",
+					"exampleCount_other": "{{count}} tâches d'exemple",
+					"create": "Créer le projet"
+				},
+				"status": {
+					"creating": "Création de {{name}}…",
+					"created": "{{name}} créé. Les premières étapes sont au-dessus du tableau.",
+					"createdShort": "{{name}} créé"
+				},
+				"error": {
+					"generic": "Impossible de créer le projet. Vos choix sont conservés, réessayez.",
+					"template": "Ce modèle n'est plus disponible sur ce serveur. Choisissez-en un autre.",
+					"forbidden": "Vous n'avez plus l'autorisation de créer des projets ici.",
+					"backToTemplates": "Retour aux modèles"
+				},
+				"firstSteps": {
+					"label": "Premières étapes",
+					"title": "{{name}} est prêt.",
+					"progress": "Premières étapes · {{done}} sur {{total}}",
+					"show": "Afficher",
+					"hide": "Masquer",
+					"dismiss": "Fermer",
+					"doneLabel": "Fait :",
+					"todoLabel": "À faire :",
+					"moveExample": "Déplacez une tâche d'exemple pour voir le flux",
+					"markDone": "Marquer comme fait",
+					"addTask": "Ajoutez votre première vraie tâche",
+					"addTaskAction": "Ajouter une tâche",
+					"invite": "Invitez des personnes dans ce projet",
+					"inviteAction": "Inviter des personnes",
+					"removeExamplesItem": "Retirez les exemples",
+					"removeExamples": "Retirer les exemples",
+					"labelsSkipped": "Certaines étiquettes n'ont pas été ajoutées, car vous ne pouvez pas créer d'étiquettes d'espace de travail."
+				},
+				"examples": {
+					"banner": "Ce projet contient des tâches d'exemple.",
+					"dismissBanner": "Masquer ce message",
+					"confirmTitle": "Retirer les tâches d'exemple ?",
+					"confirmBody": "Elles vont dans la corbeille, d'où vous pouvez les restaurer.",
+					"removed_one": "{{count}} tâche d'exemple déplacée dans la corbeille",
+					"removed_many": "{{count}} tâches d'exemple déplacées dans la corbeille",
+					"removed_other": "{{count}} tâches d'exemple déplacées dans la corbeille",
+					"restoreHint": "Vous pouvez les restaurer depuis la corbeille du projet.",
+					"openTrash": "Ouvrir la corbeille",
+					"removeFailed": "Impossible de retirer les tâches d'exemple"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -96,7 +234,16 @@
 				"descriptionPlaceholder": "Ajouter une description...",
 				"createButton": "Créer l'espace de travail",
 				"successToast": "Espace de travail créé avec succès",
-				"errorToast": "Échec de la création de l'espace de travail"
+				"restored": "Votre brouillon a été restauré.",
+				"ready": {
+					"title": "{{name}} est prêt",
+					"body": "Commencez par un projet, ou faites d'abord venir votre équipe.",
+					"project": "Lancer un projet",
+					"projectNote": "Choisissez un modèle ou partez de zéro.",
+					"invite": "Inviter des personnes",
+					"inviteNote": "Ajoutez des coéquipiers par e-mail ou par lien.",
+					"goToWorkspace": "Aller à l'espace de travail"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "TÂCHE",
@@ -382,17 +529,12 @@
 			"createWorkspace": "Créer un espace de travail",
 			"workspaceCreatedTitle": "Espace de travail créé",
 			"toast": {
-				"workspaceCreated": "Espace de travail créé avec succès",
-				"createFailed": "Échec de la création de l'espace de travail",
-				"inviteFailed": "Impossible d'envoyer l'invitation",
-				"projectFailed": "Impossible de créer le projet",
-				"taskFailed": "Impossible d'ajouter la tâche",
-				"templateFailed": "Le projet a été créé, mais les paramètres du modèle n'ont pas été appliqués."
+				"inviteFailed": "Impossible d'envoyer l'invitation"
 			},
 			"validation": {
-				"workspaceNameRequired": "Le nom de l'espace de travail est requis"
+				"workspaceNameRequired": "Le nom de l'espace de travail est requis",
+				"workspaceNameTooLong": "Moins de 80 caractères, s'il vous plaît."
 			},
-			"addTask": "Ajouter la tâche",
 			"back": "Retour",
 			"continue": "Continuer",
 			"createProject": "Créer le projet",
@@ -405,35 +547,99 @@
 			"inviting": "Invitation…",
 			"joinDescription": "Vous avez été invité. Rejoignez une équipe déjà au travail, ou créez la vôtre ci-dessous.",
 			"joinTitle": "Rejoindre un espace de travail",
-			"openBoard": "Ouvrir le tableau",
 			"progress": "Étape {{current}} sur {{total}}",
 			"projectCreated": "Projet créé",
-			"projectKey": "Clé",
-			"projectKeyHint": "Les ID de tâche commencent par la clé, par exemple {{example}}-1.",
-			"projectName": "Nom du projet",
-			"projectNamePlaceholder": "p. ex. Refonte du site web",
-			"projectSubtitle": "Seul le nom est nécessaire. Tout le reste pourra changer plus tard.",
 			"projectTitle": "Lancez votre premier projet",
 			"sendInvite": "Inviter",
 			"skip": "Passer pour l'instant",
-			"taskLabel": "Titre de la tâche",
-			"taskPlaceholder": "p. ex. Rédiger le plan de lancement",
-			"tasksSubtitle": "Saisissez une tâche et appuyez sur Entrée. Chacune arrive dans À faire dans {{project}}.",
-			"tasksTitle": "Ajoutez vos premières tâches",
-			"templateLabel": "Comment travaille cette équipe ?",
-			"templates": {
-				"board": {
-					"name": "Tableau simple",
-					"note": "Des colonnes de À faire à Terminé"
-				},
-				"cycles": {
-					"name": "Cycles",
-					"note": "Des cycles limités dans le temps, avec estimations"
-				},
-				"intake": {
-					"name": "Réception",
-					"note": "Une file pour les demandes entrantes"
-				}
+			"stepPrefix": "Étape {{current}} sur {{total}} :",
+			"stepNames": {
+				"workspace": "Nom",
+				"project": "Premier projet",
+				"invite": "Inviter",
+				"done": "Terminé"
+			},
+			"nameWorkspaceTitle": "Nommez votre espace de travail",
+			"nameWorkspaceSubtitle": "C'est là que vivent vos projets et vos équipes. Vous pouvez le renommer à tout moment.",
+			"addDescription": "+ Ajouter une description",
+			"tryAgain": "Réessayer",
+			"intent": {
+				"legend": "Que voulez-vous suivre en premier ? (facultatif)",
+				"hint": "Nous suggérerons des modèles adaptés. Cela ne limite rien.",
+				"more": "Plus de types de travail",
+				"team": "Tâches d'équipe",
+				"software": "Logiciel",
+				"product": "Produit",
+				"marketing": "Marketing",
+				"service": "Centre de services",
+				"it": "Informatique",
+				"hr": "RH",
+				"personal": "Personnel",
+				"sales": "Ventes",
+				"support": "Support client",
+				"finance": "Finance",
+				"design": "Design",
+				"operations": "Opérations",
+				"legal": "Juridique",
+				"facilities": "Services généraux",
+				"analytics": "Analyse",
+				"nonprofit": "Associatif"
+			},
+			"waiting": {
+				"title": "En attente d'une invitation",
+				"body": "Sur ce serveur Margaya, ce sont les admins qui créent les espaces de travail. Demandez à l'un d'eux de vous inviter : l'invitation apparaîtra ici.",
+				"checkAgain": "Vérifier à nouveau"
+			},
+			"errors": {
+				"workspace": "Impossible de créer votre espace de travail. Vérifiez votre connexion et réessayez.",
+				"template": "Ce modèle n'est plus disponible. Choisissez-en un autre."
+			},
+			"status": {
+				"creatingWorkspace": "Création de votre espace de travail…",
+				"workspaceCreated": "{{name}} créé",
+				"projectCreated": "{{name}} créé",
+				"creatingStarter": "Création de vos projets…"
+			},
+			"firstProjectSubtitle": "Un projet regroupe les tâches, statuts et vues d'un flux de travail, continu ou avec une date de fin.",
+			"recommended": "Recommandés pour vous",
+			"browseAll": "Parcourir tous les modèles",
+			"showRecommended": "Afficher seulement les recommandations",
+			"guidedTour": "Ou découvrez un projet de visite guidée",
+			"setUpPanel": "Configurer",
+			"creatingProject": "Création du projet…",
+			"createProjects_one": "Créer {{count}} projet",
+			"createProjects_many": "Créer {{count}} projets",
+			"createProjects_other": "Créer {{count}} projets",
+			"projectCreatedWithExamples_one": "Projet créé · {{count}} tâche d'exemple",
+			"projectCreatedWithExamples_many": "Projet créé · {{count}} tâches d'exemple",
+			"projectCreatedWithExamples_other": "Projet créé · {{count}} tâches d'exemple",
+			"starters": {
+				"title": "Commencer avec un ensemble",
+				"hint": "Plusieurs projets pour une équipe qui connaît déjà ses flux de travail.",
+				"projectCount_one": "{{count}} projet",
+				"projectCount_many": "{{count}} projets",
+				"projectCount_other": "{{count}} projets",
+				"examplesHint": "Jusqu'à quatre tâches d'exemple par projet, que vous pouvez retirer en une fois."
+			},
+			"inviteSubtitlePersonal": "Vous travaillez seul ? Passez cette étape. Vous pouvez inviter des personnes à tout moment depuis Équipe.",
+			"finish": "Terminer",
+			"done": {
+				"title": "Tout est prêt",
+				"workspace": "Espace de travail {{name}}",
+				"project": "Projet {{name}}",
+				"blankProject": "Projet vierge {{name}}",
+				"projectWithExamples_one": "Projet {{name}}, avec {{count}} tâche d'exemple",
+				"projectWithExamples_many": "Projet {{name}}, avec {{count}} tâches d'exemple",
+				"projectWithExamples_other": "Projet {{name}}, avec {{count}} tâches d'exemple",
+				"projects_one": "{{count}} projet, en commençant par {{name}}",
+				"projects_many": "{{count}} projets, en commençant par {{name}}",
+				"projects_other": "{{count}} projets, en commençant par {{name}}",
+				"invited_one": "{{count}} personne invitée",
+				"invited_many": "{{count}} personnes invitées",
+				"invited_other": "{{count}} personnes invitées",
+				"open": "Ouvrir {{name}}",
+				"goToWorkspace": "Aller à votre espace de travail",
+				"hint": "Votre tableau contient une courte liste pour bien démarrer."
 			}
 		},
 		"profileSetup": {
@@ -3968,7 +4174,9 @@
 			},
 			"recent": "Récents",
 			"removeScope": "Rechercher partout",
-			"scope": "Dans"
+			"scope": "Dans",
+			"newBlankProject": "Nouveau projet vierge",
+			"newProjectFromTemplate": "Nouveau projet à partir d'un modèle…"
 		},
 		"notifications": "Notifications",
 		"sidebar": {

@@ -10,6 +10,7 @@ import {
   ProjectViewTabs,
 } from "@/components/common/project-view-tabs";
 import { ProjectTile } from "@/components/context-panel/panel-primitives";
+import ProjectFirstSteps from "@/components/create-project/project-first-steps";
 import FavoriteButton from "@/components/favorite/favorite-button";
 import ProjectLeadBadge from "@/components/project/project-lead-badge";
 import ProjectPublicBadge from "@/components/publication/project-public-badge";
@@ -237,6 +238,7 @@ export default function ProjectLayout({
       />
 
       <ProjectArchivedNotice project={project} />
+      {isTasksSection && <ProjectFirstSteps project={project} />}
 
       <Layout.Content>{children}</Layout.Content>
 

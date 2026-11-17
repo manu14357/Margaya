@@ -67,26 +67,152 @@
 		},
 		"modals": {
 			"createProject": {
-				"title": "新しいプロジェクトを作成",
-				"breadcrumbNew": "新しいプロジェクトを作成",
-				"workspaceFallback": "ワークスペース",
-				"description": "名前、キー、アイコンを設定してワークスペースに新しいプロジェクトを作成します。",
 				"pickIcon": "アイコンを選択",
 				"searchIcons": "アイコンを検索...",
 				"projectName": "プロジェクト名",
-				"keyLabel": "キー:",
-				"keyHint": "チケットIDに使用されます (例: {{example}}-123)",
-				"createButton": "プロジェクトを作成",
-				"errorToast": "プロジェクトの作成に失敗しました",
-				"keyTaken": "このワークスペースには、キー {{key}} のプロジェクトが既に存在します",
-				"blankProject": "空のプロジェクト",
 				"copyHint": "ステータス、カスタムフィールド、見積もり、設定、自動化がコピーされます。メンバー、連携、公開ボードはコピーされません。",
 				"includeOpenTasks": "未完了のタスクを含める",
 				"includeTemplates": "タスクテンプレートを含める",
 				"openTasksHint": "未完了のタスクを最大500件、サブタスク・ラベル・見積もりとともにコピーします。コメントと履歴はコピーされません。",
-				"restricted": "制限付き",
-				"restrictedHint": "このプロジェクトはメンバーだけが見られます。あなたが最初のメンバーになります。ワークスペースのオーナーと管理者はいつでも閲覧できます。",
-				"startFrom": "作成元"
+				"stepPrefix": "ステップ {{current}} / {{total}}:",
+				"stepLabel": "ステップ {{current}} / {{total}} · {{name}}",
+				"stepAnnouncement": "ステップ {{current}} / {{total}}: {{title}}",
+				"back": "戻る",
+				"tryAgain": "もう一度試す",
+				"restored": "作成途中のプロジェクトを復元しました。",
+				"startOver": "最初からやり直す",
+				"choose": {
+					"title": "プロジェクトを作成",
+					"subtitle": "プロジェクトには、継続中または終了日のある 1 つの作業の流れに関するタスク、ステータス、ビューがまとまっています。",
+					"stepName": "選択",
+					"search": "テンプレートを検索",
+					"categories": "テンプレートのカテゴリ",
+					"recommended": "おすすめ",
+					"all": "すべてのテンプレート",
+					"searchResults": "検索結果",
+					"fromWorkspace": "ワークスペースから",
+					"import": "他のツールや CSV ファイルからインポート",
+					"groups": {
+						"product": "プロダクトと技術",
+						"service": "サービスとサポート",
+						"growth": "グロース",
+						"everyday": "日常業務"
+					},
+					"blankName": "空のプロジェクト",
+					"blankNote": "未着手、進行中、確認中、完了。ほかは後から追加できます。",
+					"existingName": "既存のプロジェクトから始める",
+					"existingNote": "すでにあるプロジェクトのステータス、フィールド、設定をコピーします。",
+					"guidedTour": "または、ガイド付きツアーのプロジェクトを見てみる",
+					"resultCount_other": "{{count}} 件のテンプレート",
+					"noResultsTitle": "「{{query}}」に一致するテンプレートはありません",
+					"noResultsBody": "別のキーワードを試すか、空のプロジェクトから始めてください。",
+					"clearSearch": "検索をクリア",
+					"loadError": "テンプレートを読み込めませんでした。",
+					"useTemplate": "テンプレートを使用",
+					"startBlank": "空の状態で始める",
+					"useProject": "このプロジェクトを使用"
+				},
+				"preview": {
+					"region": "プレビュー: {{template}}",
+					"goodFor": "おすすめの用途: {{categories}}",
+					"restricted": "制限付きで開始するため、詳細はあなたが追加した人だけに共有されます。",
+					"statuses": "ステータス",
+					"views": "ビュー",
+					"fields": "フィールド",
+					"features": "含まれる機能",
+					"noFeatures": "ボードとリストのみ。機能はいつでもオンにできます。",
+					"examples": "サンプルタスク",
+					"noExamples": "サンプルタスクはありません",
+					"more_other": "+ ほか {{count}} 件",
+					"loadError": "このプレビューを読み込めませんでした。",
+					"fieldTypes": {
+						"text": "テキスト",
+						"number": "数値",
+						"date": "日付",
+						"dropdown": "ドロップダウン",
+						"boolean": "はい/いいえ"
+					}
+				},
+				"blank": {
+					"statuses": {
+						"todo": "未着手",
+						"inProgress": "進行中",
+						"inReview": "確認中",
+						"done": "完了"
+					}
+				},
+				"setup": {
+					"title": "プロジェクトを設定",
+					"subtitle": "必要なのは名前だけです。すべて後からプロジェクト設定で変更できます。",
+					"stepName": "設定",
+					"namePlaceholder": "例: Web サイトのリニューアル",
+					"nameRequired": "プロジェクトに名前を付けてください。",
+					"nameTooLong": "名前は 80 文字未満にしてください。",
+					"keyChip": "タスク ID: {{key}}-1",
+					"keyChange": "変更",
+					"keyLabel": "タスク ID の接頭辞",
+					"keyInvalid": "1～8 文字の英字または数字を使用してください。",
+					"keyTaken": "{{key}} はこのワークスペースですでに使われています。別のものを試してください。",
+					"examples": "サンプルタスクを追加",
+					"examplesHint_other": "このプロジェクトの使い方がわかる {{count}} 件のタスク。まとめて一度に削除できます。",
+					"labelsSkipped": "一部のラベルは追加されません: ワークスペースのラベルを作成する権限がありません。",
+					"featuresTitle": "オンのままにする機能",
+					"included": "含まれるもの: {{list}}",
+					"includedNone": "ボードとリストのみ",
+					"moreOptions": "その他のオプション (機能、プライバシー)",
+					"privacy": "プライバシー",
+					"privacyOpen": "オープン",
+					"privacyOpenHint": "ワークスペースの全員が見つけられ、各自のロールの権限で利用できます。",
+					"privacyRestricted": "制限付き",
+					"privacyRestrictedHint": "あなたが追加した人と、ワークスペースのオーナーと管理者のみ。",
+					"privacySuggested": "このテンプレートは制限付きプロジェクトを推奨しています。変更することもできます。",
+					"summary": "選択内容",
+					"yourChoice": "選択内容",
+					"change": "変更",
+					"statusCount_other": "{{count}} 個のステータス",
+					"exampleCount_other": "{{count}} 件のサンプルタスク",
+					"create": "プロジェクトを作成"
+				},
+				"status": {
+					"creating": "{{name}} を作成中…",
+					"created": "{{name}} を作成しました。最初のステップはボードの上にあります。",
+					"createdShort": "{{name}} を作成しました"
+				},
+				"error": {
+					"generic": "プロジェクトを作成できませんでした。選択内容は保持されているので、もう一度お試しください。",
+					"template": "このテンプレートはこのサーバーでは利用できなくなりました。別のテンプレートを選んでください。",
+					"forbidden": "ここでプロジェクトを作成する権限がなくなりました。",
+					"backToTemplates": "テンプレートに戻る"
+				},
+				"firstSteps": {
+					"label": "最初のステップ",
+					"title": "{{name}} の準備ができました。",
+					"progress": "最初のステップ · {{done}} / {{total}}",
+					"show": "表示",
+					"hide": "非表示",
+					"dismiss": "閉じる",
+					"doneLabel": "完了:",
+					"todoLabel": "未完了:",
+					"moveExample": "サンプルタスクを移動して流れを確認する",
+					"markDone": "完了にする",
+					"addTask": "最初の実際のタスクを追加する",
+					"addTaskAction": "タスクを追加",
+					"invite": "このプロジェクトにメンバーを招待する",
+					"inviteAction": "メンバーを招待",
+					"removeExamplesItem": "サンプルを削除する",
+					"removeExamples": "サンプルを削除",
+					"labelsSkipped": "ワークスペースのラベルを作成する権限がないため、一部のラベルは追加されませんでした。"
+				},
+				"examples": {
+					"banner": "このプロジェクトにはサンプルタスクがあります。",
+					"dismissBanner": "このメッセージを非表示",
+					"confirmTitle": "サンプルタスクを削除しますか？",
+					"confirmBody": "ゴミ箱に移動するので、そこから復元できます。",
+					"removed_other": "{{count}} 件のサンプルタスクをゴミ箱に移動しました",
+					"restoreHint": "プロジェクトのゴミ箱から復元できます。",
+					"openTrash": "ゴミ箱を開く",
+					"removeFailed": "サンプルタスクを削除できませんでした"
+				}
 			},
 			"createWorkspace": {
 				"breadcrumbMargaya": "MARGAYA",
@@ -96,7 +222,16 @@
 				"descriptionPlaceholder": "説明を追加...",
 				"createButton": "ワークスペースを作成",
 				"successToast": "ワークスペースを作成しました",
-				"errorToast": "ワークスペースの作成に失敗しました"
+				"restored": "下書きを復元しました。",
+				"ready": {
+					"title": "{{name}} の準備ができました",
+					"body": "プロジェクトから始めるか、先にメンバーを招待しましょう。",
+					"project": "プロジェクトを始める",
+					"projectNote": "テンプレートを選ぶか、空の状態から始めます。",
+					"invite": "メンバーを招待",
+					"inviteNote": "メールまたはリンクでチームメイトを追加します。",
+					"goToWorkspace": "ワークスペースへ移動"
+				}
 			},
 			"createTask": {
 				"breadcrumbTask": "タスク",
@@ -382,17 +517,12 @@
 			"createWorkspace": "ワークスペースを作成",
 			"workspaceCreatedTitle": "ワークスペースを作成しました",
 			"toast": {
-				"workspaceCreated": "ワークスペースを作成しました",
-				"createFailed": "ワークスペースの作成に失敗しました",
-				"inviteFailed": "招待を送信できませんでした",
-				"projectFailed": "プロジェクトを作成できませんでした",
-				"taskFailed": "タスクを追加できませんでした",
-				"templateFailed": "プロジェクトは作成されましたが、テンプレートの設定は適用されませんでした。"
+				"inviteFailed": "招待を送信できませんでした"
 			},
 			"validation": {
-				"workspaceNameRequired": "ワークスペース名を入力してください"
+				"workspaceNameRequired": "ワークスペース名を入力してください",
+				"workspaceNameTooLong": "80 文字未満にしてください。"
 			},
-			"addTask": "タスクを追加",
 			"back": "戻る",
 			"continue": "続ける",
 			"createProject": "プロジェクトを作成",
@@ -405,35 +535,87 @@
 			"inviting": "招待中…",
 			"joinDescription": "招待が届いています。すでに活動中のチームに参加するか、下から自分のワークスペースを作成できます。",
 			"joinTitle": "ワークスペースに参加",
-			"openBoard": "ボードを開く",
 			"progress": "ステップ {{current}} / {{total}}",
 			"projectCreated": "プロジェクトを作成しました",
-			"projectKey": "キー",
-			"projectKeyHint": "タスクIDはキーで始まります（例: {{example}}-1）。",
-			"projectName": "プロジェクト名",
-			"projectNamePlaceholder": "例: Webサイトのリニューアル",
-			"projectSubtitle": "必要なのは名前だけです。ほかの項目は後から変更できます。",
 			"projectTitle": "最初のプロジェクトを始めましょう",
 			"sendInvite": "招待",
 			"skip": "今はスキップ",
-			"taskLabel": "タスク名",
-			"taskPlaceholder": "例: ローンチ計画を作成する",
-			"tasksSubtitle": "タスクを入力して Enter を押します。どのタスクも {{project}} の To Do に追加されます。",
-			"tasksTitle": "最初のタスクを追加",
-			"templateLabel": "このチームの進め方は？",
-			"templates": {
-				"board": {
-					"name": "シンプルなボード",
-					"note": "To Do から Done までのカラム"
-				},
-				"cycles": {
-					"name": "サイクル",
-					"note": "見積もり付きの期間区切りサイクル"
-				},
-				"intake": {
-					"name": "受付",
-					"note": "届いたリクエストのキュー"
-				}
+			"stepPrefix": "ステップ {{current}} / {{total}}:",
+			"stepNames": {
+				"workspace": "名前",
+				"project": "最初のプロジェクト",
+				"invite": "招待",
+				"done": "完了"
+			},
+			"nameWorkspaceTitle": "ワークスペースに名前を付ける",
+			"nameWorkspaceSubtitle": "ここにあなたのプロジェクトとメンバーが集まります。名前はいつでも変更できます。",
+			"addDescription": "+ 説明を追加",
+			"tryAgain": "もう一度試す",
+			"intent": {
+				"legend": "最初に何を管理しますか？ (任意)",
+				"hint": "合ったテンプレートをおすすめします。何かが制限されることはありません。",
+				"more": "その他の種類の作業",
+				"team": "チームのタスク",
+				"software": "ソフトウェア",
+				"product": "プロダクト",
+				"marketing": "マーケティング",
+				"service": "サービスデスク",
+				"it": "IT",
+				"hr": "人事",
+				"personal": "個人",
+				"sales": "営業",
+				"support": "カスタマーサポート",
+				"finance": "経理・財務",
+				"design": "デザイン",
+				"operations": "オペレーション",
+				"legal": "法務",
+				"facilities": "施設管理",
+				"analytics": "アナリティクス",
+				"nonprofit": "非営利"
+			},
+			"waiting": {
+				"title": "招待を待っています",
+				"body": "この Margaya サーバーでは、ワークスペースは管理者が作成します。管理者に招待を依頼すると、招待がここに表示されます。",
+				"checkAgain": "もう一度確認"
+			},
+			"errors": {
+				"workspace": "ワークスペースを作成できませんでした。接続を確認して、もう一度お試しください。",
+				"template": "このテンプレートは利用できなくなりました。別のテンプレートを選んでください。"
+			},
+			"status": {
+				"creatingWorkspace": "ワークスペースを作成中…",
+				"workspaceCreated": "{{name}} を作成しました",
+				"projectCreated": "{{name}} を作成しました",
+				"creatingStarter": "プロジェクトを作成中…"
+			},
+			"firstProjectSubtitle": "プロジェクトには、継続中または終了日のある 1 つの作業の流れに関するタスク、ステータス、ビューがまとまっています。",
+			"recommended": "あなたへのおすすめ",
+			"browseAll": "すべてのテンプレートを見る",
+			"showRecommended": "おすすめのみ表示",
+			"guidedTour": "または、ガイド付きツアーのプロジェクトを見てみる",
+			"setUpPanel": "設定",
+			"creatingProject": "プロジェクトを作成中…",
+			"createProjects_other": "{{count}} 件のプロジェクトを作成",
+			"projectCreatedWithExamples_other": "プロジェクトを作成しました · サンプルタスク {{count}} 件",
+			"starters": {
+				"title": "セットで始める",
+				"hint": "作業の流れがすでに決まっているチーム向けの複数のプロジェクト。",
+				"projectCount_other": "{{count}} 件のプロジェクト",
+				"examplesHint": "プロジェクトごとに最大 4 件のサンプルタスク。まとめて一度に削除できます。"
+			},
+			"inviteSubtitlePersonal": "ひとりで使いますか？ その場合はスキップしてください。メンバーはいつでも「チーム」から招待できます。",
+			"finish": "完了",
+			"done": {
+				"title": "準備が整いました",
+				"workspace": "ワークスペース {{name}}",
+				"project": "プロジェクト {{name}}",
+				"blankProject": "空のプロジェクト {{name}}",
+				"projectWithExamples_other": "プロジェクト {{name}} (サンプルタスク {{count}} 件)",
+				"projects_other": "{{count}} 件のプロジェクト ({{name}} から開始)",
+				"invited_other": "{{count}} 人を招待しました",
+				"open": "{{name}} を開く",
+				"goToWorkspace": "ワークスペースへ移動",
+				"hint": "ボードには、始めるのに役立つ短いチェックリストがあります。"
 			}
 		},
 		"profileSetup": {
@@ -3846,7 +4028,9 @@
 			},
 			"recent": "最近",
 			"removeScope": "すべてを検索",
-			"scope": "対象"
+			"scope": "対象",
+			"newBlankProject": "新しい空のプロジェクト",
+			"newProjectFromTemplate": "テンプレートから新しいプロジェクト…"
 		},
 		"notifications": "通知",
 		"sidebar": {
