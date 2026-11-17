@@ -25,6 +25,13 @@ type TaskDeleteButtonProps = {
   className?: string;
   /** Hide the label (tight headers); the name stays on `aria-label`. */
   iconOnly?: boolean;
+  /**
+   * False when something else opens the confirm (a "…" menu item): the
+   * dialog stays mounted, controlled by `open` and `onOpenChange`.
+   */
+  showTrigger?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 export default function TaskDeleteButton({
@@ -32,9 +39,17 @@ export default function TaskDeleteButton({
   onDeleted,
   className,
   iconOnly = false,
+  showTrigger = true,
+  open,
+  onOpenChange,
 }: TaskDeleteButtonProps) {
   const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+  const [ownOpen, setOwnOpen] = useState(false);
+  const isOpen = open ?? ownOpen;
+  const setIsOpen = (next: boolean) => {
+    setOwnOpen(next);
+    onOpenChange?.(next);
+  };
   const { canDeleteTasks, isCheckingPermissions } = useWorkspacePermission();
   const { mutateAsync: deleteTask, isPending } = useDeleteTask();
 
@@ -60,27 +75,29 @@ export default function TaskDeleteButton({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger
-        render={
-          <Button
-            variant="ghost"
-            size={iconOnly ? "icon-sm" : "sm"}
-            aria-label={t("tasks:delete.action")}
-            title={iconOnly ? t("tasks:delete.action") : undefined}
-            className={cn(
-              "text-destructive hover:bg-destructive/10 hover:text-destructive",
-              className,
-            )}
-          />
-        }
-      >
-        <Trash2 className="size-4" />
-        {!iconOnly && (
-          <TopBarLabel className="hidden sm:inline">
-            {t("tasks:delete.action")}
-          </TopBarLabel>
-        )}
-      </AlertDialogTrigger>
+      {showTrigger && (
+        <AlertDialogTrigger
+          render={
+            <Button
+              variant="ghost"
+              size={iconOnly ? "icon-sm" : "sm"}
+              aria-label={t("tasks:delete.action")}
+              title={iconOnly ? t("tasks:delete.action") : undefined}
+              className={cn(
+                "text-destructive hover:bg-destructive/10 hover:text-destructive",
+                className,
+              )}
+            />
+          }
+        >
+          <Trash2 className="size-4" />
+          {!iconOnly && (
+            <TopBarLabel className="hidden sm:inline">
+              {t("tasks:delete.action")}
+            </TopBarLabel>
+          )}
+        </AlertDialogTrigger>
+      )}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{t("tasks:delete.title")}</AlertDialogTitle>

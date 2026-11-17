@@ -53,6 +53,25 @@ export function subscriptionDisplay(
   };
 }
 
+/**
+ * Subscribe or unsubscribe as a menu entry (a crowded panel header's "…"):
+ * its label, icon and toggle, or null until the state loads.
+ */
+export function useTaskSubscriptionToggle(taskId: string | undefined) {
+  const { t } = useTranslation();
+  const { data: subscription } = useTaskSubscription(taskId);
+  const { mutate, isPending } = useToggleTaskSubscription(taskId ?? "");
+  if (!taskId || !subscription) return null;
+  const display = subscriptionDisplay(subscription);
+  return {
+    label: t(display.labelKey),
+    icon: display.icon,
+    toggle: () => {
+      if (!isPending) mutate(!subscription.subscribed);
+    },
+  };
+}
+
 type TaskSubscribeButtonProps = {
   taskId: string | undefined;
   /** `icon` hides the label for tight headers. */

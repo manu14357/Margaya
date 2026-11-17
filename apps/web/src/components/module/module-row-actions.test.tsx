@@ -19,6 +19,16 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
+// What a crowded top bar hands this menu (null outside a top bar).
+const overflow = vi.hoisted(() => ({
+  items: null as
+    | null
+    | { id: string; label: string; icon: null; onSelect: () => void }[],
+}));
+vi.mock("@/components/common/header/top-bar-overflow", () => ({
+  useTopBarOverflowHost: () => overflow.items,
+}));
+
 vi.mock("@/hooks/use-workspace-permission", () => ({
   useWorkspacePermission: () => ({
     canUpdateModules: () => permissions.canUpdateModules,
@@ -44,6 +54,7 @@ vi.mock("./delete-module-dialog", () => ({ default: () => null }));
 
 afterEach(() => {
   cleanup();
+  overflow.items = null;
   document.body.innerHTML = "";
   permissions.canUpdateModules = true;
   permissions.canReadAnalytics = false;

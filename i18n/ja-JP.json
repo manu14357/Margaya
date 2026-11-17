@@ -4040,7 +4040,8 @@
 			"unreadOnly": "未読のみ",
 			"whatsNew": "新機能",
 			"sourceCode": "ソースコード",
-			"workspaceAnalytics": "ワークスペース"
+			"workspaceAnalytics": "ワークスペース",
+			"moreTabs": "その他のタブ"
 		},
 		"focus": {
 			"menuLabel": "通知を一時停止",

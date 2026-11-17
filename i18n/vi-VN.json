@@ -4040,7 +4040,8 @@
 			"unreadOnly": "Chỉ chưa đọc",
 			"whatsNew": "Có gì mới",
 			"sourceCode": "Mã nguồn",
-			"workspaceAnalytics": "Không gian làm việc"
+			"workspaceAnalytics": "Không gian làm việc",
+			"moreTabs": "Thêm thẻ"
 		},
 		"focus": {
 			"menuLabel": "Tạm dừng thông báo",

@@ -4101,7 +4101,8 @@
 			"unreadOnly": "Yalnızca okunmamışlar",
 			"whatsNew": "Yenilikler",
 			"sourceCode": "Kaynak kod",
-			"workspaceAnalytics": "Çalışma alanı"
+			"workspaceAnalytics": "Çalışma alanı",
+			"moreTabs": "Daha fazla sekme"
 		},
 		"focus": {
 			"menuLabel": "Bildirimleri duraklat",

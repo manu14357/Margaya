@@ -388,6 +388,7 @@ export default function PagesList({
                 variant="ghost"
                 size="icon-sm"
                 aria-label={t("pages:list.searchPlaceholder")}
+                title={t("pages:list.searchPlaceholder")}
                 aria-expanded={false}
                 className="text-muted-foreground"
                 onClick={openSearch}

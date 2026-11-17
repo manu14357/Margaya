@@ -56,7 +56,10 @@ export default function ModulesDisplayMenu({
         }
       >
         <SlidersHorizontal className="size-3" />
-        <span className="hidden sm:inline">{t("modules:display.menu")}</span>
+        {/* Read on phones too, where only the icon shows. */}
+        <span className="sr-only sm:not-sr-only">
+          {t("modules:display.menu")}
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuGroup>

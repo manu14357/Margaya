@@ -15,6 +15,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
 import { useTopBarDensity } from "./top-bar-density";
@@ -148,6 +149,29 @@ export function TopBarCollapsible({
   }, [collapsed, registry, id, label]);
 
   return collapsed ? null : children;
+}
+
+/**
+ * The entries a hosting page menu lists first (see useTopBarOverflowHost),
+ * then a divider before the menu's own items. Nothing while the bar has room.
+ */
+export function TopBarOverflowMenuItems({
+  items,
+}: {
+  items: TopBarOverflowItem[] | null;
+}) {
+  if (!items || items.length === 0) return null;
+  return (
+    <>
+      {items.map((item) => (
+        <DropdownMenuItem key={item.id} onClick={item.onSelect}>
+          {item.icon}
+          {item.label}
+        </DropdownMenuItem>
+      ))}
+      <DropdownMenuSeparator />
+    </>
+  );
 }
 
 /**

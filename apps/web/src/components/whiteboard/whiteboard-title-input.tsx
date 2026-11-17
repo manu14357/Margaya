@@ -92,9 +92,11 @@ export default function WhiteboardTitleInput({
       value={value}
       maxLength={WHITEBOARD_TITLE_MAX_LENGTH}
       aria-label={t("whiteboards:screen.titleLabel")}
+      // The whole title while the header truncates it.
+      title={value}
       placeholder={t("whiteboards:list.untitled")}
       className={cn(
-        "h-7 min-w-0 rounded-md border pointer-coarse:h-11 border-transparent bg-transparent px-1.5 font-semibold text-base outline-none transition-colors duration-150 placeholder:text-muted-foreground hover:border-border focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 sm:text-sm",
+        "h-7 min-w-0 text-ellipsis rounded-md border pointer-coarse:h-11 border-transparent bg-transparent px-1.5 font-semibold text-base outline-none transition-colors duration-150 placeholder:text-muted-foreground hover:border-border focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 sm:text-sm",
         className,
       )}
       onFocus={() => {

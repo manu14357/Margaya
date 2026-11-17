@@ -10,14 +10,13 @@ import {
   Highlighter,
   ImageIcon,
   ListTodo,
-  Lock,
-  LockOpen,
   type LucideIcon,
   Minus,
   MoreHorizontal,
   MousePointer2,
   MoveUpRight,
   Pencil,
+  Pin,
   Shapes,
   Square,
   StickyNote,
@@ -200,11 +199,9 @@ export function EditorToolbar({
           />
         }
       >
-        {locked ? (
-          <Lock className="size-4" aria-hidden="true" />
-        ) : (
-          <LockOpen className="size-4" aria-hidden="true" />
-        )}
+        {/* A pin, not a padlock: the board's own lock sits in the header.
+            The pressed state shows whether the tool stays active. */}
+        <Pin className="size-4" aria-hidden="true" />
       </TooltipTrigger>
       <TooltipContent
         side={compact ? "top" : "bottom"}
@@ -260,11 +257,7 @@ export function EditorToolbar({
               })}
               {!readOnly && (
                 <MenuItem onClick={onToggleLock}>
-                  {locked ? (
-                    <Lock aria-hidden="true" />
-                  ) : (
-                    <LockOpen aria-hidden="true" />
-                  )}
+                  <Pin aria-hidden="true" />
                   {lockLabel}
                 </MenuItem>
               )}
@@ -383,7 +376,7 @@ function ShapeToolButton({
                   <ToolbarButton
                     aria-label={libraryLabel}
                     aria-keyshortcuts="Shift+S"
-                    className="relative -ms-1 inline-flex h-9 w-4 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors duration-150 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-popup-open:bg-accent sm:h-8 pointer-coarse:h-11 pointer-coarse:w-11 motion-reduce:transition-none"
+                    className="relative inline-flex h-9 w-4 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors duration-150 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-popup-open:bg-accent sm:h-8 pointer-coarse:h-11 pointer-coarse:w-11 motion-reduce:transition-none"
                     data-testid="whiteboard-shape-picker-trigger"
                   />
                 }

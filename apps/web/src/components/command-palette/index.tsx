@@ -177,22 +177,38 @@ function CommandPalette() {
     isProjectFeatureOn("intake");
   const canOpenAnalytics = !isCheckingPermissions && canReadAnalytics();
 
+  // The palette has no trigger element (the top bar's field, the rail, the
+  // mobile tabs and shortcuts all open it), so closing it would drop focus to
+  // the page. It returns focus to whatever had it when it opened instead.
+  const openerRef = useRef<HTMLElement | null>(null);
+  const rememberOpener = useCallback(() => {
+    const active = document.activeElement;
+    // Re-opened from inside (a new query): keep the original opener.
+    if (active?.closest("[data-slot=command-dialog-popup]")) return;
+    openerRef.current =
+      active instanceof HTMLElement && active !== document.body ? active : null;
+  }, []);
   const openWith = useCallback(
     (nextQuery: string) => {
+      rememberOpener();
       setQuery(nextQuery);
       setScopeProjectId(projectIdFromRoute);
       setOpen(true);
     },
-    [projectIdFromRoute],
+    [projectIdFromRoute, rememberOpener],
   );
 
-  const handleOpenChange = useCallback((next: boolean) => {
-    setOpen(next);
-    if (!next) {
-      setQuery("");
-      setSubmenu(null);
-    }
-  }, []);
+  const handleOpenChange = useCallback(
+    (next: boolean) => {
+      if (next) rememberOpener();
+      setOpen(next);
+      if (!next) {
+        setQuery("");
+        setSubmenu(null);
+      }
+    },
+    [rememberOpener],
+  );
   const openSubmenu = useCallback((next: PaletteSubmenu) => {
     setSubmenu(next);
     setQuery("");
@@ -984,7 +1000,7 @@ function CommandPalette() {
       >
         <CommandDialogPopup
           instant
-          finalFocus={skipFocusReturn ? false : undefined}
+          finalFocus={skipFocusReturn ? false : openerRef}
         >
           <Command
             items={visibleGroups}
@@ -1036,8 +1052,10 @@ function CommandPalette() {
                               <span className="min-w-0 flex-1 truncate">
                                 {item.label}
                               </span>
+                              {/* A long hint (a project name) truncates
+                                  too, never squeezing the label away. */}
                               {item.hint && (
-                                <span className="shrink-0 font-mono text-muted-foreground text-xs">
+                                <span className="min-w-0 max-w-[40%] shrink-0 truncate font-mono text-muted-foreground text-xs">
                                   {item.hint}
                                 </span>
                               )}

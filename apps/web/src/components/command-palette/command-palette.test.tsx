@@ -378,6 +378,27 @@ describe("CommandPalette", () => {
     ).toHaveValue("#");
   });
 
+  it("gives focus back to the command field it opened from", async () => {
+    const field = document.createElement("button");
+    document.body.append(field);
+    render(<CommandPalette />);
+    field.focus();
+    act(() => openCommandPalette());
+    const input = screen.getByPlaceholderText(
+      "navigation:commandPalette.inputPlaceholder",
+    );
+    await waitFor(() => expect(input).toHaveFocus());
+
+    fireEvent.keyDown(input, { key: "Escape" });
+    await waitFor(() =>
+      expect(
+        document.querySelector("[data-slot='command-dialog-popup']"),
+      ).toBeNull(),
+    );
+    await waitFor(() => expect(field).toHaveFocus());
+    field.remove();
+  });
+
   it("stays as it was with no task open", () => {
     render(<CommandPalette />);
     openPalette();

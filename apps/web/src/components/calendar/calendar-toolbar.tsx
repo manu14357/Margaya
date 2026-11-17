@@ -89,6 +89,11 @@ export default function CalendarToolbar({
               ? t("tasks:calendar.previousWeek")
               : t("tasks:calendar.previousMonth")
           }
+          title={
+            isWeek
+              ? t("tasks:calendar.previousWeek")
+              : t("tasks:calendar.previousMonth")
+          }
           onClick={onPrevious}
         >
           <ChevronLeft />
@@ -106,6 +111,11 @@ export default function CalendarToolbar({
           size="icon-xs"
           className="touch-manipulation"
           aria-label={
+            isWeek
+              ? t("tasks:calendar.nextWeek")
+              : t("tasks:calendar.nextMonth")
+          }
+          title={
             isWeek
               ? t("tasks:calendar.nextWeek")
               : t("tasks:calendar.nextMonth")

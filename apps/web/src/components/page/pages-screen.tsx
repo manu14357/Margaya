@@ -108,6 +108,7 @@ export default function PagesScreen({
                   <Button
                     size="icon-xs"
                     aria-label={t("pages:templates.moreCreateOptions")}
+                    title={t("pages:templates.moreCreateOptions")}
                     className="pointer-coarse:min-w-11"
                   />
                 }

@@ -4101,7 +4101,8 @@
 			"unreadOnly": "Само непрочитани",
 			"whatsNew": "Што е ново",
 			"sourceCode": "Изворен код",
-			"workspaceAnalytics": "Работен простор"
+			"workspaceAnalytics": "Работен простор",
+			"moreTabs": "Повеќе јазичиња"
 		},
 		"focus": {
 			"menuLabel": "Паузирај ги известувањата",

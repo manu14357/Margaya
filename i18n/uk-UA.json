@@ -4227,7 +4227,8 @@
 			"unreadOnly": "Лише непрочитані",
 			"whatsNew": "Що нового",
 			"sourceCode": "Вихідний код",
-			"workspaceAnalytics": "Робочий простір"
+			"workspaceAnalytics": "Робочий простір",
+			"moreTabs": "Більше вкладок"
 		},
 		"focus": {
 			"menuLabel": "Призупинити сповіщення",

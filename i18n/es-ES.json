@@ -4164,7 +4164,8 @@
 			"unreadOnly": "Solo sin leer",
 			"whatsNew": "Novedades",
 			"sourceCode": "Código fuente",
-			"workspaceAnalytics": "Espacio de trabajo"
+			"workspaceAnalytics": "Espacio de trabajo",
+			"moreTabs": "Más pestañas"
 		},
 		"focus": {
 			"menuLabel": "Pausar notificaciones",

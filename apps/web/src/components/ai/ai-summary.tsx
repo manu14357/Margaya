@@ -272,7 +272,7 @@ function AiSummaryCard({
       aria-label={t(LABEL_KEY[kind])}
       tabIndex={-1}
       onKeyDown={onKeyDown}
-      className="fixed inset-x-4 top-16 z-40 flex max-h-[70vh] flex-col rounded-lg border bg-popover text-popover-foreground shadow-lg/5 outline-none sm:inset-x-auto sm:right-4 sm:w-[28rem]"
+      className="fixed inset-x-4 top-16 z-(--z-floating) flex max-h-[70vh] flex-col rounded-lg border bg-popover text-popover-foreground shadow-lg/5 outline-none sm:inset-x-auto sm:right-4 sm:w-[28rem]"
     >
       <div className="flex items-center gap-2 border-b px-3 py-2">
         <Sparkles

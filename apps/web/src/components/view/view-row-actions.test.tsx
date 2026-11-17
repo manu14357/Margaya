@@ -30,6 +30,10 @@ vi.mock("@/components/favorite/favorite-button", () => ({
   default: () => <div>favorite</div>,
 }));
 
+// Outside a top bar there is nothing to host.
+vi.mock("@/components/common/header/top-bar-overflow", () => ({
+  useTopBarOverflowHost: () => null,
+}));
 vi.mock("./view-form-dialog", () => ({ default: () => null }));
 vi.mock("./delete-view-dialog", () => ({ default: () => null }));
 

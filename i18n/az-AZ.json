@@ -4101,7 +4101,8 @@
 			"unreadOnly": "Yalnız oxunmamışlar",
 			"whatsNew": "Yeniliklər",
 			"sourceCode": "Mənbə kodu",
-			"workspaceAnalytics": "İş sahəsi"
+			"workspaceAnalytics": "İş sahəsi",
+			"moreTabs": "Daha çox bölmə"
 		},
 		"focus": {
 			"menuLabel": "Bildirişləri dayandır",

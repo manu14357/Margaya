@@ -4101,7 +4101,8 @@
 			"unreadOnly": "Nur ungelesene",
 			"whatsNew": "Neuigkeiten",
 			"sourceCode": "Quellcode",
-			"workspaceAnalytics": "Workspace"
+			"workspaceAnalytics": "Workspace",
+			"moreTabs": "Mehr Tabs"
 		},
 		"focus": {
 			"menuLabel": "Benachrichtigungen pausieren",

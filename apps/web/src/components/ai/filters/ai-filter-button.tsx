@@ -88,15 +88,18 @@ export default function AiFilterButton({
             type="button"
             variant="ghost"
             size="xs"
-            className="shrink-0 gap-1 text-muted-foreground"
+            // As tall as Filter and My tasks beside it, with the same icon.
+            className="h-7 shrink-0 gap-1.5 px-2.5 text-muted-foreground text-xs sm:h-7"
             disabled={disabled}
           />
         }
         aria-label={t("ai:filters.button")}
         title={t("ai:filters.button")}
       >
-        <Sparkles aria-hidden className="size-3.5" />
-        <span className="hidden lg:inline">{t("ai:filters.short")}</span>
+        <Sparkles aria-hidden className="size-3" />
+        {/* From xl: below it the label pushed My tasks out of the row on a
+            cycle or module page with its side panel open. */}
+        <span className="hidden xl:inline">{t("ai:filters.short")}</span>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-80 p-3">
         <form

@@ -4040,7 +4040,8 @@
 			"unreadOnly": "읽지 않음만",
 			"whatsNew": "새로운 소식",
 			"sourceCode": "소스 코드",
-			"workspaceAnalytics": "워크스페이스"
+			"workspaceAnalytics": "워크스페이스",
+			"moreTabs": "탭 더 보기"
 		},
 		"focus": {
 			"menuLabel": "알림 일시 중지",

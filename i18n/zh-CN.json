@@ -4040,7 +4040,8 @@
 			"unreadOnly": "仅未读",
 			"whatsNew": "更新内容",
 			"sourceCode": "源代码",
-			"workspaceAnalytics": "工作区"
+			"workspaceAnalytics": "工作区",
+			"moreTabs": "更多标签页"
 		},
 		"focus": {
 			"menuLabel": "暂停通知",

@@ -96,7 +96,10 @@ export default function ModulesFilterMenu({
         }
       >
         <Filter className="size-3" />
-        <span className="hidden sm:inline">{t("modules:filters.menu")}</span>
+        {/* Read on phones too, where only the icon shows. */}
+        <span className="sr-only sm:not-sr-only">
+          {t("modules:filters.menu")}
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuGroup>

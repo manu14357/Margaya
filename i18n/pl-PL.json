@@ -842,7 +842,8 @@
 			"unreadOnly": "Tylko nieprzeczytane",
 			"whatsNew": "Co nowego",
 			"sourceCode": "Kod źródłowy",
-			"workspaceAnalytics": "Obszar roboczy"
+			"workspaceAnalytics": "Obszar roboczy",
+			"moreTabs": "Więcej kart"
 		},
 		"focus": {
 			"menuLabel": "Wstrzymaj powiadomienia",

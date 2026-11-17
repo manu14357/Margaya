@@ -352,6 +352,7 @@ export default function WhiteboardsScreen({
                   <Button
                     size="icon-xs"
                     aria-label={t("whiteboards:list.moreCreateOptions")}
+                    title={t("whiteboards:list.moreCreateOptions")}
                     className="pointer-coarse:min-w-11"
                   />
                 }

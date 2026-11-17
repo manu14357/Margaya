@@ -75,6 +75,7 @@ export default function WhiteboardExportMenu({
             size="icon-sm"
             disabled={!editor}
             aria-label={t("whiteboards:actions.export")}
+            title={t("whiteboards:actions.export")}
             className="text-muted-foreground"
           />
         }

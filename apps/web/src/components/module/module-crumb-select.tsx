@@ -56,6 +56,7 @@ export default function ModuleCrumbSelect({
               size="xs"
               aria-label={t("modules:detail.switchModule")}
               className="h-7 max-w-56 justify-between gap-2 px-2 text-foreground text-xs"
+              title={moduleName}
             />
           }
         >

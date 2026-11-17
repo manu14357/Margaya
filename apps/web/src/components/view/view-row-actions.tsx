@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useTopBarOverflowHost } from "@/components/common/header/top-bar-overflow";
 import FavoriteButton from "@/components/favorite/favorite-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -58,6 +59,9 @@ export default function ViewRowActions({
   className,
 }: ViewRowActionsProps) {
   const { t } = useTranslation();
+  // On a view's page, a crowded top bar hands this menu what it moved out
+  // of the row, so the bar shows one "…", not two.
+  const overflow = useTopBarOverflowHost();
   const { canCreateViews, isCheckingPermissions } = useWorkspacePermission();
   const duplicate = useDuplicateView();
   const setLock = useSetViewLock();
@@ -137,6 +141,7 @@ export default function ViewRowActions({
               variant="ghost"
               size="icon-xs"
               aria-label={t("views:actions.menu")}
+              title={t("views:actions.menu")}
               className={className}
               onClick={(event) => event.stopPropagation()}
             />
@@ -149,6 +154,17 @@ export default function ViewRowActions({
           className="w-56"
           onClick={(event) => event.stopPropagation()}
         >
+          {overflow && overflow.length > 0 && (
+            <>
+              {overflow.map((item) => (
+                <DropdownMenuItem key={item.id} onClick={item.onSelect}>
+                  {item.icon}
+                  {item.label}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+            </>
+          )}
           <FavoriteButton
             variant="menu-item"
             workspaceId={view.workspaceId}

@@ -12,8 +12,9 @@ import { cn } from "@/lib/cn";
 
 /**
  * The top bar's command field: a button that opens the command palette.
- * Between 10rem and 24rem wide while the bar has room; `compact` makes it a
- * search icon that opens the same palette.
+ * Between 15rem and 24rem wide while the bar has room (narrower, its prompt
+ * and shortcut would be cut off, so the bar turns compact first); `compact`
+ * makes it a search icon that opens the same palette.
  */
 export function CommandField({
   compact = false,
@@ -63,7 +64,7 @@ export function CommandField({
       onClick={() => openCommandPalette()}
       className={cn(
         // Touch: reaches 44px tall through an invisible hit area.
-        "relative flex h-8 w-60 min-w-40 cursor-pointer items-center gap-2 overflow-hidden rounded-full border border-input bg-card ps-3 pe-1.5 text-muted-foreground/80 text-sm outline-hidden transition-colors hover:border-ring/40 hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:overflow-visible pointer-coarse:after:absolute pointer-coarse:after:inset-x-0 pointer-coarse:after:-inset-y-[7px] lg:w-96",
+        "relative flex h-8 w-60 min-w-60 cursor-pointer items-center gap-2 overflow-hidden rounded-full border border-input bg-card ps-3 pe-1.5 text-muted-foreground/80 text-sm outline-hidden transition-colors hover:border-ring/40 hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:overflow-visible pointer-coarse:after:absolute pointer-coarse:after:inset-x-0 pointer-coarse:after:-inset-y-[7px] lg:w-96",
         className,
       )}
       data-slot="command-field"

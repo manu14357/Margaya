@@ -182,6 +182,16 @@ export function TopBar({ title, place, actions, className }: TopBarProps) {
                 <NotificationDropdown />
               </div>
             )}
+            {/* The app's own controls (Ask, notifications) and the page's
+                actions are two groups: a divider keeps a page's bell or
+                "…" from reading as the app's. */}
+            {full && actions && (
+              <span
+                aria-hidden
+                className="mx-0.5 hidden h-5 w-px shrink-0 bg-border sm:block"
+                data-slot="top-bar-divider"
+              />
+            )}
             {actions}
             {/* Crowded: Ask and the page's secondary actions wait in "More". */}
             {!full && !overflow.hosted && (

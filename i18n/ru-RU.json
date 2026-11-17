@@ -4235,7 +4235,8 @@
 			"unreadOnly": "Только непрочитанные",
 			"whatsNew": "Что нового",
 			"sourceCode": "Исходный код",
-			"workspaceAnalytics": "Рабочая область"
+			"workspaceAnalytics": "Рабочая область",
+			"moreTabs": "Ещё вкладки"
 		},
 		"focus": {
 			"menuLabel": "Приостановить уведомления",

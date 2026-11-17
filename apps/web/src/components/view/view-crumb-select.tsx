@@ -56,6 +56,7 @@ export default function ViewCrumbSelect({
               variant="ghost"
               size="xs"
               className="h-7 max-w-56 justify-between gap-2 px-2 text-foreground text-xs"
+              title={view?.name}
             />
           }
         >

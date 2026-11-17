@@ -171,6 +171,9 @@ export default function ProjectLayout({
               projectName={project?.name}
               onSelectProject={handleProjectSwitch}
               onAddProject={() => setIsCreateProjectModalOpen(true)}
+              // With a place after it (a cycle, a page) a long project name
+              // leaves that place room instead of pushing it out of the bar.
+              className={extraCrumbs ? "xl:max-w-64" : undefined}
             />
             {project && (
               <TopBarRoomy>
@@ -206,8 +209,11 @@ export default function ProjectLayout({
               </TopBarRoomy>
             )}
             {/* Below xl the top bar has no room for them beside the actions. */}
+            {/* The crumbs' switchers shrink and truncate with an ellipsis
+                (buttons do not shrink by default), never cut off mid-word; the
+                section links before them keep their size. */}
             {extraCrumbs && (
-              <span className="hidden min-w-0 items-center gap-1 xl:flex">
+              <span className="hidden min-w-0 items-center gap-1 xl:flex [&_a]:shrink-0 [&_button]:min-w-0 [&_button]:shrink">
                 <span aria-hidden className="text-muted-foreground/60">
                   ·
                 </span>

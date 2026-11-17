@@ -4101,7 +4101,8 @@
 			"unreadOnly": "Μόνο μη αναγνωσμένα",
 			"whatsNew": "Τι νέο υπάρχει",
 			"sourceCode": "Πηγαίος κώδικας",
-			"workspaceAnalytics": "Χώρος εργασίας"
+			"workspaceAnalytics": "Χώρος εργασίας",
+			"moreTabs": "Περισσότερες καρτέλες"
 		},
 		"focus": {
 			"menuLabel": "Παύση ειδοποιήσεων",

@@ -28,7 +28,7 @@ export default function TaskStatusChip({
   return (
     <Badge
       variant="outline"
-      className="hidden max-w-40 shrink-0 gap-1 rounded-full px-2 sm:inline-flex"
+      className="inline-flex min-w-0 max-w-40 gap-1 rounded-full px-2"
       title={t("tasks:status.label")}
     >
       <span aria-hidden className="flex shrink-0 [&_svg]:size-3">

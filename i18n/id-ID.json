@@ -4040,7 +4040,8 @@
 			"unreadOnly": "Hanya yang belum dibaca",
 			"whatsNew": "Yang baru",
 			"sourceCode": "Kode sumber",
-			"workspaceAnalytics": "Ruang kerja"
+			"workspaceAnalytics": "Ruang kerja",
+			"moreTabs": "Tab lainnya"
 		},
 		"focus": {
 			"menuLabel": "Jeda notifikasi",

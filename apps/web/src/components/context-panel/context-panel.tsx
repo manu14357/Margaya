@@ -1,5 +1,5 @@
 import { useLocation } from "@tanstack/react-router";
-import { CircleQuestionMark, PanelLeftClose, X } from "lucide-react";
+import { CircleQuestionMark, PanelLeftClose } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useRailDestinations } from "@/components/app-rail";
@@ -135,7 +135,7 @@ function PanelContents({
   return (
     <div className="flex h-full min-h-0 flex-col">
       {drawer && (
-        <div className="border-b p-2 min-[520px]:hidden">
+        <div className="border-b p-2 ps-[calc(--spacing(2)+var(--sheet-start-inset,0px))] min-[520px]:hidden">
           <WorkspaceSwitcher variant="row" />
         </div>
       )}
@@ -171,7 +171,9 @@ function PanelContents({
               />
             }
           >
-            {drawer ? <X /> : <PanelLeftClose />}
+            {/* One close-panel glyph for every side panel; an X closes
+                dialogs and the window. */}
+            <PanelLeftClose className="rtl:-scale-x-100" />
           </TooltipTrigger>
           <TooltipContent>
             <KbdSequence

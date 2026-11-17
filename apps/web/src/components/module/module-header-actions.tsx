@@ -1,6 +1,11 @@
 import { PanelRight, Plus, SquarePlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import BriefButton from "@/components/ai/brief/brief-button";
+import {
+  TopBarLabel,
+  TopBarRoomy,
+} from "@/components/common/header/top-bar-label";
+import { TopBarCollapsible } from "@/components/common/header/top-bar-overflow";
 import FavoriteButton from "@/components/favorite/favorite-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,43 +46,61 @@ export default function ModuleHeaderActions({
   const { t } = useTranslation();
   return (
     <div className="flex items-center gap-1">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="hidden rounded-md bg-muted px-2 py-0.5 font-medium text-muted-foreground text-xs sm:inline">
-              {t("modules:detail.taskCount", { count: taskCount })}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            {t("modules:detail.taskCountTooltip")}
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      {/* The count is a nicety: the first thing to go in a crowded bar. */}
+      <TopBarRoomy>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="hidden rounded-md bg-muted px-2 py-0.5 font-medium text-muted-foreground text-xs sm:inline">
+                {t("modules:detail.taskCount", { count: taskCount })}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              {t("modules:detail.taskCountTooltip")}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </TopBarRoomy>
       {canAddTasks && (
         <Button
           variant="outline"
           size="xs"
           className="gap-1"
+          // Named while the label is hidden (a crowded bar or a phone).
+          aria-label={t("modules:detail.addTask")}
+          title={t("modules:detail.addTask")}
           onClick={onAddTask}
         >
           <Plus className="size-3" />
-          <span className="hidden sm:inline">
+          <TopBarLabel className="hidden sm:inline">
             {t("modules:detail.addTask")}
-          </span>
+          </TopBarLabel>
         </Button>
       )}
       {canAddExisting && (
-        <Button
-          variant="outline"
-          size="xs"
-          className="gap-1"
-          onClick={onAddExisting}
+        // Secondary: waits in "…" once the top bar is crowded.
+        <TopBarCollapsible
+          item={{
+            id: "module-add-existing",
+            label: t("modules:detail.addExisting"),
+            icon: <SquarePlus aria-hidden />,
+            onSelect: onAddExisting,
+          }}
         >
-          <SquarePlus className="size-3" />
-          <span className="hidden sm:inline">
-            {t("modules:detail.addExisting")}
-          </span>
-        </Button>
+          <Button
+            variant="outline"
+            size="xs"
+            className="gap-1"
+            aria-label={t("modules:detail.addExisting")}
+            title={t("modules:detail.addExisting")}
+            onClick={onAddExisting}
+          >
+            <SquarePlus className="size-3" />
+            <TopBarLabel className="hidden sm:inline">
+              {t("modules:detail.addExisting")}
+            </TopBarLabel>
+          </Button>
+        </TopBarCollapsible>
       )}
       <Button
         variant="ghost"

@@ -4101,7 +4101,8 @@
 			"unreadOnly": "केवल अपठित",
 			"whatsNew": "नया क्या है",
 			"sourceCode": "सोर्स कोड",
-			"workspaceAnalytics": "वर्कस्पेस"
+			"workspaceAnalytics": "वर्कस्पेस",
+			"moreTabs": "और टैब"
 		},
 		"focus": {
 			"menuLabel": "सूचनाएँ रोकें",

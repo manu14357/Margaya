@@ -69,6 +69,7 @@ export default function CycleCrumbSelect({
               size="xs"
               aria-label={t("cycles:detail.switchCycle")}
               className="h-7 max-w-56 justify-between gap-2 px-2 text-foreground text-xs"
+              title={cycleName}
             />
           }
         >

@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
 import useGetProjects from "@/hooks/queries/project/use-get-projects";
+import { cn } from "@/lib/cn";
 
 type ProjectCrumbSelectProps = {
   workspaceId: string;
@@ -18,6 +19,7 @@ type ProjectCrumbSelectProps = {
   projectName?: string;
   onSelectProject: (projectId: string) => void;
   onAddProject: () => void;
+  className?: string;
 };
 
 export default function ProjectCrumbSelect({
@@ -26,6 +28,7 @@ export default function ProjectCrumbSelect({
   projectName,
   onSelectProject,
   onAddProject,
+  className,
 }: ProjectCrumbSelectProps) {
   const { t } = useTranslation();
   const { data: projects = [] } = useGetProjects({ workspaceId });
@@ -37,7 +40,12 @@ export default function ProjectCrumbSelect({
           <Button
             variant="ghost"
             size="xs"
-            className="h-7 min-w-0 shrink justify-between gap-2.5 px-2 text-xs text-foreground"
+            className={cn(
+              "h-7 min-w-0 shrink justify-between gap-2.5 px-2 text-xs text-foreground",
+              className,
+            )}
+            // The full name while the bar truncates it.
+            title={projectName}
           />
         }
       >

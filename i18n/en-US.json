@@ -4101,7 +4101,8 @@
 			"filters": "Filters",
 			"unreadOnly": "Unread only",
 			"workspaceAnalytics": "Workspace",
-			"backlog": "Backlog"
+			"backlog": "Backlog",
+			"moreTabs": "More tabs"
 		},
 		"focus": {
 			"menuLabel": "Pause notifications",

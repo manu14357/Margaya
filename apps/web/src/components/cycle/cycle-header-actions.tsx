@@ -2,6 +2,7 @@ import { Kanban, ListPlus, PanelRight, Plus, SquarePlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AiSummaryButton } from "@/components/ai/ai-summary";
 import BriefButton from "@/components/ai/brief/brief-button";
+import { TopBarCollapsible } from "@/components/common/header/top-bar-overflow";
 import FavoriteButton from "@/components/favorite/favorite-button";
 import RetroButton from "@/components/insight/retro-button";
 import { useMinWidth } from "@/components/task/use-min-width";
@@ -74,6 +75,7 @@ export default function CycleHeaderActions({
           aria-label={
             isPlanning ? t("cycles:plan.done") : t("cycles:plan.open")
           }
+          title={isPlanning ? t("cycles:plan.done") : t("cycles:plan.open")}
           onClick={onTogglePlanning}
         >
           {isPlanning ? (
@@ -93,6 +95,7 @@ export default function CycleHeaderActions({
             size="xs"
             className="gap-1"
             aria-label={t("cycles:detail.addTask")}
+            title={t("cycles:detail.addTask")}
             onClick={onAddTask}
           >
             <Plus className="size-3" />
@@ -100,18 +103,29 @@ export default function CycleHeaderActions({
               {t("cycles:detail.addTask")}
             </span>
           </Button>
-          <Button
-            variant="outline"
-            size="xs"
-            className="gap-1"
-            aria-label={t("cycles:detail.addExisting")}
-            onClick={onAddExisting}
+          {/* Secondary: waits in "…" once the top bar is crowded. */}
+          <TopBarCollapsible
+            item={{
+              id: "cycle-add-existing",
+              label: t("cycles:detail.addExisting"),
+              icon: <SquarePlus aria-hidden />,
+              onSelect: onAddExisting,
+            }}
           >
-            <SquarePlus className="size-3" />
-            <span className="hidden 2xl:inline">
-              {t("cycles:detail.addExisting")}
-            </span>
-          </Button>
+            <Button
+              variant="outline"
+              size="xs"
+              className="gap-1"
+              aria-label={t("cycles:detail.addExisting")}
+              title={t("cycles:detail.addExisting")}
+              onClick={onAddExisting}
+            >
+              <SquarePlus className="size-3" />
+              <span className="hidden 2xl:inline">
+                {t("cycles:detail.addExisting")}
+              </span>
+            </Button>
+          </TopBarCollapsible>
         </>
       )}
       <Button

@@ -71,6 +71,7 @@ export default function PageCrumbSelect({
               variant="ghost"
               size="xs"
               className="h-7 min-w-0 max-w-72 shrink justify-between gap-1.5 px-1.5 font-medium text-[13px] text-foreground"
+              title={title?.trim() || untitled}
             />
           }
         >

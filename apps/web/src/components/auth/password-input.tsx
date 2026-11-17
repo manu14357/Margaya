@@ -16,7 +16,8 @@ export function PasswordInput(
       <button
         type="button"
         onClick={() => setVisible((value) => !value)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+        // 32px to tap, 40px on touch screens; the icon stays 16px.
+        className="absolute right-1 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:size-10"
         aria-label={
           visible ? t("auth:forms.hidePassword") : t("auth:forms.showPassword")
         }

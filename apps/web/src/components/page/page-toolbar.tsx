@@ -311,6 +311,7 @@ export default function PageHeaderActions({
                 variant="ghost"
                 size="icon-sm"
                 aria-label={t("pages:header.moreActions")}
+                title={t("pages:header.moreActions")}
                 className="text-muted-foreground"
               />
             }

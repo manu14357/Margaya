@@ -1,6 +1,10 @@
-import { cleanup, fireEvent, render } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ViewTabs } from "./view-tabs";
+
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
 
 afterEach(cleanup);
 
@@ -57,5 +61,53 @@ describe("ViewTabs", () => {
     // Its end (570) lines up with the row's end (200), with 16px to spare.
     expect(scrollerOf(document.body).scrollLeft).toBe(386);
     rect.mockRestore();
+  });
+
+  it("moves the tabs that do not fit into More, keeping the selected one", () => {
+    // Each tab is 100px wide; the row has room for 300px.
+    const width = vi
+      .spyOn(HTMLElement.prototype, "offsetWidth", "get")
+      .mockImplementation(function (this: HTMLElement) {
+        if (this.dataset.viewTab) return 100;
+        if (this.dataset.slot === "view-tabs-more") return 60;
+        return 0;
+      });
+    const client = vi
+      .spyOn(HTMLElement.prototype, "clientWidth", "get")
+      .mockImplementation(function (this: HTMLElement) {
+        return this.dataset.slot === "view-tabs-scroller" ? 300 : 0;
+      });
+
+    render(<ViewTabs tabs={tabs} value="analytics" label="Views" />);
+
+    // Analytics (selected) and Backlog stay; the rest wait in More.
+    const shown = screen
+      .getAllByRole("tab")
+      .filter((tab) => !tab.closest(".hidden"))
+      .map((tab) => tab.textContent);
+    expect(shown).toEqual(["Backlog", "Analytics"]);
+    const more = screen.getByRole("button", {
+      name: "navigation:shell.moreTabs",
+    });
+    expect(more).toHaveAttribute("title", "navigation:shell.moreTabs");
+
+    fireEvent.click(more);
+    const items = screen
+      .getAllByRole("menuitem")
+      .map((item) => item.textContent);
+    expect(items).toEqual(["Board", "List", "Calendar"]);
+    fireEvent.click(screen.getByRole("menuitem", { name: "List" }));
+    expect(tabs[2].onSelect).toHaveBeenCalled();
+
+    width.mockRestore();
+    client.mockRestore();
+  });
+
+  it("shows every tab and no More when they fit", () => {
+    render(<ViewTabs tabs={tabs} value="board" label="Views" />);
+    expect(screen.getAllByRole("tab")).toHaveLength(5);
+    expect(
+      screen.queryByRole("button", { name: "navigation:shell.moreTabs" }),
+    ).toBeNull();
   });
 });

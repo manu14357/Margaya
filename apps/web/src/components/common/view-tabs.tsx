@@ -1,12 +1,25 @@
-import type { LucideIcon } from "lucide-react";
+import { ChevronDown, type LucideIcon } from "lucide-react";
 import {
   type ReactNode,
+  useCallback,
   useLayoutEffect,
   useRef,
+  useState,
   type WheelEvent,
 } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/menu";
 import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
 import { cn } from "@/lib/cn";
+import { overflowingTabs } from "./view-tabs-fit";
+
+/** The "More" button's width before it has been measured. */
+const MORE_WIDTH_GUESS = 84;
 
 export type ViewTab = {
   /** Unique within the row; matched against `value`. */
@@ -33,8 +46,10 @@ export type ViewTabsProps = {
 
 /**
  * The underline tab row under the top bar: a page's views or sections.
- * It scrolls sideways when it runs out of room (phones, narrow windows), and
- * on touch screens the tabs and the row grow to a 44px target.
+ * When the tabs run out of room (many project features, narrow windows,
+ * phones) the last ones move into a "More" menu at the row's end, so no tab
+ * is ever cut off at the edge; the selected tab always stays in the row. On
+ * touch screens the tabs and the row grow to a 44px target.
  */
 export function ViewTabs({
   tabs,
@@ -43,7 +58,67 @@ export function ViewTabs({
   trailing,
   className,
 }: ViewTabsProps) {
+  const { t } = useTranslation();
   const scroller = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLButtonElement>(null);
+  // Each tab's width (separator included), kept while the tab is in "More".
+  const widths = useRef(new Map<string, number>());
+  const [hidden, setHidden] = useState<readonly string[]>([]);
+  const hiddenKey = hidden.join(" ");
+
+  const fitTabs = useCallback(() => {
+    const row = scroller.current;
+    if (!row) return;
+    for (const element of row.querySelectorAll<HTMLElement>(
+      "[data-view-tab]",
+    )) {
+      const key = element.dataset.viewTab;
+      if (key && element.offsetWidth > 0) {
+        // The list's gap (0.125rem) sits between tabs.
+        widths.current.set(key, element.offsetWidth + 2);
+      }
+    }
+    const measured = tabs.map((tab) => widths.current.get(tab.value));
+    let next: string[];
+    if (measured.some((width) => width === undefined)) {
+      // A tab that has never been on screen: show them all once to measure.
+      next = [];
+    } else {
+      const moreWidth = moreRef.current?.offsetWidth
+        ? moreRef.current.offsetWidth + 4
+        : MORE_WIDTH_GUESS;
+      next = overflowingTabs({
+        widths: measured as number[],
+        // The row's own padding is outside the tabs.
+        available: row.clientWidth - 4,
+        moreWidth,
+        activeIndex: tabs.findIndex((tab) => tab.value === value),
+      }).map((index) => tabs[index].value);
+    }
+    setHidden((current) =>
+      current.join(" ") === next.join(" ") ? current : next,
+    );
+  }, [tabs, value]);
+
+  // Every render may have changed the labels (language) or the tabs.
+  useLayoutEffect(() => {
+    fitTabs();
+  });
+
+  // One observer for the row's life; it always runs the latest fit (the
+  // tab list is a new array on every render).
+  const latestFit = useRef(fitTabs);
+  latestFit.current = fitTabs;
+  useLayoutEffect(() => {
+    const row = scroller.current;
+    if (!row || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(() => latestFit.current());
+    observer.observe(row);
+    return () => observer.disconnect();
+  }, []);
+
+  const overflow = tabs.filter((tab) => hidden.includes(tab.value));
+  const moreLabel = t("navigation:shell.moreTabs");
 
   // The row hides its scrollbar, so the selected tab must never start out of
   // sight (Analytics in a narrow window). Sections can arrive after the
@@ -61,7 +136,7 @@ export function ViewTabs({
     const room = 16;
     if (tab.right > box.right) row.scrollLeft += tab.right - box.right + room;
     else if (tab.left < box.left) row.scrollLeft -= box.left - tab.left + room;
-  }, [value, tabKeys]);
+  }, [value, tabKeys, hiddenKey]);
 
   // A mouse wheel only scrolls vertically; with no scrollbar to drag, it
   // moves the row sideways instead. Touchpads already scroll sideways.
@@ -84,10 +159,10 @@ export function ViewTabs({
       <div
         ref={scroller}
         onWheel={onWheel}
-        className="-mb-px min-w-0 flex-1 overflow-x-auto [scrollbar-width:none]"
+        className="-mb-px flex min-w-0 flex-1 items-center overflow-x-auto [scrollbar-width:none]"
         data-slot="view-tabs-scroller"
       >
-        <Tabs value={value}>
+        <Tabs value={value} className="shrink-0">
           <TabsList
             variant="underline"
             className="h-10 gap-0.5 py-0 pointer-coarse:h-11"
@@ -95,7 +170,14 @@ export function ViewTabs({
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
-                <span key={tab.value} className="flex items-center">
+                <span
+                  key={tab.value}
+                  className={cn(
+                    "flex items-center",
+                    hidden.includes(tab.value) && "hidden",
+                  )}
+                  data-view-tab={tab.value}
+                >
                   {tab.separated && (
                     <span
                       aria-hidden
@@ -116,6 +198,36 @@ export function ViewTabs({
             })}
           </TabsList>
         </Tabs>
+        {overflow.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              ref={moreRef}
+              aria-label={moreLabel}
+              title={moreLabel}
+              className="relative ms-0.5 flex h-7 shrink-0 cursor-pointer items-center gap-1 rounded-md px-2 font-medium text-[13px] text-muted-foreground outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring data-popup-open:bg-accent data-popup-open:text-foreground pointer-coarse:h-11 pointer-coarse:min-w-11"
+              data-slot="view-tabs-more"
+            >
+              {t("navigation:sidebar.more")}
+              <ChevronDown aria-hidden className="size-3.5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="min-w-44">
+              {overflow.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <DropdownMenuItem
+                    key={tab.value}
+                    onClick={tab.onSelect}
+                    data-view-tab-item={tab.value}
+                  >
+                    {Icon && <Icon aria-hidden />}
+                    {tab.label}
+                    {tab.badge}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       {trailing && (
         <div className="flex shrink-0 items-center gap-1.5">{trailing}</div>

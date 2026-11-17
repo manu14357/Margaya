@@ -19,6 +19,16 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
+// What a crowded top bar hands this menu (null outside a top bar).
+const overflow = vi.hoisted(() => ({
+  items: null as
+    | null
+    | { id: string; label: string; icon: null; onSelect: () => void }[],
+}));
+vi.mock("@/components/common/header/top-bar-overflow", () => ({
+  useTopBarOverflowHost: () => overflow.items,
+}));
+
 vi.mock("@/hooks/use-workspace-permission", () => ({
   useWorkspacePermission: () => ({
     canUpdateCycles: () => permissions.canUpdateCycles,
@@ -47,6 +57,7 @@ vi.mock("./transfer-tasks-dialog", () => ({ default: () => null }));
 
 afterEach(() => {
   cleanup();
+  overflow.items = null;
   document.body.innerHTML = "";
   permissions.canUpdateCycles = true;
   permissions.canReadAnalytics = false;
@@ -141,5 +152,18 @@ describe("CycleRowActions", () => {
       params: { workspaceId: "ws-1", projectId: "project-1" },
       search: { cycleId: "cycle-1" },
     });
+  });
+
+  it("lists what the crowded top bar moved out first, in the same menu", async () => {
+    const onSelect = vi.fn();
+    overflow.items = [
+      { id: "add", label: "cycles:detail.addExisting", icon: null, onSelect },
+    ];
+    const items = await openMenu(makeCycle({ status: "current" }));
+    expect(items[0]).toBe("cycles:detail.addExisting");
+    fireEvent.click(
+      screen.getByRole("menuitem", { name: "cycles:detail.addExisting" }),
+    );
+    expect(onSelect).toHaveBeenCalled();
   });
 });

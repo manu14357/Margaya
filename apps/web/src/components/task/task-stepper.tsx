@@ -16,7 +16,7 @@ type TaskStepperProps = {
   onNavigate: (taskId: string) => void;
   /** Load the project's board when it is not cached yet (the task page). */
   fetch?: boolean;
-  /** "3 of 12" after the arrows (from 640px). */
+  /** "3 of 12" after the arrows. */
   showPosition?: boolean;
   className?: string;
 };
@@ -53,7 +53,13 @@ export default function TaskStepper({
 
   return (
     <TooltipProvider>
-      <div className={cn("flex items-center gap-0.5", className)}>
+      {/* On touch screens the arrows sit a 44px hit area apart. */}
+      <div
+        className={cn(
+          "flex items-center gap-0.5 pointer-coarse:gap-4",
+          className,
+        )}
+      >
         {steps.map(({ id, label, icon: Icon }) => (
           <Tooltip key={label}>
             <TooltipTrigger asChild>
@@ -72,7 +78,11 @@ export default function TaskStepper({
           </Tooltip>
         ))}
         {showPosition && (
-          <span className="hidden whitespace-nowrap px-1 text-muted-foreground text-xs tabular-nums sm:inline">
+          // Room for "999 of 999" at any position, so the row never shifts.
+          <span
+            className="min-w-[10ch] whitespace-nowrap px-1 text-center text-muted-foreground text-xs tabular-nums"
+            data-slot="task-stepper-position"
+          >
             {t("tasks:detail.position", { position, total })}
           </span>
         )}

@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import OpenInAnalyticsItem from "@/components/analytics/open-in-analytics-item";
+import { useTopBarOverflowHost } from "@/components/common/header/top-bar-overflow";
 import FavoriteButton from "@/components/favorite/favorite-button";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,6 +54,9 @@ export default function CycleRowActions({
   className,
 }: CycleRowActionsProps) {
   const { t } = useTranslation();
+  // In a crowded top bar (a cycle or module page) this menu also holds what
+  // the bar moved out of the row, so the page shows one "…", not two.
+  const overflow = useTopBarOverflowHost();
   const { data: session } = authClient.useSession();
   const { canUpdateCycles, canDeleteCycles, canReadAnalytics } =
     useWorkspacePermission();
@@ -108,6 +112,7 @@ export default function CycleRowActions({
               variant="ghost"
               size="icon-xs"
               aria-label={t("cycles:actions.menu")}
+              title={t("cycles:actions.menu")}
               className={className}
               onClick={(event) => event.stopPropagation()}
             />
@@ -120,6 +125,17 @@ export default function CycleRowActions({
           className="w-60"
           onClick={(event) => event.stopPropagation()}
         >
+          {overflow && overflow.length > 0 && (
+            <>
+              {overflow.map((item) => (
+                <DropdownMenuItem key={item.id} onClick={item.onSelect}>
+                  {item.icon}
+                  {item.label}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+            </>
+          )}
           {showEdit && (
             <DropdownMenuItem onClick={() => setDialog("edit")}>
               <Pencil />

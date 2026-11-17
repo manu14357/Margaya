@@ -4101,7 +4101,8 @@
 			"unreadOnly": "Alleen ongelezen",
 			"whatsNew": "Wat is er nieuw",
 			"sourceCode": "Broncode",
-			"workspaceAnalytics": "Werkruimte"
+			"workspaceAnalytics": "Werkruimte",
+			"moreTabs": "Meer tabbladen"
 		},
 		"focus": {
 			"menuLabel": "Meldingen pauzeren",

@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import OpenInAnalyticsItem from "@/components/analytics/open-in-analytics-item";
+import { useTopBarOverflowHost } from "@/components/common/header/top-bar-overflow";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -50,6 +51,9 @@ export default function ModuleRowActions({
   className,
 }: ModuleRowActionsProps) {
   const { t } = useTranslation();
+  // In a crowded top bar (a cycle or module page) this menu also holds what
+  // the bar moved out of the row, so the page shows one "…", not two.
+  const overflow = useTopBarOverflowHost();
   const { data: session } = authClient.useSession();
   const {
     canUpdateModules,
@@ -101,6 +105,7 @@ export default function ModuleRowActions({
               variant="ghost"
               size="icon-xs"
               aria-label={t("modules:actions.menu")}
+              title={t("modules:actions.menu")}
               className={className}
               onClick={(event) => event.stopPropagation()}
             />
@@ -113,6 +118,17 @@ export default function ModuleRowActions({
           className="w-60"
           onClick={(event) => event.stopPropagation()}
         >
+          {overflow && overflow.length > 0 && (
+            <>
+              {overflow.map((item) => (
+                <DropdownMenuItem key={item.id} onClick={item.onSelect}>
+                  {item.icon}
+                  {item.label}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+            </>
+          )}
           {showEdit && (
             <DropdownMenuItem onClick={() => setDialog("edit")}>
               <Pencil />
