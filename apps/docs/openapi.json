@@ -2551,6 +2551,161 @@
           "defaultAssigneeUserId"
         ]
       },
+      "CreatedProject": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Project"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "template": {
+                "$ref": "#/components/schemas/AppliedProjectTemplate"
+              }
+            }
+          }
+        ]
+      },
+      "AppliedProjectTemplate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "locale": {
+            "type": "string",
+            "description": "The locale the template's text was written in."
+          },
+          "sampleTaskCount": {
+            "type": "integer"
+          },
+          "skipped": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "label",
+                    "pageTemplate",
+                    "automationRule"
+                  ]
+                },
+                "key": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "permission",
+                    "limit",
+                    "deleting"
+                  ]
+                }
+              },
+              "required": [
+                "kind",
+                "key",
+                "reason"
+              ]
+            },
+            "description": "Parts not created: labels without label:create (and rules that name them), labels being deleted, page templates beyond the workspace limit."
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "locale",
+          "sampleTaskCount",
+          "skipped"
+        ],
+        "description": "Present when the project was created from a template."
+      },
+      "CreateProjectTemplateInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "description": "A template id from GET /project-template."
+          },
+          "sampleData": {
+            "type": "boolean",
+            "description": "Also add the template's example tasks (needs task:create). Default false."
+          },
+          "locale": {
+            "type": "string",
+            "maxLength": 35,
+            "description": "BCP 47 language tag for the text, e.g. de-DE. Matched by language; defaults to your saved locale, then Accept-Language, then en-US."
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "description": "Start from a built-in template: statuses, labels, fields, views, rules, pages and more are created with the project, in one step. Not together with fromProjectId."
+      },
+      "ProjectFeaturesInput": {
+        "type": "object",
+        "properties": {
+          "cycles": {
+            "type": "boolean"
+          },
+          "modules": {
+            "type": "boolean"
+          },
+          "views": {
+            "type": "boolean"
+          },
+          "pages": {
+            "type": "boolean"
+          },
+          "whiteboards": {
+            "type": "boolean"
+          },
+          "intake": {
+            "type": "boolean"
+          },
+          "estimates": {
+            "type": "boolean"
+          },
+          "timeTracking": {
+            "type": "boolean"
+          },
+          "ai": {
+            "type": "boolean"
+          },
+          "updates": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Feature switches by name (cycles, modules, views, pages, whiteboards, intake, estimates, timeTracking, ai, updates). They win over the template's or source project's; omitted ones keep the default."
+      },
+      "ProjectDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Project"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hasSampleData": {
+                "type": "boolean",
+                "description": "Whether example tasks from its template are still on the project (POST /project-template/project/{projectId}/remove-sample-data removes them)."
+              }
+            },
+            "required": [
+              "hasSampleData"
+            ]
+          }
+        ]
+      },
       "ProjectRights": {
         "type": "object",
         "properties": {
@@ -2679,6 +2834,540 @@
           "name",
           "email",
           "image"
+        ]
+      },
+      "ProjectTemplateCatalog": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "string",
+            "description": "Changes whenever a template does; also the ETag's base."
+          },
+          "locale": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectTemplateCategory"
+            }
+          },
+          "templates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectTemplateSummary"
+            }
+          }
+        },
+        "required": [
+          "revision",
+          "locale",
+          "categories",
+          "templates"
+        ]
+      },
+      "ProjectTemplateCategory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "icon",
+          "name",
+          "description"
+        ]
+      },
+      "ProjectTemplateSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Category ids; the first is the primary one."
+          },
+          "featured": {
+            "type": "boolean"
+          },
+          "icon": {
+            "type": "string",
+            "description": "A project icon name."
+          },
+          "name": {
+            "type": "string"
+          },
+          "pitch": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "suggestedKey": {
+            "type": "string"
+          },
+          "suggestedVisibility": {
+            "type": "string",
+            "enum": [
+              "open",
+              "restricted"
+            ]
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "statuses": {
+                "type": "integer"
+              },
+              "labels": {
+                "type": "integer"
+              },
+              "customFields": {
+                "type": "integer"
+              },
+              "views": {
+                "type": "integer"
+              },
+              "automationRules": {
+                "type": "integer"
+              },
+              "taskTemplates": {
+                "type": "integer"
+              },
+              "pages": {
+                "type": "integer"
+              },
+              "whiteboards": {
+                "type": "integer"
+              },
+              "modules": {
+                "type": "integer"
+              },
+              "sampleTasks": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "statuses",
+              "labels",
+              "customFields",
+              "views",
+              "automationRules",
+              "taskTemplates",
+              "pages",
+              "whiteboards",
+              "modules",
+              "sampleTasks"
+            ]
+          },
+          "hasSampleData": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "categories",
+          "featured",
+          "icon",
+          "name",
+          "pitch",
+          "description",
+          "suggestedKey",
+          "suggestedVisibility",
+          "counts",
+          "hasSampleData"
+        ]
+      },
+      "WorkspaceStarterList": {
+        "type": "object",
+        "properties": {
+          "starters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceStarter"
+            }
+          }
+        },
+        "required": [
+          "starters"
+        ]
+      },
+      "WorkspaceStarter": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "templateId": {
+                  "type": "string"
+                },
+                "key": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string",
+                  "enum": [
+                    "open",
+                    "restricted"
+                  ]
+                }
+              },
+              "required": [
+                "templateId",
+                "key",
+                "name",
+                "icon",
+                "visibility"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "icon",
+          "name",
+          "description",
+          "projects"
+        ]
+      },
+      "ProjectTemplatePreview": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ProjectTemplateSummary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "projectDescription": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "features": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "boolean"
+                },
+                "description": "Feature switches the project starts with."
+              },
+              "statuses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "group": {
+                      "type": "string",
+                      "enum": [
+                        "backlog",
+                        "unstarted",
+                        "started",
+                        "completed",
+                        "cancelled",
+                        "triage"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "group"
+                  ]
+                }
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "color"
+                  ]
+                }
+              },
+              "customFields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "text",
+                        "number",
+                        "date",
+                        "dropdown",
+                        "boolean"
+                      ]
+                    },
+                    "required": {
+                      "type": "boolean"
+                    },
+                    "options": {
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "type",
+                    "required",
+                    "options"
+                  ]
+                }
+              },
+              "estimate": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "points",
+                      "categories",
+                      "time"
+                    ]
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "type",
+                  "values"
+                ]
+              },
+              "modules": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "taskTemplates": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "views": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "layout": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "layout"
+                  ]
+                }
+              },
+              "automations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "trigger": {
+                      "type": "string"
+                    },
+                    "actions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "trigger",
+                    "actions"
+                  ]
+                }
+              },
+              "scheduledAutomations": {
+                "type": "object",
+                "properties": {
+                  "autoArchive": {
+                    "type": "boolean"
+                  },
+                  "autoClose": {
+                    "type": "boolean"
+                  },
+                  "cycleRollover": {
+                    "type": "boolean"
+                  },
+                  "flowAlerts": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "autoArchive",
+                  "autoClose",
+                  "cycleRollover",
+                  "flowAlerts"
+                ]
+              },
+              "intakeForm": {
+                "type": "boolean",
+                "description": "Whether a request form is set up (always created off)."
+              },
+              "pages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "whiteboards": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sampleTasks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "priority": {
+                      "type": "string"
+                    },
+                    "labels": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "status",
+                    "priority",
+                    "labels"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "projectDescription",
+              "features",
+              "statuses",
+              "labels",
+              "customFields",
+              "estimate",
+              "modules",
+              "taskTemplates",
+              "views",
+              "automations",
+              "scheduledAutomations",
+              "intakeForm",
+              "pages",
+              "whiteboards",
+              "sampleTasks"
+            ]
+          }
+        ]
+      },
+      "RemovedSampleData": {
+        "type": "object",
+        "properties": {
+          "removedTaskCount": {
+            "type": "integer"
+          },
+          "trashBatchId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The trash batch holding the removed tasks; restoring it brings them back. Null when nothing was left to remove."
+          }
+        },
+        "required": [
+          "removedTaskCount",
+          "trashBatchId"
         ]
       },
       "SimilarTasks": {
@@ -8404,6 +9093,50 @@
           "scheduledBy",
           "graceDays"
         ]
+      },
+      "AppliedWorkspaceStarter": {
+        "type": "object",
+        "properties": {
+          "projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreatedProject"
+            }
+          }
+        },
+        "required": [
+          "projects"
+        ]
+      },
+      "ApplyWorkspaceStarterInput": {
+        "type": "object",
+        "properties": {
+          "starterId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "description": "A starter id from GET /project-template/starters."
+          },
+          "sampleData": {
+            "type": "boolean",
+            "description": "Add up to four example tasks per project (needs task:create). Default false."
+          },
+          "locale": {
+            "type": "string",
+            "maxLength": 35,
+            "description": "BCP 47 language tag for the text, e.g. de-DE. Matched by language; defaults to your saved locale, then Accept-Language, then en-US."
+          },
+          "timezone": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "description": "IANA time zone to set on the workspace first, e.g. Europe/Berlin (needs workspace:manage_settings)."
+          }
+        },
+        "required": [
+          "starterId"
+        ],
+        "additionalProperties": false
       },
       "WorkspaceMember": {
         "type": "object",
@@ -41567,7 +42300,7 @@
           "Projects"
         ],
         "summary": "Create project",
-        "description": "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on. With fromProjectId the project starts from another project's setup instead (and optionally its task templates and open tasks); no tasks are copied unless copy.openTasks is true.",
+        "description": "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on. With fromProjectId the project starts from another project's setup instead (and optionally its task templates and open tasks); no tasks are copied unless copy.openTasks is true. With template it starts from a built-in template (GET /project-template): its statuses, labels, fields, views, rules, pages and more are created in the same step, in the creator's language. features sets switches on top of either. Creating from a template or with features needs only project:create: the setup a template writes (statuses, views, rules, pages, modules and feature switches) is part of creating the project, the same as starting from an existing project. New workspace labels need label:create (without it only existing labels are used), and example tasks need task:create.",
         "requestBody": {
           "required": true,
           "content": {
@@ -41614,6 +42347,12 @@
                     },
                     "additionalProperties": false,
                     "description": "Only with fromProjectId."
+                  },
+                  "template": {
+                    "$ref": "#/components/schemas/CreateProjectTemplateInput"
+                  },
+                  "features": {
+                    "$ref": "#/components/schemas/ProjectFeaturesInput"
                   }
                 },
                 "required": [
@@ -41632,13 +42371,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Project"
+                  "$ref": "#/components/schemas/CreatedProject"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid body, workspace ID could not be determined, copy without fromProjectId, or more than 500 open tasks to copy",
+            "description": "Invalid body, workspace ID could not be determined, copy without fromProjectId, template together with fromProjectId, or more than 500 open tasks to copy",
             "content": {
               "text/plain": {
                 "schema": {
@@ -41651,7 +42390,7 @@
             "description": "Missing or invalid credentials"
           },
           "403": {
-            "description": "No workspace access, missing project:create permission, or task:create when copying open tasks",
+            "description": "No workspace access, missing project:create permission, or task:create when copying open tasks or adding a template's example tasks",
             "content": {
               "text/plain": {
                 "schema": {
@@ -41661,7 +42400,7 @@
             }
           },
           "404": {
-            "description": "The source project is not a live project of the workspace",
+            "description": "The source project is not a live project of the workspace, or the template does not exist",
             "content": {
               "text/plain": {
                 "schema": {
@@ -41707,7 +42446,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Project"
+                  "$ref": "#/components/schemas/ProjectDetail"
                 }
               }
             }
@@ -42731,6 +43470,241 @@
           },
           "404": {
             "description": "Unknown project, a restricted project the caller is not a member of, or any project a workspace guest was not added to, or not a project member",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project-template": {
+      "get": {
+        "operationId": "listProjectTemplates",
+        "tags": [
+          "Project templates"
+        ],
+        "summary": "List project templates",
+        "description": "The built-in template gallery: categories and template summaries, with their text in the requested language. Any signed-in caller or API key may read it. Answers 304 for a matching If-None-Match.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 35,
+              "description": "BCP 47 language tag for the text, e.g. de-DE. Matched by language; defaults to your saved locale, then Accept-Language, then en-US."
+            },
+            "required": false,
+            "description": "BCP 47 language tag for the text, e.g. de-DE. Matched by language; defaults to your saved locale, then Accept-Language, then en-US.",
+            "name": "locale",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "software-development",
+                "service-management",
+                "work-management",
+                "product-management",
+                "marketing",
+                "design",
+                "it",
+                "customer-service",
+                "human-resources",
+                "finance",
+                "legal",
+                "sales",
+                "operations",
+                "facilities",
+                "analytics",
+                "nonprofit",
+                "personal"
+              ],
+              "description": "Only templates in this category (a category id from the catalog)."
+            },
+            "required": false,
+            "description": "Only templates in this category (a category id from the catalog).",
+            "name": "category",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The catalog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTemplateCatalog"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Unchanged since the ETag sent in If-None-Match"
+          },
+          "400": {
+            "description": "Unknown category",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/project-template/starters": {
+      "get": {
+        "operationId": "listWorkspaceStarters",
+        "tags": [
+          "Project templates"
+        ],
+        "summary": "List workspace starters",
+        "description": "Sets of up to five templates a new, empty workspace can create in one step (POST /workspace/{workspaceId}/starter).",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 35,
+              "description": "BCP 47 language tag for the text, e.g. de-DE. Matched by language; defaults to your saved locale, then Accept-Language, then en-US."
+            },
+            "required": false,
+            "description": "BCP 47 language tag for the text, e.g. de-DE. Matched by language; defaults to your saved locale, then Accept-Language, then en-US.",
+            "name": "locale",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The starters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceStarterList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          }
+        }
+      }
+    },
+    "/project-template/{id}": {
+      "get": {
+        "operationId": "getProjectTemplate",
+        "tags": [
+          "Project templates"
+        ],
+        "summary": "Get project template",
+        "description": "What a template creates, resolved in the requested language: statuses with their groups, labels, fields, views, rules, pages, feature switches, whether it sets up a request form, and its example tasks.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 35,
+              "description": "BCP 47 language tag for the text, e.g. de-DE. Matched by language; defaults to your saved locale, then Accept-Language, then en-US."
+            },
+            "required": false,
+            "description": "BCP 47 language tag for the text, e.g. de-DE. Matched by language; defaults to your saved locale, then Accept-Language, then en-US.",
+            "name": "locale",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The template preview",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTemplatePreview"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Unchanged since the ETag sent in If-None-Match"
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "404": {
+            "description": "Template not found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project-template/project/{projectId}/remove-sample-data": {
+      "post": {
+        "operationId": "removeProjectSampleData",
+        "tags": [
+          "Project templates"
+        ],
+        "summary": "Remove example tasks",
+        "description": "Moves the example tasks a template added, those still in this project, to the trash as one batch; restoring that batch brings them back. Only the recorded example tasks are trashed: sub-tasks the team added under an example, and examples moved to another project, stay. Allowed with task:delete, or with task:create for the person who created the project from the template (checked against their current role and API key scope). Calling it again changes nothing.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "required": true,
+            "name": "projectId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "What was removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemovedSampleData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "No workspace access, or neither task:delete nor the creator of the project holding task:create",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown project, a project in the trash, or one the caller can't see",
             "content": {
               "text/plain": {
                 "schema": {
@@ -56397,6 +57371,92 @@
           },
           "404": {
             "description": "Workspace not found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace/{workspaceId}/starter": {
+      "post": {
+        "operationId": "applyWorkspaceStarter",
+        "tags": [
+          "Project templates"
+        ],
+        "summary": "Apply a workspace starter",
+        "description": "Creates every project of a starter (GET /project-template/starters) in one step, only in a workspace without projects: any project counts, including restricted projects the caller cannot see, so a workspace with one answers 409. Labels are shared between the projects. Needs project:create; the statuses, views, rules, pages and modules each template writes are part of creating its project. New workspace labels need label:create (without it only existing ones are used), example tasks need task:create and a time zone needs workspace:manage_settings.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "required": true,
+            "name": "workspaceId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplyWorkspaceStarterInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created projects, in order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppliedWorkspaceStarter"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body or an unknown time zone",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "No workspace access, missing project:create, task:create for example tasks, or workspace:manage_settings for the time zone",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown starter",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The workspace already has projects (any project, visible to the caller or not)",
             "content": {
               "text/plain": {
                 "schema": {

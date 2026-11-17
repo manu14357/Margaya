@@ -25,6 +25,7 @@ const READ_ONLY = new Set([
   "list_workspace_members",
   "search",
   "list_project_columns",
+  "list_project_templates",
   "list_task_time_entries",
   "get_time_entry",
   "list_task_activity",

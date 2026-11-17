@@ -496,4 +496,139 @@ describe("registerTools", () => {
       ?.handler({ taskId: "task-1", assigneeIds: null });
     expect(putBody()).toMatchObject({ assigneeIds: [] });
   });
+
+  it("lists project templates with only the filters given", async () => {
+    const { server, tools } = createServerMock();
+    const client = {
+      json: vi.fn().mockResolvedValue({ categories: [], templates: [] }),
+    };
+
+    registerTools(server as never, { client: client as never });
+
+    await tools.get("list_project_templates")?.handler({});
+    expect(client.json).toHaveBeenLastCalledWith("/api/project-template", {
+      method: "GET",
+    });
+
+    await tools
+      .get("list_project_templates")
+      ?.handler({ category: "software", locale: "de-DE" });
+    expect(client.json).toHaveBeenLastCalledWith(
+      "/api/project-template?category=software&locale=de-DE",
+      { method: "GET" },
+    );
+  });
+
+  it("creates a project from a template, taking the template's icon when none is given", async () => {
+    const { server, tools } = createServerMock();
+    const client = {
+      json: vi
+        .fn()
+        .mockResolvedValueOnce({ id: "kanban", icon: "Columns" })
+        .mockResolvedValueOnce({ id: "project-1" }),
+    };
+
+    registerTools(server as never, { client: client as never });
+
+    const result = await tools.get("create_project_from_template")?.handler({
+      workspaceId: "ws1",
+      templateId: "kanban",
+      name: "Website",
+      slug: "WEB",
+      sampleData: false,
+      visibility: "open",
+      features: { cycles: false },
+    });
+
+    expect(client.json).toHaveBeenNthCalledWith(
+      1,
+      "/api/project-template/kanban",
+      { method: "GET" },
+    );
+    const postCall = client.json.mock.calls[1];
+    expect(postCall?.[0]).toBe("/api/project");
+    expect(
+      JSON.parse(String((postCall?.[1] as { body?: string })?.body ?? "{}")),
+    ).toEqual({
+      name: "Website",
+      workspaceId: "ws1",
+      icon: "Columns",
+      slug: "WEB",
+      visibility: "open",
+      template: { id: "kanban", sampleData: false },
+      features: { cycles: false },
+    });
+    expect(result?.isError).toBe(false);
+  });
+
+  it("sends the given icon without reading the template", async () => {
+    const { server, tools } = createServerMock();
+    const client = { json: vi.fn().mockResolvedValue({ id: "project-1" }) };
+
+    registerTools(server as never, { client: client as never });
+
+    await tools.get("create_project_from_template")?.handler({
+      workspaceId: "ws1",
+      templateId: "kanban",
+      name: "Website",
+      slug: "WEB",
+      icon: "Globe",
+    });
+
+    expect(client.json).toHaveBeenCalledTimes(1);
+    expect(client.json).toHaveBeenCalledWith("/api/project", {
+      method: "POST",
+      body: JSON.stringify({
+        name: "Website",
+        workspaceId: "ws1",
+        icon: "Globe",
+        slug: "WEB",
+        template: { id: "kanban" },
+      }),
+    });
+  });
+
+  it("validates create_project_from_template input", () => {
+    const { server, tools } = createServerMock();
+    registerTools(server as never, { client: { json: vi.fn() } as never });
+    const schema = tools.get("create_project_from_template")?.config
+      .inputSchema;
+    const base = {
+      workspaceId: "ws1",
+      templateId: "kanban",
+      name: "Website",
+      slug: "WEB",
+    };
+
+    expect(() => schema?.parse(base)).not.toThrow();
+    expect(() => schema?.parse({ ...base, slug: undefined })).toThrow();
+    expect(() =>
+      schema?.parse({ ...base, templateId: "x".repeat(65) }),
+    ).toThrow();
+    expect(() => schema?.parse({ ...base, visibility: "secret" })).toThrow();
+    expect(() =>
+      schema?.parse({ ...base, features: { gantt: true } }),
+    ).toThrow();
+  });
+
+  it("marks the template listing read-only and the create as non-destructive", () => {
+    const { server, tools } = createServerMock();
+    registerTools(server as never, { client: { json: vi.fn() } as never });
+    const config = (name: string) =>
+      tools.get(name)?.config as unknown as {
+        annotations: { readOnlyHint: boolean; destructiveHint: boolean };
+        outputSchema?: unknown;
+      };
+
+    expect(config("list_project_templates").annotations).toMatchObject({
+      readOnlyHint: true,
+      destructiveHint: false,
+    });
+    expect(config("create_project_from_template").annotations).toMatchObject({
+      readOnlyHint: false,
+      destructiveHint: false,
+    });
+    expect(config("list_project_templates").outputSchema).toBeDefined();
+    expect(config("create_project_from_template").outputSchema).toBeDefined();
+  });
 });

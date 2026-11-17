@@ -1,3 +1,4 @@
+import { HTTPException } from "hono/http-exception";
 import {
   apiRouter,
   type BaseVariables,
@@ -5,6 +6,10 @@ import {
   errorResponse,
   jsonResponse,
 } from "../openapi";
+import { applyStarterRoute } from "../project-template";
+import { requestLocale } from "../project-template/create";
+import { applyStarter } from "../project-template/starters";
+import { hasWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import {
   cancelWorkspaceDeletion,
@@ -101,6 +106,36 @@ const workspace = apiRouter<BaseVariables & { workspaceId: string }>()
       200,
     ),
   )
+  .openapi(applyStarterRoute, async (c) => {
+    const body = c.req.valid("json");
+    const sampleData = body.sampleData ?? false;
+    if (
+      sampleData &&
+      !(await hasWorkspacePermission(c, { task: ["create"] }))
+    ) {
+      throw new HTTPException(403, {
+        message: "Example tasks need the task:create permission",
+      });
+    }
+    if (
+      body.timezone !== undefined &&
+      !(await hasWorkspacePermission(c, { workspace: ["manage_settings"] }))
+    ) {
+      throw new HTTPException(403, {
+        message: "Setting the time zone needs workspace:manage_settings",
+      });
+    }
+    const projects = await applyStarter({
+      workspaceId: c.get("workspaceId"),
+      userId: c.get("userId"),
+      starterId: body.starterId,
+      locale: await requestLocale(c, body.locale),
+      sampleData,
+      canCreateLabels: await hasWorkspacePermission(c, { label: ["create"] }),
+      timezone: body.timezone,
+    });
+    return c.json({ projects }, 200);
+  })
   .openapi(getWorkspaceMembersRoute, async (c) =>
     c.json(await getWorkspaceMembersCtrl(c.get("workspaceId")), 200),
   )

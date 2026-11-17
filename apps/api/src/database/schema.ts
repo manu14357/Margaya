@@ -5790,3 +5790,41 @@ export const ssoProviderTable = pgTable(
     index("sso_provider_workspace_idx").on(table.organizationId),
   ],
 );
+
+// One row per project created from a built-in template (project-template/):
+// which template and version, the locale its text was written in, and the
+// sample tasks it seeded, so "Remove example tasks" trashes exactly those.
+// After creation a project is an ordinary project; nothing else reads this.
+export const projectTemplateApplicationTable = pgTable(
+  "project_template_application",
+  {
+    projectId: text("project_id")
+      .primaryKey()
+      .references(() => projectTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    templateId: text("template_id").notNull(),
+    templateVersion: integer("template_version").notNull(),
+    locale: text("locale").notNull(),
+    sampleTaskIds: jsonb("sample_task_ids")
+      .$type<string[]>()
+      .notNull()
+      .default([]),
+    sampleRemovedAt: timestamp("sample_removed_at", {
+      mode: "date",
+      withTimezone: true,
+    }),
+    appliedBy: text("applied_by").references(() => userTable.id, {
+      onDelete: "set null",
+      onUpdate: "cascade",
+    }),
+    appliedAt: timestamp("applied_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("project_template_application_templateId_idx").on(table.templateId),
+    index("project_template_application_appliedBy_idx").on(table.appliedBy),
+  ],
+);

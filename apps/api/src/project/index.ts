@@ -9,6 +9,8 @@ import {
   lookupNotFound,
   z,
 } from "../openapi";
+import { templateOptionsFor } from "../project-template/create";
+import { hasSampleData } from "../project-template/sample";
 import {
   hasWorkspacePermission,
   requireWorkspacePermission,
@@ -24,7 +26,12 @@ import reorderProjectsCtrl from "./controllers/reorder-projects";
 import unarchiveProjectCtrl from "./controllers/unarchive-project";
 import updateProjectCtrl from "./controllers/update-project";
 import updateProjectFeaturesCtrl from "./controllers/update-project-features";
-import { projectListSchema, projectSchema } from "./response";
+import {
+  createdProjectSchema,
+  projectDetailSchema,
+  projectListSchema,
+  projectSchema,
+} from "./response";
 import {
   createProjectBody,
   listProjectsQuery,
@@ -60,7 +67,7 @@ const createProjectRoute = createRoute({
   tags: ["Projects"],
   summary: "Create project",
   description:
-    "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on. With fromProjectId the project starts from another project's setup instead (and optionally its task templates and open tasks); no tasks are copied unless copy.openTasks is true.",
+    "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on. With fromProjectId the project starts from another project's setup instead (and optionally its task templates and open tasks); no tasks are copied unless copy.openTasks is true. With template it starts from a built-in template (GET /project-template): its statuses, labels, fields, views, rules, pages and more are created in the same step, in the creator's language. features sets switches on top of either. Creating from a template or with features needs only project:create: the setup a template writes (statuses, views, rules, pages, modules and feature switches) is part of creating the project, the same as starting from an existing project. New workspace labels need label:create (without it only existing labels are used), and example tasks need task:create.",
   middleware: [
     workspaceAccess.fromBody(),
     requireWorkspacePermission({ project: ["create"] }),
@@ -73,15 +80,15 @@ const createProjectRoute = createRoute({
     },
   },
   responses: {
-    200: jsonResponse("The created project", projectSchema),
+    200: jsonResponse("The created project", createdProjectSchema),
     400: errorResponse(
-      "Invalid body, workspace ID could not be determined, copy without fromProjectId, or more than 500 open tasks to copy",
+      "Invalid body, workspace ID could not be determined, copy without fromProjectId, template together with fromProjectId, or more than 500 open tasks to copy",
     ),
     403: errorResponse(
-      "No workspace access, missing project:create permission, or task:create when copying open tasks",
+      "No workspace access, missing project:create permission, or task:create when copying open tasks or adding a template's example tasks",
     ),
     404: errorResponse(
-      "The source project is not a live project of the workspace",
+      "The source project is not a live project of the workspace, or the template does not exist",
     ),
     409: errorResponse("Another project in the workspace already uses the key"),
   },
@@ -97,7 +104,7 @@ const getProjectRoute = createRoute({
   middleware: [workspaceAccess.fromProject()] as const,
   request: { params: projectParam },
   responses: {
-    200: jsonResponse("Project details", projectSchema),
+    200: jsonResponse("Project details", projectDetailSchema),
     403: errorResponse("No access to the project's workspace"),
     404: lookupNotFound("project"),
   },
@@ -281,9 +288,22 @@ const project = apiRouter<BaseVariables & { workspaceId: string }>()
     );
   })
   .openapi(createProjectRoute, async (c) => {
-    const { name, icon, slug, fromProjectId, copy, visibility } =
-      c.req.valid("json");
+    const {
+      name,
+      icon,
+      slug,
+      fromProjectId,
+      copy,
+      visibility,
+      template,
+      features,
+    } = c.req.valid("json");
     const workspaceId = c.get("workspaceId");
+    if (template && fromProjectId) {
+      throw new HTTPException(400, {
+        message: "Choose a template or a source project, not both",
+      });
+    }
     // A restricted source the caller cannot see reads as missing.
     if (fromProjectId) {
       await assertProjectVisible(c.get("userId"), fromProjectId);
@@ -314,7 +334,11 @@ const project = apiRouter<BaseVariables & { workspaceId: string }>()
             openTasks: copy?.openTasks ?? false,
           }
         : undefined,
-      { visibility },
+      {
+        visibility,
+        features,
+        template: template ? await templateOptionsFor(c, template) : undefined,
+      },
     );
     return c.json(newProject, 200);
   })
@@ -322,7 +346,10 @@ const project = apiRouter<BaseVariables & { workspaceId: string }>()
     const { id } = c.req.valid("param");
     const workspaceId = c.get("workspaceId");
     const projectData = await getProjectCtrl(id, workspaceId);
-    return c.json(projectData, 200);
+    return c.json(
+      { ...projectData, hasSampleData: await hasSampleData(id) },
+      200,
+    );
   })
   .openapi(reorderProjectsRoute, async (c) => {
     const workspaceId = c.get("workspaceId");

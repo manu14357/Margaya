@@ -1,8 +1,13 @@
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { mcpToolAnnotations } from "../../apps/api/src/mcp/annotations";
+import { mcpToolOutputSchema } from "../../apps/api/src/mcp/output";
 import {
   type McpToolRegistrar,
   registerMcpTools,
 } from "../../apps/api/src/mcp/tools";
+import { PROJECT_FEATURE_KEYS } from "../../apps/api/src/project/features";
 
 type ToolCallback = (args: unknown) => Promise<{
   content: Array<{ text: string }>;
@@ -419,5 +424,199 @@ describe("MCP tool catalog", () => {
 
     await call("set_task_parent", { taskId: "t1", parentTaskId: null });
     expect(lastRequest().body).toEqual({ parentTaskId: null });
+  });
+});
+
+describe("project template tools", () => {
+  it("lists templates, passing only the filters that were given", async () => {
+    await call("list_project_templates");
+    expect(lastRequest()).toMatchObject({
+      url: "http://api.test/api/project-template",
+      method: "GET",
+    });
+
+    await call("list_project_templates", {
+      category: "software",
+      locale: "de-DE",
+    });
+    const url = new URL(lastRequest().url);
+    expect(url.pathname).toBe("/api/project-template");
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      category: "software",
+      locale: "de-DE",
+    });
+  });
+
+  it("creates a project from a template with the options given", async () => {
+    await call("create_project_from_template", {
+      workspaceId: "ws1",
+      templateId: "kanban",
+      name: "Website",
+      slug: "WEB",
+      icon: "Globe",
+      sampleData: true,
+      visibility: "restricted",
+      features: { cycles: false, intake: true },
+    });
+
+    expect(apiFetch).toHaveBeenCalledTimes(1);
+    expect(lastRequest()).toMatchObject({
+      url: "http://api.test/api/project",
+      method: "POST",
+      auth: "Bearer test-token",
+    });
+    expect(lastRequest().body).toEqual({
+      name: "Website",
+      workspaceId: "ws1",
+      icon: "Globe",
+      slug: "WEB",
+      visibility: "restricted",
+      template: { id: "kanban", sampleData: true },
+      features: { cycles: false, intake: true },
+    });
+  });
+
+  it("uses the template's icon when none is given", async () => {
+    apiFetch.mockResolvedValueOnce(
+      Response.json({ id: "bug tracker", icon: "Bug" }),
+    );
+
+    await call("create_project_from_template", {
+      workspaceId: "ws1",
+      templateId: "bug tracker",
+      name: "Bugs",
+      slug: "BUG",
+      locale: "fr-FR",
+    });
+
+    expect(apiFetch).toHaveBeenCalledTimes(2);
+    expect(String(apiFetch.mock.calls[0]?.[0])).toBe(
+      "http://api.test/api/project-template/bug%20tracker",
+    );
+    expect(lastRequest().body).toEqual({
+      name: "Bugs",
+      workspaceId: "ws1",
+      icon: "Bug",
+      slug: "BUG",
+      template: { id: "bug tracker", locale: "fr-FR" },
+    });
+  });
+
+  it("reports an unknown template without creating anything", async () => {
+    apiFetch.mockResolvedValueOnce(
+      new Response("Template not found", { status: 404 }),
+    );
+
+    const result = await call("create_project_from_template", {
+      workspaceId: "ws1",
+      templateId: "nope",
+      name: "X",
+      slug: "X",
+    });
+
+    expect(result.isError).toBe(true);
+    expect(result.content[0]?.text).toContain("Template not found");
+    expect(apiFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("refuses bad input before calling the API", async () => {
+    for (const args of [
+      { workspaceId: "ws1", templateId: "kanban", name: "X" },
+      { workspaceId: "ws1", templateId: "x".repeat(65), name: "X", slug: "X" },
+      {
+        workspaceId: "ws1",
+        templateId: "kanban",
+        name: "X",
+        slug: "X",
+        visibility: "secret",
+      },
+      {
+        workspaceId: "ws1",
+        templateId: "kanban",
+        name: "X",
+        slug: "X",
+        features: { gantt: true },
+      },
+    ]) {
+      const result = await call("create_project_from_template", args);
+      expect(result.isError, JSON.stringify(args)).toBe(true);
+    }
+    expect(
+      (await call("list_project_templates", { locale: "x".repeat(36) }))
+        .isError,
+    ).toBe(true);
+    expect(apiFetch).not.toHaveBeenCalled();
+  });
+
+  it("accepts every project feature switch the API knows", async () => {
+    const features = Object.fromEntries(
+      PROJECT_FEATURE_KEYS.map((key) => [key, true]),
+    );
+    const result = await call("create_project_from_template", {
+      workspaceId: "ws1",
+      templateId: "kanban",
+      name: "X",
+      slug: "X",
+      icon: "Layout",
+      features,
+    });
+    expect(result.isError).toBe(false);
+    expect(lastRequest().body.features).toEqual(features);
+  });
+
+  it("keeps the stdio package's feature list in step with the API", () => {
+    const source = readFileSync(
+      fileURLToPath(
+        new URL("../../packages/mcp/src/tools/register.ts", import.meta.url),
+      ),
+      "utf8",
+    );
+    const list = source.match(
+      /const PROJECT_FEATURE_KEYS = \[([^\]]*)\] as const;/,
+    )?.[1];
+    expect(list).toBeDefined();
+    expect([...(list ?? "").matchAll(/"([^"]+)"/g)].map((m) => m[1])).toEqual([
+      ...PROJECT_FEATURE_KEYS,
+    ]);
+  });
+
+  it("marks the listing read-only and the create as a plain write", () => {
+    expect(mcpToolAnnotations("list_project_templates")).toMatchObject({
+      readOnlyHint: true,
+      destructiveHint: false,
+    });
+    expect(mcpToolAnnotations("create_project_from_template")).toMatchObject({
+      readOnlyHint: false,
+      destructiveHint: false,
+    });
+  });
+
+  it("declares loose output schemas for both tools", () => {
+    expect(
+      mcpToolOutputSchema("list_project_templates")?.safeParse({
+        revision: "r1",
+        locale: "en-US",
+        categories: [{ id: "software", name: "Software", icon: "Code" }],
+        templates: [
+          {
+            id: "kanban",
+            version: 1,
+            categories: ["software"],
+            name: "Kanban",
+            suggestedKey: "KAN",
+            counts: { statuses: 4 },
+          },
+        ],
+      }).success,
+    ).toBe(true);
+    const created = mcpToolOutputSchema("create_project_from_template");
+    const project = { id: "p1", workspaceId: "ws1", slug: "WEB", name: "W" };
+    expect(
+      created?.safeParse({
+        ...project,
+        template: { id: "kanban", version: 1, skipped: [] },
+      }).success,
+    ).toBe(true);
+    expect(created?.safeParse(project).success).toBe(false);
   });
 });

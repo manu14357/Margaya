@@ -312,3 +312,24 @@ describe("change extraction", () => {
     expect(webhookSourceFor("intake.item_created")?.privacy).toEqual([]);
   });
 });
+
+describe("project.created data", () => {
+  const source = webhookSourceFor("project.created");
+
+  it("adds the template a project was created from", () => {
+    expect(
+      source?.dataExtras?.({
+        projectId: "p1",
+        templateId: "kanban",
+        templateVersion: 3,
+      }),
+    ).toEqual({ templateId: "kanban", templateVersion: 3 });
+  });
+
+  it("adds nothing for a project created without a template", () => {
+    expect(source?.dataExtras?.({ projectId: "p1" })).toEqual({});
+    expect(
+      source?.dataExtras?.({ projectId: "p1", copiedFromProjectId: "p0" }),
+    ).toEqual({});
+  });
+});

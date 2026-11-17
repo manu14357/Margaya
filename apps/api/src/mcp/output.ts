@@ -40,11 +40,31 @@ const column = z.looseObject({
   slug: z.string(),
 });
 
+const projectTemplate = z.looseObject({
+  id: z.string(),
+  categories: z.array(z.string()),
+  name: z.string(),
+  suggestedKey: z.string(),
+});
+
+const templateCategory = z.looseObject({
+  id: z.string(),
+  name: z.string(),
+});
+
 const OUTPUT_SCHEMAS: Record<string, z.ZodObject> = {
   get_task: task,
   create_task: task,
   get_project: project,
   create_project: project,
+  create_project_from_template: project.extend({
+    template: z.looseObject({ id: z.string(), version: z.number() }),
+  }),
+  list_project_templates: z.looseObject({
+    locale: z.string(),
+    categories: z.array(templateCategory),
+    templates: z.array(projectTemplate),
+  }),
   list_projects: z.object({ items: z.array(project) }),
   list_project_columns: z.object({ items: z.array(column) }),
 };

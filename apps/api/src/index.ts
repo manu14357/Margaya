@@ -137,6 +137,7 @@ import { initializePlugins } from "./plugins";
 import { migrateGitHubIntegration } from "./plugins/github/migration";
 import project from "./project";
 import projectAutomation from "./project-automation";
+import projectTemplate from "./project-template";
 import projectUpdate from "./project-update";
 import publicBoard from "./public-board";
 import { perIpLimit, publicResponseHeaders } from "./public-board/gate";
@@ -1060,6 +1061,7 @@ export function createApp() {
 
   const billingApi = api.route("/billing", billing);
   const projectApi = api.route("/project", project);
+  const projectTemplateApi = api.route("/project-template", projectTemplate);
   const taskApi = api.route("/task", task);
   const columnApi = api.route("/column", column);
   const activityApi = api.route("/activity", activity);
@@ -1318,6 +1320,7 @@ export function createApp() {
     notificationApi,
     notificationPreferencesApi,
     projectApi,
+    projectTemplateApi,
     publicProjectApi,
     publicBoardApi,
     publicPageApi,
@@ -1560,6 +1563,7 @@ const {
   notificationApi,
   notificationPreferencesApi,
   projectApi,
+  projectTemplateApi,
   publicProjectApi,
   publicBoardApi,
   publicPageApi,
@@ -1659,6 +1663,7 @@ export type AppType =
   | typeof billingApi
   | typeof configApi
   | typeof projectApi
+  | typeof projectTemplateApi
   | typeof taskApi
   | typeof columnApi
   | typeof activityApi

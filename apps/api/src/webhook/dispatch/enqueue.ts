@@ -285,6 +285,7 @@ async function buildData(
     // Where the comment was written; the row does not store it (B12 K18).
     data.origin = payload.origin === "public_board" ? "public_board" : "app";
   }
+  if (source.dataExtras) Object.assign(data, source.dataExtras(payload));
   return { data, changes };
 }
 

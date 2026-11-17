@@ -49,6 +49,7 @@ import {
   projectMemberTable,
   projectPublicationTable,
   projectTable,
+  projectTemplateApplicationTable,
   publicBoardBlockTable,
   pushSubscriptionTable,
   quickLinkTable,
@@ -1342,6 +1343,20 @@ export const whiteboardTaskLinkTableRelations = relations(
     task: one(taskTable, {
       fields: [whiteboardTaskLinkTable.taskId],
       references: [taskTable.id],
+    }),
+  }),
+);
+
+export const projectTemplateApplicationTableRelations = relations(
+  projectTemplateApplicationTable,
+  ({ one }) => ({
+    project: one(projectTable, {
+      fields: [projectTemplateApplicationTable.projectId],
+      references: [projectTable.id],
+    }),
+    appliedByUser: one(userTable, {
+      fields: [projectTemplateApplicationTable.appliedBy],
+      references: [userTable.id],
     }),
   }),
 );

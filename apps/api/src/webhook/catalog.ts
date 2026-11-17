@@ -57,6 +57,8 @@ export type SourceSpec = {
   changes: (payload: Payload) => Record<string, unknown> | null;
   /** Data taken from the payload instead of a snapshot (deletions). */
   payloadData?: (payload: Payload) => Record<string, unknown>;
+  /** Fields from the payload added to the snapshot (facts it does not hold). */
+  dataExtras?: (payload: Payload) => Record<string, unknown>;
   /** The project when its row is already gone (project.deleted). */
   projectFromPayload?: (payload: Payload) => ProjectRef | null;
   privacy: PrivacyRule[];
@@ -125,6 +127,17 @@ function source(spec: Partial<SourceSpec> & Pick<SourceSpec, "entityId">) {
 }
 
 // --- per family -------------------------------------------------------------
+
+/** `templateId` and `templateVersion` of a project created from a template. */
+function templateOrigin(payload: Payload): Record<string, unknown> {
+  const templateId = str(payload, "templateId");
+  if (!templateId) return {};
+  const version = payload.templateVersion;
+  return {
+    templateId,
+    templateVersion: typeof version === "number" ? version : null,
+  };
+}
 
 const projectSource = (spec: Partial<SourceSpec> = {}) =>
   source({ entityId: (p) => str(p, "projectId"), ...spec });
@@ -234,7 +247,11 @@ const ENTRIES: Record<string, EntryInput> = {
   // Projects
   "project.created": {
     entity: "project",
-    sources: { "project.created": projectSource() },
+    sources: {
+      // Which built-in template it started from, if any; the project row
+      // does not say.
+      "project.created": projectSource({ dataExtras: templateOrigin }),
+    },
   },
   "project.updated": {
     entity: "project",

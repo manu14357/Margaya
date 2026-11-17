@@ -117,7 +117,7 @@ For headless or sandboxed environments where opening a browser is impractical, s
 
 - Session: `whoami`, `list_workspaces`, `list_workspace_members`, `list_notifications`
 - Search: `search`
-- Projects: `list_projects`, `get_project`, `create_project`, `update_project`, `list_project_columns`
+- Projects: `list_projects`, `get_project`, `create_project`, `update_project`, `list_project_columns`, `list_project_templates`, `create_project_from_template`
 - Tasks: `list_tasks`, `get_task`, `create_task`, `update_task`, `delete_task`, `move_task`, `update_task_status`, `update_task_assignee`, `set_task_assignees`, `update_task_assignees`, `update_task_due_date`, `list_task_activity`
 - Time entries: `list_task_time_entries`, `get_time_entry`, `create_time_entry`, `update_time_entry`
 - Comments: `list_task_comments`, `create_task_comment`, `update_task_comment`, `delete_task_comment`

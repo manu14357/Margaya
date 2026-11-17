@@ -70,28 +70,68 @@ async function liveDescendants(
   return byTask;
 }
 
+export type TrashTasksOptions = {
+  /** Put every trashed task in one batch, named after the first root. */
+  singleBatch?: boolean;
+  /**
+   * Trash only tasks in this set that are still in this project. Sub-tasks
+   * outside it stay live, even below a trashed task: someone else's task
+   * re-parented under an example task, or an example sub-task moved to
+   * another project, is not the remover's to delete.
+   */
+  onlyWithin?: { projectId: string; taskIds: ReadonlySet<string> };
+};
+
 /**
  * Moves live tasks and their live sub-tasks to the trash. A requested task
  * that is a sub-task of another requested task joins that task's batch.
- * Publishes task.deleted for every trashed task (its meaning is "moved to
- * the trash"). Returns the trashed rows, roots first.
+ * With `singleBatch`, everything joins the first live requested task's
+ * batch instead, so one restore brings the whole set back (removing a
+ * template's example tasks). Publishes task.deleted for every trashed task
+ * (its meaning is "moved to the trash"). Returns the trashed rows, roots
+ * first.
  */
-export async function trashTasks(taskIds: string[], userId: string | null) {
-  const requested = [...new Set(taskIds)];
+export async function trashTasks(
+  taskIds: string[],
+  userId: string | null,
+  { singleBatch = false, onlyWithin }: TrashTasksOptions = {},
+) {
+  const requested = [...new Set(taskIds)].filter(
+    (id) => !onlyWithin || onlyWithin.taskIds.has(id),
+  );
   if (requested.length === 0) return [];
   const now = new Date();
+  const inScope = onlyWithin
+    ? eq(taskTable.projectId, onlyWithin.projectId)
+    : undefined;
 
   const trashed = await db.transaction(async (tx) => {
     const roots = await tx
       .select({ id: taskTable.id })
       .from(taskTable)
-      .where(and(inArray(taskTable.id, requested), isNull(taskTable.deletedAt)))
+      .where(
+        and(
+          inArray(taskTable.id, requested),
+          isNull(taskTable.deletedAt),
+          inScope,
+        ),
+      )
       .for("update");
-    const rootIds = roots.map((row) => row.id);
+    const live = new Set(roots.map((row) => row.id));
+    // Requested order, so the single batch is named after the first task.
+    const rootIds = requested.filter((id) => live.has(id));
+    const firstRoot = rootIds[0];
     // Each task maps to the requested task it hangs under; a requested task
     // below another requested task joins that one's batch.
     const below = await liveDescendants(tx, rootIds);
+    if (onlyWithin) {
+      // The project check happens in the update below.
+      for (const id of [...below.keys()]) {
+        if (!onlyWithin.taskIds.has(id)) below.delete(id);
+      }
+    }
     const batchOf = (id: string): string => {
+      if (singleBatch && firstRoot) return firstRoot;
       let current = id;
       for (let hops = 0; hops < 64; hops++) {
         const up = below.get(current);
@@ -112,7 +152,9 @@ export async function trashTasks(taskIds: string[], userId: string | null) {
       const updated = await tx
         .update(taskTable)
         .set({ deletedAt: now, deletedBy: userId, trashBatchId: batch })
-        .where(and(inArray(taskTable.id, ids), isNull(taskTable.deletedAt)))
+        .where(
+          and(inArray(taskTable.id, ids), isNull(taskTable.deletedAt), inScope),
+        )
         .returning();
       rows.push(...updated);
     }

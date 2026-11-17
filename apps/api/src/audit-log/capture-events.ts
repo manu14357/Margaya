@@ -166,6 +166,12 @@ export const EVENT_ACTIONS: Record<string, Mapper> = {
   "page.unpublished": async (data) => pageEntry("page.unpublished", data),
   "project.created": project("project.created", (data) => ({
     slug: data.slug ?? null,
+    ...(data.templateId
+      ? {
+          templateId: data.templateId,
+          templateVersion: data.templateVersion ?? null,
+        }
+      : {}),
   })),
   // With the trash, deleting a project moves it there (taskCount tasks).
   "project.deleted": project("project.trashed", (data) => ({

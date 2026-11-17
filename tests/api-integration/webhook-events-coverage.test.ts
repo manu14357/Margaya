@@ -549,5 +549,31 @@ describe("every mapped internal event", () => {
       project: { id: created.id, name: "Mobile app", slug: "mob" },
       data: { id: created.id, name: "Mobile app", slug: "mob" },
     });
+    expect(bodies[0]?.data).not.toHaveProperty("templateId");
+  });
+
+  it("names the template a project was created from", async () => {
+    const { s, webhook } = await scene();
+    const created = await s.ok<{
+      id: string;
+      template: { id: string; version: number };
+    }>(s.ada, "POST", "/project", {
+      name: "Board",
+      workspaceId: s.workspaceId,
+      icon: "Layout",
+      slug: "brd",
+      template: { id: "kanban" },
+    });
+    await settleWebhookEnqueues();
+
+    const body = (await deliveryRows(webhook.id))
+      .map((row) => JSON.parse(row.body) as Body)
+      .find((candidate) => candidate.event === "project.created");
+    expect(body?.data).toMatchObject({
+      id: created.id,
+      slug: "brd",
+      templateId: "kanban",
+      templateVersion: created.template.version,
+    });
   });
 });

@@ -1,4 +1,5 @@
 import { nullableResponseTimestamp, responseTimestamp, z } from "../openapi";
+import { appliedTemplateSchema } from "../project-template/response";
 import { boardColumnSchema, boardTaskSchema } from "../task/response";
 
 const featureFlag = (feature: string) =>
@@ -56,6 +57,23 @@ export const projectSchema = z
     }),
   })
   .openapi("Project");
+
+export const createdProjectSchema = projectSchema
+  .extend({
+    template: appliedTemplateSchema.optional().openapi({
+      description: "Present when the project was created from a template.",
+    }),
+  })
+  .openapi("CreatedProject");
+
+export const projectDetailSchema = projectSchema
+  .extend({
+    hasSampleData: z.boolean().openapi({
+      description:
+        "Whether example tasks from its template are still on the project (POST /project-template/project/{projectId}/remove-sample-data removes them).",
+    }),
+  })
+  .openapi("ProjectDetail");
 
 export const projectStatisticsSchema = z
   .object({

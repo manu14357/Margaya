@@ -13753,5 +13753,5127 @@
 			"mist": "雾色",
 			"mint": "薄荷色"
 		}
+	},
+	"projectTemplates": {
+		"categories": {
+			"analytics": {
+				"name": "数据分析",
+				"description": "接收数据问题，交付值得信赖的答案。"
+			},
+			"customer-service": {
+				"name": "客户服务",
+				"description": "答复客户，把缺陷和建议转给合适的团队，并跟进到底。"
+			},
+			"design": {
+				"name": "设计",
+				"description": "设计需求、评审与交付，从最初的想法到最终文件。"
+			},
+			"facilities": {
+				"name": "行政后勤",
+				"description": "为办公场所处理维修、搬迁和会议室布置。"
+			},
+			"finance": {
+				"name": "财务",
+				"description": "预算、财务申请和月末结账集中在一处。"
+			},
+			"human-resources": {
+				"name": "人力资源",
+				"description": "招聘、入职和员工事务，注重隐私保护。"
+			},
+			"it": {
+				"name": "IT",
+				"description": "面向 IT 团队的服务台、事件、变更和设备管理。"
+			},
+			"legal": {
+				"name": "法务",
+				"description": "合同、制度和法律请求，每次审查都有清晰记录。"
+			},
+			"marketing": {
+				"name": "市场营销",
+				"description": "从一条帖子到完整发布，规划、制作并上线营销工作。"
+			},
+			"nonprofit": {
+				"name": "非营利",
+				"description": "为使命驱动的团队管理项目、资助和社区工作。"
+			},
+			"operations": {
+				"name": "运营",
+				"description": "让流程、采购和服务平稳运转。"
+			},
+			"personal": {
+				"name": "个人",
+				"description": "为个人或小团体准备的轻量配置。"
+			},
+			"product-management": {
+				"name": "产品管理",
+				"description": "把想法从最初信号推进到交付，让所有人都能看到计划。"
+			},
+			"sales": {
+				"name": "销售",
+				"description": "跟踪线索和商机，快速获得其他团队的帮助。"
+			},
+			"service-management": {
+				"name": "服务管理",
+				"description": "接收任何人的请求，分类处理并跟踪到完成。"
+			},
+			"software-development": {
+				"name": "软件开发",
+				"description": "从简单看板到冲刺和缺陷跟踪，规划、构建并发布软件。"
+			},
+			"work-management": {
+				"name": "工作管理",
+				"description": "适合任何团队的结构化、可重复工作。"
+			}
+		},
+		"common": {
+			"statuses": {
+				"backlog": "待办池",
+				"todo": "待办",
+				"upNext": "下一步",
+				"new": "新建",
+				"ideas": "想法",
+				"notStarted": "未开始",
+				"inProgress": "进行中",
+				"inReview": "审核中",
+				"waiting": "等待中",
+				"waitingOnRequester": "等待请求人",
+				"blocked": "已阻塞",
+				"awaitingApproval": "待审批",
+				"scheduled": "已排期",
+				"drafting": "起草中",
+				"proposed": "已提议",
+				"submitted": "已提交",
+				"requested": "已申请",
+				"approved": "已批准",
+				"confirmed": "已确认",
+				"published": "已发布",
+				"design": "设计",
+				"ready": "就绪",
+				"parked": "搁置",
+				"qualified": "已合格",
+				"done": "已完成",
+				"resolved": "已解决",
+				"delivered": "已交付",
+				"closed": "已关闭",
+				"cancelled": "已取消",
+				"wontDo": "不做",
+				"withdrawn": "已撤回",
+				"dropped": "已放弃",
+				"declined": "已拒绝",
+				"retired": "已停用",
+				"lost": "已丢失"
+			},
+			"labels": {
+				"quickWin": "快速见效",
+				"change": "变更",
+				"security": "信息安全",
+				"social": "社交媒体",
+				"newsletter": "新闻通讯",
+				"needsAnotherTeam": "需要其他团队",
+				"atRisk": "有风险",
+				"highRisk": "高风险",
+				"promotion": "推广",
+				"safety": "人身安全",
+				"recurring": "反复出现",
+				"renewal": "续约",
+				"software": "软件",
+				"incident": "事件",
+				"followUp": "跟进",
+				"waiting": "等待中",
+				"needsDesign": "需要设计",
+				"risk": "风险",
+				"decision": "决策"
+			},
+			"fields": {
+				"requestType": "请求类型",
+				"neededBy": "需要日期",
+				"impact": "影响",
+				"source": "来源",
+				"owningTeam": "负责团队",
+				"confidence": "信心",
+				"urgency": "紧急程度",
+				"severity": "严重程度",
+				"target": "目标",
+				"result": "结果",
+				"commitment": "承诺",
+				"version": "版本",
+				"team": "团队",
+				"cost": "成本",
+				"location": "地点",
+				"amount": "金额",
+				"phase": "阶段",
+				"service": "服务",
+				"changeType": "变更类型",
+				"company": "公司",
+				"reach": "覆盖面",
+				"testResult": "测试结果",
+				"successMeasure": "成功指标",
+				"score": "得分",
+				"supplier": "供应商",
+				"dealValue": "交易金额",
+				"costCenter": "成本中心"
+			},
+			"options": {
+				"other": "其他",
+				"question": "提问",
+				"operations": "运营",
+				"sales": "销售",
+				"marketing": "市场",
+				"engineering": "工程",
+				"people": "人力资源",
+				"finance": "财务",
+				"high": "高",
+				"medium": "中",
+				"low": "低",
+				"itCanWait": "可以等",
+				"workIsSlowed": "工作变慢",
+				"workIsStopped": "工作已停止",
+				"justMe": "只有我",
+				"myTeam": "我的团队",
+				"manyPeople": "很多人",
+				"oneTeam": "一个团队",
+				"referral": "推荐",
+				"feedback": "反馈",
+				"email": "邮件",
+				"committed": "已承诺",
+				"stretch": "挑战目标",
+				"print": "印刷品",
+				"website": "网站",
+				"desktop": "台式机",
+				"standard": "标准",
+				"normal": "常规",
+				"emergency": "紧急",
+				"event": "活动",
+				"outbound": "主动外联",
+				"contractReview": "合同审查"
+			},
+			"views": {
+				"unassigned": "未指派",
+				"myQueue": "我的队列",
+				"breachingSoon": "即将超时",
+				"dueSoon": "即将到期",
+				"timeline": "时间线",
+				"calendar": "日历",
+				"pipeline": "管道",
+				"board": "看板",
+				"byTeam": "按团队",
+				"designBoard": "设计看板",
+				"results": "结果",
+				"awaitingApproval": "待审批",
+				"deadlines": "截止日期",
+				"changeCalendar": "变更日历",
+				"risksAndDecisions": "风险与决策",
+				"myWork": "我的工作",
+				"dueThisWeek": "本周到期",
+				"overdue": "已逾期",
+				"byPriority": "按优先级"
+			},
+			"pages": {
+				"knowledgeBase": "知识库",
+				"changePolicy": "变更政策",
+				"brandBasics": "品牌基础",
+				"goal": "目标",
+				"scope": "范围",
+				"successMeasures": "成功指标",
+				"audience": "受众",
+				"budget": "预算",
+				"timeline": "时间安排",
+				"purpose": "目的",
+				"roles": "角色与职责",
+				"context": "背景",
+				"keyMessage": "核心信息",
+				"channels": "渠道",
+				"whatToInclude": "需要提供的内容",
+				"leadTimes": "所需时间",
+				"whatHappensNext": "接下来会怎样",
+				"whoApproves": "由谁审批",
+				"whenToEscalate": "何时升级",
+				"whoToCall": "联系谁",
+				"symptoms": "症状",
+				"workaround": "临时解决办法",
+				"decisions": "决定",
+				"results": "结果",
+				"whatWentWell": "做得好的地方",
+				"whatToChangeNextTime": "下次要改进的地方",
+				"nextSteps": "后续步骤",
+				"openQuestions": "待解决问题",
+				"steps": "步骤"
+			}
+		},
+		"starters": {
+			"software-team": {
+				"name": "软件团队",
+				"description": "面向产品研发团队的冲刺、缺陷、其他团队的请求和路线图。",
+				"projects": {
+					"scrum": "冲刺",
+					"bug-tracking": "缺陷",
+					"development-requests": "请求",
+					"product-roadmap": "路线图"
+				}
+			},
+			"product-team": {
+				"name": "产品团队",
+				"description": "面向产品经理和设计师的探索、优先级、路线图和设计工作。",
+				"projects": {
+					"product-discovery": "探索",
+					"prioritization": "优先级",
+					"product-roadmap": "路线图",
+					"ux-design": "设计"
+				}
+			},
+			"it-team": {
+				"name": "IT 团队",
+				"description": "面向内部 IT 的服务台、日常运维和资产登记。",
+				"projects": {
+					"it-service-desk": "服务台",
+					"it-operations": "运维",
+					"it-asset-management": "资产"
+				}
+			},
+			"support-team": {
+				"name": "支持团队",
+				"description": "客户支持，并为缺陷和产品反馈提供流转路径。",
+				"projects": {
+					"customer-support": "客户支持",
+					"bug-tracking": "缺陷",
+					"product-discovery": "反馈"
+				}
+			},
+			"marketing-team": {
+				"name": "市场团队",
+				"description": "面向市场和内容团队的营销活动、内容、物料请求和活动策划。",
+				"projects": {
+					"campaign-management": "营销活动",
+					"content-calendar": "内容",
+					"marketing-assets": "物料请求",
+					"event-planning": "活动策划"
+				}
+			},
+			"people-team": {
+				"name": "人事团队",
+				"description": "人事请求、招聘、绩效评估和制度，涉及个人信息时使用私密项目。",
+				"projects": {
+					"hr-service-desk": "人事请求",
+					"recruitment": "招聘",
+					"employee-reviews": "绩效评估",
+					"policy-management": "制度"
+				}
+			},
+			"finance-team": {
+				"name": "财务团队",
+				"description": "财务请求、预算、月末结账和采购。",
+				"projects": {
+					"finance-service-desk": "财务请求",
+					"budget-planning": "预算",
+					"financial-close": "月末结账",
+					"procurement": "采购"
+				}
+			},
+			"sales-team": {
+				"name": "销售团队",
+				"description": "销售漏斗、新线索，以及获取其他团队协助的窗口。",
+				"projects": {
+					"sales-pipeline": "销售漏斗",
+					"lead-tracking": "线索",
+					"sales-support-desk": "交易支持"
+				}
+			},
+			"agency": {
+				"name": "代理机构或服务",
+				"description": "面向服务多个客户的团队的客户项目、新请求和内部工作。",
+				"projects": {
+					"project-management": "客户项目",
+					"design-request-desk": "请求",
+					"task-tracking": "内部工作"
+				}
+			},
+			"nonprofit": {
+				"name": "非营利组织",
+				"description": "面向使命驱动团队的项目计划、资助和社区工作。",
+				"projects": {
+					"nonprofit-programs": "项目计划",
+					"grant-tracker": "资助",
+					"community-management": "社区"
+				}
+			},
+			"operations": {
+				"name": "运营",
+				"description": "面向业务运营的请求、流程改进、采购和文件审阅。",
+				"projects": {
+					"general-service-desk": "请求",
+					"process-control": "改进",
+					"procurement": "采购",
+					"document-review": "文件"
+				}
+			},
+			"just-me": {
+				"name": "仅我自己",
+				"description": "为一个人准备的轻量计划。",
+				"projects": {
+					"personal-planner": "我的计划"
+				}
+			}
+		},
+		"catalog": {
+			"analytics-request-desk": {
+				"name": "数据分析需求台",
+				"pitch": "与决策挂钩的问题，按正确顺序回答。",
+				"description": "为数据团队设立的需求入口，接收来自整个组织的问题、报表、数据提取和数字核对请求。每个请求都写明它服务于哪项决策以及何时做出决策，让价值和工作量并排可见。交付前的同事复核和共享的指标定义，让答案值得信赖。"
+			},
+			"blank": {
+				"name": "空白项目",
+				"pitch": "三列看板，其余按需添加。",
+				"description": "一个只有待办、进行中和已完成三列的看板，所有可选功能均已关闭。随着工作展现出实际需要，再在设置中随时添加列、标签或功能，逐步塑造项目。"
+			},
+			"budget-planning": {
+				"name": "预算规划",
+				"pitch": "按部门逐一收集、审核并按时批准明年的预算。",
+				"description": "在一个地方完成年度或季度预算流程。每个部门都会获得一个带标准检查清单的提交任务，财务在申请金额旁记录批准金额，跟踪视图显示哪些部门还没有开始。"
+			},
+			"bug-tracking": {
+				"name": "缺陷跟踪",
+				"pitch": "报告、分诊、修复、验证。",
+				"description": "通过表单接收任何人的缺陷报告，按严重程度分类，并以稳定的分诊节奏修复。信息不足的报告会退回给报告人，每个修复都要在发现缺陷的环境中验证后才算完成。"
+			},
+			"campaign-management": {
+				"name": "营销活动管理",
+				"pitch": "规划每个营销活动，看清哪些正在投放，把预算和成效放在工作旁边。",
+				"description": "为同时运营多个营销活动的市场团队准备的看板。每个活动是一个模块，每个渠道内容是一个任务，单独的状态显示当前正在投放的内容。每项内容都有预算、上线前写下的目标和结束后记录的结果。"
+			},
+			"community-management": {
+				"name": "社区管理",
+				"pitch": "欢迎成员，快速处理问题，把他们的想法变成行动。",
+				"description": "在一个地方照看由成员、客户或志愿者组成的社区。成员通过简单的表单提交反馈、活动创意和问题，需要管理的案例会排到最前面，每月一次的健康检查让你了解社区的状况。"
+			},
+			"content-calendar": {
+				"name": "内容日历",
+				"pitch": "看清什么内容何时发布，以及每篇内容进展到哪一步。",
+				"description": "在同一个日历中规划文章、社交媒体帖子、视频和新闻通讯。想法先放在想法库里，等有了作者和发布日期再排上日历；状态显示每篇内容的进度；每张已发布卡片上的发布链接让日历同时成为一份归档。"
+			},
+			"cross-team-planning": {
+				"name": "团队共同计划",
+				"pitch": "共同目标，明确负责人，依赖一目了然。",
+				"description": "让多个团队一起规划一个季度或半年。每个团队添加为几个共同目标要交付的内容，标记为已承诺或挑战目标，如实选择信心程度，并关联所依赖的工作。时间线、依赖视图和每周更新让大家无需额外开会也能保持一致。"
+			},
+			"customer-support": {
+				"name": "客户支持",
+				"pitch": "客户的问题、缺陷和想法，分类处理并给出答复。",
+				"description": "一个在入口就把每条消息分好类的支持台：问题得到答复，真正的缺陷交给研发，想法留待以后。层级标签把疑难问题交给专家，提问客户数把重复反馈变成信号，已知问题页面让答复保持一致。"
+			},
+			"design-request-desk": {
+				"name": "设计需求台",
+				"pitch": "需求清楚，评审聚焦，交付干净利落。",
+				"description": "通过一个需求表单收集带有目标、格式和日期的设计需求。团队为每个需求估算规模并指派负责人，在评审环节分享方案，无需冗长的来回沟通即可交付最终文件。"
+			},
+			"development-requests": {
+				"name": "工程需求",
+				"pitch": "所有需求，一个入口。",
+				"description": "为其他团队提供一个表单，提交他们需要工程团队完成的一切。需求按固定节奏评审，接受的工作在有空档时排期，交付后自动通知请求人。"
+			},
+			"document-review": {
+				"name": "文档审阅",
+				"pitch": "文档审阅、修订、签批，始终基于正确的版本。",
+				"description": "让合同、规程和报告经过多轮审阅，直到最终签批。每份文档的文件、版本和轮次都在同一个任务里，谁也不会对旧副本提意见。高风险文档有专属视图，已签批的版本保持冻结。"
+			},
+			"email-campaign": {
+				"name": "邮件营销活动",
+				"pitch": "每封邮件从简报到发送，都有真正的质检步骤，结果直接记录在卡片上。",
+				"description": "每期新闻通讯、推广或公告都是一张卡片：从简短的简报到文案、设计，再到排期前的质检。发送后，卡片停在“已发送”中，直到写上打开率和点击率，从而积累起哪些做法有效的记录。"
+			},
+			"employee-reviews": {
+				"name": "员工绩效评估",
+				"pitch": "按时完成一轮评估，从自评到面谈，不在看板上展示任何人的评分。",
+				"description": "每位员工一张卡片，以员工编号命名，依次经过自评、经理评估、校准和评估面谈。项目默认是私密的：评分、薪酬和书面反馈留在人力资源系统中，看板只显示进度。"
+			},
+			"event-planning": {
+				"name": "活动策划",
+				"pitch": "从寻找场地到发送感谢信，一场活动的每项预订、截止日期和费用。",
+				"description": "从活动日期倒推，规划一场会议、聚会或工作坊。供应商预订记录了费用和合同状态，让预算表始终保持最新；所有等待回复的事项都会自动获得跟进日期。倒计时视图显示还剩哪些工作，流程单页面则用来掌控活动当天。"
+			},
+			"facilities-service-desk": {
+				"name": "设施服务台",
+				"pitch": "为你的楼宇处理维修、搬迁、保洁和活动布置，从报修到完成都有排期、可追踪。",
+				"description": "通过一个简单的表单接收任何人提交的楼宇问题和预订请求，按紧急程度排序，并逐一跟进直到完成。工位搬迁、活动布置等计划性工作有专门的“已排期”列和日历，安全隐患则优先处理。"
+			},
+			"finance-service-desk": {
+				"name": "财务服务台",
+				"pitch": "采购、报销和发票，按时审批和付款。",
+				"description": "采购申请、费用报销、供应商发票和预算问题集中在一个队列中处理。每个请求都带有类型、金额和成本中心，审批有自己的状态，按金额排序的视图能看出结账前还有哪些需要批准。"
+			},
+			"financial-close": {
+				"name": "月末结账",
+				"pitch": "每月自动重建的月末清单，每一步都有复核人。",
+				"description": "适用于各种规模会计团队的月末结账看板。每个步骤在每月固定的日期重复，按结账日分组，并在复核队列中等待，直到由编制人以外的人检查。签核页面记录由谁在何时锁定了期间。"
+			},
+			"general-service-desk": {
+				"name": "综合服务台",
+				"pitch": "所有请求一个入口，在同一个队列里分派和处理。",
+				"description": "把发给 IT、人力资源、财务和行政后勤的问题与需求集中到一处。每个请求都先经过分派，根据影响范围和紧急程度确定团队和优先级，截止日期自动设置。一份简短的知识库让相同的问题越来越少。"
+			},
+			"go-to-market": {
+				"name": "产品上市发布",
+				"pitch": "上线前、上线当天和上线后需要落实的一切，都在一个看板里。",
+				"description": "为产品营销人员和发布负责人准备的发布看板，覆盖从约八周前到上线后一个月。工作按阶段划分，上线决策项带有标记，就绪情况视图就是会议议程；每周的项目更新让相关方随时了解进展。"
+			},
+			"grant-tracker": {
+				"name": "资助申请跟踪",
+				"pitch": "每个资助机会，从初步评估到结项报告，不错过任何截止日期。",
+				"description": "每笔资助都是一张卡片，记录资助方、金额和截止日期，从初步评估到意向书、正式申请和评审结果。获批的资助会一直保持打开，直到结项报告被接受；未获批的也会保留反馈，留待下一轮。"
+			},
+			"hr-service-desk": {
+				"name": "人力资源服务台",
+				"pitch": "一个私密队列，处理员工请求、入职和离职。",
+				"description": "薪资、休假和制度问题，以及入职和离职事项，都放在只有人力资源团队能看到的受限队列里。申请表只询问必要信息，入职和离职步骤会变成各有负责人的子任务，敏感事项直接交给负责人。"
+			},
+			"ip-infringement": {
+				"name": "知识产权侵权",
+				"pitch": "记录对你的品牌、内容或发明的疑似滥用，决定如何处理，并把每个案件跟进到底。",
+				"description": "一个私密的案件跟踪器，用于处理被复制的内容、仿冒标志、假冒商品以及针对你的索赔。举报通过表单提交，先保全证据，每个案件只在必要时沿着应对阶梯逐级上升，从平台举报到正式行动。此模板用于组织工作，不构成法律建议。"
+			},
+			"it-asset-management": {
+				"name": "IT 资产",
+				"pitch": "每台设备、每个许可证，从申请到停用。",
+				"description": "跟踪笔记本电脑、显示器、电话和软件订阅，从提出申请到停用的那一天。字段少，台账容易维护；截止日期会在续订或保修到期前提醒你；设备停用按清单进行，记录数据擦除和处置情况。"
+			},
+			"it-operations": {
+				"name": "IT 运维",
+				"pitch": "告警、事件和变更，每次都按同样的方式处理。",
+				"description": "在一个看板上管理监控告警、事件和生产系统的计划变更。严重程度决定处理节奏，每个事件都从首次响应清单开始，严重故障以不追责的复盘收尾。变更都有回滚计划，并按变更窗口显示在日历上。"
+			},
+			"it-service-desk": {
+				"name": "IT 服务台",
+				"pitch": "日常 IT 支持集中在一个队列：修好坏掉的东西，发放权限和设备，安全地完成小变更。",
+				"description": "同事向 IT 寻求的所有帮助都在一个队列里：故障、权限、设备、软件和小变更。请求人在表单中选择影响和紧急程度，由你设定优先级，每个优先级都有自己的截止日期。起始页面介绍如何获得帮助，并提供知识库和小变更检查清单。"
+			},
+			"it-service-management": {
+				"name": "IT 服务管理",
+				"pitch": "事件、服务请求、问题和变更集中在一个项目中，各有自己的标签、清单和目标。",
+				"description": "一个项目覆盖整个 IT 服务：事件发生后快速恢复服务，处理日常请求，消除反复故障的根因，并谨慎地变更系统。优先级由影响和紧急程度决定，目标自动设置，每项变更都有回退方法。"
+			},
+			"kanban": {
+				"name": "看板流程",
+				"pitch": "让工作持续流动。先完成，再开始。",
+				"description": "适合工作源源不断、没有固定冲刺的团队的持续流动看板。规则清楚写明，加急工作有专用泳道，视图会在问题出现之前显示哪些工作正在老化或卡住。"
+			},
+			"lead-tracking": {
+				"name": "线索跟踪",
+				"pitch": "不漏掉任何新线索，按时跟进，快速决定：已合格、继续培育或不合适。",
+				"description": "一个轻量看板，用于管理来自网站表单、推荐和活动的线索。表单线索一经接受就有回复期限，每次联系都会设定下次跟进日期，每条线索最终都会被判定为已合格、留作培育，或注明原因后关闭。"
+			},
+			"legal-request-desk": {
+				"name": "法务请求台",
+				"pitch": "合同与法律问题，提交时信息就已齐全。",
+				"description": "通过一个表单接收合同审查、保密协议和法律问题，表单会询问合同相对方、金额和真正的截止日期。标准协议走快速通道，异常条款由资深人员审阅，“相对方处理中”状态则表明正在等待对方。合同手册、签署规则和简短的问答能在简单问题变成请求之前就给出答案。"
+			},
+			"marketing-assets": {
+				"name": "营销物料需求",
+				"pitch": "所有图片、横幅和幻灯片需求都用一个表单提交，设计团队也只需规划一个队列。",
+				"description": "面向内部设计团队的需求受理台。需求方在一个表单里填写物料类型、尺寸、文案和日期，设计负责人在待筛选中逐一接受需求说明，审核和修改分为独立步骤，轮到谁一目了然。"
+			},
+			"marketing-request-desk": {
+				"name": "市场需求服务台",
+				"pitch": "简报进来，成果按时交付。",
+				"description": "通过简短的简报接收帖子、邮件、页面和活动支持等需求，再做好计划并按时交付。每个需求都带有目标、受众、覆盖面和日期，让各团队之间的优先级保持公平。审核环节和发布日历让反馈更清晰，也避免多个发布撞在同一天。"
+			},
+			"nonprofit-programs": {
+				"name": "公益项目",
+				"pitch": "每周推进你的公益项目，并在同一块看板上展示它们的成果。",
+				"description": "为每个项目规划活动、宣传和志愿者工作，并在每次活动结束后立即记录参与人数和志愿服务时长。到季度末，产出表里已经有了数字，一条进展更新就能告诉理事会发生了哪些变化。"
+			},
+			"outcome-tree": {
+				"name": "成果树",
+				"pitch": "从你想要的结果，到验证路径的检验。",
+				"description": "把一个可衡量的成果拆解为背后的客户需求、可能满足这些需求的想法，以及显示哪些想法站得住脚的小检验。每一层都是上一层的子任务，每个新方案都会自动获得一项检验，被放弃的分支则作为经验留在树上。"
+			},
+			"personal-planner": {
+				"name": "个人计划本",
+				"pitch": "今天、本周、将来：一张帮你清空脑袋的小清单。",
+				"description": "为一个人准备的轻量计划本。所有事情先进入收集箱，每天早上把几张卡片拖到“今天”，每周一次简短回顾，把其余的分到“本周”或“将来”。没有字段，没有额外功能，也不需要维护。"
+			},
+			"policy-management": {
+				"name": "制度管理",
+				"pitch": "编写、审批并发布制度，不再错过年度复审。",
+				"description": "将每项公司制度从申请推进到起草、审核、审批和发布，并清楚记录谁在何时批准了什么。每项制度都有负责人、版本和复审日期，并每年重复，下一次复审会自动出现。"
+			},
+			"portfolio-roadmap": {
+				"name": "项目组合路线图",
+				"pitch": "所有举措，一条时间线，均衡的组合。",
+				"description": "在一条时间线上查看组织内的所有重大举措，并按其服务的战略目标分组。为每项举措设定投资领域以保持组合均衡，共同决定新的提案，并在有风险的举措延误之前把它们带到评审会上。"
+			},
+			"prioritization": {
+				"name": "优先级评分",
+				"pitch": "按覆盖面、影响、信心和工作量比较想法。",
+				"description": "当好想法多于团队产能时，用一种共享、可重复的方法来比较它们。每个候选项都有覆盖面、影响、信心和工作量，“排名”视图按得分排序。评分指南让每一轮的评分尺度保持一致。"
+			},
+			"process-control": {
+				"name": "过程控制",
+				"pitch": "以经过测试的小步骤改进流程，再通过定期检查巩固成果。",
+				"description": "每项改进都经过计划、执行、检查和处理四个阶段，测试开始前先写下基线和目标。结果与目标并排显示，采纳的变更写入标准作业，定期的控制检查确保成果得以保持。"
+			},
+			"procurement": {
+				"name": "采购管理",
+				"pitch": "从“我们需要这个”到全额付款，每笔采购都经过审批、下单、收货和核对。",
+				"description": "用一张表单收集采购申请，在下单前逐一审批。跟踪订单直到到货，付款前核对订单、交货和发票，让差错第一时间暴露出来。"
+			},
+			"product-discovery": {
+				"name": "产品探索",
+				"pitch": "先学习，再构建已被证明的想法。",
+				"description": "从客户、支持、销售和你自己的团队收集想法，在有人动手构建之前，用访谈和小实验检验风险最高的那些。“证据”字段显示你们真正了解多少，被证明的想法会带着简报交给开发。"
+			},
+			"product-roadmap": {
+				"name": "产品路线图",
+				"pitch": "现在、下一步、以后，以及原因。",
+				"description": "按“现在”“下一步”“以后”三个时间段组织的路线图，每个条目都归属于一个说明成功标准的主题。信心字段显示每个条目的把握程度，时间线只出现在日期确定的地方。"
+			},
+			"project-management": {
+				"name": "项目管理",
+				"pitch": "以清晰的阶段、负责人和里程碑，带领项目从构想走到收尾。",
+				"description": "适用于有开始、有结束，并需要几位相关人员审批的项目。工作经历四个阶段，里程碑和风险在时间线上一目了然，每周的进展更新让其他人随时了解情况。简短的项目简报在一开始就确定范围，收尾记录则留下团队的经验。"
+			},
+			"recruitment": {
+				"name": "招聘",
+				"pitch": "以公平、结构化的流程，并尽量少用个人数据，推动候选人从投递走到录用。",
+				"description": "适合一次招聘少量岗位的小团队的招聘流程。每位候选人是一张用编号代替姓名的卡片，每位面试官在复盘会前独立评分，未通过的候选人会在两天内收到答复。项目默认受限，只有招聘团队能看到。"
+			},
+			"rfp-process": {
+				"name": "招标（RFP）流程",
+				"pitch": "从初稿到签署中标，公平地完成一次招标，每个问题的答复都发给每一位投标方。",
+				"description": "从需求说明到确定中标方的竞争性采购。评审标准和权重在开启任何建议书之前确定，供应商的每个问题都同时答复给所有投标方，每位评审人在评审小组开会前独立打分。"
+			},
+			"sales-pipeline": {
+				"name": "销售管道",
+				"pitch": "每笔交易一张卡片，每个阶段一列：真正推进时再拖到下一列。",
+				"description": "在看板上跟踪从第一次沟通到签约的每笔交易，每一列就是一个阶段。每笔交易都有金额、公司和预计成交日期，让你看清资金在哪里、本月应该成交什么。预计成交日期过期会收到提醒，每笔丢单都会记录原因。"
+			},
+			"sales-support-desk": {
+				"name": "销售支持台",
+				"pitch": "报价、审批和文书工作，帮助交易顺利成交。",
+				"description": "为销售背后的支持团队准备的请求台：报价、折扣审批、合同审查和安全问卷。每个请求都带有交易金额、客户和预计成交日期，便于优先帮助金额最大、成交最近的交易。价格例外有专门的状态和标签，共享的答案库让问卷处理更快。"
+			},
+			"sample-playground": {
+				"name": "新手导览",
+				"pitch": "边用边学 Margaya，只需八个简短站点。",
+				"description": "一个练习项目，每个任务都是一节简短的课。八个编号站点会带你学会移动任务、创建视图、规划迭代、把工作归入模块、在页面上写作以及在白板上绘图。这里没有真实工作：可以把项目留作练习场，也可以在完成后删除。"
+			},
+			"scrum": {
+				"name": "Scrum 冲刺",
+				"pitch": "每个冲刺一个目标。规划、构建、评审、改进。",
+				"description": "围绕一个目标，以短而固定的冲刺推进工作。用点数估算故事，只承诺放得下的工作，未完成的工作会自动转入下一个冲刺。共享的完成定义和团队工作约定让每个人理解一致。"
+			},
+			"task-tracking": {
+				"name": "任务跟踪",
+				"pitch": "简单的共享清单：谁在做什么，何时完成。",
+				"description": "适合日常工作的轻量看板：每个任务都有负责人、截止日期和优先级，无需填写其他内容。“等待中”列把卡住的工作与尚未开始的工作区分开，逾期任务会自动提醒。"
+			},
+			"top-level-planning": {
+				"name": "项目群计划",
+				"pitch": "举措、里程碑和风险，尽在一条时间线上。",
+				"description": "把一个为期数月的项目群拆成几个举措，每个举措都有负责人和目标日期，真正重要的日期标记为里程碑。风险、待定决策和对其他团队的依赖都有专用标签和视图，每周的进展更新让所有人随时了解情况。"
+			},
+			"ux-design": {
+				"name": "UX 设计",
+				"pitch": "把每个设计问题从调研推进到清晰的交接，一次一个阶段。",
+				"description": "一个设计工作流，让每个问题依次经过调研、定义、设计、测试和交接。现成的模板让测试轮次和交接更快完成，白板用来放用户旅程图和草图，每次交接都以面向工程团队的讲解收尾。"
+			}
+		},
+		"content": {
+			"analytics-request-desk": {
+				"projectDescription": "关于数字、报表和分析的请求。每个请求写明它支持的决策和需要的时间，用点数估算，并在分享前由另一位分析师复核。",
+				"labels": {
+					"recurringAsk": "重复提问",
+					"dataQuality": "数据质量"
+				},
+				"fields": {
+					"decision": "支持的决策",
+					"decisionSize": "决策范围"
+				},
+				"options": {
+					"requestType": {
+						"quickQuestion": "简单问题",
+						"reportOrDashboard": "报表或看板",
+						"deepDive": "深度分析",
+						"dataPull": "数据提取",
+						"checkANumber": "核对数字"
+					},
+					"decisionSize": {
+						"oneDepartment": "一个部门",
+						"wholeOrganisation": "整个组织"
+					}
+				},
+				"estimate": {
+					"name": "工作量"
+				},
+				"views": {
+					"valueAndEffort": "价值与工作量",
+					"valueAndEffortDescription": "按优先级列出未完成的请求，并排显示决策范围、需要日期和工作量。"
+				},
+				"form": {
+					"title": "向数据团队提问",
+					"intro": "告诉我们问题是什么、它会改变哪项决策，以及该决策何时做出。没有对应决策的请求通常需要等待。",
+					"confirmation": "谢谢。我们每天早上分拣请求，并会确认日期。"
+				},
+				"taskTemplates": {
+					"quickQuestion": {
+						"name": "简单问题",
+						"description": "- [ ] 用一句话重述问题\n- [ ] 用数字及其定义作答\n- [ ] 如果以前见过，添加 **重复提问**"
+					},
+					"reportOrDashboard": {
+						"name": "报表或看板",
+						"description": "- [ ] 谁在使用、使用频率\n- [ ] 指标和定义已达成一致\n- [ ] 已搭建\n- [ ] 已与已知数字核对\n- [ ] 已分享并讲解"
+					},
+					"deepDive": {
+						"name": "深度分析",
+						"description": "- [ ] 重述问题和决策\n- [ ] 列出数据来源\n- [ ] 写明方法\n- [ ] 用平实的语言写出结论\n- [ ] 在 **审核中** 中由同事复核\n- [ ] 附上局限和注意事项后分享"
+					},
+					"dataPull": {
+						"name": "数据提取",
+						"description": "- [ ] 字段和筛选条件已达成一致\n- [ ] 已去除个人数据或其使用已获批准\n- [ ] 已安全分享"
+					},
+					"checkANumber": {
+						"name": "核对数字",
+						"description": "- [ ] 数字出现在哪里\n- [ ] 它应该是多少\n- [ ] 已找到原因\n- [ ] 如果源数据有误，添加 **数据质量**\n- [ ] 已修正或已解释"
+					}
+				},
+				"rules": {
+					"quickQuestionsFirst": "简单问题优先",
+					"lateOwner": "逾期时通知负责人",
+					"lateMessage": "{{task.key}} 已过截止日期：{{task.title}}"
+				},
+				"pages": {
+					"howToAsk": {
+						"title": "如何向数据团队提问",
+						"goodQuestion": "好问题是什么样的",
+						"goodQuestionStarter": "一个问题、它会改变的决策、由谁以及何时做出该决策。",
+						"leadTimesStarter": "简单问题：1 天。数据提取或数字核对：2-3 天。报表或看板：1-2 周。深度分析：分拣时商定。",
+						"whatHappensNextStarter": "我们每天早上分拣请求、估算工作量、确认日期，并告诉你由谁负责。"
+					},
+					"metricDefinitions": {
+						"title": "指标定义",
+						"howToAdd": "如何添加指标",
+						"howToAddStarter": "每个指标一个标题：用平实的语言说明含义、计算方法以及在哪里查看。",
+						"example": "每月注册数（示例）",
+						"exampleStarter": "一个自然月内新建的账户数，不含测试账户。可在注册报表中查看。"
+					},
+					"reviewChecklist": {
+						"title": "复核清单",
+						"question": "问题与决策",
+						"questionStarter": "- [ ] 答案回应了请求中的问题和决策",
+						"method": "方法与数据",
+						"methodStarter": "- [ ] 数据来源、筛选条件和日期范围正确并已记录",
+						"numbers": "数字",
+						"numbersStarter": "- [ ] 合计与已知数字一致，每个指标都遵循约定的定义",
+						"caveats": "局限与注意事项",
+						"caveatsStarter": "- [ ] 在答案旁用平实的语言写明局限"
+					}
+				},
+				"samples": {
+					"signups": "上个月有多少注册？",
+					"signupsDecision": "新用户引导团队是否保留新的欢迎邮件。",
+					"salesDashboard": "销售漏斗看板",
+					"salesDashboardDecision": "销售团队在每周漏斗复盘中重点关注什么。",
+					"cancellations": "为什么三月份的退订增加了？",
+					"cancellationsDescription": "三月份退订大幅增加。按套餐、地区和注册月份对比，并说明最可能发生了什么变化。",
+					"cancellationsDecision": "下个季度是否调整年度套餐价格。",
+					"surveyList": "调研用的客户名单",
+					"surveyListDescription": "等待请求人确认要包含哪些客户，以及他们的同意是否涵盖本次调研。",
+					"revenueMismatch": "董事会报告中的收入与财务数据不一致",
+					"revenueMismatchDescription": "董事会报告中的季度收入低于财务的数字。在董事会开会前找出两个数字在哪里出现分歧。"
+				}
+			},
+			"budget-planning": {
+				"projectDescription": "明年的预算：先发布指南，再由每个部门提交一份，由财务审核并在截止日期前批准。",
+				"labels": {
+					"headcount": "人员编制",
+					"capital": "资本支出",
+					"newInitiative": "新举措",
+					"savingOption": "节约方案"
+				},
+				"fields": {
+					"department": "部门",
+					"requested": "申请金额",
+					"approved": "批准金额"
+				},
+				"views": {
+					"submissionTracker": "提交跟踪",
+					"submissionTrackerDescription": "本轮所有提交，申请金额与批准金额并列显示。",
+					"byDepartment": "按部门",
+					"budgetCalendar": "预算日历"
+				},
+				"taskTemplates": {
+					"departmentSubmission": {
+						"name": "部门预算提交",
+						"titlePattern": "预算提交：{title}",
+						"description": "**去年**\n\n- [ ] 实际支出与预算对比\n\n**明年**\n\n- [ ] 采用的假设\n- [ ] 人员编制变化\n- [ ] 一次性成本与经常性成本\n- [ ] 新举措及其预期回报\n- [ ] 节约方案\n- [ ] 填写申请金额，然后移到已提交"
+					},
+					"reviewSubmission": {
+						"name": "审核提交",
+						"titlePattern": "审核：{title}",
+						"description": "- [ ] 已对照预算指南检查\n- [ ] 已在评论中询问与去年相比的重大变化\n- [ ] 已商定并记录批准金额\n- [ ] 已注明每项差异的原因"
+					}
+				},
+				"rules": {
+					"submitted": "已收到提交",
+					"submittedMessage": "{{task.key}} 已提交审核：{{task.title}}",
+					"submittedComment": "已提交。财务将在五个工作日内完成审核。",
+					"overdue": "逾期提交",
+					"overdueMessage": "{{task.key}} 已超过截止日期：{{task.title}}"
+				},
+				"pages": {
+					"guidelines": {
+						"title": "预算指南",
+						"timelineStarter": "从批准日期倒推：发布指南、提交截止、完成审核、批准预算。",
+						"assumptions": "公司假设",
+						"assumptionsStarter": "每个部门都应采用的增长率、价格变化和加薪幅度。",
+						"format": "提交格式",
+						"formatStarter": "使用“部门预算提交”任务模板，并填写申请金额。",
+						"whoApprovesStarter": "财务审核每份提交，管理层批准最终预算。",
+						"publication": "发布批准后的预算",
+						"publicationStarter": "每位预算负责人看到其批准金额的日期。"
+					}
+				},
+				"samples": {
+					"guidelines": "发布预算指南和时间安排",
+					"marketing": "市场部预算提交",
+					"marketingDescription": "包括春季产品发布活动和两场行业展会。",
+					"engineering": "工程部预算提交",
+					"operations": "运营部预算提交",
+					"operationsDescription": "增加的大部分是仓库更换叉车的费用。财务已要求提供第二份报价。",
+					"sales": "销售部预算提交",
+					"portal": "新客户门户提案",
+					"portalDescription": "用于订单和发票的自助门户，预计可将支持来电减少五分之一。",
+					"consolidate": "汇总并向管理层汇报",
+					"consolidateDescription": "将所有已批准的提交汇总成一份预算，并在管理层会议上汇报。"
+				}
+			},
+			"bug-tracking": {
+				"projectDescription": "缺陷报告通过表单提交，按严重程度分诊、修复，并在关闭前于发现的环境中验证。",
+				"statuses": {
+					"needsInfo": "需要信息",
+					"fixing": "修复中",
+					"verifying": "验证中",
+					"fixed": "已修复",
+					"closedWithoutFix": "未修复关闭"
+				},
+				"labels": {
+					"regression": "回归",
+					"customerReported": "客户报告",
+					"cannotReproduce": "无法复现"
+				},
+				"fields": {
+					"environment": "环境",
+					"foundInVersion": "发现版本"
+				},
+				"options": {
+					"severity": {
+						"critical": "致命",
+						"major": "严重",
+						"minor": "一般",
+						"trivial": "轻微"
+					},
+					"environment": {
+						"production": "生产",
+						"staging": "预发布",
+						"development": "开发"
+					}
+				},
+				"views": {
+					"openBySeverity": "按严重程度查看未关闭",
+					"openBySeverityDescription": "所有未关闭的缺陷，按严重程度分组。",
+					"regressions": "回归缺陷",
+					"verifyQueue": "待验证队列",
+					"verifyQueueDescription": "等待检查的修复，最早的排在前面。",
+					"fixedRecently": "最近修复"
+				},
+				"taskTemplates": {
+					"bugReport": {
+						"name": "缺陷报告",
+						"description": "**复现步骤**\n\n1.\n\n**预期结果**\n\n\n**实际结果**\n\n\n**环境 / 版本**\n\n\n**截图或日志**\n\n\n- [ ] 已复现\n- [ ] 已设置严重程度\n- [ ] 已添加修复前会失败的测试\n- [ ] 已在报告的环境中验证修复"
+					}
+				},
+				"rules": {
+					"criticalPagesLead": "致命缺陷通知负责人",
+					"criticalMessage": "有新的致命缺陷：{{task.key}} {{task.title}}",
+					"askForDetails": "索要缺失的信息",
+					"askForDetailsComment": "我们暂时无法处理此问题。请补充复现步骤、版本和环境。",
+					"askForDetailsMessage": "{{task.key}} 需要更多信息才能开始处理：{{task.title}}",
+					"securityStaysUrgent": "安全问题始终紧急",
+					"securityMessage": "{{task.key}} 已被标记为安全问题：{{task.title}}"
+				},
+				"form": {
+					"title": "报告缺陷",
+					"intro": "告诉我们发生了什么。请在描述中写下复现步骤、你的预期以及实际发生的情况。步骤越清晰，修复越快。",
+					"confirmation": "谢谢。我们每个工作日都会查看新报告。"
+				},
+				"pages": {
+					"severityGuide": {
+						"title": "严重程度与优先级指南",
+						"levels": "严重程度等级",
+						"levelsStarter": "**致命:** 数据丢失、服务中断或安全漏洞。 **严重:** 功能损坏且没有替代办法。 **一般:** 有问题，但有替代办法。 **轻微:** 仅影响外观。",
+						"severityVsPriority": "严重程度不等于优先级",
+						"severityVsPriorityStarter": "严重程度描述缺陷造成的损害；优先级是团队决定何时修复。",
+						"triage": "分诊节奏",
+						"triageStarter": "每个工作日由一人查看新报告：复现、设置严重程度，然后确认或索要信息。",
+						"closing": "何时不修复就关闭",
+						"closingStarter": "不修复、无法复现或按设计工作：关闭前在评论中说明属于哪种情况。"
+					}
+				},
+				"samples": {
+					"csvExport": "导出的 CSV 会丢失名称中含逗号的行",
+					"csvExportDescription": "名称中含逗号的行在导出文件中缺失。可能是该字段没有加引号。",
+					"version": "发布版本 2.4.1",
+					"emptyUpload": "上传 0 字节文件时应用崩溃",
+					"emptyUploadDescription": "上传空文件会导致应用崩溃。上一个版本中是正常的。",
+					"weekStart": "日期选择器在某些语言下显示错误的一周起始日",
+					"sessionCookie": "预发布主机上的会话 Cookie 未标记为 secure",
+					"tooltip": "窄屏上提示文字相互重叠",
+					"archivedSearch": "搜索结果中出现已归档的项目"
+				}
+			},
+			"campaign-management": {
+				"projectDescription": "每个活动一个模块，每个渠道内容一个任务。上线前写下目标，结束时记录结果。",
+				"statuses": {
+					"inProduction": "制作中",
+					"live": "投放中"
+				},
+				"labels": {
+					"email": "邮件",
+					"paid": "付费广告",
+					"web": "网站",
+					"pr": "公关"
+				},
+				"fields": {
+					"budget": "预算"
+				},
+				"views": {
+					"campaignCalendar": "活动日历",
+					"byCampaign": "按活动",
+					"liveNow": "正在投放",
+					"liveNowDescription": "当前正在投放的全部内容，按渠道分组。",
+					"budgetSheet": "预算表"
+				},
+				"taskTemplates": {
+					"channelPiece": {
+						"name": "渠道内容",
+						"description": "**渠道：**\n\n**受众：**\n\n**核心信息：**\n\n**行动号召：**\n\n**追踪链接：**\n\n- [ ] 简报已确认\n- [ ] 文案已完成\n- [ ] 创意已就绪\n- [ ] 已审核\n- [ ] 已排期\n- [ ] 结果已记录"
+					},
+					"wrapUp": {
+						"name": "活动复盘",
+						"description": "**活动：**\n\n- [ ] 收集每个渠道的数据\n- [ ] 与目标对比\n- [ ] 记下要保留或放弃的做法\n- [ ] 分享总结"
+					}
+				},
+				"rules": {
+					"wentLive": "内容开始投放",
+					"liveComment": "{{task.title}} 已开始投放。请添加追踪链接，并在一周后查看效果。"
+				},
+				"pages": {
+					"brief": {
+						"title": "活动简报",
+						"goalStarter": "这个活动要改变什么，改变多少？",
+						"keyMessageStarter": "受众应记住的唯一一件事。",
+						"timelineStarter": "开始日期、上线日期和结束日期。"
+					},
+					"results": {
+						"title": "效果报告",
+						"resultsStarter": "按渠道对比目标与结果。",
+						"spend": "花费",
+						"lessons": "经验"
+					}
+				},
+				"samples": {
+					"brief": "撰写活动简报",
+					"briefDescription": "Hollowfern Tea 秋季续订活动：召回本季套餐到期的订阅用户。",
+					"briefTarget": "1,200 次续订",
+					"landingPage": "续订优惠落地页",
+					"searchAds": "面向回头客的搜索广告",
+					"searchAdsDescription": "面向过去一年内购买过的用户的广告。文案等待审批。",
+					"socialSeries": "社交媒体帖子系列，第一周",
+					"reminderEmail": "续订提醒邮件",
+					"reminderEmailDescription": "发送给 30 天内套餐到期的订阅用户。",
+					"reminderEmailTarget": "35% 打开率",
+					"partnerNewsletter": "合作伙伴通讯中的推荐"
+				}
+			},
+			"community-management": {
+				"projectDescription": "照看我们的社区：欢迎新成员，快速处理违规内容，策划活动，并把反馈变成行动。",
+				"statuses": {
+					"waitingOnMember": "等待成员回复"
+				},
+				"labels": {
+					"moderation": "审核",
+					"onboarding": "新人欢迎",
+					"event": "活动",
+					"feedback": "意见",
+					"ambassadors": "社区大使"
+				},
+				"fields": {
+					"channel": "渠道",
+					"member": "成员"
+				},
+				"options": {
+					"requestType": {
+						"eventIdea": "活动创意",
+						"problem": "报告问题",
+						"ambassador": "成为社区大使"
+					},
+					"channel": {
+						"forum": "论坛",
+						"chat": "聊天",
+						"social": "社交平台",
+						"inPerson": "线下"
+					}
+				},
+				"views": {
+					"moderationQueue": "审核队列",
+					"eventsCalendar": "活动日历",
+					"feedbackThemes": "意见主题"
+				},
+				"form": {
+					"title": "联系社区团队",
+					"intro": "分享一个想法、提议一场活动，或告诉我们遇到的问题。每一条我们都会阅读。",
+					"confirmation": "感谢来信。我们会在两天内回复。"
+				},
+				"taskTemplates": {
+					"healthCheck": {
+						"name": "每月社区健康检查",
+						"titlePattern": "健康检查：{title}",
+						"description": "**本月**\n\n- [ ] 新成员\n- [ ] 活跃成员\n- [ ] 首次回复用时\n- [ ] 未结的审核案例\n- [ ] 排名前三的意见主题\n- [ ] 下个月要改进的一件事"
+					},
+					"event": {
+						"name": "社区活动",
+						"titlePattern": "活动：{title}",
+						"description": "**检查清单**\n\n- [ ] 日期和形式\n- [ ] 主持人\n- [ ] 活动公告\n- [ ] 前一天提醒\n- [ ] 举办活动\n- [ ] 致谢和录像"
+					},
+					"ambassador": {
+						"name": "欢迎社区大使",
+						"titlePattern": "社区大使：{title}",
+						"description": "**检查清单**\n\n- [ ] 欢迎通话\n- [ ] 分享社区准则\n- [ ] 商定第一项贡献\n- [ ] 向社区介绍"
+					}
+				},
+				"rules": {
+					"replyToMember": "回复每一位成员",
+					"replyToMemberComment": "请在两天内回复成员，哪怕只是告诉对方我们已收到。",
+					"moderationFirst": "审核优先",
+					"moderationMessage": "{{task.key}} 需要审核：{{task.title}}",
+					"waitingFollowUp": "跟进等待回复的成员"
+				},
+				"pages": {
+					"guidelines": {
+						"title": "社区准则",
+						"expect": "我们的期望",
+						"expectStarter": "友善待人，紧扣话题，并相信他人的善意。",
+						"notAllowed": "禁止的行为",
+						"notAllowedStarter": "骚扰、垃圾信息、泄露他人隐私以及未经许可的售卖。",
+						"report": "如何举报",
+						"reportStarter": "使用社区表单或私信版主。我们会在两天内回复。"
+					},
+					"playbook": {
+						"title": "审核手册",
+						"levels": "处理等级",
+						"levelsStarter": "提醒，然后隐藏帖子，然后警告，最后封禁。",
+						"whoDecides": "由谁决定",
+						"whoDecidesStarter": "任何版主都可以提醒或隐藏帖子。警告和封禁由社区负责人决定。",
+						"recording": "如何记录案例",
+						"recordingStarter": "每个案例一个带“审核”标签的任务：发生了什么、相关链接、采取的措施及原因。",
+						"escalateStarter": "威胁、违法内容或警告后再犯，立即上报社区负责人。"
+					},
+					"welcome": {
+						"title": "新人欢迎包",
+						"firstSteps": "第一步",
+						"firstStepsStarter": "做个自我介绍，阅读社区准则，并参与一次讨论。",
+						"help": "在哪里求助",
+						"helpStarter": "在求助频道提问，或使用社区表单。",
+						"events": "近期活动"
+					}
+				},
+				"samples": {
+					"spam": "种子交换帖里出现垃圾帖",
+					"spamDescription": "几个新账号在发布相同的链接。隐藏这些帖子，封禁账号，并记录这个案例。",
+					"welcome": "欢迎本月加入的 40 位成员",
+					"workshop": "成员希望举办冬季修剪工作坊",
+					"workshopDescription": "好几位成员在聊天中提出了这个需求。找到主持人并定好日期，然后发布公告。",
+					"search": "论坛搜索不好用",
+					"searchDescription": "一位成员反映搜索找不到较早的帖子。我们已请对方提供例子，正在等待回复。",
+					"ambassador": "帮助阿玛拉成为地区社区大使",
+					"healthCheck": "十月健康检查",
+					"searchMember": "tomato_tess"
+				}
+			},
+			"content-calendar": {
+				"projectDescription": "我们的发布日历，涵盖文章、社交媒体帖子、视频和新闻通讯。截止日期就是发布日期，每篇已发布的内容都保留其发布链接。",
+				"statuses": {
+					"assigned": "已分配",
+					"editing": "编辑中"
+				},
+				"labels": {
+					"article": "文章",
+					"video": "视频"
+				},
+				"fields": {
+					"pillar": "内容支柱",
+					"keyword": "关键词",
+					"liveLink": "发布链接"
+				},
+				"options": {
+					"pillar": {
+						"howTo": "实用指南",
+						"product": "产品",
+						"customerStories": "客户故事",
+						"behindTheScenes": "幕后花絮"
+					}
+				},
+				"views": {
+					"ideasBank": "想法库",
+					"byPillar": "按内容支柱"
+				},
+				"taskTemplates": {
+					"article": {
+						"name": "文章",
+						"description": "**切入角度**\n\n\n**受众**\n\n\n**关键词**\n\n\n**资料来源**\n\n-"
+					},
+					"socialPost": {
+						"name": "社交媒体帖子",
+						"description": "**核心信息**\n\n\n**链接**\n\n\n**图片**\n\n\n- [ ] 文案\n- [ ] 图片\n- [ ] 替代文本\n- [ ] 已定时"
+					}
+				},
+				"subtasks": {
+					"outline": "大纲",
+					"draft": "初稿",
+					"edit": "编辑",
+					"images": "配图",
+					"finalCheck": "最终检查",
+					"schedule": "定时发布"
+				},
+				"rules": {
+					"askForDate": "提醒设置发布日期",
+					"askForDateComment": "请选择发布日期，这样它才会显示在日历上。"
+				},
+				"pages": {
+					"strategy": {
+						"title": "内容策略",
+						"audienceStarter": "我们为谁写作，以及他们需要从我们这里获得什么。",
+						"pillars": "内容支柱",
+						"pillarsStarter": "我们反复围绕的三四个主题，以及每个主题涵盖的内容。",
+						"rhythm": "发布节奏",
+						"rhythmStarter": "每个渠道的发布频率，例如每周一篇文章。"
+					},
+					"styleGuide": {
+						"title": "风格指南",
+						"voice": "语气",
+						"voiceStarter": "友好、平实、实用：像给邻居解释一样去写。",
+						"spelling": "拼写与格式",
+						"headlines": "标题与链接",
+						"headlinesStarter": "标题简短明确。链接文字说明链接指向哪里。"
+					}
+				},
+				"samples": {
+					"seedsIndoors": "如何在室内育苗",
+					"seedsIndoorsDescription": "写给新手的分步指南，从育苗盘到移栽到户外。",
+					"seedsIndoorsKeyword": "室内育苗",
+					"seedsIndoorsLink": "https://briarwick-gardens.example/zh/blog/indoor-seed-starting",
+					"packingTeam": "认识为你打包订单的团队",
+					"packingTeamDescription": "来自 Briarwick Gardens 打包间的短视频：谁在打包每一份订单，植物又是如何安全送达的。",
+					"shadePlants": "适合小院子的五种耐阴植物",
+					"shadePlantsKeyword": "耐阴植物",
+					"newsletter": "月度新闻通讯",
+					"newsletterDescription": "新品上架、育苗指南和一位客户的花园。在发布日期发送。",
+					"gardenTours": "客户花园参观系列",
+					"wateringCan": "新款洒水壶上市帖子"
+				}
+			},
+			"cross-team-planning": {
+				"projectDescription": "本期的共同计划：几个共同目标、各团队为此交付的内容，以及团队之间的依赖关系。",
+				"statuses": {
+					"agreed": "已商定"
+				},
+				"views": {
+					"planTimeline": "计划时间线",
+					"planTimelineDescription": "所有交付物显示在日历上，按共同目标分组。",
+					"byTeamDescription": "未完成的工作按负责团队分组，截止日期最近的在前。",
+					"dependencies": "依赖关系",
+					"dependenciesDescription": "被阻塞或需要其他团队的工作，截止日期最近的在前。",
+					"commitments": "承诺",
+					"commitmentsDescription": "已承诺和挑战目标的工作并排显示，附带团队和信心。"
+				},
+				"taskTemplates": {
+					"deliverable": {
+						"name": "团队交付物",
+						"description": "**服务于哪个目标**\n\n\n**我们将交付什么**\n\n\n**我们需要谁**\n\n\n- [ ] 已设置负责团队\n- [ ] 已设置日期\n- [ ] 已关联依赖\n- [ ] 已选择承诺和信心"
+					}
+				},
+				"pages": {
+					"agenda": {
+						"title": "规划会议议程",
+						"contextStarter": "30 分钟：我们为何在此，以及本期的共同目标。",
+						"drafts": "各团队起草计划",
+						"draftsStarter": "分组讨论：每个团队把自己的交付物、日期和负责人添加到本项目。",
+						"dependencies": "依赖与风险",
+						"dependenciesStarter": "一起过一遍“依赖关系”视图，把每个跨团队需求关联到它所等待的任务。",
+						"confidence": "信心检查",
+						"confidenceStarter": "每个团队按 1 到 5 投票。分数低意味着重新规划，而不是寄希望于运气。",
+						"commitments": "最终承诺"
+					},
+					"goals": {
+						"title": "共同目标",
+						"goalStarter": "一句话：对用户或业务来说有什么变化。",
+						"measureStarter": "我们如何判断，以及要达到的数字。",
+						"lead": "目标负责人",
+						"teams": "参与团队",
+						"midPeriod": "期中检查",
+						"midPeriodStarter": "进展顺利、有风险还是偏离计划，以及因此要改变什么。"
+					}
+				},
+				"rules": {
+					"crossTeam": "让跨团队需求被看见",
+					"crossTeamMessage": "{{task.key}} 需要其他团队：{{task.title}}",
+					"crossTeamComment": "用“被阻塞”关联它所依赖的任务，并提及该任务的负责人。",
+					"atRisk": "风险传达给负责人",
+					"atRiskMessage": "{{task.key}} 有风险：{{task.title}}",
+					"missedDate": "错过的日期浮出水面",
+					"missedDateMessage": "{{task.key}} 已超过截止日期：{{task.title}}"
+				},
+				"samples": {
+					"apiEstimates": "公开 API 返回预计送达时间",
+					"apiEstimatesDescription": "目标：更快结账。在订单 API 中加入预计送达时间，让每个应用都能显示。",
+					"mobileEstimates": "在移动端购物车中显示预计送达时间",
+					"mobileEstimatesDescription": "目标：更快结账。正在等待 API 变更；两位负责人一起商定日期。",
+					"reorder": "从订单历史一键再次下单",
+					"reorderDescription": "目标：更快结账。如果预计送达时间提前完成，则作为挑战目标。",
+					"refundTickets": "将退款相关的支持工单减少三分之一",
+					"refundTicketsDescription": "目标：减少退款工单。按每千笔订单的退款工单数衡量。",
+					"refundStatus": "退款状态自助查询页面",
+					"refundStatusDescription": "目标：减少退款工单。有风险：所需的支付数据尚未就绪。",
+					"teams": {
+						"api": "API 团队",
+						"mobile": "移动团队",
+						"web": "Web 团队",
+						"supportTools": "支持工具团队"
+					}
+				}
+			},
+			"customer-support": {
+				"projectDescription": "客户问题、故障反馈和功能想法集中在一处：答复问题，把真正的缺陷交给研发，收集想法，并向每位客户告知结果。",
+				"statuses": {
+					"waitingOnCustomer": "等待客户回复",
+					"withEngineering": "研发处理中"
+				},
+				"labels": {
+					"tier2": "二线支持",
+					"tier3": "三线支持",
+					"keyAccount": "重点客户",
+					"knownIssue": "已知问题"
+				},
+				"fields": {
+					"kind": "类别",
+					"effect": "这对你影响有多大？",
+					"customerAccount": "客户账户",
+					"customersAsking": "提问客户数"
+				},
+				"options": {
+					"kind": {
+						"problem": "故障或缺陷",
+						"suggestion": "功能建议",
+						"billing": "账单",
+						"access": "账户访问"
+					},
+					"effect": {
+						"cantUse": "完全无法使用",
+						"partly": "部分功能不可用",
+						"minor": "轻微或外观问题",
+						"justAsking": "只是咨询"
+					}
+				},
+				"views": {
+					"breachingSoonDescription": "一天内到期或已逾期的未关闭请求，最早的排在前面。",
+					"topBugsAndIdeas": "热门缺陷与想法",
+					"topBugsAndIdeasDescription": "故障和建议，被问得最多的排在前面。"
+				},
+				"taskTemplates": {
+					"howTo": {
+						"name": "使用方法咨询",
+						"description": "- [ ] 已答复问题\n- [ ] 已附上帮助文章链接\n- [ ] 如缺少文章则已撰写"
+					},
+					"bugReport": {
+						"name": "缺陷报告",
+						"description": "- [ ] 复现步骤\n- [ ] 预期结果与实际结果\n- [ ] 浏览器、设备和账户\n- [ ] 支持团队已复现\n- [ ] 已添加二线支持或三线支持标签\n- [ ] 已告知客户后续安排"
+					},
+					"handToEngineering": {
+						"name": "转交研发",
+						"description": "- [ ] 已尝试的方法\n- [ ] 对客户的影响\n- [ ] 已告诉客户的内容\n- [ ] 研发任务链接"
+					},
+					"featureSuggestion": {
+						"name": "功能建议",
+						"description": "- [ ] 想法背后的问题\n- [ ] 谁提出的\n- [ ] 已更新**提问客户数**"
+					},
+					"billingQuestion": {
+						"name": "账单咨询",
+						"description": "- [ ] 已确认账户\n- [ ] 已找到发票或扣款\n- [ ] 已答复或转交财务"
+					}
+				},
+				"rules": {
+					"targetUrgent": "目标：紧急",
+					"urgentMessage": "紧急支持请求 {{task.key}}：{{task.title}}",
+					"targetHigh": "目标：高",
+					"targetMedium": "目标：中",
+					"targetLow": "目标：低",
+					"lateOwner": "逾期时提醒负责人",
+					"lateMessage": "{{task.key}} 已超过目标日期：{{task.title}}"
+				},
+				"form": {
+					"title": "联系支持",
+					"intro": "提出问题、反馈故障或建议想法。如果是故障，请告诉我们你做了什么、预期是什么以及实际发生了什么。",
+					"confirmation": "谢谢，我们已收到你的消息，会通过电子邮件回复。"
+				},
+				"pages": {
+					"replyGuide": {
+						"title": "回复指南",
+						"tone": "语气",
+						"toneStarter": "友好、平实、具体。感谢客户，并说明接下来会怎样。",
+						"greeting": "问候与落款",
+						"greetingStarter": "用客户的名字称呼对方，落款写上你的名字和团队名称。",
+						"replies": "可直接改用的回复",
+						"sayingNo": "如何礼貌地拒绝",
+						"sayingNoStarter": "说明原因，如有替代方案就提出来，并感谢对方的询问。"
+					},
+					"knownIssues": {
+						"title": "已知问题列表",
+						"howToAdd": "如何添加问题",
+						"howToAddStarter": "每个问题复制一份下面的小节，有任何变化时及时更新。",
+						"whoIsAffected": "受影响的人",
+						"fixStatus": "修复状态",
+						"fixStatusStarter": "调查中、研发处理中或已修复，以及最近更新日期。"
+					},
+					"escalationGuide": {
+						"title": "升级指南",
+						"firstLine": "一线负责处理什么",
+						"firstLineStarter": "使用方法咨询、账户访问、账单咨询，以及已有临时解决办法的问题。",
+						"whenStarter": "需要专家时添加 **二线支持**，需要产品或研发团队时添加 **三线支持**。",
+						"handover": "好的交接说明",
+						"handoverStarter": "客户反馈了什么、尝试过什么、影响如何，以及已告诉客户什么。",
+						"fixesBack": "修复如何回到一线",
+						"fixesBackStarter": "修复发布后，一线通知客户，更新已知问题列表，并将请求标记为已解决。"
+					},
+					"featureSuggestions": {
+						"title": "功能建议汇总",
+						"collect": "如何收集想法",
+						"collectStarter": "所有建议都进入想法列。重复的建议不新建任务，而是增加**提问客户数**。",
+						"review": "我们如何评审",
+						"reviewStarter": "产品团队每月一次在 **热门缺陷与想法** 中评审被问得最多的想法。",
+						"tellCustomers": "如何答复客户",
+						"tellCustomersStarter": "感谢对方，并说明想法已记录。不要承诺日期，也不要承诺一定会做。"
+					}
+				},
+				"samples": {
+					"checkout": "有效卡结账时提示“卡被拒绝”",
+					"checkoutDescription": "今天上午有三位客户反馈。支持团队已用测试卡复现，研发正在查找原因。",
+					"exportInvoices": "如何导出我的发票？",
+					"exportInvoicesDescription": "已用已知问题列表中的临时解决办法答复：在账单页面按月分别导出。",
+					"passwordReset": "无法重置密码，一直收不到邮件",
+					"passwordResetDescription": "我们请客户检查垃圾邮件文件夹，并确认账户的电子邮件地址。",
+					"chargedTwice": "本月被重复扣款",
+					"chargedTwiceDescription": "一位重点客户看到两笔相同的扣款。确认账户，找到这两笔扣款，并退还重复的一笔。",
+					"darkMode": "移动应用的深色模式",
+					"darkModeDescription": "已有七位客户提出。尚未承诺；产品团队会与其他想法一起评审。",
+					"slowReport": "大型账户的报表页面加载缓慢",
+					"slowReportDescription": "数据跨越数年的账户需要一分钟以上。转交研发前应由专家先检查。"
+				}
+			},
+			"design-request-desk": {
+				"projectDescription": "承接其他团队设计工作的统一队列。需求通过表单提交，附带格式和日期，每周接收和估算两次，经过评审直至交付。",
+				"labels": {
+					"brand": "品牌",
+					"quickFix": "快速修改"
+				},
+				"fields": {
+					"formats": "格式和尺寸",
+					"reviewRounds": "评审轮次"
+				},
+				"options": {
+					"requestType": {
+						"social": "社交媒体或广告图",
+						"slides": "幻灯片或文档",
+						"web": "网页或邮件图",
+						"productUi": "产品界面",
+						"illustration": "插画或图标"
+					}
+				},
+				"estimate": {
+					"name": "规模"
+				},
+				"views": {
+					"dueSoonDescription": "未来三天内到期或已逾期的未完成需求，按到期时间从早到晚排列。"
+				},
+				"form": {
+					"title": "提交设计需求",
+					"intro": "每个交付物提交一个需求。请告诉我们目标、谁会看到、格式和日期。参考图片或文案可通过邮件发送，或在我们接收后添加到评论中。",
+					"confirmation": "谢谢。我们每周审阅两次需求，并会确认交付日期。"
+				},
+				"taskTemplates": {
+					"social": {
+						"name": "社交媒体或广告图",
+						"description": "**目标和受众**\n\n\n- [ ] 文案定稿\n- [ ] 列出尺寸\n- [ ] 初版方案\n- [ ] 评审\n- [ ] 导出最终文件"
+					},
+					"slides": {
+						"name": "幻灯片或文档",
+						"description": "**目标和受众**\n\n\n- [ ] 内容定稿\n- [ ] 按模板排版\n- [ ] 评审\n- [ ] 以可编辑文件交付"
+					},
+					"print": {
+						"name": "印刷品",
+						"description": "**目标和受众**\n\n\n- [ ] 文案定稿\n- [ ] 确认尺寸、出血和纸张\n- [ ] 打样确认\n- [ ] 交付可印刷文件"
+					},
+					"productUi": {
+						"name": "产品界面",
+						"description": "**目标和受众**\n\n\n- [ ] 描述问题和用户\n- [ ] 流程\n- [ ] 页面\n- [ ] 与产品团队评审\n- [ ] 交接说明\n- [ ] 可复用的内容加入设计系统"
+					},
+					"illustration": {
+						"name": "插画或图标",
+						"description": "**目标和受众**\n\n\n- [ ] 风格参考\n- [ ] 草图\n- [ ] 评审\n- [ ] 导出最终套件\n- [ ] 添加到设计系统页面"
+					}
+				},
+				"rules": {
+					"askForFeedback": "征求反馈",
+					"askForFeedbackComment": "已可以反馈。请在两个工作日内评论。",
+					"lateNotice": "逾期时提醒负责人",
+					"lateNoticeMessage": "{{task.key}} {{task.title}} 已超过截止日期（{{task.dueDate}}）。"
+				},
+				"pages": {
+					"howToRequest": {
+						"title": "如何提交设计需求",
+						"leadTimesStarter": "快速修改：2 个工作日。社交媒体、网页和印刷图：1 周。幻灯片和插画：2 周。产品界面：与设计负责人商定。",
+						"whatToIncludeStarter": "每个交付物一个需求，写明目标、谁会看到、格式和尺寸，以及需要的日期。",
+						"priority": "我们如何确定优先级",
+						"priorityStarter": "面向公众或客户：不足 1 周为紧急，3 周以内为高，否则为中。面向合作伙伴或销售：高、中、低。内部：不足 1 周为中，否则为低。",
+						"reviews": "评审如何进行",
+						"reviewsStarter": "我们在“审核中”状态分享方案，包含两轮反馈。请在两个工作日内评论。"
+					},
+					"designSystem": {
+						"title": "品牌与设计系统",
+						"colours": "色彩",
+						"type": "字体排印",
+						"logo": "标志使用",
+						"logoStarter": "安全空间、最小尺寸以及禁止使用的版本。",
+						"components": "组件",
+						"files": "文件存放位置",
+						"filesStarter": "在这里添加源文件和已导出素材库的链接。"
+					},
+					"handOff": {
+						"title": "交付检查清单",
+						"formats": "文件格式",
+						"formatsStarter": "- [ ] 源文件以及需求方要求的导出文件",
+						"naming": "命名规则",
+						"namingStarter": "- [ ] project-deliverable-size-v1，小写，无空格",
+						"storage": "最终文件存放位置",
+						"storageStarter": "- [ ] 移到“已交付”前，在任务中链接最终文件"
+					}
+				},
+				"samples": {
+					"webinarBanners": "网络研讨会横幅套图",
+					"webinarBannersDescription": "春季产品网络研讨会的横幅：活动页面、两条社交媒体帖子和邮件页眉。初版方案已交市场团队反馈。",
+					"webinarBannersFormats": "1080×1080 和 1200×628",
+					"settingsIcons": "新设置页面的图标",
+					"settingsIconsDescription": "十二个与现有图标风格一致的线性图标。完成后添加到设计系统页面。",
+					"salesDeck": "更新销售演示文稿",
+					"posterTypo": "修正活动海报上的错别字",
+					"onboardingScreens": "移动应用的引导页面"
+				}
+			},
+			"development-requests": {
+				"projectDescription": "汇集其他团队对工程团队所有需求的一条队列。新需求通过表单提交，每周评审两次，并一直跟踪到交付。",
+				"statuses": {
+					"accepted": "已接受",
+					"notDoing": "不做了"
+				},
+				"labels": {
+					"waitingOnRequester": "等待请求人"
+				},
+				"fields": {
+					"requestingTeam": "请求团队",
+					"businessImpact": "业务影响"
+				},
+				"options": {
+					"requestType": {
+						"newFeature": "新功能",
+						"change": "修改现有内容",
+						"data": "数据或报表",
+						"access": "权限或配置"
+					},
+					"businessImpact": {
+						"blocksWork": "阻碍工作",
+						"slowsWork": "拖慢工作",
+						"niceToHave": "有了更好"
+					}
+				},
+				"views": {
+					"requestOverview": "需求概览",
+					"requestOverviewDescription": "按类型列出未完成的需求，最早需要的排在前面。",
+					"blockingWork": "阻碍工作的需求",
+					"waitingOnRequester": "等待请求人回复",
+					"deliveredThisMonth": "本月已交付"
+				},
+				"form": {
+					"title": "向工程团队提需求",
+					"intro": "请描述你需要的结果，而不是解决方案。我们每周二和周四评审新需求。",
+					"confirmation": "已收到。下次评审后我们会联系你。"
+				},
+				"taskTemplates": {
+					"acceptedRequest": {
+						"name": "已接受的需求",
+						"titlePattern": "{title}",
+						"description": "**请求人需要什么**\n\n\n**为什么是现在**\n\n\n**完成后是什么样**\n\n\n- [ ] 已与请求人确认\n- [ ] 已排期并指定负责人\n- [ ] 交付时已通知请求人"
+					}
+				},
+				"rules": {
+					"blockingNoticed": "阻碍工作的需求第一时间被看到",
+					"blockingMessage": "有新需求阻碍了工作：{{task.key}} {{task.title}}",
+					"tellRequester": "完成后通知请求人",
+					"deliveredMessage": "你的需求 {{task.key}} 已交付：{{task.title}}",
+					"waitingReminder": "等待提醒",
+					"waitingMessage": "关于你的需求 {{task.key}} 我们有一个问题：{{task.title}}。请在评论中回复。"
+				},
+				"pages": {
+					"howToAsk": {
+						"title": "如何向工程团队提需求",
+						"whatWeTake": "这条队列接收什么",
+						"whatWeTakeStarter": "新功能、现有工具的修改、数据和报表、权限和配置，以及问题。",
+						"whatWeDont": "不接收什么",
+						"whatWeDontStarter": "服务中断和紧急事件：请通过值班频道报告。",
+						"review": "我们多久评审一次",
+						"reviewStarter": "每周二和周四。每个需求都会被接受、拒绝，或收到一个问题。",
+						"responseTimes": "常见响应时间",
+						"responseTimesStarter": "阻碍工作：一天内。拖慢工作：一周内。有了更好：有空档时。",
+						"statuses": "“已接受”和“已排期”的含义",
+						"statusesStarter": "**已接受：**我们会做，但还没有排期。**已排期：**已有时间和负责人。"
+					},
+					"triage": {
+						"title": "分派处理检查清单",
+						"complete": "信息完整吗？",
+						"completeStarter": "- [ ] 结果、团队、影响和日期都已填写",
+						"ours": "是我们负责的吗？",
+						"oursStarter": "- [ ] 如果属于其他团队，拒绝并告诉请求人去找谁",
+						"duplicate": "是重复的吗？",
+						"duplicateStarter": "- [ ] 搜索未完成的需求并关联相同的条目",
+						"impact": "影响有多大？",
+						"impactStarter": "- [ ] 阻碍工作的优先；快速见效的穿插完成",
+						"decide": "接受、拒绝或提问",
+						"decideStarter": "接受、拒绝，或提出一个问题并添加“等待请求人”标签。",
+						"decline": "友善地拒绝",
+						"declineStarter": "说明原因，如有其他途径就提出建议，并感谢对方提出需求。"
+					}
+				},
+				"samples": {
+					"invoiceExport": "在月度发票导出中添加成本中心列",
+					"invoiceExportDescription": "财务需要每条发票明细都带有成本中心才能月结。没有它，他们只能手动拆分文件。",
+					"orderLogs": "为支持团队开通订单日志的只读权限",
+					"planName": "在客户管理页面显示套餐名称",
+					"signupNumbers": "按地区统计的每周注册人数",
+					"bulkImport": "能否从电子表格批量导入联系人？",
+					"bulkImportDescription": "我们询问了表格包含哪些列，以及需要多久导入一次。",
+					"teamSupport": "支持",
+					"teamCustomerSuccess": "客户成功"
+				}
+			},
+			"document-review": {
+				"projectDescription": "文档从草稿开始，经过多轮审阅，最终签批。把当前文件及其版本保留在任务上，签批后的任何修改都新建任务处理。",
+				"statuses": {
+					"draft": "草稿",
+					"revising": "修订中",
+					"readyForSignOff": "待签批",
+					"signedOff": "已签批"
+				},
+				"labels": {
+					"contract": "合同",
+					"procedure": "规程",
+					"report": "报告"
+				},
+				"fields": {
+					"reviewRound": "审阅轮次",
+					"approver": "签批人"
+				},
+				"views": {
+					"reviewQueue": "审阅队列",
+					"reviewQueueDescription": "在审阅人或签批人手中的文档，截止日期最近的排在前面。",
+					"highRisk": "高风险",
+					"highRiskDescription": "未完成的高风险文档，截止日期最近的排在前面。",
+					"documentRegister": "文档登记表",
+					"documentRegisterDescription": "所有文档及其版本、审阅轮次、签批人和状态。"
+				},
+				"taskTemplates": {
+					"reviewRequest": {
+						"name": "审阅请求",
+						"description": "**文档内容及修改原因**\n\n\n**附件版本**\n\n\n**审阅人应重点关注的内容**\n\n\n**审阅截止日期**\n\n\n**需要的决定及决定人**\n"
+					}
+				},
+				"rules": {
+					"askForNewVersion": "索取新版本",
+					"revisingComment": "请附上新版本，更新“版本”和“审阅轮次”，并回复每条评论。",
+					"readyForSignOff": "待签批时通知负责人",
+					"readyMessage": "{{task.key}} 已可签批：{{task.title}}",
+					"freezeSignedOff": "冻结已签批文档",
+					"signedOffComment": "已签批。请勿更改附件。之后的任何修改请新建任务。"
+				},
+				"samples": {
+					"supplierAgreement": "保洁服务供应商协议",
+					"supplierAgreementDescription": "第 2 版回应了两位审阅人关于通知期和服务水平的意见，目前由运营负责人签批。",
+					"fireProcedure": "仓库火灾疏散规程",
+					"fireProcedureDescription": "首次全面审阅新的疏散路线和集合点。请对照当前平面图逐步核对。",
+					"satisfactionReport": "季度客户满意度报告",
+					"ndaTemplate": "更新保密协议模板",
+					"returnsProcedure": "退货处理规程",
+					"headOfOperations": "运营负责人",
+					"safetyManager": "安全健康主管",
+					"v1": "v1",
+					"v2": "v2",
+					"v4": "v4"
+				}
+			},
+			"email-campaign": {
+				"projectDescription": "每封邮件从简报到发送：先定文案再做设计，排期前先质检，发送后记录打开率和点击率。",
+				"statuses": {
+					"brief": "简报",
+					"copy": "文案",
+					"qa": "质检",
+					"sent": "已发送",
+					"resultsLogged": "已记录结果"
+				},
+				"labels": {
+					"productNews": "产品动态",
+					"lifecycle": "生命周期"
+				},
+				"fields": {
+					"segment": "受众分群",
+					"subjectLine": "邮件主题",
+					"openRate": "打开率 %",
+					"clickRate": "点击率 %"
+				},
+				"views": {
+					"sendCalendar": "发送日历",
+					"sendCalendarDescription": "所有未取消的邮件，按发送日期显示。",
+					"qaQueue": "质检队列"
+				},
+				"taskTemplates": {
+					"email": {
+						"name": "邮件",
+						"description": "**简报**\n- 目标：\n- 受众分群：\n- 一条核心信息：\n- 行动号召：\n\n**质检清单**\n- [ ] 每个链接都可用并已加跟踪\n- [ ] 个性化字段都有备用值\n- [ ] 图片都有替代文本\n- [ ] 有纯文本版本\n- [ ] 退订链接可用\n- [ ] 已在手机上检查\n- [ ] 已向团队发送测试邮件"
+					}
+				},
+				"subtasks": {
+					"briefAgreed": "简报已确认",
+					"copyFinal": "文案已定稿",
+					"designBuilt": "设计已完成",
+					"qaPassed": "质检已通过",
+					"scheduled": "已排期"
+				},
+				"rules": {
+					"sentFollowUp": "发送后收集结果",
+					"sentComment": "三天后记录打开数和点击数。",
+					"qaNotify": "邮件进入质检时通知负责人",
+					"qaMessage": "{{task.key}} 已可质检：{{task.title}}"
+				},
+				"pages": {
+					"brief": {
+						"title": "邮件简报",
+						"goalStarter": "这封邮件要达成什么？",
+						"segmentStarter": "谁会收到，谁不会。",
+						"keyMessageStarter": "读者应记住的唯一一件事。",
+						"callToAction": "行动号召",
+						"callToActionStarter": "我们希望读者采取的唯一行动。",
+						"sendDate": "发送日期"
+					},
+					"qa": {
+						"title": "质检清单",
+						"links": "链接",
+						"linksStarter": "- [ ] 每个链接都可用并已加跟踪",
+						"personal": "个性化字段",
+						"personalStarter": "- [ ] 每个个性化字段都有备用值",
+						"images": "图片和纯文本",
+						"imagesStarter": "- [ ] 图片都有替代文本，并且有纯文本版本",
+						"footer": "退订和页脚",
+						"footerStarter": "- [ ] 退订链接可用，页脚信息完整",
+						"testSend": "手机检查和测试发送",
+						"testSendStarter": "- [ ] 已在手机上检查，并向团队发送了测试邮件"
+					},
+					"style": {
+						"title": "邮件风格指南",
+						"sender": "发件人名称",
+						"senderStarter": "邮件使用的发件人名称和地址。",
+						"tone": "语气",
+						"toneStarter": "我们的语气：友好、清楚、简短。",
+						"subjects": "主题写法",
+						"subjectsStarter": "少于 50 个字符，具体明确，不用全大写单词。",
+						"images": "图片尺寸",
+						"imagesStarter": "头图宽 600 px；文件尽量小。",
+						"footer": "页脚",
+						"footerStarter": "地址、退订链接，以及读者收到这封邮件的原因。"
+					}
+				},
+				"samples": {
+					"marchNewsletter": "三月新闻通讯",
+					"marchNewsletterDescription": "春季骑行小贴士和新的营业时间。打开率和点击率已填在字段中。",
+					"allSubscribers": "全部新闻通讯订阅者",
+					"springDiscount": "春季保养优惠",
+					"springDiscountDescription": "自行车使用超过两年的顾客，春季保养享 15% 优惠。",
+					"olderBikesSegment": "自行车使用超过两年的顾客",
+					"repairBooking": "新的维修预约页面",
+					"welcomeTwo": "欢迎系列，第 2 封",
+					"weekendSale": "周末促销提醒",
+					"weekendSaleSubject": "最后一天：调校保养八折",
+					"aprilNewsletter": "四月新闻通讯"
+				}
+			},
+			"employee-reviews": {
+				"projectDescription": "从自评到面谈的一轮评估。卡片使用员工编号，只显示进度；评分和反馈留在人力资源系统中。",
+				"statuses": {
+					"selfReview": "自评",
+					"managerReview": "经理评估",
+					"calibration": "校准",
+					"conversation": "面谈",
+					"deferred": "已推迟"
+				},
+				"labels": {
+					"programmeStep": "流程步骤",
+					"needsHrHelp": "需要人力资源协助"
+				},
+				"fields": {
+					"reviewType": "评估类型",
+					"selfReviewIn": "已提交自评"
+				},
+				"options": {
+					"reviewType": {
+						"yearly": "年度",
+						"midYear": "年中",
+						"probation": "试用期"
+					}
+				},
+				"views": {
+					"progressByTeam": "按团队查看进度",
+					"progressByTeamDescription": "所有员工评估先按团队、再按状态分组。人力资源自己的流程步骤不包含在内。",
+					"myReviews": "我的评估"
+				},
+				"taskTemplates": {
+					"employeeReview": {
+						"name": "员工评估",
+						"description": "**标题：** 只写员工编号和团队，例如 E-014 · 运营。评分和书面反馈留在人力资源系统中。\n\n- [ ] 已确认本期目标\n- [ ] 已提交自评\n- [ ] 已在人力资源系统中填写经理评估\n- [ ] 已完成校准\n- [ ] 已进行面谈\n- [ ] 评估已签字"
+					},
+					"cycleStep": {
+						"name": "周期步骤",
+						"description": "**需要做什么，截止到什么时候？**\n\n\n- [ ] 已指定负责人\n- [ ] 经理清楚对他们的要求"
+					}
+				},
+				"pages": {
+					"reviewGuide": {
+						"title": "评估指南",
+						"timelineStarter": "自评在第 2 周前完成，经理评估在第 3 周前完成，第 4 周进行校准，面谈在第 6 周前完成。",
+						"criteria": "评估内容",
+						"criteriaStarter": "公布的标准和评分等级，绝不包含任何个人的结果。",
+						"selfReview": "如何写好自评",
+						"selfReviewStarter": "成绩、目标进展、一两个成长方向，以及给经理的反馈。",
+						"calibration": "校准如何进行",
+						"calibrationStarter": "经理们比较相似岗位的评估，使各团队之间的评分保持一致。",
+						"conversation": "面谈指南",
+						"conversationStarter": "先听员工的看法，商定下一期的两三个目标，并在人力资源系统中记录后续步骤。",
+						"privacy": "隐私规则",
+						"privacyStarter": "卡片上只显示员工编号和团队。评分、薪酬、反馈和个人信息留在人力资源系统中，评论只用于流程沟通。"
+					}
+				},
+				"rules": {
+					"readyForCalibration": "可以校准",
+					"readyForCalibrationMessage": "{{task.key}} 已可以进行校准：{{task.title}}",
+					"overdueStep": "评估步骤逾期",
+					"overdueStepMessage": "{{task.key}} 已超过截止日期：{{task.title}}",
+					"hrHelp": "已请求人力资源协助",
+					"hrHelpMessage": "{{task.key}} 需要人力资源协助：{{task.title}}"
+				},
+				"samples": {
+					"publishGuide": "发布时间安排、评估标准和评估指南",
+					"publishGuideDescription": "时间安排、评估标准和评分等级都在“评估指南”页面上，所有参与者都知道在哪里找到它。",
+					"briefManagers": "向经理说明校准安排",
+					"briefManagersDescription": "说明哪些岗位会被比较以及需要准备什么。评分只在会上讨论，绝不放在看板上。",
+					"e014": "E-014 · 运营",
+					"e014Description": "自评已提交。经理正在人力资源系统中填写评估。",
+					"e022": "E-022 · 销售",
+					"e031": "E-031 · 工程",
+					"e045": "E-045 · 市场",
+					"e045Description": "试用期评估。自评邀请将在下周发出。",
+					"closeCycle": "结束本轮评估并收集对流程的反馈",
+					"closeCycleDescription": "将剩余评估移到“已关闭”或“已推迟”，然后询问经理和员工下次可以改进什么。"
+				}
+			},
+			"event-planning": {
+				"projectDescription": "一场活动所需的一切：预订、讲者、推广和活动当天，从日期倒推来规划。",
+				"labels": {
+					"venue": "场地",
+					"program": "议程",
+					"vendors": "供应商",
+					"onTheDay": "活动当天"
+				},
+				"fields": {
+					"vendor": "承办方",
+					"contractSigned": "已签合同"
+				},
+				"views": {
+					"timelineDescription": "所有仍在进行的事项，按开始日期排列。",
+					"countdown": "倒计时",
+					"countdownDescription": "活动前还剩下的工作，最先到期的排在前面。",
+					"budget": "预算",
+					"budgetDescription": "每项预订及其承办方、费用和合同，按标签分组。"
+				},
+				"taskTemplates": {
+					"vendorBooking": {
+						"name": "供应商预订",
+						"description": "**承办方和联系人**\n\n\n- [ ] 获取三份报价\n- [ ] 比较报价\n- [ ] 签订合同\n- [ ] 支付定金\n- [ ] 提前一周：确认人数和到场时间"
+					},
+					"speaker": {
+						"name": "讲者",
+						"description": "**演讲题目和时段**\n\n\n- [ ] 发出邀请\n- [ ] 确认出席\n- [ ] 获取简介和照片\n- [ ] 幻灯片截止日期\n- [ ] 技术彩排\n- [ ] 发送感谢信"
+					}
+				},
+				"rules": {
+					"followUp": "跟进等待中的事项",
+					"followUpComment": "如果到时仍未收到回复，请再次跟进。",
+					"overdue": "逾期的活动工作",
+					"overdueMessage": "{{task.key}} 已超过截止日期：{{task.title}}"
+				},
+				"pages": {
+					"brief": {
+						"title": "活动简报",
+						"purposeStarter": "用一句话说明我们为什么举办这场活动。",
+						"date": "日期和地点",
+						"dateStarter": "日期、开始和结束时间以及场地。",
+						"headcount": "预计人数",
+						"budgetStarter": "总预算以及由谁审批支出。"
+					},
+					"runOfShow": {
+						"title": "活动流程单",
+						"schedule": "时间安排",
+						"scheduleStarter": "- 08:00 · 开门入场 · 负责人： · 提示：",
+						"cues": "提示信号",
+						"cuesStarter": "音乐、灯光、幻灯片和讲者的提示信号。"
+					},
+					"contacts": {
+						"title": "联系人",
+						"vendors": "供应商和合作方",
+						"vendorsStarter": "- 公司 · 联系人 · 电话",
+						"onSite": "现场联系人",
+						"whoToCallStarter": "活动当天如果出现问题，请先打电话给活动负责人。"
+					},
+					"after": {
+						"title": "活动结束后",
+						"attendance": "出席情况",
+						"feedback": "反馈",
+						"spend": "支出与预算对比",
+						"spendStarter": "计划、实际支出和差额。"
+					}
+				},
+				"samples": {
+					"venue": "预订场地",
+					"venueDescription": "Harbourline Hall 有 180 个座位，Harbourline Makers Day 当天空闲。定金已付。",
+					"venueVendor": "Harbourline Hall 预订处",
+					"catering": "确认 150 人的餐饮",
+					"cateringDescription": "Fernbank Kitchen 已收到我们的午餐和下午咖啡需求，正在等待他们的回复。",
+					"cateringVendor": "Fernbank Kitchen 活动团队",
+					"keynote": "确认主旨演讲嘉宾",
+					"registration": "开放报名并发送邀请",
+					"registrationDescription": "主旨演讲嘉宾确认后，立即邀请 Saltreed Studio 的邮件列表。",
+					"sound": "租用音响和投影仪",
+					"runOfShow": "编写活动流程单",
+					"thankYou": "发送感谢信和反馈问卷"
+				}
+			},
+			"facilities-service-desk": {
+				"projectDescription": "负责我们楼宇的维修、保洁、搬迁、会议室布置和门禁申请。请通过申请表报告问题；安全第一。",
+				"statuses": {
+					"waitingOnPartsOrContractor": "等待配件或外包商"
+				},
+				"labels": {
+					"contractor": "外包商"
+				},
+				"fields": {
+					"howUrgent": "有多紧急？",
+					"dateNeeded": "需要日期"
+				},
+				"options": {
+					"requestType": {
+						"repair": "维修",
+						"cleaning": "保洁",
+						"move": "工位或办公室搬迁",
+						"setup": "会议室或活动布置",
+						"access": "钥匙和门禁",
+						"safetyHazard": "安全隐患"
+					},
+					"howUrgent": {
+						"danger": "现在对人有危险",
+						"stopsWork": "工作无法进行",
+						"inconvenient": "造成不便",
+						"canSchedule": "可以排期处理"
+					}
+				},
+				"views": {
+					"myJobs": "我的工单",
+					"breachingSoonDescription": "一天内到期或已逾期的未完成工单，最早到期的排在前面。",
+					"schedule": "排期表",
+					"scheduleDescription": "在日历上查看未完成的工单，方便安排搬迁、布置和计划性维修。"
+				},
+				"taskTemplates": {
+					"repair": {
+						"name": "维修",
+						"description": "**什么坏了，具体在哪里？**\n\n\n- [ ] 已确认位置和故障\n- [ ] 已自行修好或已预约外包商\n- [ ] 修好后已检查\n- [ ] 已告知申请人"
+					},
+					"move": {
+						"name": "工位或办公室搬迁",
+						"description": "**谁要搬，从哪里搬到哪里，什么时候？**\n\n电话和线缆请尽早联系 IT。"
+					},
+					"setup": {
+						"name": "会议室或活动布置",
+						"description": "**活动、日期、时间和人数**\n\n\n- [ ] 场地和布局\n- [ ] 桌椅\n- [ ] 屏幕和音响\n- [ ] 餐饮\n- [ ] 活动后复原"
+					},
+					"safetyHazard": {
+						"name": "安全隐患",
+						"description": "**是什么隐患，具体在哪里？**\n\n\n- [ ] 区域已处理安全或已围挡\n- [ ] 原因已排除\n- [ ] 事件已记录\n- [ ] 已确认不会再次发生"
+					},
+					"access": {
+						"name": "钥匙和门禁",
+						"description": "**谁需要门禁权限，哪些门或房间，从什么时候开始？**\n\n\n- [ ] 申请人的主管已批准\n- [ ] 已发放门禁卡或钥匙\n- [ ] 已签收"
+					}
+				},
+				"subtasks": {
+					"confirmDate": "确认日期和搬迁人员",
+					"bookMovers": "预约搬运工",
+					"moveFurniture": "搬运家具",
+					"movePhones": "迁移电话和线缆（联系 IT）",
+					"updateFloorPlan": "更新楼层平面图"
+				},
+				"rules": {
+					"safetyFirst": "安全第一",
+					"safetyMessage": "有人报告安全隐患，紧急且今天到期：{{task.key}} {{task.title}}",
+					"targetUrgent": "目标时限：紧急",
+					"targetHigh": "目标时限：高",
+					"targetMedium": "目标时限：中",
+					"targetLow": "目标时限：低",
+					"lateOwner": "逾期时通知负责人",
+					"lateMessage": "{{task.key}} 已超过截止日期（{{task.dueDate}}）：{{task.title}}"
+				},
+				"form": {
+					"title": "报告楼宇问题或预约布置",
+					"intro": "告诉我们是什么问题、在哪里。如果现在有人可能受伤，请先拨打公告栏上的紧急电话，再提交此表。",
+					"confirmation": "谢谢，设施团队已收到你的申请。"
+				},
+				"pages": {
+					"emergency": {
+						"title": "什么算紧急情况",
+						"whoToCallStarter": "火灾、受伤、漏水淹水或停电：先拨打公告栏上的紧急电话，再联系设施负责人。",
+						"useTheForm": "改用表单提交的情况",
+						"useTheFormStarter": "能等一小时的事情都用表单：已控制的漏水、损坏的设施、保洁、搬迁和布置。",
+						"targets": "响应目标",
+						"targetsStarter": "紧急：当天 · 高：次日 · 中：一周内 · 低：一个月内"
+					},
+					"buildingGuide": {
+						"title": "楼宇指南",
+						"floors": "楼层和房间",
+						"supplies": "物资存放位置",
+						"suppliesStarter": "清洁用品、灯泡、备用椅子和急救箱：",
+						"contractors": "外包商联系方式",
+						"contractorsStarter": "工种、公司、电话号码以及何时联系。"
+					},
+					"moveChecklist": {
+						"title": "搬迁清单",
+						"leadTimesStarter": "单个工位至少提前两周预约，整个团队至少提前四周。",
+						"before": "搬迁前",
+						"movingDay": "搬迁当天",
+						"after": "搬迁后"
+					},
+					"maintenance": {
+						"title": "计划性维护",
+						"fireAlarms": "火灾报警器",
+						"heating": "供暖与制冷",
+						"lifts": "电梯",
+						"checkStarter": "频率： · 上次检查： · 下次： · 执行人："
+					}
+				},
+				"samples": {
+					"tap": "3 楼茶水间水龙头漏水",
+					"tapDescription": "水槽下面一直在滴水。水管工已约好明天上午来。",
+					"tapLocation": "3 楼茶水间",
+					"carpet": "前台地毯边缘翘起",
+					"carpetDescription": "被报告为绊倒隐患。当天上午已围挡，下午重新铺好。",
+					"carpetLocation": "1 楼前台",
+					"teamMove": "市场团队搬到 2 楼",
+					"teamMoveDescription": "从 4 楼搬 8 个工位到 2 楼东侧。家具在截止日当天上午搬运。",
+					"teamMoveLocation": "从 4 楼到 2 楼东侧",
+					"townHall": "120 人全员大会布置",
+					"townHallDescription": "剧院式座位，舞台屏幕配两支麦克风，9:00 起供应咖啡。",
+					"townHallLocation": "1 楼大厅",
+					"coldRoom": "4 号会议室太冷",
+					"coldRoomDescription": "本月第三次报告。检查温控器，并考虑更换暖气。",
+					"coldRoomLocation": "2 楼 4 号会议室",
+					"accessCard": "为新外包商办理门禁卡",
+					"accessCardLocation": "正门和 2 楼"
+				}
+			},
+			"finance-service-desk": {
+				"projectDescription": "采购申请、费用报销、供应商发票和预算问题，从提交到审批再到付款。",
+				"statuses": {
+					"processing": "处理中",
+					"notApproved": "未获批准"
+				},
+				"labels": {
+					"overLimit": "超出限额",
+					"monthEnd": "月末"
+				},
+				"options": {
+					"requestType": {
+						"purchase": "采购",
+						"expenseClaim": "费用报销",
+						"supplierInvoice": "供应商发票",
+						"newSupplier": "新供应商",
+						"budgetChange": "预算调整"
+					}
+				},
+				"views": {
+					"breachingSoonDescription": "2 天内到期或已逾期的未完成请求，最早到期的在前。",
+					"awaitingApprovalDescription": "等待批准的请求，金额最大的在前。"
+				},
+				"taskTemplates": {
+					"purchase": {
+						"name": "采购申请",
+						"description": "**买什么、买多少、向谁买**\n\n\n- [ ] 已附报价单\n- [ ] 已填写金额和成本中心\n- [ ] 预算负责人已批准\n- [ ] 已下单\n- [ ] 已收货"
+					},
+					"expenseClaim": {
+						"name": "费用报销",
+						"description": "**这笔费用用于什么？**\n\n\n- [ ] 已附票据\n- [ ] 符合费用政策\n- [ ] 经理已批准\n- [ ] 已入账\n- [ ] 已随下次发薪报销"
+					},
+					"supplierInvoice": {
+						"name": "供应商发票",
+						"description": "**供应商、发票号和付款到期日**\n\n\n- [ ] 与订单和收货一致\n- [ ] 已批准付款\n- [ ] 已填写成本中心\n- [ ] 已安排在到期日前付款"
+					},
+					"newSupplier": {
+						"name": "新供应商",
+						"description": "**供应商名称及我们向其采购的内容**\n\n\n- [ ] 已收到供应商信息和税号\n- [ ] 已拨打已知号码电话确认银行信息\n- [ ] 已加入供应商名单"
+					},
+					"budgetChange": {
+						"name": "预算调整",
+						"description": "**为什么需要调整？**\n\n\n- [ ] 已写明调出和调入的预算\n- [ ] 已写明金额和原因\n- [ ] 双方预算负责人均已批准\n- [ ] 已入账"
+					}
+				},
+				"rules": {
+					"invoicesToApproval": "发票进入审批",
+					"lateOwner": "逾期时通知负责人",
+					"lateMessage": "{{task.key}} 已过到期日：{{task.title}}"
+				},
+				"form": {
+					"title": "咨询财务",
+					"intro": "采购、费用报销、发票和预算问题。请通过邮件附上票据或发票，并写明金额和成本中心，这样我们一次就能批准。",
+					"confirmation": "谢谢，财务已收到你的请求。如有缺漏，我们会发邮件告诉你。"
+				},
+				"pages": {
+					"howToAsk": {
+						"title": "如何向财务提交请求",
+						"includeStarter": "采购需要报价单，报销需要票据，发票需要订单号。请始终写明金额和成本中心。",
+						"invoices": "发票寄往何处",
+						"invoicesStarter": "供应商把发票发到财务邮箱。附件会和请求一起保存。",
+						"leadTimesStarter": "大多数请求在 2 个工作日内获批，并在下一个付款批次中支付。"
+					},
+					"approvalLimits": {
+						"title": "审批权限",
+						"whoApprovesStarter": "预算负责人在自己的限额内审批本预算的支出。",
+						"overLimit": "超出限额时",
+						"overLimitStarter": "添加“超出限额”标签，并指派给下一级审批人。"
+					},
+					"expensePolicy": {
+						"title": "费用政策",
+						"claimable": "可以报销的内容",
+						"claimableStarter": "差旅、客户餐费以及事先同意的小额采购。",
+						"receipts": "票据",
+						"receiptsStarter": "每笔费用都要附上明细票据。",
+						"deadlines": "截止时间",
+						"deadlinesStarter": "请在费用发生后 30 天内提交报销。"
+					},
+					"monthEnd": {
+						"title": "月末结账日历",
+						"invoices": "供应商发票",
+						"invoicesStarter": "月末前 3 个工作日截止。",
+						"claims": "费用报销",
+						"claimsStarter": "当月最后一个工作日截止。",
+						"budgetChanges": "预算调整",
+						"budgetChangesStarter": "每月 20 日前确定。"
+					}
+				},
+				"samples": {
+					"cleaningInvoice": "办公室保洁发票（10 月）",
+					"cleaningInvoiceDescription": "每月的保洁发票。批准前请对照合同核对工时。",
+					"monitors": "为设计团队采购两台显示器",
+					"trainTickets": "拜访客户的火车票",
+					"trainTicketsDescription": "缺少返程票据，已请申请人补交。",
+					"cateringSupplier": "新增餐饮供应商",
+					"cateringSupplierDescription": "拨打已知号码电话确认银行信息，绝不使用发来这些信息的邮件。",
+					"budgetMove": "从活动预算调 2,000 到培训预算",
+					"lunchQuestion": "团队午餐应计入哪个成本中心？",
+					"costCenterFacilities": "行政",
+					"costCenterDesign": "设计",
+					"costCenterSales": "销售"
+				}
+			},
+			"financial-close": {
+				"projectDescription": "本月结账，按结账日分组。每个步骤每月在固定日期重复，并在锁定期间之前由编制人以外的人复核。",
+				"statuses": {
+					"readyForReview": "待复核",
+					"reviewed": "已复核",
+					"notNeeded": "无需处理"
+				},
+				"labels": {
+					"preClose": "结账前",
+					"reconciliation": "对账",
+					"journalEntry": "会计分录",
+					"reporting": "报告"
+				},
+				"fields": {
+					"closeDay": "结账日",
+					"reviewer": "复核人"
+				},
+				"options": {
+					"closeDay": {
+						"beforeClose": "结账前",
+						"day1": "第 1 天",
+						"day2": "第 2 天",
+						"day3": "第 3 天",
+						"day4": "第 4 天",
+						"day5": "第 5 天"
+					}
+				},
+				"views": {
+					"closeBoard": "结账看板",
+					"closeBoardDescription": "按结账日显示本次结账，包括日期在上月末的结账前步骤。",
+					"waitingForReview": "等待复核",
+					"openThisMonth": "本月未完成"
+				},
+				"taskTemplates": {
+					"accountReconciliation": {
+						"name": "科目对账",
+						"description": "**科目和期间**\n\n\n**步骤**\n\n- [ ] 取得账面余额\n- [ ] 取得外部余额（对账单或明细账）\n- [ ] 解释每一项差异\n- [ ] 附上支持文件\n- [ ] 如需要，录入调整分录\n- [ ] 移至待复核"
+					},
+					"journalEntry": {
+						"name": "记账凭证",
+						"description": "**分录用途**\n\n\n- [ ] 已附计算和支持文件\n- [ ] 已过账\n- [ ] 复核人在锁定期间前批准"
+					}
+				},
+				"rules": {
+					"readyForReview": "请求复核",
+					"readyForReviewMessage": "{{task.key}} 已可复核：{{task.title}}",
+					"reviewerComment": "复核人：请检查支持文件已附上且余额一致。",
+					"overdue": "逾期的结账步骤",
+					"overdueMessage": "{{task.key}} 已过截止日期，可能拖慢结账：{{task.title}}"
+				},
+				"pages": {
+					"closeCalendar": {
+						"title": "结账日历和签核",
+						"dayPlan": "结账日计划",
+						"dayPlanStarter": "结账前：截止时间。第 1–3 天：对账和分录。第 4 天：差异分析。第 5 天：签核。",
+						"cutoffs": "截止时间",
+						"cutoffsStarter": "应付、应收和工资：仍计入本月的最后日期和时间。",
+						"rolesStarter": "为每个领域写明谁编制、谁复核。复核人绝不是编制人。",
+						"materiality": "重要性阈值",
+						"materialityStarter": "解释超过此金额或比例的每项差异：",
+						"signOff": "签核记录",
+						"signOffStarter": "期间、签核人、日期以及锁定期间的时间。"
+					}
+				},
+				"samples": {
+					"cutoff": "确认应付和应收截止",
+					"bankRec": "银行对账，运营账户",
+					"bankRecDescription": "将账面余额与银行对账单核对，解释每个调节项并附上对账单。",
+					"depreciation": "计提折旧和预付费用摊销",
+					"accruals": "预提已收货未开票的费用",
+					"accrualsDescription": "列出本月已收到但尚未开票的商品和服务，并附支持文件计提。",
+					"payroll": "工资预提和对账",
+					"receivables": "应收明细账对账",
+					"variances": "复核资产负债表和利润表差异",
+					"variancesDescription": "对照上月和预算，解释超过重要性阈值的每项变动。",
+					"signOff": "签核管理报告并锁定期间",
+					"signOffDescription": "确认每个步骤已复核或标记为无需处理，签核报告并记录在签核页面。"
+				}
+			},
+			"general-service-desk": {
+				"projectDescription": "面向所有团队的统一请求入口。新请求先经过分派，交给相应团队，并在同一个队列里处理。",
+				"labels": {
+					"repeatQuestion": "重复问题"
+				},
+				"options": {
+					"requestType": {
+						"notWorking": "有东西坏了",
+						"needSomething": "我需要某样东西"
+					},
+					"urgency": {
+						"thisWeek": "本周需要"
+					},
+					"team": {
+						"it": "IT",
+						"facilities": "行政后勤"
+					}
+				},
+				"views": {
+					"breachingSoonDescription": "一天内到期或已经逾期的未完成请求，最早的排在前面。"
+				},
+				"taskTemplates": {
+					"walkUp": {
+						"name": "当面或电话请求",
+						"description": "用于当面或通过电话提出的需求。\n\n- [ ] 谁提出的\n- [ ] 需要什么\n- [ ] 影响范围和紧急程度\n- [ ] 团队"
+					},
+					"question": {
+						"name": "问题咨询",
+						"description": "- [ ] 已发送答复\n- [ ] 如以前问过，已把答复加入知识库"
+					},
+					"notWorking": {
+						"name": "有东西坏了",
+						"description": "- [ ] 什么坏了、从什么时候开始\n- [ ] 影响到谁\n- [ ] 已提供临时办法\n- [ ] 已修复或已转交"
+					},
+					"handOver": {
+						"name": "转交给其他团队",
+						"description": "- [ ] 已写明团队和联系人\n- [ ] 已为对方概括请求\n- [ ] 已告知请求人由谁处理"
+					}
+				},
+				"rules": {
+					"targetUrgent": "目标：紧急",
+					"targetHigh": "目标：高",
+					"targetMedium": "目标：中",
+					"targetLow": "目标：低",
+					"lateOwner": "逾期时通知负责人",
+					"lateMessage": "{{task.key}} 已超过目标日期。"
+				},
+				"form": {
+					"title": "我们能帮您做什么？",
+					"intro": "请用一句话说明您需要什么，然后补充细节。每张表单只提交一个请求。",
+					"confirmation": "谢谢，我们已收到您的请求。我们每个工作日都会查看新请求。"
+				},
+				"pages": {
+					"howToAsk": {
+						"title": "如何寻求帮助",
+						"where": "请求发到哪里",
+						"whereStarter": "使用应用中的 **新建请求**、请求表单或服务台的邮箱地址。",
+						"includeStarter": "需要什么、影响到谁、有多紧急，以及截图或参考编号（如有）。",
+						"nextStarter": "我们每个工作日阅读新请求，确定团队和优先级，您会在请求本身收到回复。",
+						"responseTimes": "通常响应时间",
+						"responseTimesStarter": "紧急：当天。高：次日。中：3 天内。低：一周内。"
+					},
+					"knowledgeBase": {
+						"howToAdd": "如何添加答案",
+						"howToAddStarter": "每个问题一个标题，下面写简短答案和带日期的 **最后核对：**。",
+						"exampleQuestion": "请求应该发到哪里？",
+						"exampleAnswer": "使用请求表单或应用中的 **新建请求**。**最后核对：**"
+					},
+					"triageGuide": {
+						"title": "分派指南",
+						"priority": "根据影响范围和紧急程度定优先级",
+						"priorityStarter": "紧急：很多人，工作已停止。高：我的团队工作停止，或很多人本周需要。中：只有我工作停止、我的团队本周需要，或很多人可以等。低：其余情况。",
+						"targets": "截止日期目标",
+						"targetsStarter": "接受时按优先级设置：紧急当天，高 1 天，中 3 天，低 7 天。",
+						"decline": "拒绝或标记为重复",
+						"declineStarter": "超出范围的请求附简短说明后拒绝。与未完成请求相同的请求标记为其重复项。",
+						"handOver": "把请求交给其他团队",
+						"handOverStarter": "使用 **转交给其他团队** 模板：写明团队和联系人，概括请求，并告知请求人。"
+					}
+				},
+				"samples": {
+					"projector": "2 号会议室的投影仪没有画面",
+					"projectorDescription": "投影仪能开机，但屏幕一片空白。团队周四要在那里和客户通话。",
+					"bankDetails": "怎样修改工资的收款银行信息？",
+					"sharedDrive": "无法登录共享网盘",
+					"sharedDriveDescription": "从今天早上开始，整个设计团队都遇到访问错误，打不开项目文件。",
+					"standingDesk": "订购一张升降办公桌",
+					"standingDeskDescription": "我们已询问请求人桌子的尺寸以及要送到哪一层。",
+					"conferenceTicket": "报销会议门票",
+					"lunchSlot": "建议安排更安静的午餐时段方便通话"
+				}
+			},
+			"go-to-market": {
+				"projectDescription": "上线前、上线当天和上线后需要落实的一切：信息传达、内容、销售和支持的准备，以及上线决策。",
+				"labels": {
+					"messaging": "信息传达",
+					"content": "内容",
+					"salesEnablement": "销售赋能",
+					"supportReadiness": "支持准备",
+					"launchDay": "发布日"
+				},
+				"fields": {
+					"goNoGo": "上线决策项"
+				},
+				"options": {
+					"phase": {
+						"preLaunch": "发布前",
+						"launchWeek": "发布周",
+						"postLaunch": "发布后"
+					}
+				},
+				"views": {
+					"launchTimeline": "发布时间线",
+					"launchTimelineDescription": "所有已承诺的事项按开始日期排列，日期扎堆的周一目了然。",
+					"byPhase": "按阶段",
+					"readiness": "上线决策就绪情况",
+					"readinessDescription": "上线决策前必须处于“就绪”的事项，可直接作为会议议程。"
+				},
+				"taskTemplates": {
+					"launchAsset": {
+						"name": "发布物料",
+						"description": "**是什么**\n\n\n**面向谁**\n\n\n**在哪里上线**\n\n\n- [ ] 草稿\n- [ ] 与该领域负责人评审\n- [ ] 定稿\n- [ ] 已排期或已发布"
+					},
+					"signOff": {
+						"name": "就绪确认",
+						"description": "**领域**\n\n\n**负责人**\n\n\n**“就绪”的含义**\n\n\n- [ ] 已测试\n- [ ] 已写文档\n- [ ] 已向团队说明\n- [ ] 已记录未决风险"
+					}
+				},
+				"rules": {
+					"readyForCall": "上线决策项已就绪",
+					"readyMessage": "{{task.title}} 已可进入上线决策",
+					"overdueItem": "上线决策项已逾期",
+					"overdueMessage": "{{task.key}} 是上线决策项，已过截止日期：{{task.title}}"
+				},
+				"pages": {
+					"brief": {
+						"title": "发布简报",
+						"whatIsLaunching": "发布什么",
+						"whatIsLaunchingStarter": "产品或功能，以及客户会注意到的那一个变化。",
+						"keyMessageStarter": "客户会转述给同事的一句话。",
+						"launchSize": "发布规模",
+						"launchSizeStarter": "大型、标准或小型。规模越小，计划越轻。",
+						"timelineStarter": "上线决策会、发布日和 30 天复盘。"
+					},
+					"goNoGo": {
+						"title": "上线决策清单",
+						"items": "就绪事项",
+						"whoApprovesStarter": "由谁做决定，以及谁必须到场。",
+						"exceptions": "如何接受例外",
+						"exceptionsStarter": "未处于“就绪”的事项，只有指定了负责人和修复日期才能放行。",
+						"fallback": "备用方案",
+						"fallbackStarter": "如果决定不上线：新的日期，以及由谁通知客户和团队。"
+					},
+					"review": {
+						"title": "发布复盘",
+						"resultsStarter": "发布简报中的每项成功指标及实际结果。"
+					}
+				},
+				"samples": {
+					"positioning": "撰写定位和核心信息",
+					"positioningDescription": "面向 Tallowmere 的现有客户和新团队为 Ledgerleaf 2.0 定位。三条核心信息，每条配一个佐证。",
+					"salesKit": "制作销售单页和演示脚本",
+					"support": "更新帮助文章并培训支持团队",
+					"supportDescription": "修订 Ledgerleaf 2.0 中有变化的文章，并在发布周之前进行一次培训。",
+					"announcement": "起草发布公告和客户邮件",
+					"goNoGo": "召开上线决策会",
+					"goNoGoDescription": "逐项查看“上线决策就绪情况”视图，并把决定记录在清单页面中。",
+					"watchRota": "安排发布日值守轮班",
+					"review": "进行发布 30 天复盘"
+				}
+			},
+			"grant-tracker": {
+				"projectDescription": "从初步评估到结项报告的资助机会。每张卡片的截止日期就是申请或意向书的截止日期。",
+				"statuses": {
+					"prospect": "潜在机会",
+					"letterOfInquiry": "意向书",
+					"awarded": "已获资助",
+					"closedOut": "已结项"
+				},
+				"labels": {
+					"foundation": "基金会",
+					"government": "政府",
+					"corporate": "企业"
+				},
+				"fields": {
+					"funder": "资助方",
+					"amountRequested": "申请金额",
+					"amountAwarded": "获批金额",
+					"nextReportDue": "下次报告截止"
+				},
+				"views": {
+					"deadlinesDescription": "所有进行中的意向书和申请，按截止日期显示。",
+					"fundingSheet": "资助总表",
+					"fundingSheetDescription": "按状态列出资助方、申请金额、获批金额和截止日期。",
+					"reportsDue": "待交报告",
+					"reportsDueDescription": "已获资助的项目，最近的报告排在前面。"
+				},
+				"taskTemplates": {
+					"application": {
+						"name": "申请",
+						"titlePattern": "申请：{title}",
+						"description": "- **资助方：**\n- **项目：**\n- **金额：**\n- **截止日期：**\n- **联系人：**"
+					},
+					"grantReport": {
+						"name": "资助报告",
+						"titlePattern": "资助报告：{title}",
+						"description": "- [ ] 成果和数据\n- [ ] 一位参与者的故事（经本人同意）\n- [ ] 支出与预算对比\n- [ ] 提交报告\n- [ ] 记下下次报告日期"
+					}
+				},
+				"subtasks": {
+					"confirmEligibility": "确认申请资格",
+					"readGuidelines": "阅读申请指南",
+					"outline": "提纲",
+					"budget": "预算表",
+					"narrativeDraft": "申请书初稿",
+					"attachments": "附件",
+					"internalReview": "内部审阅",
+					"submit": "提交并保存确认回执"
+				},
+				"rules": {
+					"awarded": "已获资助：感谢资助方并安排报告",
+					"thankYou": "发送感谢信",
+					"reportDates": "设定报告日期",
+					"awardedMessage": "{{task.title}} 已获资助。请发送感谢信并设定报告日期。",
+					"declined": "未获批：请求反馈",
+					"declinedComment": "请资助方给出反馈，并记下我们何时可以再次申请。",
+					"deadlinePassed": "截止日期已过但尚未提交",
+					"deadlinePassedMessage": "{{task.title}} 的截止日期已过，但还没有提交。"
+				},
+				"pages": {
+					"boilerplate": {
+						"title": "常用文案库",
+						"mission": "使命",
+						"missionStarter": "可以直接粘贴到任何申请中的一两句话。",
+						"history": "发展历程",
+						"programs": "项目介绍",
+						"people": "团队",
+						"budgetStarter": "年度预算、主要资金来源以及我们如何跟踪支出。",
+						"outcomes": "成果"
+					},
+					"funderNotes": {
+						"title": "资助方笔记",
+						"priorities": "他们关注什么",
+						"prioritiesStarter": "每个资助方一节：资助重点、常见金额和时间安排。",
+						"pastRequests": "以往申请",
+						"feedback": "反馈"
+					},
+					"deadlineRule": {
+						"title": "截止日期规则",
+						"internalDraft": "内部初稿",
+						"internalDraftStarter": "内部初稿应在每个截止日期前两周完成。",
+						"finalReview": "最终审阅",
+						"finalReviewStarter": "最终审阅在每个截止日期前一周进行。"
+					}
+				},
+				"samples": {
+					"riverstone": "河石家族基金：青少年阅读项目",
+					"riverstoneDescription": "附一页预算表的完整申请。可复用常用文案库中的阅读项目成果。",
+					"riverstoneFunder": "河石家族基金",
+					"countyArts": "县艺术资助 2027",
+					"countyArtsFunder": "县艺术委员会",
+					"holloway": "霍洛韦五金店社区公益项目",
+					"hollowayFunder": "霍洛韦五金店",
+					"linden": "林登基金会：运营支持",
+					"lindenDescription": "已获得下一年度的资助。请填写下次报告截止日期，并规划续约。",
+					"lindenFunder": "林登基金会",
+					"brookmere": "布鲁克米尔基金会：夏令营",
+					"brookmereFunder": "布鲁克米尔基金会",
+					"coastal": "沿海地区医疗可及性资助",
+					"coastalDescription": "需求很迫切，但预算太单薄。下一轮将在春季开放。",
+					"coastalFunder": "地区卫生局"
+				}
+			},
+			"hr-service-desk": {
+				"projectDescription": "员工问题、入职、离职、休假和薪资，由人力资源团队在一个私密队列中处理。",
+				"statuses": {
+					"waitingOnEmployee": "等待员工"
+				},
+				"labels": {
+					"sensitive": "敏感",
+					"policyGap": "制度缺口"
+				},
+				"fields": {
+					"keyDate": "关键日期",
+					"sensitive": "敏感"
+				},
+				"options": {
+					"requestType": {
+						"newStarter": "新员工入职",
+						"leaver": "离职",
+						"timeOff": "休假或请假",
+						"pay": "薪资或福利",
+						"policy": "制度问题",
+						"concern": "工作场所问题",
+						"details": "信息变更"
+					}
+				},
+				"views": {
+					"myCases": "我的事项",
+					"breachingSoonDescription": "两天内到期或已逾期的未结事项。",
+					"startersAndLeavers": "入职与离职"
+				},
+				"taskTemplates": {
+					"newStarter": {
+						"name": "新员工入职",
+						"description": "**谁入职、担任什么职位、什么时候开始？**\n\n\n将截止日期设为入职日前一周。"
+					},
+					"leaver": {
+						"name": "离职",
+						"description": "**谁要离职，最后工作日是哪天？**\n\n\n首先以书面形式确认离职日期。"
+					},
+					"leaveRequest": {
+						"name": "请假申请",
+						"description": "**假期类型和日期**\n\n\n- [ ] 已记录日期和假期类型\n- [ ] 已核实资格\n- [ ] 已通知经理\n- [ ] 已通知薪资组\n- [ ] 已书面确认给员工"
+					},
+					"policyQuestion": {
+						"name": "制度问题",
+						"description": "**问题**\n\n\n- [ ] 已发送答复\n- [ ] 已链接制度页面\n- [ ] 页面没有答案时已添加“制度缺口”标签"
+					},
+					"concern": {
+						"name": "工作场所问题",
+						"description": "标题中不要写姓名或细节。\n\n- [ ] 一个工作日内确认收到\n- [ ] 已商定谁可以查看\n- [ ] 记录只写在此任务中\n- [ ] 已与员工商定后续步骤"
+					}
+				},
+				"subtasks": {
+					"contract": "合同已签署并交回",
+					"payroll": "已收集薪资和税务信息",
+					"equipment": "已向 IT 申请设备和账号",
+					"accessCard": "工位或门禁卡已就绪",
+					"firstDay": "首日安排和伙伴",
+					"checkIn": "第一周结束后的沟通",
+					"endDate": "已书面确认离职日期",
+					"finalPay": "最后一次薪资和剩余假期",
+					"equipmentReturn": "已约定设备归还",
+					"accountsClosed": "最后一天关闭账号",
+					"exitConversation": "已提供离职面谈",
+					"referencePolicy": "已说明推荐信政策"
+				},
+				"rules": {
+					"onboarding": "入职步骤",
+					"offboarding": "离职步骤",
+					"sensitive": "敏感事项交给负责人",
+					"sensitiveMessage": "{{task.key}} 是一个敏感请求，请接手处理。",
+					"late": "逾期时提醒负责人",
+					"lateMessage": "{{task.key}} 已超过截止日期：{{task.title}}"
+				},
+				"form": {
+					"title": "咨询人力资源",
+					"intro": "关于薪资、休假、制度或个人信息的问题，或需要告知我们的入职、离职事项。如果涉及个人隐私，请勾选“敏感”，只有人力资源团队能看到。",
+					"confirmation": "谢谢。人力资源已收到您的请求，将通过邮件回复。"
+				},
+				"pages": {
+					"questions": {
+						"title": "人力资源问答",
+						"payDates": "发薪日",
+						"payDatesStarter": "每月何时发薪，没收到时该问谁。",
+						"leave": "假期类型及申请方式",
+						"leaveStarter": "年假、病假、育儿假等，以及各自需要提前多久申请。",
+						"benefits": "福利",
+						"benefitsStarter": "每位员工都享有的福利，以及详情在哪里查看。",
+						"details": "变更个人信息",
+						"detailsStarter": "请提交类型为“信息变更”的请求，我们会通过邮件确认。",
+						"whoToCallStarter": "人力资源团队的共享邮箱，以及各主题的负责人。"
+					},
+					"onboarding": {
+						"title": "入职清单",
+						"before": "入职前",
+						"beforeStarter": "合同已签署，薪资和税务信息已收集，已向 IT 申请设备和账号，工位或门禁卡已就绪。",
+						"firstDay": "第一天",
+						"firstDayStarter": "首日安排，以及帮助新同事融入的伙伴。",
+						"firstWeek": "第一周",
+						"firstWeekStarter": "第一周结束时进行一次沟通。",
+						"owners": "每一步由谁、在何时完成"
+					},
+					"offboarding": {
+						"title": "离职清单",
+						"notice": "得知后立即",
+						"noticeStarter": "书面确认离职日期；核算最后一次薪资和剩余假期。",
+						"lastDay": "最后一天",
+						"lastDayStarter": "设备已归还，账号已关闭。",
+						"after": "离职之后",
+						"afterStarter": "已提供离职面谈，并说明推荐信政策。"
+					},
+					"sensitive": {
+						"title": "敏感事项处理",
+						"whoCanSee": "谁可以查看",
+						"whoCanSeeStarter": "仅限此受限项目的成员，以及工作区的所有者和管理员。",
+						"notes": "记录写在哪里",
+						"notesStarter": "写在任务本身，绝不写在聊天或共享页面中。",
+						"titles": "任务标题中绝不能写的内容",
+						"titlesStarter": "姓名、健康信息或投诉的具体内容。",
+						"retention": "记录保存多久",
+						"retentionStarter": "已结事项保存多久，以及由谁删除。"
+					}
+				},
+				"samples": {
+					"newStarter": "新员工入职：产品设计师，3 号入职",
+					"newStarterDescription": "下个月 3 号加入设计团队。合同已发出待签署。",
+					"leaver": "离职：月底为最后工作日",
+					"parentalLeave": "我能休多少天育儿假？",
+					"parentalLeaveDescription": "制度页面没有涵盖夫妻共享假期，因此已通过邮件答复，页面需要更新。",
+					"overtime": "上一张工资单缺少加班费",
+					"overtimeDescription": "月底最后一周的六小时加班没有发放。",
+					"address": "更新我的家庭住址",
+					"addressDescription": "等待员工以书面形式发送新地址。",
+					"concern": "对团队内行为的担忧",
+					"concernDescription": "以保密方式反映。记录保留在此任务中，由负责人处理。"
+				}
+			},
+			"ip-infringement": {
+				"projectDescription": "我们的商标、内容、外观设计和发明被疑似滥用的情况，以及针对我们的索赔。先保全证据，再选择有效的最轻应对，只记录案件所需的信息。不构成法律建议。",
+				"statuses": {
+					"reported": "已举报",
+					"assessing": "评估中",
+					"noticeSent": "已发送通知",
+					"awaitingResponse": "等待回复",
+					"escalated": "已升级",
+					"closedNoAction": "已关闭，不采取行动"
+				},
+				"labels": {
+					"inboundClaim": "针对我们的索赔",
+					"repeat": "重复侵权",
+					"counterNotice": "反通知"
+				},
+				"fields": {
+					"ipType": "知识产权类型",
+					"whereFound": "发现位置",
+					"link": "链接",
+					"responseDeadline": "回复截止日期"
+				},
+				"options": {
+					"ipType": {
+						"trademark": "商标",
+						"copyright": "著作权",
+						"patent": "专利",
+						"design": "外观设计",
+						"tradeSecret": "商业秘密"
+					},
+					"whereFound": {
+						"marketplace": "在线市场",
+						"socialMedia": "社交媒体",
+						"appStore": "应用商店",
+						"physicalProduct": "实体产品"
+					}
+				},
+				"views": {
+					"openCases": "未结案件",
+					"byIpType": "按知识产权类型",
+					"deadlinesDescription": "在日历上按截止日期显示未结案件。"
+				},
+				"taskTemplates": {
+					"caseAssessment": {
+						"name": "案件评估",
+						"description": "**我们发现了什么**\n\n\n**评估**\n\n- [ ] 已保全证据：截图、链接和日期\n- [ ] 已确认我们拥有的权利、是否注册及在何处注册\n- [ ] 已核查司法管辖\n- [ ] 已考虑该使用是否可能被允许（引用、评论、正品转售）\n- [ ] 已选择合适的最轻应对：平台举报、通知、函件或律师\n- [ ] 已记录决定及理由"
+					},
+					"inboundClaim": {
+						"name": "针对我们的索赔",
+						"description": "**谁在主张什么，截止到何时？**\n\n\n- [ ] 已核实索赔和发件人真实\n- [ ] 已在回复截止日期中记下期限\n- [ ] 已保全相关材料\n- [ ] 法务决定前不承认、不删除任何内容\n- [ ] 已与律师准备回复或反通知"
+					}
+				},
+				"rules": {
+					"evidenceFirst": "新举报先取证",
+					"evidenceSubtask": "保全证据：截图、链接和日期",
+					"noticeFollowUp": "发出通知后跟进",
+					"noticeComment": "请在截止日期前确认材料是否已删除或是否收到回复。",
+					"overdue": "逾期案件",
+					"overdueMessage": "{{task.key}} 已过截止日期：{{task.title}}",
+					"inboundClaim": "针对我们的索赔为紧急",
+					"inboundClaimMessage": "{{task.key}} 是针对我们的索赔。请检查期限：{{task.title}}"
+				},
+				"form": {
+					"title": "举报疑似滥用我们知识产权的情况",
+					"intro": "告诉我们你发现了什么、在哪里发现的。请勿自行联系对方。",
+					"confirmation": "谢谢。法务团队会审核你的举报。"
+				},
+				"pages": {
+					"playbook": {
+						"title": "维权手册",
+						"protect": "我们保护什么",
+						"protectStarter": "我们的商标、外观设计、专利和核心内容，以及各自的注册地。",
+						"evidence": "证据清单",
+						"evidenceStarter": "截图、完整链接、发现日期以及发现人。",
+						"ladder": "应对阶梯",
+						"ladderStarter": "从最轻到最重：平台举报、礼貌通知、正式函件、律师。",
+						"whoSends": "谁可以发送通知",
+						"whoSendsStarter": "只有这里列出的人可以代表我们发送通知或函件。",
+						"counsel": "何时请外部律师",
+						"counselStarter": "针对我们的索赔、重复侵权、法院期限，或对我们权利提出异议的回复。",
+						"repeat": "重复侵权案件",
+						"repeatStarter": "添加“重复侵权”标签，关联之前的案件，并上升一级。"
+					}
+				},
+				"samples": {
+					"mugs": "电商平台商品页上带仿冒标志的马克杯",
+					"mugsDescription": "一位客服人员发现了这个商品页。已向平台举报；请在截止日期前确认商品页是否已下架。",
+					"blogGuide": "博客逐字抄袭我们的产品指南",
+					"blogGuideDescription": "多个章节与我们已发布的指南相同。联系任何人之前，请确认日期并保存页面。",
+					"chargers": "贸易展会上出售的假冒充电器",
+					"chargersDescription": "与去年是同一个卖家。律师正在准备正式函件。",
+					"productPhotos": "社交账号使用我们的产品照片",
+					"iconSet": "有人声称我们的新图标集抄袭了另一家工作室的作品",
+					"iconSetDescription": "一家设计工作室称我们的新图标抄袭了他们的作品。不要修改或删除任何内容；在期限前与律师准备回复。",
+					"reseller": "转售商在店铺名称中使用品牌名",
+					"resellerDescription": "该店铺销售正品并如实描述。属于正品转售，因此不采取行动。"
+				}
+			},
+			"it-asset-management": {
+				"projectDescription": "我们的设备和软件台账。每项资产是一个任务：状态表示所处阶段，负责人是 IT 负责人，截止日期表示何时需要决定续订、保修或更换。",
+				"statuses": {
+					"toOrder": "待采购",
+					"inStock": "在库",
+					"inUse": "使用中",
+					"inRepair": "维修中"
+				},
+				"labels": {
+					"hardware": "硬件",
+					"renewalDue": "待续订"
+				},
+				"fields": {
+					"category": "类别",
+					"serial": "序列号或资产标签",
+					"holder": "使用人",
+					"purchaseDate": "购买日期"
+				},
+				"options": {
+					"category": {
+						"laptop": "笔记本电脑",
+						"monitor": "显示器",
+						"phone": "电话",
+						"peripheral": "外设",
+						"serverNetwork": "服务器或网络",
+						"licence": "许可证",
+						"subscription": "订阅"
+					}
+				},
+				"views": {
+					"inventory": "资产清单",
+					"inventoryDescription": "我们拥有或在用的全部资产，按类别分组。",
+					"readyToHandOut": "可发放",
+					"renewals": "续订与保修",
+					"renewalsDescription": "续订、保修到期和预定更换的处理期限。",
+					"byHolder": "按使用人"
+				},
+				"form": {
+					"title": "申请设备或软件",
+					"intro": "请告诉我们你需要什么、给谁用以及何时开始使用。",
+					"confirmation": "谢谢。我们会在两个工作日内确认可用情况。"
+				},
+				"taskTemplates": {
+					"newLaptop": {
+						"name": "新笔记本电脑",
+						"titlePattern": "笔记本：{title}",
+						"description": "- [ ] 已记录序列号\n- [ ] 已设置加密和管理\n- [ ] 已安装标准软件\n- [ ] 已交付并记录使用人"
+					},
+					"subscription": {
+						"name": "软件订阅",
+						"description": "**已购席位 / 已用席位**\n\n\n**计费周期**\n\n\n**管理负责人**\n\n\n**续订条款**\n\n\n请把截止日期设为处理期限：续订日期减去通知期。许可证密钥请保存在密码管理器中，切勿写在这里。"
+					},
+					"retire": {
+						"name": "停用资产",
+						"titlePattern": "停用：{title}",
+						"description": "- [ ] 已擦除数据（记录方式和日期）\n- [ ] 已从管理系统和账号中移除\n- [ ] 已收回许可证\n- [ ] 已处置、出售或回收（记录经办人和时间）"
+					}
+				},
+				"rules": {
+					"renewal": "即将续订",
+					"renewalMessage": "{{task.key}} 已到处理期限，请决定续订还是更换：{{task.title}}",
+					"repair": "维修留痕",
+					"repairComment": "记录故障、维修单号以及借出的备用设备。",
+					"retire": "停用按清单进行",
+					"retireSubtask": "确认数据已擦除并记录处置方式"
+				},
+				"pages": {
+					"assetPolicy": {
+						"title": "资产政策",
+						"requests": "谁可以申请什么",
+						"requestsStarter": "任何人都可以通过申请表申请标准配置；其他物品需经理批准。",
+						"kits": "各岗位的标准配置",
+						"kitsStarter": "每人配笔记本电脑、显示器和耳机；仅在岗位需要时配电话。",
+						"replacement": "更换周期",
+						"replacementStarter": "笔记本电脑每四年、电话每三年更换一次；若维修费用超过新机的一半，可提前更换。",
+						"leavers": "员工离职时",
+						"leaversStarter": "在最后一天收回设备和许可证，并把每项资产移到“在库”或“已停用”。",
+						"lost": "设备丢失或被盗",
+						"lostStarter": "当天告知 IT 以便远程锁定设备，然后将其移到“已丢失”。",
+						"disposal": "数据擦除与处置",
+						"disposalStarter": "每台设备离开公司前都要擦除，并记录方式、日期和领取人。"
+					},
+					"softwareRegister": {
+						"title": "软件台账指南",
+						"recording": "如何记录订阅",
+						"recordingStarter": "每个订阅一个任务，加上“软件”标签、年费和续订前的处理期限。",
+						"keys": "密钥存放位置",
+						"keysStarter": "许可证密钥和管理员密码保存在密码管理器中，绝不写在任务或页面里。",
+						"seatReview": "每季度席位复核",
+						"seatReviewStarter": "每个季度对比已购和已用席位，取消没人需要的部分。"
+					}
+				},
+				"samples": {
+					"supportLaptop": "给支持团队新同事的 14 英寸笔记本电脑",
+					"supportLaptopDescription": "入职第一天已交付，已设置加密和标准软件。",
+					"supportTeam": "支持团队",
+					"monitor": "27 英寸显示器（闪烁）",
+					"monitorDescription": "开机几分钟后开始闪烁。已送修，桌上放了一台备用显示器。",
+					"financeDesk": "财务工位 4",
+					"designSubscription": "设计工具订阅，12 个席位",
+					"designSubscriptionDescription": "每年续订。在处理期限前，检查 12 个席位中有多少在用。",
+					"designTeam": "设计团队",
+					"spareLaptop": "备用笔记本电脑，上一代型号",
+					"conferencePhone": "会议室电话",
+					"dockingStations": "新办公室用的两个扩展坞",
+					"serial48213": "SN-48213",
+					"serial11907": "SN-11907",
+					"serial30455": "SN-30455",
+					"serial77310": "SN-77310"
+				}
+			},
+			"it-operations": {
+				"projectDescription": "生产系统的告警、事件和变更都在一个看板上：先止住影响，再修复原因，然后总结经验。",
+				"statuses": {
+					"open": "待处理",
+					"watching": "观察中",
+					"dismissed": "已忽略"
+				},
+				"labels": {
+					"alert": "告警"
+				},
+				"options": {
+					"severity": {
+						"sev1": "SEV1 · 全面中断",
+						"sev2": "SEV2 · 严重",
+						"sev3": "SEV3 · 性能下降",
+						"sev4": "SEV4 · 轻微"
+					}
+				},
+				"views": {
+					"activeIncidents": "处理中的事件",
+					"alertQueue": "告警队列",
+					"alertQueueDescription": "等待接受或忽略的未处理告警，最新的在前。",
+					"bySeverity": "按严重程度",
+					"followUps": "跟进事项",
+					"followUpsDescription": "来自事件复盘的行动项，截止日期最近的在前。"
+				},
+				"form": {
+					"title": "报告问题或申请变更",
+					"intro": "如遇服务中断，请同时拨打值班电话。请告诉我们受影响的内容以及开始时间。",
+					"confirmation": "已收到。值班团队会持续处理新的报告。"
+				},
+				"taskTemplates": {
+					"incident": {
+						"name": "事件",
+						"description": "**受影响的是什么，从什么时候开始？**\n\n\n- [ ] 已确认并指定负责人\n- [ ] 已设置严重程度\n- [ ] 已向受影响人员发送首次通报\n- [ ] 影响已止住（已缓解）\n- [ ] 已查明原因\n- [ ] 已安排复盘（SEV1–SEV2）"
+					},
+					"change": {
+						"name": "变更申请",
+						"description": "**变更内容和原因**\n\n\n**风险和受影响的服务**\n\n\n**测试计划**\n\n\n**回滚计划（必填）**\n\n\n**变更窗口**\n\n\n**需要通知谁**\n\n"
+					},
+					"review": {
+						"name": "事件复盘",
+						"titlePattern": "复盘：{title}",
+						"description": "**时间线**\n\n\n**影响（谁、多长时间）**\n\n\n**促成因素（不追责）**\n\n\n**做得好的地方**\n\n\n**跟进事项**\n\n将每个行动项创建为带有“跟进”标签的任务。"
+					}
+				},
+				"rules": {
+					"firstResponse": "首次响应",
+					"firstResponseComment": "指定负责人、设置严重程度，并在 15 分钟内发送首次通报。",
+					"firstResponseMessage": "已宣布事件：{{task.key}} {{task.title}}",
+					"reviewSerious": "复盘严重事件",
+					"reviewSubtask": "为 {{task.key}} 撰写事件复盘",
+					"reviewMessage": "{{task.key}} 已解决，该撰写事件复盘了。",
+					"approvals": "审批不等待",
+					"approvalsMessage": "{{task.key}} 正在等待审批：{{task.title}}",
+					"emergencyReview": "紧急变更需事后复核",
+					"emergencySubtask": "事后复核此紧急变更",
+					"emergencyMessage": "紧急变更已开始：{{task.key}} {{task.title}}"
+				},
+				"pages": {
+					"runbook": {
+						"title": "事件处理手册",
+						"severity": "严重程度级别",
+						"severityStarter": "**SEV1** 所有用户都无法使用 · **SEV2** 主要功能中断或大量用户受影响 · **SEV3** 性能下降，有临时解决办法 · **SEV4** 轻微",
+						"onCall": "谁在值班",
+						"onCallStarter": "记下值班表和要拨打的电话号码。",
+						"escalateStarter": "15 分钟内无人响应，或影响在扩大：联系值班表上的下一位。",
+						"firstMinutes": "最初 15 分钟",
+						"updates": "沟通模板",
+						"updatesStarter": "**进展通报：**受影响的内容、我们正在做什么，以及下次通报的时间。",
+						"declare": "宣布与降级",
+						"declareStarter": "拿不准时先宣布较高的严重程度，影响明确后再降低。"
+					},
+					"changePolicy": {
+						"types": "三种变更类型",
+						"typesStarter": "**标准：**预先批准的常规变更。**常规：**先评估再审批。**紧急：**为恢复服务而立即需要。",
+						"standard": "哪些算标准变更",
+						"whoApprovesStarter": "常规变更在开始前由项目负责人审批。",
+						"emergency": "紧急变更",
+						"emergencyStarter": "由值班负责人当场批准，事后再复核。",
+						"rollback": "回滚计划",
+						"rollbackStarter": "每项变更在审批前都必须有回滚计划。"
+					},
+					"reviewGuide": {
+						"title": "事件复盘指南",
+						"blameless": "不追责的复盘",
+						"blamelessStarter": "关注系统和决策，而不是人：是什么让这个错误容易发生？",
+						"whenRequired": "何时需要复盘",
+						"whenRequiredStarter": "每次 SEV1 和 SEV2 事件之后，以及每当有值得分享的经验时。",
+						"followUps": "跟踪跟进事项",
+						"followUpsStarter": "将每个行动项创建为带有“跟进”标签、负责人和截止日期的任务。"
+					}
+				},
+				"samples": {
+					"disk": "文件服务器磁盘使用率超过 90%",
+					"vpn": "员工无法通过 VPN 登录",
+					"vpnDescription": "远程办公的员工从今天早上起无法登录。办公室网络未受影响。",
+					"mail": "邮件投递延迟 20 分钟",
+					"database": "将主数据库升级到下一个次要版本",
+					"databaseDescription": "**回滚计划：**恢复升级前刚刚创建的快照。",
+					"certificate": "续订通配符证书",
+					"vpnAlert": "为 VPN 证书到期添加告警",
+					"services": {
+						"fileServer": "文件服务器",
+						"vpnGateway": "VPN 网关",
+						"mailRelay": "邮件中继",
+						"database": "数据库",
+						"webFrontEnd": "Web 前端"
+					}
+				}
+			},
+			"it-service-desk": {
+				"projectDescription": "日常 IT 支持集中在一个队列。请求通过收集箱进入；根据影响和紧急程度设定优先级，截止日期会自动设置。",
+				"labels": {
+					"waitingOnSupplier": "等待供应商"
+				},
+				"options": {
+					"requestType": {
+						"broken": "有东西坏了",
+						"access": "我需要权限",
+						"device": "我需要设备或软件",
+						"smallChange": "小变更"
+					}
+				},
+				"fields": {
+					"assetTag": "设备或资产标签"
+				},
+				"views": {
+					"breachingSoonDescription": "一天内到期或已逾期的未完成请求，最早到期的排在前面。"
+				},
+				"taskTemplates": {
+					"signIn": {
+						"name": "登录或密码问题",
+						"description": "**检查清单**\n\n- [ ] 已确认身份\n- [ ] 已解锁账户或重置密码\n- [ ] 第二步登录验证可用\n- [ ] 请求人已成功登录"
+					},
+					"access": {
+						"name": "权限申请",
+						"description": "**需要什么权限，为什么？**\n\n\n- [ ] 已在评论中记录数据负责人的批准\n- [ ] 已授予权限\n- [ ] 请求人已确认可用"
+					},
+					"newStarter": {
+						"name": "新员工入职准备",
+						"description": "**姓名、岗位和入职日期**\n\n\n在第一天之前完成各项子任务。"
+					},
+					"software": {
+						"name": "软件安装",
+						"description": "**什么软件，给谁用？**\n\n\n- [ ] 有可用许可证\n- [ ] 已安装\n- [ ] 请求人已确认能打开"
+					},
+					"smallChange": {
+						"name": "小变更",
+						"description": "**改什么，为什么？**\n\n\n**会影响谁？**\n\n\n**如何撤销**\n\n\n- [ ] 已将开始日期设为变更时间\n- [ ] 已完成并检查"
+					}
+				},
+				"subtasks": {
+					"prepareLaptop": "订购或准备笔记本电脑",
+					"createAccounts": "创建账户",
+					"addToGroups": "加入相关群组和共享文件夹",
+					"secondStep": "设置第二步登录验证",
+					"handOver": "交付电脑并讲解使用"
+				},
+				"rules": {
+					"targetUrgent": "目标：紧急",
+					"urgentMessage": "紧急 IT 请求 {{task.key}}：{{task.title}}",
+					"targetHigh": "目标：高",
+					"targetMedium": "目标：中",
+					"targetLow": "目标：低",
+					"lateOwner": "逾期时通知负责人",
+					"lateMessage": "{{task.key}} 已超过目标日期：{{task.title}}"
+				},
+				"form": {
+					"title": "获取 IT 帮助",
+					"intro": "告诉我们出了什么问题或你需要什么。如果现在有很多人受影响，请在标题中说明。",
+					"confirmation": "谢谢。IT 已收到你的请求，会尽快与你联系。"
+				},
+				"pages": {
+					"getHelp": {
+						"title": "如何获取 IT 帮助",
+						"where": "在哪里提问",
+						"whereStarter": "使用请求表单、应用中的 **新建请求**，或发送邮件到 IT 邮箱。",
+						"includeStarter": "你已经尝试过什么、错误截图，以及设备标签上的资产编号。",
+						"urgent": "什么算紧急",
+						"urgentStarter": "现在有很多人无法工作。一个团队停工算高优先级；一个人工作变慢可以等几天。"
+					},
+					"knowledgeBase": {
+						"howToAdd": "如何添加解决方法",
+						"howToAddStarter": "请求解决后如果可能再次出现，就在这里加一小节，并在回复中附上链接。",
+						"printing": "打印",
+						"wireless": "无线网络",
+						"videoCalls": "视频通话",
+						"passwordReset": "重置密码",
+						"sharedFolders": "共享文件夹",
+						"entryStarter": "**步骤：** 按顺序尝试什么。**最后检查：** 日期。"
+					},
+					"changeChecklist": {
+						"title": "小变更检查清单",
+						"before": "变更前",
+						"beforeStarter": "- [ ] 在任务中写明改什么、为什么、影响谁以及何时进行",
+						"undo": "如何撤销",
+						"undoStarter": "恢复原状的具体步骤，尽量提前测试。",
+						"after": "变更后",
+						"afterStarter": "- [ ] 已确认正常，并通知受影响的人"
+					}
+				},
+				"samples": {
+					"printer": "2 楼打印机每次打印都卡纸",
+					"printerDescription": "这个月已经第三次了。可能需要更换搓纸轮；找出原因，而不是再次取出卡纸。",
+					"salesFolder": "销售共享文件夹的访问权限",
+					"salesFolderDescription": "为销售部新同事开通只读权限。正在等待文件夹负责人在评论中批准。",
+					"newStarter": "新员工的笔记本电脑（周四）",
+					"newStarterDescription": "一位新设计师周四入职。按新员工准备步骤操作，确保当天早上一切就绪。",
+					"wireless": "会议室无线网络经常断开",
+					"wirelessDescription": "通话每隔几分钟就会中断。我们已询问请求人会议室何时空闲以便测试。",
+					"charger": "更换充电器",
+					"guestWireless": "修改访客无线网络密码",
+					"guestWirelessDescription": "每季度更换一次。切换前先通知前台，然后更新柜台上的卡片。"
+				}
+			},
+			"it-service-management": {
+				"projectDescription": "事件、服务请求、问题和变更都在一个看板上。标签说明每个任务的类型，优先级由影响和紧急程度决定。",
+				"labels": {
+					"serviceRequest": "服务请求",
+					"problem": "问题",
+					"majorIncident": "重大事件",
+					"knownError": "已知错误"
+				},
+				"options": {
+					"impact": {
+						"onePerson": "一个人",
+						"many": "多个团队或客户"
+					},
+					"service": {
+						"email": "邮件和日历",
+						"network": "网络和互联网",
+						"devices": "设备",
+						"accounts": "账号和权限",
+						"businessApps": "业务应用"
+					}
+				},
+				"views": {
+					"breachingSoonDescription": "一天内到期或已逾期的未完成工作，最早的排在前面。",
+					"changeCalendarDescription": "每项变更按其窗口显示，从开始日期到截止日期。",
+					"problems": "问题和已知错误"
+				},
+				"taskTemplates": {
+					"incident": {
+						"name": "事件",
+						"description": "**发生了什么**\n\n\n- [ ] 已记录服务和症状\n- [ ] 受影响的人\n- [ ] 已提供临时解决办法\n- [ ] 服务已恢复\n- [ ] 请求人已确认\n- [ ] 如再次发生已创建问题"
+					},
+					"majorIncident": {
+						"name": "重大事件",
+						"description": "**什么中断了，影响了谁**\n\n\n按顺序完成子任务。服务恢复前每 30 分钟发布一次进展。"
+					},
+					"serviceRequest": {
+						"name": "服务请求",
+						"description": "**需要什么，给谁**\n\n\n- [ ] 如需审批已记录\n- [ ] 已完成\n- [ ] 请求人已确认"
+					},
+					"problem": {
+						"name": "问题",
+						"description": "**关联的事件**\n\n\n**时间线**\n\n\n- [ ] 已找到原因\n- [ ] 临时解决办法已写入已知错误\n- [ ] 修复已作为变更提出\n- [ ] 事件不再发生后关闭"
+					},
+					"standardChange": {
+						"name": "标准变更",
+						"description": "用于预先批准的日常变更。\n\n- [ ] 按批准的步骤执行\n- [ ] 在约定的窗口内完成\n- [ ] 完成后已检查"
+					},
+					"normalChange": {
+						"name": "常规变更",
+						"description": "**原因**\n\n\n**影响范围**\n\n\n**风险：** 低、中或高\n\n- [ ] 已写测试计划\n- [ ] 已写回退方法\n- [ ] 窗口已设为开始日期\n- [ ] 审批人：\n- [ ] 完成后已检查"
+					},
+					"emergencyChange": {
+						"name": "紧急变更",
+						"description": "**为什么不能等**\n\n\n- [ ] 一位审批人已同意\n- [ ] 已写回退方法\n- [ ] 已完成\n- [ ] 事后已记录并复盘"
+					}
+				},
+				"subtasks": {
+					"nameLead": "指定一名事件负责人",
+					"statusNotes": "每 30 分钟发布一次状态说明",
+					"restore": "恢复服务",
+					"tellEveryone": "通知所有人服务已恢复",
+					"review": "5 天内进行一次简短复盘"
+				},
+				"rules": {
+					"targetUrgent": "目标：紧急",
+					"targetHigh": "目标：高",
+					"targetMedium": "目标：中",
+					"targetLow": "目标：低",
+					"safetyNet": "故障安全网",
+					"majorIncident": "重大事件召集",
+					"majorIncidentMessage": "重大事件 {{task.key}}：{{task.title}}",
+					"lateOwner": "逾期时通知负责人",
+					"lateMessage": "{{task.key}} 已超过目标：{{task.title}}"
+				},
+				"form": {
+					"title": "报告问题或咨询 IT",
+					"intro": "有东西坏了，还是需要什么？请选择服务，并告诉我们有多少人受影响、影响有多严重。",
+					"confirmation": "谢谢。如果很多人无法工作，我们的团队已经在处理了。"
+				},
+				"pages": {
+					"priority": {
+						"title": "优先级和目标",
+						"matrix": "影响和紧急程度",
+						"matrixStarter": "紧急：多个团队且工作已停止。高：多个团队工作变慢，或一个团队工作停止。中：可以等待的多个团队、工作变慢的一个团队，或工作停止的一个人。低：其他所有情况。",
+						"targets": "目标",
+						"targetsStarter": "紧急：当天。高：1 天。中：3 天。低：5 天。",
+						"major": "什么算重大事件",
+						"majorStarter": "很多人同时无法工作，或某项关键服务对所有人中断。"
+					},
+					"runbook": {
+						"title": "重大事件处理手册",
+						"lead": "谁来负责",
+						"leadStarter": "由一名事件负责人主导响应，其他人都向其汇报。",
+						"updates": "进展通报",
+						"updatesStarter": "服务恢复前，每 30 分钟在任务中发布一次状态说明。",
+						"close": "关闭",
+						"closeStarter": "服务恢复且受影响的人确认后关闭。",
+						"review": "事后复盘",
+						"reviewStarter": "5 天内：发生了什么、什么有帮助、要改变什么。"
+					},
+					"changePolicy": {
+						"types": "变更类型",
+						"typesStarter": "标准：日常且预先批准。常规：需要先审批。紧急：不能等，事后复盘。",
+						"preApproved": "预先批准的标准变更",
+						"approvesStarter": "常规变更在开始工作前需要项目负责人同意。",
+						"windows": "变更窗口",
+						"windowsStarter": "变更在约定的窗口内实施，窗口设为任务的开始日期。",
+						"undo": "回退计划",
+						"undoStarter": "每项变更在开始前都要写明如何回退。"
+					},
+					"knownErrors": {
+						"title": "已知错误",
+						"howToAdd": "如何添加条目",
+						"howToAddStarter": "为每个已知错误复制下面的各节，并关联它的问题任务。",
+						"cause": "原因",
+						"fix": "永久修复",
+						"fixStarter": "关联修复它的变更，并记录其进展。"
+					},
+					"catalogue": {
+						"title": "服务目录",
+						"offer": "IT 提供哪些服务",
+						"howToAsk": "如何申请",
+						"howToAskStarter": "使用应用中的“新建请求”或请求表单。如果很多人无法工作，请说明。",
+						"leadTimesStarter": "权限：1 天。新设备：5 天。新业务应用：与 IT 商定。"
+					}
+				},
+				"samples": {
+					"mailOutage": "办公室里所有人都无法发送邮件",
+					"mailOutageDescription": "9:10 前收到三份报告。10:00 通过临时解决办法恢复了服务，原因作为问题跟踪。",
+					"mailQueue": "更新后外发邮件队列被占满",
+					"mailQueueDescription": "已找到原因：更新后队列上限过低。临时解决办法：在变更上线前手动清空队列。",
+					"queueLimit": "提高邮件服务器的队列上限",
+					"queueLimitDescription": "安排在周四晚上的常规变更。如需回退，恢复旧的上限并重启邮件服务。",
+					"financeAccess": "新员工需要财务应用的访问权限",
+					"videoCalls": "三楼的视频通话频繁掉线",
+					"videoCallsDescription": "正在等待网络供应商检查三楼的无线接入点。",
+					"securityUpdates": "笔记本电脑的每月安全更新"
+				}
+			},
+			"kanban": {
+				"projectDescription": "持续流动的看板：有余力时再拉取工作，先完成手头的再开始新的，并留意正在老化的工作。",
+				"labels": {
+					"expedite": "加急",
+					"fixedDate": "固定日期"
+				},
+				"views": {
+					"aging": "老化工作",
+					"agingDescription": "进行中的工作，最久未处理的排在最前。",
+					"blocked": "阻塞或等待中",
+					"expedite": "加急泳道",
+					"recentlyFinished": "最近完成"
+				},
+				"taskTemplates": {
+					"workItem": {
+						"name": "工作项",
+						"description": "**为什么重要**\n\n\n**完成标准**\n\n- [ ] 达到约定的结果\n- [ ] 已由他人审核\n- [ ] 其他人需要知道的内容都已写下"
+					},
+					"expedite": {
+						"name": "加急请求",
+						"description": "**影响是什么，截止到什么时候？**\n\n\n- [ ] 已指定负责人\n- [ ] 已通知主管\n- [ ] 已在待办池中添加防止再次发生的后续事项"
+					}
+				},
+				"pages": {
+					"policies": {
+						"title": "看板规则",
+						"ready": "“就绪”的含义",
+						"readyStarter": "足够清晰，任何人都能接手；足够小，几天内就能完成。",
+						"done": "“已完成”的含义",
+						"doneStarter": "已交付、经他人审核并被接受。",
+						"limits": "在制品限制",
+						"limitsStarter": "“审核中”最多 2 项。每人进行中最多 1 项。",
+						"classes": "加急和固定日期工作",
+						"classesStarter": "加急可以插队，应尽量少用。固定日期的工作总有截止日期。",
+						"finish": "停止开始，开始完成",
+						"finishStarter": "拉取新工作之前，先帮忙推进已经在进行中的工作。"
+					},
+					"flowReview": {
+						"title": "流动回顾笔记",
+						"aged": "哪些工作老化了",
+						"blocked": "哪些被阻塞了，原因是什么",
+						"change": "一条要修改的规则"
+					}
+				},
+				"rules": {
+					"expediteAttention": "加急工作需关注",
+					"expediteMessage": "{{task.key}} 已标记为加急：{{task.title}}",
+					"overdueFixedDate": "逾期的固定日期工作",
+					"overdueMessage": "{{task.key}} 已超过固定日期：{{task.title}}"
+				},
+				"samples": {
+					"tls": "更换构建服务器上即将过期的 TLS 证书",
+					"tlsDescription": "证书即将过期。请续期、安装，并确认构建服务器仍能响应。",
+					"pagination": "为动态信息流接口添加分页",
+					"emptyState": "明确报告页面空状态的文案",
+					"nightlyExport": "为财务团队恢复失败的夜间导出",
+					"nightlyExportDescription": "昨晚的导出中途停止。财务团队需要在晨会前拿到文件。",
+					"findCause": "查明导出任务停止的原因",
+					"rerunExport": "重新运行导出并与财务团队确认",
+					"imageLibrary": "升级图像处理库",
+					"vendorKey": "等待供应商为配送集成提供 API 密钥",
+					"shippingLaunch": "启用配送集成"
+				}
+			},
+			"lead-tracking": {
+				"projectDescription": "每条新线索，从首次联系到做出决定：已合格、培育中或不合适。截止日期始终是下一次跟进。",
+				"statuses": {
+					"nurture": "培育中",
+					"contacting": "联系中",
+					"inConversation": "沟通中",
+					"notAFit": "不合适"
+				},
+				"labels": {
+					"demoRequested": "申请演示",
+					"existingCustomer": "现有客户"
+				},
+				"fields": {
+					"companySize": "公司规模",
+					"notAFitReason": "不合适的原因"
+				},
+				"options": {
+					"companySize": {
+						"tiny": "1–10 人",
+						"small": "11–50 人",
+						"medium": "51–200 人",
+						"large": "201 人以上"
+					},
+					"source": {
+						"websiteForm": "网站表单",
+						"contentDownload": "资料下载"
+					},
+					"notAFitReason": {
+						"noNeed": "没有需求",
+						"noBudget": "没有预算",
+						"wrongContact": "联系人不对",
+						"noReply": "没有回复",
+						"tooSmall": "规模太小"
+					}
+				},
+				"views": {
+					"followUpsDue": "待跟进",
+					"followUpsDueDescription": "下次跟进为今天或已逾期的未关闭线索，最早的排在前面。",
+					"bySource": "按来源"
+				},
+				"taskTemplates": {
+					"lead": {
+						"name": "线索",
+						"description": "**他们是谁**\n\n\n**他们想要什么**\n\n\n**他们如何找到我们**\n"
+					}
+				},
+				"subtasks": {
+					"research": "调研这家公司",
+					"firstContact": "第一次联系",
+					"secondContact": "第二次联系",
+					"thirdContact": "第三次联系",
+					"decide": "做出决定：合格、培育或不合适"
+				},
+				"rules": {
+					"replyFast": "一天内回复表单线索",
+					"replyFastComment": "请在一个工作日内回复。",
+					"contactingFollowUp": "联系两天后再次跟进",
+					"overdueFollowUp": "提醒逾期的跟进",
+					"overdueFollowUpMessage": "请跟进 {{task.title}}",
+					"qualifiedHandoff": "将合格线索移交销售管道",
+					"qualifiedHandoffComment": "在销售管道中创建商机，并将链接添加到这里。"
+				},
+				"form": {
+					"title": "联系我们",
+					"intro": "请简单介绍一下您的团队以及您在寻找什么。我们会在一个工作日内回复。",
+					"confirmation": "谢谢。我们团队的成员会尽快与您联系。"
+				},
+				"pages": {
+					"qualification": {
+						"title": "资格审核清单",
+						"need": "真实需求",
+						"needStarter": "他们想解决什么问题？如果什么都不做会怎样？",
+						"budgetStarter": "这项支出是否已有预算，还是需要另行争取？",
+						"timing": "时间",
+						"timingStarter": "他们什么时候需要用上？这个日期由什么决定？",
+						"whoApprovesStarter": "谁做最终决定？我们和这个人谈过吗？"
+					},
+					"rhythm": {
+						"title": "跟进节奏",
+						"day1": "第 1 天",
+						"day1Starter": "打电话，然后发一封简短的邮件。",
+						"day3": "第 3 天",
+						"day3Starter": "发一封跟进邮件。",
+						"day7": "第 7 天",
+						"day7Starter": "再打一次电话。",
+						"day14": "第 14 天",
+						"day14Starter": "发送最后一条消息，然后将线索移到培育中。"
+					}
+				},
+				"samples": {
+					"rowan": "Brindle & Oak Interiors 的 Rowan Teague",
+					"rowanDescription": "通过网站表单申请演示。他们约 20 人的设计团队希望把客户项目集中在一个地方。",
+					"kestrel": "Kestrel Valley 学校的后勤负责人",
+					"kestrelDescription": "在地区学校展会上认识。已留语音留言并发送邮件，暂未回复。",
+					"marlpit": "Marlpit Coffee 的店主",
+					"marlpitDescription": "由现有客户推荐。如果三人团队的价格合适，希望本月就开始。",
+					"thornby": "Thornby Logistics 的运营经理",
+					"thornbyDescription": "下载了规划指南。今年没有预算，下个季度再联系。",
+					"cindervale": "Cindervale 诊所的第二家分店",
+					"cindervaleDescription": "现有客户正在开设第二家诊所。已判定合格并移交销售管道。",
+					"student": "学生项目咨询"
+				}
+			},
+			"legal-request-desk": {
+				"projectDescription": "为业务部门处理合同审查、保密协议和法律问题。请求附带合同相对方、金额和截止日期，每次审查都有记录。",
+				"statuses": {
+					"withCounterparty": "相对方处理中"
+				},
+				"labels": {
+					"standardTerms": "标准条款"
+				},
+				"fields": {
+					"counterparty": "合同相对方",
+					"contractValue": "合同金额"
+				},
+				"options": {
+					"requestType": {
+						"confidentiality": "保密协议",
+						"newDraft": "新合同起草",
+						"policyQuestion": "政策或合规问题",
+						"dispute": "争议或索赔"
+					}
+				},
+				"views": {
+					"myMatters": "我的事项",
+					"byType": "按类型",
+					"dueSoonDescription": "三天内到期或已逾期的未结事项，最早的排在前面。"
+				},
+				"taskTemplates": {
+					"confidentiality": {
+						"name": "保密协议",
+						"description": "使用我们的标准模板：快速通道。\n\n- [ ] 单向还是双向\n- [ ] 已使用我们的模板\n- [ ] 目的和期限\n- [ ] 已指定业务方签署人\n- [ ] 已发送\n- [ ] 已存档签署版本"
+					},
+					"contractReview": {
+						"name": "合同审查",
+						"description": "- [ ] 已收到合同\n- [ ] 金额和期限\n- [ ] 责任与赔偿\n- [ ] 付款条件\n- [ ] 数据与保密\n- [ ] 终止\n- [ ] 已发送意见\n- [ ] 最终版本已批准"
+					},
+					"newDraft": {
+						"name": "新合同起草",
+						"description": "- [ ] 业务方提供交易概要\n- [ ] 已选择模板\n- [ ] 已发送草稿\n- [ ] 已谈判\n- [ ] 已签署"
+					},
+					"policyQuestion": {
+						"name": "政策或合规问题",
+						"description": "- [ ] 已重述问题\n- [ ] 附政策依据作答\n- [ ] 已更新问答"
+					},
+					"dispute": {
+						"name": "争议或索赔",
+						"description": "保留所有文件，并记下每个答复期限。\n\n- [ ] 事实和日期\n- [ ] 文件已保全\n- [ ] 答复期限\n- [ ] 是否需要外部律师？\n- [ ] 已商定后续步骤"
+					}
+				},
+				"rules": {
+					"disputesToLead": "争议转交负责人",
+					"disputeMessage": "新的争议或索赔：{{task.key}} {{task.title}}",
+					"lateOwner": "逾期时通知负责人",
+					"lateMessage": "{{task.key}} 已超过截止日期。"
+				},
+				"form": {
+					"title": "咨询法务",
+					"intro": "请告诉我们对方是谁、涉及什么利害，以及您真正需要的时间。如有合同，请通过电子邮件发送。如果是标准保密协议，请先试用内网上的模板。",
+					"confirmation": "谢谢。法务已收到您的请求，如有缺失会通知您。"
+				},
+				"pages": {
+					"whenToAsk": {
+						"title": "何时咨询法务",
+						"needsReview": "需要审查的情况",
+						"needsReviewStarter": "非我方起草的合同、对我方模板的修改、超出签署权限的任何事项，以及所有争议或索赔。",
+						"noReview": "不需要审查的情况",
+						"noReviewStarter": "使用我方模板且未作修改、由有权限的人签署的保密协议。",
+						"selfServe": "自助模板",
+						"selfServeStarter": "在此链接每个标准模板，并用一行说明何时使用。",
+						"priority": "我们如何确定优先级",
+						"priorityStarter": "先处理争议和高金额交易，再处理非标准条款，最后是标准协议和问题；**需要日期**越近，优先级越高。"
+					},
+					"playbook": {
+						"title": "合同手册",
+						"standard": "我们的标准立场",
+						"standardStarter": "针对每个常见条款（责任、赔偿、付款、终止、数据），说明我方模板的规定及原因。",
+						"fallbacks": "可接受的退让方案",
+						"fallbacksStarter": "无需资深人员审查即可同意的内容。",
+						"walkAway": "底线",
+						"walkAwayStarter": "我们绝不接受的条款；请为其加上**高风险**标签。"
+					},
+					"whoCanSign": {
+						"title": "谁可以签署",
+						"byType": "按合同类型",
+						"byTypeStarter": "谁可以签署保密协议、销售合同、供应商合同和租赁合同。",
+						"byValue": "按金额",
+						"byValueStarter": "每个角色的金额上限，以及超过最高上限时由谁签署。"
+					},
+					"questions": {
+						"title": "法律问答",
+						"gifts": "我可以接受供应商的礼品吗？",
+						"giftsStarter": "我们的金额上限、应拒绝的情况以及礼品的登记位置。",
+						"dataSharing": "我们可以与合作伙伴共享客户数据吗？",
+						"dataSharingStarter": "何时需要先签协议，以及由谁审核。",
+						"logos": "我们可以使用客户的标志吗？",
+						"logosStarter": "仅限获得书面许可时；注明已批准标志的存放位置。"
+					}
+				},
+				"samples": {
+					"partnerNda": "与新合作伙伴的双向保密协议",
+					"partnerNdaDescription": "使用我们的标准模板。当天已发出；正在等待对方在周五会议前签署。",
+					"partnerName": "蓝野数据服务有限公司",
+					"cateringContract": "供应商合同：餐饮服务",
+					"cateringContractDescription": "一笔 40,000 的订单取决于这份合同。责任条款不同寻常，因此需要在下单前两天完成资深审查。",
+					"cateringName": "港湾厨房餐饮有限公司",
+					"supplierGift": "我们可以接受供应商的礼品吗？",
+					"refundClaim": "客户要求超出我方条款的退款",
+					"refundClaimDescription": "回复前正在等待订单记录和客户经理的邮件。",
+					"resellerAgreement": "北部地区经销商协议"
+				}
+			},
+			"marketing-assets": {
+				"projectDescription": "图片、横幅、幻灯片及其他营销物料的需求。新需求通过表单提交，在待筛选中等待设计负责人接受。",
+				"statuses": {
+					"changesRequested": "需要修改"
+				},
+				"labels": {
+					"rush": "加急",
+					"fromTemplate": "基于模板"
+				},
+				"fields": {
+					"assetType": "物料类型",
+					"sizes": "尺寸和格式",
+					"campaign": "营销活动"
+				},
+				"options": {
+					"assetType": {
+						"socialGraphic": "社交媒体图片",
+						"webBanner": "网页横幅",
+						"displayAd": "展示广告",
+						"presentation": "演示文稿",
+						"video": "视频"
+					}
+				},
+				"views": {
+					"queue": "队列",
+					"byAssetType": "按物料类型",
+					"dueSoonDescription": "未来七天内到期的未完成需求。"
+				},
+				"form": {
+					"title": "申请营销物料",
+					"intro": "请告诉我们目标、受众、最终文案以及你喜欢的参考示例。如非加急，请预留五个工作日。",
+					"confirmation": "谢谢。我们会审阅你的需求说明，并在一个工作日内回复。"
+				},
+				"taskTemplates": {
+					"assetRequest": {
+						"name": "物料需求",
+						"description": "**需求说明**\n\n- [ ] 目标：这份物料要达成什么？\n- [ ] 受众：谁会看到它？\n- [ ] 已核对并批准的最终文案\n- [ ] 尺寸和格式\n- [ ] 需遵守的品牌规范\n- [ ] 你喜欢的参考或示例\n- [ ] 使用场景"
+					}
+				},
+				"rules": {
+					"checkBrief": "检查新需求的需求说明",
+					"checkBriefComment": "请检查需求说明：目标、受众、最终文案、尺寸和参考。开始前向需求方补齐缺少的内容。",
+					"rush": "关注加急需求",
+					"rushMessage": "{{task.key}} 已标记为加急：{{task.title}}",
+					"changesRequested": "通知设计师有修改要求",
+					"changesRequestedMessage": "{{task.key}} 收到修改要求：{{task.title}}"
+				},
+				"pages": {
+					"howToRequest": {
+						"title": "如何申请物料",
+						"whatToIncludeStarter": "好的需求说明应写明目标、受众、最终文案、尺寸，并附上一两个你喜欢的示例。",
+						"leadTimesStarter": "社交媒体图片和横幅：3 个工作日。演示文稿和印刷品：5 个工作日。视频：10 个工作日。",
+						"rush": "什么算加急",
+						"rushStarter": "需要在 3 个工作日内交付的都算。请添加“加急”标签，并在描述中说明原因。"
+					},
+					"brandBasics": {
+						"logo": "标志使用",
+						"logoStarter": "标志四周要留出安全空间，切勿拉伸、改色或旋转。",
+						"colours": "颜色",
+						"type": "字体排版",
+						"tone": "语气",
+						"toneStarter": "亲切、清晰、平实：句子简短，不用行话。",
+						"files": "已批准的文件",
+						"filesStarter": "存放已批准标志、模板和照片的文件夹链接。"
+					}
+				},
+				"samples": {
+					"tradeShowBanner": "春季展会的展位横幅",
+					"tradeShowBannerDescription": "Northbrook Ceramics 在春季手工艺展会展位使用的易拉宝。需求方已附上最终文案和照片。",
+					"tradeShowBannerSizes": "2×1 米易拉宝，可直接印刷的 PDF",
+					"glazeSocial": "新釉色系列的社交媒体图片",
+					"salesDeck": "更新销售演示文稿",
+					"salesDeckCampaign": "批发推广",
+					"heroBanner": "首页主横幅",
+					"heroBannerDescription": "需求方希望背景更浅、标题更短。修改后重新提交审核。",
+					"videoEndCard": "产品视频片尾卡",
+					"openStudioFlyer": "开放工作室日的临时传单",
+					"openStudioFlyerDescription": "本周末开放工作室日使用的 A5 传单。沿用去年的版式，更新日期和照片。"
+				}
+			},
+			"marketing-request-desk": {
+				"projectDescription": "市场工作的需求。每个需求都带着目标、受众和日期进来，在收件评审中排期，发布前经过审核。",
+				"labels": {
+					"launch": "发布"
+				},
+				"fields": {
+					"audience": "面向对象"
+				},
+				"options": {
+					"requestType": {
+						"socialPost": "社交媒体帖子",
+						"webPage": "博客或网页",
+						"eventSupport": "活动支持",
+						"printed": "印刷品",
+						"campaign": "营销活动"
+					},
+					"reach": {
+						"internal": "内部",
+						"customers": "现有客户",
+						"public": "公开"
+					}
+				},
+				"views": {
+					"publishingCalendar": "发布日历",
+					"publishingCalendarDescription": "哪天发布什么一目了然，避免发布、邮件和帖子撞期。"
+				},
+				"form": {
+					"title": "请求市场团队支持",
+					"intro": "每个交付物提交一个需求。请告诉我们目标、面向谁以及何时必须发出；我们会在两个工作日内确认日期。",
+					"confirmation": "谢谢。我们每周评审两次新需求，并会确认日期。"
+				},
+				"taskTemplates": {
+					"socialPost": {
+						"name": "社交媒体帖子",
+						"description": "**目标**\n\n\n- [ ] 信息和链接\n- [ ] 图片（如为新图片，添加“需要设计”）\n- [ ] 文案已审核\n- [ ] 已排期"
+					},
+					"email": {
+						"name": "邮件",
+						"description": "**目标**\n\n\n- [ ] 收件人列表\n- [ ] 主题和预览文字\n- [ ] 正文\n- [ ] 测试发送\n- [ ] 已批准\n- [ ] 已排期"
+					},
+					"webPage": {
+						"name": "博客或网页",
+						"description": "**目标**\n\n\n- [ ] 大纲已批准\n- [ ] 草稿\n- [ ] 图片\n- [ ] 审核\n- [ ] 已发布\n- [ ] 已分享"
+					},
+					"eventSupport": {
+						"name": "活动支持",
+						"description": "**活动日期和地点**\n\n\n- [ ] 物料清单\n- [ ] 已印刷或寄出\n- [ ] 跟进邮件"
+					},
+					"campaignKickoff": {
+						"name": "营销活动启动",
+						"description": "**目标**\n\n\n**核心信息**\n\n\n**发布日期**\n"
+					}
+				},
+				"subtasks": {
+					"briefSignedOff": "简报已确认",
+					"channelPlan": "渠道计划",
+					"assetsList": "物料清单",
+					"launchDayChecklist": "发布当天检查清单",
+					"resultsReview": "效果复盘"
+				},
+				"rules": {
+					"askForReview": "请求审核",
+					"askForReviewComment": "已可审核。请在 {{task.dueDate}} 前通过评论提出修改意见。",
+					"lateOwner": "逾期时通知负责人",
+					"lateMessage": "{{task.key}} 已过截止日期：{{task.title}}"
+				},
+				"pages": {
+					"howToBrief": {
+						"title": "如何向市场团队提需求",
+						"whatToIncludeStarter": "目标、核心信息、面向谁、在哪里发布，以及必须上线的日期。",
+						"leadTimesStarter": "社交媒体帖子：3 个工作日。邮件：1 周。博客或网页：2 周。印刷品：3 周。营销活动：6 周。",
+						"priority": "我们如何确定优先级",
+						"priorityStarter": "覆盖面越广、时间越紧，优先级越高：公开且一周内需要的为紧急；内部且一周以后需要的为低。",
+						"whatHappensNextStarter": "我们每周评审两次新需求，确认日期，并在任务中随时告知进展，包括何时可以由你审核。"
+					},
+					"brandBasics": {
+						"voice": "语气",
+						"voiceStarter": "清晰、亲切、直接。句子简短，不用行话。",
+						"words": "我们使用和避免的词语",
+						"logoAndColour": "标志和颜色",
+						"logoAndColourStarter": "标志周围留出空白，切勿拉伸，只使用品牌色。"
+					},
+					"channelCalendar": {
+						"title": "渠道日历",
+						"channelsStarter": "哪些渠道在哪几天发布，以及每个渠道由谁负责。",
+						"blackoutDates": "停发日期"
+					}
+				},
+				"samples": {
+					"featureEmail": "邮件：宣布新的报表功能",
+					"featureEmailDescription": "15 日发给现有客户。草稿正在由产品团队审核。",
+					"featureEmailAudience": "使用报表的客户",
+					"tradeShowHandout": "展会单页宣传资料",
+					"tradeShowHandoutDescription": "等展会日期确定后再做。需要设计团队提供新的版式。",
+					"tradeShowHandoutAudience": "来我们展位的访客",
+					"schoolStory": "博客：一所学校的客户故事",
+					"webinarPosts": "夏季网络研讨会的社交媒体帖子",
+					"officeNewsletter": "内部通讯：新办公室",
+					"officeNewsletterAudience": "全体员工"
+				}
+			},
+			"nonprofit-programs": {
+				"projectDescription": "每周推进我们的公益项目：活动、宣传和志愿者工作，边做边记录数字。",
+				"labels": {
+					"session": "活动",
+					"outreach": "宣传",
+					"volunteers": "志愿者",
+					"evaluation": "评估"
+				},
+				"fields": {
+					"participants": "参与人数",
+					"volunteerHours": "志愿服务时长"
+				},
+				"views": {
+					"programCalendar": "活动日历",
+					"byProgram": "按公益项目",
+					"outputs": "产出",
+					"outputsDescription": "已完成的工作及其参与人数和志愿服务时长，按公益项目分组。"
+				},
+				"taskTemplates": {
+					"session": {
+						"name": "项目活动",
+						"description": "**活动前**\n\n- [ ] 准备材料\n- [ ] 确认志愿者\n- [ ] 打印签到表\n\n**活动当天**\n\n- [ ] 开展活动\n\n**活动后**\n\n- [ ] 记录参与人数和志愿服务时长\n- [ ] 记下需要跟进的事项"
+					},
+					"outcomesCheck": {
+						"name": "季度成效检查",
+						"description": "- [ ] 从产出视图汇总数字\n- [ ] 征得同意后收集两个简短的参与者故事\n- [ ] 与项目计划中的目标进行对比\n- [ ] 发布一条进展更新"
+					}
+				},
+				"rules": {
+					"recordOutputs": "记录活动数字",
+					"recordComment": "请在这张卡片上记录参与人数和志愿服务时长。"
+				},
+				"pages": {
+					"programPlan": {
+						"title": "项目计划",
+						"need": "需求",
+						"needStarter": "我们在回应什么问题？我们是怎么知道的？",
+						"whoItServes": "服务对象",
+						"activities": "活动内容",
+						"outputs": "我们统计什么（产出）",
+						"outputsStarter": "举办的活动场次、参与人数和志愿服务时长。",
+						"outcomes": "我们希望带来什么改变（成效）",
+						"outcomesStarter": "参与者会有什么不同，我们如何察觉。",
+						"assumptions": "我们的假设"
+					},
+					"volunteerGuide": {
+						"title": "志愿者指南",
+						"schedules": "排班",
+						"schedulesStarter": "什么时候需要志愿者，以及如何调换班次。",
+						"safety": "安全须知",
+						"safetyStarter": "急救箱和紧急出口在哪里，有人受伤时该怎么做。"
+					},
+					"safeguarding": {
+						"title": "安全保护政策",
+						"keepSafe": "我们如何保护参与者",
+						"keepSafeStarter": "核查志愿者，有儿童参加的活动至少有两名成年人在场，拍照前先征得同意。",
+						"reportConcern": "如何报告担忧",
+						"reportConcernStarter": "当天告诉安全保护负责人，写下你看到或听到的情况，不要自行调查。"
+					}
+				},
+				"samples": {
+					"codingWeek3": "课后编程俱乐部，第 3 周",
+					"codingWeek3Description": "在图书馆为枫溪社区基金会举办。本周新加入了两个家庭。",
+					"codingWeek4": "课后编程俱乐部，第 4 周",
+					"libraryRoom": "图书馆 B 室",
+					"foodBankVolunteers": "为周末食物银行招募四名志愿者",
+					"foodBankVolunteersDescription": "周六班次人手不足。先联系以前的志愿者，再在社区公告栏发布招募信息。",
+					"jobSkillsFlyers": "就业技能课程的宣传单",
+					"springSurvey": "春季参与者调查",
+					"springSurveyDescription": "给本期所有参与者的五个简短问题，提供纸质版和线上版。",
+					"cookingWorkshop": "低预算烹饪工作坊"
+				}
+			},
+			"outcome-tree": {
+				"projectDescription": "用于持续探索的成果树：顶端是一个可衡量的成果，下面是客户需求，再往下是可能满足需求的想法，以及验证这些想法的小检验。",
+				"statuses": {
+					"mapped": "已梳理",
+					"chosen": "已选定",
+					"exploring": "探索中",
+					"discarded": "已放弃"
+				},
+				"labels": {
+					"outcome": "成果",
+					"opportunity": "机会",
+					"solution": "方案",
+					"assumptionTest": "假设检验"
+				},
+				"fields": {
+					"metric": "指标",
+					"opportunitySize": "机会规模"
+				},
+				"options": {
+					"opportunitySize": {
+						"large": "大",
+						"medium": "中",
+						"small": "小"
+					},
+					"testResult": {
+						"pending": "待定",
+						"passed": "通过",
+						"failed": "未通过",
+						"mixed": "好坏参半"
+					}
+				},
+				"views": {
+					"tree": "树状图",
+					"treeDescription": "每个成果，以及作为子任务排在其下的机会、方案和检验。",
+					"opportunities": "机会列表",
+					"testsThisWeek": "本周检验",
+					"learningLog": "经验日志"
+				},
+				"taskTemplates": {
+					"outcome": {
+						"name": "成果",
+						"description": "**指标、基线和目标**\n\n\n**为什么现在重要**\n\n\n**时间范围**"
+					},
+					"opportunity": {
+						"name": "机会",
+						"description": "**用客户自己的话**\n\n\n**谁有这个需求**\n\n\n**证据（访谈、数据）**"
+					},
+					"solution": {
+						"name": "方案",
+						"description": "**它如何回应这个机会**\n\n\n**必须成立的前提**\n\n- [ ] 有吸引力：人们想要它\n- [ ] 商业可行：对业务有价值\n- [ ] 技术可行：我们做得出来\n- [ ] 好用：人们用得起来"
+					},
+					"assumptionTest": {
+						"name": "假设检验",
+						"titlePattern": "检验：{title}",
+						"description": "**我们相信……**\n\n\n**检验方法**\n\n\n**通过条件……**\n\n\n**结果**"
+					}
+				},
+				"rules": {
+					"solutionGetsTest": "每个方案都有一项检验",
+					"solutionTestTitle": "检验：要让 {{task.title}} 奏效，什么必须成立？",
+					"failedClosesBranch": "未通过的检验关闭分支",
+					"failedClosesBranchComment": "记下我们学到的东西，让下一个想法从这里出发。"
+				},
+				"pages": {
+					"howToGrow": {
+						"title": "如何培育这棵树",
+						"oneOutcome": "每棵树一个成果",
+						"oneOutcomeStarter": "选一个团队能影响的可衡量成果，写明当前值和目标。",
+						"realStories": "从真实故事中找机会",
+						"realStoriesStarter": "用客户自己的话写下每个需求，来源是访谈或真实使用情况。",
+						"threeSolutions": "至少比较三个方案",
+						"threeSolutionsStarter": "针对选定的机会，在确定其中一个之前先列出三个或更多想法。",
+						"testFirst": "先检验假设，再动手构建",
+						"testFirstStarter": "说明方案奏效必须满足什么前提，并先以低成本检验风险最高的部分。",
+						"weekly": "每周回顾这棵树",
+						"weeklyStarter": "更新状态和检验结果，把被放弃的分支作为经验保留下来。"
+					},
+					"interviewSnapshot": {
+						"title": "访谈速记",
+						"who": "我们和谁交谈",
+						"whoStarter": "角色、背景和访谈日期。",
+						"story": "对方讲述的故事",
+						"opportunities": "听到的机会",
+						"quote": "令人难忘的原话"
+					}
+				},
+				"boards": {
+					"treeSketch": "成果树草图"
+				},
+				"samples": {
+					"outcome": "更多试用账号在第一周邀请一位同事",
+					"outcomeDescription": "目前约 18% 的新试用账号会在第一周邀请他人。我们的目标是在本季度末达到 30%。",
+					"outcomeMetric": "试用账号的 18% → 30%",
+					"unknownColleague": "“我还不知道哪位同事会觉得这个有用”",
+					"unknownColleagueDescription": "在八次新试用用户访谈中有五次听到。",
+					"domainSuggestions": "根据注册邮箱的域名推荐同事",
+					"acceptTest": "检验：人们会接受推荐的同事吗？",
+					"acceptTestDescription": "我们相信至少十分之四的新用户会邀请被推荐的同事。向 50 个新试用账号展示推荐，并统计邀请数。",
+					"inviteCard": "在第一个完成的任务上显示邀请卡片",
+					"feelsCommitting": "“邀请别人感觉像是在我决定之前就把团队绑定了”"
+				}
+			},
+			"personal-planner": {
+				"projectDescription": "想到什么就放进收集箱，每天早上把几张卡片拖到“今天”，再用每周回顾选出“本周”要做的事，并让“将来”保持整洁。",
+				"statuses": {
+					"inbox": "收集箱",
+					"today": "今天",
+					"thisWeek": "本周",
+					"someday": "将来"
+				},
+				"labels": {
+					"quick": "很快"
+				},
+				"taskTemplates": {
+					"weeklyReview": {
+						"name": "每周回顾",
+						"description": "- [ ] 清空收集箱：把每张卡片移到“今天”“本周”或“将来”，或者删除\n- [ ] 回看日历中的上周，并查看接下来的两周\n- [ ] 检查所有带“等待中”标签的事项\n- [ ] 选出要放进“本周”的事\n- [ ] 浏览“将来”，看看有没有现在就可以做的"
+					}
+				},
+				"samples": {
+					"dentist": "预约看牙医",
+					"bikeRack": "回复伊内丝关于借自行车架的事",
+					"lease": "寄回签好的租赁合同",
+					"leaseDescription": "每一页都签字，自己留一份副本，并在本周结束前寄出。",
+					"plumber": "等水管工回复报价",
+					"plumberDescription": "已经询问厨房水龙头的报价。如果周五前还没回复，就再打一次电话。",
+					"hike": "计划一次周末徒步"
+				}
+			},
+			"policy-management": {
+				"projectDescription": "公司制度从申请经起草、审核、审批到发布的全过程。每项制度的截止日期就是下一次复审日期。",
+				"statuses": {
+					"retired": "已废止"
+				},
+				"labels": {
+					"people": "人事",
+					"finance": "财务",
+					"operations": "运营"
+				},
+				"fields": {
+					"owner": "制度负责人",
+					"acknowledgement": "需确认已读"
+				},
+				"views": {
+					"register": "制度清单",
+					"registerDescription": "所有有效制度及其负责人、版本、状态和下次复审日期。",
+					"reviewsDueSoon": "即将复审",
+					"reviewsDueSoonDescription": "未来 60 天内到期复审的制度。",
+					"reviewCalendar": "复审日历"
+				},
+				"taskTemplates": {
+					"newPolicy": {
+						"name": "新制度",
+						"description": "**目的与范围**\n\n\n- [ ] 目的与范围已确认\n- [ ] 已按制度模板起草\n- [ ] 法务及其他相关团队已审核\n- [ ] 指定审批人已批准\n- [ ] 已发布\n- [ ] 已通知员工\n- [ ] 如需要，已收集已读确认"
+					},
+					"policyReview": {
+						"name": "制度复审",
+						"description": "**结论：** 保持不变、修订后重新审批，或废止并指向替代制度。\n\n- [ ] 已阅读当前版本\n- [ ] 已对照法规、风险和实际做法检查\n- [ ] 已记录一个结论\n- [ ] 已更新版本和下次复审日期"
+					}
+				},
+				"rules": {
+					"approvalNeeded": "制度待审批时通知项目负责人",
+					"approvalMessage": "{{task.key}} 正在等待审批：{{task.title}}",
+					"announceOnPublish": "公告已发布的制度"
+				},
+				"subtasks": {
+					"announce": "公告制度，如需要则收集已读确认"
+				},
+				"pages": {
+					"guide": {
+						"title": "我们如何管理制度",
+						"who": "谁可以申请制度",
+						"whoStarter": "任何人都可以创建一个写明原因的任务，申请新制度或修改。",
+						"reviewRule": "复审规则",
+						"reviewRuleStarter": "每项制度每年至少复审一次。其截止日期就是下次复审日期。",
+						"whoApprovesStarter": "每项制度指定一名审批人，通常是所涉领域的负责人。",
+						"where": "已发布制度存放在哪里",
+						"whereStarter": "附上员工随时能找到现行版本的位置链接。"
+					},
+					"policy": {
+						"title": "制度模板",
+						"purposeStarter": "用一两句话说明为什么需要这项制度。",
+						"statements": "制度条款",
+						"exceptions": "例外情况及申请方式",
+						"exceptionsStarter": "谁可以批准例外，以及如何申请。",
+						"related": "相关制度",
+						"history": "版本历史",
+						"historyStarter": "- 版本 1.0，(日期) 由 (审批人) 批准"
+					}
+				},
+				"samples": {
+					"remoteWork": "远程办公制度（第 2 版）",
+					"remoteWorkDescription": "应经理们的要求，明确在家和在境外办公的规则。等待审批人签批。",
+					"devices": "公司设备使用规范",
+					"expenses": "费用与差旅制度年度复审",
+					"expensesDescription": "年度复审。将每日补贴与今年的费用对照。",
+					"visitors": "访客与场所出入制度",
+					"socialMedia": "社交媒体使用指南",
+					"paperRecords": "纸质档案保存制度",
+					"paperRecordsDescription": "已废止：已由记录管理制度取代，该制度统一涵盖纸质和电子记录。",
+					"ownerPeople": "人力资源负责人",
+					"ownerSecurity": "安全负责人",
+					"ownerFinance": "财务经理",
+					"ownerOperations": "行政经理",
+					"v20": "2.0",
+					"v31": "3.1",
+					"v40": "4.0",
+					"v12": "1.2",
+					"v10": "1.0"
+				}
+			},
+			"portfolio-roadmap": {
+				"projectDescription": "组织内每项举措一个条目：服务于哪个战略目标、是否已获资金，以及哪些需要决策。日常工作留在各团队自己的项目中。",
+				"statuses": {
+					"active": "实施中",
+					"complete": "已完成",
+					"stopped": "已停止"
+				},
+				"labels": {
+					"offTrack": "偏离轨道",
+					"onHold": "已暂停"
+				},
+				"fields": {
+					"investmentArea": "投资领域",
+					"size": "规模"
+				},
+				"options": {
+					"investmentArea": {
+						"grow": "增长",
+						"sustain": "维持",
+						"explore": "探索"
+					},
+					"size": {
+						"s": "S（不到一个月）",
+						"m": "M（约一个季度）",
+						"l": "L（两个季度）",
+						"xl": "XL（更长）"
+					}
+				},
+				"modules": {
+					"growMidSize": "在中型企业中增长",
+					"growMidSizeDescription": "今年赢得并留住更多中型企业客户。",
+					"reliableFoundations": "可靠的基础",
+					"reliableFoundationsDescription": "保持产品快速、安全且运行成本低。"
+				},
+				"views": {
+					"portfolioTimeline": "组合时间线",
+					"portfolioTimelineDescription": "所有未停止的举措，按战略目标和开始日期排列。",
+					"investmentMix": "投资配比",
+					"investmentMixDescription": "已批准和实施中的举措，按投资领域和规模分组。",
+					"needsAttention": "需要关注",
+					"proposals": "提案"
+				},
+				"taskTemplates": {
+					"initiativeProposal": {
+						"name": "举措提案",
+						"description": "**问题或机会**\n\n\n**战略目标**\n\n\n**成功指标**\n\n\n**大致规模和所需人员**\n\n\n**我们将停止做什么**\n\n\n**风险**\n\n\n- [ ] 已设定投资领域\n- [ ] 已商定负责团队"
+					}
+				},
+				"rules": {
+					"risksReachLead": "风险送达负责人",
+					"risksMessage": "{{task.key}} 需要关注：{{task.title}}",
+					"approvedMeansPlanned": "批准即排期",
+					"addDatesComment": "请添加开始日期和目标日期，以便它显示在组合时间线上。"
+				},
+				"pages": {
+					"reviewAgenda": {
+						"title": "组合评审议程",
+						"healthChanges": "自上次以来的变化",
+						"needsAttention": "需要关注的事项",
+						"needsAttentionStarter": "浏览“需要关注”视图，并为每个事项商定一个下一步。",
+						"proposals": "待决定的提案",
+						"mix": "投资配比与目标对比",
+						"mixStarter": "将“投资配比”视图与“投资标准”中的目标配比进行比较。",
+						"decisionsStarter": "- 决定、负责人、截止时间"
+					},
+					"criteria": {
+						"title": "投资标准",
+						"areas": "各投资领域的含义",
+						"areasStarter": "**增长**带来新的收入或用户。**维持**让现有业务运转良好。**探索**是押注与学习。",
+						"targetMix": "目标配比",
+						"targetMixStarter": "维持 60%，增长 30%，探索 10%。",
+						"judging": "如何评估提案",
+						"judgingStarter": "与战略目标的契合度、明确的成功指标、规模和所需人员，以及我们将停止做什么。",
+						"stopping": "何时停止一项举措",
+						"stoppingStarter": "当成功指标已无法达成或目标已改变时。在移到“已停止”之前写下原因。"
+					}
+				},
+				"samples": {
+					"selfServeUpgrades": "自助升级套餐",
+					"selfServeMeasure": "一半的套餐升级无需销售电话即可完成。",
+					"billingTeam": "计费团队",
+					"reportingMove": "将报表迁移到新的数据平台",
+					"reportingMoveDescription": "两个团队仍依赖旧的报表任务，因此切换可能推迟一个月。",
+					"dataTeam": "数据团队",
+					"marketplacePilot": "合作伙伴市场试点",
+					"marketplacePilotDescription": "在一个季度内让几家合作伙伴在产品中提供附加功能，看看客户是否使用。",
+					"partnerships": "合作伙伴关系",
+					"cloudSpend": "将云支出降低 15%",
+					"cloudSpendMeasure": "每月云账单比上季度低 15%。",
+					"platformTeam": "平台团队",
+					"accessibilityReview": "核心流程无障碍评审",
+					"designSystems": "设计系统",
+					"voiceNotes": "移动应用中的语音笔记",
+					"voiceNotesDescription": "初步测试后停止：使用的人太少，不值得持续维护。"
+				}
+			},
+			"prioritization": {
+				"projectDescription": "按覆盖面、影响、信心和工作量为每个候选项评分，再按单位工作量的价值排序。“评分指南”页面说明了各项尺度。",
+				"statuses": {
+					"candidates": "候选",
+					"scored": "已评分",
+					"inDelivery": "开发中",
+					"notNow": "暂不考虑"
+				},
+				"labels": {
+					"needsData": "需要数据"
+				},
+				"fields": {
+					"effort": "工作量"
+				},
+				"views": {
+					"ranking": "排名",
+					"rankingDescription": "已评分的候选项，得分最高的在前。",
+					"needsScoring": "待评分",
+					"needsScoringDescription": "仍在等待数字的候选项，最早的在前。",
+					"shakyNumbers": "不可靠的数字",
+					"shakyNumbersDescription": "含有估算输入或信心较低的候选项。"
+				},
+				"taskTemplates": {
+					"candidate": {
+						"name": "候选项",
+						"description": "**解决什么问题**\n\n\n**覆盖哪些人，我们如何统计**\n\n\n**为什么是这个影响**\n\n\n**我们还不确定什么**\n"
+					}
+				},
+				"pages": {
+					"guide": {
+						"title": "评分指南",
+						"reachStarter": "在固定周期内（例如每季度）受影响的人数或账户数。尽量根据数据统计。",
+						"impactStarter": "选择其一：**3** 巨大，**2** 高，**1** 中，**0.5** 低，**0.25** 极小。",
+						"confidenceStarter": "**100** 高，**80** 中，**50** 低。低于 50 意味着：先去了解更多。",
+						"effortStarter": "以人月计，取整；小工作填 0.5 即可。询问将要实现它的人，并一起商定一个数字。",
+						"formula": "公式",
+						"formulaStarter": "得分 = 覆盖面 × 影响 × 信心 ÷ 100 ÷ 工作量。目前需手动填写。",
+						"fixedScales": "保持尺度不变",
+						"fixedScalesStarter": "每一轮都使用相同的尺度，这样不同的人、不同轮次的得分才能比较。",
+						"usingScore": "如何使用得分",
+						"usingScoreStarter": "得分用于安排讨论的顺序，而不是最终裁决。战略、依赖和风险仍需要判断。",
+						"lighter": "更轻量的做法",
+						"lighterStarter": "快速评估时，把影响、信心和难易度各按 1 到 10 打分，然后相乘。"
+					}
+				},
+				"samples": {
+					"rememberFilter": "在报告中记住上次使用的筛选条件",
+					"singleSignOn": "面向小团队的单点登录",
+					"offlineMode": "移动应用的离线模式",
+					"offlineModeDescription": "信心只有 50%：先和几位客户做个快速测试，再重新评分。",
+					"bulkArchive": "批量归档旧项目",
+					"recurringInvoices": "定期发票",
+					"recurringInvoicesDescription": "尚未评分。在下次评分会议上填写覆盖面、影响、信心和工作量。",
+					"twoStepApproval": "费用的两步审批"
+				}
+			},
+			"process-control": {
+				"projectDescription": "以经过测试的小步骤改进流程：带着基线和目标做计划，小范围试行变更，检查结果并据此处理。采纳的变更写入标准作业，并通过定期检查加以保持。",
+				"statuses": {
+					"plan": "计划",
+					"do": "执行",
+					"check": "检查",
+					"act": "处理",
+					"standardized": "已标准化"
+				},
+				"labels": {
+					"quality": "质量",
+					"cost": "成本",
+					"speed": "速度",
+					"controlCheck": "控制检查"
+				},
+				"fields": {
+					"measure": "衡量指标",
+					"baseline": "基线"
+				},
+				"views": {
+					"improvementCycle": "改进循环",
+					"improvementCycleDescription": "所有正在经历计划、执行、检查和处理的改进。",
+					"resultsDescription": "检查中或已采纳的变更的基线、目标和结果。",
+					"controlChecks": "控制检查清单",
+					"controlChecksDescription": "未完成的控制检查，截止日期最近的在前。"
+				},
+				"taskTemplates": {
+					"improvement": {
+						"name": "改进",
+						"description": "**问题**\n\n\n**计划**\n\n- [ ] 用数据描述问题\n- [ ] 确定衡量指标、基线和目标\n- [ ] 选择一个小规模测试\n\n**执行**\n\n- [ ] 在安全的地方进行测试\n- [ ] 记录发生了什么\n\n**检查**\n\n- [ ] 记录结果\n- [ ] 与目标进行比较\n\n**处理**\n\n- [ ] 采纳、调整或放弃变更\n- [ ] 如果采纳，更新标准作业"
+					},
+					"controlCheck": {
+						"name": "控制检查",
+						"description": "**样本量**\n\n\n**测量方法**\n\n\n**可接受范围**\n\n\n**结果超出范围时**\n\n- [ ] 停下来并控制住问题\n- [ ] 通知流程负责人\n- [ ] 如果再次发生，创建一项改进"
+					}
+				},
+				"pages": {
+					"standardWork": {
+						"title": "标准作业",
+						"purposeStarter": "这个流程为什么存在，好的结果是什么样子。",
+						"owner": "负责人",
+						"ownerStarter": "谁负责保持本页内容最新并回答相关问题。",
+						"checking": "如何检查以及多久检查一次",
+						"checkingStarter": "测量什么、由谁测量、多久一次。控制检查会在看板上重复出现。",
+						"reaction": "检查未通过时",
+						"reactionStarter": "停下来并控制住问题，通知负责人，然后创建一项改进来查找原因。"
+					},
+					"improvementLog": {
+						"title": "改进日志",
+						"changesTried": "尝试过的变更"
+					}
+				},
+				"rules": {
+					"checkDue": "设置检查日期",
+					"checkComment": "继续之前，请记录“结果”并与“目标”进行比较。",
+					"standardize": "将采纳的变更写入标准作业",
+					"standardizeSubtask": "更新标准作业页面并向团队说明"
+				},
+				"samples": {
+					"mislabelled": "减少包装环节贴错标签的包裹",
+					"mislabelledDescription": "大约每二十个包裹就有一个贴错标签发出。我们在 2 号包装台试行了两周扫描步骤。",
+					"mislabelledMeasure": "每 100 个包裹中贴错标签的数量",
+					"lineSetup": "缩短早班产线准备时间",
+					"lineSetupMeasure": "从到岗到第一件产品的分钟数",
+					"walkway": "清理 3 号区旁边的通道",
+					"offcuts": "减少包装边角料浪费",
+					"twoBin": "为小零件试行双箱系统",
+					"spotCheck": "每周标签准确性抽检",
+					"spotCheckDescription": "随机检查 100 个包裹。如果贴错标签的超过 2 个，请按照标准作业页面上的应对计划处理。"
+				}
+			},
+			"procurement": {
+				"projectDescription": "来自全公司的采购申请：下单前审批，付款前与交货和发票核对。",
+				"statuses": {
+					"ordered": "已下单",
+					"received": "已收货",
+					"rejected": "已驳回"
+				},
+				"labels": {
+					"goods": "货物",
+					"services": "服务",
+					"mismatch": "不一致"
+				},
+				"fields": {
+					"poNumber": "采购订单号"
+				},
+				"views": {
+					"approvalQueue": "审批队列",
+					"approvalQueueDescription": "等待预算负责人审批的申请，金额最大的排在最前。",
+					"openOrders": "未结订单",
+					"spendByCostCenter": "按成本中心统计支出"
+				},
+				"taskTemplates": {
+					"purchaseRequest": {
+						"name": "采购申请",
+						"description": "**需要什么、多少、为什么？**\n\n\n- [ ] 已确认需求和数量\n- [ ] 已核对预算科目\n- [ ] 如金额需要，已比较报价\n- [ ] 已记录审批\n- [ ] 已发出采购订单并记录订单号\n- [ ] 已检查收货\n- [ ] 已核对订单、交货和发票"
+					},
+					"receiptCheck": {
+						"name": "收货检查",
+						"description": "- [ ] 已按订单核对数量\n- [ ] 已检查货物状况\n- [ ] 已附上送货单\n- [ ] 已向供应商报告损坏或短缺"
+					}
+				},
+				"subtasks": {
+					"match": "核对订单、交货和发票"
+				},
+				"rules": {
+					"checkRequest": "检查新申请",
+					"checkComment": "检查金额、成本中心和预算科目，然后移到待审批。",
+					"matchOnReceipt": "收货时核对",
+					"flagMismatch": "标记不一致",
+					"mismatchMessage": "{{task.key}}：订单、交货和发票不一致。{{task.title}}"
+				},
+				"form": {
+					"title": "申请采购",
+					"intro": "告诉我们你需要什么、什么时候要。下单前我们会先和你确认。",
+					"confirmation": "谢谢。你的申请已进入队列，如需更多信息我们会回复你。"
+				},
+				"pages": {
+					"guide": {
+						"title": "采购指南",
+						"whoApprovesStarter": "列出每个支出额度，以及该额度以内的采购由谁审批。",
+						"quotes": "何时需要报价",
+						"quotesStarter": "超过此处设定的额度时，下单前至少比较三家报价。",
+						"suppliers": "首选供应商",
+						"receiving": "收货",
+						"receivingStarter": "清点并检查每批货物，附上送货单，然后把任务移到已收货。",
+						"matching": "发票核对",
+						"matchingStarter": "只有发票与订单和交货一致时才提交付款。不一致时，添加不一致标签。"
+					}
+				},
+				"samples": {
+					"monitors": "为支持团队采购六台显示器",
+					"monitorsDescription": "为新的支持工位采购六台显示器。首选供应商报价每台 200。",
+					"designLicences": "设计工具许可证年度续订",
+					"poNumber": "PO-0193",
+					"windowCleaning": "二楼窗户清洁",
+					"toner": "打印机替换碳粉",
+					"booth": "租用展会展位",
+					"chairs": "办公椅，发票数量有误",
+					"chairsDescription": "到货十二把椅子，但发票按十五把收费。付款前请供应商开具更正后的发票。"
+				}
+			},
+			"product-discovery": {
+				"projectDescription": "探索工作：想法不断进来，最有希望的会与客户一起验证，只有被证明的想法才会进入“构建中”。",
+				"statuses": {
+					"discovering": "探索中",
+					"building": "构建中",
+					"shipped": "已上线"
+				},
+				"labels": {
+					"customerRequest": "客户需求",
+					"experiment": "实验"
+				},
+				"fields": {
+					"evidence": "证据",
+					"targetOutcome": "目标成果"
+				},
+				"options": {
+					"evidence": {
+						"noneYet": "暂无",
+						"problemConfirmed": "问题已确认",
+						"solutionTested": "方案已验证"
+					},
+					"source": {
+						"customer": "客户",
+						"support": "支持",
+						"team": "团队",
+						"data": "数据"
+					}
+				},
+				"views": {
+					"discoveryBoard": "探索看板",
+					"ideaInbox": "想法收件箱",
+					"byEvidence": "按证据",
+					"bySource": "想法来源"
+				},
+				"form": {
+					"title": "分享产品想法",
+					"intro": "请先说明问题：谁遇到了它、什么时候发生、目前他们如何应对。",
+					"confirmation": "谢谢。我们会阅读每一个想法，包括暂时不做的那些。"
+				},
+				"taskTemplates": {
+					"idea": {
+						"name": "想法",
+						"description": "**问题**\n\n\n**谁遇到了**\n\n\n**目前的证据**\n\n\n**目标成果**"
+					},
+					"assumptionTest": {
+						"name": "假设检验",
+						"titlePattern": "检验：{title}",
+						"description": "**我们相信……**\n\n\n**当……时，我们就知道自己是对的**\n\n\n**检验方式**\n访谈、原型、假门测试或数据。\n\n**结果**"
+					}
+				},
+				"subtasks": {
+					"planTest": "规划检验",
+					"runTest": "执行检验",
+					"writeUpResult": "写下结果"
+				},
+				"rules": {
+					"buildOnEvidence": "有证据再构建",
+					"buildOnEvidenceComment": "此项在没有证据的情况下进入了“构建中”。请关联简报或检验结果，或将其移回“探索中”。",
+					"buildOnEvidenceMessage": "{{task.key}} 在没有证据的情况下进入构建：{{task.title}}",
+					"checkOutcome": "检查成果",
+					"checkOutcomeSubtask": "发布约一个月后检查 {{task.title}} 的目标成果"
+				},
+				"pages": {
+					"brief": {
+						"title": "探索简报",
+						"problem": "问题",
+						"problemStarter": "谁在什么事情上、什么时候遇到困难？",
+						"evidence": "证据",
+						"evidenceStarter": "证明问题真实存在的访谈、数据和支持工单。",
+						"options": "考虑过的方案",
+						"assumptions": "风险最高的假设",
+						"assumptionsStarter": "要让它成功，哪些前提必须成立？从风险最高的开始。"
+					},
+					"interview": {
+						"title": "客户访谈记录",
+						"contextStarter": "我们和谁聊了、对方的角色以及时间。",
+						"story": "他们讲述的经历",
+						"pains": "痛点",
+						"quotes": "原话摘录",
+						"surprises": "让我们意外的地方"
+					}
+				},
+				"boards": {
+					"problemMap": "问题地图",
+					"flowSketch": "流程草图"
+				},
+				"samples": {
+					"cart": "顾客切换设备时购物车会丢失",
+					"cartDescription": "受访的六位顾客中有五位在手机上开始、在笔记本电脑上完成购买。大多数人凭记忆重新加购，或者干脆放弃。",
+					"cartOutcome": "减少弃购",
+					"savedReports": "让团队把筛选后的报告保存为收藏",
+					"guidedSetup": "面向新管理员的引导式设置",
+					"guidedSetupOutcome": "更多管理员完成设置",
+					"prioritySupport": "检验：用户会为优先支持付费吗？",
+					"prioritySupportDescription": "假门测试：在套餐页面展示优先支持选项两周，并统计点击次数。",
+					"bulkPrices": "批量编辑商品价格",
+					"bulkPricesOutcome": "减少更新价格所花的时间",
+					"darkMode": "移动应用的深色模式",
+					"darkModeDescription": "暂时搁置：用户想要它，但它没有改变使用应用的频率。改版后再看。"
+				}
+			},
+			"product-roadmap": {
+				"projectDescription": "产品的方向：我们现在在做什么、下一步做什么、以后相信什么，按主题分组。",
+				"statuses": {
+					"later": "以后",
+					"next": "下一步",
+					"now": "现在",
+					"released": "已上线"
+				},
+				"labels": {
+					"customerCommitment": "客户承诺"
+				},
+				"modules": {
+					"fasterOnboarding": "更快上手",
+					"fasterOnboardingDescription": "目标：新团队在第一天就能获得价值。成功指标：新工作区在 10 分钟内完成设置。",
+					"trustedReporting": "值得信赖的报表",
+					"trustedReportingDescription": "目标：大家依靠我们的报表做决策。成功指标：关于数字来源的疑问减少。"
+				},
+				"views": {
+					"roadmap": "路线图",
+					"roadmapDescription": "现在、下一步和以后，条目按主题排列。",
+					"byTheme": "按主题",
+					"timelineDescription": "“现在”和“下一步”中有日期的工作，按主题显示。",
+					"released": "已上线条目"
+				},
+				"taskTemplates": {
+					"roadmapItem": {
+						"name": "路线图条目",
+						"description": "**要解决的问题**\n\n\n**面向谁**\n\n\n**成功指标**\n\n\n**包含 / 不包含的范围**\n\n\n- [ ] 已设置主题\n- [ ] 已设置信心\n- [ ] 移到“现在”时已设置日期"
+					}
+				},
+				"rules": {
+					"datesForNow": "为“现在”的工作设日期",
+					"datesForNowComment": "添加开始日期和目标日期，这样它就会显示在时间线上。",
+					"protectPromises": "守护承诺",
+					"protectPromisesMessage": "{{task.key}} 现在是一项客户承诺：{{task.title}}。修改日期时请谨慎。"
+				},
+				"pages": {
+					"narrative": {
+						"title": "路线图说明",
+						"vision": "愿景",
+						"visionStarter": "用两句话说明产品的方向。",
+						"themes": "主题及为什么是现在",
+						"themesStarter": "每个主题一行：它追求的结果，以及为什么现在重要。",
+						"howToRead": "如何阅读这份路线图",
+						"howToReadStarter": "“现在”正在开发且有日期。“下一步”很可能很快开始。“以后”是方向，不是承诺。信心表示我们有多大把握。",
+						"notDoing": "我们刻意不做的事",
+						"requests": "如何提出需求",
+						"requestsStarter": "请告诉产品负责人问题是什么、谁遇到了它，而不是解决方案。"
+					}
+				},
+				"samples": {
+					"spreadsheetImport": "一步从电子表格导入项目",
+					"spreadsheetImportDescription": "新团队带着电子表格里的工作而来。让他们无需先整理就能导入。",
+					"spreadsheetImportMeasure": "10 分钟内完成设置",
+					"templateGallery": "新项目的模板库",
+					"reportEmails": "定时发送报表邮件",
+					"reportEmailsDescription": "已承诺给一位客户用于其每周评审。改期前请先与客户负责人沟通。",
+					"chartExplanations": "说明每个图表的计算方式",
+					"auditTrail": "管理员变更的审计记录"
+				}
+			},
+			"project-management": {
+				"projectDescription": "从构想到收尾的项目：四个阶段，每个任务一位负责人，时间线上的里程碑，以及每周五的简短更新。",
+				"labels": {
+					"milestone": "里程碑"
+				},
+				"fields": {
+					"signOff": "需要审批"
+				},
+				"options": {
+					"phase": {
+						"initiate": "启动",
+						"plan": "规划",
+						"deliver": "执行",
+						"close": "收尾"
+					}
+				},
+				"views": {
+					"timelineDescription": "仍在范围内的所有工作，按阶段分组并按日期排列。里程碑在截止日期处显示为标记。",
+					"nextTwoWeeks": "未来两周"
+				},
+				"taskTemplates": {
+					"milestone": {
+						"name": "里程碑",
+						"description": "**完成的标准**\n\n\n**验收人**\n\n\n**日期**\n\n\n- [ ] 已标记为里程碑并设置截止日期\n- [ ] 已获得审批"
+					},
+					"risk": {
+						"name": "风险",
+						"description": "**可能发生什么**\n\n\n**可能性有多大**\n\n\n**影响**\n\n\n**应对措施**\n\n\n**由谁关注**\n"
+					},
+					"decision": {
+						"name": "决策",
+						"description": "**问题**\n\n\n**选项**\n\n\n**选择**\n\n\n**由谁决定，何时决定**\n"
+					}
+				},
+				"rules": {
+					"riskRaised": "风险及时告知主管",
+					"riskMessage": "{{task.key}} 被标记为风险：{{task.title}}",
+					"milestoneReached": "达成里程碑时通知",
+					"milestoneComment": "已达成里程碑：{{task.title}}",
+					"milestoneMessage": "{{task.key}} 已达成里程碑：{{task.title}}"
+				},
+				"pages": {
+					"brief": {
+						"title": "项目简报",
+						"goalStarter": "这个项目交付什么，以及为什么现在很重要。",
+						"scopeStarter": "**范围内：**我们要做的事。**范围外：**我们有意不做的事。",
+						"milestones": "里程碑与日期",
+						"milestonesStarter": "- 日期：里程碑（由谁审批）",
+						"rolesStarter": "被指派的人负责完成工作，项目主管对结果负责。写明需要征询谁的意见、需要通知谁。",
+						"risks": "主要风险"
+					},
+					"closeout": {
+						"title": "收尾记录",
+						"delivered": "我们交付了什么",
+						"handover": "已移交的未完成事项",
+						"handoverStarter": "- [ ] 事项：由谁接手"
+					}
+				},
+				"samples": {
+					"brief": "撰写项目简报",
+					"approvers": "确认发起人和审批人",
+					"approversDescription": "商定谁是项目发起人、谁审批每个里程碑，然后写进项目简报。",
+					"milestonePlan": "制定里程碑计划",
+					"kickoff": "全体团队启动会",
+					"supplier": "供应商交货期可能推迟两周",
+					"supplierDescription": "供应商提醒零件可能晚到两周。应对措施：本周确认订单，并请另一家供应商报价。",
+					"pilot": "在第一个办公室试点上线",
+					"pilotDescription": "第一个办公室开始使用新的安排。上线前由发起人审批。",
+					"lessons": "经验总结会"
+				}
+			},
+			"recruitment": {
+				"projectDescription": "招聘流程：每位候选人一张卡片，以编号和岗位命名。简历、联系方式和其他个人数据请保存在人力资源系统中。",
+				"statuses": {
+					"applied": "已投递",
+					"screening": "筛选中",
+					"interviewing": "面试中",
+					"offer": "录用洽谈",
+					"hired": "已录用",
+					"notMovingForward": "不再推进"
+				},
+				"labels": {
+					"referral": "推荐",
+					"internal": "内部",
+					"needsDecision": "待决定"
+				},
+				"fields": {
+					"role": "岗位",
+					"scorecardsIn": "评分表已齐"
+				},
+				"options": {
+					"role": {
+						"supportSpecialist": "客服专员",
+						"accountManager": "客户经理",
+						"operationsCoordinator": "运营协调员"
+					},
+					"source": {
+						"careersPage": "公司招聘页",
+						"jobBoard": "招聘网站",
+						"agency": "猎头机构"
+					}
+				},
+				"views": {
+					"byRole": "按岗位",
+					"interviewsThisWeek": "本周面试",
+					"waitingForDecision": "等待决定"
+				},
+				"taskTemplates": {
+					"candidate": {
+						"name": "候选人",
+						"description": "**标题：** 编号和岗位，例如 C-1042 · 客服专员。不要写姓名或联系方式。\n\n- [ ] 已按必备条件筛选\n- [ ] 已完成筛选电话\n- [ ] 已安排面试轮次\n- [ ] 每位面试官都在复盘会前提交了评分表\n- [ ] 已记录复盘会结论\n- [ ] 已做背景调查（如适用）\n- [ ] 已将结果告知候选人"
+					},
+					"offer": {
+						"name": "录用通知",
+						"titlePattern": "录用通知：{title}",
+						"description": "- [ ] 录用已审批\n- [ ] 已口头发出录用\n- [ ] 已从人力资源系统发出书面录用通知\n- [ ] 候选人已接受\n- [ ] 已商定入职日期\n- [ ] 已移交入职流程"
+					}
+				},
+				"rules": {
+					"collectScorecards": "复盘会前收齐评分表",
+					"collectScorecardsTask": "复盘会前收齐所有评分表",
+					"respectfulDecline": "两天内发出婉拒",
+					"respectfulDeclineComment": "请在截止日期前发出得体的婉拒通知。",
+					"decisionNeeded": "需要决定时通知负责人",
+					"decisionNeededMessage": "{{task.key}} 需要做出录用决定：{{task.title}}"
+				},
+				"pages": {
+					"roleBrief": {
+						"title": "岗位说明和评分表",
+						"purposeStarter": "为什么设立这个岗位，以及六个月后成功是什么样子。",
+						"mustHave": "必备技能",
+						"niceToHave": "加分技能",
+						"competencies": "每轮面试考察的能力",
+						"competenciesStarter": "为每轮面试分配两到三项能力，避免遗漏或重复评分。",
+						"interviewPlan": "面试安排",
+						"coreQuestions": "核心问题",
+						"coreQuestionsStarter": "对每位候选人按相同顺序提出相同的核心问题。",
+						"scoringScale": "评分标准",
+						"scoringScaleStarter": "1 = 无证据，2 = 少量证据，3 = 证据明确，4 = 证据充分。"
+					},
+					"privacy": {
+						"title": "招聘隐私规则",
+						"whoCanSee": "谁能看到这个项目",
+						"whoCanSeeStarter": "只有招聘团队，以及工作区所有者和管理员。被添加的每个人都能看到所有候选人卡片，所以只添加需要访问的人。",
+						"referenceCodes": "候选人卡片",
+						"referenceCodesStarter": "使用 C-1042 这样的编号和岗位。绝不写全名、联系方式或简历。",
+						"neverRecord": "绝不记录",
+						"neverRecordStarter": "期望薪资、年龄、健康、家庭状况、国籍、证件号码或其他敏感个人数据。这些应放在人力资源系统中。",
+						"retention": "保留期限",
+						"retentionStarter": "保留期限结束时，归档或删除候选人卡片。"
+					}
+				},
+				"samples": {
+					"c1042": "C-1042 · 客服专员",
+					"c1042Description": "本周安排了第二轮面试。共三位面试官；评分表需在复盘会前提交。",
+					"c1047": "C-1047 · 客服专员",
+					"c1051": "C-1051 · 客户经理",
+					"c1051Description": "评分表已全部提交，复盘会决定发放录用。正在等待书面录用通知的审批。",
+					"c1053": "C-1053 · 运营协调员",
+					"c1038": "C-1038 · 客户经理",
+					"c1038Description": "筛选后与该岗位不匹配。请在截止日期前发出得体的婉拒通知。",
+					"c1029": "C-1029 · 运营协调员"
+				}
+			},
+			"rfp-process": {
+				"projectDescription": "公平的招标：从定标日期倒推计划，把每个问题的答复发给所有投标方，并按事先确定的标准为建议书打分。",
+				"labels": {
+					"supplierQuestion": "供应商提问",
+					"addendum": "补充通知",
+					"scoring": "评分"
+				},
+				"fields": {
+					"stage": "阶段"
+				},
+				"options": {
+					"stage": {
+						"prepare": "准备",
+						"issue": "发标",
+						"questions": "答疑",
+						"evaluate": "评审",
+						"award": "定标"
+					}
+				},
+				"views": {
+					"timelineDescription": "招标的所有阶段显示在一条时间线上，从定标日期倒推。",
+					"questionLog": "答疑记录",
+					"questionLogDescription": "供应商的所有提问，最早的在前。",
+					"scoring": "评分表",
+					"scoringDescription": "每位评审人的得分，按供应商分组。"
+				},
+				"taskTemplates": {
+					"supplierQuestion": {
+						"name": "供应商提问",
+						"titlePattern": "提问：{title}",
+						"description": "- [ ] 逐字记录问题\n- [ ] 去掉投标方的身份信息\n- [ ] 起草答复\n- [ ] 请第二个人审阅\n- [ ] 向所有投标方发布答复\n- [ ] 如果答复改变了某项要求，发出补充通知"
+					},
+					"evaluateProposal": {
+						"name": "评审建议书",
+						"titlePattern": "为建议书打分：{title}",
+						"description": "- [ ] 申报任何利益冲突\n- [ ] 检查建议书是否完整\n- [ ] 独立为每项标准打分，并写明简短理由\n- [ ] 在得分中填写加权总分"
+					}
+				},
+				"pages": {
+					"brief": {
+						"title": "招标说明与时间表",
+						"scopeStarter": "我们要采购什么、为什么需要，以及哪些不在范围内。",
+						"requirements": "必备要求",
+						"timelineStarter": "从定标日期倒推：发标、提问截止、投标截止、评审、定标。",
+						"submissionRules": "投标规则",
+						"submissionRulesStarter": "格式、截止时间和提交方式。逾期的建议书不予接受。",
+						"contactStarter": "由一位指定联系人接收所有供应商提问，并以书面形式答复。"
+					},
+					"criteria": {
+						"title": "评审标准",
+						"weights": "标准与权重",
+						"weightsStarter": "列出每项标准及其权重，权重合计为 100。",
+						"scale": "评分尺度",
+						"scaleStarter": "0 未满足，1 部分满足，3 完全满足，5 超出预期。写明每个分数的含义。",
+						"fixed": "开标前确定",
+						"fixedStarter": "在开启任何建议书之前，由评审小组商定并注明日期。"
+					}
+				},
+				"rules": {
+					"questionDue": "供应商提问 3 天内答复",
+					"questionMessage": "新的供应商提问 {{task.key}}：{{task.title}}",
+					"addendumReminder": "补充通知发给所有投标方",
+					"addendumComment": "请把这份补充通知发给所有投标方，并确认投标截止时间是否需要顺延。"
+				},
+				"samples": {
+					"requirements": "与相关方小组商定需求",
+					"criteria": "确定评审标准和权重",
+					"criteriaDescription": "在开启任何建议书之前，商定并记录权重和评分尺度。",
+					"publish": "向入围供应商发出招标文件",
+					"onsiteQuestion": "提问：两个场地都需要现场支持吗？",
+					"onsiteQuestionDescription": "答复已起草。发给所有投标方之前，由第二个人审阅。",
+					"addendum": "补充通知 1：扩大数据迁移范围",
+					"addendumDescription": "数据迁移范围扩大了。把补充通知发给所有投标方，并决定截止时间是否顺延。",
+					"scoreB": "为供应商 B 的建议书打分",
+					"supplierB": "供应商 B",
+					"consensus": "评审小组共识会议",
+					"award": "中标通知与未中标通知",
+					"awardDescription": "向选定的供应商发送中标通知，并向其他每位投标方发送简短、礼貌的未中标通知。"
+				}
+			},
+			"sales-pipeline": {
+				"projectDescription": "每笔交易是一张卡片，每个阶段是一列。只有交易真正推进时才移到下一列，及时更新金额和成交日期，并记录丢单的原因。",
+				"statuses": {
+					"lead": "线索",
+					"proposal": "方案",
+					"negotiation": "谈判",
+					"won": "已成交"
+				},
+				"labels": {
+					"newBusiness": "新业务",
+					"expansion": "增购"
+				},
+				"fields": {
+					"lostReason": "丢单原因"
+				},
+				"options": {
+					"source": {
+						"partner": "合作伙伴"
+					},
+					"lostReason": {
+						"price": "价格",
+						"timing": "时机",
+						"wentElsewhere": "选择了别家",
+						"noDecision": "未做决定",
+						"notAFit": "不合适"
+					}
+				},
+				"views": {
+					"pipelineDescription": "按阶段显示进行中的交易，金额大的在前。",
+					"closingThisMonth": "本月成交",
+					"closingThisMonthDescription": "预计本月成交的进行中交易，金额大的在前。",
+					"dealsSheet": "交易表",
+					"lostDeals": "丢失的交易"
+				},
+				"taskTemplates": {
+					"deal": {
+						"name": "交易",
+						"description": "**客户是谁**\n\n\n**需要什么**\n\n\n**决策人**\n\n\n**预算**\n\n\n**时间**"
+					}
+				},
+				"subtasks": {
+					"discoveryCall": "需求沟通电话",
+					"confirmNeed": "确认需求、预算和时间",
+					"sendProposal": "发送方案",
+					"followUp": "跟进"
+				},
+				"rules": {
+					"lostReason": "询问丢单原因",
+					"lostReasonComment": "请选择丢单原因，方便我们总结经验。",
+					"dealWon": "成交时通知负责人",
+					"dealWonMessage": "交易已成交：{{task.title}}",
+					"closeDatePassed": "预计成交日期已过",
+					"closeDatePassedComment": "预计成交日期已过。请更新日期，或把交易退回上一个阶段。",
+					"closeDatePassedMessage": "预计成交日期已过：{{task.title}}"
+				},
+				"pages": {
+					"stageGuide": {
+						"title": "阶段指南",
+						"lead": "线索",
+						"leadStarter": "**进入**：有人表现出真正的兴趣。**离开**：需求、预算和时间已确认。",
+						"qualified": "已合格",
+						"qualifiedStarter": "**进入**：需求、预算和时间已确认。**离开**：决策人想要一份方案。",
+						"proposal": "方案",
+						"proposalStarter": "**进入**：已发送方案或报价。**离开**：客户在讨论价格、范围或条款。",
+						"negotiation": "谈判",
+						"negotiationStarter": "**进入**：正在讨论价格、范围或条款。**离开**：合同已签署，或交易不再推进。",
+						"outcome": "成交或丢单",
+						"outcomeStarter": "成交意味着已签约。丢单必须选择丢单原因。"
+					},
+					"proposalChecklist": {
+						"title": "方案检查清单",
+						"scopeStarter": "- [ ] 包含什么，不包含什么",
+						"price": "价格",
+						"priceStarter": "- [ ] 总价、折扣和付款计划",
+						"terms": "条款",
+						"termsStarter": "- [ ] 合同期限、续约和解约",
+						"timelineStarter": "- [ ] 开始日期和主要交付日期",
+						"whoSigns": "签署人",
+						"whoSignsStarter": "- [ ] 签署人的姓名和职务，以及需要事先审批的人"
+					}
+				},
+				"samples": {
+					"larchmont": "拉奇蒙特牙科：4 家诊所的预约软件",
+					"larchmontDescription": "诊所负责人很喜欢演示，希望四家诊所都能享受折扣。本周发送修改后的报价。",
+					"larchmontCompany": "拉奇蒙特牙科",
+					"quayside": "奎赛德货运：增加 20 个席位",
+					"quaysideCompany": "奎赛德货运",
+					"otterburn": "奥特本图书馆：年度续约",
+					"otterburnDescription": "图书馆还在等预算，续约日期已经过了。请与馆长商定新日期。",
+					"otterburnCompany": "奥特本图书馆",
+					"pellowFinch": "佩洛与芬奇建筑事务所：试点",
+					"pellowFinchCompany": "佩洛与芬奇建筑事务所",
+					"glenrock": "格伦洛克面包店：入门套餐",
+					"glenrockCompany": "格伦洛克面包店",
+					"ashby": "阿什比汽车：车队追踪",
+					"ashbyDescription": "他们喜欢这个产品，但明年之前冻结了新的支出。六个月后再联系。",
+					"ashbyCompany": "阿什比汽车"
+				}
+			},
+			"sales-support-desk": {
+				"projectDescription": "为客户经理提供交易支持：报价、折扣审批、合同审查和问卷，按交易金额和预计成交日期排序。",
+				"statuses": {
+					"waitingOnSeller": "等待销售"
+				},
+				"labels": {
+					"nonStandardTerms": "非标准条款",
+					"strategicDeal": "战略交易"
+				},
+				"fields": {
+					"account": "客户",
+					"closeDate": "预计成交日期"
+				},
+				"options": {
+					"requestType": {
+						"quote": "报价",
+						"discount": "折扣或价格审批",
+						"security": "安全或合规问卷",
+						"proposal": "方案或投标响应",
+						"productQuestion": "产品问题"
+					}
+				},
+				"views": {
+					"closingSoon": "即将成交",
+					"closingSoonDescription": "3 天内到期或已逾期的未完成请求，按到期时间先后排列。",
+					"awaitingApprovalDescription": "等待决定的价格和条款，金额最大的交易排在前面。"
+				},
+				"taskTemplates": {
+					"quote": {
+						"name": "报价",
+						"description": "**交易和客户**\n\n\n- [ ] 已确认产品和数量\n- [ ] 已使用最新版价格表\n- [ ] 折扣在销售的权限内\n- [ ] 报价已发给销售"
+					},
+					"discountApproval": {
+						"name": "折扣审批",
+						"description": "**申请的折扣及原因**\n\n\n- [ ] 已核对交易金额和合同期限\n- [ ] 已核对付款条件\n- [ ] 审批人的决定已记录在评论中\n- [ ] 报价已更新"
+					},
+					"contractReview": {
+						"name": "合同审查",
+						"description": "**客户想修改的内容**\n\n\n- [ ] 已列出每处修改\n- [ ] 超出规范时已交给法务\n- [ ] 已将商定版本交回销售"
+					},
+					"securityQuestionnaire": {
+						"name": "安全问卷",
+						"description": "**问卷和截止日期**\n\n\n- [ ] 已复用答案库中的答案\n- [ ] 新答案已与负责人核对\n- [ ] 已更新答案库\n- [ ] 问卷已发送"
+					},
+					"proposal": {
+						"name": "方案或投标响应",
+						"description": "**截止日期和提交方式**\n\n\n**由谁决定是否参与**\n\n"
+					}
+				},
+				"subtasks": {
+					"goNoGo": "决定是否参与",
+					"questionList": "列出问题及负责人",
+					"firstDraft": "撰写初稿",
+					"pricingSection": "准备价格部分",
+					"finalReview": "最终审核",
+					"submit": "在截止日期前提交"
+				},
+				"pages": {
+					"pricingGuide": {
+						"title": "价格与折扣指南",
+						"priceList": "价格表",
+						"priceListStarter": "链接当前价格表并注明版本。",
+						"discounts": "各角色的折扣权限",
+						"discountsStarter": "销售：最多 10%。销售经理：最多 20%。更高折扣需要审批。",
+						"valueBands": "金额档位",
+						"valueBandsStarter": "小：低于 10,000。中：10,000 至 100,000。大：高于 100,000。",
+						"priority": "优先级",
+						"priorityStarter": "3 天内成交：大额或战略交易为紧急，中额为高，小额为中。2 周内：降低一级。更晚：大额为中，其余为低。将截止日期设在预计成交日期前一两天。",
+						"paymentTerms": "我们接受的付款条件",
+						"paymentTermsStarter": "标准：开票后 30 天。更长的账期均视为非标准条款。"
+					},
+					"answerLibrary": {
+						"title": "答案库",
+						"howToUse": "使用方法",
+						"howToUseStarter": "直接使用已批准的答案。每个答案都有负责人和复核日期，修改前请先问负责人。",
+						"security": "安全",
+						"securityStarter": "**客户数据是否加密？** 在此写下已批准的答案，并注明负责人和复核日期。",
+						"privacy": "隐私",
+						"product": "产品"
+					},
+					"howToAsk": {
+						"title": "如何申请销售支持",
+						"includeStarter": "客户、交易金额、预计成交日期、你需要什么以及客户提出了什么。每笔交易、每项需求各提一个请求。",
+						"leadTimesStarter": "报价：1 个工作日。折扣审批：2 天。合同审查：3 至 5 天。问卷：1 周。方案或投标：在决定是否参与时商定。"
+					}
+				},
+				"rules": {
+					"discountsToApproval": "折扣转入审批",
+					"approvalWaiting": "审批等待提醒",
+					"approvalMessage": "{{task.key}} 需要价格决策。",
+					"lateOwner": "逾期时通知负责人",
+					"lateMessage": "{{task.key}} 已超过截止日期：{{task.title}}"
+				},
+				"form": {
+					"title": "申请交易支持",
+					"intro": "每笔交易、每项需求各提一个请求。请填写客户、交易金额和预计成交日期，并说明你需要什么以及客户提出了什么。",
+					"confirmation": "谢谢，销售支持已收到，今天内会回复。"
+				},
+				"samples": {
+					"discount": "三年期交易的 25% 折扣",
+					"discountDescription": "客户愿意以 25% 折扣签三年合同。这超出了销售的权限，发出报价前需要审批。",
+					"quote": "40 个席位加上线培训的报价",
+					"security": "某医院集团的安全问卷",
+					"securityDescription": "约 120 个问题。大部分答案在答案库里，新答案交给负责人核对。",
+					"paymentTerms": "客户希望 60 天账期",
+					"paymentTermsDescription": "我们的标准是 30 天。正在等销售确认客户是否接受 45 天。",
+					"tender": "某市政府的投标响应",
+					"tenderDescription": "先决定是否参与，再把问题分给各负责人。",
+					"accounts": {
+						"retail": "区域零售连锁",
+						"agency": "设计公司",
+						"hospital": "医院集团",
+						"consultancy": "工程咨询公司",
+						"council": "市政府"
+					}
+				}
+			},
+			"sample-playground": {
+				"projectDescription": "用于学习 Margaya 的练习项目。打开“按顺序导览”视图，依次完成八个站点，然后将项目留作练习场或删除。",
+				"labels": {
+					"tour": "导览",
+					"tryIt": "动手试试",
+					"goingFurther": "进阶"
+				},
+				"fields": {
+					"tourStop": "导览站点"
+				},
+				"estimate": {
+					"name": "点数"
+				},
+				"modules": {
+					"basics": "学习基础",
+					"basicsDescription": "导览的前几课集中在一处。模块会显示其中的工作进展到了哪里。"
+				},
+				"cycles": {
+					"tourWeek": "导览周"
+				},
+				"views": {
+					"tourInOrder": "按顺序导览",
+					"tourInOrderDescription": "所有导览站点，按站点编号排序。",
+					"spreadsheet": "电子表格练习",
+					"spreadsheetDescription": "以表格展示所有任务及其站点、预估、迭代和模块。点击单元格即可修改。",
+					"thisWeek": "本周",
+					"thisWeekDescription": "本周到期的任务，以日历显示。"
+				},
+				"taskTemplates": {
+					"practice": {
+						"name": "练习任务",
+						"titlePattern": "练习：{title}",
+						"description": "在快速添加中使用此模板，看看模板如何填充任务。完成后把我删掉。",
+						"changePriority": "修改我的优先级",
+						"assignMe": "把我分配给你自己"
+					}
+				},
+				"rules": {
+					"nextStop": "下一站",
+					"nextStopComment": "做得好。打开“按顺序导览”前往下一站。（这条评论来自自动化，参见第 7 站。）"
+				},
+				"pages": {
+					"welcome": {
+						"title": "欢迎开始导览",
+						"whatFor": "Margaya 是做什么的",
+						"whatForStarter": "一个规划、跟踪并完成团队工作的地方。在你需要更多功能之前，它始终保持轻量。",
+						"layout": "这个项目的结构",
+						"layoutStarter": "**看板**、**列表**和**待办**显示任务。**视图**、**迭代**、**模块**、**页面**和**白板**各有自己的版块。",
+						"stops": "八个站点",
+						"stopsStarter": "打开**按顺序导览**视图，从第 1 站开始。每一站只需几分钟。",
+						"notes": "你的笔记",
+						"finished": "完成之后",
+						"finishedStarter": "在项目设置中删除项目，或者留着它随意试用。"
+					},
+					"shortcuts": {
+						"title": "值得一试的快捷键",
+						"quickAdd": "快速添加",
+						"quickAddStarter": "先按 **T** 再按 **C** 可在任意位置创建任务，在看板或列表中直接按 **C** 即可。",
+						"search": "搜索",
+						"searchStarter": "按 **/** 搜索，或按 **Ctrl+K**（Mac 上为 **⌘K**）打开命令栏。",
+						"switchViews": "切换视图",
+						"switchViewsStarter": "先按 **V**，再按 **B** 切到看板、**L** 切到列表、**S** 切到电子表格。",
+						"openTask": "打开任务",
+						"openTaskStarter": "在列表中选中任务，然后按 **Enter**。",
+						"moveBetween": "在任务间移动",
+						"moveBetweenStarter": "按 **J** 和 **K** 前往下一个和上一个任务，按 **?** 查看全部快捷键。"
+					}
+				},
+				"samples": {
+					"stop1": "1. 打开我，勾选我的清单，然后把我拖到已完成",
+					"stop1Description": "欢迎开始导览。勾选每一项，然后在看板上把这个任务拖到**已完成**。\n\n- [ ] 阅读这段说明\n- [ ] 勾选这个方框\n- [ ] 把我拖到已完成",
+					"stop2": "2. 在看板、列表和电子表格之间切换",
+					"stop2Description": "使用项目顶部的布局切换器。**看板**展示工作如何流经各个状态，**列表**最适合快速浏览，**电子表格**可以一次编辑多个字段。",
+					"stop3": "3. 创建你自己的视图：只看你的任务，按优先级分组",
+					"stop3Description": "筛选分配给你的任务，按优先级分组，然后保存视图。保存的视图在**视图**中一键即可打开。",
+					"saveView": "保存视图",
+					"stop4": "4. 规划“导览周”迭代，看着容量逐渐填满",
+					"stop4Description": "打开**迭代**，选择**导览周**并添加几个任务。每个预估都会计入迭代，让你看到这一周有多满。这个任务值 3 点。",
+					"stop5": "5. 把相关任务归入“学习基础”模块",
+					"stop5Description": "模块会把相关工作集中在一起，不论其状态如何。这个任务已经在**学习基础**中；把第 1 到第 4 站加进去，看看进度如何增长。",
+					"stop6": "6. 在欢迎页面上写一行字并提及一位队友",
+					"stop6Description": "在**页面**中打开**欢迎开始导览**，在**你的笔记**下添加一行，然后输入 **@** 提及一位队友。对方会收到通知。",
+					"stop7": "7. 创建一个白板，画出团队的工作流程",
+					"stop7Description": "打开**白板**，新建一个，画出工作在团队中的流转方式。顺便说一下，每完成一站后出现的评论来自项目设置中**工作流**下的**下一站**自动化。",
+					"stop8": "8. 打开收集箱或进展更新，看看有什么变化",
+					"stop8Description": "为了让项目保持轻量，这里关闭了收集箱、进展更新、工时记录和 AI。在项目设置的**功能**中打开其中一项，看看会出现什么。你随时可以再关闭它。"
+				}
+			},
+			"scrum": {
+				"projectDescription": "围绕一个目标的短冲刺：梳理待办，承诺放得下的工作，评审成果，并改进团队的工作方式。",
+				"labels": {
+					"story": "故事",
+					"bug": "缺陷",
+					"spike": "技术预研",
+					"techDebt": "技术债务"
+				},
+				"estimate": {
+					"name": "故事点"
+				},
+				"views": {
+					"sprintBoard": "冲刺看板",
+					"refinement": "需求梳理",
+					"refinementDescription": "尚未进入任何冲刺的未完成工作，优先级最高的在前。",
+					"needsEstimate": "待估算",
+					"needsEstimateDescription": "按估算分组的未完成工作。请估算“无估算”分组中的所有工作。",
+					"mySprint": "我的冲刺"
+				},
+				"taskTemplates": {
+					"userStory": {
+						"name": "用户故事",
+						"description": "**谁以及为什么**\n作为……，我希望……，以便……\n\n**验收标准**\n- [ ] ……\n- [ ] ……"
+					},
+					"bug": {
+						"name": "缺陷报告",
+						"description": "**复现步骤**\n1. ……\n\n**预期结果**\n……\n\n**实际结果**\n……\n\n- [ ] 已添加修复前会失败的测试"
+					},
+					"spike": {
+						"name": "技术预研",
+						"titlePattern": "技术预研：{title}",
+						"description": "**要回答的问题**\n……\n\n**时间盒**\n一天\n\n**产出**\n- [ ] 已写下结论\n- [ ] 已创建后续故事"
+					}
+				},
+				"rules": {
+					"askForEstimate": "请求估算",
+					"askForEstimateComment": "{{task.key}} 进入冲刺时没有估算。请在下次需求梳理或每日站会上估算。",
+					"bugsToTop": "缺陷置顶"
+				},
+				"pages": {
+					"definitionOfDone": {
+						"title": "完成的定义",
+						"checklist": "每个已完成的事项",
+						"checklistStarter": "- [ ] 已由他人审核\n- [ ] 已测试\n- [ ] 必要处已写文档\n- [ ] 已发布或可以发布",
+						"notDone": "没有完成时",
+						"notDoneStarter": "它会回到待办或转入下一个冲刺，永远不算作完成。"
+					},
+					"workingAgreement": {
+						"title": "团队工作约定",
+						"sprintLength": "冲刺时长",
+						"sprintLengthStarter": "两周，从周一开始。",
+						"events": "冲刺活动",
+						"eventsStarter": "第一天规划，每天 15 分钟站会，最后一天评审和回顾。",
+						"refinement": "梳理待办",
+						"refinementStarter": "每周一次，估算待办顶部的工作，让下一个冲刺随时可以规划。",
+						"blockers": "报告阻碍",
+						"blockersStarter": "在每日站会上说出来；如果等不了，马上写在任务评论里。"
+					}
+				},
+				"cycles": {
+					"sprintOne": "冲刺 1"
+				},
+				"samples": {
+					"passwordReset": "允许用户在登录页面重置密码",
+					"passwordResetDescription": "忘记密码的人无需联系支持即可重新登录。\n\n- [ ] 重置链接发送到账户邮箱\n- [ ] 链接一小时后失效",
+					"orderHistory": "显示可按日期筛选的订单历史",
+					"checkoutButton": "支付失败后结账按钮一直不可用",
+					"checkoutButtonDescription": "银行卡被拒后按钮再也不会恢复，客户无法重试。",
+					"searchCache": "技术预研：能否在边缘节点缓存搜索结果？",
+					"v1Export": "移除未使用的 v1 导出接口",
+					"inviteLink": "通过链接邀请队友"
+				}
+			},
+			"task-tracking": {
+				"projectDescription": "日常工作集中在一处：谁在做什么，何时完成。为每个任务指定负责人和截止日期；等待团队外部人员的工作移到“等待中”。",
+				"statuses": {
+					"doing": "处理中"
+				},
+				"views": {
+					"myTasks": "我的任务"
+				},
+				"taskTemplates": {
+					"followUp": {
+						"name": "催办",
+						"description": "**联系谁**\n\n\n**我们需要什么**\n\n\n**何时再次催问**"
+					}
+				},
+				"rules": {
+					"overdue": "标记逾期任务",
+					"overdueMessage": "{{task.key}} 已超过截止日期（{{task.dueDate}}）：{{task.title}}"
+				},
+				"samples": {
+					"chairs": "为会议室订购新椅子",
+					"contactSheet": "更新团队通讯录",
+					"signedQuote": "从印刷厂取回签好的报价单",
+					"signedQuoteDescription": "报价单已于周一发出。如果到截止日期仍未收到，请再次联系印刷厂。",
+					"venue": "预订季度聚会的场地",
+					"venueDescription": "比较三个可容纳约 30 人的场地，在日期被订满前预订最合适的一个。",
+					"meetingNotes": "分享周二会议的笔记"
+				}
+			},
+			"top-level-planning": {
+				"projectDescription": "拆分为几个举措的项目群，每个举措都有负责人和目标日期。里程碑标出关键日期，风险和决策始终一目了然。",
+				"labels": {
+					"decisionNeeded": "待决策",
+					"dependency": "依赖"
+				},
+				"modules": {
+					"dataMove": "数据迁移",
+					"dataMoveDescription": "目标：在不丢失任何订单的前提下，把所有客户数据迁移到新存储。衡量标准：连续两周夜间比对没有任何差异。",
+					"newLogin": "新登录",
+					"newLoginDescription": "目标：所有人都通过新的登录流程登录。衡量标准：全体员工和客户都使用新流程，登录相关的支持请求减少。",
+					"retireOldApi": "停用旧 API",
+					"retireOldApiDescription": "目标：安全关闭旧 API。衡量标准：连续 30 天没有对旧 API 的调用。"
+				},
+				"views": {
+					"timelineDescription": "仍在范围内的所有工作，按举措分组并按日期排布。里程碑会在截止日期处显示为标记。",
+					"byInitiative": "按举措",
+					"blocked": "被阻塞"
+				},
+				"taskTemplates": {
+					"milestone": {
+						"name": "里程碑",
+						"description": "**这一天应达成的状态**\n\n\n**如何确认**\n\n\n**依赖的交付物**\n\n\n- [ ] 已标记为里程碑\n- [ ] 已设置截止日期"
+					},
+					"deliverable": {
+						"name": "交付物",
+						"description": "**成果**\n\n\n**负责人**\n\n\n**依赖于**\n\n\n- [ ] 已设置日期\n- [ ] 已关联依赖\n- [ ] 已选择承诺程度"
+					}
+				},
+				"rules": {
+					"decisionsDontWait": "决策不默默等待",
+					"decisionMessage": "{{task.key}} 需要决策：{{task.title}}",
+					"missedDates": "错过的日期及时浮现",
+					"missedDateMessage": "{{task.key}} 已超过截止日期：{{task.title}}",
+					"risksGetOwner": "每个风险都有负责人",
+					"riskComment": "谁负责这个风险？应对计划是什么？请指派一个人。",
+					"riskMessage": "{{task.key}} 被标记为风险，但还没有负责人：{{task.title}}"
+				},
+				"pages": {
+					"brief": {
+						"title": "项目群简介",
+						"why": "为什么要做这个项目群",
+						"whyStarter": "我们要解决的问题，以及为什么是现在。",
+						"goalStarter": "每个目标，以及我们如何衡量它。",
+						"scopeStarter": "哪些在范围内，哪些是我们有意不做的。",
+						"initiatives": "举措与负责人",
+						"timelineStarter": "关键里程碑及其日期。",
+						"risks": "已知风险",
+						"decisionsStarter": "- 日期：决策（决定人）"
+					},
+					"rhythm": {
+						"title": "更新节奏",
+						"who": "谁来发布更新",
+						"whoStarter": "项目群负责人每周五发布一份简短的书面更新。",
+						"health": "状态的含义",
+						"healthStarter": "**进展顺利**：日期能守住。**有风险**：某个里程碑可能延误。**已偏离**：没有帮助就会延误。",
+						"escalateStarter": "当状态为已偏离，或某个决策已等待超过一周时，请升级处理。"
+					}
+				},
+				"samples": {
+					"dataCopied": "客户数据已复制到新存储",
+					"dataCopiedDescription": "这一天应达成的状态：每条客户记录都在新存储中，夜间比对没有任何差异。",
+					"dualWrite": "搭建订单的双写通路",
+					"platformTeam": "平台团队",
+					"loadTest": "压力测试可能无法在切换窗口前完成",
+					"loadTestDescription": "测试环境是共用的，我们的时段可能来得太晚。计划：预订一个备用时段，并与负责人商定一个规模更小的测试。",
+					"signIn": "面向员工的新登录流程上线",
+					"identityTeam": "身份认证团队",
+					"tokenPolicy": "确定令牌有效期策略",
+					"tokenPolicyDescription": "有效期短更安全，有效期长则登录次数更少。安全负责人将在下周末前做出决定。",
+					"partners": "将合作伙伴集成迁出旧 API"
+				}
+			},
+			"ux-design": {
+				"projectDescription": "从调研到交接的设计工作：理解问题并达成共识，设计并测试方案，然后把工程团队需要的一切交给他们。",
+				"statuses": {
+					"discover": "调研",
+					"define": "定义",
+					"test": "测试",
+					"readyForHandoff": "待交接",
+					"handedOff": "已交接"
+				},
+				"labels": {
+					"research": "调研",
+					"usabilityIssue": "可用性问题",
+					"accessibility": "无障碍",
+					"designSystem": "设计系统"
+				},
+				"fields": {
+					"platform": "平台",
+					"prototypeLink": "原型链接"
+				},
+				"options": {
+					"platform": {
+						"web": "网页",
+						"mobile": "移动端",
+						"all": "全部"
+					},
+					"testResult": {
+						"notTested": "未测试",
+						"works": "可用",
+						"needsChanges": "需要修改"
+					}
+				},
+				"views": {
+					"testing": "测试中",
+					"handoffQueue": "交接队列"
+				},
+				"taskTemplates": {
+					"testRound": {
+						"name": "可用性测试轮次",
+						"titlePattern": "可用性测试：{title}",
+						"description": "**我们想了解什么**\n\n\n- [ ] 写好目标和问题\n- [ ] 准备好测试脚本\n- [ ] 招募五名参与者\n- [ ] 完成测试环节\n- [ ] 整理发现\n- [ ] 确定修改"
+					},
+					"handoff": {
+						"name": "交接包",
+						"titlePattern": "交接：{title}",
+						"description": "**工程团队需要什么**\n\n\n- [ ] 最终界面\n- [ ] 空状态、加载中和错误状态\n- [ ] 交互说明\n- [ ] 无障碍说明\n- [ ] 导出的素材\n- [ ] 待解决问题，每个都有负责人\n- [ ] 与工程团队一起讲解"
+					}
+				},
+				"rules": {
+					"walkthrough": "交接前讲解",
+					"walkthroughSubtask": "向工程团队讲解设计",
+					"walkthroughMessage": "{{task.key}} 已可以交接：{{task.title}}"
+				},
+				"pages": {
+					"researchPlan": {
+						"title": "调研计划",
+						"learn": "我们想了解什么",
+						"learnStarter": "这次调研必须回答的一两个问题。",
+						"who": "我们和谁交谈",
+						"whoStarter": "五位遇到这个问题的人，例如最近中途放弃的客户。",
+						"methods": "方法"
+					},
+					"problem": {
+						"title": "问题陈述",
+						"who": "谁遇到了问题",
+						"what": "问题是什么",
+						"why": "为什么重要",
+						"solved": "如何判断问题已解决",
+						"solvedStarter": "一个发布后可以检查的指标。"
+					},
+					"handoff": {
+						"title": "交接指南",
+						"includeStarter": "- [ ] 最终界面，空状态、加载中和错误状态，交互，无障碍说明和导出的素材",
+						"questionsStarter": "每个待解决问题都记录在任务中并指定负责人，在讲解时解决。"
+					}
+				},
+				"boards": {
+					"journeyMap": "用户旅程图",
+					"affinitySort": "亲和图分类",
+					"sketches": "草图"
+				},
+				"samples": {
+					"checkoutInterviews": "访谈五位放弃移动端结账的用户",
+					"checkoutInterviewsDescription": "与最近在付款前离开结账页面的客户交谈，然后把他们的操作画到用户旅程图上。",
+					"deliverySlots": "配送时段选择的问题陈述",
+					"oneTapReorder": "一键再次下单原型",
+					"oneTapReorderDescription": "让用户在首页一键重复之前的生鲜订单。",
+					"oneTapReorderPrototype": "再次下单原型第 3 版，位于团队设计文件中",
+					"addressForm": "测试新的地址表单",
+					"addressFormDescription": "五位参与者中有三位没注意到门牌号字段。把它移到上方后再测一次。",
+					"contrastFixes": "修复商品卡片的颜色对比度",
+					"savedLists": "重新设计已保存的清单"
+				}
+			}
+		}
 	}
 }

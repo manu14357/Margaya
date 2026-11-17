@@ -43,6 +43,8 @@ const externallyReadPrefixes = [
   // The desktop launcher (apps/desktop) reads these at build time.
   "desktop:launcher.",
   "invitations:email.",
+  // Seeded project template text, resolved by the API (project-template/).
+  "projectTemplates:",
 ];
 const unused = new Set(
   [...localeKeys].filter(

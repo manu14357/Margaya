@@ -1,4 +1,8 @@
 import { z } from "../openapi";
+import {
+  createFromTemplateInput,
+  projectFeaturesInput,
+} from "../project-template/schema";
 
 export const projectParam = z.object({ id: z.string() });
 
@@ -67,6 +71,8 @@ export const createProjectBody = z.object({
     .strict()
     .optional()
     .openapi({ description: "Only with fromProjectId." }),
+  template: createFromTemplateInput.optional(),
+  features: projectFeaturesInput.optional(),
 });
 
 const projectMemberField = (description: string) =>

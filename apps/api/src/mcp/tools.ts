@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PROJECT_FEATURE_KEYS } from "../project/features";
 import {
   ARCHIVED_FILTERS,
   GROUP_BY_KEYS,
@@ -263,6 +264,29 @@ const hexColorSchema = z
     "Expected a hex color like #FF6600",
   );
 
+// The project template routes' limits (project-template/schema.ts).
+const templateIdSchema = z.string().trim().min(1).max(64);
+const templateCategorySchema = z.string().trim().min(1).max(64);
+const templateLocaleSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(35)
+  .describe(
+    "BCP 47 language tag for the template text, e.g. de-DE; defaults to the caller's saved language",
+  );
+
+/** A template's icon name, from GET /api/project-template/{id}. */
+async function templateIcon(
+  template: Promise<Record<string, unknown>>,
+): Promise<string> {
+  const { icon } = await template;
+  if (typeof icon !== "string" || icon.length === 0) {
+    throw new Error("The template has no icon; pass icon.");
+  }
+  return icon;
+}
+
 /** Register Margaya's authenticated tool catalog on an MCP server adapter. */
 export function registerMcpTools(
   server: McpToolRegistrar,
@@ -362,6 +386,105 @@ export function registerMcpTools(
           }),
         }),
       ),
+  );
+
+  registerTool(
+    "list_project_templates",
+    {
+      description:
+        "List the built-in project templates and their categories, with names and descriptions in the caller's language (their saved locale unless locale is given). Each template has an id, categories, an icon, a suggested key and visibility, counts of what it creates (statuses, labels, fields, views, rules, pages, example tasks) and whether it has example tasks. Pass a template id to create_project_from_template.",
+      inputSchema: z.object({
+        category: templateCategorySchema
+          .optional()
+          .describe("Only templates in this category id"),
+        locale: templateLocaleSchema.optional(),
+      }),
+    },
+    async (args) => {
+      const qs = new URLSearchParams();
+      if (args.category) qs.set("category", args.category);
+      if (args.locale) qs.set("locale", args.locale);
+      const query = qs.toString();
+      return run(() =>
+        client.json(`/api/project-template${query ? `?${query}` : ""}`, {
+          method: "GET",
+        }),
+      );
+    },
+  );
+
+  registerTool(
+    "create_project_from_template",
+    {
+      description:
+        "Create a project from a built-in template (see list_project_templates). Its statuses, labels, custom fields, views, automation rules, pages and more are created in the same step, in the caller's language. Needs project:create; new workspace labels need label:create (they are skipped without it) and example tasks need task:create. Returns the project with a template block listing anything skipped.",
+      inputSchema: z.object({
+        workspaceId: nonEmptyString.describe("Workspace ID"),
+        templateId: templateIdSchema.describe(
+          "A template id from list_project_templates",
+        ),
+        name: nonEmptyString.describe("Project name"),
+        slug: nonEmptyString.describe(
+          "Project key, the prefix of task identifiers (e.g. WEB); unique in the workspace, ignoring case. The template's suggestedKey is a good default.",
+        ),
+        icon: optionalNonEmptyString.describe(
+          "Project icon name; defaults to the template's icon",
+        ),
+        sampleData: z
+          .boolean()
+          .optional()
+          .describe("Also add the template's example tasks. Default false."),
+        visibility: z
+          .enum(["open", "restricted"])
+          .optional()
+          .describe(
+            "open (default): reached through workspace roles. restricted: only project members, workspace owners and admins.",
+          ),
+        features: z
+          .strictObject(
+            Object.fromEntries(
+              PROJECT_FEATURE_KEYS.map((key) => [key, z.boolean().optional()]),
+            ) as Record<
+              (typeof PROJECT_FEATURE_KEYS)[number],
+              z.ZodOptional<z.ZodBoolean>
+            >,
+          )
+          .optional()
+          .describe(
+            "Feature switches that win over the template's, by name; omitted ones keep the template's",
+          ),
+        locale: templateLocaleSchema.optional(),
+      }),
+    },
+    async (args) =>
+      run(async () => {
+        const icon =
+          args.icon ??
+          (await templateIcon(
+            client.json<Record<string, unknown>>(
+              `/api/project-template/${encodeURIComponent(args.templateId)}`,
+              { method: "GET" },
+            ),
+          ));
+        return client.json("/api/project", {
+          method: "POST",
+          body: JSON.stringify({
+            name: args.name,
+            workspaceId: args.workspaceId,
+            icon,
+            slug: args.slug,
+            ...(args.visibility ? { visibility: args.visibility } : {}),
+            template: {
+              id: args.templateId,
+              ...(args.sampleData !== undefined
+                ? { sampleData: args.sampleData }
+                : {}),
+              ...(args.locale ? { locale: args.locale } : {}),
+            },
+            ...(args.features ? { features: args.features } : {}),
+          }),
+        });
+      }),
   );
 
   registerTool(
