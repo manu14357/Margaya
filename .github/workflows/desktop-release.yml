@@ -7,6 +7,16 @@ name: Desktop Release
 # and records SLSA build provenance for every file in SHA256SUMS.txt.
 # Then it rebuilds the website so the Download page lists the new files.
 #
+# A published prerelease (v1.5.0-beta.1) is the beta channel: it builds the
+# formats whose versions may carry a pre-release suffix (the NSIS setup, the
+# DMGs and the AppImages; no MSI, .deb or .rpm), uploads them and its
+# latest.json to its own release, copies them to the rolling `desktop-beta`
+# release that the app's Beta channel reads, and leaves the website alone.
+#
+# Stable or beta, only a tag whose commit is on main is built, and every
+# build checks out exactly the commit the plan resolved (and fails if the tag
+# was moved since), so a beta signs nothing that wasn't reviewed into main.
+#
 # Linux builds run on Ubuntu 22.04, the oldest supported base (glibc 2.35,
 # WebKitGTK 4.1), so the packages also run on newer distributions. Only the
 # AppImage updates itself (latest.json's linux-* entries point at it); .deb
@@ -42,16 +52,19 @@ concurrency:
 jobs:
   plan:
     name: Plan
-    # mcp-v* releases belong to publish-mcp.yml.
-    if: ${{ github.event_name == 'workflow_dispatch' || (startsWith(github.event.release.tag_name, 'v') && !github.event.release.prerelease) }}
+    # mcp-v* releases belong to publish-mcp.yml. Prereleases are the beta
+    # channel, built only from tags on main like stable releases.
+    if: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'v') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       contents: read
     outputs:
       tag: ${{ steps.plan.outputs.tag }}
+      sha: ${{ steps.plan.outputs.sha }}
       version: ${{ steps.plan.outputs.version }}
       draft: ${{ steps.plan.outputs.draft }}
+      channel: ${{ steps.plan.outputs.channel }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -66,18 +79,37 @@ jobs:
           TAG: ${{ github.event.release.tag_name || inputs.tag }}
         run: |
           set -euo pipefail
-          # Plain x.y.z only: MSI versions can't carry a pre-release suffix.
-          if ! printf '%s' "$TAG" | grep -Eq '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'; then
-            echo "::error::Expected a release tag like v1.4.0, got '$TAG'."
-            exit 1
+          prerelease=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isPrerelease --jq .isPrerelease)
+          if [ "$prerelease" = "true" ]; then
+            # The beta channel: x.y.z-<pre-release>, built without MSI.
+            if ! printf '%s' "$TAG" | grep -Eq '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)-[0-9A-Za-z.-]+$'; then
+              echo "::error::Expected a prerelease tag like v1.5.0-beta.1, got '$TAG'."
+              exit 1
+            fi
+            channel=beta
+          else
+            # Plain x.y.z only: MSI versions can't carry a pre-release suffix.
+            if ! printf '%s' "$TAG" | grep -Eq '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'; then
+              echo "::error::Expected a release tag like v1.4.0, got '$TAG'."
+              exit 1
+            fi
+            channel=stable
           fi
           draft=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)
-          # Only build what has been reviewed into main.
-          git merge-base --is-ancestor "refs/tags/$TAG" refs/remotes/origin/main
+          # The commit the tag points at now; every build checks out exactly
+          # this one.
+          sha=$(git rev-parse --verify "refs/tags/$TAG^{commit}")
+          # Only build what has been reviewed into main, for both channels.
+          if ! git merge-base --is-ancestor "$sha" refs/remotes/origin/main; then
+            echo "::error::$TAG ($sha) is not on main."
+            exit 1
+          fi
           {
             echo "tag=$TAG"
+            echo "sha=$sha"
             echo "version=${TAG#v}"
             echo "draft=$draft"
+            echo "channel=$channel"
           } >> "$GITHUB_OUTPUT"
 
   build:
@@ -90,32 +122,56 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # beta_bundles: what a prerelease builds (its version has a
+          # pre-release suffix, which MSI, .deb and .rpm versions can't carry
+          # as is). Stable releases build every target in tauri.conf.json.
           - name: macOS Apple Silicon
             runner: macos-15
             target: aarch64-apple-darwin
+            beta_bundles: app,dmg
           - name: macOS Intel
             runner: macos-15
             target: x86_64-apple-darwin
+            beta_bundles: app,dmg
           - name: Windows x64
             runner: windows-latest
             target: x86_64-pc-windows-msvc
+            beta_bundles: nsis
           - name: Linux x64
             runner: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
+            beta_bundles: appimage
           - name: Linux ARM64
             runner: ubuntu-22.04-arm
             target: aarch64-unknown-linux-gnu
+            beta_bundles: appimage
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
     defaults:
       run:
         shell: bash
     steps:
-      - name: Checkout the release tag
+      # The exact commit the plan checked, not the tag name, which could be
+      # moved between the two jobs.
+      - name: Checkout the planned commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: refs/tags/${{ needs.plan.outputs.tag }}
+          ref: ${{ needs.plan.outputs.sha }}
           persist-credentials: false
+
+      - name: Verify the tag still points at the planned commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.plan.outputs.tag }}
+          SHA: ${{ needs.plan.outputs.sha }}
+        run: |
+          set -euo pipefail
+          head=$(git rev-parse HEAD)
+          current=$(gh api "repos/$GITHUB_REPOSITORY/commits/$TAG" --jq .sha)
+          if [ "$head" != "$SHA" ] || [ "$current" != "$SHA" ]; then
+            echo "::error::$TAG now points at $current, checked out $head; the plan resolved $SHA. Not building."
+            exit 1
+          fi
 
       - name: Setup pnpm
         uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
@@ -256,7 +312,7 @@ jobs:
           # releases/latest/download, which can be another release.
           tagName: ${{ needs.plan.outputs.tag }}
           releaseDraft: ${{ needs.plan.outputs.draft }}
-          args: --target ${{ matrix.target }}
+          args: --target ${{ matrix.target }}${{ needs.plan.outputs.channel == 'beta' && format(' --bundles {0}', matrix.beta_bundles) || '' }}
           updaterJsonPreferNsis: true
           retryAttempts: 1
 
@@ -278,6 +334,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ needs.plan.outputs.tag }}
+          CHANNEL: ${{ needs.plan.outputs.channel }}
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/assets"
@@ -287,6 +344,21 @@ jobs:
             --pattern 'Margaya_*' --pattern 'Margaya-*' --pattern 'latest.json'
           sha256sum -- * | sort -k 2 > "$RUNNER_TEMP/SHA256SUMS.txt"
           cat "$RUNNER_TEMP/SHA256SUMS.txt"
+          if [ "$CHANNEL" = "beta" ]; then
+            expected=(
+              "Margaya_${TAG#v}_aarch64.dmg"
+              "Margaya_${TAG#v}_x64.dmg"
+              "Margaya_${TAG#v}_x64-setup.exe"
+              "Margaya_${TAG#v}_amd64.AppImage"
+              "Margaya_${TAG#v}_aarch64.AppImage"
+              latest.json
+            )
+            for file in "${expected[@]}"; do
+              if [ ! -f "$file" ]; then
+                echo "::warning::$file is missing from release $TAG."
+              fi
+            done
+          else
           for file in \
             "Margaya_${TAG#v}_aarch64.dmg" \
             "Margaya_${TAG#v}_x64.dmg" \
@@ -303,6 +375,7 @@ jobs:
               echo "::warning::$file is missing from release $TAG."
             fi
           done
+          fi
           gh release upload "$TAG" "$RUNNER_TEMP/SHA256SUMS.txt" \
             --repo "$GITHUB_REPOSITORY" --clobber
 
@@ -314,10 +387,69 @@ jobs:
         with:
           subject-checksums: ${{ runner.temp }}/SHA256SUMS.txt
 
+  beta-channel:
+    name: Refresh the beta channel
+    needs: [plan, checksums]
+    # A draft's files can't be downloaded yet, so its latest.json would point
+    # nowhere; publish the prerelease (or run this again) first.
+    if: ${{ needs.plan.outputs.channel == 'beta' && needs.plan.outputs.draft == 'false' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write # update the desktop-beta release
+    concurrency:
+      group: desktop-beta-channel
+      cancel-in-progress: false
+    steps:
+      # The app's Beta channel reads
+      # releases/download/desktop-beta/latest.json. That manifest points at
+      # this prerelease's own files; the copies here serve people who
+      # download the newest beta by hand. Never "latest", so the stable
+      # channel's releases/latest/download never sees a beta.
+      - name: Copy the prerelease to desktop-beta
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.plan.outputs.tag }}
+          SHA: ${{ needs.plan.outputs.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/beta"
+          cd "$RUNNER_TEMP/beta"
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --pattern 'Margaya_*' --pattern 'Margaya-*' --pattern 'latest.json' \
+            --pattern 'SHA256SUMS.txt'
+          if [ ! -f latest.json ]; then
+            echo "::error::$TAG has no latest.json; the beta channel is unchanged."
+            exit 1
+          fi
+          notes="The newest Margaya Desktop beta: $TAG. Beta builds may have rough edges."
+          if gh release view desktop-beta --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release edit desktop-beta --repo "$GITHUB_REPOSITORY" \
+              --prerelease --latest=false --title "Margaya Desktop beta" --notes "$notes"
+          else
+            gh release create desktop-beta --repo "$GITHUB_REPOSITORY" \
+              --target "$SHA" --prerelease --latest=false \
+              --title "Margaya Desktop beta" --notes "$notes"
+          fi
+          # The installers first, the manifest last, then drop older betas'
+          # files.
+          shopt -s nullglob
+          files=(Margaya_* Margaya-* SHA256SUMS.txt)
+          if [ "${#files[@]}" -gt 0 ]; then
+            gh release upload desktop-beta "${files[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+          fi
+          gh release upload desktop-beta latest.json --repo "$GITHUB_REPOSITORY" --clobber
+          gh release view desktop-beta --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' |
+            while IFS= read -r name; do
+              if [ ! -f "$name" ]; then
+                gh release delete-asset desktop-beta "$name" --repo "$GITHUB_REPOSITORY" --yes
+              fi
+            done
+
   site:
     name: Rebuild the website
     needs: [plan, checksums]
-    if: ${{ needs.plan.outputs.draft == 'false' }}
+    if: ${{ needs.plan.outputs.draft == 'false' && needs.plan.outputs.channel == 'stable' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
