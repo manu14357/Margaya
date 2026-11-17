@@ -13,6 +13,7 @@
 		"lint": "biome check src scripts vite.config.ts"
 	},
 	"dependencies": {
+		"@margaya/file-preview": "workspace:*",
 		"@tauri-apps/api": "2.12.4",
 		"react": "^19.2.8",
 		"react-dom": "^19.2.8"

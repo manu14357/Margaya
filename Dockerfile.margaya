@@ -95,6 +95,7 @@ COPY packages/permissions ./packages/permissions
 COPY packages/editor-schema ./packages/editor-schema
 COPY packages/whiteboard ./packages/whiteboard
 COPY packages/landing ./packages/landing
+COPY packages/file-preview ./packages/file-preview
 COPY i18n ./i18n
 COPY apps/web ./apps/web
 

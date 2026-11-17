@@ -1,0 +1,74 @@
+/*
+ * File type icons. The design system keeps hue for status, priority, area,
+ * identity and deadlines, so a file's type is told by its icon and its
+ * extension badge, on one neutral tile for every kind. The tokens follow the
+ * host's own (with the Canopy values as fallbacks for hosts without them).
+ */
+:root {
+  --mfp-type-tile-bg: var(--muted, #f1f4f2);
+  --mfp-type-tile-fg: var(--muted-foreground, #5f6b65);
+  --mfp-type-tile-border: var(--border, #e3e8e5);
+  --mfp-type-badge-bg: var(--card, #ffffff);
+  --mfp-type-badge-fg: var(--foreground, #1c1f1d);
+  --mfp-type-badge-border: var(--border, #e3e8e5);
+}
+
+.dark,
+[data-theme="dark"] {
+  --mfp-type-tile-bg: var(--muted, #1b1d1d);
+  --mfp-type-tile-fg: var(--muted-foreground, #9a9f9d);
+  --mfp-type-tile-border: var(--border, #262929);
+  --mfp-type-badge-bg: var(--card, #131515);
+  --mfp-type-badge-fg: var(--foreground, #e9ebea);
+  --mfp-type-badge-border: var(--border, #262929);
+}
+
+.mfp-type-icon {
+  --mfp-type-size: 32px;
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--mfp-type-size);
+  height: var(--mfp-type-size);
+  border: 1px solid var(--mfp-type-tile-border);
+  border-radius: calc(var(--mfp-type-size) * 0.22);
+  background: var(--mfp-type-tile-bg);
+  color: var(--mfp-type-tile-fg);
+  line-height: 1;
+}
+
+.mfp-type-icon-glyph {
+  width: calc(var(--mfp-type-size) * 0.5);
+  height: calc(var(--mfp-type-size) * 0.5);
+  flex-shrink: 0;
+}
+
+/* With a badge, the glyph sits a little higher to leave it room. */
+.mfp-type-icon[data-badge] .mfp-type-icon-glyph {
+  transform: translateY(calc(var(--mfp-type-size) * -0.1));
+}
+
+.mfp-type-icon-badge {
+  position: absolute;
+  bottom: calc(var(--mfp-type-size) * -0.08);
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  max-width: calc(var(--mfp-type-size) + 6px);
+  padding: 1px 3px;
+  overflow: hidden;
+  border: 1px solid var(--mfp-type-badge-border);
+  border-radius: 3px;
+  background: var(--mfp-type-badge-bg);
+  color: var(--mfp-type-badge-fg);
+  font-family: inherit;
+  font-size: max(7px, calc(var(--mfp-type-size) * 0.24));
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

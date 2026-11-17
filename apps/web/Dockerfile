@@ -26,6 +26,7 @@ COPY packages/permissions/package.json ./packages/permissions/
 COPY packages/editor-schema/package.json ./packages/editor-schema/
 COPY packages/whiteboard/package.json ./packages/whiteboard/
 COPY packages/landing/package.json ./packages/landing/
+COPY packages/file-preview/package.json ./packages/file-preview/
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile
@@ -37,6 +38,7 @@ COPY packages/permissions ./packages/permissions
 COPY packages/editor-schema ./packages/editor-schema
 COPY packages/whiteboard ./packages/whiteboard
 COPY packages/landing ./packages/landing
+COPY packages/file-preview ./packages/file-preview
 COPY i18n ./i18n
 COPY apps/web ./apps/web
 
