@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import { SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { DesktopTaskOfflineSnapshot } from "@/components/desktop/desktop-offline-snapshot";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import {
   SHEET_HEADER_PANEL_GROUP,
@@ -122,6 +123,10 @@ export default function TaskDetailsSheet({
   return (
     // The sheet acts in its task's project, whatever view opened it.
     <ProjectScope projectId={task?.projectId ?? projectId}>
+      <DesktopTaskOfflineSnapshot
+        task={taskId && task?.id === currentTaskId ? task : undefined}
+        workspaceId={workspaceId}
+      />
       <Sheet open={!!taskId} onOpenChange={(open) => !open && onClose()}>
         <SheetContent
           side="right"

@@ -12,7 +12,8 @@
 			"reset": "Sıfırla",
 			"undo": "Geri al",
 			"closePanel": "Paneli bağla",
-			"moreActions": "Digər əməliyyatlar"
+			"moreActions": "Digər əməliyyatlar",
+			"openInNewWindow": "Yeni pəncərədə aç"
 		},
 		"a11y": {
 			"toggleSidebar": "Yan paneli aç/bağla"

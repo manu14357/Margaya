@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useTopBarDensity } from "@/components/common/header/top-bar-density";
 import { TopBarRoomy } from "@/components/common/header/top-bar-label";
 import TaskLayout from "@/components/common/task-layout";
+import { DesktopTaskOfflineSnapshot } from "@/components/desktop/desktop-offline-snapshot";
 import PageTitle from "@/components/page-title";
 import TaskActionsMenu from "@/components/task/task-actions-menu";
 import TaskDeleteButton from "@/components/task/task-delete-button";
@@ -229,6 +230,10 @@ function RouteComponent() {
               : `${project?.slug}-${task?.number} · ${task?.title}`
         }
         hideAppName
+      />
+      <DesktopTaskOfflineSnapshot
+        task={task?.id === taskId ? task : undefined}
+        workspaceId={workspaceId}
       />
       {isLoading ? (
         <div className="flex min-h-full">

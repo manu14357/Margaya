@@ -12,7 +12,8 @@
 			"reset": "Herstellen",
 			"undo": "Ongedaan maken",
 			"closePanel": "Paneel sluiten",
-			"moreActions": "Meer acties"
+			"moreActions": "Meer acties",
+			"openInNewWindow": "Openen in nieuw venster"
 		},
 		"a11y": {
 			"toggleSidebar": "Zijbalk in-/uitschakelen"

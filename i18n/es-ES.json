@@ -12,7 +12,8 @@
 			"reset": "Restablecer",
 			"undo": "Deshacer",
 			"closePanel": "Cerrar el panel",
-			"moreActions": "Más acciones"
+			"moreActions": "Más acciones",
+			"openInNewWindow": "Abrir en una ventana nueva"
 		},
 		"a11y": {
 			"toggleSidebar": "Mostrar barra lateral"

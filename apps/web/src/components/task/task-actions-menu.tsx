@@ -1,4 +1,10 @@
-import { CopyPlus, Ellipsis, Hash, Link as LinkIcon } from "lucide-react";
+import {
+  AppWindow,
+  CopyPlus,
+  Ellipsis,
+  Hash,
+  Link as LinkIcon,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useTopBarOverflowHost } from "@/components/common/header/top-bar-overflow";
 import { Button } from "@/components/ui/button";
@@ -14,7 +20,8 @@ import useGetProject from "@/hooks/queries/project/use-get-project";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { copyTaskKey, copyTaskLink } from "@/lib/copy-task-reference";
-import { formatTaskKey, shareableTaskUrl } from "@/lib/task-key";
+import { canOpenInNewWindow, openInNewWindow } from "@/lib/desktop-new-window";
+import { formatTaskKey, shareableTaskUrl, taskPagePath } from "@/lib/task-key";
 import useCopyTaskDialog from "@/store/copy-task-dialog";
 
 type TaskActionsMenuProps = {
@@ -104,6 +111,19 @@ export default function TaskActionsMenu({
             {extraItems.filter((item) => !item.destructive).map(extraItem)}
             <DropdownMenuSeparator />
           </>
+        )}
+        {canOpenInNewWindow() && (
+          <DropdownMenuItem
+            className="gap-2"
+            onClick={() =>
+              openInNewWindow(
+                taskPagePath({ workspaceId, projectId: ownProjectId, taskId }),
+              )
+            }
+          >
+            <AppWindow className="size-4" />
+            {t("common:actions.openInNewWindow")}
+          </DropdownMenuItem>
         )}
         <DropdownMenuItem
           className="gap-2"

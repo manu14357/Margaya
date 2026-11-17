@@ -1,4 +1,5 @@
 import { getApiUrl } from "@/fetchers/get-api-url";
+import type { DesktopOfflineSnapshot } from "@/lib/desktop-offline-snapshot";
 
 /**
  * What the Margaya desktop app injects into the server's web UI. The app may be
@@ -52,6 +53,11 @@ export type MargayaDesktopBridge = {
   notificationSound: "system";
   /** "Mute sounds on this device" for this server's notifications. */
   setSoundMuted(muted: boolean): void;
+  /**
+   * Keeps a read-only copy of the task or page on screen for the app's
+   * offline page. Older apps don't have it.
+   */
+  saveOfflineSnapshot(snapshot: DesktopOfflineSnapshot): void;
 };
 
 export type DesktopWindowState = {
@@ -188,6 +194,23 @@ export function getDesktopShowServers(win: Window = window) {
   const bridge = getDesktopBridge(win);
   const show = bridge?.showServers;
   return typeof show === "function" ? () => show.call(bridge) : null;
+}
+
+/**
+ * Hands a read-only snapshot to the app for offline reading; null outside the
+ * desktop app or in an app without it. See `desktop-offline-snapshot.ts`.
+ */
+export function getDesktopOfflineSnapshotSaver(win: Window = window) {
+  const bridge = getDesktopBridge(win);
+  const save = bridge?.saveOfflineSnapshot;
+  if (typeof save !== "function") return null;
+  return (snapshot: DesktopOfflineSnapshot) => {
+    try {
+      save.call(bridge, snapshot);
+    } catch {
+      // The app refused it: offline reading just misses this one.
+    }
+  };
 }
 
 export type DesktopTitleBar = MargayaDesktopBridge["titleBar"];

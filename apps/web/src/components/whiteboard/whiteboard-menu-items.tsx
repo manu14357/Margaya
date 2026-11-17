@@ -15,6 +15,7 @@ import {
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/menu";
+import { canOpenInNewWindow } from "@/lib/desktop-new-window";
 import {
   type WhiteboardMenuItemId,
   whiteboardMenuItemIds,
@@ -58,7 +59,9 @@ export default function WhiteboardMenuItems({
         return (
           <DropdownMenuItem onClick={actions.openInNewTab}>
             <ExternalLink />
-            {t("whiteboards:actions.openInNewTab")}
+            {canOpenInNewWindow()
+              ? t("common:actions.openInNewWindow")
+              : t("whiteboards:actions.openInNewTab")}
           </DropdownMenuItem>
         );
       case "copyLink":

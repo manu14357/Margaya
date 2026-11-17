@@ -12,7 +12,8 @@
 			"reset": "Redefinir",
 			"undo": "Desfazer",
 			"closePanel": "Fechar o painel",
-			"moreActions": "Mais ações"
+			"moreActions": "Mais ações",
+			"openInNewWindow": "Abrir em nova janela"
 		},
 		"a11y": {
 			"toggleSidebar": "Alternar barra lateral"

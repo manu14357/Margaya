@@ -21,9 +21,20 @@ export function taskUrl({
   projectId: string;
   taskId: string;
 }): string {
-  return generateLink(
-    `/dashboard/workspace/${workspaceId}/project/${projectId}/task/${taskId}`,
-  );
+  return generateLink(taskPagePath({ workspaceId, projectId, taskId }));
+}
+
+/** The in-app path of the task's full page, by ids. */
+export function taskPagePath({
+  workspaceId,
+  projectId,
+  taskId,
+}: {
+  workspaceId: string;
+  projectId: string;
+  taskId: string;
+}): string {
+  return `/dashboard/workspace/${workspaceId}/project/${projectId}/task/${taskId}`;
 }
 
 /** The in-app path of a readable task link: /dashboard/workspace/{id}/task/WEB-12. */

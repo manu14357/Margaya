@@ -12,7 +12,8 @@
 			"reset": "Ресетирај",
 			"undo": "Врати",
 			"closePanel": "Затвори панел",
-			"moreActions": "Повеќе акции"
+			"moreActions": "Повеќе акции",
+			"openInNewWindow": "Отвори во нов прозорец"
 		},
 		"a11y": {
 			"toggleSidebar": "Вклучи/исклучи странична лента"

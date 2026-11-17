@@ -30,6 +30,7 @@ import { useDeleteTask } from "@/hooks/mutations/task/use-delete-task";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useTaskAssignees } from "@/hooks/use-task-assignees";
 import { cn } from "@/lib/cn";
+import { openInNewWindowOnClick } from "@/lib/desktop-new-window";
 import {
   dueDateStatusColors,
   getDueDateStatus,
@@ -37,6 +38,7 @@ import {
 } from "@/lib/due-date-status";
 import { getExternalWebUrl, openExternalWebUrl } from "@/lib/external-url";
 import { formatDateShort } from "@/lib/format";
+import { taskPagePath } from "@/lib/task-key";
 import { TaskPropertySlotOutlet } from "@/lib/task-property-slots";
 import { toastTaskTrashed } from "@/lib/task-undo";
 import { toast } from "@/lib/toast";
@@ -152,9 +154,24 @@ function TaskRow({
     touchAction: isDragging ? "none" : "auto",
   };
 
+  // Desktop app: Shift+click or a middle click opens the task's page in a
+  // new window.
+  const openTaskInNewWindow = (e: React.MouseEvent) =>
+    Boolean(project && workspace) &&
+    !e.defaultPrevented &&
+    openInNewWindowOnClick(
+      e,
+      taskPagePath({
+        workspaceId: workspace?.id ?? "",
+        projectId: task.projectId || (project?.id ?? ""),
+        taskId: task.id,
+      }),
+    );
+
   const handleClick = (e: React.MouseEvent) => {
     if (!project || !task) return;
     if (e.defaultPrevented) return;
+    if (openTaskInNewWindow(e)) return;
 
     if (e.metaKey || e.ctrlKey) {
       e.preventDefault();
@@ -224,6 +241,7 @@ function TaskRow({
           {/* biome-ignore lint/a11y/noStaticElementInteractions: false positive for onClick and onKeyDown */}
           <div
             onClick={handleClick}
+            onAuxClick={openTaskInNewWindow}
             className={cn(
               "group/selectable group relative flex min-h-9 cursor-pointer items-center gap-1.5 px-2 py-0.5 transition-colors pointer-coarse:min-h-11 md:gap-2 md:px-3",
               isTaskSelected

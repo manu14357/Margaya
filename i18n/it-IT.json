@@ -12,7 +12,8 @@
 			"reset": "Reimposta",
 			"undo": "Annulla",
 			"closePanel": "Chiudi il pannello",
-			"moreActions": "Altre azioni"
+			"moreActions": "Altre azioni",
+			"openInNewWindow": "Apri in una nuova finestra"
 		},
 		"a11y": {
 			"toggleSidebar": "Attiva/disattiva barra laterale"

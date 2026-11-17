@@ -29,6 +29,7 @@ import {
   installDesktopExternalLinks,
   installDesktopNavigation,
 } from "./lib/desktop";
+import { installDesktopFileDropGuard } from "./lib/desktop-file-drop";
 import { AppI18nProvider } from "./lib/i18n/provider";
 import { routeTree } from "./routeTree.gen";
 
@@ -38,6 +39,7 @@ captureCheckoutIntent();
 
 // A no-op outside the desktop app.
 installDesktopExternalLinks();
+installDesktopFileDropGuard();
 
 console.log("Margaya: plan the work, ship the work.");
 

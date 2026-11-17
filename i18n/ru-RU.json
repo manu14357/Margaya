@@ -12,7 +12,8 @@
 			"reset": "Сбросить",
 			"undo": "Отменить",
 			"closePanel": "Закрыть панель",
-			"moreActions": "Другие действия"
+			"moreActions": "Другие действия",
+			"openInNewWindow": "Открыть в новом окне"
 		},
 		"a11y": {
 			"toggleSidebar": "Переключить боковую панель"

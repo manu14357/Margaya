@@ -12,7 +12,8 @@
 			"reset": "재설정",
 			"undo": "실행 취소",
 			"closePanel": "패널 닫기",
-			"moreActions": "더 많은 작업"
+			"moreActions": "더 많은 작업",
+			"openInNewWindow": "새 창에서 열기"
 		},
 		"a11y": {
 			"toggleSidebar": "사이드바 토글"

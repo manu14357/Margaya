@@ -23,6 +23,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
 import {
+  AppWindow,
   Archive,
   CalendarPlus,
   ChevronRight,
@@ -67,6 +68,11 @@ import useGetProjects from "@/hooks/queries/project/use-get-projects";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { cn } from "@/lib/cn";
+import {
+  canOpenInNewWindow,
+  openInNewWindow,
+  openInNewWindowOnClick,
+} from "@/lib/desktop-new-window";
 import {
   getVisibleProjectSections,
   type ProjectSection,
@@ -282,6 +288,9 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
   const isExpanded = (projectId: string) =>
     toggled[projectId] ?? isCurrentProject(projectId);
 
+  const projectBoardPath = (project: ProjectListItem) =>
+    `/dashboard/workspace/${workspace?.id || ""}/project/${project.id}/board`;
+
   const handleProjectClick = (project: ProjectListItem) => {
     navigate({
       to: "/dashboard/workspace/$workspaceId/project/$projectId/board",
@@ -397,7 +406,23 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
                           !(expanded && sections.length > 1)
                         }
                         className="ps-7 pe-7 font-medium"
-                        onClick={() => handleProjectClick(project)}
+                        onClick={(event) => {
+                          if (
+                            openInNewWindowOnClick(
+                              event,
+                              projectBoardPath(project),
+                            )
+                          )
+                            return;
+                          handleProjectClick(project);
+                        }}
+                        // Desktop app: a middle click opens a new window.
+                        onAuxClick={(event) => {
+                          openInNewWindowOnClick(
+                            event,
+                            projectBoardPath(project),
+                          );
+                        }}
                       >
                         <ProjectTile icon={project.icon} seed={project.id} />
                         <span>{project.name}</span>
@@ -465,6 +490,17 @@ export function NavProjects({ filter = "" }: NavProjectsProps) {
                               {t("navigation:projectList.viewProject")}
                             </span>
                           </DropdownMenuItem>
+                          {canOpenInNewWindow() && (
+                            <DropdownMenuItem
+                              className="h-7 cursor-pointer items-start text-sm"
+                              onClick={() =>
+                                openInNewWindow(projectBoardPath(project))
+                              }
+                            >
+                              <AppWindow className="text-muted-foreground" />
+                              <span>{t("common:actions.openInNewWindow")}</span>
+                            </DropdownMenuItem>
+                          )}
                           <DropdownMenuItem
                             className="h-7 cursor-pointer items-start text-sm"
                             onClick={() => {

@@ -12,7 +12,8 @@
 			"reset": "Sıfırla",
 			"undo": "Geri al",
 			"closePanel": "Paneli kapat",
-			"moreActions": "Diğer işlemler"
+			"moreActions": "Diğer işlemler",
+			"openInNewWindow": "Yeni pencerede aç"
 		},
 		"a11y": {
 			"toggleSidebar": "Kenar çubuğunu aç/kapat"

@@ -12,7 +12,8 @@
 			"reset": "Resetuj",
 			"undo": "Cofnij",
 			"closePanel": "Zamknij panel",
-			"moreActions": "Więcej akcji"
+			"moreActions": "Więcej akcji",
+			"openInNewWindow": "Otwórz w nowym oknie"
 		},
 		"a11y": {
 			"toggleSidebar": "Przełącz pasek boczny"

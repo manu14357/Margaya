@@ -22,9 +22,10 @@ import useGetProject from "@/hooks/queries/project/use-get-project";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { getColumnIcon } from "@/lib/column";
 import { copyTaskKey, copyTaskLink } from "@/lib/copy-task-reference";
+import { canOpenInNewWindow, openInNewWindow } from "@/lib/desktop-new-window";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
-import { formatTaskKey, shareableTaskUrl } from "@/lib/task-key";
+import { formatTaskKey, shareableTaskUrl, taskPagePath } from "@/lib/task-key";
 import { TaskPropertySlotOutlet } from "@/lib/task-property-slots";
 import { toastTaskArchived, toastTaskStatusChanged } from "@/lib/task-undo";
 import { toast } from "@/lib/toast";
@@ -178,6 +179,24 @@ export default function TaskCardContextMenuContent({
 
   return (
     <ContextMenuContent className="w-46">
+      {canOpenInNewWindow() && (
+        <>
+          <ContextMenuItem
+            onClick={() =>
+              openInNewWindow(
+                taskPagePath({
+                  workspaceId: taskCardContext.worskpaceId,
+                  projectId: taskProjectId,
+                  taskId: task.id,
+                }),
+              )
+            }
+          >
+            <span>{t("common:actions.openInNewWindow")}</span>
+          </ContextMenuItem>
+          <ContextMenuSeparator />
+        </>
+      )}
       <ContextMenuItem onClick={handleCopyTaskLink}>
         <span>{t("tasks:contextMenu.copyLink")}</span>
       </ContextMenuItem>

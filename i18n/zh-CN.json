@@ -12,7 +12,8 @@
 			"reset": "重置",
 			"undo": "撤销",
 			"closePanel": "关闭面板",
-			"moreActions": "更多操作"
+			"moreActions": "更多操作",
+			"openInNewWindow": "在新窗口中打开"
 		},
 		"a11y": {
 			"toggleSidebar": "切换侧边栏"

@@ -34,6 +34,7 @@ import useGetCustomFieldValuesByProject from "@/hooks/queries/custom-field/use-g
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useTaskAssignees } from "@/hooks/use-task-assignees";
 import { cn } from "@/lib/cn";
+import { openInNewWindowOnClick } from "@/lib/desktop-new-window";
 import {
   dueDateStatusColors,
   getDueDateStatus,
@@ -44,6 +45,7 @@ import { formatDateShort } from "@/lib/format";
 import { getTaskItemStats } from "@/lib/get-task-item-stats";
 import { getPriorityLabel } from "@/lib/i18n/domain";
 import { getPriorityIcon } from "@/lib/priority";
+import { taskPagePath } from "@/lib/task-key";
 import { TaskPropertySlotOutlet } from "@/lib/task-property-slots";
 import { toastTaskTrashed } from "@/lib/task-undo";
 import { toast } from "@/lib/toast";
@@ -184,10 +186,23 @@ function TaskCard({
   };
 
   const assignees = useTaskAssignees(task, workspace?.id ?? "");
+  const openTaskInNewWindow = (event: React.MouseEvent) =>
+    Boolean(project && workspace) &&
+    openInNewWindowOnClick(
+      event,
+      taskPagePath({
+        workspaceId: workspace?.id ?? "",
+        projectId: task.projectId || (project?.id ?? ""),
+        taskId: task.id,
+      }),
+    );
   function handleTaskCardClick(
     e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>,
   ) {
     if (!project || !task || !workspace) return;
+
+    // Desktop app: Shift+click opens the task's page in a new window.
+    if ("button" in e && openTaskInNewWindow(e)) return;
 
     if ((e as React.MouseEvent).metaKey || (e as React.KeyboardEvent).ctrlKey) {
       toggleSelection(task.id);
@@ -254,6 +269,7 @@ function TaskCard({
           {/** biome-ignore lint/a11y/noStaticElementInteractions: the sortable wrapper around it is the interactive element */}
           <div
             onClick={handleTaskCardClick}
+            onAuxClick={openTaskInNewWindow}
             data-selected={isTaskSelected || undefined}
             data-dragging={isDragging || undefined}
             className={cn(

@@ -12,7 +12,8 @@
 			"reset": "Reset",
 			"undo": "Undo",
 			"closePanel": "Close panel",
-			"moreActions": "More actions"
+			"moreActions": "More actions",
+			"openInNewWindow": "Open in new window"
 		},
 		"a11y": {
 			"toggleSidebar": "Toggle sidebar"

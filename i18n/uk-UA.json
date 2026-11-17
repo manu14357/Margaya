@@ -12,7 +12,8 @@
 			"reset": "Скинути",
 			"undo": "Скасувати",
 			"closePanel": "Закрити панель",
-			"moreActions": "Інші дії"
+			"moreActions": "Інші дії",
+			"openInNewWindow": "Відкрити в новому вікні"
 		},
 		"a11y": {
 			"toggleSidebar": "Перемикач бічної панелі"

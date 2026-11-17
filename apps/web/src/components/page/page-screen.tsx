@@ -16,6 +16,7 @@ import { AiSummaryButton } from "@/components/ai/ai-summary";
 import DescriptionTranslation from "@/components/ai/translate/description-translation";
 import ProjectLayout from "@/components/common/project-layout";
 import { ContextPanelSlot } from "@/components/context-panel/panel-slot";
+import { DesktopPageOfflineSnapshot } from "@/components/desktop/desktop-offline-snapshot";
 import AiPageTitle from "@/components/editor/ai/ai-page-title";
 import PageTitle from "@/components/page-title";
 import ProjectFeatureGate from "@/components/project/project-feature-gate";
@@ -441,6 +442,10 @@ export default function PageScreen({
       <PageTitle
         title={`${features.project?.name ?? ""} · ${page ? page.title.trim() || untitled : t("pages:section.title")}`}
         hideAppName
+      />
+      <DesktopPageOfflineSnapshot
+        page={page?.id === pageId && !isNotFound ? page : undefined}
+        workspaceId={workspaceId}
       />
       <ProjectFeatureGate
         projectId={projectId}

@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { useLocation } from "@tanstack/react-router";
 import { ArrowUp, Paperclip } from "lucide-react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CommentEditor from "@/components/activity/comment-editor";
 import {
@@ -22,6 +23,7 @@ import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { getModifierKeyText } from "@/hooks/use-keyboard-shortcuts";
 import { cn } from "@/lib/cn";
+import { focusReplyComposer, isReplyHash } from "@/lib/focus-reply-composer";
 import { toast } from "@/lib/toast";
 import type { CommentVisibility } from "@/types/publication";
 
@@ -60,6 +62,20 @@ export default function CommentInput({
     },
   });
   const showAi = Boolean(projectId && aiAvailable && workspace?.id);
+
+  // Opened with #reply (the desktop app's "Reply" on a notification): focus
+  // the box, once for each such navigation.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const replyRequest = useLocation({
+    select: (location) =>
+      isReplyHash(location.hash)
+        ? (location.state.__TSR_key ?? location.href)
+        : null,
+  });
+  useEffect(() => {
+    if (!replyRequest || !rootRef.current) return;
+    return focusReplyComposer(rootRef.current);
+  }, [replyRequest]);
 
   const handleSubmit = useCallback(async () => {
     if (!content.trim()) {
@@ -108,7 +124,7 @@ export default function CommentInput({
   );
 
   return (
-    <div className="w-full">
+    <div ref={rootRef} className="w-full">
       <div className="rounded-xl border border-border/80 bg-card/70 transition-colors focus-within:border-ring/60 focus-within:shadow-[0_0_0_2px_color-mix(in_srgb,var(--ring)_20%,transparent)]">
         <CommentEditor
           value={content}

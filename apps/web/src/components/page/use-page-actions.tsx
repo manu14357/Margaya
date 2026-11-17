@@ -7,6 +7,7 @@ import { useSetPageArchived } from "@/hooks/mutations/page/use-set-page-archived
 import { useSetPageLock } from "@/hooks/mutations/page/use-set-page-lock";
 import { useUpdatePageAccess } from "@/hooks/mutations/page/use-update-page-access";
 import { copyToClipboard } from "@/lib/copy-to-clipboard";
+import { openInNewWindow } from "@/lib/desktop-new-window";
 import { generateLink } from "@/lib/generate-link";
 import { pageErrorMessage } from "@/lib/pages/page-errors";
 import { pagePath } from "@/lib/pages/page-paths";
@@ -57,6 +58,8 @@ export function usePageActions({
 
   return {
     openInNewTab: () => {
+      // The desktop app has windows, not tabs (the item says so there).
+      if (openInNewWindow(path)) return;
       window.open(generateLink(path), "_blank", "noopener,noreferrer");
     },
     copyLink: async () => {

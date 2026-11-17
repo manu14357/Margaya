@@ -218,6 +218,29 @@ function renderTask(taskToRender: Task) {
 }
 
 describe("TaskCardContextMenuContent", () => {
+  it("offers Open in new window only inside the desktop app", () => {
+    renderTask(task);
+    expect(
+      screen.queryByText("common:actions.openInNewWindow"),
+    ).not.toBeInTheDocument();
+    cleanup();
+
+    const desktop = window as Window & { __MARGAYA_DESKTOP__?: unknown };
+    desktop.__MARGAYA_DESKTOP__ = { version: "1.0.0" };
+    const open = vi.spyOn(window, "open").mockReturnValue(null);
+    try {
+      renderTask(task);
+      fireEvent.click(screen.getByText("common:actions.openInNewWindow"));
+      expect(open).toHaveBeenCalledWith(
+        `${window.location.origin}/dashboard/workspace/workspace-1/project/project-1/task/task-1`,
+        "_blank",
+      );
+    } finally {
+      delete desktop.__MARGAYA_DESKTOP__;
+      open.mockRestore();
+    }
+  });
+
   it("hides Mark as planned for planned tasks", () => {
     renderTask({
       ...task,

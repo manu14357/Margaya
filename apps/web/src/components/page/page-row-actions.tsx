@@ -29,6 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
 import { cn } from "@/lib/cn";
+import { canOpenInNewWindow } from "@/lib/desktop-new-window";
 import type { PageSummary } from "@/types/page";
 import type { PageActions } from "./use-page-actions";
 
@@ -103,7 +104,9 @@ export function PageMenuItems({
         return (
           <Item key={id} onClick={actions.openInNewTab}>
             <ExternalLink />
-            {t("pages:actions.openInNewTab")}
+            {canOpenInNewWindow()
+              ? t("common:actions.openInNewWindow")
+              : t("pages:actions.openInNewTab")}
           </Item>
         );
       case "copyLink":

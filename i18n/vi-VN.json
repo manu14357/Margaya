@@ -12,7 +12,8 @@
 			"reset": "Đặt lại",
 			"undo": "Hoàn tác",
 			"closePanel": "Đóng bảng bên",
-			"moreActions": "Thêm hành động"
+			"moreActions": "Thêm hành động",
+			"openInNewWindow": "Mở trong cửa sổ mới"
 		},
 		"a11y": {
 			"toggleSidebar": "Bật/tắt thanh bên"

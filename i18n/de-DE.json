@@ -12,7 +12,8 @@
 			"reset": "Zurücksetzen",
 			"undo": "Rückgängig",
 			"closePanel": "Bereich schließen",
-			"moreActions": "Weitere Aktionen"
+			"moreActions": "Weitere Aktionen",
+			"openInNewWindow": "In neuem Fenster öffnen"
 		},
 		"a11y": {
 			"toggleSidebar": "Sidebar umschalten"

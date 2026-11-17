@@ -12,7 +12,8 @@
 			"reset": "Atur ulang",
 			"undo": "Urungkan",
 			"closePanel": "Tutup panel",
-			"moreActions": "Tindakan lain"
+			"moreActions": "Tindakan lain",
+			"openInNewWindow": "Buka di jendela baru"
 		},
 		"a11y": {
 			"toggleSidebar": "Tampilkan/sembunyikan panel samping"
