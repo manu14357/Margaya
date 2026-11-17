@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useFilePreview } from "@/components/file-preview/file-preview-dialog";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import {
   AlertDialog,
@@ -30,7 +31,10 @@ import useGetTaskAttachments from "@/hooks/queries/task-attachment/use-get-task-
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { toast } from "@/lib/toast";
 import TaskAttachmentDropZone from "./task-attachment-drop-zone";
-import TaskAttachmentRow, { PendingAttachmentRow } from "./task-attachment-row";
+import TaskAttachmentRow, {
+  attachmentPreviewFile,
+  PendingAttachmentRow,
+} from "./task-attachment-row";
 
 export type TaskAttachmentsHandle = {
   /** Opens the file picker (and reveals the section). */
@@ -65,6 +69,21 @@ export default function TaskAttachments({ taskId, ref }: TaskAttachmentsProps) {
   const deleteAttachment = useDeleteTaskAttachment();
   const { canUpdateTasks, canDeleteTasks } = useWorkspacePermission();
   const canEdit = canUpdateTasks();
+  const preview = useFilePreview();
+
+  // Every attachment of the task, so the preview's arrows step through them.
+  const openPreview = (attachment: TaskAttachment) => {
+    const files = attachments.flatMap((item) => {
+      const file = attachmentPreviewFile(item);
+      return file ? [{ id: item.id, file }] : [];
+    });
+    const index = files.findIndex((entry) => entry.id === attachment.id);
+    if (index < 0) return;
+    preview.open(
+      files.map((entry) => entry.file),
+      index,
+    );
+  };
 
   const openPicker = () => {
     if (!canEdit) return;
@@ -190,6 +209,7 @@ export default function TaskAttachments({ taskId, ref }: TaskAttachmentsProps) {
                       attachment={attachment}
                       canDelete={canDelete(attachment)}
                       onDelete={() => setDeleting(attachment)}
+                      onPreview={() => openPreview(attachment)}
                     />
                   ))}
                 </div>
@@ -217,6 +237,7 @@ export default function TaskAttachments({ taskId, ref }: TaskAttachmentsProps) {
     <>
       {section}
       {fileInput}
+      {preview.dialog}
       <AlertDialog
         open={deleting !== null}
         onOpenChange={(open) => {

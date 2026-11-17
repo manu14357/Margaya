@@ -6,6 +6,7 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import TaskAttachments from "./task-attachments";
@@ -112,13 +113,135 @@ describe("TaskAttachments", () => {
     expect(image).toHaveAttribute("src", "https://api.example/api/asset/img");
     expect(image).toHaveAttribute("loading", "lazy");
     expect(screen.queryByAltText("spec.pdf")).toBeNull();
-    // Only images get an "Open" action; every file can be downloaded.
+    // Only what the browser can show gets a new-tab link (a PDF on another
+    // host can't be checked); every file can be downloaded.
     expect(
-      screen.getAllByRole("link", { name: "tasks:attachments.open" }),
+      screen.getAllByRole("link", { name: "common:filePreview.openInNewTab" }),
     ).toHaveLength(1);
     expect(
-      screen.getAllByRole("link", { name: "tasks:attachments.download" }),
+      screen.getAllByRole("link", { name: "common:files.download" }),
     ).toHaveLength(2);
+  });
+
+  it("shows each file's type icon and its type beside the size", () => {
+    mocks.attachments = [
+      attachment({ id: "pdf" }),
+      attachment({
+        id: "doc",
+        filename: "brief.docx",
+        mimeType:
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      }),
+      attachment({ id: "xls", filename: "budget.xlsx", mimeType: "" }),
+      attachment({ id: "zip", filename: "logs.zip", mimeType: "" }),
+    ];
+    const { container } = renderAttachments();
+    const icons = [
+      ...container.querySelectorAll<HTMLElement>(".mfp-type-icon"),
+    ];
+    expect(icons.map((icon) => icon.dataset.kind)).toEqual([
+      "pdf",
+      "word",
+      "spreadsheet",
+      "archive",
+    ]);
+    expect(icons.map((icon) => icon.textContent)).toEqual([
+      "PDF",
+      "DOCX",
+      "XLSX",
+      "ZIP",
+    ]);
+  });
+
+  it("downloads in one click, without opening the preview", async () => {
+    mocks.attachments = [
+      attachment({ url: "http://localhost:1337/api/asset/a-1" }),
+    ];
+    renderAttachments();
+    const link = screen.getByRole("link", { name: "common:files.download" });
+    expect(link).toHaveAttribute(
+      "href",
+      "https://api.example/api/asset/a-1?download=1",
+    );
+    expect(link).toHaveAttribute("download", "spec.pdf");
+    expect(link).not.toHaveAttribute("target");
+    // Always visible, not only on hover.
+    expect(link.className).not.toContain("opacity-0");
+    const click = new MouseEvent("click", { bubbles: true, cancelable: true });
+    link.dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(false);
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(screen.queryByTestId("file-preview")).toBeNull();
+  });
+
+  it("makes a download link from the file's own link when the server sends none", () => {
+    mocks.attachments = [
+      attachment({
+        url: "http://localhost:1337/api/asset/a-1",
+        downloadUrl: "",
+      }),
+    ];
+    renderAttachments();
+    expect(
+      screen.getByRole("link", { name: "common:files.download" }),
+    ).toHaveAttribute("href", "http://localhost:1337/api/asset/a-1?download=1");
+  });
+
+  it("opens the preview on a file, with the task's other files around it", async () => {
+    mocks.attachments = [
+      attachment({
+        id: "img",
+        filename: "screen.png",
+        mimeType: "image/png",
+        kind: "image",
+        url: "http://localhost:1337/api/asset/img",
+      }),
+      attachment({ url: "http://localhost:1337/api/asset/a-1" }),
+    ];
+    renderAttachments();
+    const rows = screen.getAllByRole("button", {
+      name: "common:filePreview.previewFile",
+    });
+    expect(rows).toHaveLength(2);
+    fireEvent.click(rows[1] as HTMLElement);
+    const dialog = await screen.findByTestId("file-preview");
+    expect(within(dialog).getByRole("heading").textContent).toBe("spec.pdf");
+    fireEvent.keyDown(dialog, { key: "ArrowLeft" });
+    expect(within(dialog).getByRole("heading").textContent).toBe("screen.png");
+    // The shared preview shows the picture from its address.
+    await waitFor(() =>
+      expect(dialog.querySelector("img.mfp-image")).toHaveAttribute(
+        "src",
+        "http://localhost:1337/api/asset/img",
+      ),
+    );
+  });
+
+  it("previews instead of opening bare windows in the desktop app", () => {
+    (window as { __MARGAYA_DESKTOP__?: unknown }).__MARGAYA_DESKTOP__ = {};
+    try {
+      mocks.attachments = [
+        attachment({
+          id: "img",
+          filename: "screen.png",
+          mimeType: "image/png",
+          kind: "image",
+          url: "http://localhost:1337/api/asset/img",
+        }),
+      ];
+      renderAttachments();
+      expect(
+        screen.queryByRole("link", { name: "common:filePreview.openInNewTab" }),
+      ).toBeNull();
+      expect(
+        screen.getByRole("link", { name: "common:files.download" }),
+      ).toHaveAttribute("href", "https://api.example/api/asset/a-1?download=1");
+      expect(
+        screen.getByRole("link", { name: "common:files.download" }),
+      ).not.toHaveAttribute("target");
+    } finally {
+      delete (window as { __MARGAYA_DESKTOP__?: unknown }).__MARGAYA_DESKTOP__;
+    }
   });
 
   it("lets the uploader delete their own file, and task deleters any file", () => {

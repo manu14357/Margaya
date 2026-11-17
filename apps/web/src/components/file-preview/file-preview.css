@@ -1,0 +1,16 @@
+/* The file preview package themed with the app's tokens (uiux.md). */
+
+.margaya-file-preview {
+  --mfp-bg: color-mix(in srgb, var(--muted) 45%, var(--background));
+  --mfp-surface: var(--popover);
+  --mfp-fg: var(--foreground);
+  --mfp-muted: var(--muted-foreground);
+  --mfp-subtle: var(--muted);
+  --mfp-border: var(--border);
+  --mfp-accent: var(--primary);
+  --mfp-accent-fg: var(--primary-foreground);
+  --mfp-ring: var(--ring);
+  --mfp-radius: var(--radius);
+  --mfp-font: var(--font-sans);
+  --mfp-mono: var(--font-mono);
+}

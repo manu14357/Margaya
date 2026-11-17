@@ -1399,6 +1399,280 @@
 						"apply",
 						"remove"
 					]
+				},
+				"files": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"download": {
+							"type": "string"
+						}
+					},
+					"required": ["download"]
+				},
+				"filePreview": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"previewFile": {
+							"type": "string"
+						},
+						"description": {
+							"type": "string"
+						},
+						"position": {
+							"type": "string"
+						},
+						"openInNewTab": {
+							"type": "string"
+						},
+						"openInBrowser": {
+							"type": "string"
+						},
+						"download": {
+							"type": "string"
+						},
+						"copyLink": {
+							"type": "string"
+						},
+						"linkCopied": {
+							"type": "string"
+						},
+						"copyFailed": {
+							"type": "string"
+						},
+						"previous": {
+							"type": "string"
+						},
+						"next": {
+							"type": "string"
+						},
+						"zoomIn": {
+							"type": "string"
+						},
+						"zoomOut": {
+							"type": "string"
+						},
+						"noPreview": {
+							"type": "string"
+						},
+						"loading": {
+							"type": "string"
+						},
+						"truncated": {
+							"type": "string"
+						},
+						"errorTitle": {
+							"type": "string"
+						},
+						"errorBody": {
+							"type": "string"
+						},
+						"tooLarge": {
+							"type": "string"
+						},
+						"toolbar": {
+							"type": "string"
+						},
+						"moreTools": {
+							"type": "string"
+						},
+						"resetZoom": {
+							"type": "string"
+						},
+						"fitWidth": {
+							"type": "string"
+						},
+						"fitPage": {
+							"type": "string"
+						},
+						"rotate": {
+							"type": "string"
+						},
+						"fullScreen": {
+							"type": "string"
+						},
+						"exitFullScreen": {
+							"type": "string"
+						},
+						"pageNumber": {
+							"type": "string"
+						},
+						"pageCount": {
+							"type": "string"
+						},
+						"pageLabel": {
+							"type": "string"
+						},
+						"thumbnails": {
+							"type": "string"
+						},
+						"passwordProtected": {
+							"type": "string"
+						},
+						"find": {
+							"type": "string"
+						},
+						"findPlaceholder": {
+							"type": "string"
+						},
+						"findNext": {
+							"type": "string"
+						},
+						"findPrevious": {
+							"type": "string"
+						},
+						"findNone": {
+							"type": "string"
+						},
+						"findClose": {
+							"type": "string"
+						},
+						"sheets": {
+							"type": "string"
+						},
+						"rowsTruncated": {
+							"type": "string"
+						},
+						"previousSlide": {
+							"type": "string"
+						},
+						"nextSlide": {
+							"type": "string"
+						},
+						"slideCount": {
+							"type": "string"
+						},
+						"slideLabel": {
+							"type": "string"
+						},
+						"present": {
+							"type": "string"
+						},
+						"exitPresent": {
+							"type": "string"
+						},
+						"plainText": {
+							"type": "string"
+						},
+						"viewSource": {
+							"type": "string"
+						},
+						"viewRendered": {
+							"type": "string"
+						},
+						"htmlNotice": {
+							"type": "string"
+						},
+						"archiveName": {
+							"type": "string"
+						},
+						"archiveSize": {
+							"type": "string"
+						},
+						"archiveModified": {
+							"type": "string"
+						},
+						"archiveItems": {
+							"type": "string"
+						},
+						"archiveBack": {
+							"type": "string"
+						},
+						"archiveUp": {
+							"type": "string"
+						},
+						"archiveRoot": {
+							"type": "string"
+						},
+						"archiveTooMany": {
+							"type": "string"
+						},
+						"archiveEntryTooLarge": {
+							"type": "string"
+						},
+						"archiveEncrypted": {
+							"type": "string"
+						},
+						"archiveTooDeep": {
+							"type": "string"
+						},
+						"wireframe": {
+							"type": "string"
+						},
+						"resetView": {
+							"type": "string"
+						},
+						"modelHint": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"previewFile",
+						"description",
+						"position",
+						"openInNewTab",
+						"openInBrowser",
+						"download",
+						"copyLink",
+						"linkCopied",
+						"copyFailed",
+						"previous",
+						"next",
+						"zoomIn",
+						"zoomOut",
+						"noPreview",
+						"loading",
+						"truncated",
+						"errorTitle",
+						"errorBody",
+						"tooLarge",
+						"toolbar",
+						"moreTools",
+						"resetZoom",
+						"fitWidth",
+						"fitPage",
+						"rotate",
+						"fullScreen",
+						"exitFullScreen",
+						"pageNumber",
+						"pageCount",
+						"pageLabel",
+						"thumbnails",
+						"passwordProtected",
+						"find",
+						"findPlaceholder",
+						"findNext",
+						"findPrevious",
+						"findNone",
+						"findClose",
+						"sheets",
+						"rowsTruncated",
+						"previousSlide",
+						"nextSlide",
+						"slideCount",
+						"slideLabel",
+						"present",
+						"exitPresent",
+						"plainText",
+						"viewSource",
+						"viewRendered",
+						"htmlNotice",
+						"archiveName",
+						"archiveSize",
+						"archiveModified",
+						"archiveItems",
+						"archiveBack",
+						"archiveUp",
+						"archiveRoot",
+						"archiveTooMany",
+						"archiveEntryTooLarge",
+						"archiveEncrypted",
+						"archiveTooDeep",
+						"wireframe",
+						"resetView",
+						"modelHint"
+					]
 				}
 			},
 			"required": [
@@ -1417,7 +1691,9 @@
 				"formats",
 				"modals",
 				"projectArchived",
-				"linkDialog"
+				"linkDialog",
+				"files",
+				"filePreview"
 			]
 		},
 		"auth": {
@@ -21022,9 +21298,6 @@
 										},
 										"download": {
 											"type": "string"
-										},
-										"closePreview": {
-											"type": "string"
 										}
 									},
 									"required": [
@@ -21035,8 +21308,7 @@
 										"originalSize",
 										"resize",
 										"fullScreen",
-										"download",
-										"closePreview"
+										"download"
 									]
 								},
 								"block": {
@@ -24569,9 +24841,6 @@
 						"uploading": {
 							"type": "string"
 						},
-						"open": {
-							"type": "string"
-						},
 						"download": {
 							"type": "string"
 						},
@@ -24675,7 +24944,6 @@
 						"dropHere",
 						"dropToAttach",
 						"uploading",
-						"open",
 						"download",
 						"delete",
 						"meta",

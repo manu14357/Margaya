@@ -653,54 +653,115 @@ input:-webkit-autofill:active {
     color: color-mix(in srgb, var(--foreground) 72%, transparent);
   }
 
+  /* Every file is a full-width row, like the attachments list: the same
+     length whatever the file name, with Download inside the row. */
   .margaya-attachment-node {
-    display: inline-flex;
-    max-width: 100%;
-    vertical-align: middle;
-    margin: 0.35rem 0;
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin: 0.25rem 0;
   }
 
   .margaya-attachment-card {
-    display: inline-flex;
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
     align-items: center;
     gap: 0.75rem;
-    min-width: min(22rem, 100%);
-    max-width: min(28rem, 100%);
-    padding: 0.75rem 0.95rem;
+    padding: 0.55rem 0.75rem;
     border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
-    border-radius: calc(var(--radius) + 1px);
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--accent) 48%, transparent),
-      color-mix(in srgb, var(--accent) 20%, transparent)
-    );
+    border-radius: var(--radius);
+    background: var(--card);
     text-decoration: none;
+    cursor: pointer;
     transition:
-      border-color 0.18s ease,
-      background-color 0.18s ease,
-      transform 0.18s ease;
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  /* A card is a link, but not a text link: no editor link underline (the
+     editor's own link rules are more specific than the card's). */
+  .margaya-attachment-node .margaya-attachment-card,
+  .ProseMirror .margaya-attachment-node .margaya-attachment-card {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .margaya-attachment-card:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 
   .margaya-attachment-card:hover {
     border-color: color-mix(in srgb, var(--foreground) 18%, var(--border));
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--accent) 62%, transparent),
-      color-mix(in srgb, var(--accent) 30%, transparent)
-    );
-    transform: translateY(-1px);
+    background: color-mix(in srgb, var(--accent) 45%, var(--card));
   }
 
-  .margaya-attachment-card-icon {
+  /* Room on the right for the download button inside the row. */
+  .margaya-attachment-node:has(.margaya-attachment-card-download)
+    .margaya-attachment-card {
+    padding-right: 3rem;
+  }
+
+  /* Download without opening: always visible, like the attachments list
+     (a 44px target on touch screens). */
+  .ProseMirror .margaya-attachment-node .margaya-attachment-card-download,
+  .margaya-attachment-node .margaya-attachment-card-download {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.8rem;
-    height: 1.8rem;
-    color: color-mix(in srgb, var(--foreground) 72%, transparent);
-    background: color-mix(in srgb, var(--foreground) 6%, transparent);
-    border-radius: 0.55rem;
-    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: calc(var(--radius) - 2px);
+    color: var(--muted-foreground);
+    text-decoration: none;
+    opacity: 1;
+    transform: translateY(-50%);
+    transition:
+      opacity 0.15s ease,
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .margaya-attachment-node:hover .margaya-attachment-card-download,
+  .margaya-attachment-node:focus-within .margaya-attachment-card-download {
+    opacity: 1;
+  }
+
+  .ProseMirror .margaya-attachment-node .margaya-attachment-card-download:hover {
+    background: var(--accent);
+    color: var(--foreground);
+  }
+
+  .ProseMirror .margaya-attachment-node .margaya-attachment-card-download:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+
+  @media (pointer: coarse) {
+    .ProseMirror .margaya-attachment-node .margaya-attachment-card-download {
+      opacity: 1;
+    }
+
+    .ProseMirror .margaya-attachment-node .margaya-attachment-card-download::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 44px;
+      height: 44px;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ProseMirror .margaya-attachment-node .margaya-attachment-card-download {
+      transition: none;
+    }
   }
 
   .margaya-attachment-card-content {
@@ -711,8 +772,8 @@ input:-webkit-autofill:active {
 
   .margaya-attachment-card-title {
     color: var(--foreground);
-    font-size: 0.96rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 500;
     line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;

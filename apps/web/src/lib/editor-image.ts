@@ -1,6 +1,8 @@
 // Image helpers shared by the editors: the preview event a node view sends,
 // and downloads.
 
+import { externalHref } from "@/lib/desktop";
+
 export const IMAGE_PREVIEW_EVENT = "margaya-image-preview";
 
 export type ImagePreview = { src: string; alt: string };
@@ -51,13 +53,19 @@ export function imageFileName(src: string, alt?: string | null): string {
   return base || "image";
 }
 
-/** Starts a download of the image (a new tab for hosts that refuse one). */
+/**
+ * Starts a download of the image. This server answers with an attachment,
+ * so the page stays and the desktop app saves it as its own download; an
+ * image elsewhere may refuse one, so it opens in a new tab instead.
+ */
 export function downloadImage(src: string, alt?: string | null) {
   const link = document.createElement("a");
   link.href = imageDownloadUrl(src);
   link.download = imageFileName(src, alt);
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
+  if (externalHref(link.href)) {
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+  }
   document.body.append(link);
   link.click();
   link.remove();
