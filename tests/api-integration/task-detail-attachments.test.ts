@@ -442,6 +442,70 @@ describe("task attachment downloads", () => {
     const anonymous = await app.request(`/api/asset/${image.id}`);
     expect(anonymous.status).toBe(401);
   });
+
+  it("shows PDFs and text inline for the file preview, and only a PDF may be framed", async () => {
+    process.env.MARGAYA_CLIENT_URL = "http://localhost:5173";
+    const { asMember, attach } = await scene();
+    const report = (await (
+      await attach(asMember, pdf)
+    ).finalize.json()) as AttachmentJson;
+    const notes = (await (
+      await attach(asMember, {
+        filename: "notes.txt",
+        contentType: "text/plain",
+        size: 3,
+      })
+    ).finalize.json()) as AttachmentJson;
+
+    const inline = await asMember(`/asset/${report.id}`);
+    expect(inline.status).toBe(200);
+    expect(inline.headers.get("content-type")).toBe("application/pdf");
+    expect(inline.headers.get("content-disposition")).toMatch(/^inline;/);
+    expect(inline.headers.get("x-content-type-options")).toBe("nosniff");
+    expect(inline.headers.get("content-security-policy")).toBe(
+      "default-src 'none'; frame-ancestors 'self' http://localhost:5173; base-uri 'none'; form-action 'none'",
+    );
+    expect(inline.headers.get("x-frame-options")).toBe("SAMEORIGIN");
+
+    const forced = await asMember(`/asset/${report.id}?download=1`);
+    expect(forced.headers.get("content-disposition")).toMatch(/^attachment;/);
+    expect(forced.headers.get("content-type")).toBe("application/octet-stream");
+    expect(forced.headers.get("content-security-policy")).toContain(
+      "frame-ancestors 'none'",
+    );
+    expect(forced.headers.get("x-frame-options")).toBe("DENY");
+
+    const text = await asMember(`/asset/${notes.id}`);
+    expect(text.headers.get("content-type")).toBe("text/plain; charset=utf-8");
+    expect(text.headers.get("content-disposition")).toMatch(/^inline;/);
+    expect(text.headers.get("content-security-policy")).toContain(
+      "frame-ancestors 'none'",
+    );
+    delete process.env.MARGAYA_CLIENT_URL;
+  });
+
+  it("never serves an uploaded page or drawing as itself", async () => {
+    const { asMember, attach } = await scene();
+    for (const file of [
+      { filename: "page.html", contentType: "text/html", size: 3 },
+      { filename: "drawing.svg", contentType: "image/svg+xml", size: 3 },
+    ]) {
+      const { finalize } = await attach(asMember, file);
+      expect(finalize.status).toBe(200);
+      const attachment = (await finalize.json()) as AttachmentJson;
+      const response = await asMember(`/asset/${attachment.id}`);
+      expect(response.status).toBe(200);
+      expect(response.headers.get("content-type")).toBe(
+        "application/octet-stream",
+      );
+      expect(response.headers.get("content-disposition")).toMatch(
+        /^attachment;/,
+      );
+      expect(response.headers.get("content-security-policy")).toContain(
+        "default-src 'none'",
+      );
+    }
+  });
 });
 
 describe("description cleanup", () => {

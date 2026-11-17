@@ -97,11 +97,10 @@ describe("local file store", () => {
     expect(finalized.status).toBe(200);
     const attachment = (await finalized.json()) as { id: string };
 
+    // A PDF shows inline (the file preview frames it).
     const download = await s.asMember(`/asset/${attachment.id}`);
     expect(download.status).toBe(200);
-    expect(download.headers.get("content-type")).toBe(
-      "application/octet-stream",
-    );
+    expect(download.headers.get("content-type")).toBe("application/pdf");
     expect(new Uint8Array(await download.arrayBuffer())).toEqual(bytes);
   });
 

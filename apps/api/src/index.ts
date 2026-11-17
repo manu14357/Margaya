@@ -195,6 +195,11 @@ import user from "./user";
 import getAvatar from "./user/controllers/get-avatar";
 import { applyRateLimitHeaders } from "./utils/api-key-rate-limit";
 import {
+  assetResponseType,
+  PDF_TYPE,
+  pdfPreviewPolicy,
+} from "./utils/asset-response";
+import {
   assetGone,
   assetInTrash,
   assetPublicHolder,
@@ -280,18 +285,6 @@ type ApiVariables = {
     apiKey?: ApiKey;
   };
 };
-
-const SAFE_INLINE_ASSET_TYPES = new Set([
-  "image/apng",
-  "image/avif",
-  "image/gif",
-  "image/heic",
-  "image/heif",
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-]);
 
 function buildContentDisposition(filename: string, inline: boolean) {
   const normalized = filename
@@ -697,14 +690,14 @@ export function createApp() {
       tags: ["Assets"],
       summary: "Download asset",
       description:
-        "Download an uploaded asset. Readable without signing in only when it is a description image of a public project (task attachments never are) and not in the trash, or in the trash while a live task of a public project (its description or a public comment) or a published page still shows it; image types are served inline, everything else as an attachment. Add ?download=1 to always download.",
+        "Download an uploaded asset. Readable without signing in only when it is a description image of a public project (task attachments never are) and not in the trash, or in the trash while a live task of a public project (its description or a public comment) or a published page still shows it; images, PDFs, audio and video are served inline with their own type, plain-text files (text, CSV, Markdown, JSON) inline as text/plain, and everything else (HTML, SVG and scripts included) as an application/octet-stream attachment. An inline PDF may be framed by this server's web app, for its file preview; nothing else may be framed. Add ?download=1 to always download.",
       security: [],
       request: {
         params: z.object({ id: z.string() }),
         query: z.object({
           download: z.string().optional().openapi({
             description:
-              "1 or true forces an attachment Content-Disposition, even for images.",
+              "1 or true forces an attachment Content-Disposition, even for files that are otherwise shown inline.",
           }),
         }),
       },
@@ -787,8 +780,13 @@ export function createApp() {
             ?.trim() ?? "";
         const download = c.req.query("download");
         const forceDownload = download === "1" || download === "true";
-        const inline =
-          !forceDownload && SAFE_INLINE_ASSET_TYPES.has(storedContentType);
+        const { inline, contentType } = assetResponseType(
+          storedContentType,
+          forceDownload,
+        );
+        // An inline PDF may be framed by the web app's file preview; every
+        // other response keeps the API's deny-all policy.
+        const framable = inline && contentType === PDF_TYPE;
 
         return new Response(object.body as BodyInit, {
           headers: {
@@ -800,10 +798,14 @@ export function createApp() {
               inline,
             ),
             "Content-Length": object.contentLength?.toString() || "",
-            "Content-Type": inline
-              ? storedContentType
-              : "application/octet-stream",
+            "Content-Type": contentType,
             "X-Content-Type-Options": "nosniff",
+            ...(framable
+              ? {
+                  "Content-Security-Policy": pdfPreviewPolicy(),
+                  "X-Frame-Options": "SAMEORIGIN",
+                }
+              : {}),
             ETag: object.etag || "",
             "Last-Modified": object.lastModified?.toUTCString() || "",
           },

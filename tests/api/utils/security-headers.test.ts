@@ -71,6 +71,39 @@ describe("securityHeaders", () => {
     );
   });
 
+  it("keeps an inline PDF's own frame policy, and only on assets", async () => {
+    const own =
+      "default-src 'none'; frame-ancestors 'self' https://app.example; base-uri 'none'; form-action 'none'";
+    const pdf = (c: { body: (b: string, s: 200, h: object) => Response }) =>
+      c.body("%PDF", 200, {
+        "content-security-policy": own,
+        "x-frame-options": "SAMEORIGIN",
+      });
+    const hono = new Hono();
+    hono.use("*", securityHeaders());
+    hono.get("/api/asset/:id", (c) =>
+      c.req.query("plain") ? c.body("x") : pdf(c),
+    );
+    hono.get("/api/other/:id", (c) => pdf(c));
+
+    const framable = await hono.request("/api/asset/a1");
+    expect(framable.headers.get("content-security-policy")).toBe(own);
+    expect(framable.headers.get("x-frame-options")).toBe("SAMEORIGIN");
+    expect(framable.headers.get("x-content-type-options")).toBe("nosniff");
+
+    const plain = await hono.request("/api/asset/a1?plain=1");
+    expect(plain.headers.get("content-security-policy")).toContain(
+      "frame-ancestors 'none'",
+    );
+    expect(plain.headers.get("x-frame-options")).toBe("DENY");
+
+    const elsewhere = await hono.request("/api/other/a1");
+    expect(elsewhere.headers.get("content-security-policy")).toContain(
+      "frame-ancestors 'none'",
+    );
+    expect(elsewhere.headers.get("x-frame-options")).toBe("DENY");
+  });
+
   it("covers error responses too", async () => {
     const response = await app().request("/api/broken");
     expect(response.status).toBe(500);
