@@ -10,7 +10,8 @@
 			"markAllRead": "Alles als gelezen markeren",
 			"remove": "Verwijderen",
 			"reset": "Herstellen",
-			"undo": "Ongedaan maken"
+			"undo": "Ongedaan maken",
+			"closePanel": "Paneel sluiten"
 		},
 		"a11y": {
 			"toggleSidebar": "Zijbalk in-/uitschakelen"

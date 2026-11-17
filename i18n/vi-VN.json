@@ -10,7 +10,8 @@
 			"markAllRead": "Đánh dấu đã đọc tất cả",
 			"remove": "Gỡ bỏ",
 			"reset": "Đặt lại",
-			"undo": "Hoàn tác"
+			"undo": "Hoàn tác",
+			"closePanel": "Đóng bảng bên"
 		},
 		"a11y": {
 			"toggleSidebar": "Bật/tắt thanh bên"

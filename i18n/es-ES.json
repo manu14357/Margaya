@@ -10,7 +10,8 @@
 			"markAllRead": "Marcar todos como leídos",
 			"remove": "Borrar",
 			"reset": "Restablecer",
-			"undo": "Deshacer"
+			"undo": "Deshacer",
+			"closePanel": "Cerrar el panel"
 		},
 		"a11y": {
 			"toggleSidebar": "Mostrar barra lateral"

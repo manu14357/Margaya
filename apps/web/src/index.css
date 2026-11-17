@@ -49,6 +49,25 @@ input:-webkit-autofill:active {
 }
 
 
+/*
+ * Only the topmost open modal backdrop paints. A confirm over a dialog or a
+ * sheet keeps the window at the same even dim, and dims the popup under it by
+ * that same amount, instead of stacking backdrops towards black. A nested
+ * overlay's portal sits inside its parent's portal after the backdrop; an
+ * unrelated one is a later portal in <body>. A closing backdrop does not
+ * count, so the one under it fades back in as it fades out.
+ */
+[data-overlay-backdrop]:has(
+    ~ [data-overlay-backdrop]:not([data-ending-style]),
+    ~ * [data-overlay-backdrop]:not([data-ending-style])
+  ),
+[data-base-ui-portal]:has(
+    ~ [data-base-ui-portal] [data-overlay-backdrop]:not([data-ending-style])
+  )
+  [data-overlay-backdrop] {
+  --overlay-backdrop: transparent;
+}
+
 @theme inline {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -167,6 +186,35 @@ input:-webkit-autofill:active {
   --code: #ffffff;
   --code-foreground: var(--foreground);
   --code-highlight: #f1f4f2;
+  /*
+   * Modal overlays (dialogs, confirms, sheets, the command palette) dim the
+   * whole window evenly with black at this opacity, no blur: the rail, the
+   * panel, the top bar or desktop title bar and the page all by the same
+   * amount (components/ui/overlay.ts). Stronger in dark, where a light dim
+   * would not separate the popup, and in high contrast.
+   */
+  --overlay-dim: 0.4;
+  --overlay-backdrop: rgb(0 0 0 / var(--overlay-dim));
+  /*
+   * Window-level layers (z-index). Anything inside a component keeps its own
+   * small local z-index; anything fixed or portaled over the app uses these.
+   *   floating         non-modal floating panels: Ask, AI summaries, the
+   *                    survey card, bulk-selection bars
+   *   overlay          modal backdrops and viewports, and popovers, menus,
+   *                    selects and tooltips: one layer, stacked by the order
+   *                    they open, so a menu opened in a dialog sits over it
+   *                    and a tooltip of the page behind stays under the dim
+   *   overlay-tools    editor handles and composers that must sit over the
+   *                    dialog or sheet their editor is in
+   *   toast            toasts, over every overlay
+   *   window-controls  the desktop app's window buttons and title-bar drag
+   *                    strip: always reachable, even over a modal
+   */
+  --z-floating: 40;
+  --z-overlay: 50;
+  --z-overlay-tools: 60;
+  --z-toast: 70;
+  --z-window-controls: 80;
 }
 
 .dark {
@@ -211,6 +259,7 @@ input:-webkit-autofill:active {
   --code: #131515;
   --code-foreground: var(--foreground);
   --code-highlight: #1b1d1d;
+  --overlay-dim: 0.56;
 }
 
 /*
@@ -252,6 +301,7 @@ input:-webkit-autofill:active {
   --sidebar-ring: #035c42;
   --code: #ffffff;
   --code-highlight: #eef1ef;
+  --overlay-dim: 0.5;
 }
 
 .dark.contrast {
@@ -288,6 +338,7 @@ input:-webkit-autofill:active {
   --sidebar-ring: #6ee7b7;
   --code: #0a0a0a;
   --code-highlight: #151515;
+  --overlay-dim: 0.68;
 }
 
 @layer base {
@@ -389,7 +440,7 @@ input:-webkit-autofill:active {
 
   .margaya-codeblock-language {
     position: fixed;
-    z-index: 40;
+    z-index: var(--z-floating);
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
@@ -680,7 +731,7 @@ input:-webkit-autofill:active {
 
   .margaya-embed-composer {
     position: fixed;
-    z-index: 60;
+    z-index: var(--z-overlay-tools);
     width: min(16.5rem, calc(100vw - 2rem));
     border: 1px solid color-mix(in srgb, var(--border) 84%, transparent);
     border-radius: 0.6rem;

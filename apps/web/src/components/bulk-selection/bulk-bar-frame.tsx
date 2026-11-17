@@ -4,7 +4,7 @@ import { useShell } from "@/components/common/shell-context";
 import { cn } from "@/lib/cn";
 
 const motion =
-  "-translate-x-1/2 left-1/2 z-50 w-max transition-[translate,opacity] duration-200 ease-out starting:translate-y-3 starting:opacity-0 motion-reduce:starting:translate-y-0";
+  "-translate-x-1/2 left-1/2 z-(--z-floating) w-max transition-[translate,opacity] duration-200 ease-out starting:translate-y-3 starting:opacity-0 motion-reduce:starting:translate-y-0";
 
 /**
  * Pins a bulk-selection bar to the bottom centre of the shell's main column,

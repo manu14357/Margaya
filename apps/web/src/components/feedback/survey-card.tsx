@@ -87,7 +87,7 @@ export function SurveyCard({ format, onClose }: SurveyCardProps) {
   return (
     <section
       aria-labelledby={titleId}
-      className="fixed right-4 bottom-20 z-40 w-[min(22rem,calc(100vw-2rem))] rounded-lg border bg-popover p-4 text-popover-foreground shadow-lg min-[520px]:bottom-4"
+      className="fixed right-4 bottom-20 z-(--z-floating) w-[min(22rem,calc(100vw-2rem))] rounded-lg border bg-popover p-4 text-popover-foreground shadow-lg min-[520px]:bottom-4"
     >
       <div className="flex items-start justify-between gap-2">
         <h2 id={titleId} className="text-sm font-medium">

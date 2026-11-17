@@ -79,7 +79,7 @@ function ContextMenuContent({
         align={align}
         alignOffset={alignOffset}
         anchor={anchor}
-        className="z-50"
+        className="z-(--z-overlay)"
         data-slot="context-menu-positioner"
         side={side}
         sideOffset={sideOffset}

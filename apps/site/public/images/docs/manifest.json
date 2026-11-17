@@ -738,7 +738,7 @@
 		},
 		"intake/new-request-dialog": {
 			"width": 704,
-			"height": 480,
+			"height": 512,
 			"format": "webp"
 		},
 		"intake/public-request-form": {

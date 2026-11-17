@@ -62,7 +62,7 @@ function PopoverPopup({
         // No transition on the position: the positioner starts at the page's
         // top left corner until its anchor is measured, and a popover placed
         // after its first frame would slide in from there.
-        className="z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width)"
+        className="z-(--z-overlay) h-(--positioner-height) w-(--positioner-width) max-w-(--available-width)"
         collisionPadding={collisionPadding}
         data-slot="popover-positioner"
         side={side}

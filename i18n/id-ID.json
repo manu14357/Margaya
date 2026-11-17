@@ -10,7 +10,8 @@
 			"markAllRead": "Tandai semua telah dibaca",
 			"remove": "Hapus",
 			"reset": "Atur ulang",
-			"undo": "Urungkan"
+			"undo": "Urungkan",
+			"closePanel": "Tutup panel"
 		},
 		"a11y": {
 			"toggleSidebar": "Tampilkan/sembunyikan panel samping"

@@ -10,7 +10,8 @@
 			"markAllRead": "Oznacz wszystko jako przeczytane",
 			"remove": "Usuń",
 			"reset": "Resetuj",
-			"undo": "Cofnij"
+			"undo": "Cofnij",
+			"closePanel": "Zamknij panel"
 		},
 		"a11y": {
 			"toggleSidebar": "Przełącz pasek boczny"

@@ -755,7 +755,7 @@ export default function AskPanel() {
         fullPage
           ? "relative h-full min-h-0 w-full flex-1"
           : [
-              "fixed inset-0 z-40",
+              "fixed inset-0 z-(--z-floating)",
               "transition-[translate,opacity] duration-150 ease-out starting:translate-y-2 starting:opacity-0 motion-reduce:starting:translate-y-0",
               "sm:inset-auto sm:end-4 sm:bottom-4 sm:rounded-xl sm:border sm:shadow-black/10 sm:shadow-xl dark:sm:shadow-black/50",
               expanded

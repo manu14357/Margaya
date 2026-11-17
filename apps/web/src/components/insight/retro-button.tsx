@@ -190,7 +190,7 @@ export function RetroCard({
       aria-label={t("insight:retro.title")}
       tabIndex={-1}
       onKeyDown={onKeyDown}
-      className="fixed inset-x-4 top-16 z-40 flex max-h-[75vh] flex-col rounded-lg border bg-popover text-popover-foreground shadow-lg/5 outline-none sm:inset-x-auto sm:right-4 sm:w-[30rem]"
+      className="fixed inset-x-4 top-16 z-(--z-floating) flex max-h-[75vh] flex-col rounded-lg border bg-popover text-popover-foreground shadow-lg/5 outline-none sm:inset-x-auto sm:right-4 sm:w-[30rem]"
     >
       <div className="flex items-center gap-2 border-b px-3 py-2">
         <MessagesSquare

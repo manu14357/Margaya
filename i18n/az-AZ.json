@@ -10,7 +10,8 @@
 			"markAllRead": "Hamısını oxunmuş kimi işarələ",
 			"remove": "Çıxar",
 			"reset": "Sıfırla",
-			"undo": "Geri al"
+			"undo": "Geri al",
+			"closePanel": "Paneli bağla"
 		},
 		"a11y": {
 			"toggleSidebar": "Yan paneli aç/bağla"

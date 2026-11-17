@@ -1,7 +1,11 @@
 "use client";
 
 import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog";
-
+import {
+  OVERLAY_BACKDROP_CLASS,
+  OVERLAY_VIEWPORT_CLASS,
+  overlayBackdropProps,
+} from "@/components/ui/overlay";
 import { cn } from "@/lib/cn";
 
 const AlertDialogCreateHandle = AlertDialogPrimitive.createHandle;
@@ -22,11 +26,9 @@ function AlertDialogBackdrop({
 }: AlertDialogPrimitive.Backdrop.Props) {
   return (
     <AlertDialogPrimitive.Backdrop
-      className={cn(
-        "fixed inset-0 z-50 bg-black/50 backdrop-blur-[6px] transition-opacity duration-200 ease-out data-ending-style:opacity-0 data-starting-style:opacity-0",
-        className,
-      )}
+      className={cn(OVERLAY_BACKDROP_CLASS, className)}
       data-slot="alert-dialog-backdrop"
+      {...overlayBackdropProps}
       {...props}
     />
   );
@@ -39,7 +41,8 @@ function AlertDialogViewport({
   return (
     <AlertDialogPrimitive.Viewport
       className={cn(
-        "fixed inset-0 z-50 grid grid-rows-[1fr_auto_3fr] justify-items-center p-4",
+        OVERLAY_VIEWPORT_CLASS,
+        "grid grid-rows-[1fr_auto_3fr] justify-items-center p-4",
         className,
       )}
       data-slot="alert-dialog-viewport"

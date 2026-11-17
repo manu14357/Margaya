@@ -52,7 +52,7 @@ function TooltipPopup({
         anchor={anchor}
         // No transition on the position, as for the popover: it would slide
         // in from the page's top left corner when placed late.
-        className="z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width)"
+        className="z-(--z-overlay) h-(--positioner-height) w-(--positioner-width) max-w-(--available-width)"
         data-slot="tooltip-positioner"
         side={side}
         sideOffset={sideOffset}

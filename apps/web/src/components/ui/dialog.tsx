@@ -4,6 +4,11 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { XIcon } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import {
+  OVERLAY_BACKDROP_CLASS,
+  OVERLAY_VIEWPORT_CLASS,
+  overlayBackdropProps,
+} from "@/components/ui/overlay";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/cn";
 import { i18n } from "@/lib/i18n";
@@ -60,11 +65,9 @@ function DialogBackdrop({
 }: DialogPrimitive.Backdrop.Props) {
   return (
     <DialogPrimitive.Backdrop
-      className={cn(
-        "fixed inset-0 z-50 bg-black/50 backdrop-blur-[6px] transition-opacity duration-200 ease-out data-ending-style:opacity-0 data-starting-style:opacity-0",
-        className,
-      )}
+      className={cn(OVERLAY_BACKDROP_CLASS, className)}
       data-slot="dialog-backdrop"
+      {...overlayBackdropProps}
       {...props}
     />
   );
@@ -77,7 +80,8 @@ function DialogViewport({
   return (
     <DialogPrimitive.Viewport
       className={cn(
-        "fixed inset-0 z-50 grid grid-rows-[1fr_auto_3fr] justify-items-center p-4",
+        OVERLAY_VIEWPORT_CLASS,
+        "grid grid-rows-[1fr_auto_3fr] justify-items-center p-4",
         className,
       )}
       data-slot="dialog-viewport"
@@ -119,8 +123,10 @@ function DialogPopup({
           {showCloseButton && (
             <DialogPrimitive.Close
               aria-label={i18n.t("common:actions.close")}
+              title={i18n.t("common:actions.close")}
               className="absolute end-2 top-2"
               render={<Button size="icon" variant="ghost" />}
+              data-slot="dialog-popup-close"
             >
               <XIcon />
             </DialogPrimitive.Close>
@@ -136,6 +142,8 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       className={cn(
         "flex flex-col gap-2 p-6 in-[[data-slot=dialog-popup]:has([data-slot=dialog-panel])]:pb-3 max-sm:pb-4",
+        // A long title wraps before the corner close button, never under it.
+        "in-[[data-slot=dialog-popup]:has(>[data-slot=dialog-popup-close])]:pe-12",
         className,
       )}
       data-slot="dialog-header"

@@ -57,7 +57,7 @@
 
   .margaya-tiptap-slash-menu {
     position: fixed;
-    z-index: 50;
+    z-index: var(--z-overlay);
     min-width: 16rem;
     border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
     border-radius: 0.5rem;

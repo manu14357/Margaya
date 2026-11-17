@@ -10,7 +10,8 @@
 			"markAllRead": "すべて既読にする",
 			"remove": "削除",
 			"reset": "リセット",
-			"undo": "元に戻す"
+			"undo": "元に戻す",
+			"closePanel": "パネルを閉じる"
 		},
 		"a11y": {
 			"toggleSidebar": "サイドバーを切り替え"

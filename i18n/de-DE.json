@@ -10,7 +10,8 @@
 			"markAllRead": "Alle als gelesen markieren",
 			"remove": "Entfernen",
 			"reset": "Zurücksetzen",
-			"undo": "Rückgängig"
+			"undo": "Rückgängig",
+			"closePanel": "Bereich schließen"
 		},
 		"a11y": {
 			"toggleSidebar": "Sidebar umschalten"

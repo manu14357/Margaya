@@ -10,7 +10,8 @@
 			"markAllRead": "Segna tutti come letti",
 			"remove": "Rimuovi",
 			"reset": "Reimposta",
-			"undo": "Annulla"
+			"undo": "Annulla",
+			"closePanel": "Chiudi il pannello"
 		},
 		"a11y": {
 			"toggleSidebar": "Attiva/disattiva barra laterale"

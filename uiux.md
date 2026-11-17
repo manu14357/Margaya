@@ -189,6 +189,10 @@ Paste this into the global stylesheet. Dark mode is class-based: put `.dark` on 
 
   --today: #047857; --today-tint: #ecfdf5; --weekend-tint: #f6f7f5;
   --dependency: #94a3b8; --dependency-conflict: #dc2626;
+
+  /* Modal backdrop: one even black dim, no blur (0.5 / 0.68 in high contrast). */
+  --overlay-dim: 0.4; --overlay-backdrop: rgb(0 0 0 / var(--overlay-dim));
+  --z-floating: 40; --z-overlay: 50; --z-overlay-tools: 60; --z-toast: 70; --z-window-controls: 80;
 }
 
 .dark {
@@ -227,6 +231,8 @@ Paste this into the global stylesheet. Dark mode is class-based: put `.dark` on 
 
   --today: #34d399; --today-tint: #10241c; --weekend-tint: #121414;
   --dependency: #64748b; --dependency-conflict: #f87171;
+
+  --overlay-dim: 0.56;
 }
 
 /* Expose tokens as Tailwind utilities: bg-primary, text-muted-foreground, rounded-lg … */
@@ -470,12 +476,28 @@ export const identityTileStyle = (seed: string) => {
 
 ### Dialogs, popovers and menus
 
-- **Backdrop:** `bg-black/50 backdrop-blur-[6px]`.
+- **Backdrop (modal state):** one even dim over the entire window and nothing else, never a blur. Every modal overlay (Dialog, AlertDialog, Sheet, the command palette, image previews) uses the shared backdrop in `components/ui/overlay.ts`: black at `--overlay-dim` (0.4 light, 0.56 dark, 0.5 high-contrast light, 0.68 high-contrast dark), fading in 200ms. It covers the rail, the panel, the top bar, sticky toolbars, the page and, in the desktop app, the title bar, so nothing behind a dialog looks brighter, sharper or active. A confirm over a dialog or sheet keeps the same dim (only the topmost backdrop paints). The desktop window buttons stay usable above the backdrop and darken by the same amount; a press on the dimmed title bar moves the window and never reaches its buttons. In the desktop shell, side panels (left and right sheets) run the full window height from the top edge: the panel's top row is the title bar there (its empty space moves the window), its rows keep clear of the window buttons (`--sheet-controls-inset`) and the macOS traffic lights (`--sheet-start-inset`), its header splits into a title row and a toolbar (see Side panel header), and the window buttons over a right panel are not dimmed. Centered dialogs and bottom sheets start under the title bar line. Non-modal panels (Ask, AI summaries, bulk bars) dim nothing.
+- **Layers:** window-level `z-index` comes from the `--z-*` tokens in `index.css`, lowest first: `--z-floating` (non-modal floating panels), `--z-overlay` (backdrops, overlay viewports, popovers, menus and tooltips, stacked by the order they open), `--z-overlay-tools` (editor handles over their dialog), `--z-toast`, `--z-window-controls` (desktop window buttons). Use `z-(--z-overlay)` and friends for anything fixed or portaled; small local values (`z-10`, `z-20`) stay inside a component.
 - **Dialog:** `rounded-2xl bg-popover border shadow-lg/5`, `max-w-lg`.
+- **Side panel header:** every left and right sheet (and a docked side panel) starts with `SheetHeaderBar` (`components/ui/sheet-header-bar.tsx`), never a hand-made header row. Slots: `identity` (a key and status, or `title`), `navigation` (previous/next and "N of M", `tabular-nums`, room for "999 of 999"), `actions` (icon buttons in groups split by a hairline; the destructive one in a group of its own) and the built-in close panel, last.
+  - **Close panel is a panel glyph:** `PanelRightClose` on a right panel, `PanelLeftClose` on a left one, mirrored in right-to-left layouts, named "Close panel" (`common:actions.closePanel`). An X closes dialogs, bottom sheets and the window only. Escape closes the panel too.
+  - **Desktop shell (full-height panel):** two rows. Row 1 is the title bar's height (48px) and holds only the identity; its empty space moves the window and the window buttons sit alone in their corner. Row 2 is the toolbar: navigation at the start, actions and close panel at the end.
+  - **Browser:** one 48px row while the identity keeps 176px beside the navigation and every action; otherwise the same two rows. Nothing overlaps or clips at any width from 360px.
+  - **Narrow panels:** actions that still do not fit move into "…", lowest priority first (on the task panel: delete, then open in full page, then watch). The panel's own "…" lists them (destructive last), the navigation and close panel never move, and an action with a popover of its own is `pinned`. On touch screens toolbar buttons sit a 44px hit area apart.
 - **Menu items:**
   - `rounded-md px-2 py-1.5 text-sm`;
   - `hover:bg-accent hover:text-accent-foreground`;
   - keyboard shortcuts shown in `Kbd` chips.
+
+### Desktop window controls
+
+In the desktop app the window's own buttons share the top row with the app: minimize, maximize and close drawn by the web app at the top right on Windows (138px) and Linux (108px), and the macOS traffic lights over the top left (`leftInset`, 80px). They always win that corner (`components/desktop/desktop-title-bar.tsx`, `styles/desktop.css`).
+
+- **Never under, never mistaken.** Nothing the app draws may sit under the window buttons or the traffic lights, at any window size: rows that reach the top edge reserve `--desktop-controls-width` (right) and `--desktop-inset-left` (left) plus a gap of their own (at least 8px), popups start under the title bar line (`--desktop-frame-top`), and toasts placed at the top start under it too.
+- **Keep app buttons apart.** Where app buttons share the row (the shell's top bar, a side panel's top row), a hairline separates them from the window buttons (`WindowControls separated`). Near the window buttons, app actions use glyphs that cannot read as window buttons: "open in full page" is `SquareArrowOutUpRight` or `ExternalLink`, never a square or the two-arrow maximize; never an app close X immediately beside the window close, nor a minus beside minimize.
+- **Always movable, always closable.** Every surface has empty space that moves the window (a double-click maximizes or restores): the top bar, a page's own header row, the slim bar on pages without the shell, a side panel's top row, the strip over a dimmed title bar. An element in full screen (the whiteboard, an image or a video) inside a window that is not full screen itself keeps a slim title bar at its top, drawn inside that element (outside it nothing takes a press), and its content starts under the bar. When the window itself goes full screen the system hides its frame and the app draws none.
+- **Above every overlay.** The window buttons stay clickable over backdrops, sheets, dialogs, menus and toasts (`--z-window-controls`).
+- **Text direction.** The window buttons follow the operating system, not the app's language: Windows and Linux buttons stay at the physical right in the OS's order (minimize, maximize, close), and the traffic lights stay at the left. Their own markup (the buttons, the slim bar, the full-screen bar) is `dir="ltr"` with physical padding. Every locale Margaya ships is left to right, so rows still reserve their room with logical `pe`/`ps`; adding a right-to-left locale means switching those reservations to physical sides (`pr` for the buttons, `pl` for the traffic lights).
 
 ### Mentions and links
 

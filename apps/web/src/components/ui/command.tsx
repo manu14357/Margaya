@@ -14,6 +14,11 @@ import {
   AutocompleteList,
   AutocompleteSeparator,
 } from "@/components/ui/autocomplete";
+import {
+  OVERLAY_BACKDROP_CLASS,
+  OVERLAY_VIEWPORT_CLASS,
+  overlayBackdropProps,
+} from "@/components/ui/overlay";
 import { cn } from "@/lib/cn";
 
 const CommandDialog = CommandDialogPrimitive.Root;
@@ -37,11 +42,9 @@ function CommandDialogBackdrop({
 }: CommandDialogPrimitive.Backdrop.Props) {
   return (
     <CommandDialogPrimitive.Backdrop
-      className={cn(
-        "fixed inset-0 z-50 bg-black/32 backdrop-blur-sm transition-opacity duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0",
-        className,
-      )}
+      className={cn(OVERLAY_BACKDROP_CLASS, className)}
       data-slot="command-dialog-backdrop"
+      {...overlayBackdropProps}
       {...props}
     />
   );
@@ -54,7 +57,8 @@ function CommandDialogViewport({
   return (
     <CommandDialogPrimitive.Viewport
       className={cn(
-        "fixed inset-0 z-50 flex flex-col items-center px-4 py-[max(--spacing(4),4vh)] sm:py-[10vh]",
+        OVERLAY_VIEWPORT_CLASS,
+        "flex flex-col items-center px-4 py-[max(--spacing(4),4vh)] sm:py-[10vh]",
         className,
       )}
       data-slot="command-dialog-viewport"

@@ -200,7 +200,7 @@ export default function TableHandles({ editor }: { editor: Editor }) {
             : "tasks:editor.table.dragColumnHint",
         )}
         className={cn(
-          "margaya-table-handle fixed z-[60] flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40",
+          "margaya-table-handle fixed z-(--z-overlay-tools) flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40",
           layout.movable && "cursor-grab",
           isTarget && "bg-accent text-accent-foreground",
         )}
@@ -251,7 +251,7 @@ export default function TableHandles({ editor }: { editor: Editor }) {
           ? "tasks:editor.table.insertRowHere"
           : "tasks:editor.table.insertColumnHere",
       )}
-      className="margaya-table-plus fixed z-[60] flex size-3.5 items-center justify-center rounded-full border border-border bg-background text-muted-foreground opacity-0 hover:text-foreground hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="margaya-table-plus fixed z-(--z-overlay-tools) flex size-3.5 items-center justify-center rounded-full border border-border bg-background text-muted-foreground opacity-0 hover:text-foreground hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       style={style}
       onMouseDown={(event) => event.preventDefault()}
       onClick={() => (kind === "row" ? insertRow(after) : insertColumn(after))}
