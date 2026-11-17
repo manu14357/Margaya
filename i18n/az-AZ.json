@@ -3830,6 +3830,10 @@
 				"confirmation": "Təsdiq mesajı",
 				"confirmationHint": "Kimsə sorğu göndərdikdən sonra göstərilir."
 			}
+		},
+		"table": {
+			"actions": "Əməliyyatlar",
+			"actionsFor": "{{name}} üçün əməliyyatlar"
 		}
 	},
 	"navigation": {

@@ -1,20 +1,15 @@
 import { Download, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  SettingsTableCell,
+  SettingsTableMeta,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { CompactDate } from "@/components/ui/compact-date";
 import { Spinner } from "@/components/ui/spinner";
-import { TableCell, TableRow } from "@/components/ui/table";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  formatDateMedium,
-  formatDateTime,
-  formatNumber,
-  formatRelativeTime,
-} from "@/lib/format";
+import { formatDateMedium, formatNumber } from "@/lib/format";
 import { formatBytes } from "@/lib/format-bytes";
 import { getInitials } from "@/lib/get-initials";
 import { canDownload, displayExportStatus } from "@/lib/task-export/status";
@@ -62,12 +57,41 @@ export function ExportHistoryRow({
           t("settings:workspaceExports.history.deletedProject"),
       });
 
+  const requester = row.requestedBy ? (
+    <span className="inline-flex min-w-0 max-w-full items-center gap-2">
+      <Avatar className="size-5 shrink-0">
+        <AvatarImage src={row.requestedBy.image ?? ""} alt="" />
+        <AvatarFallback className="bg-muted text-[0.625rem]">
+          {getInitials(row.requestedBy.name)}
+        </AvatarFallback>
+      </Avatar>
+      <span className="truncate">{row.requestedBy.name}</span>
+    </span>
+  ) : (
+    <Muted>—</Muted>
+  );
+  const expires =
+    row.expiresAt && (status === "completed" || status === "expired") ? (
+      <Muted>
+        {downloadable
+          ? t("settings:workspaceExports.history.expiresOn", {
+              date: formatDateMedium(row.expiresAt),
+            })
+          : t("settings:workspaceExports.history.expiredOn", {
+              date: formatDateMedium(row.expiresAt),
+            })}
+      </Muted>
+    ) : (
+      <Muted>—</Muted>
+    );
+  const tasks =
+    row.taskCount === null ? <Muted>—</Muted> : formatNumber(row.taskCount);
+  const size = row.sizeBytes ? formatBytes(row.sizeBytes) : <Muted>—</Muted>;
+
   return (
-    <TableRow>
-      <TableCell className="max-w-56">
-        <span className="block truncate font-medium" title={summary}>
-          {summary}
-        </span>
+    <SettingsTableRow>
+      <SettingsTableCell kind="primary">
+        <span className="block font-medium">{summary}</span>
         {isWorkspace && row.fileCount !== null && (
           <span className="block truncate text-muted-foreground text-xs">
             {row.includeFiles
@@ -84,69 +108,44 @@ export function ExportHistoryRow({
             })}
           </span>
         )}
-      </TableCell>
+        <SettingsTableMeta hideAbove="md">
+          <span>
+            {t("settings:workspaceExports.history.columns.tasks")} {tasks}
+          </span>
+          <span>{size}</span>
+        </SettingsTableMeta>
+        <SettingsTableMeta hideAbove="lg">
+          {showRequester && <span className="min-w-0">{requester}</span>}
+          <span>{expires}</span>
+        </SettingsTableMeta>
+      </SettingsTableCell>
       {showRequester && (
-        <TableCell>
-          {row.requestedBy ? (
-            <span className="inline-flex min-w-0 items-center gap-2">
-              <Avatar className="size-5">
-                <AvatarImage src={row.requestedBy.image ?? ""} alt="" />
-                <AvatarFallback className="bg-muted text-[0.625rem]">
-                  {getInitials(row.requestedBy.name)}
-                </AvatarFallback>
-              </Avatar>
-              <span className="truncate">{row.requestedBy.name}</span>
-            </span>
-          ) : (
-            <Muted>—</Muted>
-          )}
-        </TableCell>
+        <SettingsTableCell hideBelow="lg">{requester}</SettingsTableCell>
       )}
-      <TableCell>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <time
-                dateTime={row.createdAt}
-                className="cursor-default whitespace-nowrap text-muted-foreground"
-              />
-            }
-          >
-            {/* The real clock: the minute tick can trail a row just created. */}
-            {formatRelativeTime(row.createdAt)}
-          </TooltipTrigger>
-          <TooltipContent>{formatDateTime(row.createdAt)}</TooltipContent>
-        </Tooltip>
-      </TableCell>
-      <TableCell>
+      <SettingsTableCell
+        label={t("settings:workspaceExports.history.columns.created")}
+        className="text-muted-foreground"
+      >
+        {/* The real clock: the minute tick can trail a row just created. */}
+        <CompactDate value={row.createdAt} />
+      </SettingsTableCell>
+      <SettingsTableCell
+        label={t("settings:workspaceExports.history.columns.status")}
+      >
         <ExportStatusBadge status={status} error={row.error} />
-      </TableCell>
-      <TableCell className="hidden text-right tabular-nums md:table-cell">
-        {row.taskCount === null ? (
-          <Muted>—</Muted>
-        ) : (
-          formatNumber(row.taskCount)
-        )}
-      </TableCell>
-      <TableCell className="hidden whitespace-nowrap text-right tabular-nums md:table-cell">
-        {row.sizeBytes ? formatBytes(row.sizeBytes) : <Muted>—</Muted>}
-      </TableCell>
-      <TableCell className="whitespace-nowrap">
-        {row.expiresAt && (status === "completed" || status === "expired") ? (
-          <Muted>
-            {downloadable
-              ? t("settings:workspaceExports.history.expiresOn", {
-                  date: formatDateMedium(row.expiresAt),
-                })
-              : t("settings:workspaceExports.history.expiredOn", {
-                  date: formatDateMedium(row.expiresAt),
-                })}
-          </Muted>
-        ) : (
-          <Muted>—</Muted>
-        )}
-      </TableCell>
-      <TableCell className="text-right">
+      </SettingsTableCell>
+      <SettingsTableCell align="end" hideBelow="md">
+        {tasks}
+      </SettingsTableCell>
+      <SettingsTableCell
+        align="end"
+        hideBelow="md"
+        className="whitespace-nowrap"
+      >
+        {size}
+      </SettingsTableCell>
+      <SettingsTableCell hideBelow="lg">{expires}</SettingsTableCell>
+      <SettingsTableCell kind="actions">
         <div className="inline-flex items-center gap-1">
           {downloadable && (
             <Button
@@ -181,8 +180,8 @@ export function ExportHistoryRow({
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
-      </TableCell>
-    </TableRow>
+      </SettingsTableCell>
+    </SettingsTableRow>
   );
 }
 

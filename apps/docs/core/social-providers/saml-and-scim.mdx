@@ -82,9 +82,9 @@ Plain HTTP still sends the response and the session unencrypted, so anyone who c
 
 ### Change or remove a connection
 
-Select **Edit** to change the name, domains, issuer, sign-on URL or certificate. Leave **Signing certificate** empty to keep the current one. The table shows when each certificate expires, with **Expires soon** in the last 30 days and **Expired** after that. An expired certificate stops sign-in, so replace it in time.
+Open the **⋯** menu on a connection and choose **Edit** to change the name, domains, issuer, sign-on URL or certificate. Leave **Signing certificate** empty to keep the current one. The table shows when each certificate expires, with **Expires soon** in the last 30 days and **Expired** after that. An expired certificate stops sign-in, so replace it in time.
 
-**Remove** stops sign-in through this provider at once. Accounts stay and their owners sign in another way, while sessions that already exist keep working.
+**Remove**, in the same menu, stops sign-in through this provider at once. Accounts stay and their owners sign in another way, while sessions that already exist keep working.
 
 ## Provisioning with SCIM
 
@@ -101,7 +101,7 @@ Each connection belongs to one workspace. To provision several workspaces, creat
 You see the token only once, and Margaya stores only its hash. Give it only to the identity provider: whoever holds it can add people to the workspace, and change or deactivate the people this connection manages.
 </Warning>
 
-<Screenshot src="admin/scim-connections" alt="The Provisioning (SCIM) section with a Connect provider button, one connection named Company directory for the Studio North workspace managing 12 people, Replace token and Remove buttons, and the SCIM base URL" caption="Each connection shows its workspace and how many people it manages." />
+<Screenshot src="admin/scim-connections" alt="The Provisioning (SCIM) section with a Connect provider button, one connection named Company directory for the Studio North workspace managing 12 people, its actions menu, and the SCIM base URL" caption="Each connection shows its workspace and how many people it manages." />
 
 The base URL looks like `https://margaya.example.com/api/auth/scim/v2`. The provider sends the token, exactly as shown, in the `Authorization: Bearer` header. Anything else gets a `401`.
 
@@ -153,7 +153,7 @@ The discovery endpoints `/ServiceProviderConfig`, `/Schemas` and `/ResourceTypes
 
 ### Replace a token or remove a connection
 
-**Replace token** stops the current token at once and shows a new one once. Provisioning stops until the provider has the new token. People stay linked.
+Both actions are in the **⋯** menu on the connection. **Replace token** stops the current token at once and shows a new one once. Provisioning stops until the provider has the new token. People stay linked.
 
 **Remove** stops the token at once. The people it added keep their accounts and memberships, and nothing updates them from the provider any more.
 

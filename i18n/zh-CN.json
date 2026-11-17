@@ -3770,6 +3770,10 @@
 				"confirmation": "确认消息",
 				"confirmationHint": "在用户提交请求后显示。"
 			}
+		},
+		"table": {
+			"actions": "操作",
+			"actionsFor": "{{name}} 的操作"
 		}
 	},
 	"navigation": {

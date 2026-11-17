@@ -25,6 +25,7 @@ function RouteComponent() {
 
   return (
     <InstancePage
+      width="wide"
       title={t("instanceAdmin:admins.title")}
       subtitle={t("instanceAdmin:admins.subtitle")}
       actions={

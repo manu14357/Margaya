@@ -39,6 +39,7 @@ function RouteComponent() {
   return (
     <SettingsPage
       title={t("settings:developerPage.title")}
+      width="wide"
       documentTitle={t("settings:developerPage.pageTitle")}
       description={t("settings:developerPage.subtitle")}
       actions={

@@ -3770,6 +3770,10 @@
 				"confirmation": "Thông điệp xác nhận",
 				"confirmationHint": "Hiển thị sau khi ai đó gửi yêu cầu."
 			}
+		},
+		"table": {
+			"actions": "Thao tác",
+			"actionsFor": "Thao tác cho {{name}}"
 		}
 	},
 	"navigation": {

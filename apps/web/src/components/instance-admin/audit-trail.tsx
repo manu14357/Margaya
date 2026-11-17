@@ -1,15 +1,16 @@
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
+import { Button } from "@/components/ui/button";
+import { CompactDate } from "@/components/ui/compact-date";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { useInstanceAuditLog } from "@/hooks/queries/instance-admin/use-instance-admin";
-import { formatDateTime } from "@/lib/format";
 import { INSTANCE_AUDIT_ACTION_KEYS } from "@/lib/instance-audit";
 import { InstanceLoadState, InstanceSection } from "./instance-page";
 
@@ -45,43 +46,55 @@ export function AuditTrail() {
         </p>
       ) : (
         <div className="space-y-3">
-          <div className="overflow-x-auto rounded-md border border-border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t("accountSecurity:auditTrail.when")}</TableHead>
-                  <TableHead>{t("accountSecurity:auditTrail.who")}</TableHead>
-                  <TableHead>{t("accountSecurity:auditTrail.what")}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {entries.map((entry) => (
-                  <TableRow key={entry.id}>
-                    <TableCell className="whitespace-nowrap text-muted-foreground">
-                      <time dateTime={String(entry.createdAt)}>
-                        {formatDateTime(entry.createdAt)}
-                      </time>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {entry.actorName ??
+          <SettingsTable>
+            <SettingsTableHeader>
+              <SettingsTableRow>
+                <SettingsTableHead className="w-36">
+                  {t("accountSecurity:auditTrail.when")}
+                </SettingsTableHead>
+                <SettingsTableHead className="w-44">
+                  {t("accountSecurity:auditTrail.who")}
+                </SettingsTableHead>
+                <SettingsTableHead>
+                  {t("accountSecurity:auditTrail.what")}
+                </SettingsTableHead>
+              </SettingsTableRow>
+            </SettingsTableHeader>
+            <SettingsTableBody>
+              {entries.map((entry) => (
+                <SettingsTableRow key={entry.id}>
+                  <SettingsTableCell
+                    label={t("accountSecurity:auditTrail.when")}
+                    className="text-muted-foreground"
+                  >
+                    <CompactDate value={entry.createdAt} />
+                  </SettingsTableCell>
+                  <SettingsTableCell
+                    label={t("accountSecurity:auditTrail.who")}
+                  >
+                    <TruncatedText
+                      text={
+                        entry.actorName ??
                         (entry.actorType === "system"
                           ? t("accountSecurity:auditTrail.system")
-                          : "—")}
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      <span>{actionLabel(entry.action)}</span>
-                      {entry.targetLabel ? (
-                        <span className="text-muted-foreground">
-                          {" · "}
-                          {entry.targetLabel}
-                        </span>
-                      ) : null}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                          : "—")
+                      }
+                    />
+                  </SettingsTableCell>
+                  {/* Long setting lists wrap instead of widening the table. */}
+                  <SettingsTableCell kind="primary" className="leading-5">
+                    <span>{actionLabel(entry.action)}</span>
+                    {entry.targetLabel ? (
+                      <span className="text-muted-foreground">
+                        {" · "}
+                        {entry.targetLabel}
+                      </span>
+                    ) : null}
+                  </SettingsTableCell>
+                </SettingsTableRow>
+              ))}
+            </SettingsTableBody>
+          </SettingsTable>
           {audit.hasNextPage ? (
             <Button
               variant="outline"

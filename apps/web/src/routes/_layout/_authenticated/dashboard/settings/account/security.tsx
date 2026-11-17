@@ -32,6 +32,7 @@ function SecurityPage() {
   return (
     <SettingsPage
       title={t("settings:securityPage.title")}
+      width="wide"
       documentTitle={t("settings:securityPage.pageTitle")}
       description={t("settings:securityPage.subtitle")}
     >

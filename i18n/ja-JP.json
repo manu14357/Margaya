@@ -3770,6 +3770,10 @@
 				"confirmation": "確認メッセージ",
 				"confirmationHint": "リクエストの送信後に表示されます。"
 			}
+		},
+		"table": {
+			"actions": "操作",
+			"actionsFor": "{{name}} の操作"
 		}
 	},
 	"navigation": {

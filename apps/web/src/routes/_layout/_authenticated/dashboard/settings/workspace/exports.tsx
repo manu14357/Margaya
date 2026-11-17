@@ -43,6 +43,7 @@ function RouteComponent() {
   return (
     <SettingsPage
       title={t("settings:workspaceExports.title")}
+      width="wide"
       documentTitle={t("settings:workspaceExports.pageTitle")}
       description={t("settings:workspaceExports.subtitle", {
         days: retentionDays,

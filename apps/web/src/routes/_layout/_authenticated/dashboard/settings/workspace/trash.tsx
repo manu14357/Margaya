@@ -19,6 +19,7 @@ function RouteComponent() {
   return (
     <SettingsPage
       title={t("settings:trash.workspaceTitle")}
+      width="wide"
       description={t("settings:trash.workspaceSubtitle")}
     >
       {workspace?.id && (

@@ -3770,6 +3770,10 @@
 				"confirmation": "Pesan konfirmasi",
 				"confirmationHint": "Ditampilkan setelah seseorang mengirim permintaan."
 			}
+		},
+		"table": {
+			"actions": "Tindakan",
+			"actionsFor": "Tindakan untuk {{name}}"
 		}
 	},
 	"navigation": {

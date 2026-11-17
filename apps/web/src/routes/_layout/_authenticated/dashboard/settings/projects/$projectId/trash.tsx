@@ -29,6 +29,7 @@ function RouteComponent() {
   return (
     <SettingsPage
       title={pageTitle}
+      width="wide"
       documentTitle={
         project?.name ? `${pageTitle} · ${project.name}` : pageTitle
       }

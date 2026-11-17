@@ -31,6 +31,7 @@ function RouteComponent() {
 
   return (
     <InstancePage
+      width="wide"
       title={t("instanceAdmin:publicBoards.title")}
       subtitle={t("instanceAdmin:publicBoards.subtitle")}
       locked={settings.data?.locked}

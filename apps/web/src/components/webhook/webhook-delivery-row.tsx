@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { TableCell, TableRow } from "@/components/ui/table";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { formatDateTime, formatRelativeTime } from "@/lib/format";
+  SettingsTableCell,
+  SettingsTableMeta,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
+import { CompactDate } from "@/components/ui/compact-date";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { type ResponseLabelKind, responseLabel } from "@/lib/webhook/delivery";
 import type { WebhookDeliverySummary } from "@/types/webhook";
 import { DeliveryStatusBadge } from "./delivery-status-badge";
@@ -59,8 +59,18 @@ export function WebhookDeliveryRow({
   onOpen,
 }: WebhookDeliveryRowProps) {
   const { t } = useTranslation();
+  const attempts = t("settings:workspaceWebhooks.deliveries.attemptsValue", {
+    attempts: delivery.attemptCount,
+    max: delivery.maxAttempts,
+  });
+  const duration =
+    delivery.durationMs === null
+      ? "—"
+      : t("settings:workspaceWebhooks.deliveries.durationValue", {
+          ms: delivery.durationMs,
+        });
   return (
-    <TableRow
+    <SettingsTableRow
       className="cursor-pointer"
       tabIndex={0}
       onClick={onOpen}
@@ -71,49 +81,53 @@ export function WebhookDeliveryRow({
         }
       }}
     >
-      <TableCell>
+      <SettingsTableCell
+        label={t("settings:workspaceWebhooks.deliveries.columns.status")}
+      >
         <DeliveryStatusBadge status={delivery.status} />
-      </TableCell>
-      <TableCell>
-        <code className="font-mono text-xs">{delivery.event}</code>
-      </TableCell>
-      <TableCell className="hidden max-w-60 lg:table-cell">
-        <span className="block truncate text-muted-foreground">
-          {delivery.summary ?? "—"}
-        </span>
-      </TableCell>
-      <TableCell>
+      </SettingsTableCell>
+      <SettingsTableCell kind="primary">
+        <code className="font-mono text-xs wrap-anywhere">
+          {delivery.event}
+        </code>
+        {delivery.summary && (
+          <SettingsTableMeta hideAbove="lg">
+            <span className="min-w-0 wrap-break-word">{delivery.summary}</span>
+          </SettingsTableMeta>
+        )}
+        <SettingsTableMeta hideAbove="md">
+          <span>{attempts}</span>
+          <span>{duration}</span>
+        </SettingsTableMeta>
+      </SettingsTableCell>
+      <SettingsTableCell hideBelow="lg">
+        <TruncatedText
+          text={delivery.summary ?? "—"}
+          className="text-muted-foreground"
+        />
+      </SettingsTableCell>
+      <SettingsTableCell
+        label={t("settings:workspaceWebhooks.deliveries.columns.response")}
+      >
         <DeliveryResponse delivery={delivery} />
-      </TableCell>
-      <TableCell className="hidden tabular-nums md:table-cell">
-        {t("settings:workspaceWebhooks.deliveries.attemptsValue", {
-          attempts: delivery.attemptCount,
-          max: delivery.maxAttempts,
-        })}
-      </TableCell>
-      <TableCell>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <time
-                dateTime={delivery.createdAt}
-                className="cursor-default whitespace-nowrap text-muted-foreground"
-              />
-            }
-          >
-            {formatRelativeTime(delivery.createdAt)}
-          </TooltipTrigger>
-          <TooltipContent>{formatDateTime(delivery.createdAt)}</TooltipContent>
-        </Tooltip>
-      </TableCell>
-      <TableCell className="hidden whitespace-nowrap text-right text-muted-foreground tabular-nums md:table-cell">
-        {delivery.durationMs === null
-          ? "—"
-          : t("settings:workspaceWebhooks.deliveries.durationValue", {
-              ms: delivery.durationMs,
-            })}
-      </TableCell>
-    </TableRow>
+      </SettingsTableCell>
+      <SettingsTableCell hideBelow="md" className="tabular-nums">
+        {attempts}
+      </SettingsTableCell>
+      <SettingsTableCell
+        label={t("settings:workspaceWebhooks.deliveries.columns.created")}
+        className="text-muted-foreground"
+      >
+        <CompactDate value={delivery.createdAt} />
+      </SettingsTableCell>
+      <SettingsTableCell
+        hideBelow="md"
+        align="end"
+        className="whitespace-nowrap text-muted-foreground"
+      >
+        {duration}
+      </SettingsTableCell>
+    </SettingsTableRow>
   );
 }
 

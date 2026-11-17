@@ -3,6 +3,15 @@ import { EllipsisVertical, ExternalLink, Globe, Settings } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableMeta,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
+import {
   AlertDialog,
   AlertDialogClose,
   AlertDialogContent,
@@ -13,6 +22,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { CompactDate } from "@/components/ui/compact-date";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,18 +30,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useUnpublishInstanceBoard } from "@/hooks/mutations/instance-admin/use-instance-admin-mutations";
 import { useInstancePublicBoards } from "@/hooks/queries/instance-admin/use-instance-admin";
 import { authClient } from "@/lib/auth-client";
-import { formatDateMedium } from "@/lib/format";
 import { toast } from "@/lib/toast";
 import type { InstancePublicBoard } from "@/types/instance-admin";
 import { InstanceLoadState } from "./instance-page";
@@ -106,99 +107,113 @@ export function PublicBoardsTable({ q }: PublicBoardsTableProps) {
 
   return (
     <div className="space-y-3">
-      <div className="overflow-x-auto rounded-md border border-border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>
-                {t("instanceAdmin:publicBoards.columns.project")}
-              </TableHead>
-              <TableHead>
-                {t("instanceAdmin:publicBoards.columns.workspace")}
-              </TableHead>
-              <TableHead>
-                {t("instanceAdmin:publicBoards.columns.published")}
-              </TableHead>
-              <TableHead>
-                {t("instanceAdmin:publicBoards.columns.features")}
-              </TableHead>
-              <TableHead className="w-0" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {items.map((board) => {
-              const features = (
-                Object.keys(FEATURE_LABELS) as Array<
-                  keyof typeof FEATURE_LABELS
+      <SettingsTable>
+        <SettingsTableHeader>
+          <SettingsTableRow>
+            <SettingsTableHead>
+              {t("instanceAdmin:publicBoards.columns.project")}
+            </SettingsTableHead>
+            <SettingsTableHead>
+              {t("instanceAdmin:publicBoards.columns.workspace")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-32" hideBelow="md">
+              {t("instanceAdmin:publicBoards.columns.published")}
+            </SettingsTableHead>
+            <SettingsTableHead>
+              {t("instanceAdmin:publicBoards.columns.features")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-14">
+              <span className="sr-only">
+                {t("instanceAdmin:publicBoards.actions")}
+              </span>
+            </SettingsTableHead>
+          </SettingsTableRow>
+        </SettingsTableHeader>
+        <SettingsTableBody>
+          {items.map((board) => {
+            const features = (
+              Object.keys(FEATURE_LABELS) as Array<keyof typeof FEATURE_LABELS>
+            ).filter((feature) => board.features[feature]);
+            return (
+              <SettingsTableRow key={board.projectId}>
+                <SettingsTableCell kind="primary" className="font-medium">
+                  {board.projectName}
+                  <SettingsTableMeta hideAbove="md" className="font-normal">
+                    <span>
+                      {t("instanceAdmin:publicBoards.columns.published")}{" "}
+                      <CompactDate value={board.publishedAt} />
+                    </span>
+                  </SettingsTableMeta>
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("instanceAdmin:publicBoards.columns.workspace")}
+                  className="text-muted-foreground"
                 >
-              ).filter((feature) => board.features[feature]);
-              return (
-                <TableRow key={board.projectId}>
-                  <TableCell className="font-medium">
-                    {board.projectName}
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {board.workspaceName}
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap text-muted-foreground">
-                    {formatDateMedium(board.publishedAt)}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap gap-1">
-                      {features.map((feature) => (
-                        <Badge key={feature} variant="outline" size="sm">
-                          {t(FEATURE_LABELS[feature])}
-                        </Badge>
-                      ))}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger
-                        render={
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            aria-label={t("instanceAdmin:publicBoards.actions")}
-                          />
+                  {board.workspaceName}
+                </SettingsTableCell>
+                <SettingsTableCell
+                  hideBelow="md"
+                  className="text-muted-foreground"
+                >
+                  <CompactDate value={board.publishedAt} />
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("instanceAdmin:publicBoards.columns.features")}
+                >
+                  <div className="flex flex-wrap gap-1">
+                    {features.map((feature) => (
+                      <Badge key={feature} variant="outline" size="sm">
+                        {t(FEATURE_LABELS[feature])}
+                      </Badge>
+                    ))}
+                  </div>
+                </SettingsTableCell>
+                <SettingsTableCell kind="actions">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          aria-label={t("instanceAdmin:publicBoards.actions")}
+                        />
+                      }
+                    >
+                      <EllipsisVertical />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onClick={() =>
+                          window.open(board.path, "_blank", "noopener")
                         }
                       >
-                        <EllipsisVertical />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() =>
-                            window.open(board.path, "_blank", "noopener")
-                          }
-                        >
-                          <ExternalLink />
-                          {t("instanceAdmin:publicBoards.openBoard")}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => void openSettings(board)}
-                        >
-                          <Settings />
-                          {t("instanceAdmin:publicBoards.projectSettings")}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          variant="destructive"
-                          onClick={() => {
-                            setPending(board);
-                            setConfirmOpen(true);
-                          }}
-                        >
-                          {t("instanceAdmin:publicBoards.unpublish")}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
+                        <ExternalLink />
+                        {t("instanceAdmin:publicBoards.openBoard")}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => void openSettings(board)}
+                      >
+                        <Settings />
+                        {t("instanceAdmin:publicBoards.projectSettings")}
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        variant="destructive"
+                        onClick={() => {
+                          setPending(board);
+                          setConfirmOpen(true);
+                        }}
+                      >
+                        {t("instanceAdmin:publicBoards.unpublish")}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </SettingsTableCell>
+              </SettingsTableRow>
+            );
+          })}
+        </SettingsTableBody>
+      </SettingsTable>
       {query.hasNextPage && (
         <Button
           variant="outline"

@@ -3830,6 +3830,10 @@
 				"confirmation": "Bevestigingsbericht",
 				"confirmationHint": "Getoond nadat iemand een verzoek heeft verstuurd."
 			}
+		},
+		"table": {
+			"actions": "Acties",
+			"actionsFor": "Acties voor {{name}}"
 		}
 	},
 	"navigation": {

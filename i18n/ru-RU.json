@@ -3962,6 +3962,10 @@
 				"confirmation": "Сообщение с подтверждением",
 				"confirmationHint": "Показывается после отправки заявки."
 			}
+		},
+		"table": {
+			"actions": "Действия",
+			"actionsFor": "Действия для {{name}}"
 		}
 	},
 	"navigation": {

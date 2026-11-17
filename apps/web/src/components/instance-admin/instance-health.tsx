@@ -5,15 +5,16 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Badge } from "@/components/ui/badge";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
+import { Badge } from "@/components/ui/badge";
+import { CompactDate } from "@/components/ui/compact-date";
 import { formatDateTime, formatNumber } from "@/lib/format";
 import type {
   InstanceHealth,
@@ -233,52 +234,71 @@ export function HealthJobs({ jobs }: { jobs: InstanceHealth["jobs"] }) {
           {t("instanceAdmin:health.jobs.empty")}
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-md border border-border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t("instanceAdmin:health.jobs.name")}</TableHead>
-                <TableHead>{t("instanceAdmin:health.jobs.lastRun")}</TableHead>
-                <TableHead>{t("instanceAdmin:health.jobs.outcome")}</TableHead>
-                <TableHead className="text-end">
-                  {t("instanceAdmin:health.jobs.runs")}
-                </TableHead>
-                <TableHead className="text-end">
-                  {t("instanceAdmin:health.jobs.failures")}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {jobs.map((job) => (
-                <TableRow key={job.name}>
-                  <TableCell className="font-mono text-xs">
-                    {job.name}
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap text-sm text-muted-foreground">
-                    {job.running
-                      ? t("instanceAdmin:health.jobs.running")
-                      : job.lastRunAt
-                        ? formatDateTime(job.lastRunAt)
-                        : t("instanceAdmin:health.jobs.notRun")}
-                  </TableCell>
-                  <TableCell>
-                    {job.lastOutcome ? (
-                      <HealthStatusBadge status={jobStatus(job)} />
-                    ) : (
-                      <span className="text-sm text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-end text-sm tabular-nums">
-                    {formatNumber(job.runs)}
-                  </TableCell>
-                  <TableCell className="text-end text-sm tabular-nums">
-                    {formatNumber(job.failures)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <SettingsTable>
+          <SettingsTableHeader>
+            <SettingsTableRow>
+              <SettingsTableHead>
+                {t("instanceAdmin:health.jobs.name")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-40">
+                {t("instanceAdmin:health.jobs.lastRun")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-32">
+                {t("instanceAdmin:health.jobs.outcome")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-20" align="end">
+                {t("instanceAdmin:health.jobs.runs")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-24" align="end">
+                {t("instanceAdmin:health.jobs.failures")}
+              </SettingsTableHead>
+            </SettingsTableRow>
+          </SettingsTableHeader>
+          <SettingsTableBody>
+            {jobs.map((job) => (
+              <SettingsTableRow key={job.name}>
+                <SettingsTableCell kind="primary" className="font-mono text-xs">
+                  {job.name}
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("instanceAdmin:health.jobs.lastRun")}
+                  className="text-muted-foreground text-sm"
+                >
+                  {job.running ? (
+                    t("instanceAdmin:health.jobs.running")
+                  ) : job.lastRunAt ? (
+                    <CompactDate value={job.lastRunAt} />
+                  ) : (
+                    t("instanceAdmin:health.jobs.notRun")
+                  )}
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("instanceAdmin:health.jobs.outcome")}
+                >
+                  {job.lastOutcome ? (
+                    <HealthStatusBadge status={jobStatus(job)} />
+                  ) : (
+                    <span className="text-sm text-muted-foreground">-</span>
+                  )}
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("instanceAdmin:health.jobs.runs")}
+                  align="end"
+                  className="text-sm"
+                >
+                  {formatNumber(job.runs)}
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("instanceAdmin:health.jobs.failures")}
+                  align="end"
+                  className="text-sm"
+                >
+                  {formatNumber(job.failures)}
+                </SettingsTableCell>
+              </SettingsTableRow>
+            ))}
+          </SettingsTableBody>
+        </SettingsTable>
       )}
     </InstanceSection>
   );

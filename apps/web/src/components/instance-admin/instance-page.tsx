@@ -12,6 +12,8 @@ type InstancePageProps = {
   /** The global lock: every control on the page is read-only. */
   locked?: boolean;
   actions?: ReactNode;
+  /** "wide" for pages built around tables (see SettingsPage). */
+  width?: "narrow" | "wide";
   children: ReactNode;
 };
 
@@ -21,6 +23,7 @@ export function InstancePage({
   subtitle,
   locked = false,
   actions,
+  width,
   children,
 }: InstancePageProps) {
   const { t } = useTranslation();
@@ -30,6 +33,7 @@ export function InstancePage({
       documentTitle={t("instanceAdmin:pageTitle", { page: title })}
       description={subtitle}
       actions={actions}
+      width={width}
       notice={
         locked ? (
           <LockedCallout>{t("instanceAdmin:lockedCallout")}</LockedCallout>

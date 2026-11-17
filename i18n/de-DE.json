@@ -3830,6 +3830,10 @@
 				"confirmation": "Bestätigungsnachricht",
 				"confirmationHint": "Wird angezeigt, nachdem jemand eine Anfrage gesendet hat."
 			}
+		},
+		"table": {
+			"actions": "Aktionen",
+			"actionsFor": "Aktionen für {{name}}"
 		}
 	},
 	"navigation": {

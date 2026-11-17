@@ -1,16 +1,16 @@
 import { Bot, ChevronRight, KeyRound, ServerCog } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  SettingsTableCell,
+  SettingsTableMeta,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { TableCell, TableRow } from "@/components/ui/table";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { CompactDate } from "@/components/ui/compact-date";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { auditActionSentence } from "@/lib/audit-log/actions";
 import { cn } from "@/lib/cn";
-import { formatDateTime, formatRelativeTime } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
 import type { AuditLogEntry } from "@/types/audit-log";
 import { AuditLogDetails } from "./audit-log-details";
@@ -141,32 +141,33 @@ export function AuditLogRow({ entry, expanded, onToggle }: AuditLogRowProps) {
 
   return (
     <>
-      <TableRow className={cn(expanded && "border-b-0")}>
-        <TableCell className="w-px">
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <time
-                  dateTime={String(entry.createdAt)}
-                  className="cursor-default whitespace-nowrap text-muted-foreground"
-                />
-              }
-            >
-              {formatRelativeTime(entry.createdAt)}
-            </TooltipTrigger>
-            <TooltipContent>{formatDateTime(entry.createdAt)}</TooltipContent>
-          </Tooltip>
-        </TableCell>
-        <TableCell className="max-w-48">
+      <SettingsTableRow className={cn(expanded && "border-b-0")}>
+        <SettingsTableCell
+          label={t("settings:workspaceAuditLog.columns.time")}
+          className="text-muted-foreground"
+        >
+          <CompactDate value={entry.createdAt} />
+        </SettingsTableCell>
+        <SettingsTableCell
+          label={t("settings:workspaceAuditLog.columns.actor")}
+        >
           <ActorCell entry={entry} />
-        </TableCell>
-        <TableCell>{t(sentence.key, sentence.values)}</TableCell>
-        <TableCell className="hidden max-w-60 md:table-cell">
+        </SettingsTableCell>
+        <SettingsTableCell kind="primary" className="leading-5">
+          {t(sentence.key, sentence.values)}
+          {entry.target && (
+            <SettingsTableMeta hideAbove="md">
+              <span className="min-w-0 wrap-break-word">
+                {entry.target.label ?? "—"}
+                {targetTypeKey && <> ({t(targetTypeKey)})</>}
+              </span>
+            </SettingsTableMeta>
+          )}
+        </SettingsTableCell>
+        <SettingsTableCell hideBelow="md">
           {entry.target ? (
             <span className="block min-w-0">
-              <span className="block truncate">
-                {entry.target.label ?? "—"}
-              </span>
+              <TruncatedText text={entry.target.label ?? "—"} />
               {targetTypeKey && (
                 <span className="block text-muted-foreground text-xs">
                   {t(targetTypeKey)}
@@ -176,8 +177,8 @@ export function AuditLogRow({ entry, expanded, onToggle }: AuditLogRowProps) {
           ) : (
             <span className="text-muted-foreground">—</span>
           )}
-        </TableCell>
-        <TableCell className="w-px text-right">
+        </SettingsTableCell>
+        <SettingsTableCell kind="actions">
           <Button
             variant="ghost"
             size="icon-sm"
@@ -194,19 +195,20 @@ export function AuditLogRow({ entry, expanded, onToggle }: AuditLogRowProps) {
               className={cn("transition-transform", expanded && "rotate-90")}
             />
           </Button>
-        </TableCell>
-      </TableRow>
+        </SettingsTableCell>
+      </SettingsTableRow>
       {expanded && (
-        <TableRow id={detailsId} className="hover:bg-transparent">
-          <TableCell colSpan={COLUMN_COUNT} className="bg-muted/30 px-4 py-3">
-            {entry.target && (
-              <p className="mb-2 text-sm md:hidden">
-                {entry.target.label ?? "—"}
-              </p>
-            )}
+        <SettingsTableRow
+          id={detailsId}
+          className="[tbody>&]:hover:bg-transparent"
+        >
+          <SettingsTableCell
+            colSpan={COLUMN_COUNT}
+            className="bg-muted/30 px-4 py-3 @max-[40rem]/settings-table:rounded-md @max-[40rem]/settings-table:p-3"
+          >
             <AuditLogDetails entry={entry} />
-          </TableCell>
-        </TableRow>
+          </SettingsTableCell>
+        </SettingsTableRow>
       )}
     </>
   );

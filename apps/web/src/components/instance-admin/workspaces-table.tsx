@@ -1,16 +1,19 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import {
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableMeta,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { CompactDate } from "@/components/ui/compact-date";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { useInstanceWorkspaces } from "@/hooks/queries/instance-admin/use-instance-admin";
 import { authClient } from "@/lib/auth-client";
 import { formatDateMedium, formatNumber } from "@/lib/format";
@@ -61,93 +64,117 @@ export function WorkspacesTable({ q }: WorkspacesTableProps) {
 
   return (
     <div className="space-y-3">
-      <div className="overflow-x-auto rounded-md border border-border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>
-                {t("instanceAdmin:workspaces.columns.name")}
-              </TableHead>
-              <TableHead>
-                {t("instanceAdmin:workspaces.columns.owner")}
-              </TableHead>
-              <TableHead className="text-right">
-                {t("instanceAdmin:workspaces.columns.members")}
-              </TableHead>
-              <TableHead className="text-right">
-                {t("instanceAdmin:workspaces.columns.projects")}
-              </TableHead>
-              <TableHead>
-                {t("instanceAdmin:workspaces.columns.created")}
-              </TableHead>
-              <TableHead className="w-0" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {items.map((workspace) => (
-              <TableRow key={workspace.id}>
-                <TableCell>
-                  <div className="flex min-w-0 items-center gap-2">
-                    <Avatar className="size-7">
-                      <AvatarImage src={workspace.logo ?? ""} alt="" />
-                      <AvatarFallback className="text-[10px]">
-                        {getInitials(workspace.name, "WS")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="min-w-0">
-                      <p className="flex min-w-0 items-center gap-2 text-sm font-medium">
-                        <span className="truncate">{workspace.name}</span>
-                        {workspace.deletionDueAt && (
-                          <Badge variant="warning" className="shrink-0">
-                            {t("settings:workspaceDeletion.admin.badge", {
-                              date: formatDateMedium(workspace.deletionDueAt),
-                            })}
-                          </Badge>
-                        )}
-                      </p>
-                      <p className="truncate text-xs text-muted-foreground">
-                        {workspace.slug}
-                      </p>
-                    </div>
+      <SettingsTable>
+        <SettingsTableHeader>
+          <SettingsTableRow>
+            <SettingsTableHead>
+              {t("instanceAdmin:workspaces.columns.name")}
+            </SettingsTableHead>
+            <SettingsTableHead>
+              {t("instanceAdmin:workspaces.columns.owner")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-24" align="end" hideBelow="md">
+              {t("instanceAdmin:workspaces.columns.members")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-24" align="end" hideBelow="md">
+              {t("instanceAdmin:workspaces.columns.projects")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-28" hideBelow="md">
+              {t("instanceAdmin:workspaces.columns.created")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-28">
+              <span className="sr-only">{t("settings:table.actions")}</span>
+            </SettingsTableHead>
+          </SettingsTableRow>
+        </SettingsTableHeader>
+        <SettingsTableBody>
+          {items.map((workspace) => (
+            <SettingsTableRow key={workspace.id}>
+              <SettingsTableCell kind="primary">
+                <div className="flex min-w-0 items-center gap-2">
+                  <Avatar className="size-7 shrink-0">
+                    <AvatarImage src={workspace.logo ?? ""} alt="" />
+                    <AvatarFallback className="text-[10px]">
+                      {getInitials(workspace.name, "WS")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0 flex-1">
+                    <p className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 font-medium text-sm">
+                      <span className="min-w-0 wrap-break-word">
+                        {workspace.name}
+                      </span>
+                      {workspace.deletionDueAt && (
+                        <Badge variant="warning" className="shrink-0">
+                          {t("settings:workspaceDeletion.admin.badge", {
+                            date: formatDateMedium(workspace.deletionDueAt),
+                          })}
+                        </Badge>
+                      )}
+                    </p>
+                    <TruncatedText
+                      text={workspace.slug}
+                      className="text-muted-foreground text-xs"
+                    />
+                    <SettingsTableMeta hideAbove="md">
+                      <span>
+                        {t("instanceAdmin:workspaces.columns.members")}{" "}
+                        {formatNumber(workspace.memberCount)}
+                      </span>
+                      <span>
+                        {t("instanceAdmin:workspaces.columns.projects")}{" "}
+                        {formatNumber(workspace.projectCount)}
+                      </span>
+                      <CompactDate value={workspace.createdAt} />
+                    </SettingsTableMeta>
                   </div>
-                </TableCell>
-                <TableCell>
-                  {workspace.owner ? (
-                    <div className="min-w-0">
-                      <p className="truncate text-sm">{workspace.owner.name}</p>
-                      <p className="truncate text-xs text-muted-foreground">
-                        {workspace.owner.email}
-                      </p>
-                    </div>
-                  ) : (
-                    <span className="text-xs text-muted-foreground">
-                      {t("instanceAdmin:workspaces.noOwner")}
-                    </span>
-                  )}
-                </TableCell>
-                <TableCell className="text-right tabular-nums">
-                  {formatNumber(workspace.memberCount)}
-                </TableCell>
-                <TableCell className="text-right tabular-nums">
-                  {formatNumber(workspace.projectCount)}
-                </TableCell>
-                <TableCell className="whitespace-nowrap text-muted-foreground">
-                  {formatDateMedium(workspace.createdAt)}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="outline"
-                    size="xs"
-                    onClick={() => void open(workspace)}
-                  >
-                    {t("instanceAdmin:workspaces.open")}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+                </div>
+              </SettingsTableCell>
+              <SettingsTableCell
+                label={t("instanceAdmin:workspaces.columns.owner")}
+              >
+                {workspace.owner ? (
+                  <div className="min-w-0">
+                    <TruncatedText
+                      text={workspace.owner.name}
+                      className="text-sm"
+                    />
+                    <TruncatedText
+                      text={workspace.owner.email}
+                      middle
+                      className="text-muted-foreground text-xs"
+                    />
+                  </div>
+                ) : (
+                  <span className="text-muted-foreground text-xs">
+                    {t("instanceAdmin:workspaces.noOwner")}
+                  </span>
+                )}
+              </SettingsTableCell>
+              <SettingsTableCell align="end" hideBelow="md">
+                {formatNumber(workspace.memberCount)}
+              </SettingsTableCell>
+              <SettingsTableCell align="end" hideBelow="md">
+                {formatNumber(workspace.projectCount)}
+              </SettingsTableCell>
+              <SettingsTableCell
+                hideBelow="md"
+                className="text-muted-foreground"
+              >
+                <CompactDate value={workspace.createdAt} />
+              </SettingsTableCell>
+              <SettingsTableCell kind="actions">
+                <Button
+                  variant="outline"
+                  size="xs"
+                  onClick={() => void open(workspace)}
+                >
+                  {t("instanceAdmin:workspaces.open")}
+                </Button>
+              </SettingsTableCell>
+            </SettingsTableRow>
+          ))}
+        </SettingsTableBody>
+      </SettingsTable>
       {query.hasNextPage && (
         <Button
           variant="outline"

@@ -12,8 +12,8 @@
 			"format": "webp"
 		},
 		"account/api-keys": {
-			"width": 768,
-			"height": 291,
+			"width": 1128,
+			"height": 310,
 			"format": "webp"
 		},
 		"account/calendar-feed-link": {
@@ -107,8 +107,8 @@
 			"format": "webp"
 		},
 		"admin/admins": {
-			"width": 768,
-			"height": 397,
+			"width": 1128,
+			"height": 380,
 			"format": "webp"
 		},
 		"admin/email": {
@@ -122,8 +122,8 @@
 			"format": "webp"
 		},
 		"admin/health": {
-			"width": 768,
-			"height": 840,
+			"width": 1128,
+			"height": 824,
 			"format": "webp"
 		},
 		"admin/oauth-custom": {
@@ -147,8 +147,8 @@
 			"format": "webp"
 		},
 		"admin/public-boards": {
-			"width": 768,
-			"height": 468,
+			"width": 1128,
+			"height": 491,
 			"format": "webp"
 		},
 		"admin/saml-connect": {
@@ -177,13 +177,13 @@
 			"format": "webp"
 		},
 		"admin/users": {
-			"width": 768,
-			"height": 738,
+			"width": 1128,
+			"height": 733,
 			"format": "webp"
 		},
 		"admin/workspaces": {
-			"width": 768,
-			"height": 473,
+			"width": 1128,
+			"height": 468,
 			"format": "webp"
 		},
 		"ai/agent-desk": {
@@ -442,8 +442,8 @@
 			"format": "webp"
 		},
 		"data/previous-exports": {
-			"width": 768,
-			"height": 453,
+			"width": 1128,
+			"height": 450,
 			"format": "webp"
 		},
 		"data/project-trash": {
@@ -467,8 +467,8 @@
 			"format": "webp"
 		},
 		"data/webhook-deliveries": {
-			"width": 768,
-			"height": 511,
+			"width": 1128,
+			"height": 367,
 			"format": "webp"
 		},
 		"data/webhook-delivery": {
@@ -482,8 +482,8 @@
 			"format": "webp"
 		},
 		"data/webhooks-list": {
-			"width": 768,
-			"height": 335,
+			"width": 1128,
+			"height": 344,
 			"format": "webp"
 		},
 		"data/workspace-trash": {

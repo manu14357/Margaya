@@ -3830,6 +3830,10 @@
 				"confirmation": "Μήνυμα επιβεβαίωσης",
 				"confirmationHint": "Εμφανίζεται αφού κάποιος στείλει αίτημα."
 			}
+		},
+		"table": {
+			"actions": "Ενέργειες",
+			"actionsFor": "Ενέργειες για {{name}}"
 		}
 	},
 	"navigation": {

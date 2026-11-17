@@ -3830,6 +3830,10 @@
 				"confirmation": "Onay mesajı",
 				"confirmationHint": "Biri istek gönderdikten sonra gösterilir."
 			}
+		},
+		"table": {
+			"actions": "İşlemler",
+			"actionsFor": "{{name}} için işlemler"
 		}
 	},
 	"navigation": {

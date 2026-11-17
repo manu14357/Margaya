@@ -49,7 +49,7 @@ function BackLink() {
   return (
     <Link
       to="/dashboard/settings/workspace/webhooks"
-      className="inline-flex items-center gap-1 text-muted-foreground text-sm hover:text-foreground"
+      className="inline-flex min-h-8 items-center gap-1 rounded-md text-muted-foreground text-sm hover:text-foreground pointer-coarse:min-h-11"
     >
       <ArrowLeft className="size-4" />
       {t("settings:workspaceWebhooks.back")}

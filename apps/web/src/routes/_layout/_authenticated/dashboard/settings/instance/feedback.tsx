@@ -34,6 +34,7 @@ function RouteComponent() {
 
   return (
     <InstancePage
+      width="wide"
       title={t("settings:feedback.admin.title")}
       subtitle={t("settings:feedback.admin.subtitle")}
       locked={settings.data?.locked}

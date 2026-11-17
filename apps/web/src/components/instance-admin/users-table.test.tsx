@@ -19,6 +19,8 @@ vi.mock("react-i18next", () => ({
 vi.mock("@/lib/toast", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 vi.mock("@/lib/format", () => ({
   formatDateMedium: (value: string) => value,
+  formatDateShort: (value: unknown) => String(value),
+  formatDateTime: (value: unknown) => String(value),
   formatRelativeTime: () => "",
 }));
 vi.mock("./instance-page", () => ({ InstanceLoadState: () => null }));

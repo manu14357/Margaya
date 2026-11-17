@@ -1,6 +1,13 @@
 import { Send } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -21,13 +28,6 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useWebhookDeliveries } from "@/hooks/queries/webhook/use-webhook-deliveries";
 import { useWebhookEvents } from "@/hooks/queries/webhook/use-webhook-events";
 import type {
@@ -145,44 +145,42 @@ export function WebhookDeliveriesTab({
   } else {
     body = (
       <div className="space-y-3">
-        <Frame>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>
-                  {t("settings:workspaceWebhooks.deliveries.columns.status")}
-                </TableHead>
-                <TableHead>
-                  {t("settings:workspaceWebhooks.deliveries.columns.event")}
-                </TableHead>
-                <TableHead className="hidden lg:table-cell">
-                  {t("settings:workspaceWebhooks.deliveries.columns.summary")}
-                </TableHead>
-                <TableHead>
-                  {t("settings:workspaceWebhooks.deliveries.columns.response")}
-                </TableHead>
-                <TableHead className="hidden md:table-cell">
-                  {t("settings:workspaceWebhooks.deliveries.columns.attempts")}
-                </TableHead>
-                <TableHead>
-                  {t("settings:workspaceWebhooks.deliveries.columns.created")}
-                </TableHead>
-                <TableHead className="hidden text-right md:table-cell">
-                  {t("settings:workspaceWebhooks.deliveries.columns.duration")}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((delivery) => (
-                <WebhookDeliveryRow
-                  key={delivery.id}
-                  delivery={delivery}
-                  onOpen={() => setOpenId(delivery.id)}
-                />
-              ))}
-            </TableBody>
-          </Table>
-        </Frame>
+        <SettingsTable>
+          <SettingsTableHeader>
+            <SettingsTableRow>
+              <SettingsTableHead className="w-32">
+                {t("settings:workspaceWebhooks.deliveries.columns.status")}
+              </SettingsTableHead>
+              <SettingsTableHead>
+                {t("settings:workspaceWebhooks.deliveries.columns.event")}
+              </SettingsTableHead>
+              <SettingsTableHead hideBelow="lg">
+                {t("settings:workspaceWebhooks.deliveries.columns.summary")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-36">
+                {t("settings:workspaceWebhooks.deliveries.columns.response")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-24" hideBelow="md">
+                {t("settings:workspaceWebhooks.deliveries.columns.attempts")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-28">
+                {t("settings:workspaceWebhooks.deliveries.columns.created")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-24" align="end" hideBelow="md">
+                {t("settings:workspaceWebhooks.deliveries.columns.duration")}
+              </SettingsTableHead>
+            </SettingsTableRow>
+          </SettingsTableHeader>
+          <SettingsTableBody>
+            {rows.map((delivery) => (
+              <WebhookDeliveryRow
+                key={delivery.id}
+                delivery={delivery}
+                onOpen={() => setOpenId(delivery.id)}
+              />
+            ))}
+          </SettingsTableBody>
+        </SettingsTable>
         {deliveries.hasNextPage && (
           <div className="flex justify-center">
             <Button

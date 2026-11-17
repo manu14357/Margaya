@@ -19,17 +19,18 @@ import {
 } from "../ui/alert-dialog";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Frame } from "../ui/frame";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { TruncatedText } from "../ui/truncated-text";
 import { ApiKeyRequestsSheet } from "./api-key-requests-sheet";
+import {
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableMeta,
+  SettingsTableRow,
+} from "./settings-table";
 
 type ApiKeyTableProps = {
   apiKeys: ApiKey[];
@@ -96,11 +97,12 @@ function ScopeSummary({ scope }: { scope: ApiKey["scope"] | undefined }) {
         {t(SCOPE_KEYS[scope.access])}
       </Badge>
       {projects && projects.length > 0 && (
-        <p className="max-w-56 truncate text-xs text-muted-foreground">
-          {t("accountSecurity:platform.apiKeys.scopeProjects", {
+        <TruncatedText
+          text={t("accountSecurity:platform.apiKeys.scopeProjects", {
             projects: projects.join(", "),
           })}
-        </p>
+          className="text-muted-foreground text-xs"
+        />
       )}
     </div>
   );
@@ -172,71 +174,97 @@ export function ApiKeyTable({ apiKeys, isLoading }: ApiKeyTableProps) {
 
   return (
     <>
-      <Frame>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>{t("settings:apiKey.table.columnName")}</TableHead>
-              <TableHead>{t("settings:apiKey.table.columnKey")}</TableHead>
-              <TableHead>
-                {t("accountSecurity:platform.apiKeys.columnScope")}
-              </TableHead>
-              <TableHead>{t("settings:apiKey.table.columnCreated")}</TableHead>
-              <TableHead>{t("settings:apiKey.table.columnExpires")}</TableHead>
-              <TableHead>{t("settings:apiKey.table.columnLastUsed")}</TableHead>
-              <TableHead className="w-[110px] text-right">
+      <SettingsTable>
+        <SettingsTableHeader>
+          <SettingsTableRow>
+            <SettingsTableHead>
+              {t("settings:apiKey.table.columnName")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-40">
+              {t("accountSecurity:platform.apiKeys.columnScope")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-28" hideBelow="md">
+              {t("settings:apiKey.table.columnCreated")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-32" hideBelow="md">
+              {t("settings:apiKey.table.columnExpires")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-32">
+              {t("settings:apiKey.table.columnLastUsed")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-24">
+              <span className="sr-only">
                 {t("settings:apiKey.table.columnActions")}
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {apiKeys.map((apiKey) => {
-              const expiration = getExpirationState(apiKey.expiresAt);
+              </span>
+            </SettingsTableHead>
+          </SettingsTableRow>
+        </SettingsTableHeader>
+        <SettingsTableBody>
+          {apiKeys.map((apiKey) => {
+            const expiration = getExpirationState(apiKey.expiresAt);
+            const expires = expiration.isExpired ? (
+              <Badge variant="error">
+                {t("settings:apiKey.table.expiredBadge", {
+                  label: expiration.label,
+                })}
+              </Badge>
+            ) : (
+              <span className="text-muted-foreground">{expiration.label}</span>
+            );
 
-              return (
-                <TableRow
-                  key={apiKey.id}
-                  className={cn(
-                    expiration.isExpired &&
-                      "bg-destructive/5 hover:bg-destructive/10",
-                  )}
-                >
-                  <TableCell
+            return (
+              <SettingsTableRow
+                key={apiKey.id}
+                className={cn(
+                  expiration.isExpired &&
+                    "bg-destructive/5 [tbody>&]:hover:bg-destructive/10",
+                )}
+              >
+                <SettingsTableCell kind="primary">
+                  <TruncatedText
+                    text={apiKey.name || t("settings:apiKey.table.unnamedKey")}
                     className={cn(
                       "font-medium",
                       expiration.isExpired && "text-destructive-foreground",
                     )}
-                  >
-                    {apiKey.name || t("settings:apiKey.table.unnamedKey")}
-                  </TableCell>
-                  <TableCell>
-                    <code className="text-xs bg-background px-2 py-1 rounded border border-border">
+                  />
+                  <span className="mt-1 flex min-w-0 items-center gap-1.5">
+                    <span className="sr-only">
+                      {t("settings:apiKey.table.columnKey")}
+                    </span>
+                    <code className="truncate rounded border border-border bg-background px-1.5 py-0.5 text-xs">
                       {apiKey.start}...
                     </code>
-                  </TableCell>
-                  <TableCell>
-                    <ScopeSummary scope={apiKey.scope} />
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {formatDate(apiKey.createdAt)}
-                  </TableCell>
-                  <TableCell>
-                    {expiration.isExpired ? (
-                      <Badge variant="error">
-                        {t("settings:apiKey.table.expiredBadge", {
-                          label: expiration.label,
-                        })}
-                      </Badge>
-                    ) : (
-                      <span className="text-muted-foreground">
-                        {expiration.label}
-                      </span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <LastUsed value={apiKey.lastRequest} />
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap text-right">
+                  </span>
+                  <SettingsTableMeta hideAbove="md">
+                    <span>
+                      {t("settings:apiKey.table.columnCreated")}{" "}
+                      {formatDate(apiKey.createdAt)}
+                    </span>
+                    <span>
+                      {t("settings:apiKey.table.columnExpires")} {expires}
+                    </span>
+                  </SettingsTableMeta>
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("accountSecurity:platform.apiKeys.columnScope")}
+                >
+                  <ScopeSummary scope={apiKey.scope} />
+                </SettingsTableCell>
+                <SettingsTableCell
+                  hideBelow="md"
+                  className="text-muted-foreground"
+                >
+                  {formatDate(apiKey.createdAt)}
+                </SettingsTableCell>
+                <SettingsTableCell hideBelow="md">{expires}</SettingsTableCell>
+                <SettingsTableCell
+                  label={t("settings:apiKey.table.columnLastUsed")}
+                >
+                  <LastUsed value={apiKey.lastRequest} />
+                </SettingsTableCell>
+                <SettingsTableCell kind="actions">
+                  <div className="flex justify-end gap-1">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -267,13 +295,13 @@ export function ApiKeyTable({ apiKeys, isLoading }: ApiKeyTableProps) {
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </Frame>
+                  </div>
+                </SettingsTableCell>
+              </SettingsTableRow>
+            );
+          })}
+        </SettingsTableBody>
+      </SettingsTable>
 
       {requestsKey && (
         <ApiKeyRequestsSheet

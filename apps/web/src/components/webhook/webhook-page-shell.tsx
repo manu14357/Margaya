@@ -44,6 +44,7 @@ export function WebhookPageShell({
       }
       eyebrow={allowed ? eyebrow : undefined}
       actions={allowed ? actions : undefined}
+      width="wide"
     >
       {allowed && children}
     </SettingsPage>

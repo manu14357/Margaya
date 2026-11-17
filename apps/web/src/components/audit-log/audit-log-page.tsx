@@ -1,6 +1,13 @@
 import { Download, ScrollText } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
 import { SettingsPage } from "@/components/settings-layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,13 +20,6 @@ import {
 import { Frame, FramePanel } from "@/components/ui/frame";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useExportAuditLog } from "@/hooks/mutations/audit-log/use-export-audit-log";
 import { useAuditLog } from "@/hooks/queries/audit-log/use-audit-log";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -110,45 +110,43 @@ export function AuditLogPage() {
   } else {
     body = (
       <div className="space-y-3">
-        <Frame>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>
-                  {t("settings:workspaceAuditLog.columns.time")}
-                </TableHead>
-                <TableHead>
-                  {t("settings:workspaceAuditLog.columns.actor")}
-                </TableHead>
-                <TableHead>
-                  {t("settings:workspaceAuditLog.columns.action")}
-                </TableHead>
-                <TableHead className="hidden md:table-cell">
-                  {t("settings:workspaceAuditLog.columns.target")}
-                </TableHead>
-                <TableHead>
-                  <span className="sr-only">
-                    {t("settings:workspaceAuditLog.columns.details")}
-                  </span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((entry) => (
-                <AuditLogRow
-                  key={entry.id}
-                  entry={entry}
-                  expanded={expandedId === entry.id}
-                  onToggle={() =>
-                    setExpandedId((current) =>
-                      current === entry.id ? null : entry.id,
-                    )
-                  }
-                />
-              ))}
-            </TableBody>
-          </Table>
-        </Frame>
+        <SettingsTable>
+          <SettingsTableHeader>
+            <SettingsTableRow>
+              <SettingsTableHead className="w-32">
+                {t("settings:workspaceAuditLog.columns.time")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-44">
+                {t("settings:workspaceAuditLog.columns.actor")}
+              </SettingsTableHead>
+              <SettingsTableHead>
+                {t("settings:workspaceAuditLog.columns.action")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-52" hideBelow="md">
+                {t("settings:workspaceAuditLog.columns.target")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-14">
+                <span className="sr-only">
+                  {t("settings:workspaceAuditLog.columns.details")}
+                </span>
+              </SettingsTableHead>
+            </SettingsTableRow>
+          </SettingsTableHeader>
+          <SettingsTableBody>
+            {rows.map((entry) => (
+              <AuditLogRow
+                key={entry.id}
+                entry={entry}
+                expanded={expandedId === entry.id}
+                onToggle={() =>
+                  setExpandedId((current) =>
+                    current === entry.id ? null : entry.id,
+                  )
+                }
+              />
+            ))}
+          </SettingsTableBody>
+        </SettingsTable>
         {log.hasNextPage && (
           <div className="flex justify-center">
             <Button

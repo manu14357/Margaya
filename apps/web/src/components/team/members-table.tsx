@@ -29,6 +29,15 @@ import type {
 } from "@/types/workspace-user";
 import { useAuth } from "../providers/auth-provider/hooks/use-auth";
 import {
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableMeta,
+  SettingsTableRow,
+} from "../settings/settings-table";
+import {
   AlertDialog,
   AlertDialogClose,
   AlertDialogContent,
@@ -40,6 +49,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { CompactDate } from "../ui/compact-date";
 import { Menu, MenuItem, MenuPopup, MenuTrigger } from "../ui/menu";
 import {
   Select,
@@ -48,14 +58,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
+import { TruncatedText } from "../ui/truncated-text";
 import InviteRoleSelect from "./invite-role-select";
 
 type Props = {
@@ -228,36 +231,38 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
 
   return (
     <>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="ps-4 sm:ps-6 text-foreground font-medium">
+      <SettingsTable>
+        <SettingsTableHeader>
+          <SettingsTableRow>
+            <SettingsTableHead className="ps-4">
               {t("team:membersTable.columns.name", {
                 defaultValue: "Member",
               })}
-            </TableHead>
-            <TableHead className="text-foreground font-medium">
+            </SettingsTableHead>
+            <SettingsTableHead className="w-40">
               {t("team:membersTable.columns.role", { defaultValue: "Role" })}
-            </TableHead>
-            <TableHead className="hidden text-foreground font-medium sm:table-cell">
+            </SettingsTableHead>
+            <SettingsTableHead className="w-32" hideBelow="md">
               {t("team:membersTable.columns.joined", {
                 defaultValue: "Joined",
               })}
-            </TableHead>
-            <TableHead className="w-px pe-4 sm:pe-6" />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+            </SettingsTableHead>
+            <SettingsTableHead className="w-14">
+              <span className="sr-only">{t("settings:table.actions")}</span>
+            </SettingsTableHead>
+          </SettingsTableRow>
+        </SettingsTableHeader>
+        <SettingsTableBody>
           {sortedUsers.map((member) => {
             const isSelf = currentUser?.id === member.userId;
             const showRoleSelect =
               canChangeRoles && !isSelf && member.role !== "owner";
             const tone = toneFor(member.user.email);
             return (
-              <TableRow key={member.user.email}>
-                <TableCell className="ps-4 sm:ps-6 py-3">
-                  <div className="flex items-center gap-3">
-                    <Avatar className={cn("size-8", tone)}>
+              <SettingsTableRow key={member.user.email}>
+                <SettingsTableCell kind="primary" className="ps-4">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <Avatar className={cn("size-8 shrink-0", tone)}>
                       <AvatarImage
                         src={member.user.image ?? ""}
                         alt={member.user.name ?? ""}
@@ -266,28 +271,44 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                         {getInitials(member.user.name)}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex min-w-0 items-center gap-2">
                         <Link
                           to="/dashboard/workspace/$workspaceId/profile/$userId"
                           params={{ workspaceId, userId: member.userId }}
-                          className="text-sm font-medium hover:underline"
+                          className="min-w-0 truncate font-medium text-sm hover:underline pointer-coarse:-my-1.5 pointer-coarse:py-1.5"
                         >
                           {member.user.name}
                         </Link>
                         {isSelf ? (
-                          <span className="text-xs text-muted-foreground">
+                          <span className="shrink-0 text-muted-foreground text-xs">
                             ({t("team:members.you", { defaultValue: "You" })})
                           </span>
                         ) : null}
                       </div>
-                      <div className="truncate text-xs text-muted-foreground">
-                        {member.user.email}
-                      </div>
+                      <TruncatedText
+                        text={member.user.email}
+                        middle
+                        className="text-muted-foreground text-xs"
+                      />
+                      {member.createdAt ? (
+                        <SettingsTableMeta hideAbove="md">
+                          <span>
+                            {t("team:membersTable.columns.joined", {
+                              defaultValue: "Joined",
+                            })}{" "}
+                            <CompactDate value={member.createdAt} />
+                          </span>
+                        </SettingsTableMeta>
+                      ) : null}
                     </div>
                   </div>
-                </TableCell>
-                <TableCell className="py-3">
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("team:membersTable.columns.role", {
+                    defaultValue: "Role",
+                  })}
+                >
                   {member.role === "owner" ? (
                     <Badge variant="outline" className="gap-1">
                       <ShieldIcon className="size-3" />
@@ -340,11 +361,18 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                       })}
                     </Badge>
                   )}
-                </TableCell>
-                <TableCell className="hidden py-3 text-sm text-muted-foreground tabular-nums sm:table-cell">
-                  {member.createdAt ? formatDateMedium(member.createdAt) : "–"}
-                </TableCell>
-                <TableCell className="pe-4 sm:pe-6 py-3 text-right">
+                </SettingsTableCell>
+                <SettingsTableCell
+                  hideBelow="md"
+                  className="text-muted-foreground"
+                >
+                  {member.createdAt ? (
+                    <CompactDate value={member.createdAt} />
+                  ) : (
+                    "–"
+                  )}
+                </SettingsTableCell>
+                <SettingsTableCell kind="actions">
                   {!isSelf && canRemove ? (
                     <Menu>
                       <MenuTrigger
@@ -367,27 +395,29 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                       </MenuPopup>
                     </Menu>
                   ) : null}
-                </TableCell>
-              </TableRow>
+                </SettingsTableCell>
+              </SettingsTableRow>
             );
           })}
 
           {pendingInvitations.map((invitation) => (
-            <TableRow key={`invite-${invitation.id}`}>
-              <TableCell className="ps-4 sm:ps-6 py-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex size-8 items-center justify-center rounded-full bg-muted text-muted-foreground">
+            <SettingsTableRow key={`invite-${invitation.id}`}>
+              <SettingsTableCell kind="primary" className="ps-4">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
                     <MailIcon className="size-4" />
                   </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">
-                        {invitation.email}
-                      </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <TruncatedText
+                        text={invitation.email}
+                        middle
+                        className="font-medium text-sm"
+                      />
                       <Badge
                         variant="outline"
                         size="sm"
-                        className="font-mono text-[9px] uppercase tracking-wider"
+                        className="shrink-0 font-mono text-[9px] uppercase tracking-wider"
                       >
                         {t("team:invitations.pendingBadge", {
                           defaultValue: "pending",
@@ -404,8 +434,12 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                     </div>
                   </div>
                 </div>
-              </TableCell>
-              <TableCell className="py-3">
+              </SettingsTableCell>
+              <SettingsTableCell
+                label={t("team:membersTable.columns.role", {
+                  defaultValue: "Role",
+                })}
+              >
                 {canEditInvitations &&
                 grantable.includes(invitation.role) &&
                 grantable.length > 1 ? (
@@ -428,11 +462,14 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                     })}
                   </Badge>
                 )}
-              </TableCell>
-              <TableCell className="hidden py-3 text-sm text-muted-foreground sm:table-cell">
+              </SettingsTableCell>
+              <SettingsTableCell
+                hideBelow="md"
+                className="text-muted-foreground"
+              >
                 –
-              </TableCell>
-              <TableCell className="pe-4 sm:pe-6 py-3 text-right">
+              </SettingsTableCell>
+              <SettingsTableCell kind="actions">
                 {canInvite ? (
                   <Menu>
                     <MenuTrigger
@@ -465,13 +502,13 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                     </MenuPopup>
                   </Menu>
                 ) : null}
-              </TableCell>
-            </TableRow>
+              </SettingsTableCell>
+            </SettingsTableRow>
           ))}
 
           {users.length === 0 && pendingInvitations.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={4} className="py-16 text-center">
+            <SettingsTableRow>
+              <SettingsTableCell colSpan={4} className="py-16 text-center">
                 <div className="flex flex-col items-center gap-2 text-muted-foreground">
                   <p className="text-sm font-medium text-foreground">
                     {t("team:membersTable.emptyTitle")}
@@ -480,11 +517,11 @@ function MembersTable({ workspaceId, invitations, users }: Props) {
                     {t("team:membersTable.emptyDescription")}
                   </p>
                 </div>
-              </TableCell>
-            </TableRow>
+              </SettingsTableCell>
+            </SettingsTableRow>
           ) : null}
-        </TableBody>
-      </Table>
+        </SettingsTableBody>
+      </SettingsTable>
 
       <AlertDialog
         open={!!memberToDelete}

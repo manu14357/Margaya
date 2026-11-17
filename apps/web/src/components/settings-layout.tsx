@@ -38,7 +38,12 @@ type SettingsPageProps = {
   eyebrow?: ReactNode;
   /** Shown above the sections (e.g. a read-only notice). */
   notice?: ReactNode;
-  /** Tables and editors can use "wide". */
+  /**
+   * The one width rule of settings: "narrow" (the default) keeps forms at a
+   * readable measure; "wide" is for pages built around data (tables, lists,
+   * logs, editors), which use the room a large window has. Section and row
+   * descriptions keep the narrow measure on both.
+   */
   width?: "narrow" | "wide";
   children?: ReactNode;
   className?: string;
@@ -66,6 +71,7 @@ export function SettingsPage({
           width === "wide" ? "max-w-6xl" : "max-w-3xl",
         )}
         data-slot="settings-page"
+        data-width={width}
       >
         {eyebrow && <div className="mb-3">{eyebrow}</div>}
         <PageHeader title={title} description={description} actions={actions} />
@@ -110,13 +116,13 @@ export function SettingsSection({
             {title}
           </h2>
           {description && (
-            <p className="text-[13px] text-muted-foreground leading-5">
+            <p className="text-[13px] in-data-[width=wide]:max-w-3xl text-muted-foreground leading-5">
               {description}
             </p>
           )}
         </div>
         {actions && (
-          <div className="flex shrink-0 flex-wrap items-center gap-1.5">
+          <div className="flex max-w-full shrink-0 flex-wrap items-center gap-1.5">
             {actions}
           </div>
         )}
@@ -204,7 +210,7 @@ export function SettingsRow({
           {badge}
         </div>
         {description && (
-          <p className="text-muted-foreground text-xs leading-4.5">
+          <p className="text-muted-foreground text-xs in-data-[width=wide]:max-w-3xl leading-4.5">
             {description}
           </p>
         )}

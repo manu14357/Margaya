@@ -3830,6 +3830,10 @@
 				"confirmation": "Порака за потврда",
 				"confirmationHint": "Се прикажува откако некој ќе испрати барање."
 			}
+		},
+		"table": {
+			"actions": "Дејства",
+			"actionsFor": "Дејства за {{name}}"
 		}
 	},
 	"navigation": {

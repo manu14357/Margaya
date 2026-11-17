@@ -26,6 +26,16 @@ vi.mock("react-i18next", () => ({
   }),
 }));
 vi.mock("@/lib/i18n", () => ({ i18n: { t: (key: string) => key } }));
+
+/** Rows keep their actions in a "…" menu. */
+async function chooseRowAction(name: string) {
+  fireEvent.click(
+    screen.getByRole("button", {
+      name: "settings:table.actionsFor:Company directory",
+    }),
+  );
+  fireEvent.click(await screen.findByRole("menuitem", { name }));
+}
 vi.mock("@/lib/toast", () => ({
   toast: { success: m.success, error: m.error },
 }));
@@ -206,7 +216,7 @@ describe("ScimConnectionsSection", () => {
     m.rotate.mockResolvedValue({ ...ISSUED, token: "new-token" });
     render(<ScimConnectionsSection />);
 
-    fireEvent.click(screen.getByRole("button", { name: `${KEY}.rotate` }));
+    await chooseRowAction(`${KEY}.rotate`);
     expect(m.rotate).not.toHaveBeenCalled();
     fireEvent.click(
       await screen.findByRole("button", { name: `${KEY}.rotateConfirm` }),
@@ -223,9 +233,7 @@ describe("ScimConnectionsSection", () => {
     m.remove.mockResolvedValue({ id: "conn-1", deleted: true });
     render(<ScimConnectionsSection />);
 
-    fireEvent.click(
-      screen.getByRole("button", { name: "instanceAdmin:identity.remove" }),
-    );
+    await chooseRowAction("instanceAdmin:identity.remove");
     expect(m.remove).not.toHaveBeenCalled();
     const dialog = await screen.findByRole("alertdialog");
     expect(dialog).toHaveTextContent(`${KEY}.removeDescription`);

@@ -1,5 +1,14 @@
+import { UserMinus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -13,19 +22,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { TruncatedText } from "@/components/ui/truncated-text";
 import { useRemoveInstanceAdmin } from "@/hooks/mutations/instance-admin/use-instance-admin-mutations";
 import { getInitials } from "@/lib/get-initials";
 import { toast } from "@/lib/toast";
@@ -57,75 +59,93 @@ export function AdminsTable({ admins }: AdminsTableProps) {
 
   return (
     <>
-      <div className="overflow-x-auto rounded-md border border-border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>{t("instanceAdmin:admins.columns.name")}</TableHead>
-              <TableHead>{t("instanceAdmin:admins.columns.email")}</TableHead>
-              <TableHead className="w-0" />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {admins.map((admin) => {
-              const removeButton = (
-                <Button
-                  variant="outline"
-                  size="xs"
-                  disabled={isLast}
-                  onClick={() => {
-                    setPending(admin);
-                    setConfirmOpen(true);
-                  }}
-                >
-                  {t("instanceAdmin:admins.remove")}
-                </Button>
-              );
-              return (
-                <TableRow key={admin.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Avatar className="size-7">
-                        <AvatarImage src={admin.image ?? ""} alt="" />
-                        <AvatarFallback className="text-[10px]">
-                          {getInitials(admin.name || admin.email)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-sm font-medium">{admin.name}</span>
-                      {admin.isYou && (
-                        <Badge variant="secondary" size="sm">
-                          {t("instanceAdmin:admins.you")}
-                        </Badge>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {admin.email}
-                  </TableCell>
-                  <TableCell>
-                    {isLast ? (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger
-                            render={<span className="inline-flex" />}
-                          >
-                            {removeButton}
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {t("instanceAdmin:admins.lastAdmin")}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    ) : (
-                      removeButton
+      <SettingsTable>
+        <SettingsTableHeader>
+          <SettingsTableRow>
+            <SettingsTableHead>
+              {t("instanceAdmin:admins.columns.name")}
+            </SettingsTableHead>
+            <SettingsTableHead>
+              {t("instanceAdmin:admins.columns.email")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-16">
+              <span className="sr-only">{t("settings:table.actions")}</span>
+            </SettingsTableHead>
+          </SettingsTableRow>
+        </SettingsTableHeader>
+        <SettingsTableBody>
+          {admins.map((admin) => {
+            const removeButton = (
+              // An icon: the label is long in several languages and would
+              // not fit the actions column.
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                disabled={isLast}
+                aria-label={t("instanceAdmin:admins.remove")}
+                onClick={() => {
+                  setPending(admin);
+                  setConfirmOpen(true);
+                }}
+              >
+                <UserMinus />
+              </Button>
+            );
+            return (
+              <SettingsTableRow key={admin.id}>
+                <SettingsTableCell kind="primary">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <Avatar className="size-7 shrink-0">
+                      <AvatarImage src={admin.image ?? ""} alt="" />
+                      <AvatarFallback className="text-[10px]">
+                        {getInitials(admin.name || admin.email)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <TruncatedText
+                      text={admin.name}
+                      className="font-medium text-sm"
+                    />
+                    {admin.isYou && (
+                      <Badge variant="secondary" size="sm" className="shrink-0">
+                        {t("instanceAdmin:admins.you")}
+                      </Badge>
                     )}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
+                  </div>
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("instanceAdmin:admins.columns.email")}
+                  className="text-muted-foreground"
+                >
+                  <TruncatedText text={admin.email} middle />
+                </SettingsTableCell>
+                <SettingsTableCell kind="actions">
+                  {isLast ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger
+                          render={<span className="inline-flex" />}
+                        >
+                          {removeButton}
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {t("instanceAdmin:admins.lastAdmin")}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : (
+                    <Tooltip>
+                      <TooltipTrigger render={removeButton} />
+                      <TooltipContent>
+                        {t("instanceAdmin:admins.remove")}
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                </SettingsTableCell>
+              </SettingsTableRow>
+            );
+          })}
+        </SettingsTableBody>
+      </SettingsTable>
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>

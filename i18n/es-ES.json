@@ -3892,6 +3892,10 @@
 				"confirmation": "Mensaje de confirmación",
 				"confirmationHint": "Se muestra después de que alguien envía una solicitud."
 			}
+		},
+		"table": {
+			"actions": "Acciones",
+			"actionsFor": "Acciones para {{name}}"
 		}
 	},
 	"navigation": {

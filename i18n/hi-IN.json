@@ -3830,6 +3830,10 @@
 				"confirmation": "पुष्टि संदेश",
 				"confirmationHint": "किसी के अनुरोध भेजने के बाद दिखाया जाता है।"
 			}
+		},
+		"table": {
+			"actions": "कार्रवाइयाँ",
+			"actionsFor": "{{name}} के लिए कार्रवाइयाँ"
 		}
 	},
 	"navigation": {

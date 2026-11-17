@@ -5277,6 +5277,10 @@
 				"confirmation": "Wiadomość potwierdzająca",
 				"confirmationHint": "Wyświetlana po wysłaniu zgłoszenia."
 			}
+		},
+		"table": {
+			"actions": "Akcje",
+			"actionsFor": "Akcje dla {{name}}"
 		}
 	},
 	"tasks": {

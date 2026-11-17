@@ -43,6 +43,7 @@ function RouteComponent() {
 
   return (
     <InstancePage
+      width="wide"
       title={t("accountSecurity:platform.users.title")}
       subtitle={t("accountSecurity:platform.users.subtitle")}
     >

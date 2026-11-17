@@ -3954,6 +3954,10 @@
 				"confirmation": "Повідомлення-підтвердження",
 				"confirmationHint": "Показується після надсилання запиту."
 			}
+		},
+		"table": {
+			"actions": "Дії",
+			"actionsFor": "Дії для {{name}}"
 		}
 	},
 	"navigation": {

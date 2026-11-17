@@ -30,6 +30,7 @@ function RouteComponent() {
     <SettingsFrame>
       <SettingsPage
         title={t("team:members.pageTitle")}
+        width="wide"
         description={t("team:members.subtitle")}
         actions={
           canInvite ? (
@@ -40,13 +41,11 @@ function RouteComponent() {
           ) : undefined
         }
       >
-        <div className="overflow-x-auto rounded-lg border bg-card">
-          <MembersTable
-            workspaceId={workspaceId}
-            users={workspace?.members ?? []}
-            invitations={workspace?.invitations ?? []}
-          />
-        </div>
+        <MembersTable
+          workspaceId={workspaceId}
+          users={workspace?.members ?? []}
+          invitations={workspace?.invitations ?? []}
+        />
 
         <InviteTeamMemberModal
           open={isInviteOpen}

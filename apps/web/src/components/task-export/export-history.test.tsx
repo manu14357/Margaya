@@ -117,9 +117,12 @@ describe("ExportHistory", () => {
 
     expect(m.useTaskExports).toHaveBeenLastCalledWith("ws-1", "all");
     expect(
-      screen.getByText("settings:workspaceExports.history.columns.requestedBy"),
+      screen.getByRole("columnheader", {
+        name: "settings:workspaceExports.history.columns.requestedBy",
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Ada Lovelace")).toBeInTheDocument();
+    // In its column, and repeated under the export for narrow tables.
+    expect(screen.getAllByText("Ada Lovelace")).toHaveLength(2);
   });
 
   it("names whole-workspace exports and reports their files", () => {

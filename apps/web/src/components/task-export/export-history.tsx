@@ -1,6 +1,13 @@
 import { FileDown } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
 import { SettingsEmptyState } from "@/components/settings-layout";
 import {
   AlertDialog,
@@ -13,15 +20,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { ErrorDisplay } from "@/components/ui/error-display";
-import { Frame } from "@/components/ui/frame";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Toggle, ToggleGroup } from "@/components/ui/toggle-group";
 import { useDeleteTaskExport } from "@/hooks/mutations/task-export/use-delete-task-export";
 import { useDownloadTaskExport } from "@/hooks/mutations/task-export/use-download-task-export";
@@ -123,53 +122,53 @@ export function ExportHistory({
   } else {
     body = (
       <div className="space-y-3">
-        <Frame>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>
-                  {t("settings:workspaceExports.history.columns.export")}
-                </TableHead>
-                {showRequester && (
-                  <TableHead>
-                    {t("settings:workspaceExports.history.columns.requestedBy")}
-                  </TableHead>
-                )}
-                <TableHead>
-                  {t("settings:workspaceExports.history.columns.created")}
-                </TableHead>
-                <TableHead>
-                  {t("settings:workspaceExports.history.columns.status")}
-                </TableHead>
-                <TableHead className="hidden text-right md:table-cell">
-                  {t("settings:workspaceExports.history.columns.tasks")}
-                </TableHead>
-                <TableHead className="hidden text-right md:table-cell">
-                  {t("settings:workspaceExports.history.columns.size")}
-                </TableHead>
-                <TableHead>
-                  {t("settings:workspaceExports.history.columns.expires")}
-                </TableHead>
-                <TableHead className="w-[90px] text-right">
+        <SettingsTable>
+          <SettingsTableHeader>
+            <SettingsTableRow>
+              <SettingsTableHead>
+                {t("settings:workspaceExports.history.columns.export")}
+              </SettingsTableHead>
+              {showRequester && (
+                <SettingsTableHead className="w-40" hideBelow="lg">
+                  {t("settings:workspaceExports.history.columns.requestedBy")}
+                </SettingsTableHead>
+              )}
+              <SettingsTableHead className="w-28">
+                {t("settings:workspaceExports.history.columns.created")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-32">
+                {t("settings:workspaceExports.history.columns.status")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-20" align="end" hideBelow="md">
+                {t("settings:workspaceExports.history.columns.tasks")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-24" align="end" hideBelow="md">
+                {t("settings:workspaceExports.history.columns.size")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-40" hideBelow="lg">
+                {t("settings:workspaceExports.history.columns.expires")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-24">
+                <span className="sr-only">
                   {t("settings:workspaceExports.history.columns.actions")}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((row) => (
-                <ExportHistoryRow
-                  key={row.id}
-                  row={row}
-                  now={now}
-                  showRequester={showRequester}
-                  isDownloading={downloadingId === row.id}
-                  onDownload={() => handleDownload(row)}
-                  onDelete={() => setPendingDelete(row)}
-                />
-              ))}
-            </TableBody>
-          </Table>
-        </Frame>
+                </span>
+              </SettingsTableHead>
+            </SettingsTableRow>
+          </SettingsTableHeader>
+          <SettingsTableBody>
+            {rows.map((row) => (
+              <ExportHistoryRow
+                key={row.id}
+                row={row}
+                now={now}
+                showRequester={showRequester}
+                isDownloading={downloadingId === row.id}
+                onDownload={() => handleDownload(row)}
+                onDelete={() => setPendingDelete(row)}
+              />
+            ))}
+          </SettingsTableBody>
+        </SettingsTable>
         {history.hasNextPage && (
           <div className="flex justify-center">
             <Button

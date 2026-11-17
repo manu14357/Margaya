@@ -3830,6 +3830,10 @@
 				"confirmation": "Confirmation message",
 				"confirmationHint": "Shown after someone sends a request."
 			}
+		},
+		"table": {
+			"actions": "Actions",
+			"actionsFor": "Actions for {{name}}"
 		}
 	},
 	"navigation": {

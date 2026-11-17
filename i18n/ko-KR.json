@@ -3770,6 +3770,10 @@
 				"confirmation": "확인 메시지",
 				"confirmationHint": "요청을 보낸 후에 표시됩니다."
 			}
+		},
+		"table": {
+			"actions": "작업",
+			"actionsFor": "{{name}} 작업"
 		}
 	},
 	"navigation": {

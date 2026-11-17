@@ -1,5 +1,14 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  SettingsRowActions,
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,14 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   useCreateScimConnection,
   useDeleteScimConnection,
@@ -109,57 +110,65 @@ export function ScimConnectionsSection() {
         </p>
       ) : (
         <div className="space-y-3">
-          <div className="overflow-x-auto rounded-md border border-border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>
-                    {t("instanceAdmin:identity.scim.columns.name")}
-                  </TableHead>
-                  <TableHead>
-                    {t("instanceAdmin:identity.scim.columns.workspace")}
-                  </TableHead>
-                  <TableHead>
-                    {t("instanceAdmin:identity.scim.columns.people")}
-                  </TableHead>
-                  <TableHead className="w-0" />
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.map((connection) => (
-                  <TableRow key={connection.id}>
-                    <TableCell className="text-sm font-medium">
-                      {connection.name}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {connection.workspaceName}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {formatNumber(connection.provisionedUsers)}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          size="xs"
-                          onClick={() => setRotating(connection)}
-                        >
-                          {t("instanceAdmin:identity.scim.rotate")}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="xs"
-                          onClick={() => setRemoving(connection)}
-                        >
-                          {t("instanceAdmin:identity.remove")}
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <SettingsTable>
+            <SettingsTableHeader>
+              <SettingsTableRow>
+                <SettingsTableHead>
+                  {t("instanceAdmin:identity.scim.columns.name")}
+                </SettingsTableHead>
+                <SettingsTableHead>
+                  {t("instanceAdmin:identity.scim.columns.workspace")}
+                </SettingsTableHead>
+                <SettingsTableHead className="w-24" align="end">
+                  {t("instanceAdmin:identity.scim.columns.people")}
+                </SettingsTableHead>
+                <SettingsTableHead className="w-14">
+                  <span className="sr-only">{t("settings:table.actions")}</span>
+                </SettingsTableHead>
+              </SettingsTableRow>
+            </SettingsTableHeader>
+            <SettingsTableBody>
+              {items.map((connection) => (
+                <SettingsTableRow key={connection.id}>
+                  <SettingsTableCell
+                    kind="primary"
+                    className="font-medium text-sm"
+                  >
+                    {connection.name}
+                  </SettingsTableCell>
+                  <SettingsTableCell
+                    label={t("instanceAdmin:identity.scim.columns.workspace")}
+                    className="text-muted-foreground"
+                  >
+                    {connection.workspaceName}
+                  </SettingsTableCell>
+                  <SettingsTableCell
+                    label={t("instanceAdmin:identity.scim.columns.people")}
+                    align="end"
+                    className="text-muted-foreground"
+                  >
+                    {formatNumber(connection.provisionedUsers)}
+                  </SettingsTableCell>
+                  <SettingsTableCell kind="actions">
+                    <SettingsRowActions
+                      name={connection.name}
+                      actions={[
+                        {
+                          label: t("instanceAdmin:identity.scim.rotate"),
+                          onClick: () => setRotating(connection),
+                        },
+                        {
+                          label: t("instanceAdmin:identity.remove"),
+                          onClick: () => setRemoving(connection),
+                          destructive: true,
+                        },
+                      ]}
+                    />
+                  </SettingsTableCell>
+                </SettingsTableRow>
+              ))}
+            </SettingsTableBody>
+          </SettingsTable>
           <div className="space-y-1.5">
             <Label htmlFor="scim-base-url">
               {t("instanceAdmin:identity.scim.baseUrl")}

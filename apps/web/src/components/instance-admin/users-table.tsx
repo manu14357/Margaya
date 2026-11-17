@@ -3,6 +3,15 @@ import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableMeta,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
+import {
   AlertDialog,
   AlertDialogClose,
   AlertDialogContent,
@@ -14,6 +23,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { CompactDate } from "@/components/ui/compact-date";
 import {
   Menu,
   MenuItem,
@@ -21,14 +31,7 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from "@/components/ui/menu";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { MiddleTruncate } from "@/components/ui/truncated-text";
 import {
   useAddInstanceAdmin,
   useInstanceUserAction,
@@ -38,7 +41,7 @@ import {
   instanceAdminKeys,
   useInstanceUsers,
 } from "@/hooks/queries/instance-admin/use-instance-admin";
-import { formatDateMedium, formatRelativeTime } from "@/lib/format";
+import { formatRelativeTime } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
 import { toast } from "@/lib/toast";
 import type { InstanceUser, InstanceUserStatus } from "@/types/instance-admin";
@@ -123,155 +126,178 @@ export function UsersTable({ q, status }: UsersTableProps) {
 
   return (
     <div className="space-y-3">
-      <div className="overflow-x-auto rounded-md border border-border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>
-                {t("accountSecurity:platform.users.columnUser")}
-              </TableHead>
-              <TableHead>
-                {t("accountSecurity:platform.users.columnStatus")}
-              </TableHead>
-              <TableHead className="text-right">
-                {t("accountSecurity:platform.users.columnWorkspaces")}
-              </TableHead>
-              <TableHead>
-                {t("accountSecurity:platform.users.columnLastActive")}
-              </TableHead>
-              <TableHead>
-                {t("accountSecurity:platform.users.columnJoined")}
-              </TableHead>
-              <TableHead className="w-0">
-                <span className="sr-only">
-                  {t("accountSecurity:platform.users.columnActions")}
-                </span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {items.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>
-                  <button
-                    type="button"
-                    className="flex min-w-0 items-center gap-2 rounded text-left focus-visible:outline-2 focus-visible:outline-ring"
-                    onClick={() => setPending({ kind: "details", user })}
-                  >
-                    <Avatar className="size-7">
-                      <AvatarImage src={user.image ?? ""} alt="" />
-                      <AvatarFallback className="text-[10px]">
-                        {getInitials(user.name, "U")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-medium">
-                        {user.name}
-                      </span>
-                      <span className="block truncate text-xs text-muted-foreground">
-                        {user.email}
-                      </span>
+      <SettingsTable>
+        <SettingsTableHeader>
+          <SettingsTableRow>
+            <SettingsTableHead>
+              {t("accountSecurity:platform.users.columnUser")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-44">
+              {t("accountSecurity:platform.users.columnStatus")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-28" align="end" hideBelow="md">
+              {t("accountSecurity:platform.users.columnWorkspaces")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-32" hideBelow="md">
+              {t("accountSecurity:platform.users.columnLastActive")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-28" hideBelow="md">
+              {t("accountSecurity:platform.users.columnJoined")}
+            </SettingsTableHead>
+            <SettingsTableHead className="w-14">
+              <span className="sr-only">
+                {t("accountSecurity:platform.users.columnActions")}
+              </span>
+            </SettingsTableHead>
+          </SettingsTableRow>
+        </SettingsTableHeader>
+        <SettingsTableBody>
+          {items.map((user) => (
+            <SettingsTableRow key={user.id}>
+              <SettingsTableCell kind="primary">
+                <button
+                  type="button"
+                  className="flex w-full min-w-0 items-center gap-2 rounded text-left focus-visible:outline-2 focus-visible:outline-ring"
+                  onClick={() => setPending({ kind: "details", user })}
+                >
+                  <Avatar className="size-7 shrink-0">
+                    <AvatarImage src={user.image ?? ""} alt="" />
+                    <AvatarFallback className="text-[10px]">
+                      {getInitials(user.name, "U")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-medium text-sm">
+                      {user.name}
                     </span>
-                  </button>
-                </TableCell>
-                <TableCell>
-                  <div className="flex flex-wrap gap-1">
-                    {user.isAdmin && (
-                      <Badge variant="outline">
-                        {t("accountSecurity:platform.users.badgeAdmin")}
-                      </Badge>
-                    )}
-                    {user.banned && (
-                      <Badge variant="error">
-                        {t("accountSecurity:platform.users.badgeBanned")}
-                      </Badge>
-                    )}
-                    {user.twoFactorEnabled && (
-                      <Badge variant="secondary">
-                        {t("accountSecurity:platform.users.badgeTwoFactor")}
-                      </Badge>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell className="text-right tabular-nums">
-                  {user.workspaceCount}
-                </TableCell>
-                <TableCell className="whitespace-nowrap text-muted-foreground">
-                  {user.lastActiveAt
-                    ? formatRelativeTime(new Date(user.lastActiveAt))
-                    : t("accountSecurity:platform.users.never")}
-                </TableCell>
-                <TableCell className="whitespace-nowrap text-muted-foreground">
-                  {formatDateMedium(user.createdAt)}
-                </TableCell>
-                <TableCell>
-                  <Menu>
-                    <MenuTrigger
-                      render={
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="size-8"
-                          aria-label={t(
-                            "accountSecurity:platform.users.actionsFor",
-                            { name: user.name },
-                          )}
-                        />
-                      }
+                    <MiddleTruncate
+                      text={user.email}
+                      className="text-muted-foreground text-xs"
+                    />
+                  </span>
+                </button>
+                <SettingsTableMeta hideAbove="md" className="ps-9">
+                  <span>
+                    {t("accountSecurity:platform.users.columnWorkspaces")}{" "}
+                    {user.workspaceCount}
+                  </span>
+                  <span>
+                    {user.lastActiveAt
+                      ? formatRelativeTime(new Date(user.lastActiveAt))
+                      : t("accountSecurity:platform.users.never")}
+                  </span>
+                </SettingsTableMeta>
+              </SettingsTableCell>
+              <SettingsTableCell
+                label={t("accountSecurity:platform.users.columnStatus")}
+              >
+                <div className="flex flex-wrap gap-1">
+                  {!user.isAdmin && !user.banned && !user.twoFactorEnabled && (
+                    <span className="text-muted-foreground">—</span>
+                  )}
+                  {user.isAdmin && (
+                    <Badge variant="outline">
+                      {t("accountSecurity:platform.users.badgeAdmin")}
+                    </Badge>
+                  )}
+                  {user.banned && (
+                    <Badge variant="error">
+                      {t("accountSecurity:platform.users.badgeBanned")}
+                    </Badge>
+                  )}
+                  {user.twoFactorEnabled && (
+                    <Badge variant="secondary">
+                      {t("accountSecurity:platform.users.badgeTwoFactor")}
+                    </Badge>
+                  )}
+                </div>
+              </SettingsTableCell>
+              <SettingsTableCell align="end" hideBelow="md">
+                {user.workspaceCount}
+              </SettingsTableCell>
+              <SettingsTableCell
+                hideBelow="md"
+                className="text-muted-foreground"
+              >
+                {user.lastActiveAt ? (
+                  <CompactDate value={user.lastActiveAt} />
+                ) : (
+                  t("accountSecurity:platform.users.never")
+                )}
+              </SettingsTableCell>
+              <SettingsTableCell
+                hideBelow="md"
+                className="text-muted-foreground"
+              >
+                <CompactDate value={user.createdAt} />
+              </SettingsTableCell>
+              <SettingsTableCell kind="actions">
+                <Menu>
+                  <MenuTrigger
+                    render={
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="size-8"
+                        aria-label={t(
+                          "accountSecurity:platform.users.actionsFor",
+                          { name: user.name },
+                        )}
+                      />
+                    }
+                  >
+                    <MoreHorizontal className="size-4" />
+                  </MenuTrigger>
+                  <MenuPopup align="end" className="w-52">
+                    <MenuItem
+                      onClick={() => setPending({ kind: "details", user })}
                     >
-                      <MoreHorizontal className="size-4" />
-                    </MenuTrigger>
-                    <MenuPopup align="end" className="w-52">
+                      {t("accountSecurity:platform.users.details")}
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => setPending({ kind: "reset", user })}
+                    >
+                      {t("accountSecurity:platform.users.resetPassword")}
+                    </MenuItem>
+                    {user.twoFactorEnabled && (
                       <MenuItem
-                        onClick={() => setPending({ kind: "details", user })}
+                        onClick={() =>
+                          setPending({ kind: "resetTwoFactor", user })
+                        }
                       >
-                        {t("accountSecurity:platform.users.details")}
+                        {t("accountSecurity:platform.users.resetTwoFactor")}
                       </MenuItem>
+                    )}
+                    <MenuItem
+                      onClick={() => setPending({ kind: "signOut", user })}
+                    >
+                      {t("accountSecurity:platform.users.signOut")}
+                    </MenuItem>
+                    <MenuItem onClick={() => void toggleAdmin(user)}>
+                      {user.isAdmin
+                        ? t("accountSecurity:platform.users.removeAdmin")
+                        : t("accountSecurity:platform.users.makeAdmin")}
+                    </MenuItem>
+                    <MenuSeparator />
+                    {user.banned ? (
+                      <MenuItem onClick={() => void unban(user)}>
+                        {t("accountSecurity:platform.users.unban")}
+                      </MenuItem>
+                    ) : (
                       <MenuItem
-                        onClick={() => setPending({ kind: "reset", user })}
+                        variant="destructive"
+                        onClick={() => setPending({ kind: "ban", user })}
                       >
-                        {t("accountSecurity:platform.users.resetPassword")}
+                        {t("accountSecurity:platform.users.ban")}
                       </MenuItem>
-                      {user.twoFactorEnabled && (
-                        <MenuItem
-                          onClick={() =>
-                            setPending({ kind: "resetTwoFactor", user })
-                          }
-                        >
-                          {t("accountSecurity:platform.users.resetTwoFactor")}
-                        </MenuItem>
-                      )}
-                      <MenuItem
-                        onClick={() => setPending({ kind: "signOut", user })}
-                      >
-                        {t("accountSecurity:platform.users.signOut")}
-                      </MenuItem>
-                      <MenuItem onClick={() => void toggleAdmin(user)}>
-                        {user.isAdmin
-                          ? t("accountSecurity:platform.users.removeAdmin")
-                          : t("accountSecurity:platform.users.makeAdmin")}
-                      </MenuItem>
-                      <MenuSeparator />
-                      {user.banned ? (
-                        <MenuItem onClick={() => void unban(user)}>
-                          {t("accountSecurity:platform.users.unban")}
-                        </MenuItem>
-                      ) : (
-                        <MenuItem
-                          variant="destructive"
-                          onClick={() => setPending({ kind: "ban", user })}
-                        >
-                          {t("accountSecurity:platform.users.ban")}
-                        </MenuItem>
-                      )}
-                    </MenuPopup>
-                  </Menu>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+                    )}
+                  </MenuPopup>
+                </Menu>
+              </SettingsTableCell>
+            </SettingsTableRow>
+          ))}
+        </SettingsTableBody>
+      </SettingsTable>
       {query.hasNextPage && (
         <Button
           variant="outline"
