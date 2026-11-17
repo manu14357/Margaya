@@ -6,10 +6,13 @@ import { eq } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { serve } from "../../apps/api/node_modules/@hono/node-server";
 import type { NodeWebSocket } from "../../apps/api/node_modules/@hono/node-ws";
+import { ACCESS_MARKER } from "../../apps/api/src/api-key/scope";
 import db, { schema } from "../../apps/api/src/database";
 import { createApp } from "../../apps/api/src/index";
 import createNotification from "../../apps/api/src/notification/controllers/create-notification";
 import { resetRateLimitMemory } from "../../apps/api/src/utils/rate-limit";
+import { createApiKey } from "./helpers/api-keys";
+import { createProjectFixture } from "./helpers/fixtures";
 import {
   resetInstanceState,
   signUpWithSession,
@@ -100,16 +103,21 @@ describe("GET /api/notification/{id}/desktop", () => {
     expect(byBearer.status, await byBearer.clone().text()).toBe(200);
     const alert = (await byBearer.json()) as Record<string, string>;
     expect(Object.keys(alert).sort()).toEqual([
+      "actions",
       "body",
       "held",
       "id",
       "sound",
       "soundName",
       "tag",
+      "taskId",
       "title",
       "url",
       "volume",
     ]);
+    // Not about a task: no buttons.
+    expect(alert.taskId).toBeNull();
+    expect(alert.actions).toEqual([]);
     expect(alert.id).toBe(created.id);
     expect(alert.tag).toBe(created.id);
     expect(alert.url).toBe(
@@ -253,6 +261,145 @@ describe("GET /api/notification/{id}/desktop", () => {
       focusUntil: new Date(Date.now() - 1000).toISOString(),
     });
     expect((await alertOf(created.id)).held).toBe(false);
+  });
+
+  it("offers the task's buttons as far as the caller may act, and the routes they name work by bearer", async () => {
+    const { project } = await createProjectFixture({ workspaceId });
+    const [task] = await db
+      .insert(schema.taskTable)
+      .values({
+        projectId: project.id,
+        title: "Ship the release",
+        status: "to-do",
+        number: 1,
+      })
+      .returning();
+    if (!task) throw new Error("No task");
+    const reminder = await createNotification({
+      userId: pat.id,
+      type: "due_date_reminder",
+      eventData: { taskTitle: task.title, leadTimeMinutes: 60 },
+      resourceId: task.id,
+      resourceType: "task",
+    });
+    if (!reminder) throw new Error("Reminder muted");
+    const bearer = { authorization: `Bearer ${pat.token}` };
+    const actionsOf = async () => {
+      const response = await alertFor(reminder.id, bearer);
+      expect(response.status).toBe(200);
+      return (await response.json()) as {
+        taskId: string | null;
+        actions: string[];
+        url: string;
+      };
+    };
+
+    const alert = await actionsOf();
+    expect(alert.taskId).toBe(task.id);
+    expect(alert.actions).toEqual(["done", "snooze", "reply"]);
+    expect(alert.url).toContain(`/task/${task.id}`);
+
+    // A key limited to reading tasks gets the scope it carries: only the
+    // own snooze.
+    const taskReader = await createApiKey(pat, { task: ["read"] });
+    const byKey = await alertFor(reminder.id, taskReader.headers);
+    expect(byKey.status).toBe(200);
+    expect(await byKey.json()).toMatchObject({
+      taskId: task.id,
+      actions: ["snooze"],
+    });
+
+    // A read-only key can't PATCH, PUT or POST, so it is offered nothing,
+    // not even the snooze, and the snooze route refuses it all the same.
+    const readOnly = await createApiKey(pat, {
+      [ACCESS_MARKER]: ["read"],
+    });
+    const byReadOnlyKey = await alertFor(reminder.id, readOnly.headers);
+    expect(byReadOnlyKey.status).toBe(200);
+    expect(await byReadOnlyKey.json()).toMatchObject({
+      taskId: task.id,
+      actions: [],
+    });
+    const refusedSnooze = await app.request(
+      `/api/notification/${reminder.id}/snooze`,
+      {
+        method: "PATCH",
+        headers: { ...readOnly.headers, "content-type": "application/json" },
+        body: JSON.stringify({
+          until: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+        }),
+      },
+    );
+    expect(refusedSnooze.status).toBe(403);
+
+    // What the app does for "Snooze 1 hour" and "Mark done".
+    const snoozed = await app.request(
+      `/api/notification/${reminder.id}/snooze`,
+      {
+        method: "PATCH",
+        headers: { ...bearer, "content-type": "application/json" },
+        body: JSON.stringify({
+          until: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+        }),
+      },
+    );
+    expect(snoozed.status, await snoozed.clone().text()).toBe(200);
+    const done = await app.request(`/api/task/status/${task.id}`, {
+      method: "PUT",
+      headers: { ...bearer, "content-type": "application/json" },
+      body: JSON.stringify({ status: "done" }),
+    });
+    expect(done.status, await done.clone().text()).toBe(200);
+    const read = await app.request(`/api/notification/${reminder.id}/read`, {
+      method: "PATCH",
+      headers: bearer,
+    });
+    expect(read.status).toBe(200);
+
+    // A done task can't be marked done again; snooze and reply stay.
+    expect((await actionsOf()).actions).toEqual(["snooze", "reply"]);
+
+    // Without task:update (a viewer who is no instance admin) only the
+    // caller's own snooze is offered, and the status route refuses the move
+    // all the same.
+    await db
+      .update(schema.taskTable)
+      .set({ status: "to-do" })
+      .where(eq(schema.taskTable.id, task.id));
+    await db
+      .update(schema.userTable)
+      .set({ role: "user" })
+      .where(eq(schema.userTable.id, sam.id));
+    await db.insert(schema.workspaceUserTable).values({
+      workspaceId,
+      userId: sam.id,
+      role: "viewer",
+      joinedAt: new Date(),
+    });
+    const samReminder = await createNotification({
+      userId: sam.id,
+      type: "due_date_reminder",
+      eventData: { taskTitle: task.title, leadTimeMinutes: 60 },
+      resourceId: task.id,
+      resourceType: "task",
+    });
+    if (!samReminder) throw new Error("Reminder muted");
+    const samBearer = { authorization: `Bearer ${sam.token}` };
+    const samAlert = await alertFor(samReminder.id, samBearer);
+    expect(samAlert.status).toBe(200);
+    expect(await samAlert.json()).toMatchObject({
+      taskId: task.id,
+      actions: ["snooze"],
+    });
+    const refused = await app.request(`/api/task/status/${task.id}`, {
+      method: "PUT",
+      headers: { ...samBearer, "content-type": "application/json" },
+      body: JSON.stringify({ status: "done" }),
+    });
+    expect(refused.status).toBe(403);
+
+    // Someone else's alert is never theirs, let alone its buttons.
+    expect((await alertFor(reminder.id, samBearer)).status).toBe(404);
   });
 
   it("answers 404 for someone else's notification, an unknown one and signed out 401", async () => {

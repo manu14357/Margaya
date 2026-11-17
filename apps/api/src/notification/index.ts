@@ -8,6 +8,7 @@ import getInboxCounts from "./controllers/get-inbox-counts";
 import getNotifications from "./controllers/get-notifications";
 import markAllNotificationsAsRead from "./controllers/mark-all-notifications-as-read";
 import updateNotificationState from "./controllers/update-notification-state";
+import { desktopNotificationActions } from "./desktop-actions";
 import { parseInboxTypes } from "./inbox";
 import {
   archiveRoute,
@@ -162,7 +163,14 @@ const notification = apiRouter()
     if (!alert) {
       throw new HTTPException(404, { message: "Notification not found" });
     }
-    return c.json(alert, 200);
+    // Only now, with the notification known to be the caller's and its task
+    // visible to them, does the task's own permission check run.
+    const { taskId, actions } = await desktopNotificationActions(
+      c,
+      alert.id,
+      c.get("userId"),
+    );
+    return c.json({ ...alert, taskId, actions }, 200);
   });
 
 export default notification;

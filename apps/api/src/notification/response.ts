@@ -1,5 +1,6 @@
 import { nullableResponseTimestamp, responseTimestamp, z } from "../openapi";
 import { NOTIFICATION_SOUNDS } from "../user/schema";
+import { DESKTOP_ACTIONS } from "./desktop-actions";
 
 export const notificationSchema = z
   .object({
@@ -150,6 +151,15 @@ export const desktopNotificationSchema = z
     held: z.boolean().openapi({
       description:
         "True while the user's quiet hours or focus mode hold desktop alerts and this notification does not bypass them: show nothing now. The inbox and the unread badge still count it, and one summary follows when quiet time ends (the user socket's NOTIFICATIONS_RELEASED hint).",
+    }),
+    taskId: z.string().nullable().openapi({
+      description:
+        "The task the alert is about, for the kinds a person can act on from it (task assignments, status changes, updates, comments, mentions, due-date reminders and overdue tasks); null otherwise.",
+    }),
+    actions: z.array(z.enum(DESKTOP_ACTIONS)).openapi({
+      description:
+        "The buttons the alert may offer, empty without `taskId` and for a read-only API key, which can perform none of them. `snooze`: hide the notification for an hour (PATCH /notification/{id}/snooze). `done`: move the task to its project's first completed column (PUT /task/status/{taskId}); listed only when the caller has task:update there (API key scopes and project roles included), the workspace may edit and the task is open, not archived and not waiting in intake. `reply`: open the task with the comment box focused; listed only with task:update, which commenting takes. The routes still check every action.",
+      example: ["done", "snooze", "reply"],
     }),
   })
   .openapi("DesktopNotification");
