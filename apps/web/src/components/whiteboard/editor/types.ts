@@ -71,4 +71,10 @@ export type WhiteboardEditorProps = {
    * response carries a snapshot; signed-in views query live data instead).
    */
   publicTasks?: Record<string, TaskCardData>;
+  /**
+   * Present mode: read-only, no toolbars; arrow keys or a click step through
+   * the frames, Esc calls `onExitPresent`.
+   */
+  presenting?: boolean;
+  onExitPresent?: () => void;
 };

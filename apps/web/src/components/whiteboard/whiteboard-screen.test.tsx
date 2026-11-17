@@ -38,6 +38,11 @@ vi.mock("@tanstack/react-router", () => ({
   Link: ({ children }: { children?: ReactNode }) => <a href="/">{children}</a>,
   useNavigate: () => vi.fn(),
 }));
+// Outside a crowded top bar: nothing to host, the menu shows as it is.
+vi.mock("@/components/common/header/top-bar-overflow", () => ({
+  useTopBarOverflowHost: () => null,
+  TopBarOverflowMenuItems: () => null,
+}));
 vi.mock("@/components/common/project-layout", () => ({
   default: ({
     headerActions,

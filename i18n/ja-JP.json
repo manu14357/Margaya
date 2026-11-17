@@ -9931,6 +9931,15 @@
 			"exitFullScreen": "全画面表示を終了",
 			"more": "ボードのその他のオプション"
 		},
+		"present": {
+			"start": "プレゼンテーション",
+			"newWindow": "新しいウィンドウでプレゼンテーション",
+			"controls": "プレゼンテーションの操作",
+			"previous": "前のフレーム",
+			"next": "次のフレーム",
+			"position": "{{current}} / {{total}}",
+			"exit": "プレゼンテーションを終了"
+		},
 		"dialogs": {
 			"cancel": "キャンセル",
 			"rename": {
@@ -13551,7 +13560,9 @@
 			"label": "ペンの種類",
 			"pen": "ペン",
 			"marker": "マーカー",
-			"highlighter": "蛍光ペン"
+			"highlighter": "蛍光ペン",
+			"penOnly": "ペンでのみ描画",
+			"penOnlyHint": "指ではスクロールとズームだけを行います。"
 		},
 		"background": {
 			"label": "背景",

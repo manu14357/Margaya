@@ -229,7 +229,8 @@ export class BoardController {
         if (
           state.style !== lastPrefs.style ||
           state.snapToObjects !== lastPrefs.snapToObjects ||
-          state.showMinimap !== lastPrefs.showMinimap
+          state.showMinimap !== lastPrefs.showMinimap ||
+          state.penOnly !== lastPrefs.penOnly
         ) {
           savePrefs(state);
         }

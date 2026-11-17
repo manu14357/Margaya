@@ -253,3 +253,52 @@ describe("templates", () => {
     expect(moved[0].y - base[0].y).toBe(500);
   });
 });
+
+describe("board files with pen strokes", () => {
+  const points = [
+    [0, 0],
+    [10, 4],
+    [24, 12],
+  ] as const;
+
+  it("round-trips pen pressure", () => {
+    const pen = createElement("draw", {
+      id: "pen",
+      order: "a0",
+      points,
+      pressures: [0.25, 0.5, 0.75],
+      simulatePressure: false,
+    });
+    const parsed = parseBoardFile(serializeBoard([pen]));
+    const [stroke] = parsed?.elements ?? [];
+    if (stroke?.type !== "draw") throw new Error("expected draw");
+    expect(stroke.pressures).toEqual([0.25, 0.5, 0.75]);
+    expect(stroke.simulatePressure).toBe(false);
+  });
+
+  it("round-trips a mouse stroke and an old stroke without pressure", () => {
+    const mouse = createElement("draw", { id: "mouse", order: "a0", points });
+    const { pressures, simulatePressure, ...old } = createElement("draw", {
+      id: "old",
+      order: "a1",
+      points,
+    });
+    void pressures;
+    void simulatePressure;
+    const text = JSON.stringify({
+      type: "margaya-board",
+      version: 1,
+      elements: [mouse, old],
+    });
+    const parsed = parseBoardFile(text);
+    expect(parsed?.elements).toHaveLength(2);
+    for (const stroke of parsed?.elements ?? []) {
+      if (stroke.type !== "draw") throw new Error("expected draw");
+      expect(stroke.pressures).toEqual([]);
+      expect(stroke.simulatePressure).toBe(true);
+    }
+    // Writing it again keeps it the same.
+    const again = parseBoardFile(serializeBoard(parsed?.elements ?? []));
+    expect(again?.elements).toEqual(parsed?.elements);
+  });
+});

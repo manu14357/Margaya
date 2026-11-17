@@ -10376,6 +10376,15 @@
 			"exitFullScreen": "Zamknij pełny ekran",
 			"more": "Więcej opcji tablicy"
 		},
+		"present": {
+			"start": "Prezentuj",
+			"newWindow": "Prezentuj w nowym oknie",
+			"controls": "Sterowanie prezentacją",
+			"previous": "Poprzednia ramka",
+			"next": "Następna ramka",
+			"position": "{{current}} / {{total}}",
+			"exit": "Zakończ prezentację"
+		},
 		"dialogs": {
 			"cancel": "Anuluj",
 			"rename": {
@@ -14202,7 +14211,9 @@
 			"label": "Styl pióra",
 			"pen": "Pióro",
 			"marker": "Marker",
-			"highlighter": "Zakreślacz"
+			"highlighter": "Zakreślacz",
+			"penOnly": "Rysuj tylko piórem",
+			"penOnlyHint": "Palcami można tylko przesuwać i powiększać."
 		},
 		"background": {
 			"label": "Tło",

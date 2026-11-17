@@ -76,6 +76,7 @@ import {
 } from "./commands";
 import type { BoardController } from "./controller";
 import { isLinear } from "./interaction";
+import { PenOnlySwitch } from "./pen-only-switch";
 import {
   describeSelection,
   type SelectionInfo,
@@ -519,6 +520,7 @@ export function PropertiesPanel({
               icon: <option.icon aria-hidden="true" />,
             }))}
           />
+          {!isSelection && <PenOnlySwitch />}
         </Section>
       )}
       {isSelection && info.allShapes && (

@@ -351,3 +351,49 @@ describe("sanitizeElements", () => {
     expect(sanitizeElements(raw)).toHaveLength(BOARD_LIMITS.maxElements);
   });
 });
+
+describe("draw pressure", () => {
+  const points = [
+    [0, 0],
+    [10, 5],
+    [20, 10],
+  ];
+
+  it("reads a stroke saved before pressure existed as simulated", () => {
+    const { pressures, simulatePressure, penStyle, ...old } = createElement(
+      "draw",
+      { id: "d1", points },
+    );
+    void pressures;
+    void simulatePressure;
+    void penStyle;
+    const draw = parseElement(old);
+    if (draw?.type !== "draw") throw new Error("expected draw");
+    expect(draw.pressures).toEqual([]);
+    expect(draw.simulatePressure).toBe(true);
+    expect(draw.penStyle).toBe("pen");
+  });
+
+  it("keeps pen pressure to two decimals, clamped to 0..1", () => {
+    const draw = parseElement({
+      ...createElement("draw", { id: "d1", points }),
+      pressures: [0.123456, 1.7, -0.2],
+      simulatePressure: false,
+    });
+    if (draw?.type !== "draw") throw new Error("expected draw");
+    expect(draw.pressures).toEqual([0.12, 1, 0]);
+    expect(draw.simulatePressure).toBe(false);
+  });
+
+  it("drops pressures that are not one number per point", () => {
+    for (const bad of [[0.5], [0.5, 0.5, "x"], "0.5,0.5,0.5", null]) {
+      const draw = parseElement({
+        ...createElement("draw", { id: "d1", points }),
+        pressures: bad,
+        simulatePressure: false,
+      });
+      if (draw?.type !== "draw") throw new Error("expected draw");
+      expect(draw.pressures).toEqual([]);
+    }
+  });
+});

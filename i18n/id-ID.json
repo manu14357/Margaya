@@ -9931,6 +9931,15 @@
 			"exitFullScreen": "Keluar dari layar penuh",
 			"more": "Opsi papan lainnya"
 		},
+		"present": {
+			"start": "Presentasikan",
+			"newWindow": "Presentasikan di jendela baru",
+			"controls": "Kontrol presentasi",
+			"previous": "Bingkai sebelumnya",
+			"next": "Bingkai berikutnya",
+			"position": "{{current}} / {{total}}",
+			"exit": "Keluar dari presentasi"
+		},
 		"dialogs": {
 			"cancel": "Batal",
 			"rename": {
@@ -13551,7 +13560,9 @@
 			"label": "Gaya pena",
 			"pen": "Pena",
 			"marker": "Spidol",
-			"highlighter": "Stabilo"
+			"highlighter": "Stabilo",
+			"penOnly": "Gambar hanya dengan pena",
+			"penOnlyHint": "Jari hanya untuk menggeser dan memperbesar."
 		},
 		"background": {
 			"label": "Latar belakang",

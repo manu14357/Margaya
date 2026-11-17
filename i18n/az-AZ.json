@@ -10078,6 +10078,15 @@
 			"exitFullScreen": "Tam ekrandan çıx",
 			"more": "Digər lövhə seçimləri"
 		},
+		"present": {
+			"start": "Təqdim et",
+			"newWindow": "Yeni pəncərədə təqdim et",
+			"controls": "Təqdimat idarəetməsi",
+			"previous": "Əvvəlki çərçivə",
+			"next": "Növbəti çərçivə",
+			"position": "{{current}} / {{total}}",
+			"exit": "Təqdimatdan çıx"
+		},
 		"dialogs": {
 			"cancel": "Ləğv et",
 			"rename": {
@@ -13766,7 +13775,9 @@
 			"label": "Qələm üslubu",
 			"pen": "Qələm",
 			"marker": "Marker",
-			"highlighter": "Vurğulayıcı"
+			"highlighter": "Vurğulayıcı",
+			"penOnly": "Yalnız qələmlə çək",
+			"penOnlyHint": "Barmaqlar yalnız sürüşdürür və miqyası dəyişir."
 		},
 		"background": {
 			"label": "Fon",

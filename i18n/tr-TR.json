@@ -10078,6 +10078,15 @@
 			"exitFullScreen": "Tam ekrandan çık",
 			"more": "Diğer tahta seçenekleri"
 		},
+		"present": {
+			"start": "Sunum yap",
+			"newWindow": "Yeni pencerede sun",
+			"controls": "Sunum denetimleri",
+			"previous": "Önceki çerçeve",
+			"next": "Sonraki çerçeve",
+			"position": "{{current}} / {{total}}",
+			"exit": "Sunumdan çık"
+		},
 		"dialogs": {
 			"cancel": "İptal",
 			"rename": {
@@ -13766,7 +13775,9 @@
 			"label": "Kalem stili",
 			"pen": "Kalem",
 			"marker": "Keçeli kalem",
-			"highlighter": "Fosforlu kalem"
+			"highlighter": "Fosforlu kalem",
+			"penOnly": "Yalnızca kalemle çiz",
+			"penOnlyHint": "Parmaklar yalnızca kaydırır ve yakınlaştırır."
 		},
 		"background": {
 			"label": "Arka plan",

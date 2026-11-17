@@ -134,6 +134,17 @@ describe("editor store reducers", () => {
     expect(loadPrefs()).toEqual({});
   });
 
+  it("remembers pen-only mode on this device", () => {
+    expect(loadPrefs().penOnly).toBeUndefined();
+    savePrefs({ ...INITIAL_EDITOR_STATE, penOnly: true });
+    expect(loadPrefs().penOnly).toBe(true);
+    window.localStorage.setItem(
+      "margaya-whiteboard-editor",
+      JSON.stringify({ penOnly: "on" }),
+    );
+    expect(loadPrefs().penOnly).toBeUndefined();
+  });
+
   it("creates a store seeded with preferences", () => {
     const store = createEditorStore({ showMinimap: true });
     expect(store.getState().showMinimap).toBe(true);

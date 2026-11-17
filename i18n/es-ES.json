@@ -10227,6 +10227,15 @@
 			"exitFullScreen": "Salir de pantalla completa",
 			"more": "Más opciones de la pizarra"
 		},
+		"present": {
+			"start": "Presentar",
+			"newWindow": "Presentar en una ventana nueva",
+			"controls": "Controles de la presentación",
+			"previous": "Marco anterior",
+			"next": "Marco siguiente",
+			"position": "{{current}} / {{total}}",
+			"exit": "Salir de la presentación"
+		},
 		"dialogs": {
 			"cancel": "Cancelar",
 			"rename": {
@@ -13984,7 +13993,9 @@
 			"label": "Estilo de lápiz",
 			"pen": "Lápiz",
 			"marker": "Rotulador",
-			"highlighter": "Subrayador"
+			"highlighter": "Subrayador",
+			"penOnly": "Dibujar solo con el lápiz",
+			"penOnlyHint": "Los dedos solo desplazan y hacen zoom."
 		},
 		"background": {
 			"label": "Fondo",

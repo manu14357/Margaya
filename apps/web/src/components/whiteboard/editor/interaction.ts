@@ -41,6 +41,7 @@ import {
   type SelectionFrame,
   snapAngle,
 } from "./handles";
+import { isPenEraser, touchPolicy } from "./pen-input";
 import { defaultShapeSize, shapeChoiceOf } from "./shapes";
 import { applyToolEvent, setSelection, toggleInSelection } from "./store";
 import {
@@ -193,6 +194,12 @@ export type InteractionHooks = {
 export class Interaction {
   private gesture: Gesture = { kind: "none" };
   private touches = new Map<number, P>();
+  /** Touches taken for a palm: every later event of theirs is dropped. */
+  private ignoredTouches = new Set<number>();
+  /** The pen pointer that is down, if any. */
+  private penPointerId: number | null = null;
+  /** `performance.now()` when the pen was last down, moving or hovering. */
+  private lastPenAt = Number.NEGATIVE_INFINITY;
   private lastDown: { time: number; x: number; y: number } | null = null;
   private longPress: ReturnType<typeof setTimeout> | null = null;
   private modifiers = { shift: false, alt: false, mod: false };
@@ -284,6 +291,27 @@ export class Interaction {
     };
     const screen = this.screenPoint(event);
     const point = toBoard(c.state.viewport, screen.x, screen.y);
+
+    // Palm rejection: a touch while the pen is near is the hand holding it,
+    // and with "Draw with pen only" a touch only moves the view.
+    let touchPans = false;
+    if (event.pointerType === "pen") {
+      this.penPointerId = event.pointerId;
+      this.lastPenAt = performance.now();
+      this.dropTouches();
+    } else if (event.pointerType === "touch") {
+      const policy = touchPolicy({
+        penDown: this.penPointerId !== null,
+        lastPenAt: this.lastPenAt,
+        now: performance.now(),
+        penOnly: c.state.penOnly,
+      });
+      if (policy === "ignore") {
+        this.ignoredTouches.add(event.pointerId);
+        return;
+      }
+      touchPans = policy === "pan";
+    }
     this.pointer = point;
 
     if (event.pointerType === "touch") {
@@ -298,8 +326,20 @@ export class Interaction {
     if (event.button === 2) return;
     target?.setPointerCapture?.(event.pointerId);
 
+    // The pen's eraser end (or eraser button) erases while held, whatever the tool.
+    if (isPenEraser(event)) {
+      if (!c.canWrite()) return;
+      this.gesture = {
+        kind: "erase",
+        pointerId: event.pointerId,
+        hits: new Set(),
+      };
+      this.eraseAt(point);
+      return;
+    }
+
     // Middle button or Space: pan, whatever the tool.
-    if (event.button === 1 || c.state.tool === "hand") {
+    if (event.button === 1 || c.state.tool === "hand" || touchPans) {
       event.preventDefault();
       this.gesture = {
         kind: "pan",
@@ -386,6 +426,12 @@ export class Interaction {
 
   pointerMove(event: PointerEvent): void {
     const c = this.c;
+    if (event.pointerType === "pen") this.lastPenAt = performance.now();
+    else if (
+      event.pointerType === "touch" &&
+      this.ignoredTouches.has(event.pointerId)
+    )
+      return;
     const screen = this.screenPoint(event);
     const point = toBoard(c.state.viewport, screen.x, screen.y);
     this.pointer = point;
@@ -491,6 +537,9 @@ export class Interaction {
 
   pointerUp(event: PointerEvent): void {
     const c = this.c;
+    if (event.pointerType === "touch" && this.forgetIgnored(event.pointerId))
+      return;
+    if (event.pointerType === "pen") this.penLifted(event.pointerId);
     this.cancelLongPress();
     if (event.pointerType === "touch") {
       this.touches.delete(event.pointerId);
@@ -592,8 +641,36 @@ export class Interaction {
   }
 
   pointerCancel(event: PointerEvent): void {
+    if (event.pointerType === "touch" && this.forgetIgnored(event.pointerId))
+      return;
+    if (event.pointerType === "pen") this.penLifted(event.pointerId);
     this.touches.delete(event.pointerId);
     this.cancel();
+  }
+
+  // ----- palm rejection ----------------------------------------------------
+
+  /** A pen came down: whatever resting fingers or a palm started is dropped. */
+  private dropTouches(): void {
+    if (this.touches.size === 0) return;
+    const gesture = this.gesture;
+    const fromTouch =
+      gesture.kind === "pinch" ||
+      ("pointerId" in gesture &&
+        gesture.pointerId !== null &&
+        this.touches.has(gesture.pointerId));
+    for (const id of this.touches.keys()) this.ignoredTouches.add(id);
+    this.touches.clear();
+    if (fromTouch) this.cancel();
+  }
+
+  private forgetIgnored(pointerId: number): boolean {
+    return this.ignoredTouches.delete(pointerId);
+  }
+
+  private penLifted(pointerId: number): void {
+    if (this.penPointerId === pointerId) this.penPointerId = null;
+    this.lastPenAt = performance.now();
   }
 
   pointerLeave(): void {
@@ -1608,7 +1685,12 @@ export class Interaction {
       points: points.map(
         ([x, y]) => [x - extent.minX, y - extent.minY] as const,
       ),
-      pressures: gesture.pen ? gesture.pressures.slice(0, points.length) : [],
+      // Two decimals are all a pen's pressure needs, and keep strokes small.
+      pressures: gesture.pen
+        ? gesture.pressures
+            .slice(0, points.length)
+            .map((pressure) => Math.round(pressure * 100) / 100)
+        : [],
     } as BoardElement;
     c.insert([element], { select: false });
   }

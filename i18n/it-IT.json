@@ -10227,6 +10227,15 @@
 			"exitFullScreen": "Esci da schermo intero",
 			"more": "Altre opzioni della lavagna"
 		},
+		"present": {
+			"start": "Presenta",
+			"newWindow": "Presenta in una nuova finestra",
+			"controls": "Controlli della presentazione",
+			"previous": "Riquadro precedente",
+			"next": "Riquadro successivo",
+			"position": "{{current}} / {{total}}",
+			"exit": "Esci dalla presentazione"
+		},
 		"dialogs": {
 			"cancel": "Annulla",
 			"rename": {
@@ -13984,7 +13993,9 @@
 			"label": "Stile penna",
 			"pen": "Penna",
 			"marker": "Pennarello",
-			"highlighter": "Evidenziatore"
+			"highlighter": "Evidenziatore",
+			"penOnly": "Disegna solo con la penna",
+			"penOnlyHint": "Con le dita puoi solo spostarti e zoomare."
 		},
 		"background": {
 			"label": "Sfondo",

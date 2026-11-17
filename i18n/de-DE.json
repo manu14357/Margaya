@@ -10078,6 +10078,15 @@
 			"exitFullScreen": "Vollbild beenden",
 			"more": "Weitere Board-Optionen"
 		},
+		"present": {
+			"start": "Präsentieren",
+			"newWindow": "In neuem Fenster präsentieren",
+			"controls": "Präsentationssteuerung",
+			"previous": "Vorheriger Rahmen",
+			"next": "Nächster Rahmen",
+			"position": "{{current}} / {{total}}",
+			"exit": "Präsentation beenden"
+		},
 		"dialogs": {
 			"cancel": "Abbrechen",
 			"rename": {
@@ -13766,7 +13775,9 @@
 			"label": "Stiftart",
 			"pen": "Stift",
 			"marker": "Marker",
-			"highlighter": "Textmarker"
+			"highlighter": "Textmarker",
+			"penOnly": "Nur mit Stift zeichnen",
+			"penOnlyHint": "Finger verschieben und zoomen nur."
 		},
 		"background": {
 			"label": "Hintergrund",

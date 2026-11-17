@@ -637,3 +637,119 @@ describe("resizing the selection", () => {
     expect(end.y).toBeLessThan(108);
   });
 });
+
+describe("stylus", () => {
+  const pen = (x: number, y: number, extra: Record<string, unknown> = {}) =>
+    event(x, y, {}, { pointerId: 7, pointerType: "pen", ...extra });
+  const finger = (
+    x: number,
+    y: number,
+    pointerId = 20,
+    extra: Record<string, unknown> = {},
+  ) => event(x, y, {}, { pointerId, pointerType: "touch", ...extra });
+
+  it("ignores a resting palm while the pen draws", () => {
+    const { doc, controller, interaction } = setup();
+    useTool(controller, "draw");
+    clock += 1000;
+    interaction.pointerDown(pen(10, 10, { pressure: 0.4 }));
+    interaction.pointerDown(finger(200, 200));
+    interaction.pointerMove(finger(260, 260));
+    interaction.pointerMove(pen(30, 20, { pressure: 0.8 }));
+    interaction.pointerUp(finger(260, 260));
+    interaction.pointerUp(pen(30, 20));
+    const strokes = readElements(doc);
+    expect(strokes).toHaveLength(1);
+    expect(strokes[0]).toMatchObject({ type: "draw", x: 10, y: 10 });
+    expect(controller.state.viewport).toEqual(
+      expect.objectContaining({ scrollX: 0, scrollY: 0 }),
+    );
+  });
+
+  it("ignores a palm that lands while the pen hovers", () => {
+    const { doc, controller, interaction } = setup();
+    useTool(controller, "draw");
+    clock += 1000;
+    interaction.pointerMove(pen(10, 10, { buttons: 0 }));
+    clock += 100;
+    interaction.pointerDown(finger(200, 200));
+    interaction.pointerMove(finger(260, 260));
+    interaction.pointerUp(finger(260, 260));
+    expect(readElements(doc)).toHaveLength(0);
+  });
+
+  it("drops what a palm started when the pen comes down", () => {
+    const { doc, controller, interaction } = setup();
+    useTool(controller, "draw");
+    clock += 1000;
+    interaction.pointerDown(finger(200, 200));
+    interaction.pointerMove(finger(220, 220));
+    interaction.pointerDown(pen(10, 10));
+    interaction.pointerMove(finger(260, 260));
+    interaction.pointerUp(finger(260, 260));
+    interaction.pointerMove(pen(40, 30));
+    interaction.pointerUp(pen(40, 30));
+    const strokes = readElements(doc);
+    expect(strokes).toHaveLength(1);
+    expect(strokes[0]).toMatchObject({ x: 10, y: 10 });
+  });
+
+  it("still pinches with two fingers when no pen is near", () => {
+    const { controller, interaction } = setup();
+    useTool(controller, "draw");
+    clock += 1000;
+    interaction.pointerDown(finger(100, 100, 21));
+    interaction.pointerDown(finger(200, 100, 22));
+    interaction.pointerMove(finger(50, 100, 21));
+    interaction.pointerMove(finger(250, 100, 22));
+    expect(controller.state.viewport.zoom).toBeCloseTo(2);
+  });
+
+  it("pans with one finger and never draws in pen-only mode", () => {
+    const { doc, controller, interaction } = setup();
+    controller.update((state) => ({ ...state, penOnly: true }));
+    useTool(controller, "draw");
+    clock += 1000;
+    interaction.pointerDown(finger(100, 100));
+    interaction.pointerMove(finger(150, 120));
+    interaction.pointerUp(finger(150, 120));
+    expect(readElements(doc)).toHaveLength(0);
+    expect(controller.state.viewport.scrollX).toBeCloseTo(50);
+    expect(controller.state.viewport.scrollY).toBeCloseTo(20);
+    // The pen still draws.
+    clock += 1000;
+    interaction.pointerDown(pen(10, 10));
+    interaction.pointerMove(pen(40, 30));
+    interaction.pointerUp(pen(40, 30));
+    expect(readElements(doc)).toHaveLength(1);
+  });
+
+  it("erases with the pen's eraser end whatever the tool", () => {
+    const box = createElement("rectangle", {
+      x: 0,
+      y: 0,
+      width: 50,
+      height: 50,
+      fillColor: "#bfdbfe",
+    });
+    const { doc, controller, interaction } = setup([box]);
+    useTool(controller, "draw");
+    clock += 1000;
+    interaction.pointerDown(pen(25, 25, { button: 5, buttons: 32 }));
+    interaction.pointerMove(pen(30, 30, { button: -1, buttons: 32 }));
+    interaction.pointerUp(pen(30, 30, { button: 5, buttons: 0 }));
+    expect(readElements(doc)).toHaveLength(0);
+    expect(controller.state.tool).toBe("draw");
+  });
+
+  it("keeps pen pressure to two decimals", () => {
+    const { doc, controller, interaction } = setup();
+    useTool(controller, "draw");
+    clock += 1000;
+    interaction.pointerDown(pen(10, 10, { pressure: 0.12345 }));
+    interaction.pointerMove(pen(20, 15, { pressure: 0.6789 }));
+    interaction.pointerUp(pen(20, 15));
+    const [stroke] = readElements(doc);
+    expect(stroke?.type === "draw" && stroke.pressures).toEqual([0.12, 0.68]);
+  });
+});

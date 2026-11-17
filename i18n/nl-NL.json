@@ -10078,6 +10078,15 @@
 			"exitFullScreen": "Volledig scherm verlaten",
 			"more": "Meer bordopties"
 		},
+		"present": {
+			"start": "Presenteren",
+			"newWindow": "Presenteren in nieuw venster",
+			"controls": "Presentatiebediening",
+			"previous": "Vorig kader",
+			"next": "Volgend kader",
+			"position": "{{current}} / {{total}}",
+			"exit": "Presentatie beëindigen"
+		},
 		"dialogs": {
 			"cancel": "Annuleren",
 			"rename": {
@@ -13766,7 +13775,9 @@
 			"label": "Penstijl",
 			"pen": "Tekenpen",
 			"marker": "Stift",
-			"highlighter": "Markeerstift"
+			"highlighter": "Markeerstift",
+			"penOnly": "Alleen met pen tekenen",
+			"penOnlyHint": "Met je vingers kun je alleen schuiven en zoomen."
 		},
 		"background": {
 			"label": "Achtergrond",

@@ -6,6 +6,7 @@ import {
   outlineToOps,
   outlineToPath,
 } from "../src/render/freehand.js";
+import { penOutlineOptions } from "../src/render/shapes.js";
 
 const stroke: LocalPoint[] = Array.from({ length: 40 }, (_, index) => [
   index * 5,
@@ -147,5 +148,55 @@ describe("outline paths", () => {
   it("builds a laser trail outline", () => {
     const outline = laserTrailOutline(stroke, { size: 6 });
     expect(isClosedAndFinite(outline)).toBe(true);
+  });
+});
+
+describe("pen pressure width", () => {
+  const straight: LocalPoint[] = Array.from({ length: 60 }, (_, index) => [
+    index * 4,
+    0,
+  ]);
+  const options = { ...penOutlineOptions("pen", 2, false), streamline: 0 };
+  const widthAt = (pressure: number) =>
+    widthNear(
+      freehandOutline(
+        straight,
+        straight.map(() => pressure),
+        options,
+      ),
+      120,
+    );
+
+  it("follows the pen's radius formula", () => {
+    // radius = size / 2 * (1 - thinning * (1 - pressure)), thinning 0.6.
+    const size = options.size;
+    expect(widthAt(1)).toBeCloseTo(size, 0);
+    expect(widthAt(0.2) / widthAt(1)).toBeCloseTo(1 - 0.6 * 0.8, 1);
+    expect(widthAt(0.5)).toBeGreaterThan(widthAt(0.2));
+    expect(widthAt(1)).toBeGreaterThan(widthAt(0.5));
+  });
+
+  it("ignores pressures when they don't match the points", () => {
+    const outline = freehandOutline(straight, [1, 1], options);
+    const simulated = freehandOutline(straight, [], {
+      ...options,
+      simulatePressure: true,
+    });
+    expect(outline).toEqual(simulated);
+  });
+
+  it("keeps markers at one width whatever the pressure", () => {
+    const marker = penOutlineOptions("marker", 2, false);
+    const light = freehandOutline(
+      straight,
+      straight.map(() => 0.1),
+      marker,
+    );
+    const heavy = freehandOutline(
+      straight,
+      straight.map(() => 1),
+      marker,
+    );
+    expect(widthNear(light, 120)).toBeCloseTo(widthNear(heavy, 120), 5);
   });
 });

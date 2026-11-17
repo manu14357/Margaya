@@ -7,13 +7,16 @@ import {
   History,
   Lock,
   LockOpen,
+  MonitorUp,
   MoreHorizontal,
   PenTool,
+  Presentation,
   Scan,
   Upload,
 } from "lucide-react";
 import {
   type ChangeEvent,
+  type ReactNode,
   useCallback,
   useEffect,
   useMemo,
@@ -21,6 +24,10 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  TopBarOverflowMenuItems,
+  useTopBarOverflowHost,
+} from "@/components/common/header/top-bar-overflow";
 import ProjectLayout from "@/components/common/project-layout";
 import PageSyncBadge from "@/components/page/collab/page-sync-badge";
 import { usePageMembers } from "@/components/page/use-page-members";
@@ -54,12 +61,15 @@ import { useWhiteboard } from "@/hooks/queries/whiteboard/use-whiteboard";
 import { whiteboardQueryKeys } from "@/hooks/queries/whiteboard/whiteboard-query-keys";
 import { useProjectFeatures } from "@/hooks/use-project-features";
 import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/cn";
+import { isDesktopApp } from "@/lib/desktop";
 import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
 import { boardColorFor } from "@/lib/whiteboards/board-presence";
 import { uploadWhiteboardImage } from "@/lib/whiteboards/upload-whiteboard-image";
 import { whiteboardAssetUrl } from "@/lib/whiteboards/whiteboard-paths";
 import type { Whiteboard } from "@/types/whiteboard";
+import { presentUrl } from "./editor/present";
 import type {
   CollaboratorIdentity,
   WhiteboardEditorHandle,
@@ -81,6 +91,8 @@ type WhiteboardScreenProps = {
   whiteboardId: string;
   /** `?element=`: scroll to and select it once the board loads. */
   elementId?: string;
+  /** `?present=1`: open straight into present mode (a presenter window). */
+  present?: boolean;
 };
 
 const BOARD_FILE_ACCEPT = ".margaya-board,application/json,image/png";
@@ -116,6 +128,41 @@ function HeaderIconButton({
         <TooltipContent>{label}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
+  );
+}
+
+/**
+ * The board's "…" menu. In a crowded top bar it also lists what the bar
+ * moved out of the row (Ask, Summarize), so the bar shows one "…", not two.
+ */
+function BoardMoreMenu({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  const overflow = useTopBarOverflowHost();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={label}
+            title={label}
+            className="text-muted-foreground"
+          />
+        }
+      >
+        <MoreHorizontal className="size-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        <TopBarOverflowMenuItems items={overflow} />
+        {children}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
@@ -178,6 +225,7 @@ export default function WhiteboardScreen({
   projectId,
   whiteboardId,
   elementId,
+  present = false,
 }: WhiteboardScreenProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -198,6 +246,10 @@ export default function WhiteboardScreen({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const goneHandledRef = useRef(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [presenting, setPresenting] = useState(present);
+  // Whether present mode took the canvas full screen, so leaving full
+  // screen (Esc in the browser) also leaves present mode.
+  const presentFullScreenRef = useRef(false);
   const [historyOpen, setHistoryOpen] = useState(false);
 
   const user = useMemo<CollaboratorIdentity | null>(
@@ -290,11 +342,16 @@ export default function WhiteboardScreen({
   }, [handleGone, queryClient, t, terminalKind, whiteboardId]);
 
   useEffect(() => {
-    const onChange = () =>
-      setIsFullScreen(
+    const onChange = () => {
+      const full =
         Boolean(canvasRef.current) &&
-          document.fullscreenElement === canvasRef.current,
-      );
+        document.fullscreenElement === canvasRef.current;
+      setIsFullScreen(full);
+      if (!full && presentFullScreenRef.current) {
+        presentFullScreenRef.current = false;
+        setPresenting(false);
+      }
+    };
     document.addEventListener("fullscreenchange", onChange);
     return () => document.removeEventListener("fullscreenchange", onChange);
   }, []);
@@ -330,6 +387,46 @@ export default function WhiteboardScreen({
     (assetId: string) => whiteboardAssetUrl(whiteboardId, assetId),
     [whiteboardId],
   );
+
+  const startPresenting = () => {
+    setPresenting(true);
+    const element = canvasRef.current;
+    if (!element || document.fullscreenElement) return;
+    // Without full screen (refused, or not offered) the canvas still covers
+    // the window, so present mode works either way.
+    void element
+      .requestFullscreen?.()
+      .then(() => {
+        presentFullScreenRef.current = true;
+      })
+      .catch(() => undefined);
+  };
+
+  const stopPresenting = () => {
+    setPresenting(false);
+    if (presentFullScreenRef.current) {
+      presentFullScreenRef.current = false;
+      if (document.fullscreenElement) void document.exitFullscreen?.();
+    }
+    // A presenter window opened with ?present=1 becomes the plain board.
+    if (present) {
+      void navigate({
+        to: "/dashboard/workspace/$workspaceId/project/$projectId/whiteboards/$whiteboardId",
+        params: { workspaceId, projectId, whiteboardId },
+        search: (previous: Record<string, unknown>) => ({
+          ...previous,
+          present: undefined,
+        }),
+        replace: true,
+      });
+    }
+  };
+
+  // The desktop app opens a same-origin window.open as its own window,
+  // which can go to a second display.
+  const presentInNewWindow = () => {
+    window.open(presentUrl(window.location.href), "_blank");
+  };
 
   const toggleFullScreen = () => {
     const element = canvasRef.current;
@@ -407,6 +504,8 @@ export default function WhiteboardScreen({
         imageUrl={imageUrl}
         onReady={onEditorReady}
         initialElementId={elementId ?? null}
+        presenting={presenting}
+        onExitPresent={stopPresenting}
       />
     );
   };
@@ -449,54 +548,50 @@ export default function WhiteboardScreen({
           </HeaderIconButton>
         )}
         <WhiteboardExportMenu editor={editor} title={title} theme={theme} />
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={t("whiteboards:actions.more")}
-                className="text-muted-foreground"
-              />
-            }
+        <BoardMoreMenu label={t("whiteboards:actions.more")}>
+          <DropdownMenuItem
+            disabled={!editor}
+            onClick={() => editor?.zoomToFit()}
           >
-            <MoreHorizontal className="size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+            <Scan />
+            {t("whiteboards:actions.zoomToFit")}
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled={!editor} onClick={startPresenting}>
+            <Presentation />
+            {t("whiteboards:present.start")}
+          </DropdownMenuItem>
+          {isDesktopApp() && (
+            <DropdownMenuItem onClick={presentInNewWindow}>
+              <MonitorUp />
+              {t("whiteboards:present.newWindow")}
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuItem onClick={toggleFullScreen}>
+            <Expand />
+            {isFullScreen
+              ? t("whiteboards:actions.exitFullScreen")
+              : t("whiteboards:actions.fullScreen")}
+          </DropdownMenuItem>
+          {!readOnly && (
             <DropdownMenuItem
               disabled={!editor}
-              onClick={() => editor?.zoomToFit()}
+              onClick={() => fileInputRef.current?.click()}
             >
-              <Scan />
-              {t("whiteboards:actions.zoomToFit")}
+              <Upload />
+              {t("whiteboards:actions.importFile")}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={toggleFullScreen}>
-              <Expand />
-              {isFullScreen
-                ? t("whiteboards:actions.exitFullScreen")
-                : t("whiteboards:actions.fullScreen")}
-            </DropdownMenuItem>
-            {!readOnly && (
-              <DropdownMenuItem
-                disabled={!editor}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Upload />
-                {t("whiteboards:actions.importFile")}
-              </DropdownMenuItem>
-            )}
-            <DropdownMenuItem onClick={() => setHistoryOpen(true)}>
-              <History />
-              {t("whiteboards:actions.history")}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <WhiteboardMenuItems
-              board={board}
-              capabilities={board.capabilities}
-              actions={actions}
-            />
-          </DropdownMenuContent>
-        </DropdownMenu>
+          )}
+          <DropdownMenuItem onClick={() => setHistoryOpen(true)}>
+            <History />
+            {t("whiteboards:actions.history")}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <WhiteboardMenuItems
+            board={board}
+            capabilities={board.capabilities}
+            actions={actions}
+          />
+        </BoardMoreMenu>
       </div>
     ) : null;
 
@@ -535,6 +630,7 @@ export default function WhiteboardScreen({
                 variant="ghost"
                 size="icon-sm"
                 aria-label={t("whiteboards:screen.backToList")}
+                title={t("whiteboards:screen.backToList")}
                 className="text-muted-foreground pointer-coarse:size-11"
                 render={
                   <Link
@@ -552,6 +648,7 @@ export default function WhiteboardScreen({
                       variant="ghost"
                       size="icon-sm"
                       aria-label={t("whiteboards:actions.changeIcon")}
+                      title={t("whiteboards:actions.changeIcon")}
                       onClick={actions.openIcon}
                     >
                       <WhiteboardIcon icon={board.icon} />
@@ -604,7 +701,11 @@ export default function WhiteboardScreen({
             )}
             <div
               ref={canvasRef}
-              className="relative min-h-0 flex-1 overflow-hidden bg-background"
+              className={cn(
+                "relative min-h-0 flex-1 overflow-hidden bg-background",
+                // Present mode covers the window even without full screen.
+                presenting && "fixed inset-0 z-60",
+              )}
               data-slot="whiteboard-canvas"
             >
               {renderCanvas()}

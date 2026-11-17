@@ -48,6 +48,7 @@ import { Interaction } from "./interaction";
 import { LinkDialog } from "./link-dialog";
 import { resetTextMeasurements } from "./measure";
 import { paintOverlay } from "./overlay";
+import { PresentLayer } from "./present-layer";
 import { PropertiesPanel } from "./properties-panel";
 import { SearchDialog } from "./search-dialog";
 import { dependencyLinkOf } from "./selection-info";
@@ -151,7 +152,7 @@ function insideOverlay(target: EventTarget | null): boolean {
     target instanceof HTMLElement &&
     Boolean(
       target.closest(
-        "[role=dialog],[role=menu],[role=listbox],[data-slot=popover-popup]",
+        "[role=dialog],[role=alertdialog],[role=menu],[role=listbox],[data-slot=popover-popup]",
       ),
     )
   );
@@ -161,7 +162,7 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
   const {
     doc,
     awareness,
-    readOnly,
+    readOnly: boardReadOnly,
     user,
     workspaceId,
     projectId,
@@ -172,7 +173,11 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
     onReady,
     initialElementId,
     isPublic = false,
+    presenting = false,
+    onExitPresent,
   } = props;
+  // Present mode shows the board read-only, whatever the viewer may do.
+  const readOnly = boardReadOnly || presenting;
   const { t } = useTranslation();
   const navigate = useNavigate();
   const createRelation = useCreateTaskRelation();
@@ -266,6 +271,15 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
   editTextRef.current = editText;
   openTaskRef.current = openTask;
   openLinkRef.current = openLink;
+  const presentingRef = useRef(presenting);
+  presentingRef.current = presenting;
+  // Entering present mode drops what was in progress and the selection.
+  useEffect(() => {
+    if (!presenting) return;
+    interaction.cancel();
+    c.select([]);
+    c.update((state) => ({ ...state, contextMenu: null, dialog: null }));
+  }, [c, interaction, presenting]);
 
   // Every refused key press on a read-only board would stack another copy
   // of the same message; one at a time is enough.
@@ -438,6 +452,8 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
       return target === document.body || Boolean(root?.contains(target));
     };
     const onKeyDown = (event: KeyboardEvent) => {
+      // Present mode handles its own keys (see PresentLayer).
+      if (presentingRef.current) return;
       if (!owns(event)) return;
       interaction.updateModifiers(event);
       if (
@@ -762,76 +778,82 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
             />
           )}
 
-          <div
-            className={cn(
-              "pointer-events-none absolute inset-x-0 z-20 flex justify-center px-2",
-              compact ? "bottom-2" : "top-2",
-            )}
-          >
-            <div className="pointer-events-auto">
-              <EditorToolbar
-                readOnly={readOnly}
-                compact={compact}
-                imagesEnabled={Boolean(uploadImage) && !isPublic}
-                tasksEnabled={tasksEnabled}
-                onPick={pickTool}
-                onPickShape={pickShapeTool}
-                onToggleLock={() => c.dispatchTool({ type: "toggleLock" })}
-              />
-            </div>
-          </div>
-
-          {!compact && (
-            <div className="pointer-events-none absolute top-16 left-2 z-20 flex max-h-[calc(100%-8rem)]">
-              <PropertiesPanel
-                actions={panelActions}
-                className="pointer-events-auto"
-              />
-            </div>
-          )}
-
-          <div
-            className={cn(
-              "pointer-events-none absolute left-2 z-20 flex max-w-[calc(100%-1rem)] items-end gap-2",
-              compact ? "top-2" : "bottom-2",
-            )}
-          >
-            <BottomBar
-              compact={compact}
-              extra={
-                compact && !readOnly ? (
-                  <CompactStyleButton
-                    actions={panelActions}
-                    label={t("whiteboardEditor:panel.label")}
+          {presenting ? (
+            <PresentLayer controller={c} onExit={() => onExitPresent?.()} />
+          ) : (
+            <>
+              <div
+                className={cn(
+                  "pointer-events-none absolute inset-x-0 z-20 flex justify-center px-2",
+                  compact ? "bottom-2" : "top-2",
+                )}
+              >
+                <div className="pointer-events-auto">
+                  <EditorToolbar
+                    readOnly={readOnly}
+                    compact={compact}
+                    imagesEnabled={Boolean(uploadImage) && !isPublic}
+                    tasksEnabled={tasksEnabled}
+                    onPick={pickTool}
+                    onPickShape={pickShapeTool}
+                    onToggleLock={() => c.dispatchTool({ type: "toggleLock" })}
                   />
-                ) : null
-              }
-            />
-          </div>
+                </div>
+              </div>
 
-          <div className="pointer-events-none absolute top-2 right-2 z-20">
-            {!compact && <Collaborators />}
-          </div>
-          {dependencies.items.length > 0 && (
-            <div
-              className={cn(
-                "pointer-events-none absolute inset-x-0 z-30 flex justify-center px-2",
-                compact ? "bottom-16" : "bottom-14",
+              {!compact && (
+                <div className="pointer-events-none absolute top-16 left-2 z-20 flex max-h-[calc(100%-8rem)]">
+                  <PropertiesPanel
+                    actions={panelActions}
+                    className="pointer-events-auto"
+                  />
+                </div>
               )}
-            >
-              <div className="pointer-events-auto">
-                <DependencyPrompt
-                  items={dependencies.items}
-                  onRemove={dependencies.remove}
-                  onKeep={dependencies.keep}
+
+              <div
+                className={cn(
+                  "pointer-events-none absolute left-2 z-20 flex max-w-[calc(100%-1rem)] items-end gap-2",
+                  compact ? "top-2" : "bottom-2",
+                )}
+              >
+                <BottomBar
+                  compact={compact}
+                  extra={
+                    compact && !readOnly ? (
+                      <CompactStyleButton
+                        actions={panelActions}
+                        label={t("whiteboardEditor:panel.label")}
+                      />
+                    ) : null
+                  }
                 />
               </div>
-            </div>
-          )}
-          {showMinimap && !compact && (
-            <div className="pointer-events-none absolute right-2 bottom-2 z-20">
-              <Minimap controller={c} />
-            </div>
+
+              <div className="pointer-events-none absolute top-2 right-2 z-20">
+                {!compact && <Collaborators />}
+              </div>
+              {dependencies.items.length > 0 && (
+                <div
+                  className={cn(
+                    "pointer-events-none absolute inset-x-0 z-30 flex justify-center px-2",
+                    compact ? "bottom-16" : "bottom-14",
+                  )}
+                >
+                  <div className="pointer-events-auto">
+                    <DependencyPrompt
+                      items={dependencies.items}
+                      onRemove={dependencies.remove}
+                      onKeep={dependencies.keep}
+                    />
+                  </div>
+                </div>
+              )}
+              {showMinimap && !compact && (
+                <div className="pointer-events-none absolute right-2 bottom-2 z-20">
+                  <Minimap controller={c} />
+                </div>
+              )}
+            </>
           )}
 
           <input

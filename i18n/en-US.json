@@ -10236,6 +10236,15 @@
 			"exitFullScreen": "Exit full screen",
 			"more": "More board options"
 		},
+		"present": {
+			"start": "Present",
+			"newWindow": "Present in new window",
+			"controls": "Presentation controls",
+			"previous": "Previous frame",
+			"next": "Next frame",
+			"position": "{{current}} / {{total}}",
+			"exit": "Exit presentation"
+		},
 		"dialogs": {
 			"cancel": "Cancel",
 			"rename": {
@@ -13766,7 +13775,9 @@
 			"label": "Pen style",
 			"pen": "Pen",
 			"marker": "Marker",
-			"highlighter": "Highlighter"
+			"highlighter": "Highlighter",
+			"penOnly": "Draw with pen only",
+			"penOnlyHint": "Fingers only pan and zoom."
 		},
 		"background": {
 			"label": "Background",

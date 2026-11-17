@@ -10227,6 +10227,15 @@
 			"exitFullScreen": "Sair da tela cheia",
 			"more": "Mais opções do quadro"
 		},
+		"present": {
+			"start": "Apresentar",
+			"newWindow": "Apresentar em nova janela",
+			"controls": "Controles da apresentação",
+			"previous": "Moldura anterior",
+			"next": "Próxima moldura",
+			"position": "{{current}} / {{total}}",
+			"exit": "Sair da apresentação"
+		},
 		"dialogs": {
 			"cancel": "Cancelar",
 			"rename": {
@@ -13984,7 +13993,9 @@
 			"label": "Estilo da caneta",
 			"pen": "Caneta",
 			"marker": "Marcador",
-			"highlighter": "Marca-texto"
+			"highlighter": "Marca-texto",
+			"penOnly": "Desenhar só com a caneta",
+			"penOnlyHint": "Os dedos só movem e dão zoom."
 		},
 		"background": {
 			"label": "Fundo",

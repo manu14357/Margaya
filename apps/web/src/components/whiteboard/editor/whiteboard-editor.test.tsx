@@ -1,4 +1,5 @@
 import {
+  type BoardElement,
   createElement,
   parseBoardFile,
   readElements,
@@ -79,7 +80,7 @@ afterEach(() => {
 
 function mount(
   overrides: Partial<WhiteboardEditorProps> = {},
-  elements = [createElement("rectangle")],
+  elements: BoardElement[] = [createElement("rectangle")],
   { strict = false } = {},
 ) {
   const doc = new Y.Doc();
@@ -319,5 +320,44 @@ describe("WhiteboardEditor", () => {
     // Imported elements get fresh ids so a second import cannot clash.
     expect(elements[0]?.id).not.toBe(source.id);
     expect(elements[0]?.type === "sticky" && elements[0].text).toBe("Imported");
+  });
+});
+
+describe("WhiteboardEditor present mode", () => {
+  const frames: BoardElement[] = [
+    createElement("frame", { id: "f2", x: 600, y: 0, width: 400, height: 300 }),
+    createElement("frame", { id: "f1", x: 0, y: 0, width: 400, height: 300 }),
+  ];
+
+  it("hides the toolbars, steps through frames and exits on Esc", () => {
+    const onExitPresent = vi.fn();
+    mount({ presenting: true, onExitPresent }, frames);
+    expect(screen.queryByTestId("whiteboard-tool-shape")).toBeNull();
+    expect(screen.getByTestId("whiteboard-present")).toBeTruthy();
+    const previous = screen.getByRole("button", {
+      name: "whiteboards:present.previous",
+    }) as HTMLButtonElement;
+    const next = screen
+      .getAllByRole("button", { name: "whiteboards:present.next" })
+      .find((button) => button.tabIndex !== -1) as HTMLButtonElement;
+    expect(previous.disabled).toBe(true);
+    expect(next.disabled).toBe(false);
+    fireEvent.keyDown(window, { key: "ArrowRight" });
+    expect(previous.disabled).toBe(false);
+    expect(next.disabled).toBe(true);
+    fireEvent.keyDown(window, { key: "ArrowLeft" });
+    expect(previous.disabled).toBe(true);
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(onExitPresent).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows only the exit control on a board without frames", () => {
+    mount({ presenting: true });
+    expect(
+      screen.queryByRole("button", { name: "whiteboards:present.previous" }),
+    ).toBeNull();
+    expect(
+      screen.getByRole("button", { name: "whiteboards:present.exit" }),
+    ).toBeTruthy();
   });
 });

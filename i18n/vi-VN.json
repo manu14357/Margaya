@@ -9931,6 +9931,15 @@
 			"exitFullScreen": "Thoát toàn màn hình",
 			"more": "Tùy chọn khác của bảng"
 		},
+		"present": {
+			"start": "Trình chiếu",
+			"newWindow": "Trình chiếu trong cửa sổ mới",
+			"controls": "Điều khiển trình chiếu",
+			"previous": "Khung trước",
+			"next": "Khung tiếp theo",
+			"position": "{{current}} / {{total}}",
+			"exit": "Thoát trình chiếu"
+		},
 		"dialogs": {
 			"cancel": "Hủy",
 			"rename": {
@@ -13551,7 +13560,9 @@
 			"label": "Kiểu bút",
 			"pen": "Bút",
 			"marker": "Bút dạ",
-			"highlighter": "Bút dạ quang"
+			"highlighter": "Bút dạ quang",
+			"penOnly": "Chỉ vẽ bằng bút",
+			"penOnlyHint": "Ngón tay chỉ dùng để kéo và thu phóng."
 		},
 		"background": {
 			"label": "Nền",

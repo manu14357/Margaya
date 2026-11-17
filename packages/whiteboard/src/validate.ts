@@ -82,6 +82,10 @@ const isRecord = (value: unknown): value is Raw => {
 const clamp = (value: number, min: number, max: number) =>
   value < min ? min : value > max ? max : value;
 
+/** Pen pressure in 0..1, kept to two decimals so long strokes stay small. */
+export const quantizePressure = (value: number): number =>
+  Math.round(clamp(value, 0, 1) * 100) / 100;
+
 export function isValidId(value: unknown): value is string {
   return (
     typeof value === "string" &&
@@ -359,7 +363,7 @@ function parseTyped(raw: Raw): BoardElement {
         raw.pressures.every(
           (value) => typeof value === "number" && Number.isFinite(value),
         )
-          ? (raw.pressures as number[]).map((value) => clamp(value, 0, 1))
+          ? (raw.pressures as number[]).map(quantizePressure)
           : [];
       return {
         ...placed,

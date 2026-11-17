@@ -10227,6 +10227,15 @@
 			"exitFullScreen": "Quitter le plein écran",
 			"more": "Autres options du tableau"
 		},
+		"present": {
+			"start": "Présenter",
+			"newWindow": "Présenter dans une nouvelle fenêtre",
+			"controls": "Commandes de présentation",
+			"previous": "Cadre précédent",
+			"next": "Cadre suivant",
+			"position": "{{current}} / {{total}}",
+			"exit": "Quitter la présentation"
+		},
 		"dialogs": {
 			"cancel": "Annuler",
 			"rename": {
@@ -13984,7 +13993,9 @@
 			"label": "Style de stylo",
 			"pen": "Stylo",
 			"marker": "Marqueur",
-			"highlighter": "Surligneur"
+			"highlighter": "Surligneur",
+			"penOnly": "Dessiner uniquement au stylet",
+			"penOnlyHint": "Les doigts servent seulement à se déplacer et à zoomer."
 		},
 		"background": {
 			"label": "Arrière-plan",

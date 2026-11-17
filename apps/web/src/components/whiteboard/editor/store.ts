@@ -105,6 +105,8 @@ export type EditorState = ToolState & {
   penStyle: PenStyle;
   snapToObjects: boolean;
   showMinimap: boolean;
+  /** "Draw with pen only": touch pans and zooms but never draws. Per device. */
+  penOnly: boolean;
   dialog: DialogId;
   contextMenu: ContextMenuState;
   /** Awareness client id being followed. */
@@ -127,6 +129,7 @@ export const INITIAL_EDITOR_STATE: EditorState = {
   penStyle: "pen",
   snapToObjects: true,
   showMinimap: false,
+  penOnly: false,
   dialog: null,
   contextMenu: null,
   followingClientId: null,
@@ -270,7 +273,12 @@ const PREFS_KEY = "margaya-whiteboard-editor";
 
 type StoredPrefs = Pick<
   EditorState,
-  "style" | "snapToObjects" | "showMinimap" | "shapeKind" | "penStyle"
+  | "style"
+  | "snapToObjects"
+  | "showMinimap"
+  | "shapeKind"
+  | "penStyle"
+  | "penOnly"
 >;
 
 const SHAPE_CHOICES: readonly unknown[] = [
@@ -293,6 +301,7 @@ export function loadPrefs(): Partial<EditorState> {
       prefs.snapToObjects = parsed.snapToObjects;
     if (typeof parsed.showMinimap === "boolean")
       prefs.showMinimap = parsed.showMinimap;
+    if (typeof parsed.penOnly === "boolean") prefs.penOnly = parsed.penOnly;
     if (SHAPE_CHOICES.includes(parsed.shapeKind))
       prefs.shapeKind = parsed.shapeKind as ShapeChoice;
     if ((PEN_STYLES as readonly unknown[]).includes(parsed.penStyle))
@@ -311,6 +320,7 @@ export function savePrefs(state: EditorState): void {
       showMinimap: state.showMinimap,
       shapeKind: state.shapeKind,
       penStyle: state.penStyle,
+      penOnly: state.penOnly,
     };
     window.localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
   } catch {

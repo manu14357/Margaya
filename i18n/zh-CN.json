@@ -9931,6 +9931,15 @@
 			"exitFullScreen": "退出全屏",
 			"more": "更多白板选项"
 		},
+		"present": {
+			"start": "演示",
+			"newWindow": "在新窗口中演示",
+			"controls": "演示控制",
+			"previous": "上一个框架",
+			"next": "下一个框架",
+			"position": "{{current}} / {{total}}",
+			"exit": "退出演示"
+		},
 		"dialogs": {
 			"cancel": "取消",
 			"rename": {
@@ -13551,7 +13560,9 @@
 			"label": "画笔样式",
 			"pen": "画笔",
 			"marker": "马克笔",
-			"highlighter": "荧光笔"
+			"highlighter": "荧光笔",
+			"penOnly": "仅用触控笔绘制",
+			"penOnlyHint": "手指只能平移和缩放。"
 		},
 		"background": {
 			"label": "背景",
