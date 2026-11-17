@@ -61,6 +61,7 @@
 									"core/functional/calendar-feeds",
 									"core/functional/keyboard-shortcuts",
 									"core/functional/desktop-app",
+									"core/functional/desktop-app-quick-add-and-search",
 									"core/functional/member-profiles"
 								]
 							},

@@ -5,7 +5,8 @@
  * LOCAL DEVELOPMENT ONLY, and never the installed desktop app. Two kinds of
  * screen:
  *
- * - The app's own windows (server list, quick add, offline page) come from
+ * - The app's own windows (server list and settings, quick add, search,
+ *   Today, the offline page and its saved copies) come from
  *   the launcher bundle in apps/desktop/dist, so build it first with
  *   `pnpm --filter @margaya/desktop build`. The bundle is served in the
  *   browser at http://tauri.localhost/, the origin Tauri uses on Windows,
@@ -82,9 +83,223 @@ async function serveLauncher(page) {
   });
 }
 
-/** The fictional state the stand-in Rust core reports. */
-function coreState(seed, { allSignedIn = false } = {}) {
+/** A local calendar day relative to today, as quick add and Today use it. */
+function day(offset) {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + offset);
+  return date.toISOString();
+}
+
+/**
+ * The picture a screenshot to task would attach: a small drawing of a
+ * billing page, since the core hands quick add a downscaled preview.
+ */
+const SCREENSHOT_PREVIEW = `data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="136" viewBox="0 0 240 136">
+    <rect width="240" height="136" fill="#ffffff"/>
+    <rect width="240" height="18" fill="#f1f5f2"/>
+    <circle cx="10" cy="9" r="3" fill="#cbd5d0"/><circle cx="20" cy="9" r="3" fill="#cbd5d0"/>
+    <rect x="12" y="30" width="96" height="9" rx="2" fill="#1f3d2f"/>
+    <rect x="12" y="46" width="140" height="6" rx="2" fill="#cbd5d0"/>
+    <rect x="12" y="64" width="216" height="58" rx="5" fill="#f6f8f7" stroke="#dfe7e2"/>
+    <rect x="22" y="74" width="60" height="6" rx="2" fill="#8aa396"/>
+    <rect x="22" y="88" width="120" height="6" rx="2" fill="#cbd5d0"/>
+    <rect x="22" y="100" width="96" height="6" rx="2" fill="#cbd5d0"/>
+    <rect x="168" y="94" width="50" height="16" rx="4" fill="#2f7a55"/>
+  </svg>`,
+)}`;
+
+/** Search results for "pricing" on both servers (search_window.rs shape). */
+function searchResults(seed) {
+  const item = (kind, id, title, key, context, path) => ({
+    kind,
+    id,
+    title,
+    key,
+    context,
+    path,
+  });
+  return {
+    groups: [
+      {
+        serverId: "studio-north",
+        serverLabel: "Studio North",
+        workspaceId: seed.workspace.id,
+        workspaceName: "Studio North",
+        sections: [
+          {
+            kind: "task",
+            items: [
+              item(
+                "task",
+                "t-pricing",
+                "Redesign the pricing page",
+                "WEB-1",
+                "Website relaunch · In progress",
+                "/task/1",
+              ),
+              item(
+                "task",
+                "t-annual",
+                "Annual billing toggle",
+                "WEB-14",
+                "Website relaunch · To do",
+                "/task/2",
+              ),
+            ],
+          },
+          {
+            kind: "page",
+            items: [
+              item(
+                "page",
+                "p-pricing",
+                "Pricing experiments",
+                null,
+                "Website relaunch",
+                "/page/1",
+              ),
+            ],
+          },
+          {
+            kind: "comment",
+            items: [
+              item(
+                "comment",
+                "c-pricing",
+                "Pricing table copy is approved, ready to build.",
+                null,
+                "WEB-1 · Priya Raman",
+                "/task/1",
+              ),
+            ],
+          },
+        ],
+      },
+      {
+        serverId: "personal",
+        serverLabel: "Personal",
+        workspaceId: "personal-home",
+        workspaceName: "Freelance",
+        sections: [
+          {
+            kind: "task",
+            items: [
+              item(
+                "task",
+                "t-rates",
+                "Update pricing on the portfolio site",
+                "FR-7",
+                "Portfolio · To do",
+                "/task/3",
+              ),
+            ],
+          },
+        ],
+      },
+    ],
+    unavailable: [],
+  };
+}
+
+/** The Today window's tasks (today_window.rs shape). */
+function todayTasks(seed) {
+  const task = (id, key, title, project, dueOffset) => ({
+    serverId: "studio-north",
+    serverLabel: "Studio North",
+    workspaceId: seed.workspace.id,
+    workspaceName: "Studio North",
+    id,
+    projectId: seed.projects.web.id,
+    projectName: project,
+    key,
+    title,
+    dueDate: day(dueOffset),
+    overdue: dueOffset < 0,
+    priority: "high",
+    path: `/task/${id}`,
+  });
+  return {
+    tasks: [
+      task("t1", "WEB-1", "Redesign the pricing page", "Website relaunch", -2),
+      task("t2", "MOB-4", "Push notification preferences", "Mobile app", -1),
+      task(
+        "t3",
+        "WEB-5",
+        "Accessibility audit for the navigation",
+        "Website relaunch",
+        0,
+      ),
+      task("t4", "API-3", "Rate limiting per API key", "Platform API", 0),
+      task("t5", "WEB-6", "Newsletter sign-up flow", "Website relaunch", 0),
+    ],
+    unavailable: [],
+  };
+}
+
+/** Saved copies for offline reading (offline_cache.rs shape). */
+function offlineCopies() {
   const now = Date.now();
+  const minutes = (count) => now - count * 60_000;
+  const summaries = [
+    {
+      kind: "task",
+      id: "copy-pricing",
+      title: "Redesign the pricing page",
+      workspaceName: "Studio North",
+      projectName: "Website relaunch",
+      savedAt: minutes(12),
+    },
+    {
+      kind: "page",
+      id: "copy-plan",
+      title: "Relaunch plan",
+      workspaceName: "Studio North",
+      projectName: "Website relaunch",
+      savedAt: minutes(48),
+    },
+    {
+      kind: "task",
+      id: "copy-push",
+      title: "Push notification preferences",
+      workspaceName: "Studio North",
+      projectName: "Mobile app",
+      savedAt: minutes(190),
+    },
+  ];
+  const item = {
+    ...summaries[0],
+    path: "/task/copy-pricing",
+    status: "In progress",
+    priority: "High",
+    dueDate: day(3),
+    assignees: ["Elena Marsh", "Priya Raman"],
+    bodyText: [
+      "The new pricing page shows three plans side by side, with annual billing as the default.",
+      "",
+      "## Scope",
+      "- Plan cards with the new grid",
+      "- Annual and monthly toggle",
+      "- FAQ under the plans",
+      "",
+      "## Checklist",
+      "- [x] Copy approved by marketing",
+      "- [x] Plan comparison table",
+      "- [ ] Customer quotes from the stories section",
+    ].join("\n"),
+    updatedAt: new Date(minutes(30)).toISOString(),
+  };
+  return { summaries, items: { "task:copy-pricing": item } };
+}
+
+/** The fictional state the stand-in Rust core reports. */
+function coreState(
+  seed,
+  { allSignedIn = false, draft = null, offlineItems = false } = {},
+) {
+  const now = Date.now();
+  const copies = offlineCopies();
   return {
     servers: [
       {
@@ -115,7 +330,48 @@ function coreState(seed, { allSignedIn = false } = {}) {
       platform: "windows",
       autostart: true,
       selfUpdate: true,
+      startMinimized: true,
+      updateChannel: "stable",
     },
+    // The defaults in shortcuts.rs; Today has none until you set one.
+    shortcuts: [
+      ["quickAdd", "CommandOrControl+Shift+Space"],
+      ["search", "CommandOrControl+Shift+K"],
+      ["screenshot", "CommandOrControl+Shift+Alt+S"],
+      ["today", null],
+    ].map(([action, accelerator]) => ({
+      action,
+      accelerator,
+      defaultAccelerator: accelerator,
+      active: true,
+    })),
+    whatsNew: { version: APP_VERSION, pending: false },
+    notificationPause: { mode: "off", until: null },
+    offlineReading: { enabled: true },
+    spellcheck: {
+      language: "system",
+      languages: ["de-DE", "en-US", "es-ES", "fr-FR", "it-IT", "nl-NL"],
+      systemLanguage: "en-US",
+      supported: true,
+      restartNeeded: false,
+    },
+    members: [
+      { id: "m-elena", name: "Elena Marsh", handle: "elena" },
+      { id: "m-priya", name: "Priya Raman", handle: "priya" },
+      { id: "m-jonas", name: "Jonas Weber", handle: "jonas" },
+      { id: "m-theo", name: "Theo Okafor", handle: "theo" },
+      { id: "m-sofia", name: "Sofia Duarte", handle: "sofia" },
+    ],
+    quickAddPrefs: {
+      serverId: "studio-north",
+      workspaceId: seed.workspace.id,
+      projectId: seed.projects.web.id,
+    },
+    draft,
+    search: searchResults(seed),
+    today: todayTasks(seed),
+    offlineItems: offlineItems ? copies.summaries : [],
+    offlineCopies: copies.items,
     targets: [
       {
         workspaceId: seed.workspace.id,
@@ -147,17 +403,35 @@ function installTauriStub(state) {
     list_servers: state.servers,
     take_launcher_prompt: null,
     get_settings: state.settings,
+    get_shortcuts: state.shortcuts,
+    // Recording a shortcut releases them and answers with the same list.
+    pause_shortcuts: state.shortcuts,
+    whats_new_state: state.whatsNew,
+    get_notification_pause: state.notificationPause,
+    get_offline_reading: state.offlineReading,
+    get_spellcheck: state.spellcheck,
     quick_add_targets: state.targets,
+    quick_add_members: state.members,
+    quick_add_prefs: state.quickAddPrefs,
+    quick_add_draft: state.draft,
+    search_query: state.search,
+    search_recent: state.search,
+    today_tasks: state.today,
     offline_state: state.offline,
-    "plugin:event|listen": 0,
+    offline_items: state.offlineItems,
+  };
+  const answer = (cmd, args) => {
+    if (cmd === "plugin:event|listen") return nextId++;
+    if (cmd === "offline_item") {
+      return state.offlineCopies[`${args?.kind}:${args?.id}`] ?? null;
+    }
+    return answers[cmd] ?? null;
   };
   window.__TAURI_INTERNALS__ = {
-    invoke: (cmd) =>
+    invoke: (cmd, args) =>
       cmd === "offline_retry"
         ? new Promise(() => {})
-        : Promise.resolve(
-            cmd === "plugin:event|listen" ? nextId++ : (answers[cmd] ?? null),
-          ),
+        : Promise.resolve(answer(cmd, args)),
     transformCallback: () => nextId++,
     unregisterCallback: () => {},
     convertFileSrc: (file) => file,
@@ -242,9 +516,28 @@ const shots = [
     url: launcher(),
     before: launcherSetUp(),
     ready: "Personal",
-    // Taller than the default window, which scrolls, so the shot shows every
-    // Settings row.
-    viewport: { width: 760, height: 860 },
+    // Much taller than the default window, which scrolls, so the shot shows
+    // every Settings row and the keyboard shortcuts.
+    viewport: { width: 760, height: 1800 },
+    clip: { selector: "#root", pad: 0 },
+  },
+  {
+    name: "desktop/settings-shortcuts",
+    url: launcher(),
+    before: launcherSetUp(),
+    ready: "Keyboard shortcuts",
+    prepare: async (page) => {
+      // Today has no default, so recording it shows the whole flow.
+      await page.getByRole("button", { name: "Change: Today" }).click();
+      await page
+        .getByRole("button", { name: "Press keys…" })
+        .waitFor({ timeout: 10_000 })
+        .catch(() => {});
+    },
+    // Moving the pointer away would blur the recorder and end recording.
+    keepPointer: true,
+    clip: { selector: "section.shortcut-settings", pad: 12 },
+    viewport: { width: 760, height: 1800 },
   },
   {
     name: "desktop/quick-add",
@@ -256,17 +549,92 @@ const shots = [
       await page
         .getByLabel("Task title")
         .fill("Send the launch checklist to the agency");
+      await page.getByRole("button", { name: "Add description" }).click();
+      await page
+        .getByLabel("Description")
+        .fill(
+          "The checklist is on the Relaunch plan page. Ask for sign-off by Thursday.",
+        );
     },
     clip: { selector: "main.quick-add" },
-    viewport: { width: 520, height: 300 },
+    viewport: { width: 520, height: 520 },
+  },
+  {
+    name: "desktop/quick-add-parsed",
+    url: launcher("#quick-add"),
+    // A screenshot to task: the core's draft brings the picture.
+    before: launcherSetUp({
+      draft: {
+        revision: 1,
+        title: null,
+        description: null,
+        attachments: [
+          {
+            id: "shot-1",
+            name: "Screenshot 2026-11-17 104212.png",
+            size: 248_000,
+            image: true,
+            preview: SCREENSHOT_PREVIEW,
+          },
+        ],
+        notices: [],
+      },
+    }),
+    ready: "Task title",
+    prepare: async (page) => {
+      await page
+        .getByLabel("Task title")
+        .fill("Send the invoice by friday !high @elena");
+      await page.getByRole("button", { name: "Add description" }).click();
+      await page
+        .getByLabel("Description")
+        .fill(
+          "November hours are in the screenshot. Use the new billing address.",
+        );
+    },
+    clip: { selector: "main.quick-add" },
+    viewport: { width: 520, height: 600 },
+  },
+  {
+    name: "desktop/search",
+    url: launcher("#search"),
+    // Two signed-in servers, so each group names its server too.
+    before: launcherSetUp({ allSignedIn: true }),
+    ready: "Recently opened",
+    prepare: async (page) => {
+      await page.getByRole("combobox").fill("pricing");
+      await page.getByText("Update pricing on the portfolio site").waitFor();
+    },
+    viewport: { width: 640, height: 520 },
+  },
+  {
+    name: "desktop/today",
+    url: launcher("#today"),
+    before: launcherSetUp(),
+    ready: "Due today",
+    viewport: { width: 360, height: 480 },
   },
   {
     name: "desktop/offline",
     url: launcher("#offline"),
-    before: launcherSetUp(),
-    ready: "Can't reach Studio North",
-    // The page fills a whole server window; a shorter one keeps it compact.
-    viewport: { width: 760, height: 480 },
+    before: launcherSetUp({ offlineItems: true }),
+    ready: "Recently opened",
+    viewport: { width: 760, height: 760 },
+  },
+  {
+    name: "desktop/offline-saved-copy",
+    url: launcher("#offline"),
+    before: launcherSetUp({ offlineItems: true }),
+    ready: "Recently opened",
+    prepare: async (page) => {
+      await page
+        .getByRole("button", { name: /^Redesign the pricing page/ })
+        .click();
+      await page
+        .getByText("Customer quotes from the stories section")
+        .waitFor();
+    },
+    viewport: { width: 760, height: 540 },
   },
 
   // Server windows: the web app with the desktop bridge.

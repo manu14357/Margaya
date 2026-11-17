@@ -1,0 +1,143 @@
+---
+title: Desktop app: quick add, search and Today
+description: Capture tasks from anywhere with quick add, screenshots and the clipboard, search every server at once, keep today's tasks in view, and set the desktop app's keyboard shortcuts
+---
+
+The [desktop app](/core/functional/desktop-app) works for you even when no Margaya window is open. From the tray or menu bar icon, or with a keyboard shortcut from any app, you can add a task, search all your servers or see what's due today.
+
+## The tray and menu bar icon
+
+Margaya's icon sits in the Windows notification area, the macOS menu bar or the Linux tray. Its menu has:
+
+- **Open Margaya** and **Switch server…**.
+- **Open** with each server's name, followed by its number of unread notifications, for example **Open Studio North (3)**.
+- **Quick add…**, **Search…**, **Today**, **New task from clipboard** and **Take screenshot to task**, each with its keyboard shortcut when it has one.
+- **Recent**: the tasks, pages and other items you opened most recently on your servers, up to eight. When you use more than one server, each item names its server.
+- **Pause notifications**: see [Pause notifications](/core/functional/desktop-app#pause-notifications).
+- **Settings…** and **Quit**.
+
+On Windows, a left click on the icon brings back your last server window; the menu is on the right button.
+
+### Taskbar and dock menus
+
+- **Windows**: right-click Margaya's taskbar button for **Quick add**, **Search**, **Inbox** and **My tasks**. **Inbox** and **My tasks** open in the window of the server you used last, in the workspace it shows.
+- **Linux**: with the .deb or .rpm, right-click Margaya in your dock or app menu for the same four actions, where your desktop shows them. The AppImage doesn't add them.
+- **macOS**: the Dock icon has no Margaya actions. Use the menu bar icon.
+
+## Quick add
+
+Create a task without opening a server's window:
+
+1. Press <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd> on Windows and Linux or <Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd> on macOS, from any app, or choose **Quick add…** from the tray or menu bar icon.
+2. Type the **Task title**. Pick the **Server** and the **Project**: quick add starts with the ones you used last.
+3. To add more text, click **Add description** and fill in **Description**.
+4. Click **Create task**. **Open task** takes you straight to it.
+
+<Screenshot src="desktop/quick-add" alt="The Quick add window with Send the launch checklist to the agency in Task title, a hint below it on typing a date, !high for priority or @name to assign, a Description, Studio North as the Server, Website relaunch as the Project, and Create task" caption="Quick add, with a task ready to create." />
+
+Quick add only lists projects in which you can create tasks, and the task starts in the project's first column.
+
+### Dates, priority and assignees in the title
+
+While you type, quick add picks a due date, a priority and assignees out of the title and shows each as a chip under it. The words go into the task's fields, not its title. Click the **×** on a chip to keep those words in the title instead.
+
+| Type | Example | Sets |
+| --- | --- | --- |
+| A day | `today`, `tomorrow`, `friday`, `in 3 days`, `in 2 weeks`, `next week` | The due date. A weekday means the next one; today's weekday means a week from now. |
+| A date | `24/12`, `24/12/2026`, `2026-12-24` | The due date. Day and month without a year mean the next time that day comes round. |
+| `!` and a priority | `!urgent` or `!1`, `!high` or `!2`, `!medium`, `!med` or `!3`, `!low` or `!4` | The priority. |
+| `@` and a name | `@elena`, `@elena.marsh` | Assigns a member of the project's workspace, matched by username, first name or full name, or by the first letters when only one person matches. |
+
+`due`, `on` or `by` right before a date is taken out too, so `Send the invoice by friday !high @elena` creates "Send the invoice", due Friday, high priority, assigned to Elena. Only the first date and the first priority count. A name that matches nobody, or more than one person, stays in the title and shows **No member named …**.
+
+<Screenshot src="desktop/quick-add-parsed" alt="The Quick add window with Send the invoice by friday !high @elena in Task title and three chips under it, the due day, Priority: High and Assign Elena Marsh, each with an ×; a Description; an attached screenshot with its preview, name and size; and Website relaunch as the Project" caption="Quick add reads the due date, priority and assignee out of the title." />
+
+<Note>
+Quick add understands English words only, whatever language the app uses. Dates are days in your computer's time zone.
+</Note>
+
+### Screenshot to task
+
+Press <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Alt</Kbd> + <Kbd>S</Kbd> (<Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>⌥ Option</Kbd> + <Kbd>S</Kbd> on macOS), or choose **Take screenshot to task** from the tray or menu bar icon. Your system's own screenshot tool opens: pick an area, and quick add opens with the picture attached and a preview. Press <Kbd>Esc</Kbd> in the screenshot tool to cancel.
+
+- **Windows** uses the system's snipping overlay. Margaya waits up to a minute for the picture.
+- **macOS** needs the **Screen Recording** permission. If the screenshot comes back empty, quick add says so: allow Margaya under **System Settings** > **Privacy & Security** > **Screen Recording**, then try again.
+- **Linux** asks your desktop for a screenshot through xdg-desktop-portal, so a portal with a Screenshot backend must be installed. GNOME and KDE Plasma include one. Without it, quick add shows **Couldn't take the screenshot.**
+
+### New task from the clipboard
+
+Choose **New task from clipboard** from the tray or menu bar icon. Quick add opens with what you copied:
+
+- Text: the first line becomes the title and the rest the description. A single link becomes the title.
+- An image, when there's no text: it is attached, like a screenshot.
+
+### Send to Margaya (Windows)
+
+The Windows setup (`.exe`) adds Margaya to File Explorer's **Send to** menu. Select files, right-click them and choose **Send to** > **Margaya**: quick add opens with the files listed. The MSI package doesn't add this.
+
+### Attachments and limits
+
+Attachments show under the description with their name, and an **×** to remove one. Nothing is uploaded until you click **Create task**; if a file can't be attached then, the task is still created and quick add names the files that failed.
+
+| Limit | What happens above it |
+| --- | --- |
+| Title: 255 characters | The title is cut, with a note. |
+| Description: 20 KB | The description is cut, with a note. |
+| 10 files at a time | The extra files are left out. |
+| 10 MB per file | The file isn't attached. Your server may allow less (`S3_MAX_IMAGE_UPLOAD_BYTES`). |
+
+Folders can't be attached.
+
+## Search every server
+
+Press <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>K</Kbd> (<Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>K</Kbd> on macOS), or choose **Search…** from the tray or menu bar icon. A search box opens in the middle of the screen, above your other windows.
+
+- Before you type, it lists what you opened most recently under **Recently opened**.
+- As you type, it searches every server you're signed in to and every workspace there: tasks, projects, pages, cycles, modules, views, intake requests, comments and activity. Whiteboards aren't included. Results are grouped by workspace and server, then by kind, and only show what you're allowed to see.
+- <Kbd>↑</Kbd> and <Kbd>↓</Kbd> move through the results, <Kbd>Enter</Kbd> opens one in its server's window, and <Kbd>Esc</Kbd> closes the box. Clicking outside it closes it too.
+
+On each server, search covers up to eight of your workspaces. If a server can't be reached, the box says **Couldn't reach …** and shows the others' results.
+
+<Screenshot src="desktop/search" alt="The search window with pricing typed in the box and results in two groups: Studio North · Studio North with two tasks, a page and a comment, and Freelance · Personal with one task; the first result is highlighted, and the hint at the bottom reads ↑ ↓ to move, Enter to open, Esc to close" caption="Results are grouped by workspace and server, then by kind." />
+
+## Today
+
+Choose **Today** from the tray or menu bar icon to open a small window with your open tasks that are **Overdue** or **Due today**, across all your servers and workspaces. "Today" is your computer's calendar day.
+
+- Tick a task's checkbox to mark it done: it moves to the first done column of its project. You need permission to edit the task (Owner, Admin or Member by default); otherwise the window says **Couldn't mark the task done. You may not be allowed to change it.**
+- Click a task to open it in its server's window. The Today window stays open.
+- **Refresh** reloads the list.
+
+<Screenshot src="desktop/today" alt="The Today window with two Overdue tasks, their due dates in red, and three tasks Due today, each with a checkbox, its key and title, and its project and workspace" caption="Today lists your overdue tasks first." />
+
+The window stays on top of other windows, and opens again where you left it, at the same size. Choose **Today** again to hide it. It shows at most 100 tasks: tasks assigned to you, from up to ten workspaces on each server.
+
+Today has no keyboard shortcut until you set one.
+
+## Keyboard shortcuts
+
+Margaya's shortcuts work everywhere, even when Margaya is in the background. Set them under **Settings** > **Keyboard shortcuts**:
+
+| Action | Default on Windows and Linux | Default on macOS |
+| --- | --- | --- |
+| **Quick add** | <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd> | <Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd> |
+| **Search** | <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>K</Kbd> | <Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>K</Kbd> |
+| **Take screenshot to task** | <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Alt</Kbd> + <Kbd>S</Kbd> | <Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>⌥ Option</Kbd> + <Kbd>S</Kbd> |
+| **Today** | **Not set** | **Not set** |
+
+To change one, click **Change** and press the new combination, or <Kbd>Esc</Kbd> to cancel. **Clear** removes the shortcut, and **Reset** brings back the default.
+
+<Screenshot src="desktop/settings-shortcuts" alt="The Keyboard shortcuts section of the settings: Quick add, Search and Take screenshot to task with their combinations, and Today, not set, recording with its button showing Press keys… and the hint Press the new combination, or Esc to cancel" caption="Recording a new combination for Today." />
+
+Margaya refuses a combination that:
+
+- has no <Kbd>Ctrl</Kbd>, <Kbd>Alt</Kbd> or <Kbd>⌘</Kbd> (<Kbd>Win</Kbd> on Windows), so it doesn't fire while you type;
+- your system or most apps already use, such as one modifier with a letter or digit, or the system's own screenshot, lock and window-switching keys;
+- another Margaya action already uses;
+- another app already holds. Then the previous combination is kept.
+
+If another app claims a combination after you set it, the row says **Not working right now: another app uses this combination.** The action still works from the tray or menu bar icon.
+
+<Note>
+On Linux, global shortcuts work on X11. Most Wayland desktops don't let apps take shortcuts from other apps, so there they work only while a Margaya window is in front. Use the tray instead.
+</Note>

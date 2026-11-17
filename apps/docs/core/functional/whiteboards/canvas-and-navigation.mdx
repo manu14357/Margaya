@@ -66,3 +66,26 @@ Both are also in the right-click menu of the empty canvas.
 ## Full screen
 
 **Full screen** in **More board options** shows the board without the rest of Margaya, using your whole screen. Choose **Exit full screen** or press `Esc` to go back.
+
+## Present a board
+
+**Present** in **More board options** walks through the board full screen, one frame at a time, without toolbars. Nothing can be edited while you present, but changes others make still show.
+
+- The frames come in reading order: rows from top to bottom, each row from left to right. A board without frames is shown whole.
+- Click anywhere to go to the next frame. `Shift`-click or right-click goes back.
+- The controls at the bottom have **Previous frame**, **Next frame**, the position (such as `2 / 5`) and **Exit presentation**.
+
+<Screenshot src="whiteboards/present" alt="The Beta release review board in present mode, filling the window with its What shipped frame: three sticky notes, Offline task lists, Push notification preferences and Faster board loading, above the line All three are in the beta build, and in the bottom-right corner the controls with Previous frame, 2 / 5, Next frame and Exit presentation" caption="Present mode shows one frame at a time; the controls say where you are." />
+
+| Key | What it does |
+| --- | --- |
+| `→`, `↓`, `Page Down`, `Space` or `Enter` | Next frame |
+| `←`, `↑`, `Page Up` or `Backspace` | Previous frame |
+| `Home` / `End` | First / last frame |
+| `Esc` | Exit presentation |
+
+If the browser doesn't allow full screen, the board still fills the window. Leaving full screen also ends the presentation.
+
+Anyone who can open the board can present it. A link to the board with `?present=1` added opens it straight in present mode; exiting turns that page back into the normal board.
+
+In the [desktop app](/core/functional/desktop-app), **Present in new window** opens the presentation in a window of its own, which you can move to a second screen while you keep the board open in the first.

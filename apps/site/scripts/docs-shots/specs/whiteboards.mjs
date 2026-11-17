@@ -10,7 +10,8 @@
  * and two live task cards joined by an arrow, a locked retrospective, a
  * signup flow with bound arrows, a release order whose arrow stands for a
  * real dependency, a homepage review with an uploaded image, pen sketches,
- * an empty board and a set of sticky-note ideas. It turns on public pages for
+ * an empty board, a set of sticky-note ideas and a five-frame beta review
+ * to present. It turns on public pages for
  * the workspace so the planning board can be published. Some shots open a
  * board as a second Studio North person too, so a collaborator's cursor
  * shows.
@@ -43,6 +44,7 @@ const REVIEW = "Homepage review";
 const SKETCHES = "Hero sketches";
 const EMPTY = "Pricing page ideas";
 const IDEAS = "Onboarding ideas";
+const BETA = "Beta release review";
 
 // Sticky-note colours of the editor's palette.
 const YELLOW = "#fff3bf";
@@ -199,6 +201,89 @@ const retroElements = [
     fillColor: ORANGE,
   },
 ];
+
+/**
+ * The presentation board: five frames in two rows, so present mode walks
+ * through them in reading order ("2 / 5" on the second).
+ */
+function betaElements() {
+  const frames = [
+    [
+      "Goals",
+      0,
+      0,
+      ["Ship to 200 beta testers", "Crash-free sessions above 99.5%"],
+      [YELLOW, GREEN],
+      "Beta opens on the 10th.",
+    ],
+    [
+      "What shipped",
+      640,
+      0,
+      [
+        "Offline task lists",
+        "Push notification preferences",
+        "Faster board loading",
+      ],
+      [BLUE, PURPLE, GREEN],
+      "All three are in the beta build.",
+    ],
+    [
+      "Feedback",
+      1280,
+      0,
+      ["Testers want swipe to complete", "Sync after reconnecting feels slow"],
+      [ORANGE, PINK],
+      "From 64 survey answers.",
+    ],
+    [
+      "Risks",
+      0,
+      480,
+      ["Store review may take a week", "Push setup differs per platform"],
+      [PINK, ORANGE],
+      "Plan a week of slack.",
+    ],
+    [
+      "Next steps",
+      640,
+      480,
+      ["Open the beta to everyone", "Release notes in the app"],
+      [GREEN, BLUE],
+      "Decide at the next review.",
+    ],
+  ];
+  return frames.flatMap(([name, x, y, notes, colors, line], index) => [
+    {
+      id: `beta-frame-${index + 1}`,
+      type: "frame",
+      x,
+      y,
+      width: 600,
+      height: 400,
+      name,
+    },
+    ...notes.map((text, note) => ({
+      id: `beta-note-${index + 1}-${note + 1}`,
+      type: "sticky",
+      x: x + 30 + note * 185,
+      y: y + 70,
+      width: 170,
+      height: 170,
+      text,
+      fillColor: colors[note],
+    })),
+    {
+      id: `beta-text-${index + 1}`,
+      type: "text",
+      x: x + 30,
+      y: y + 300,
+      width: 540,
+      height: 30,
+      text: line,
+    },
+  ]);
+}
 
 /** A box's anchor point, as a binding's focus. */
 const bind = (elementId, fx, fy) => ({
@@ -726,6 +811,8 @@ async function ensureWhiteboardDemo() {
     throw new Error(`Creating the dependency failed: ${relation.status}`);
   }
 
+  // Oldest of all, so the lists keep their order from before it existed.
+  const beta = await ensureBoard(press, mobile.id, BETA, betaElements());
   await ensureBoard(press, mobile.id, IDEAS, ideaElements);
   // Oldest first, so the planning board is the most recently edited one.
   const empty = await ensureBoard(press, web.id, EMPTY, []);
@@ -770,6 +857,7 @@ async function ensureWhiteboardDemo() {
   return {
     webId: web.id,
     mobileId: mobile.id,
+    betaId: beta.id,
     publicToken: live.publicToken,
     boards: {
       planning: planning.id,
@@ -1127,6 +1215,30 @@ export default [
     clip: { selector: "[role=dialog]", pad: 0 },
   },
   // Work with tasks
+  {
+    name: "whiteboards/present",
+    // ?present=1 opens the board straight in present mode.
+    url: (seed) =>
+      `${workspacePath(seed)}/project/${demo.mobileId}/whiteboards/${demo.betaId}?present=1`,
+    prepare: async (page) => {
+      const controls = page.getByRole("navigation", {
+        name: "Presentation controls",
+      });
+      await controls.waitFor({ timeout: 60_000 });
+      await page
+        .waitForLoadState("networkidle", { timeout: 15_000 })
+        .catch(() => {});
+      await page.waitForTimeout(1_000);
+      await page.keyboard.press("ArrowRight");
+      await controls.getByText("2 / 5").waitFor();
+      await page.waitForTimeout(800);
+      // The controls fade until the pointer is over them.
+      await controls.hover();
+    },
+    keepPointer: true,
+    // Narrower than the frames, so they fit by width and their names show.
+    viewport: { width: 1200, height: 860 },
+  },
   {
     name: "whiteboards/task-cards",
     url: (seed) => boardPath(seed, "planning", "?element=docs-arrow"),

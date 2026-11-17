@@ -1,13 +1,14 @@
 ---
 title: Desktop app
-description: Use Margaya as an app on macOS, Windows and Linux, with native notifications, an unread badge, quick add and sign-in through your browser
+description: Use Margaya as an app on macOS, Windows and Linux, with native notifications you can act on, an unread badge, offline reading and sign-in through your browser
 ---
 
 Margaya Desktop is a small app for macOS, Windows and Linux. It opens your Margaya server's own web app in its own window, so everything works exactly as it does in the browser and always matches your server's version. On top of that it adds what a browser tab can't:
 
-- Native notifications, even when the window is closed.
+- Native notifications, even when the window is closed, with **Mark done**, **Snooze 1 hour** and **Reply** buttons on task alerts.
 - An unread count on the Dock icon, the taskbar button or, on Linux, the dock and the tray icon.
-- **Quick add** for new tasks, from the tray or menu bar, without opening the app.
+- **Quick add**, **Search** and **Today** from the tray, the menu bar or a keyboard shortcut, without opening a server's window. See [Quick add, search and Today](/core/functional/desktop-app-quick-add-and-search).
+- Saved copies of the tasks and pages you opened recently, to read while a server can't be reached.
 - Sign-in through your usual browser, so single sign-on works as it does there.
 - Several servers side by side, each with its own sign-in.
 - Updates that install themselves (on Linux, for the AppImage).
@@ -116,7 +117,7 @@ The first time you open Margaya, it asks for a server.
 
 The server appears in the **Servers** list. Click **Open** to open it in its own window. To add another server, use **Add a server** again: each server keeps its own sign-in, cookies and window, so work and personal servers never mix. **Rename** and **Remove** are in the server's row.
 
-<Screenshot src="desktop/server-list" alt="The Margaya window listing two servers: Studio North, signed in with 3 unread, and Personal, not signed in with a Sign in with browser button, each with Open, Rename and Remove; below them Add a server with the Server address field and Connect, and Settings with an Open at login switch, Updates with the version and Check for updates, and Diagnostics with Copy diagnostics" caption="The server list, with Add a server and the app's settings below it." />
+<Screenshot src="desktop/server-list" alt="The Margaya window listing two servers: Studio North, signed in with 3 unread, and Personal, not signed in with a Sign in with browser button, each with Open, Rename and Remove; below them Add a server with the Server address field and Connect; Settings with switches for Open at login and Start minimized to the tray, Updates with the version, What's new and Check for updates, Update channel set to Stable, Pause notifications set to Off, a Keep recent items for offline reading switch, Saved copies with Clear saved copies, Spell-check language set to Same as the system, and Diagnostics with Copy diagnostics; and Keyboard shortcuts for Quick add, Search, Take screenshot to task and Today, each with Change, Clear and Reset" caption="The server list, with Add a server, the app's settings and its keyboard shortcuts below it." />
  Removing a server signs you out of it on this computer.
 
 After the first time, Margaya opens straight into the server windows you had open when you last used it. The server list only appears when no server window was open. To get back to it, choose **Switch server…** from the tray or menu bar icon, or **Switch server** in the user menu of a server window.
@@ -146,8 +147,10 @@ A server's window looks like Margaya in the browser, without the browser around 
 
 - **Title bar.** On Windows and Linux, the minimize, maximize and close buttons sit at the right end of Margaya's own top bar (round buttons on Linux). Drag an empty part of the bar to move the window, and double-click it to maximize. On Linux, drag the window's edges to resize it. On macOS, the window buttons sit inside the top bar. A server that runs an older version of Margaya's web app shows the normal window frame instead.
 - **Closing a window** hides it to the tray (Windows, Linux) or the menu bar (macOS), so notifications and quick add keep working. To quit, choose **Quit** from the tray or menu bar icon. On Linux, the tray icon opens its menu on any click; **Open Margaya** is at the top.
-- **More windows.** <Kbd>Ctrl</Kbd>-click (<Kbd>⌘</Kbd>-click on macOS) a link, or choose to open it in a new tab, to open it in a second window of the app.
-- **Downloads.** Images and PDFs open in a viewer window inside the app. Other attachments, exports and whiteboard images download to your **Downloads** folder, under their own name; a file with the same name already there is kept, and the new one gets a number, such as `report (2).csv`. A notification tells you when each download has finished, or if it failed. Click it to show the file, selected, in File Explorer, Finder or your file manager; the file itself never opens. If you have deleted or moved the file since, or restarted Margaya, the click opens the folder instead, and a click on a failed download opens your **Downloads** folder. On Windows this also works from the notification centre after you quit Margaya: the click starts it in the tray and opens the folder.
+- **More windows.** <Kbd>Ctrl</Kbd>-click (<Kbd>⌘</Kbd>-click on macOS) a link, or choose to open it in a new tab, to open it in a second window of the app. **Open in new window** is in the menus of tasks, projects in the sidebar, pages and whiteboards; for pages and whiteboards it replaces **Open in new tab**. <Kbd>Shift</Kbd>-click or middle-click a task card, a task in a list or a project in the sidebar does the same. On a whiteboard, **Present in new window** opens the board in [present mode](/core/functional/whiteboards/canvas-and-navigation#present-a-board) in its own window, which you can move to a second screen.
+- **Drop files.** Drag files from your computer onto a task's attachments, a task description, a comment, a page or a whiteboard to add them, as in the browser. Files dropped anywhere else are ignored, so a stray drop never replaces Margaya with the file.
+- **Downloads.** Images and PDFs open in a viewer window inside the app. Other attachments, exports and whiteboard images download to your **Downloads** folder, under their own name; a file with the same name already there is kept, and the new one gets a number, such as `report (2).csv`. While files download, the taskbar button (Windows), the Dock icon (macOS) or the dock icon (Linux, in the docks that show the unread count) shows a progress bar; macOS shows that something is downloading, without the percentage. A notification tells you when each download has finished, or if it failed. Click it to show the file, selected, in File Explorer, Finder or your file manager; the file itself never opens. If you have deleted or moved the file since, or restarted Margaya, the click opens the folder instead, and a click on a failed download opens your **Downloads** folder. On Windows this also works from the notification centre after you quit Margaya: the click starts it in the tray and opens the folder.
+- **Spell check.** The spell checker uses your system's language. On Windows and Linux you can pick another one under **Settings** > **Spell-check language**. Linux applies it right away. On Windows, servers whose window you already opened since Margaya started keep the old language until you restart Margaya. On macOS, the system's own spelling settings apply.
 - **Other sites.** Links to other websites open in your browser. Linking your GitHub account opens a small sign-in window inside the app. Billing and installing the GitHub App continue in your browser.
 - **Keyboard.** <Kbd>Ctrl</Kbd> + <Kbd>,</Kbd> (<Kbd>⌘</Kbd> + <Kbd>,</Kbd> on macOS) opens Margaya's settings. On Windows, <Kbd>Ctrl</Kbd> + <Kbd>+</Kbd> and <Kbd>Ctrl</Kbd> + <Kbd>−</Kbd> zoom in and out. The browser's right-click menu and its back and forward shortcuts are switched off, so Margaya's own [keyboard shortcuts](/core/functional/keyboard-shortcuts) and menus work as expected.
 
@@ -157,15 +160,69 @@ A server's window looks like Margaya in the browser, without the browser around 
 
 If a server can't be reached, its window shows an offline screen instead of an error page. The app tries again on its own, after 2, 5, 10, 20 and 30 seconds and then every minute, and opens the server as soon as it answers. Click **Try again** to try right away, or **Switch server** to open another one.
 
-<Screenshot src="desktop/offline" alt="The offline screen: Can't reach Studio North, the server's address, the last error, a countdown to the next try, and Try again and Switch server buttons" caption="The window keeps trying on its own while the server is offline." />
+<Screenshot src="desktop/offline" alt="The offline screen: Can't reach Studio North, the server's address, the last error, a countdown to the next try, Try again and Switch server buttons, and below them Recently opened with two saved tasks and a page, each with its workspace, project and when it was saved" caption="The window keeps trying on its own while the server is offline, and lists the saved copies you can read meanwhile." />
+
+### Read saved copies offline
+
+While you work, the app keeps a read-only copy of the last 50 tasks and pages you opened on each server. When the server can't be reached, the offline screen lists them under **Recently opened**, with when each was saved. Click one to read it: a banner says **You're offline — this is a saved copy from …**, and **Back to recently opened** returns to the list.
+
+<Screenshot src="desktop/offline-saved-copy" alt="A saved copy of the task Redesign the pricing page, under an orange banner that says You're offline, this is a saved copy from the time it was saved, with Try again and Back to recently opened; below it the task's status, priority, due date and assignees, and its description with a Scope list and a checklist" caption="A saved copy is read-only plain text, with Try again always at hand." />
+
+A copy is plain text: the title, the description or page text, and for a task its status, priority, due date and assignees. Images, attachments, comments and formatting aren't kept, and changes made since the copy was saved don't show. Each item keeps up to about 200 KB of text and each server about 4 MB in all. Only servers whose web app is recent enough to send copies get them.
+
+<Info>
+Saved copies stay on this computer only, in the server's folder of the app's data (under `profiles`, see [Uninstall](#uninstall)). They aren't encrypted, like a browser's cache, and never contain your sign-in. They are deleted when you sign out of the server, when you remove it, when you turn off **Keep recent items for offline reading** in **Settings**, or with **Clear saved copies** there, which deletes the copies of every server.
+</Info>
 
 ## Notifications and the unread badge
 
 Once you're signed in, the app shows Margaya notifications as native system notifications, with the same text you'd see in the browser. Clicking one brings Margaya to the front and opens the task or page in that server's window, without reloading it. On Windows this also works from the notification centre, and even after you quit Margaya: the click starts it and opens the page. On Linux, clicks work while Margaya is running; when you quit it, your desktop removes its notifications. On Wayland, some desktops announce **Margaya is ready** instead of bringing the window to the front: click that to switch to it. Notifications keep arriving while the window is closed, as long as Margaya is running in the tray or menu bar. A newer notification about the same thing replaces the older one, and when you use more than one server each notification names its server.
 
-The Dock icon (macOS) or the taskbar button (Windows) shows how many unread notifications you have, added up across all your servers. Linux has no common badge: the count appears next to the tray icon, and on the dock icon in docks that support it (Ubuntu Dock, Dash to Dock, KDE Plasma's task manager and Plank). The **Servers** list shows the count for each one.
+The Dock icon (macOS) or the taskbar button (Windows) shows how many unread notifications you have, added up across all your servers. Linux has no common badge: the count appears next to the tray icon, and on the dock icon in docks that support it (Ubuntu Dock, Dash to Dock, KDE Plasma's task manager and Plank). The **Servers** list and the tray menu show the count for each one.
 
 While [quiet hours or focus mode](/core/functional/account-notifications#quiet-hours-and-focus-mode) hold the desktop app, new notifications only update the badge. When they end, one silent alert says how many arrived meanwhile. Focus mode started on any device, or from **Pause notifications** in the account menu inside the app, pauses the app's alerts too.
+
+### Act on a task notification
+
+Notifications about a task, such as an assignment, a status change, an update, a comment, a mention, a due-date reminder or an overdue task, can carry buttons:
+
+| Button | What it does | When it appears |
+| --- | --- | --- |
+| **Mark done** | Moves the task to the first done column of its project and marks the notification read. | You can edit the task (Owner, Admin or Member by default), the task is still open, not archived and not waiting in intake, and its project has a done column. |
+| **Snooze 1 hour** | Hides the notification from your inbox for an hour and marks it read. It comes back unread after the hour, and the app shows it again if it's still running. | Always, on task notifications. |
+| **Reply** | Opens the task with the comment box ready for typing. | You can edit the task, which commenting needs. |
+
+After **Mark done** or **Snooze 1 hour**, a short silent notification confirms it, or says it didn't work, for example because the task changed meanwhile: open the task in Margaya to try again. Margaya checks your permissions again when you press a button.
+
+Where the buttons show depends on your system:
+
+- **Windows** shows them under the notification text, also in the notification centre.
+- **macOS** shows them under **Options** on the notification.
+- **Linux** shows them where your desktop's notifications support buttons, as GNOME and KDE Plasma do.
+
+Buttons work while Margaya keeps running. After Margaya restarts, a button on an older notification only brings Margaya to the front.
+
+### Pause notifications
+
+To stop the app's pop-ups and sounds for a while, choose **Pause notifications** in the tray or menu bar icon, or in **Settings**:
+
+| In the tray | In **Settings** | Notifications come back |
+| --- | --- | --- |
+| **For 1 hour** | **For 1 hour** | after an hour |
+| **Until tomorrow morning** | **Until tomorrow (8:00)** | at 8:00 on your computer's clock: tomorrow, or this morning if you pause between midnight and 8:00 |
+| **Until I turn them back on** | **Until I turn them back on** | when you choose **Don't pause** in the tray or **Off** in **Settings** |
+
+This pauses notifications from every server on this computer only, and keeps paused after a restart. The unread badge and the counts keep updating, and nothing is lost: everything is in your inbox. **Settings** shows until when notifications are paused. To pause on all your devices, use focus mode inside Margaya instead.
+
+### Do Not Disturb and Focus
+
+The app also stays quiet when your system says so:
+
+- **Windows**: no pop-up and no sound while Do Not Disturb or Focus is on, during a presentation, or while an app or game runs full screen.
+- **macOS**: Focus applies to Margaya's notifications as to any other app's.
+- **Linux**: no pop-up and no sound while GNOME's **Do Not Disturb** is on. Other desktops' Do Not Disturb modes still hide the notification, but the app can't read them, so it may still play its sound; use **Mute sounds on this device** then.
+
+The badge keeps counting in all these cases.
 
 ### Notification sound
 
@@ -173,27 +230,24 @@ Each new notification makes at most one sound, and a burst of notifications make
 
 <Screenshot src="desktop/notification-sounds" alt="The Sounds section of the notification settings inside the desktop app, explaining that the app plays the chosen Margaya sound at your volume, with Play sounds, Volume at 70%, a sound for each kind of notification and Mute sounds on this device" caption="Inside the app, the Sounds settings describe what the app plays." />
 
-- **Windows**: the app plays the Margaya sound you chose for that kind of notification (Chime, Pop, Ding, Soft bell, Knock or Marimba) at your volume, instead of the Windows notification sound. It comes out louder than the preview in the settings: at volume 70 it is at least as loud as the Windows notification sound. It stays silent while Do Not Disturb is on, during a full-screen game or presentation, and when notifications for Margaya are turned off in Windows Settings. Windows' own **Play a sound** switch for Margaya doesn't apply to it; use **Mute sounds on this device** instead.
+- **Windows**: the app plays the Margaya sound you chose for that kind of notification (Chime, Pop, Ding, Soft bell, Knock or Marimba) at your volume, instead of the Windows notification sound. It comes out louder than the preview in the settings: at volume 70 it is at least as loud as the Windows notification sound. It stays silent while notifications are paused or Windows holds them back (see [Do Not Disturb and Focus](#do-not-disturb-and-focus)), and when notifications for Margaya are turned off in Windows Settings. Windows' own **Play a sound** switch for Margaya doesn't apply to it; use **Mute sounds on this device** instead.
 - **macOS**: the notification plays your system's notification sound. Focus and your per-app sound setting silence it as for any other app.
-- **Linux**: the app plays the same Margaya sounds as on Windows, through your desktop's sound system (PipeWire or PulseAudio, using `paplay` or `pw-play`, or ALSA's `aplay`), at your desktop's alert volume. It stays silent while GNOME's **Do Not Disturb** is on. Other desktops' Do Not Disturb modes still hide the notification, but the app can't read them; use **Mute sounds on this device** then.
+- **Linux**: the app plays the same Margaya sounds as on Windows, through your desktop's sound system (PipeWire or PulseAudio, using `paplay` or `pw-play`, or ALSA's `aplay`), at your desktop's alert volume. It stays silent while notifications are paused or GNOME's **Do Not Disturb** is on. Other desktops' Do Not Disturb modes still hide the notification, but the app can't read them; use **Mute sounds on this device** then.
 
 A server older than this version doesn't name a sound; the app then plays Chime at volume 70.
 
 Which events notify you is still set in Margaya, under [your notification settings](/core/functional/account-notifications). Inside the desktop app, browser push notifications are switched off, so you don't get everything twice: the **Push notifications** card is replaced by **Desktop notifications**, which explains that the app shows them on this computer. To silence the app completely, or change how its notifications look, use your system's notification settings.
 
-## Quick add
+## Quick add, search and Today
 
-Create a task without opening a server's window:
+Without opening a server's window, you can:
 
-1. Press <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd> on Windows and Linux or <Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd> on macOS, from any app. You can also choose **Quick add…** from the tray or menu bar icon, where the shortcut is shown next to it.
-2. Pick the **Server** and the **Project**, and type the **Task title**.
-3. Click **Create task**. **Open task** takes you straight to it.
+- Create a task with **Quick add** (<Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd>, or <Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Space</Kbd> on macOS), with its due date, priority and assignees typed in the title, a description and attachments.
+- Turn a screenshot, the clipboard or, on Windows, files from **Send to** into a task.
+- **Search** every server and workspace at once (<Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>K</Kbd>, or <Kbd>⌘</Kbd> + <Kbd>Shift</Kbd> + <Kbd>K</Kbd> on macOS).
+- Keep your overdue and due-today tasks in view in the **Today** window.
 
-<Screenshot src="desktop/quick-add" alt="The Quick add window with Send the launch checklist to the agency in Task title, Studio North as the Server, Website relaunch as the Project, and Create task" caption="Quick add, with a task ready to create." />
-
-Quick add only lists projects in which you can create tasks.
-
-If another app already uses the same shortcut, Margaya can't claim it, and the shortcut does nothing. Quick add still works from the tray or menu bar icon. On Linux the shortcut works on X11; most Wayland desktops don't let apps take shortcuts from other apps, so there it works only while a Margaya window is in front. Use the tray's **Quick add…** instead.
+All of this is in the tray or menu bar icon too, and you can change the shortcuts. See [Quick add, search and Today](/core/functional/desktop-app-quick-add-and-search).
 
 ## Open Margaya links in the app
 
@@ -207,25 +261,42 @@ On Linux, the AppImage updates itself the same way. A .deb or .rpm belongs to yo
 
 A server may need a newer app than yours. Then connecting shows **This server needs Margaya Desktop … or newer**: update the app and try again.
 
+After an update, the next start opens the server list with **Updated to …** and that version's release notes, loaded from the project's GitHub releases. **Read the release notes** opens the full release page, and **What's new** in **Settings** shows them again.
+
+### Update channel
+
+**Settings** > **Update channel** picks which versions you get:
+
+- **Stable**: the regular releases. This is the default.
+- **Beta**: new versions before everyone else. They may have rough edges. On Beta, the app still offers a stable release when it is newer than the latest beta.
+
+Beta versions are built only as the Windows setup (`.exe`), the macOS disk images and the AppImages; there is no beta MSI, .deb or .rpm.
+
 ## Settings
 
-Open the settings with <Kbd>Ctrl</Kbd> + <Kbd>,</Kbd> (<Kbd>⌘</Kbd> + <Kbd>,</Kbd> on macOS).
+Open the settings with <Kbd>Ctrl</Kbd> + <Kbd>,</Kbd> (<Kbd>⌘</Kbd> + <Kbd>,</Kbd> on macOS), or **Settings…** in the tray or menu bar icon.
 
 - **Open at login** is a switch that starts Margaya in the background when you sign in to your computer, so notifications and quick add are ready. On Linux it adds Margaya to `~/.config/autostart`.
-- **Updates** shows the version you have. **Check for updates** looks for a newer one; when there is one, **Restart to update** (or **Download** for a Linux .deb or .rpm) appears below it. See [Updates](#updates).
+- **Start minimized to the tray**: when Margaya opens at login, it waits in the tray without opening any windows. On by default; turn it off to have your server windows open at login. It only applies with **Open at login** on.
+- **Updates** shows the version you have. **Check for updates** looks for a newer one; when there is one, **Restart to update** (or **Download** for a Linux .deb or .rpm) appears below it. **What's new** shows the release notes of your version. See [Updates](#updates).
+- **Update channel**: **Stable** or **Beta**. See [Update channel](#update-channel).
+- **Pause notifications**: **Off**, **For 1 hour**, **Until tomorrow (8:00)** or **Until I turn them back on**. See [Pause notifications](#pause-notifications).
+- **Keep recent items for offline reading**, on by default, and **Saved copies** with **Clear saved copies**. See [Read saved copies offline](#read-saved-copies-offline).
+- **Spell-check language** (Windows and Linux): **Same as the system**, or one of the languages Margaya is available in.
 - **Diagnostics**: **Copy diagnostics** copies the app version, your system, your server list and recent log lines for a bug report. Sign-in tokens are never included. **Open logs folder** in the **Help** menu shows the log files.
+- **Keyboard shortcuts** for **Quick add**, **Search**, **Take screenshot to task** and **Today**. See [Keyboard shortcuts](/core/functional/desktop-app-quick-add-and-search#keyboard-shortcuts).
 
 ## Uninstall
 
 <Tabs>
 <Tab title="macOS">
 
-Quit Margaya (**Quit** in the menu bar icon), then drag **Margaya** from **Applications** to the Trash. Your server list and window data stay in `~/Library/Application Support/com.margaya.desktop`; delete that folder too if you want them gone. Sign out of each server first to remove its stored sign-in from the Keychain.
+Quit Margaya (**Quit** in the menu bar icon), then drag **Margaya** from **Applications** to the Trash. Your server list, window data and saved copies stay in `~/Library/Application Support/com.margaya.desktop`; delete that folder too if you want them gone. Sign out of each server first to remove its stored sign-in from the Keychain.
 
 </Tab>
 <Tab title="Windows">
 
-Sign out of each server first, then open **Settings**, go to **Apps** > **Installed apps**, and choose **Uninstall** next to **Margaya**. To remove your server list and window data as well, delete `%APPDATA%\com.margaya.desktop` (the server list) and `%LOCALAPPDATA%\com.margaya.desktop` (each server's window data, under `profiles`).
+Sign out of each server first, then open **Settings**, go to **Apps** > **Installed apps**, and choose **Uninstall** next to **Margaya**. To remove your server list and window data as well, delete `%APPDATA%\com.margaya.desktop` (the server list) and `%LOCALAPPDATA%\com.margaya.desktop` (each server's window data and saved copies, under `profiles`).
 
 </Tab>
 <Tab title="Linux">
@@ -236,7 +307,7 @@ Sign out of each server first, so its sign-in leaves your keyring, and quit Marg
 - **.deb:** `sudo apt remove margaya`
 - **.rpm:** `sudo dnf remove margaya`, or `sudo zypper remove margaya` on openSUSE.
 
-To remove your server list and window data as well, delete `~/.config/com.margaya.desktop` (the server list), `~/.local/share/com.margaya.desktop` (each server's window data, under `profiles`, and the logs) and `~/.cache/com.margaya.desktop`.
+To remove your server list and window data as well, delete `~/.config/com.margaya.desktop` (the server list), `~/.local/share/com.margaya.desktop` (each server's window data and saved copies, under `profiles`, and the logs) and `~/.cache/com.margaya.desktop`.
 
 </Tab>
 </Tabs>
@@ -293,12 +364,17 @@ Some company computers only allow signed installers. Ask your IT team to deploy 
 </Accordion>
 <Accordion title="Notifications don't appear">
 
-Check that Margaya is running (its icon is in the tray or menu bar), that you're signed in to the server (signing out in the server's window also stops its notifications), and that notifications for Margaya are allowed in your system settings, including Focus or Do Not Disturb. Then check which events notify you in [your notification settings](/core/functional/account-notifications).
+Check that Margaya is running (its icon is in the tray or menu bar), that you're signed in to the server (signing out in the server's window also stops its notifications), and that **Pause notifications** in the tray is set to **Don't pause**. Check that notifications for Margaya are allowed in your system settings and that Do Not Disturb or Focus is off; on Windows, also leave full-screen apps and presentations. Then check which events notify you in [your notification settings](/core/functional/account-notifications).
+
+</Accordion>
+<Accordion title="A notification has no buttons">
+
+Only notifications about a task get buttons, and only those that apply to you: see [Act on a task notification](#act-on-a-task-notification). On Linux, your desktop's notification service must support buttons. On macOS, look under **Options** on the notification. A server older than this version sends no buttons.
 
 </Accordion>
 <Accordion title="A server window shows the offline screen">
 
-The app can't reach that server right now. It keeps trying on its own, so the window recovers once your network or VPN is back. If it stays offline, check the server in your browser, or use **Switch server** to work on another one.
+The app can't reach that server right now. It keeps trying on its own, so the window recovers once your network or VPN is back. If it stays offline, check the server in your browser, or use **Switch server** to work on another one. Meanwhile, you can read the tasks and pages you opened recently under **Recently opened**.
 
 </Accordion>
 <Accordion title="The window has the normal Windows frame">
@@ -306,9 +382,14 @@ The app can't reach that server right now. It keeps trying on its own, so the wi
 That server runs an older version of Margaya's web app, which doesn't draw its own title bar yet. Everything else works; the title bar changes once your administrator updates the server.
 
 </Accordion>
-<Accordion title="The quick add shortcut does nothing">
+<Accordion title="A keyboard shortcut does nothing">
 
-Another app is using the same shortcut, so Margaya couldn't claim it. Use **Quick add…** from the tray or menu bar icon, or free the shortcut in the other app and restart Margaya.
+Another app is using the same combination, so Margaya couldn't claim it: **Settings** > **Keyboard shortcuts** then says **Not working right now: another app uses this combination.** Click **Change** to pick another one, or free it in the other app and restart Margaya. The action still works from the tray or menu bar icon. On Linux with Wayland, shortcuts only work while a Margaya window is in front.
+
+</Accordion>
+<Accordion title="Take screenshot to task comes back empty">
+
+On macOS, allow Margaya under **System Settings** > **Privacy & Security** > **Screen Recording**, then try again. On Linux, install xdg-desktop-portal with a Screenshot backend for your desktop (GNOME and KDE Plasma include one).
 
 </Accordion>
 <Accordion title="I closed the window and Margaya is still running">

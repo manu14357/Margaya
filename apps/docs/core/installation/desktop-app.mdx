@@ -1,9 +1,9 @@
 ---
 title: Desktop app for administrators
-description: What your Margaya server needs for the desktop app, the settings that control it, reverse proxy notes and how to deploy it to company computers with the MSI, .deb or .rpm
+description: What your Margaya server needs for the desktop app, the settings that control it, the routes it calls, the data it keeps on computers, update channels and how to deploy it to company computers with the MSI, .deb or .rpm
 ---
 
-[Margaya Desktop](/core/functional/desktop-app) for macOS, Windows and Linux opens your server's own web app in a window and adds native notifications, an unread badge and quick add. It talks only to your server: there is no Margaya cloud service in between. A current Margaya server supports it with no extra setup; this page covers the settings and the network details that matter.
+[Margaya Desktop](/core/functional/desktop-app) for macOS, Windows and Linux opens your server's own web app in a window and adds native notifications with buttons, an unread badge, quick add, search across servers, a Today window and offline reading. For your data it talks only to your server: there is no Margaya cloud service in between. Its own updates come from GitHub (see [Outside your server](#outside-your-server)). A current Margaya server supports it with no extra setup; this page covers the settings and the network details that matter.
 
 ## What the server needs
 
@@ -39,12 +39,58 @@ A desktop session is an ordinary Margaya session. It appears among the user's se
 
 The defaults in the [Nginx guide](/core/reverse-proxy/nginx) work. If you use your own proxy, check that it:
 
-- Forwards the `Authorization` header to the API. The app's background connection, notification lookups and quick add use `Authorization: Bearer` instead of a cookie.
+- Forwards the `Authorization` header to the API. The app's background connection, notification lookups and buttons, quick add, search, the Today window and the tray's recent items use `Authorization: Bearer` instead of a cookie (see [What the app calls](#what-the-app-calls)).
 - Passes WebSocket upgrades on `/api/ws/` (`Upgrade` and `Connection` headers), and keeps idle WebSockets open for at least a few minutes. The app holds one connection per signed-in server for notifications.
 - Serves `/.well-known/margaya-desktop.json` from the web app when the web app and API are on different origins. Don't block `/.well-known/` in front of it.
 - Does not rewrite redirects to other schemes. Sign-in ends with a redirect to `com.margaya.desktop://`.
 
 A proxy or firewall that requires its own sign-in page in front of Margaya will stop the app from discovering the server. Let `/api/config` and `/.well-known/margaya-desktop.json` through, or have users connect over the network or VPN that skips it.
+
+### What the app calls
+
+Besides its WebSocket on `/api/ws/user` and the sign-in routes, the app's own windows (tray, quick add, search, Today) and notifications call these API routes with the user's bearer token. Each route checks the user's permissions as it does for the web app.
+
+| Feature | Routes |
+| --- | --- |
+| Notifications and badge | `GET /api/notification/{id}/desktop`, `GET /api/notification`, `GET /api/notification/counts`, `GET /api/auth/organization/list` |
+| Notification buttons | `PATCH /api/notification/{id}/snooze`, `PATCH /api/notification/{id}/read`, `GET /api/task/{id}`, `GET /api/column/{projectId}`, `PUT /api/task/status/{id}` |
+| Quick add | `GET /api/project`, `GET /api/column/{projectId}`, `POST /api/task/{projectId}`, `GET /api/auth/organization/list-members`, `POST /api/task-attachment/{taskId}/upload` and `POST /api/task-attachment/{taskId}/finalize` |
+| Search and the tray's **Recent** | `GET /api/search`, `GET /api/recent-visit` |
+| Today | `POST /api/task-query`, `GET /api/column/{projectId}`, `PUT /api/task/status/{id}` |
+
+Quick add uploads attachments the way the web app does: the server answers `/upload` with an upload URL, and the app sends the file there with a `PUT`, never with the bearer token. With S3 storage that URL is your bucket's, so users' computers must reach it, as their browsers already do. Attachments follow `S3_MAX_IMAGE_UPLOAD_BYTES`; the app itself takes at most 10 files of 10 MB at a time.
+
+## Notification buttons
+
+Task notifications in the app can carry **Mark done**, **Snooze 1 hour** and **Reply** buttons. `GET /api/notification/{id}/desktop` tells the app which ones apply, in `taskId` and `actions`, for notifications about a task (assignments, status changes, updates, comments, mentions, due-date reminders and overdue tasks):
+
+- `snooze` on every such notification: it only changes the user's own inbox.
+- `done` when the user has the `task` `update` permission in that project (built-in Owner, Admin and Member; a restricted project's role and an API key's scope count too), the workspace may edit, and the task is open, not archived and not waiting in intake, in a project with a completed column.
+- `reply` with the same `task` `update` permission, which commenting needs.
+
+The app then acts through the ordinary routes listed above, which check everything again. Servers from before this change send neither field, and the app shows no buttons.
+
+## Data on users' computers
+
+Besides each server's window data, the app keeps on each computer:
+
+- Read-only copies of the last 50 tasks and pages the user opened on each server, for reading while the server can't be reached. They are plain text, at most about 200 KB per item and 4 MB per server, in the server's profile folder: `profiles/<id>/offline` under `%LOCALAPPDATA%\com.margaya.desktop` on Windows, `~/Library/Application Support/com.margaya.desktop` on macOS and `~/.local/share/com.margaya.desktop` on Linux. They aren't encrypted, like a browser's cache, and hold no tokens. The app deletes a server's copies when the user signs out of it (in the app or inside its window) or removes it, and every server's copies when the user turns off **Keep recent items for offline reading** or chooses **Clear saved copies**. A session you revoke on the server doesn't delete them.
+- Its preferences: shortcuts, the update channel, the notification pause and quick add's last server and project.
+
+There is no server setting for offline reading: each user turns it on or off under **Settings**. Where saved copies must not stay on a device, rely on disk encryption, as for browser caches.
+
+## Outside your server
+
+The app contacts GitHub, never your server, for its own updates:
+
+- `https://github.com/manu14357/Margaya/releases/latest/download/latest.json` for the Stable channel, and also `https://github.com/manu14357/Margaya/releases/download/desktop-beta/latest.json` for users on the Beta channel. The update files they point at come from GitHub too.
+- `https://api.github.com/repos/manu14357/Margaya/releases/tags/v<version>` once after an update, without credentials, for the release notes under **What's new**.
+
+If your firewall blocks GitHub, the app still works but doesn't update itself: roll out each release yourself as described below.
+
+## Update channels
+
+Users pick **Stable** or **Beta** under **Settings** > **Update channel**. Stable follows the regular `v<version>` releases. Beta follows the rolling `desktop-beta` release on GitHub, which each published Margaya prerelease (such as `v1.5.0-beta.1`) refreshes; a beta user is still offered a stable release when it is newer. Prereleases are built only as the Windows setup (`.exe`), the macOS disk images and the AppImages: there is no beta MSI, .deb or .rpm, and the Download page only lists stable releases. There is no server setting that locks the channel.
 
 ## Private certificates
 
@@ -70,11 +116,15 @@ The Windows installers aren't code-signed yet. SmartScreen warns on the first ru
 
 The app checks for updates and installs them itself. If your users can't install software, plan to roll out each new MSI through your management tool, and use `DESKTOP_MIN_VERSION` to make sure nobody stays on an old release.
 
+Only the setup `.exe` adds **Send to** > **Margaya** to File Explorer; the MSI doesn't. Both get the taskbar menu with **Quick add**, **Search**, **Inbox** and **My tasks**.
+
+When **Open at login** is on, the app starts in the tray without opening windows, unless the user turns off **Start minimized to the tray**.
+
 For macOS, distribute the `.dmg` (or the app inside it) with your device management tool. The app runs on macOS 14 Sonoma or later, on Apple Silicon and Intel.
 
 ## Deploy on Linux
 
-For managed Linux computers, use the `.deb` (Debian, Ubuntu, Linux Mint, Pop!_OS) or the `.rpm` (Fedora, RHEL-compatible, openSUSE) from the [download page](https://margaya.app/download) or the [GitHub release](https://github.com/manu14357/Margaya/releases), for x86_64 (`amd64`, `x86_64`) or ARM64 (`arm64`, `aarch64`). Check each file against `SHA256SUMS.txt` before you distribute it. The packages install the app as `/usr/bin/margaya-desktop` with its menu entry and icons, register the `com.margaya.desktop://` and `margaya://` links, and depend on WebKitGTK 4.1 and the Ayatana AppIndicator library, which the package manager installs.
+For managed Linux computers, use the `.deb` (Debian, Ubuntu, Linux Mint, Pop!_OS) or the `.rpm` (Fedora, RHEL-compatible, openSUSE) from the [download page](https://margaya.app/download) or the [GitHub release](https://github.com/manu14357/Margaya/releases), for x86_64 (`amd64`, `x86_64`) or ARM64 (`arm64`, `aarch64`). Check each file against `SHA256SUMS.txt` before you distribute it. The packages install the app as `/usr/bin/margaya-desktop` with its menu entry and icons, register the `com.margaya.desktop://` and `margaya://` links, add **Quick add**, **Search**, **Inbox** and **My tasks** to the app's menu in docks and launchers that show such actions, and depend on WebKitGTK 4.1 and the Ayatana AppIndicator library, which the package manager installs.
 
 Install them non-interactively, for example from Ansible, Salt, Puppet or a shell script:
 
@@ -95,7 +145,7 @@ The .deb and .rpm aren't GPG-signed. To serve them from an internal apt or dnf r
 
 Packaged installs don't update themselves: when a new version is out, the app tells the user and points to the download page. Roll out each new package through your tooling, and use `DESKTOP_MIN_VERSION` to make sure nobody stays on an old release. The AppImage updates itself, but suits personal machines better than managed ones.
 
-Every user needs a running Secret Service (GNOME Keyring or KWallet) for the app to keep its sign-in; standard GNOME, KDE Plasma and Cinnamon sessions start one. On GNOME, the tray icon needs the AppIndicator extension (`gnome-shell-extension-appindicator`), which Ubuntu includes. Without a tray, closing a window still keeps the app running, and starting it again brings the window back.
+Every user needs a running Secret Service (GNOME Keyring or KWallet) for the app to keep its sign-in; standard GNOME, KDE Plasma and Cinnamon sessions start one. **Take screenshot to task** needs xdg-desktop-portal with a Screenshot backend, which GNOME and KDE Plasma include. On GNOME, the tray icon needs the AppIndicator extension (`gnome-shell-extension-appindicator`), which Ubuntu includes. Without a tray, closing a window still keeps the app running, and starting it again brings the window back.
 
 ## Turn the desktop app off
 

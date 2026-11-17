@@ -528,22 +528,47 @@
 		},
 		"desktop/offline": {
 			"width": 760,
-			"height": 480,
+			"height": 760,
+			"format": "webp"
+		},
+		"desktop/offline-saved-copy": {
+			"width": 760,
+			"height": 540,
 			"format": "webp"
 		},
 		"desktop/quick-add": {
 			"width": 520,
-			"height": 207,
+			"height": 349,
+			"format": "webp"
+		},
+		"desktop/quick-add-parsed": {
+			"width": 520,
+			"height": 473,
+			"format": "webp"
+		},
+		"desktop/search": {
+			"width": 640,
+			"height": 520,
 			"format": "webp"
 		},
 		"desktop/server-list": {
 			"width": 760,
-			"height": 860,
+			"height": 1610,
 			"format": "webp"
 		},
 		"desktop/server-window": {
 			"width": 1280,
 			"height": 820,
+			"format": "webp"
+		},
+		"desktop/settings-shortcuts": {
+			"width": 712,
+			"height": 367,
+			"format": "webp"
+		},
+		"desktop/today": {
+			"width": 360,
+			"height": 480,
 			"format": "webp"
 		},
 		"drafts/drafts-list": {
@@ -1198,7 +1223,7 @@
 		},
 		"whiteboards/more-menu": {
 			"width": 249,
-			"height": 398,
+			"height": 426,
 			"format": "webp"
 		},
 		"whiteboards/pen-styles": {
@@ -1214,6 +1239,11 @@
 		"whiteboards/phone-more-tools": {
 			"width": 390,
 			"height": 844,
+			"format": "webp"
+		},
+		"whiteboards/present": {
+			"width": 1200,
+			"height": 860,
 			"format": "webp"
 		},
 		"whiteboards/public-view": {
