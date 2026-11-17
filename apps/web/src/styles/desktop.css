@@ -65,23 +65,88 @@ html[data-desktop-slim-bar] :is(.min-h-svh, .min-h-dvh, .min-h-screen) {
 }
 
 /*
- * Overlays start under the title bar line (--desktop-frame-top: the shell's
- * top bar or the slim bar), so the window buttons, the traffic lights and
- * the bar stay visible and in reach while a sheet, dialog or the palette is
- * open, the way native windows keep their title bar above their dialogs.
+ * A modal overlay's backdrop dims the whole window, title bar included, like
+ * every other part of the app (components/ui/overlay.ts). Its popup still
+ * starts under the title bar line (--desktop-frame-top: the shell's top bar
+ * or the slim bar), so a sheet's or dialog's own buttons never sit under the
+ * window buttons or the traffic lights.
  */
 html[data-desktop-titlebar]
   :is(
-    [data-slot="sheet-backdrop"],
     [data-slot="sheet-viewport"],
-    [data-slot="dialog-backdrop"],
     [data-slot="dialog-viewport"],
-    [data-slot="alert-dialog-backdrop"],
     [data-slot="alert-dialog-viewport"],
-    [data-slot="command-dialog-backdrop"],
     [data-slot="command-dialog-viewport"]
   ) {
   top: var(--desktop-frame-top, 0px);
+}
+
+/*
+ * Side panels (left and right sheets) run the window's full height in the
+ * shell, as in native apps: no strip of dimmed title bar sits above them.
+ * Their top row is the title bar there (a press on its empty space moves the
+ * window, components/ui/sheet.tsx), so it keeps clear of what the window
+ * draws: the window buttons on a right panel (--sheet-controls-inset, used
+ * by the panel's headers and close button), the traffic lights on a left one
+ * (--sheet-start-inset). A left panel never reaches under the buttons.
+ * Slim-bar pages keep their panels under the bar, which stays a full bar.
+ */
+html[data-desktop-titlebar]:not([data-desktop-slim-bar])
+  [data-slot="sheet-viewport"]:is([data-side="left"], [data-side="right"]) {
+  top: 0;
+  /* The panel's title row: SheetHeaderBar keeps it for the panel's name
+     and the window, and puts its toolbar and close panel under it. */
+  --sheet-title-row: var(--desktop-frame-top, 0px);
+}
+
+html[data-desktop-titlebar]:not([data-desktop-slim-bar])
+  [data-slot="sheet-viewport"][data-side="right"] {
+  --sheet-controls-inset: var(--desktop-controls-width, 0px);
+}
+
+html[data-desktop-titlebar]:not([data-desktop-slim-bar])
+  [data-slot="sheet-viewport"][data-side="left"] {
+  --sheet-start-inset: var(--desktop-inset-left, 0px);
+}
+
+html[data-desktop-titlebar]:not([data-desktop-slim-bar])
+  [data-slot="sheet-viewport"][data-side="left"]
+  > [data-side="left"] {
+  max-width: calc(100% - var(--desktop-controls-width, 0px));
+}
+
+html[data-desktop-slim-bar] [data-slot="sheet-title-bar-gap"] {
+  display: none;
+}
+
+/*
+ * The window buttons stay above every backdrop (--z-window-controls), so
+ * minimize, maximize and close work while a modal is open, as in native
+ * apps. Over the dimmed title bar they would look lit, so they darken by
+ * exactly the backdrop's amount: brightness(1 - dim) is the same sRGB
+ * multiply as black at `dim` opacity, for their glyphs, hover fills and the
+ * bar under them alike. Over a right side panel they sit on the panel's top
+ * row and stay as they are, until something opens over that panel. On pages
+ * without the shell the whole slim bar rises and dims instead (its buttons
+ * inside it, so they are not dimmed twice). A closing backdrop no longer
+ * counts, so they brighten as it fades.
+ */
+[data-slot="window-controls"],
+[data-slot="desktop-title-bar"] {
+  transition: filter 200ms ease-out;
+}
+
+html:has([data-overlay-backdrop]:not([data-ending-style]))
+  [data-slot="desktop-title-bar"],
+html:not([data-desktop-slim-bar]):has(
+    [data-overlay-backdrop]:not([data-ending-style]):not([data-side="right"])
+  )
+  [data-slot="window-controls"] {
+  filter: brightness(calc(1 - var(--overlay-dim)));
+}
+
+html:has([data-overlay-backdrop]) [data-slot="desktop-title-bar"] {
+  z-index: var(--z-window-controls);
 }
 
 /* Ask fills the window on narrow screens; it too stays under the bar. */
@@ -103,14 +168,56 @@ html[data-desktop-titlebar]
   }
 }
 
+/*
+ * While a modal overlay is open, a transparent strip over the title bar line
+ * (desktop-title-bar.tsx) keeps moving the window: the bar under the dim no
+ * longer takes clicks, so its search, switchers and menus stay shut. A side
+ * panel covers that line itself: its top row and the gap beside it move the
+ * window instead (sheet.tsx), so the strip stays out of their way.
+ */
 html:has(
-    :is(
-      [data-slot="sheet-backdrop"],
-      [data-slot="dialog-backdrop"],
-      [data-slot="alert-dialog-backdrop"],
-      [data-slot="command-dialog-backdrop"]
-    )
+    [data-overlay-backdrop]:not([data-side="left"]):not([data-side="right"])
   )
+  [data-slot="desktop-overlay-drag"],
+html[data-desktop-slim-bar]:has([data-overlay-backdrop])
   [data-slot="desktop-overlay-drag"] {
   display: block;
+}
+
+/*
+ * Window buttons and app buttons never read as one group. Where app buttons
+ * sit on the same row (the shell's top bar, a side panel's top row), a
+ * hairline marks where the window's own buttons start, at the physical
+ * left of the group: the buttons keep the OS's place, the right, in every
+ * text direction. The rows that reach them reserve the room
+ * (--desktop-controls-width) plus a gap of their own.
+ */
+[data-slot="window-controls"][data-separated]::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1px;
+  height: 1.25rem;
+  translate: 0 -50%;
+  background: var(--border);
+  pointer-events: none;
+}
+
+/*
+ * An element in full screen inside a window that is not (Windows: the
+ * webview fills only the window) keeps a slim title bar at its top, drawn
+ * inside it (desktop-title-bar.tsx); its content starts under that bar, so the
+ * whiteboard's toolbar and people strip never sit under the window buttons.
+ */
+html[data-desktop-element-fullscreen] :not(html):fullscreen {
+  border-top: var(--desktop-fullscreen-bar-height, 0px) solid
+    var(--background);
+}
+
+/* Toasts placed at the top start under the title bar line, never under or
+   over the window buttons or the traffic lights. */
+html[data-desktop-titlebar]
+  [data-slot="toast-viewport"][data-position*="top"] {
+  top: calc(var(--desktop-frame-top, 0px) + var(--toast-inset, 1rem));
 }

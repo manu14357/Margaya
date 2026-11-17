@@ -10,6 +10,7 @@ import {
   DesktopTitleBar,
   useDesktopDragRegion,
   useDesktopShellFrame,
+  useDesktopTopRowDrag,
 } from "./desktop-title-bar";
 
 vi.mock("react-i18next", () => ({
@@ -26,7 +27,8 @@ function enterDesktopApp(
   platform: "windows" | "macos" | "linux",
   { style = "custom", maximized = false } = {},
 ) {
-  let listener: StateListener = () => {};
+  // Every subscriber hears each change, as with the app's bridge.
+  const listeners = new Set<StateListener>();
   const window_ = {
     minimize: vi.fn(),
     toggleMaximize: vi.fn(),
@@ -34,9 +36,9 @@ function enterDesktopApp(
     startDragging: vi.fn(),
     isMaximized: vi.fn(async () => maximized),
     onStateChange: vi.fn((next: StateListener) => {
-      listener = next;
+      listeners.add(next);
       return () => {
-        listener = () => {};
+        listeners.delete(next);
       };
     }),
   };
@@ -56,7 +58,10 @@ function enterDesktopApp(
   });
   return {
     api: window_,
-    emit: (state: Parameters<StateListener>[0]) => act(() => listener(state)),
+    emit: (state: Parameters<StateListener>[0]) =>
+      act(() => {
+        for (const listener of listeners) listener(state);
+      }),
   };
 }
 
@@ -179,7 +184,7 @@ describe("desktop title bar", () => {
     ).toBe("138px");
   });
 
-  it("keeps overlays under the title bar line and the buttons above them", () => {
+  it("keeps overlay popups under the title bar line and the buttons above every backdrop", () => {
     enterDesktopApp("windows");
     const root = document.documentElement;
     const { container, rerender } = render(<DesktopTitleBar />);
@@ -192,19 +197,19 @@ describe("desktop title bar", () => {
         <Shell />
       </>,
     );
-    // With the shell, under its 48px top bar; the buttons stack above
-    // sheets and dialogs (z-50) so they stay visible and clickable.
+    // With the shell, under its 48px top bar; the buttons stack above every
+    // backdrop (the window-controls layer) so they stay clickable.
     expect(root.style.getPropertyValue("--desktop-frame-top")).toBe("48px");
     expect(
       container.querySelector("[data-slot='window-controls']"),
-    ).toHaveClass("z-60");
+    ).toHaveClass("z-(--z-window-controls)");
 
     // A strip over the bar line (shown by desktop.css only while an overlay
     // dims the page) keeps moving the window, clear of the buttons.
     const strip = container.querySelector(
       "[data-slot='desktop-overlay-drag']",
     ) as HTMLElement;
-    expect(strip).toHaveClass("fixed", "hidden");
+    expect(strip).toHaveClass("fixed", "hidden", "z-(--z-window-controls)");
     expect(strip.style.height).toBe("48px");
     expect(strip.style.right).toBe("138px");
   });
@@ -222,6 +227,33 @@ describe("desktop title bar", () => {
     ) as HTMLElement;
     expect(strip.style.right).toBe("0px");
     press(strip);
+    expect(api.startDragging).toHaveBeenCalledOnce();
+  });
+
+  it("moves the window from a full-height panel's top row only", () => {
+    const { api } = enterDesktopApp("linux");
+    function Panel() {
+      const drag = useDesktopTopRowDrag();
+      return (
+        <section data-testid="panel" {...drag}>
+          <button type="button">Close</button>
+        </section>
+      );
+    }
+    render(<Panel />);
+    const panel = screen.getByTestId("panel");
+    fireEvent.mouseDown(panel, { button: 0, clientY: 47, detail: 1 });
+    expect(api.startDragging).toHaveBeenCalledOnce();
+    fireEvent.mouseDown(panel, { button: 0, clientY: 48, detail: 1 });
+    fireEvent.mouseDown(screen.getByRole("button"), {
+      button: 0,
+      clientY: 10,
+      detail: 1,
+    });
+    expect(api.startDragging).toHaveBeenCalledOnce();
+    // Slim-bar pages keep panels under the bar, which moves the window.
+    document.documentElement.dataset.desktopSlimBar = "";
+    fireEvent.mouseDown(panel, { button: 0, clientY: 10, detail: 1 });
     expect(api.startDragging).toHaveBeenCalledOnce();
   });
 
@@ -280,7 +312,9 @@ describe("desktop title bar", () => {
       "[data-slot='window-controls']",
     ) as HTMLElement;
     expect(controls).toHaveAttribute("data-platform", "linux");
-    expect(controls.style.paddingInlineEnd).toBe("6px");
+    // The OS's side and order in every text direction.
+    expect(controls.style.paddingRight).toBe("6px");
+    expect(controls).toHaveAttribute("dir", "ltr");
 
     const close = screen.getByRole("button", {
       name: "navigation:desktopWindow.close",
@@ -324,7 +358,7 @@ describe("desktop title bar", () => {
     expect(strip.style.right).toBe("108px");
     expect(
       container.querySelector("[data-slot='window-controls']"),
-    ).toHaveClass("fixed", "top-0", "right-0", "z-60");
+    ).toHaveClass("fixed", "top-0", "right-0", "z-(--z-window-controls)");
     expect(
       await screen.findByRole("button", {
         name: "navigation:desktopWindow.restore",
@@ -342,13 +376,134 @@ describe("desktop title bar", () => {
     const bar = container.querySelector(
       "[data-slot='desktop-title-bar']",
     ) as HTMLElement;
-    expect(bar.style.paddingInlineStart).toBe("78px");
+    // The traffic lights stay at the left in every text direction.
+    expect(bar.style.paddingLeft).toBe("78px");
+    expect(bar).toHaveAttribute("dir", "ltr");
     expect(bar.style.height).toBe("48px");
     expect(screen.queryByRole("button", { name: /desktopWindow/ })).toBeNull();
     expect(
       document.documentElement.style.getPropertyValue("--desktop-inset-left"),
     ).toBe("78px");
     expect(document.documentElement.dataset.desktopTitlebar).toBe("macos");
+  });
+});
+
+describe("window buttons beside app buttons", () => {
+  it("marks off the buttons over the shell's top bar, not on a slim bar", () => {
+    enterDesktopApp("windows");
+    const slim = render(<DesktopTitleBar />);
+    expect(
+      slim.container.querySelector("[data-slot='window-controls']"),
+    ).not.toHaveAttribute("data-separated");
+    slim.unmount();
+
+    const { container } = render(
+      <>
+        <DesktopTitleBar />
+        <Shell />
+      </>,
+    );
+    const controls = container.querySelector("[data-slot='window-controls']");
+    expect(controls).toHaveAttribute("data-separated", "true");
+    expect(controls).toHaveAttribute("dir", "ltr");
+  });
+});
+
+describe("an element in full screen", () => {
+  function enterFullscreen(element: Element | null) {
+    Object.defineProperty(document, "fullscreenElement", {
+      configurable: true,
+      get: () => element,
+    });
+    act(() => {
+      document.dispatchEvent(new Event("fullscreenchange"));
+    });
+  }
+
+  afterEach(() => {
+    Reflect.deleteProperty(document, "fullscreenElement");
+  });
+
+  it("keeps a slim bar with the window buttons inside it while the window is not full screen", () => {
+    const { api, emit } = enterDesktopApp("windows");
+    const { container } = render(
+      <>
+        <DesktopTitleBar />
+        <Shell />
+        <div data-testid="canvas" />
+      </>,
+    );
+    expect(
+      container.querySelector("[data-slot='desktop-fullscreen-bar']"),
+    ).toBeNull();
+
+    const canvas = screen.getByTestId("canvas");
+    enterFullscreen(canvas);
+    // Inside the full-screen element: outside it nothing takes a press.
+    const bar = canvas.querySelector(
+      "[data-slot='desktop-fullscreen-bar']",
+    ) as HTMLElement;
+    expect(bar).not.toBeNull();
+    expect(bar.style.height).toBe("32px");
+    expect(bar).toHaveClass("fixed", "top-0", "z-(--z-window-controls)");
+    const root = document.documentElement;
+    expect(root.dataset.desktopElementFullscreen).toBe("");
+    expect(root.style.getPropertyValue("--desktop-fullscreen-bar-height")).toBe(
+      "32px",
+    );
+
+    // Its buttons work and its empty space moves the window.
+    const close = bar.querySelector(
+      "[aria-label='navigation:desktopWindow.close']",
+    ) as HTMLElement;
+    fireEvent.click(close);
+    expect(api.close).toHaveBeenCalledOnce();
+    press(bar);
+    expect(api.startDragging).toHaveBeenCalledOnce();
+
+    // A window that went full screen itself needs no bar.
+    emit({ maximized: false, focused: true, fullscreen: true });
+    expect(canvas.querySelector("[data-slot='desktop-fullscreen-bar']")).toBe(
+      null,
+    );
+    expect(root.dataset.desktopElementFullscreen).toBeUndefined();
+
+    emit({ maximized: false, focused: true, fullscreen: false });
+    expect(
+      canvas.querySelector("[data-slot='desktop-fullscreen-bar']"),
+    ).not.toBeNull();
+    enterFullscreen(null);
+    expect(
+      document.querySelector("[data-slot='desktop-fullscreen-bar']"),
+    ).toBeNull();
+  });
+
+  it("leaves a video or frame in full screen as it is", () => {
+    enterDesktopApp("windows");
+    render(<DesktopTitleBar />);
+    const video = document.createElement("video");
+    document.body.append(video);
+    enterFullscreen(video);
+    expect(
+      document.querySelector("[data-slot='desktop-fullscreen-bar']"),
+    ).toBeNull();
+    video.remove();
+  });
+
+  it("ignores the whole page in full screen, and a browser", () => {
+    enterFullscreen(document.documentElement);
+    enterDesktopApp("windows");
+    render(<DesktopTitleBar />);
+    expect(
+      document.querySelector("[data-slot='desktop-fullscreen-bar']"),
+    ).toBeNull();
+    cleanup();
+    Reflect.deleteProperty(window, "__MARGAYA_DESKTOP__");
+    enterFullscreen(document.body);
+    render(<DesktopTitleBar />);
+    expect(
+      document.querySelector("[data-slot='desktop-fullscreen-bar']"),
+    ).toBeNull();
   });
 });
 

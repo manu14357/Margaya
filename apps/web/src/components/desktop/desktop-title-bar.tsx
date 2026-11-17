@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { create } from "zustand";
 import { cn } from "@/lib/cn";
@@ -72,6 +73,17 @@ export function useDesktopTitleBar(): TitleBarSettings | null {
   // The bridge is injected before the page loads and never changes.
   const [titleBar] = useState(() => getDesktopTitleBar());
   return titleBar;
+}
+
+/**
+ * Whether side panels run the window's full height (the custom frame with
+ * the shell's top bar on screen), so a panel's top row is the title bar.
+ * False in a browser and on slim-bar pages, where panels start under the bar.
+ */
+export function useDesktopFullHeightPanels(): boolean {
+  const titleBar = useDesktopTitleBar();
+  const shellMounted = useShellFrame((state) => state.mounted > 0);
+  return Boolean(titleBar) && shellMounted;
 }
 
 /** The window's maximized and focused state, kept current by the app. */
@@ -185,6 +197,33 @@ export function useDesktopDragRegion() {
   };
 }
 
+/**
+ * For a panel that runs the window's full height in the desktop shell (a
+ * side sheet): a press on empty space in its top row, the title bar's
+ * height from the window's top edge, moves the window and a double-click
+ * maximizes. Presses lower down, on controls, on slim-bar pages (where
+ * panels start under the bar) or in a browser do nothing.
+ */
+export function useDesktopTopRowDrag(): {
+  onMouseDown?: (event: MouseEvent<HTMLElement>) => void;
+} {
+  const titleBar = useDesktopTitleBar();
+  if (!titleBar) return {};
+  return {
+    onMouseDown: (event) => {
+      if (event.button !== 0 || !isWindowDragTarget(event.target)) return;
+      if (document.documentElement.hasAttribute("data-desktop-slim-bar"))
+        return;
+      const top = event.currentTarget.getBoundingClientRect().top;
+      if (top > 1 || event.clientY >= SHELL_BAR_HEIGHT) return;
+      const api = getDesktopWindow();
+      event.preventDefault();
+      if (event.detail >= 2) api?.toggleMaximize?.();
+      else api?.startDragging?.();
+    },
+  };
+}
+
 function Glyph({
   children,
   strokeWidth = 1,
@@ -219,23 +258,34 @@ export function WindowControls({
   height,
   className,
   platform = "windows",
+  separated = false,
 }: {
   height: number;
   className?: string;
   platform?: TitleBarSettings["platform"];
+  /**
+   * A hairline at their start, for a bar where app buttons sit beside them
+   * (the shell's top bar, a side panel's top row): the window's minimize,
+   * maximize and close never read as part of the app's own group.
+   */
+  separated?: boolean;
 }) {
-  if (platform === "linux")
-    return <LinuxWindowControls height={height} className={className} />;
-  return <WindowsWindowControls height={height} className={className} />;
+  const props = { height, className, separated };
+  if (platform === "linux") return <LinuxWindowControls {...props} />;
+  return <WindowsWindowControls {...props} />;
 }
+
+type ControlsProps = {
+  height: number;
+  className?: string;
+  separated?: boolean;
+};
 
 function WindowsWindowControls({
   height,
   className,
-}: {
-  height: number;
-  className?: string;
-}) {
+  separated,
+}: ControlsProps) {
   const { t } = useTranslation();
   const { maximized, focused } = useDesktopWindowState();
   const api = getDesktopWindow();
@@ -250,8 +300,11 @@ function WindowsWindowControls({
 
   return (
     <div
-      className={cn("group/controls flex items-stretch", className)}
+      className={cn("group/controls relative flex items-stretch", className)}
+      // The OS's order in every text direction: minimize, maximize, close.
+      dir="ltr"
       data-focused={focused}
+      data-separated={separated || undefined}
       data-slot="window-controls"
       data-no-window-drag=""
     >
@@ -319,13 +372,7 @@ function WindowsWindowControls({
 }
 
 /** GNOME-like round window buttons, for Linux. */
-function LinuxWindowControls({
-  height,
-  className,
-}: {
-  height: number;
-  className?: string;
-}) {
+function LinuxWindowControls({ height, className, separated }: ControlsProps) {
   const { t } = useTranslation();
   const { maximized, focused } = useDesktopWindowState();
   const api = getDesktopWindow();
@@ -365,9 +412,11 @@ function LinuxWindowControls({
 
   return (
     <div
-      className={cn("group/controls flex items-stretch", className)}
-      style={{ paddingInlineEnd: LINUX_END_PADDING }}
+      className={cn("group/controls relative flex items-stretch", className)}
+      style={{ paddingRight: LINUX_END_PADDING }}
+      dir="ltr"
       data-focused={focused}
+      data-separated={separated || undefined}
       data-platform="linux"
       data-slot="window-controls"
       data-no-window-drag=""
@@ -389,6 +438,91 @@ function LinuxWindowControls({
         </button>
       ))}
     </div>
+  );
+}
+
+/** The element in browser full screen, other than the whole page, or null. */
+function readFullscreenElement(): Element | null {
+  if (typeof document === "undefined") return null;
+  const element = document.fullscreenElement ?? null;
+  return element === document.documentElement ? null : element;
+}
+
+export function useFullscreenElement(): Element | null {
+  const [element, setElement] = useState<Element | null>(readFullscreenElement);
+  useEffect(() => {
+    const update = () => setElement(readFullscreenElement());
+    update();
+    document.addEventListener("fullscreenchange", update);
+    return () => document.removeEventListener("fullscreenchange", update);
+  }, []);
+  return element;
+}
+
+/** Elements that cannot hold the bar: their full screen keeps no frame. */
+function canHoldBar(element: Element): element is HTMLElement {
+  return (
+    element instanceof HTMLElement &&
+    !(
+      element instanceof HTMLIFrameElement ||
+      element instanceof HTMLVideoElement ||
+      element instanceof HTMLImageElement ||
+      element instanceof HTMLCanvasElement
+    )
+  );
+}
+
+/**
+ * An element in full screen (the whiteboard's Full screen) sits in the top
+ * layer, over every fixed element, the window buttons included. When the
+ * window itself goes full screen (macOS, and Linux, whose webviews do that)
+ * the system hides its frame and that is right. On Windows the webview fills
+ * only the window, which stays as it was: without this bar it could be
+ * neither moved nor closed. The bar renders inside the full-screen element,
+ * because everything outside it, even a popover above it in the top layer,
+ * takes no presses; desktop.css moves that element's content under the bar
+ * (`data-desktop-element-fullscreen`).
+ */
+function FullscreenTitleBar({
+  titleBar,
+  height,
+}: {
+  titleBar: TitleBarSettings;
+  height: number;
+}) {
+  const element = useFullscreenElement();
+  const { fullscreen } = useDesktopWindowState();
+  const dragRegion = useDesktopDragRegion();
+  const host = element && !fullscreen && canHoldBar(element) ? element : null;
+  const controls =
+    titleBar.platform === "windows" || titleBar.platform === "linux";
+
+  useEffect(() => {
+    if (!host) return;
+    const root = document.documentElement;
+    root.dataset.desktopElementFullscreen = "";
+    root.style.setProperty("--desktop-fullscreen-bar-height", `${height}px`);
+    return () => {
+      delete root.dataset.desktopElementFullscreen;
+      root.style.removeProperty("--desktop-fullscreen-bar-height");
+    };
+  }, [host, height]);
+
+  if (!host) return null;
+  return createPortal(
+    <div
+      {...dragRegion}
+      dir="ltr"
+      className="fixed inset-x-0 top-0 z-(--z-window-controls) flex items-stretch border-border/60 border-b bg-background text-foreground"
+      style={{ height, paddingLeft: titleBar.leftInset }}
+      data-slot="desktop-fullscreen-bar"
+    >
+      <span className="min-w-0 flex-1" />
+      {controls && (
+        <WindowControls platform={titleBar.platform} height={height - 1} />
+      )}
+    </div>,
+    host,
   );
 }
 
@@ -436,8 +570,9 @@ export function DesktopTitleBar() {
     };
   }, [slim, slimHeight]);
 
-  // Overlays (sheets, dialogs, the palette) start under the title bar line,
-  // so the window buttons and the traffic lights stay in reach (desktop.css).
+  // Overlays (sheets, dialogs, the palette) dim the whole window but place
+  // their popups under the title bar line, clear of the window buttons and
+  // the traffic lights (desktop.css).
   const frameTop = slim ? slimHeight : SHELL_BAR_HEIGHT;
   useEffect(() => {
     if (!titleBar) return;
@@ -450,13 +585,24 @@ export function DesktopTitleBar() {
 
   if (!titleBar) return null;
 
-  // While a sheet or dialog dims the page, this strip over the title bar
-  // line keeps moving the window (desktop.css shows it only then).
+  // An element in full screen (the whiteboard, a video) covers everything
+  // else, these buttons included, unless the window itself goes full screen.
+  const fullscreenBar = (
+    <FullscreenTitleBar
+      titleBar={titleBar}
+      height={slimBarHeight(titleBar.platform)}
+    />
+  );
+
+  // While a modal overlay dims the window, this transparent strip over the
+  // title bar line, above the backdrop, keeps moving the window, and keeps a
+  // press on the dimmed bar from reaching its buttons or closing the overlay
+  // (desktop.css shows it only then).
   const overlayDrag = (
     <div
       {...dragRegion}
       aria-hidden="true"
-      className="fixed top-0 left-0 z-55 hidden"
+      className="fixed top-0 left-0 z-(--z-window-controls) hidden"
       style={{
         height: frameTop,
         right: controls ? controlsWidth : 0,
@@ -470,11 +616,13 @@ export function DesktopTitleBar() {
     return (
       <>
         {overlayDrag}
+        {fullscreenBar}
         {controls && (
           <WindowControls
             platform={platform}
             height={SHELL_BAR_HEIGHT - 1}
-            className="fixed top-0 right-0 z-60"
+            className="fixed top-0 right-0 z-(--z-window-controls)"
+            separated
           />
         )}
       </>
@@ -484,10 +632,14 @@ export function DesktopTitleBar() {
   return (
     <>
       {overlayDrag}
+      {fullscreenBar}
       <div
         {...dragRegion}
-        className="relative z-40 flex w-full shrink-0 items-stretch border-border/60 border-b bg-background"
-        style={{ height: slimHeight, paddingInlineStart: titleBar.leftInset }}
+        className="relative z-(--z-floating) flex w-full shrink-0 items-stretch border-border/60 border-b bg-background"
+        // The window's buttons keep the OS's places in every text direction:
+        // the traffic lights at the left, the buttons drawn here at the right.
+        dir="ltr"
+        style={{ height: slimHeight, paddingLeft: titleBar.leftInset }}
         data-slot="desktop-title-bar"
       >
         <span className="flex min-w-0 flex-1 items-center px-3">

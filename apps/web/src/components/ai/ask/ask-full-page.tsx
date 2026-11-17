@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Layout from "@/components/common/layout";
 import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import { useAskPanel } from "./ask-store";
 
@@ -25,7 +26,13 @@ export function AskFullPage() {
 
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col">
-      <h1 className="sr-only">{t("ai:ask.title")}</h1>
+      {!available && !isLoading ? (
+        // Without the chat's own header the page still needs a top row: the
+        // desktop app's title bar (drag area, room for the window buttons).
+        <Layout.TopBar title={t("ai:ask.title")} />
+      ) : (
+        <h1 className="sr-only">{t("ai:ask.title")}</h1>
+      )}
       {!available && !isLoading && (
         <p className="m-auto max-w-sm px-6 text-center text-muted-foreground text-sm">
           {t("ai:ask.fullPageUnavailable")}
