@@ -1,0 +1,739 @@
+---
+title: Template Catalog
+description: Every built-in project template by category, with its statuses, views, fields and features
+---
+
+Margaya has 52 built-in project templates: **Blank project** and 51 templates for a particular kind of work. Pick one when you [create a project](/core/functional/templates/create-a-project). This page lists them by gallery category, with what each one sets up.
+
+## Before you pick
+
+- **Everything stays editable.** A template only decides how the project starts. Afterwards its statuses, views, fields, pages and rules are ordinary project settings, and later changes to the template never touch your project.
+- **Text comes in your language.** Status names, views, fields, pages and example tasks are written in the language you use Margaya in when you create the project. Switching language later doesn't rename them.
+- **Labels are workspace-wide.** [Labels](/core/functional/manage-workspace-labels) belong to the whole workspace, so a template reuses a label that already has the same name. Labels that don't exist yet are created only if you may create labels (Members, Admins and Owners can); otherwise they are skipped and the dialog tells you.
+- **Request forms start switched off.** Templates marked "a request form (switched off)" prepare a [public request form](/core/functional/intake#share-a-public-request-form) with a heading, text and fields, but nobody can open it until someone with the **project:share** permission turns on **Open the form**.
+- **Some templates start restricted.** **HR service desk**, **Recruitment**, **Employee reviews**, **Finance service desk**, **Legal request desk** and **IP infringement** preselect **Restricted** under **Privacy**, because they hold people's or confidential details. You can switch to **Open** before you create the project. See [Restricted projects](/core/functional/restricted-projects).
+- **Only the features a template needs are on.** "Features on" lists the switches a template turns on; the rest start off. Turn any of them on or off in **Set up**, or later under [project features](/core/functional/project-features-and-column-groups). The **AI** switch only applies when AI is turned on for the instance and the workspace.
+- **Example tasks are optional.** They are added only when you turn on **Add example tasks**, and you can [remove them in one go](/core/functional/templates/create-a-project#remove-the-example-tasks).
+
+A template appears in every category it fits, so the gallery shows some templates in more than one place. Each one is described once below, under its main category, and linked from the others.
+
+## Blank project
+
+Three columns. Add the rest when you need it.
+
+- **Statuses:** To do, In progress, Done
+- **Features on:** none (board and list only)
+- **Also:** no labels, fields, views or pages. The gallery always shows it as the first tile.
+
+## Software development
+
+Plan, build and ship software, from a simple board to sprints and bug tracking.
+
+### Bug tracker
+
+Report, triage, fix, verify.
+
+- **Statuses:** Needs info, Confirmed, Fixing, Verifying, Fixed, Closed without fix
+- **Views:** Open by severity (list), Regressions (list), Verify queue (list), Fixed recently (list)
+- **Fields:** Severity, Environment, Found in version
+- **Labels:** Regression, Security, Customer reported, Cannot reproduce
+- **Pages:** Severity and priority guide
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 3 automation rules, 1 task template, 6 example tasks, suggested key `BUG`
+
+### Shared team plan
+
+Common goals, clear owners, visible dependencies.
+
+- **Statuses:** Proposed, Agreed, In progress, Delivered, Dropped
+- **Views:** Plan timeline (Gantt), By team (list), Dependencies (list), Commitments (spreadsheet)
+- **Fields:** Owning team, Commitment, Confidence
+- **Labels:** Needs another team, At risk
+- **Pages:** Planning session agenda, Shared goals
+- **Features on:** Modules, Views, Pages, Updates
+- **Also:** 3 automation rules, 1 task template, 5 example tasks, suggested key `PLAN`
+
+### Requests for engineering
+
+One front door for every ask.
+
+- **Statuses:** Accepted, Scheduled, In progress, Delivered, Not doing
+- **Views:** Request overview (spreadsheet), Blocking work (list), Waiting on requester (list), Delivered this month (list)
+- **Fields:** Request type, Requesting team, Business impact, Needed by
+- **Labels:** Waiting on requester, Quick win
+- **Pages:** How to ask engineering for work, Triage checklist
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 3 automation rules, 1 task template, 5 example tasks, suggested key `DEV`
+
+### Kanban flow
+
+Keep work moving. Finish before you start.
+
+- **Statuses:** Backlog, Ready, In progress, In review, Done, Won't do
+- **Views:** Aging work (list), Blocked or waiting (list), Expedite lane (board), Recently finished (list)
+- **Labels:** Expedite, Fixed date, Waiting
+- **Pages:** Board policies, Flow review notes
+- **Features on:** Views, Pages
+- **Also:** 2 automation rules, 2 task templates, 9 example tasks, suggested key `KAN`
+
+### Scrum sprints
+
+One goal per sprint. Plan, build, review, improve.
+
+- **Statuses:** Backlog, To do, In progress, In review, Done, Won't do
+- **Views:** Sprint board (board), Refinement (list), Needs an estimate (list), My sprint (list)
+- **Labels:** Story, Bug, Spike, Tech debt
+- **Estimates:** Story points (points: 1, 2, 3, 5, 8, 13)
+- **Pages:** Definition of Done, Team working agreement
+- **Features on:** Cycles, Views, Pages, Estimates
+- **Also:** 2 automation rules, 3 task templates, 6 example tasks, suggested key `SCRUM`
+
+### Program plan
+
+Initiatives, milestones and risks on one timeline.
+
+- **Statuses:** Proposed, Scheduled, In progress, Done, Dropped
+- **Views:** Timeline (Gantt), By initiative (list), Risks and decisions (list), Blocked (list)
+- **Fields:** Commitment, Owning team
+- **Labels:** Risk, Decision needed, Dependency
+- **Modules:** Data move, New login, Retire old API
+- **Pages:** Program brief, Update rhythm
+- **Features on:** Modules, Views, Pages, Updates
+- **Also:** 3 automation rules, 2 task templates, 6 example tasks, suggested key `PRG`
+
+Also in Software development: [Outcome tree](#outcome-tree), [Portfolio roadmap](#portfolio-roadmap), [Priority scoring](#priority-scoring), [Product discovery](#product-discovery), [Product roadmap](#product-roadmap), [Guided tour](#guided-tour).
+
+## Service management
+
+Collect requests from anyone, sort them in triage and track them to done.
+
+### Analytics request desk
+
+Questions tied to decisions, answered in the right order.
+
+- **Statuses:** Up next, In progress, Waiting on requester, In review, Delivered, Won't do
+- **Views:** My queue (list), Unassigned (list), Due soon (list), Value and effort (spreadsheet)
+- **Fields:** Request type, Decision it informs, Decision size, Needed by
+- **Labels:** Recurring ask, Data quality
+- **Estimates:** Effort (points: 1, 2, 3, 5, 8)
+- **Pages:** How to ask the data team, Metric definitions, Review checklist
+- **Features on:** Views, Pages, Intake, Estimates
+- **Also:** a request form (switched off), 2 automation rules, 5 task templates, 5 example tasks, suggested key `DATA`
+
+### Customer support
+
+Questions, bugs and ideas from customers, sorted and answered.
+
+- **Statuses:** Ideas, New, In progress, Waiting on customer, With engineering, Resolved, Won't do
+- **Views:** My queue (list), Unassigned (list), Breaching soon (list), Top bugs and ideas (spreadsheet)
+- **Fields:** Kind, How much does it affect you?, Customer account, Customers asking
+- **Labels:** Tier 2, Tier 3, Key account, Known issue
+- **Pages:** Reply guide, Known issues, Escalation guide, Feature suggestions
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 5 automation rules, 5 task templates, 6 example tasks, suggested key `SUP`
+
+### Design request desk
+
+Clear asks, focused reviews, clean hand-offs.
+
+- **Statuses:** Up next, In progress, In review, Delivered, Won't do
+- **Views:** My queue (list), Unassigned (list), Due soon (list), Design board (board)
+- **Fields:** Request type, Formats and sizes, Needed by, Review rounds
+- **Labels:** Brand, Quick fix
+- **Estimates:** Size (points: 1, 2, 3, 5, 8)
+- **Pages:** How to request design, Brand and design system, Hand-off checklist
+- **Features on:** Views, Pages, Intake, Estimates
+- **Also:** a request form (switched off), 2 automation rules, 5 task templates, 5 example tasks, suggested key `DES`
+
+### Facilities service desk
+
+Repairs, moves, cleaning and event setups for your buildings, scheduled and tracked from report to done.
+
+- **Statuses:** New, Scheduled, In progress, Waiting on parts or contractor, Done, Won't do
+- **Views:** My jobs (list), Unassigned (list), Breaching soon (list), Schedule (calendar)
+- **Fields:** Request type, Location, How urgent?, Date needed
+- **Labels:** Contractor, Safety, Recurring
+- **Pages:** What counts as an emergency, Building guide, Move checklist, Planned maintenance
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 6 automation rules, 5 task templates, 8 example tasks, suggested key `FAC`
+
+### Finance service desk
+
+Purchases, claims and invoices, approved and paid on time. Starts **Restricted**.
+
+- **Statuses:** New, Awaiting approval, Processing, Waiting on requester, Done, Not approved
+- **Views:** My queue (list), Unassigned (list), Breaching soon (list), Awaiting approval (spreadsheet)
+- **Fields:** Request type, Amount, Cost center, Needed by
+- **Labels:** Over limit, Month-end
+- **Pages:** How to ask finance, Approval limits, Expense policy, Month-end calendar
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 2 automation rules, 5 task templates, 6 example tasks, suggested key `FIN`
+
+### General service desk
+
+One front door for every kind of request, sorted and answered from a single queue.
+
+- **Statuses:** New, In progress, Waiting on requester, Resolved, Won't do
+- **Views:** My queue (list), Unassigned (list), Breaching soon (list), By team (board)
+- **Fields:** Request type, Impact, Urgency, Team
+- **Labels:** Needs another team, Repeat question
+- **Pages:** How to ask for help, Knowledge base, Triage guide
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 5 automation rules, 4 task templates, 6 example tasks, suggested key `DESK`
+
+### HR service desk
+
+A private queue for people requests, starters and leavers. Starts **Restricted**.
+
+- **Statuses:** New, In progress, Waiting on employee, Resolved, Withdrawn
+- **Views:** My cases (list), Unassigned (list), Breaching soon (list), Starters and leavers (calendar)
+- **Fields:** Request type, Key date, Sensitive
+- **Labels:** Sensitive, Policy gap
+- **Pages:** HR questions and answers, Onboarding checklist, Offboarding checklist, Handling sensitive cases
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 4 automation rules, 5 task templates, 8 example tasks, suggested key `HR`
+
+### IT service desk
+
+Everyday IT help in one queue: fix what's broken, hand out access and equipment, and make small changes safely.
+
+- **Statuses:** New, In progress, Waiting on requester, Resolved, Won't do
+- **Views:** My queue (list), Unassigned (list), Breaching soon (list)
+- **Fields:** Request type, Impact, Urgency, Device or asset tag
+- **Labels:** Recurring, Waiting on supplier, Change
+- **Pages:** How to get IT help, Knowledge base, Small change checklist
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 5 automation rules, 5 task templates, 8 example tasks, suggested key `IT`
+
+### IT service management
+
+Incidents, service requests, problems and changes in one project, each with its own label, checklist and target.
+
+- **Statuses:** New, Awaiting approval, In progress, Waiting, Resolved, Won't do
+- **Views:** My queue (list), Unassigned (list), Breaching soon (list), Change calendar (calendar), Problems and known errors (list)
+- **Fields:** Impact, Urgency, Service, Change type
+- **Labels:** Incident, Service request, Problem, Change, Major incident, Known error
+- **Pages:** Priority and targets, Major incident runbook, Change policy, Known errors, Service catalogue
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 7 automation rules, 7 task templates, 6 example tasks, suggested key `ITSM`
+
+### Legal request desk
+
+Contracts and legal questions, complete on arrival. Starts **Restricted**.
+
+- **Statuses:** New, In review, Waiting on requester, With counterparty, Done, Withdrawn
+- **Views:** My matters (list), Unassigned (list), Due soon (list), By type (board)
+- **Fields:** Request type, Counterparty, Contract value, Needed by
+- **Labels:** Standard terms, High risk
+- **Pages:** When to ask legal, Contract playbook, Who can sign, Legal questions and answers
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 2 automation rules, 5 task templates, 5 example tasks, suggested key `LEGAL`
+
+### Marketing request desk
+
+Briefs in, deliverables out, on time.
+
+- **Statuses:** Up next, In progress, In review, Delivered, Won't do
+- **Views:** My queue (list), Unassigned (list), Due soon (list), Publishing calendar (calendar)
+- **Fields:** Request type, Audience, Reach, Needed by
+- **Labels:** Launch, Needs design
+- **Pages:** How to brief marketing, Brand basics, Channel calendar
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 2 automation rules, 5 task templates, 5 example tasks, suggested key `MKT`
+
+### Sales support desk
+
+Quotes, approvals and paperwork that help deals close.
+
+- **Statuses:** New, In progress, Awaiting approval, Waiting on seller, Done, Withdrawn
+- **Views:** My queue (list), Unassigned (list), Closing soon (list), Awaiting approval (spreadsheet)
+- **Fields:** Request type, Deal value, Account, Close date
+- **Labels:** Non-standard terms, Strategic deal
+- **Pages:** Pricing and discount guide, Answer library, How to ask for deal support
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 3 automation rules, 5 task templates, 5 example tasks, suggested key `DEAL`
+
+Also in Service management: [Requests for engineering](#requests-for-engineering), [IT assets](#it-assets), [IT operations](#it-operations).
+
+## Work management
+
+Structured, repeatable work for any team.
+
+### Project management
+
+Take a project from idea to wrap-up with clear phases, owners and milestones.
+
+- **Statuses:** Backlog, Scheduled, In progress, In review, Done, Cancelled
+- **Views:** Timeline (Gantt), My work (list), Next two weeks (list), Risks and decisions (list)
+- **Fields:** Phase, Sign-off needed
+- **Labels:** Milestone, Risk, Decision
+- **Pages:** Project brief, Closeout notes
+- **Features on:** Views, Pages, Updates
+- **Also:** 2 automation rules, 3 task templates, 7 example tasks, suggested key `PM`
+
+### Task tracking
+
+A simple shared list of who is doing what, and by when.
+
+- **Statuses:** To do, Doing, Waiting, Done, Won't do
+- **Views:** My tasks (list), Due this week (list), Calendar (calendar)
+- **Labels:** Quick win, Follow-up
+- **Features on:** Views
+- **Also:** 1 automation rule, 1 task template, 5 example tasks, suggested key `TASK`
+
+Also in Work management: [Budget planning](#budget-planning), [Campaign management](#campaign-management), [Community management](#community-management), [Content calendar](#content-calendar), [Document review](#document-review), [Email campaigns](#email-campaigns), [Employee reviews](#employee-reviews), [Event planning](#event-planning), [Financial close](#financial-close), [Go-to-market launch](#go-to-market-launch), [Grant tracker](#grant-tracker), [IP infringement](#ip-infringement), [Lead tracking](#lead-tracking), [Marketing asset requests](#marketing-asset-requests), [Nonprofit programs](#nonprofit-programs), [Personal planner](#personal-planner), [Policy management](#policy-management), [Process control](#process-control), [Procurement](#procurement), [Recruitment](#recruitment), [RFP process](#rfp-process), [Sales pipeline](#sales-pipeline), [UX design](#ux-design).
+
+## Product management
+
+Take an idea from first signal to delivery, with a plan everyone can see.
+
+### Outcome tree
+
+From the result you want to the tests that prove the way.
+
+- **Statuses:** Mapped, Chosen, Exploring, Confirmed, Discarded
+- **Views:** Tree (list), Opportunities (list), Tests this week (list), Learning log (list)
+- **Fields:** Metric, Opportunity size, Test result
+- **Labels:** Outcome, Opportunity, Solution, Assumption test
+- **Pages:** How to grow this tree, Interview snapshot
+- **Whiteboards:** Tree sketch
+- **Features on:** Views, Pages, Whiteboards
+- **Also:** 2 automation rules, 4 task templates, 6 example tasks, suggested key `TREE`
+
+### Portfolio roadmap
+
+Every initiative, one timeline, a balanced mix.
+
+- **Statuses:** Proposed, Approved, Active, Complete, Stopped
+- **Views:** Portfolio timeline (Gantt), Investment mix (list), Needs attention (list), Proposals (list)
+- **Fields:** Investment area, Size, Owning team, Success measure
+- **Labels:** At risk, Off track, On hold
+- **Modules:** Grow in mid-size companies, Reliable foundations
+- **Pages:** Portfolio review agenda, Investment criteria
+- **Features on:** Modules, Views, Pages, Updates
+- **Also:** 2 automation rules, 1 task template, 6 example tasks, suggested key `PORT`
+
+### Priority scoring
+
+Compare ideas on reach, impact, confidence and effort.
+
+- **Statuses:** Candidates, Scored, In delivery, Done, Not now
+- **Views:** Ranking (spreadsheet), Needs scoring (list), Shaky numbers (list)
+- **Fields:** Reach, Impact, Confidence, Effort, Score
+- **Labels:** Needs data
+- **Pages:** Scoring guide
+- **Features on:** Views, Pages
+- **Also:** 1 task template, 6 example tasks, suggested key `PRI`
+
+### Product discovery
+
+Learn first, then build what's proven.
+
+- **Statuses:** Ideas, Up next, Discovering, Building, Shipped, Parked
+- **Views:** Discovery board (board), Idea inbox (list), By evidence (list), Where ideas come from (list)
+- **Fields:** Evidence, Source, Target outcome
+- **Labels:** Customer request, Experiment
+- **Pages:** Discovery brief
+- **Whiteboards:** Problem mapping, Flow sketches
+- **Features on:** Views, Pages, Whiteboards, Intake
+- **Also:** a request form (switched off), 2 automation rules, 2 task templates, 9 example tasks, suggested key `DISC`
+
+### Product roadmap
+
+Now, next, later, and why.
+
+- **Statuses:** Later, Next, Now, Released, Dropped
+- **Views:** Roadmap (board), By theme (list), Timeline (Gantt), Released (list)
+- **Fields:** Confidence, Success measure
+- **Labels:** Customer commitment, Needs design
+- **Modules:** Faster onboarding, Reporting you can trust
+- **Pages:** Roadmap narrative
+- **Features on:** Modules, Views, Pages, Updates
+- **Also:** 2 automation rules, 1 task template, 5 example tasks, suggested key `ROAD`
+
+### Guided tour
+
+Learn Margaya by doing, in eight short stops.
+
+- **Statuses:** Backlog, To do, In progress, Done
+- **Views:** Tour in order (list), Spreadsheet practice (spreadsheet), This week (calendar)
+- **Fields:** Tour stop
+- **Labels:** Tour, Try it, Going further
+- **Estimates:** Points (points: 1, 2, 3, 5)
+- **Modules:** Learn the basics
+- **Pages:** Welcome to your tour, Shortcuts to try
+- **Features on:** Cycles, Modules, Views, Pages, Whiteboards, Estimates
+- **Also:** 1 automation rule, 1 task template, 9 example tasks, suggested key `TOUR`
+
+## Marketing
+
+Plan, produce and ship marketing work, from a single post to a full launch.
+
+### Campaign management
+
+Plan each campaign, see what is live, and keep budget and results next to the work.
+
+- **Statuses:** Ideas, Scheduled, In production, In review, Live, Done, Cancelled
+- **Views:** Campaign calendar (calendar), By campaign (list), Live now (list), Budget sheet (spreadsheet)
+- **Fields:** Budget, Target, Result
+- **Labels:** Email, Social, Paid, Web, PR
+- **Pages:** Campaign brief, Results report
+- **Features on:** Modules, Views, Pages
+- **Also:** 1 automation rule, 2 task templates, 6 example tasks, suggested key `CAMP`
+
+### Content calendar
+
+See what goes out when, and where every piece stands on its way there.
+
+- **Statuses:** Ideas, Assigned, Drafting, Editing, Scheduled, Published, Dropped
+- **Views:** Calendar (calendar), Pipeline (board), Ideas bank (list), By pillar (list)
+- **Fields:** Pillar, Keyword, Live link
+- **Labels:** Article, Social, Video, Newsletter
+- **Pages:** Content strategy, Style guide
+- **Features on:** Views, Pages
+- **Also:** 1 automation rule, 2 task templates, 6 example tasks, suggested key `CAL`
+
+### Email campaigns
+
+Every email from brief to send, with a real QA step and the results kept on the card.
+
+- **Statuses:** Brief, Copy, Design, QA, Scheduled, Sent, Results logged, Cancelled
+- **Views:** Send calendar (calendar), QA queue (list), Results (spreadsheet)
+- **Fields:** Segment, Subject line, Open rate %, Click rate %
+- **Labels:** Newsletter, Promotion, Product news, Lifecycle
+- **Pages:** Email brief, QA checklist, Email style guide
+- **Features on:** Views, Pages
+- **Also:** 2 automation rules, 1 task template, 6 example tasks, suggested key `EML`
+
+### Event planning
+
+From venue search to thank-you notes, every booking, deadline and cost for one event.
+
+- **Statuses:** Ideas, To do, In progress, Waiting, Done, Cancelled
+- **Views:** Timeline (Gantt), Countdown (list), Budget (spreadsheet), Calendar (calendar)
+- **Fields:** Cost, Vendor, Contract signed
+- **Labels:** Venue, Program, Vendors, Promotion, On the day
+- **Pages:** Event brief, Run of show, Contacts, After the event
+- **Features on:** Views, Pages
+- **Also:** 2 automation rules, 2 task templates, 7 example tasks, suggested key `EVT`
+
+### Go-to-market launch
+
+One board for everything that has to be true before, on and after launch day.
+
+- **Statuses:** Backlog, To do, In progress, In review, Ready, Done, Dropped
+- **Views:** Launch timeline (Gantt), By phase (list), Go/no-go readiness (list)
+- **Fields:** Phase, Go/no-go item
+- **Labels:** Messaging, Content, Sales enablement, Support readiness, Launch day
+- **Pages:** Launch brief, Go/no-go checklist, Launch review
+- **Features on:** Views, Pages, Updates
+- **Also:** 2 automation rules, 2 task templates, 7 example tasks, suggested key `GTM`
+
+Also in Marketing: [Marketing request desk](#marketing-request-desk), [Project management](#project-management).
+
+## Design
+
+Design requests, reviews and handoff, from first idea to final files.
+
+### Marketing asset requests
+
+One form for every graphic, banner and slide request, and one queue the design team can actually plan.
+
+- **Statuses:** To do, In progress, In review, Changes requested, Delivered, Declined
+- **Views:** Queue (board), By asset type (list), Due soon (list)
+- **Fields:** Asset type, Sizes and formats, Needed by, Campaign
+- **Labels:** Rush, From a template
+- **Pages:** How to request an asset, Brand basics
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 3 automation rules, 1 task template, 6 example tasks, suggested key `ASSET`
+
+### UX design
+
+Take each design problem from research to a clean handoff, one clear phase at a time.
+
+- **Statuses:** Up next, Discover, Define, Design, Test, Ready for handoff, Handed off, Parked
+- **Views:** Design board (board), Testing (list), Handoff queue (list)
+- **Fields:** Platform, Prototype link, Test result
+- **Labels:** Research, Usability issue, Accessibility, Design system, Quick win
+- **Pages:** Research plan, Problem statement, Handoff guide
+- **Whiteboards:** Journey map, Affinity sorting, Sketches
+- **Features on:** Views, Pages, Whiteboards
+- **Also:** 1 automation rule, 2 task templates, 7 example tasks, suggested key `UX`
+
+Also in Design: [Design request desk](#design-request-desk), [Project management](#project-management).
+
+## IT
+
+Help desk, incidents, changes and equipment for IT teams.
+
+### IT assets
+
+Every device and licence, from request to retirement.
+
+- **Statuses:** To order, In stock, In use, In repair, Retired, Lost
+- **Views:** Inventory (spreadsheet), Ready to hand out (list), Renewals and warranties (calendar), By holder (list)
+- **Fields:** Category, Serial or asset tag, Holder, Purchase date, Cost
+- **Labels:** Hardware, Software, Renewal due
+- **Pages:** Asset policy, Software register guide
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 3 automation rules, 3 task templates, 6 example tasks, suggested key `ASSET`
+
+### IT operations
+
+Alerts, incidents and changes, handled the same way every time.
+
+- **Statuses:** Open, Awaiting approval, In progress, Watching, Resolved, Dismissed
+- **Views:** Active incidents (board), Alert queue (list), Change calendar (calendar), By severity (list), Follow-ups (list)
+- **Fields:** Severity, Service, Change type
+- **Labels:** Alert, Incident, Change, Follow-up
+- **Pages:** Incident runbook, Change policy, Post-incident review guide
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 4 automation rules, 3 task templates, 6 example tasks, suggested key `OPS`
+
+Also in IT: [General service desk](#general-service-desk), [IT service desk](#it-service-desk), [IT service management](#it-service-management).
+
+## Customer service
+
+Answer customers, route bugs and ideas to the right team, and close the loop.
+
+Templates in Customer service, described under their main category: [Customer support](#customer-support), [Kanban flow](#kanban-flow), [Project management](#project-management), [Scrum sprints](#scrum-sprints), [Task tracking](#task-tracking).
+
+## Human resources
+
+Hiring, onboarding and people requests, handled with care for privacy.
+
+### Employee reviews
+
+Run a review cycle on time, from self-review to conversation, without putting anyone's rating on the board. Starts **Restricted**.
+
+- **Statuses:** Not started, Self-review, Manager review, Calibration, Conversation, Closed, Deferred
+- **Views:** Progress by team (list), My reviews (list), Overdue (list)
+- **Fields:** Team, Review type, Self-review in
+- **Labels:** Programme step, Needs HR help
+- **Pages:** Review guide
+- **Features on:** Views, Pages
+- **Also:** 3 automation rules, 2 task templates, 7 example tasks, suggested key `REV`
+
+### Policy management
+
+Write, approve and publish policies, and never miss a yearly review.
+
+- **Statuses:** Requested, Drafting, In review, Awaiting approval, Published, Retired
+- **Views:** Policy register (spreadsheet), Reviews due soon (list), Review calendar (calendar)
+- **Fields:** Policy owner, Version, Acknowledgement needed
+- **Labels:** People, Security, Finance, Operations
+- **Pages:** How we manage policies
+- **Features on:** Views, Pages
+- **Also:** 2 automation rules, 2 task templates, 7 example tasks, suggested key `POL`
+
+### Recruitment
+
+Move candidates from application to hire with a fair, structured process and as little personal data as possible. Starts **Restricted**.
+
+- **Statuses:** Applied, Screening, Interviewing, Offer, Hired, Not moving forward
+- **Views:** By role (list), Interviews this week (list), Waiting for a decision (list)
+- **Fields:** Role, Source, Scorecards in
+- **Labels:** Referral, Internal, Needs decision
+- **Pages:** Role brief and scorecard, Hiring privacy rules
+- **Features on:** Views, Pages
+- **Also:** 3 automation rules, 2 task templates, 6 example tasks, suggested key `HIRE`
+
+Also in Human resources: [HR service desk](#hr-service-desk).
+
+## Finance
+
+Budgets, finance requests and month-end close in one place.
+
+### Budget planning
+
+Collect, review and approve next year's budget on time, one department at a time.
+
+- **Statuses:** Not started, Drafting, Submitted, In review, Approved, Withdrawn
+- **Views:** Submission tracker (spreadsheet), By department (list), Budget calendar (calendar)
+- **Fields:** Department, Requested amount, Approved amount
+- **Labels:** Headcount, Capital, New initiative, Saving option
+- **Pages:** Budget guidelines
+- **Features on:** Views, Pages
+- **Also:** 2 automation rules, 2 task templates, 7 example tasks, suggested key `BUD`
+
+### Financial close
+
+A month-end checklist that rebuilds itself every month, with a reviewer on every step.
+
+- **Statuses:** To do, In progress, Ready for review, Reviewed, Not needed
+- **Views:** Close board (board), Waiting for review (list), Open this month (list)
+- **Fields:** Close day, Reviewer
+- **Labels:** Pre-close, Reconciliation, Journal entry, Reporting
+- **Pages:** Close calendar and sign-off
+- **Features on:** Views, Pages
+- **Also:** 2 automation rules, 2 task templates, 8 example tasks, suggested key `CLOSE`
+
+### RFP process
+
+Run a fair request for proposals, from first draft to signed award, with every question answered for every bidder.
+
+- **Statuses:** To do, In progress, In review, Done, Cancelled
+- **Views:** Timeline (Gantt), Question log (list), Scoring (spreadsheet)
+- **Fields:** Stage, Supplier, Score
+- **Labels:** Supplier question, Addendum, Scoring, Decision
+- **Pages:** RFP brief and timeline, Evaluation criteria
+- **Features on:** Views, Pages
+- **Also:** 2 automation rules, 2 task templates, 8 example tasks, suggested key `RFP`
+
+Also in Finance: [Finance service desk](#finance-service-desk).
+
+## Legal
+
+Contracts, policies and legal requests, with a clear record of every review.
+
+### Document review
+
+Get documents reviewed, revised and signed off, always on the right version.
+
+- **Statuses:** Draft, In review, Revising, Ready for sign-off, Signed off, Withdrawn
+- **Views:** Review queue (list), High risk (list), Document register (spreadsheet)
+- **Fields:** Version, Review round, Approver
+- **Labels:** Contract, Procedure, Report, High risk
+- **Features on:** Views
+- **Also:** 3 automation rules, 1 task template, 5 example tasks, suggested key `DOC`
+
+### IP infringement
+
+Log suspected misuse of your brand, content or inventions, decide what to do, and follow each case through to the end. Starts **Restricted**.
+
+- **Statuses:** Reported, Assessing, Notice sent, Awaiting response, Escalated, Resolved, Closed, no action
+- **Views:** Open cases (list), By IP type (list), Deadlines (calendar)
+- **Fields:** IP type, Where found, Link, Response deadline
+- **Labels:** Inbound claim, Repeat, Counter-notice
+- **Pages:** Enforcement playbook
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 4 automation rules, 2 task templates, 7 example tasks, suggested key `IP`
+
+Also in Legal: [Legal request desk](#legal-request-desk).
+
+## Sales
+
+Track leads and deals, and get fast help from other teams.
+
+### Lead tracking
+
+Catch every new lead, follow up on time, and decide quickly: qualified, nurture or not a fit.
+
+- **Statuses:** Nurture, New, Contacting, In conversation, Qualified, Not a fit
+- **Views:** Board (board), Follow-ups due (list), By source (list)
+- **Fields:** Company, Company size, Source, Not a fit reason
+- **Labels:** Demo requested, Existing customer
+- **Pages:** Qualification checklist, Follow-up rhythm
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 4 automation rules, 1 task template, 6 example tasks, suggested key `LEAD`
+
+### Sales pipeline
+
+Every deal as a card, every stage as a column: drag it forward when it really moves.
+
+- **Statuses:** Lead, Qualified, Proposal, Negotiation, Won, Lost
+- **Views:** Pipeline (board), Closing this month (list), Deals sheet (spreadsheet), Lost deals (list)
+- **Fields:** Deal value, Company, Source, Lost reason
+- **Labels:** New business, Expansion, Renewal
+- **Pages:** Stage guide, Proposal checklist
+- **Features on:** Views, Pages
+- **Also:** 3 automation rules, 1 task template, 6 example tasks, suggested key `DEAL`
+
+Also in Sales: [Sales support desk](#sales-support-desk).
+
+## Operations
+
+Keep processes, purchasing and services running smoothly.
+
+### Process control
+
+Improve a process in small tested steps, then keep the gains with regular checks.
+
+- **Statuses:** Ideas, Plan, Do, Check, Act, Standardized, Dropped
+- **Views:** Improvement cycle (board), Results (spreadsheet), Control checks (list)
+- **Fields:** Measure, Baseline, Target, Result
+- **Labels:** Quality, Safety, Cost, Speed, Control check
+- **Pages:** Standard work, Improvement log
+- **Features on:** Views, Pages
+- **Also:** 2 automation rules, 2 task templates, 6 example tasks, suggested key `PDCA`
+
+### Procurement
+
+From "we need this" to paid in full, with every purchase approved, ordered, received and matched.
+
+- **Statuses:** Requested, Awaiting approval, Ordered, Received, Closed, Rejected
+- **Views:** Approval queue (list), Open orders (spreadsheet), Spend by cost center (spreadsheet)
+- **Fields:** Amount, Cost center, Supplier, PO number
+- **Labels:** Goods, Services, Software, Mismatch
+- **Pages:** Purchasing guide
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 3 automation rules, 2 task templates, 7 example tasks, suggested key `PUR`
+
+Also in Operations: [Requests for engineering](#requests-for-engineering), [IT assets](#it-assets), [IT operations](#it-operations), [RFP process](#rfp-process).
+
+## Facilities
+
+Repairs, moves and room setups for the places people work.
+
+Templates in Facilities, described under their main category: [Facilities service desk](#facilities-service-desk), [IT assets](#it-assets).
+
+## Analytics
+
+Take in questions about data and deliver answers people can trust.
+
+Templates in Analytics, described under their main category: [Analytics request desk](#analytics-request-desk).
+
+## Nonprofit
+
+Programs, grants and community work for mission-driven teams.
+
+### Community management
+
+Welcome members, handle problems fast, and turn their ideas into action.
+
+- **Statuses:** Backlog, To do, In progress, Waiting on member, Done, Won't do
+- **Views:** Board (board), Moderation queue (list), Events calendar (calendar), Feedback themes (list)
+- **Fields:** Request type, Channel, Member
+- **Labels:** Moderation, Onboarding, Event, Feedback, Ambassadors
+- **Pages:** Community guidelines, Moderation playbook, Welcome kit
+- **Features on:** Views, Pages, Intake
+- **Also:** a request form (switched off), 3 automation rules, 3 task templates, 6 example tasks, suggested key `COM`
+
+### Grant tracker
+
+Every funding opportunity from first look to final report, with no deadline missed.
+
+- **Statuses:** Prospect, Letter of inquiry, Drafting, Submitted, Awarded, Closed out, Declined
+- **Views:** Deadlines (calendar), Pipeline (board), Funding sheet (spreadsheet), Reports due (list)
+- **Fields:** Funder, Amount requested, Amount awarded, Next report due
+- **Labels:** Foundation, Government, Corporate, Renewal
+- **Pages:** Boilerplate library, Funder notes, Deadline rule
+- **Features on:** Views, Pages
+- **Also:** 3 automation rules, 2 task templates, 6 example tasks, suggested key `GRT`
+
+### Nonprofit programs
+
+Run your programs week to week and show what they achieved, from the same board.
+
+- **Statuses:** Ideas, Scheduled, In progress, Done, Cancelled
+- **Views:** Program calendar (calendar), By program (list), Outputs (spreadsheet)
+- **Fields:** Participants, Volunteer hours, Location
+- **Labels:** Session, Outreach, Volunteers, Evaluation
+- **Pages:** Program plan, Volunteer guide, Safeguarding policy
+- **Features on:** Modules, Views, Pages, Updates
+- **Also:** 1 automation rule, 2 task templates, 6 example tasks, suggested key `PRG`
+
+## Personal
+
+Light setups for one person or a small group.
+
+### Personal planner
+
+Today, this week, someday: a small list that gets things out of your head.
+
+- **Statuses:** Inbox, Today, This week, Someday, Done
+- **Labels:** Waiting, Quick
+- **Features on:** none (board and list only)
+- **Also:** 1 task template, 6 example tasks, suggested key `ME`
+
+Also in Personal: [Project management](#project-management), [Task tracking](#task-tracking).

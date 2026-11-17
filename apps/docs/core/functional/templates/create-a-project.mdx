@@ -1,0 +1,153 @@
+---
+title: Create a Project
+description: Start a project from a template, from a blank board or from a project you already have, in two short steps
+---
+
+Creating a project takes two steps: **Choose** a starting point, then **Set up** its name and a few settings. Margaya creates the whole project in one go, with its statuses, views, fields, pages and rules, and opens its board.
+
+Creating a project needs the **project:create** permission, which Owners, Admins and Members have. Viewers and guests can't create projects.
+
+## Open the dialog
+
+- Click **+** (**Add project**) next to **Projects** in the side panel.
+- Press `p` then `c`.
+- In the command bar (`Ctrl` `K`), run **Create project**, **New blank project** or **New project from template…**. See [Shortcuts and the command bar](#shortcuts-and-the-command-bar).
+
+## Step 1: Choose
+
+The **Choose** step shows a gallery of templates, with a preview of the selected one beside it.
+
+<Screenshot src="templates/gallery" alt="The Create a project dialog on Step 1 of 2, Choose, with Search templates at the top, the categories on the left with Software development selected, tiles for Blank project, Start from an existing project, Scrum sprints, Kanban flow, Bug tracker and Shared team plan, and the preview of Blank project on the right" caption="Choose: Blank project comes first, then the templates of the selected category." />
+
+1. Pick a category on the left, or type in **Search templates** to search every category. Search matches template names, descriptions and category names.
+2. Click a tile to select it. The preview on the right shows what you'll get.
+3. Click **Use template** (or **Start blank**, or **Use this project**) to go on to **Set up**.
+
+Outside search results, the tiles start with **Blank project**, then **Start from an existing project** when the workspace has projects, then the templates of the category. A search with no matches offers **Start blank** and **Clear search**. See the [Template catalog](/core/functional/templates/catalog) for every template and what it sets up.
+
+### Categories
+
+| Category | What it shows |
+| --- | --- |
+| **Recommended** | Up to six picks: templates for what you said you'd track first when you created the workspace, the template you used last, and a few general ones such as **Kanban flow**, **Project management** and **General service desk**. |
+| **All templates** | Every template. Below the grid, **Or explore a guided tour project** selects **Guided tour**, a practice project that walks you through Margaya in eight stops. |
+| **Product and tech**, **Service and support**, **Growth**, **Everyday work** | The 17 team categories, such as **Software development**, **Human resources** or **Personal**. A category's most useful templates come first. |
+| **From your workspace** | The workspace's projects, to copy one's setup. Shown only when the workspace has projects that aren't archived. |
+
+The gallery remembers the category and template you used last in this workspace and selects them the next time you open it.
+
+### The preview
+
+The preview lists what the selected template creates: its **Statuses**, **Views** and **Fields**, the features it turns on under **Included**, and its **Example tasks**. **Good for** names its categories. A template that suggests a restricted project says so: "Starts restricted, so its details stay with the people you add."
+
+<Screenshot src="templates/preview" alt="The Bug tracker tile selected in the Software development category, with its preview beside it: the statuses Needs info, Confirmed, Fixing, Verifying, Fixed and Closed without fix, the views Open by severity, Regressions, Verify queue and Fixed recently, the fields Severity, Environment and Found in version, Views, Pages and Intake under Included, and four example tasks from BUG-1 to BUG-4 with 2 more" caption="The preview of Bug tracker: everything the project starts with." />
+
+### Start blank
+
+**Blank project** creates three statuses (To do, In progress, Done) and nothing else: no labels, fields, views or pages, and every feature off. Turn on what you need later.
+
+### Start from an existing project
+
+Click **Start from an existing project**, or open **From your workspace**, and pick a project. The new project copies its statuses, custom fields, estimate systems, feature switches and settings. In **Set up** you can also tick **Include task templates** and **Include open tasks**. See [Start a project from an existing one](/core/functional/task-templates#start-a-project-from-an-existing-one) for exactly what is copied.
+
+### Import tasks
+
+**Import from another tool or a CSV file** at the bottom of the categories goes straight to **Set up** for a blank project. After you create it, Margaya opens the project's general settings, where you [import tasks](/core/functional/import-tasks-from-csv).
+
+## Step 2: Set up
+
+Only the name is required. Everything else has a sensible default from your choice, and you can change all of it later in project settings.
+
+<Screenshot src="templates/setup" alt="Step 2 of 2, Set up your project, for Bug tracker: the project name Bug tracker with its icon, Task IDs BUG-1 with Change, Add example tasks switched off with 6 tasks, Features that stay on listing Views, Pages and Intake, Privacy set to Open, and Your choice showing Bug tracker with 6 statuses" caption="Set up: only the name is required, and the template fills in the rest." />
+
+| Setting | What it does |
+| --- | --- |
+| **Project name** | Up to 80 characters. A template suggests its own name; Blank asks you for one. The button beside the name picks the project's icon. |
+| **Task IDs** | Shows the prefix of the project's task IDs, for example `BUG-1`. Click **Change** to edit the **Task ID prefix**: 1 to 8 letters or digits, unique in the workspace. Each template suggests a key, and Margaya suggests one from the name you type. |
+| **Add example tasks** | Adds the template's example tasks, which show how the project is meant to work. Off by default. Shown only for templates that have example tasks, and only when you may create tasks. |
+| **Features that stay on** | The project's feature switches, preset by the template: **Cycles**, **Modules**, **Views**, **Pages**, **Whiteboards**, **Intake**, **Estimates**, **Time tracking**, **Updates** and, when AI is turned on for the instance and the workspace, **AI**. The collapsed row lists what is on. |
+| **Privacy** | **Open**: everyone in the workspace can find it, with their role's rights. **Restricted**: only people you add, plus workspace Owners and Admins. A template for private work preselects **Restricted** and says "This template suggests a restricted project. You can change it." See [Restricted projects](/core/functional/restricted-projects). |
+
+<Screenshot src="templates/restricted-suggestion" alt="Set up your project for HR service desk with the task ID prefix HR, Privacy set to Restricted and the note This template suggests a restricted project. You can change it." caption="HR service desk starts as a restricted project, and says so." />
+
+**Your choice** beside the form shows the template you picked, how many statuses it has and how many example tasks it adds. Click **Change** or **Back** to return to the gallery; what you typed is kept.
+
+Click **Create project**, or press `Ctrl` `Enter`. Margaya opens the new project's board with a short [First steps](#first-steps) list.
+
+If you can't create workspace labels, a note says "Some labels won't be added: you can't create workspace labels." The project is still created, without the labels that don't exist in the workspace yet.
+
+### If creating fails
+
+| Message | What to do |
+| --- | --- |
+| "BUG is already used in this workspace. Try another." | Choose a different **Task ID prefix**. |
+| "This template isn't available on this server any more. Choose another." | Click **Back to templates** and pick another one. |
+| "You no longer have permission to create projects here." | Your role changed while the dialog was open. Ask a workspace Admin. |
+| "We couldn't create the project. Your choices are kept, so try again." | Click **Try again**. |
+
+## Your draft is kept for 30 minutes
+
+If you close the dialog after changing anything (with **Cancel**, `Esc` or a click outside it), Margaya keeps your draft in this browser tab for 30 minutes. Opening the dialog again brings it back with "Restored your unfinished project." Click **Start over** to discard it. Drafts are not restored when you open the dialog with **New blank project** or **New project from template…**.
+
+## Shortcuts and the command bar
+
+| Keys | Action |
+| --- | --- |
+| `p` `c` | Open the create project dialog |
+| `/` | Focus **Search templates** (in **Choose**, outside a text field) |
+| `Esc` in the search box | Clear the search |
+| Arrow keys, `Home`, `End` | Move between tiles and select them, or between categories |
+| `Space` | Select the focused tile |
+| `Enter` or a double-click | Select the tile and go on to **Set up**, with the name ready to type |
+| `Ctrl` `Enter` | In **Choose**, go on to **Set up**. In **Set up**, create the project. |
+| `Esc` | Close the dialog and keep a draft |
+
+On macOS, use ⌘ instead of `Ctrl`.
+
+The command bar has three entries:
+
+- **Create project** opens the dialog as usual.
+- **New blank project** opens **Set up** directly for a blank project.
+- **New project from template…** opens **All templates** with the search box focused.
+
+The last two are listed only when you may create projects.
+
+On a phone, the dialog fills the screen. Tapping a tile opens its preview; **Back** returns to the gallery.
+
+## First steps
+
+The board of a project you just created shows a **First steps** list headed with the project name ("Website relaunch is ready."), with up to four items and a progress count:
+
+- **Move an example task to see the flow**, with **Mark as done** (when the project has example tasks).
+- **Add your first real task**, with **Add task** (when you may create tasks).
+- **Invite people to this project**, with **Invite people** (when you may invite people).
+- **Remove the examples**, with **Remove examples** (when you may remove them, see below).
+
+<Screenshot src="templates/first-steps" alt="The board of a new Bug tracker project with the First steps list above it: Bug tracker is ready, First steps 0 of 4, with Move an example task to see the flow, Add your first real task, Invite people to this project and Remove the examples, each with its button, and the example tasks BUG-1 to BUG-4 in the Needs info, Confirmed, Fixing and Verifying columns" caption="First steps on a project created from Bug tracker with example tasks." />
+
+**Hide** folds the list and **Show** opens it again. **Dismiss** removes it. It disappears by itself once every item is done.
+
+The list appears for your first three projects in a workspace, and for any project you create with example tasks. It is kept in this browser only: other people, and you on another device, don't see it.
+
+## Remove the example tasks
+
+Example tasks are ordinary tasks, so you can edit, move or delete them one by one. To remove them all at once:
+
+1. Click **Remove examples** in the banner "This project has example tasks." above the board, or in **First steps**.
+2. Confirm with **Remove examples**.
+
+<Screenshot src="templates/examples-banner" alt="The top of the Bug tracker board with the banner This project has example tasks., a Remove examples button and a close button, above the example tasks" caption="The example-task banner shows once First steps is hidden or done." />
+
+They move to the project's [trash](/core/functional/trash-and-restore) as one batch: "N example tasks moved to the trash". Click **Open trash** in that message, or go to **Settings** > **Projects** > the project > **Recently deleted**. The batch is listed as one row named after the first example task, and **Restore** on that row brings them all back.
+
+Only the example tasks are removed: sub-tasks your team added under an example, and examples moved to another project, stay. After removal, the banner doesn't come back, even if you restore the tasks.
+
+Removing example tasks needs the **task:delete** permission (Owners and Admins), or being the person who created the project from its template while you can still create tasks. A Member who created a project with example tasks can remove them; other Members can't, and neither can the creator after being made a Viewer.
+
+The banner shows for people with **task:delete**, and for the creator in the browser where they created the project. While the open **First steps** list already offers **Remove examples**, the banner waits until the list is hidden or done. Close the banner with **Hide this message**.
+
+## Next
+
+- [Template catalog](/core/functional/templates/catalog)
+- [Create a workspace](/core/functional/templates/create-a-workspace)
+- [Templates for admins and the API](/core/functional/templates/admin-and-api)

@@ -205,6 +205,13 @@ const shots = [
       const dialog = page.getByRole("dialog");
       await dialog.waitFor({ state: "visible" });
       await dialog.getByPlaceholder("Workspace name").fill("Studio North Labs");
+      // Filled for the picture and never sent.
+      await dialog
+        .getByRole("button", { name: /What will you track first/ })
+        .click();
+      await dialog
+        .getByRole("button", { name: "Software", exact: true })
+        .click();
     },
     clip: { selector: "[role=dialog]", pad: 0 },
   },
@@ -217,9 +224,14 @@ const shots = [
         .getByRole("button", { name: "Create project" })
         .first()
         .click();
-      const dialog = page.getByRole("dialog");
+      // Opens on Choose with the Recommended templates; nothing is created.
+      const dialog = page.getByRole("dialog", { name: /Create a project/ });
       await dialog.waitFor({ state: "visible" });
-      await dialog.getByPlaceholder("Project name").fill("Brand refresh");
+      await dialog
+        .getByRole("region", { name: /^Preview: / })
+        .getByText("Statuses")
+        .first()
+        .waitFor({ state: "visible", timeout: 60_000 });
     },
     clip: { selector: "[role=dialog]", pad: 0 },
   },

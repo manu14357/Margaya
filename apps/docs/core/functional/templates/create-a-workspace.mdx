@@ -1,0 +1,120 @@
+---
+title: Create a Workspace
+description: The first-run setup, the What will you track first? question, starter sets and the Add workspace dialog
+---
+
+A workspace holds your projects and people. You create your first one in a short guided setup right after you sign up, and more later from the workspace switcher.
+
+## Your first workspace
+
+When you sign in without a workspace, Margaya walks you through three numbered steps: **Name**, **First project** and **Invite**, then a **Done** screen. Only the workspace name is required. **Back** shows what you already created instead of creating it twice.
+
+### Step 1: Name your workspace
+
+1. Enter a **Workspace name** (up to 80 characters), usually your company, team or department. Click **+ Add a description** to add one.
+2. Optionally answer **What will you track first? (optional)**. See [What will you track first?](#what-will-you-track-first).
+3. Click **Create workspace**.
+
+<Screenshot src="templates/onboarding-name" alt="Name your workspace with the workspace name Studio North, + Add a description, and What will you track first? (optional) with the chips Team tasks, Software (selected), Product, Marketing, Service desk, IT, HR and Personal, More kinds of work and the Create workspace button" caption="Step 1: the name is required, and the question is optional." />
+
+If you have pending invitations, **Join a workspace** lists them above the form, so you can join a team that is already working instead.
+
+If an instance admin has [limited workspace creation to admins](/core/installation/instance-admin), and nobody has invited you yet, you see **Waiting for an invitation** instead. Ask an admin to invite you, then click **Check again**.
+
+### Step 2: Start your first project
+
+**Recommended for you** shows **Blank project** and three templates that fit your answer in step 1.
+
+- **Browse all templates** opens the full gallery with its categories and search, as in the [create project dialog](/core/functional/templates/create-a-project#step-1-choose). **Show recommendations only** goes back to the short list.
+- **Or explore a guided tour project** selects **Guided tour**, a practice project that teaches Margaya in eight short stops.
+- **Start with a set** offers [starter sets](#starter-sets) that create several projects at once.
+
+Below the picks, set the **Project name** and the task ID prefix (**Change** next to **Task IDs**). **Add example tasks** is on by default here, so the first board isn't empty; you can [remove them in one go](/core/functional/templates/create-a-project#remove-the-example-tasks) later. **More options (features, privacy)** opens the feature switches and **Privacy**.
+
+Click **Create project** (or **Create N projects** for a starter set), or press `Ctrl` `Enter`. **Skip for now** goes on without a project.
+
+<Screenshot src="templates/onboarding-first-project" alt="Start your first project with Recommended for you showing Blank project, Scrum sprints (selected), Kanban flow and Bug tracker, the links Browse all templates and Or explore a guided tour project, Start with a set with Software team, Product team, IT team and Support team, and a form with the project name Scrum sprints, Task IDs SCRUM-1 and Add example tasks switched on" caption="Step 2 after choosing Software: three software templates are recommended, and example tasks are on." />
+
+### Step 3: Invite people
+
+Enter one or more email addresses under **Email**, pick a role and click **Invite**. Each invitation also has a link you can share if the email doesn't arrive. Click **Finish**, or **Skip for now** if you work alone. You can always invite people later from **Team**.
+
+### You're all set
+
+The last screen sums up what you created: the workspace, the project (with its example tasks) or the starter set, and the people you invited. Click **Open** with the project's name to go to its board, which has a short [First steps](/core/functional/templates/create-a-project#first-steps) checklist, or **Go to your workspace** if you skipped the project.
+
+## What will you track first?
+
+An optional single choice that only orders the template recommendations. It never limits which templates or features you can use, and it is kept in your browser, not sent to the server. Click the chosen chip again to clear it.
+
+| Chip | Recommends templates from |
+| --- | --- |
+| **Team tasks** | Work management |
+| **Software** | Software development |
+| **Product** | Product management |
+| **Marketing** | Marketing |
+| **Service desk** | Service management |
+| **IT** | IT |
+| **HR** | Human resources |
+| **Personal** | Personal |
+
+**More kinds of work** shows nine more: **Sales**, **Customer support** (Customer service), **Finance**, **Design**, **Operations**, **Legal**, **Facilities**, **Analytics** and **Nonprofit**.
+
+The answer orders **Recommended for you** in step 2 and the **Recommended** category of the project gallery in that workspace. Choosing **Personal** also changes the invite step's hint, since you may be working alone.
+
+## Starter sets
+
+A starter set creates up to five projects in one step, each from a [template](/core/functional/templates/catalog) with its own name and key. Pick a set under **Start with a set** to see its projects; projects marked **Restricted** start as [restricted projects](/core/functional/restricted-projects). Click the set again to go back to a single project.
+
+<Screenshot src="templates/workspace-starters" alt="Start with a set with Software team selected, its description and its four projects Sprints SPR, Bugs BUG, Requests REQ and Roadmap MAP, Add example tasks switched off, and the Create 4 projects button" caption="The Software team set creates four projects at once." />
+
+| Starter | What it is for | Projects it creates |
+| --- | --- | --- |
+| **Software team** | Sprints, bugs, requests from other teams and a roadmap for a product engineering team. | Sprints `SPR` ([Scrum sprints](/core/functional/templates/catalog#scrum-sprints)); Bugs `BUG` ([Bug tracker](/core/functional/templates/catalog#bug-tracker)); Requests `REQ` ([Requests for engineering](/core/functional/templates/catalog#requests-for-engineering)); Roadmap `MAP` ([Product roadmap](/core/functional/templates/catalog#product-roadmap)) |
+| **Product team** | Discovery, priorities, a roadmap and design work for product managers and designers. | Discovery `DISC` ([Product discovery](/core/functional/templates/catalog#product-discovery)); Priorities `PRI` ([Priority scoring](/core/functional/templates/catalog#priority-scoring)); Roadmap `MAP` ([Product roadmap](/core/functional/templates/catalog#product-roadmap)); Design `UX` ([UX design](/core/functional/templates/catalog#ux-design)) |
+| **IT team** | A help desk, day-to-day operations and an asset register for internal IT. | Help desk `HELP` ([IT service desk](/core/functional/templates/catalog#it-service-desk)); Operations `OPS` ([IT operations](/core/functional/templates/catalog#it-operations)); Assets `AST` ([IT assets](/core/functional/templates/catalog#it-assets)) |
+| **Support team** | Customer support with a path for bugs and product feedback. | Support `SUP` ([Customer support](/core/functional/templates/catalog#customer-support)); Bugs `BUG` ([Bug tracker](/core/functional/templates/catalog#bug-tracker)); Feedback `FB` ([Product discovery](/core/functional/templates/catalog#product-discovery)) |
+| **Marketing team** | Campaigns, content, asset requests and events for marketing and content teams. | Campaigns `CAMP` ([Campaign management](/core/functional/templates/catalog#campaign-management)); Content `CON` ([Content calendar](/core/functional/templates/catalog#content-calendar)); Asset requests `AR` ([Marketing asset requests](/core/functional/templates/catalog#marketing-asset-requests)); Events `EVT` ([Event planning](/core/functional/templates/catalog#event-planning)) |
+| **People team** | HR requests, hiring, reviews and policies, with private projects where people's details are involved. | HR requests `HR` ([HR service desk](/core/functional/templates/catalog#hr-service-desk)), restricted; Hiring `HIRE` ([Recruitment](/core/functional/templates/catalog#recruitment)), restricted; Reviews `REV` ([Employee reviews](/core/functional/templates/catalog#employee-reviews)), restricted; Policies `POL` ([Policy management](/core/functional/templates/catalog#policy-management)) |
+| **Finance team** | Finance requests, the budget, the month-end close and purchasing. | Finance requests `FIN` ([Finance service desk](/core/functional/templates/catalog#finance-service-desk)), restricted; Budget `BUD` ([Budget planning](/core/functional/templates/catalog#budget-planning)); Month-end close `CLOSE` ([Financial close](/core/functional/templates/catalog#financial-close)); Purchasing `BUY` ([Procurement](/core/functional/templates/catalog#procurement)) |
+| **Sales team** | A deal pipeline, incoming leads and a desk for help from other teams. | Pipeline `PIPE` ([Sales pipeline](/core/functional/templates/catalog#sales-pipeline)); Leads `LEAD` ([Lead tracking](/core/functional/templates/catalog#lead-tracking)); Deal desk `DEAL` ([Sales support desk](/core/functional/templates/catalog#sales-support-desk)) |
+| **Agency or services** | Client projects, incoming requests and internal work for teams serving several customers. | Client projects `CLI` ([Project management](/core/functional/templates/catalog#project-management)); Requests `REQ` ([Design request desk](/core/functional/templates/catalog#design-request-desk)); Internal `INT` ([Task tracking](/core/functional/templates/catalog#task-tracking)) |
+| **Nonprofit** | Programs, grants and community work for mission-driven teams. | Programs `PROG` ([Nonprofit programs](/core/functional/templates/catalog#nonprofit-programs)); Grants `GRANT` ([Grant tracker](/core/functional/templates/catalog#grant-tracker)); Community `COM` ([Community management](/core/functional/templates/catalog#community-management)) |
+| **Operations** | Requests, process improvements, purchasing and document reviews for business operations. | Requests `REQ` ([General service desk](/core/functional/templates/catalog#general-service-desk)); Improvements `IMP` ([Process control](/core/functional/templates/catalog#process-control)); Purchasing `BUY` ([Procurement](/core/functional/templates/catalog#procurement)); Documents `DOC` ([Document review](/core/functional/templates/catalog#document-review)) |
+| **Just me** | One light plan for one person. | My plan `ME` ([Personal planner](/core/functional/templates/catalog#personal-planner)) |
+
+How starter sets work:
+
+- They are offered only in the first-run setup, and they only work in a workspace without projects.
+- All the projects are created together: if one can't be created, none are.
+- Projects in a set share the workspace's labels, so a label two templates both use is created once.
+- **Add example tasks** under the set adds up to four example tasks per project. It is off by default.
+- The workspace's time zone is set to your browser's time zone at the same time, so example due dates land on the right days.
+
+## Add another workspace
+
+1. Click the workspace switcher at the top of the left rail and choose **Add workspace**, or press `w` then `c`.
+2. Enter the workspace name, and click **+ Add a description** if you want one.
+3. Optionally open **What will you track first? (optional)** and pick a chip.
+4. Click **Create workspace**. Margaya switches to the new workspace.
+
+<Screenshot src="getting-around/create-workspace" alt="The Create a new workspace dialog with the name Studio North Labs, + Add a description, and What will you track first? (optional) opened with Software selected, and the Cancel and Create workspace buttons" caption="The Add workspace dialog, with the optional question opened." />
+
+The dialog then says the workspace is ready ("Studio North is ready") and offers two shortcuts:
+
+- **Start a project** opens the [create project dialog](/core/functional/templates/create-a-project), with **Recommended** ordered by your answer.
+- **Invite people** opens the invite dialog.
+
+<Screenshot src="templates/workspace-ready" alt="The dialog saying Studio North Labs is ready, Start with a project, or bring your people in first., with the choices Start a project and Invite people and the Go to workspace button" caption="The ready step offers the next two things to do." />
+
+**Go to workspace** closes the dialog. **Start a project** and **Invite people** only appear when your role allows them.
+
+If you click **Cancel** after typing something, the dialog keeps your draft for 30 minutes and shows "Restored your draft." the next time. **Start over** clears it.
+
+If **Add workspace** is missing, an instance admin has turned off workspace creation for regular users. On the instance admin's **Workspaces** page, **Create workspace** opens the same dialog without the question and the ready step, because admins often create workspaces for other people.
+
+## Next
+
+- [Create a project](/core/functional/templates/create-a-project)
+- [Template catalog](/core/functional/templates/catalog)
+- [Templates for admins and the API](/core/functional/templates/admin-and-api)

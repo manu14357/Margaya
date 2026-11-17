@@ -612,13 +612,13 @@
 			"format": "webp"
 		},
 		"getting-around/create-project": {
-			"width": 448,
-			"height": 414,
+			"width": 1024,
+			"height": 680,
 			"format": "webp"
 		},
 		"getting-around/create-workspace": {
 			"width": 448,
-			"height": 244,
+			"height": 418,
 			"format": "webp"
 		},
 		"getting-around/favorite-star": {
@@ -1084,6 +1084,56 @@
 		"tasks/workspace-labels": {
 			"width": 752,
 			"height": 416,
+			"format": "webp"
+		},
+		"templates/examples-banner": {
+			"width": 1128,
+			"height": 360,
+			"format": "webp"
+		},
+		"templates/first-steps": {
+			"width": 1440,
+			"height": 900,
+			"format": "webp"
+		},
+		"templates/gallery": {
+			"width": 1024,
+			"height": 680,
+			"format": "webp"
+		},
+		"templates/onboarding-first-project": {
+			"width": 808,
+			"height": 906,
+			"format": "webp"
+		},
+		"templates/onboarding-name": {
+			"width": 560,
+			"height": 464,
+			"format": "webp"
+		},
+		"templates/preview": {
+			"width": 1024,
+			"height": 1111,
+			"format": "webp"
+		},
+		"templates/restricted-suggestion": {
+			"width": 1024,
+			"height": 680,
+			"format": "webp"
+		},
+		"templates/setup": {
+			"width": 1024,
+			"height": 680,
+			"format": "webp"
+		},
+		"templates/workspace-ready": {
+			"width": 448,
+			"height": 315,
+			"format": "webp"
+		},
+		"templates/workspace-starters": {
+			"width": 808,
+			"height": 806,
 			"format": "webp"
 		},
 		"views/calendar-layout": {

@@ -52,6 +52,15 @@
 							"core/functional/index",
 							"core/functional/create-workspace-and-project",
 							{
+								"group": "Templates",
+								"pages": [
+									"core/functional/templates/create-a-project",
+									"core/functional/templates/create-a-workspace",
+									"core/functional/templates/catalog",
+									"core/functional/templates/admin-and-api"
+								]
+							},
+							{
 								"group": "Getting around",
 								"pages": [
 									"core/functional/home",
@@ -639,6 +648,15 @@
 						]
 					},
 					{
+						"group": "Project templates",
+						"pages": [
+							"api-reference/endpoints/project-templates/listProjectTemplates",
+							"api-reference/endpoints/project-templates/getProjectTemplate",
+							"api-reference/endpoints/project-templates/listWorkspaceStarters",
+							"api-reference/endpoints/project-templates/removeProjectSampleData"
+						]
+					},
+					{
 						"group": "Project updates",
 						"pages": [
 							"api-reference/endpoints/project-updates/listProjectUpdates",
@@ -1038,7 +1056,8 @@
 							"api-reference/endpoints/workspaces/updateWorkspaceSettings",
 							"api-reference/endpoints/workspaces/getWorkspaceDeletion",
 							"api-reference/endpoints/workspaces/scheduleWorkspaceDeletion",
-							"api-reference/endpoints/workspaces/cancelWorkspaceDeletion"
+							"api-reference/endpoints/workspaces/cancelWorkspaceDeletion",
+							"api-reference/endpoints/workspaces/applyWorkspaceStarter"
 						]
 					},
 					{

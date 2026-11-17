@@ -1,0 +1,89 @@
+---
+title: Templates for Admins and the API
+description: Permissions, example tasks, the database change, API routes, MCP tools and webhook fields for project templates and starter sets
+---
+
+Project templates and starter sets are built into Margaya. They ship with the server, in all 20 languages of the app, and there is nothing to configure or turn on. This page covers what admins and integrators need to know.
+
+## Permissions
+
+| To | You need |
+| --- | --- |
+| Create a project from a template | **project:create** (Owners, Admins and Members) |
+| Have the template's new workspace labels created | **label:create**. Without it, labels that already exist in the workspace are still used, and the rest are skipped, together with any automation rule that names a skipped label. |
+| Add example tasks | **task:create** |
+| Remove a project's example tasks | **task:delete** (Owners and Admins), or being the person who created the project from its template and still holding **task:create**. Both are checked against the caller's current role and, for an API key, its scope. |
+| Apply a starter set | **project:create**, plus **task:create** for example tasks. The first-run setup also sets the workspace time zone, which needs **workspace:manage_settings**. |
+| Turn on a template's request form | **project:share**, as for any [request form](/core/functional/intake#share-a-public-request-form) |
+
+Creating from a template needs only **project:create**, even though a template sets up things a Member can't otherwise change, such as statuses, custom fields, saved views, automation rules and the request form. Everything is created as part of the one create request, inside the new project. Afterwards, changing those settings needs the usual permissions.
+
+A template may name only one person: the creator, as the project lead or default assignee. It never adds other members, integrations, webhooks, email intake or a public board.
+
+## Example tasks
+
+Example tasks (sample data) are ordinary tasks, written in the creator's language with dates counted from today in the workspace's time zone. A template adds at most 25; a starter set adds at most four per project. They are added only when the person creating the project asks for them.
+
+- Writing them publishes no `task.created` events, so they don't run the project's automation rules, send notifications or reach webhooks and integrations. The project gets one `project.created` event.
+- Margaya records which tasks were examples, so **Remove examples** (or `POST /api/project-template/project/{projectId}/remove-sample-data`) moves exactly those still in the project to the trash, as one batch. Sub-tasks someone added under an example, and examples moved to another project, stay. Each one publishes `task.deleted`, as any task moved to the trash does. Calling it again changes nothing.
+- Restoring the batch from **Recently deleted** brings them all back, as ordinary tasks.
+
+## Database change
+
+Upgrading runs migration `0051_project_template_application` automatically at startup. It only adds one table, `project_template_application`, with one row per project created from a template: the template's id and version, the language its text was written in, the ids of its example tasks, who applied it and when, and when the examples were removed. Existing tables and data don't change, and projects created before the upgrade have no row. The row is deleted with its project.
+
+Templates themselves live in the server's code, not the database. A newer release can add or improve templates; projects already created from them never change.
+
+## API
+
+| Method and path | What it does |
+| --- | --- |
+| `GET /api/project-template` | The gallery: categories and template summaries (name, pitch, categories, icon, suggested key and privacy, counts of what each creates). Optional `locale`, and `category`, a category id such as `software-development`; an unknown category answers `400`. |
+| `GET /api/project-template/{id}` | Everything a template creates: statuses with their groups, labels, fields, views, rules, pages, feature switches, whether it sets up a request form, and its example tasks. |
+| `GET /api/project-template/starters` | The starter sets and the projects each creates. |
+| `POST /api/project` | Creates a project. With `template: { "id", "sampleData", "locale" }` it starts from a template; `features` overrides any of the template's switches. |
+| `POST /api/workspace/{workspaceId}/starter` | Creates every project of a starter set (`starterId`, `sampleData`, `locale`, `timezone`) in one transaction. Answers `409` when the workspace already has any project, including restricted projects the caller can't see. |
+| `POST /api/project-template/project/{projectId}/remove-sample-data` | Moves the project's example tasks to the trash. |
+
+Any signed-in user or API key may read the catalog, including read-only keys. The catalog answers with an `ETag` and `Cache-Control: private, max-age=3600`, and `304` for a matching `If-None-Match`.
+
+Template text comes in the `locale` you pass, else the caller's saved language, else the `Accept-Language` header, else English (`en-US`).
+
+```json
+POST /api/project
+{
+  "workspaceId": "ws_123",
+  "name": "Bugs",
+  "slug": "BUG",
+  "icon": "Code",
+  "visibility": "open",
+  "template": { "id": "bug-tracking", "sampleData": true }
+}
+```
+
+The response is the project with a `template` block: `id`, `version`, `locale`, `sampleTaskCount`, and `skipped`, which lists any label, page template or automation rule that wasn't created and why (`permission`, `limit` or `deleting`). `GET /api/project/{id}` also returns `hasSampleData`, whether the project still has example tasks.
+
+`template` and `fromProjectId` can't be combined (`400`). An unknown template answers `404`, and `sampleData: true` without **task:create** answers `403`.
+
+Reference pages: [listProjectTemplates](/api-reference/endpoints/project-templates/listProjectTemplates), [getProjectTemplate](/api-reference/endpoints/project-templates/getProjectTemplate), [listWorkspaceStarters](/api-reference/endpoints/project-templates/listWorkspaceStarters), [removeProjectSampleData](/api-reference/endpoints/project-templates/removeProjectSampleData), [applyWorkspaceStarter](/api-reference/endpoints/workspaces/applyWorkspaceStarter) and [createProject](/api-reference/endpoints/projects/createProject).
+
+## MCP tools
+
+The [MCP server](/core/integrations/mcp), over HTTP and in the stdio package, has two tools:
+
+- `list_project_templates` lists the templates and categories in the caller's language. Optional `category` and `locale`.
+- `create_project_from_template` creates a project from a template: `workspaceId`, `templateId`, `name` and `slug` (a template's `suggestedKey` is a good default), plus optional `icon`, `sampleData`, `visibility`, `features` and `locale`. It needs the same permissions as the app and returns the project with its `template` block.
+
+## Webhooks and the audit log
+
+The `project.created` [webhook](/core/functional/webhooks) event of a project made from a template carries `data.templateId` and `data.templateVersion`. Both are absent for blank projects and copies of other projects. The [audit log](/core/functional/audit-log) records the same two fields on the project's creation.
+
+## What stays in the browser
+
+The create flows remember a few things in the browser only, never on the server: the draft of an unfinished project or workspace (30 minutes, per tab), the last template and category used in each workspace, the **What will you track first?** answer, and the **First steps** list of each new project. Clearing site data resets them, and nothing breaks without them.
+
+## Next
+
+- [Create a project](/core/functional/templates/create-a-project)
+- [Create a workspace](/core/functional/templates/create-a-workspace)
+- [Template catalog](/core/functional/templates/catalog)

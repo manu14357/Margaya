@@ -66,7 +66,7 @@ Margaya sends a `POST` with a JSON body:
 }
 ```
 
-Comment data carries `visibility` (`internal` or `public`) and `origin` (`app`, or `public_board` for feedback posted on the public board), so your service can keep internal discussion apart. `data` is the entity when the event was queued (page content is never included; read it with `GET /api/page/{id}`). Deleted entities carry their identifiers only. A body over 256 KB keeps only `data.id` and `data.projectId` and sets `dataTruncated: true`. Redelivered copies set `redelivery: true`.
+Comment data carries `visibility` (`internal` or `public`) and `origin` (`app`, or `public_board` for feedback posted on the public board), so your service can keep internal discussion apart. `data` is the entity when the event was queued (page content is never included; read it with `GET /api/page/{id}`). Deleted entities carry their identifiers only. `project.created` for a project made from a built-in template (see [List project templates](/api-reference/endpoints/project-templates/listProjectTemplates)) also carries `data.templateId` and `data.templateVersion`; both are absent otherwise. A body over 256 KB keeps only `data.id` and `data.projectId` and sets `dataTruncated: true`. Redelivered copies set `redelivery: true`.
 
 | Header | Value |
 | --- | --- |

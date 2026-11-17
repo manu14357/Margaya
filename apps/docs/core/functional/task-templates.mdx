@@ -41,7 +41,7 @@ Creating a task from a template needs permission to create tasks. Its sub-tasks 
 
 ## Start a project from an existing one
 
-When you create a project, pick an existing project under **Start from** to reuse its setup:
+When you [create a project](/core/functional/templates/create-a-project), click **Start from an existing project** in the gallery (or open **From your workspace**) and pick a project to reuse its setup:
 
 - statuses (columns and their groups), custom fields and estimate systems,
 - feature toggles, description, project lead and default assignee,
@@ -49,7 +49,7 @@ When you create a project, pick an existing project under **Start from** to reus
 
 Members' personal data, integrations, webhooks, workflow rules and public boards are never copied. Labels are shared across the workspace, so they are already available.
 
-Two options add more:
+Two options in **Set up** add more:
 
 - **Include task templates** copies the source's templates.
 - **Include open tasks** copies up to 500 tasks that are not completed, cancelled, archived or waiting in Intake, with their assignees, labels, custom field values, estimates and sub-task links. Comments, attachments, history, cycles and modules stay with the source. This needs permission to create tasks.
@@ -59,7 +59,7 @@ No tasks are copied unless you tick **Include open tasks**.
 ## API and MCP
 
 - Templates: `GET /task-template/project/{projectId}`, `POST /task-template`, `PATCH` and `DELETE /task-template/{id}`, and `POST /task-template/{id}/apply` to create a task from one.
-- Projects: `POST /project` accepts `fromProjectId` and `copy: { taskTemplates, openTasks }`.
+- Projects: `POST /project` accepts `fromProjectId` and `copy: { taskTemplates, openTasks }`. To start from a built-in project template instead, see [Templates for admins and the API](/core/functional/templates/admin-and-api#api).
 - MCP tools: `list_task_templates` and `create_task_from_template`.
 
 ## Next

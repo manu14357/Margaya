@@ -59,7 +59,8 @@ Margaya follows MCP revision `2026-07-28`, the current revision as of October
   `structuredContent` and as a text block, for clients that only read text. A
   list comes back as `{ "items": [...] }`. Tools with a stable shape also
   declare an `outputSchema`: `get_task`, `create_task`, `get_project`,
-  `create_project`, `list_projects` and `list_project_columns`. The schemas name
+  `create_project`, `create_project_from_template`, `list_projects`,
+  `list_project_columns` and `list_project_templates`. The schemas name
   only the fields every result has, and extra fields are allowed. Errors stay
   plain text with `isError: true`.
 - **Tool annotations.** Every tool has `readOnlyHint`, `destructiveHint`,
@@ -204,7 +205,7 @@ Both the HTTP endpoint and stdio package expose the same tools:
 
 - Session: `whoami`, `list_workspaces`, `list_workspace_members`, `list_notifications`
 - Search: `search`
-- Projects: `list_projects`, `get_project`, `create_project`, `update_project`, `list_project_columns`
+- Projects: `list_projects`, `get_project`, `create_project`, `update_project`, `list_project_columns`, `list_project_templates`, `create_project_from_template`
 - Tasks: `list_tasks`, `get_task`, `create_task`, `update_task`, `delete_task` (moves the task to the [trash](/core/functional/trash-and-restore)), `restore_task`, `move_task`, `update_task_status`, `update_task_assignee`, `update_task_due_date`, `list_task_activity`
 - Time entries: `list_task_time_entries`, `get_time_entry`, `create_time_entry`, `update_time_entry`
 - Comments: `list_task_comments`, `create_task_comment`
@@ -225,6 +226,12 @@ Both the HTTP endpoint and stdio package expose the same tools:
 slugs it returns are exactly the values `create_task` and `update_task_status`
 accept. Likewise `list_workspace_members` resolves the user IDs the assignee
 tools expect. There is no `delete_time_entry` tool yet.
+
+`list_project_templates` returns the built-in templates in the caller's
+language. Pass a template's `id` to `create_project_from_template` with a name
+and a key (its `suggestedKey` is a good default); the project's statuses,
+labels, fields, views, rules and pages are created in the same step. Example
+tasks are added only with `sampleData: true` and need `task:create`.
 
 The cycle, module, page, whiteboard and intake tools are thin wrappers over the same API routes,
 so they follow the same rules: a project with the feature turned off answers
