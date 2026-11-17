@@ -1,3 +1,29 @@
+### Features
+
+- **desktop:** show downloads in their folder from the notification: [a41fdde](https://github.com/manu14357/Margaya/commit/a41fdde90b494f7c75a72d925382656dbf35f7ca)
+- **calendar:** show a day agenda on phones and tablets: [5b2d640](https://github.com/manu14357/Margaya/commit/5b2d64099717fc9113bddd5a64eefd412538d6bc)
+- **web:** add Whiteboards to every project and the sidebar: [9795412](https://github.com/manu14357/Margaya/commit/97954121614328e20b1405a6c16d7b5d845d0669)
+- **web:** add the whiteboard canvas editor: [bbbbe96](https://github.com/manu14357/Margaya/commit/bbbbe96b2b304b013f69e370eb77df495045f78e)
+- **i18n:** add copy for whiteboards, the touch calendar and desktop downloads: [e397e96](https://github.com/manu14357/Margaya/commit/e397e9630d9c53137f3fefba1bcc08680a271040)
+- **mcp:** add whiteboard tools for agents: [ad9758b](https://github.com/manu14357/Margaya/commit/ad9758bf5c80a1ea7c8cfa5f2eb5f3146797c895)
+- **api:** add whiteboard trash, history and audit log entries: [7def265](https://github.com/manu14357/Margaya/commit/7def265b9ebe52a6c66612286158417e8cc66470)
+- **api:** add whiteboards with live collaboration and public links: [665d50d](https://github.com/manu14357/Margaya/commit/665d50de2a441e1f751553ee085c09a80aa7c9d7)
+- **permissions:** add the whiteboard permission: [8822466](https://github.com/manu14357/Margaya/commit/8822466aa619f0c15647f33a43db532d68d05049)
+- **db:** add whiteboard tables and the per-project switch: [e870a7b](https://github.com/manu14357/Margaya/commit/e870a7bfd9bc0dc3f4284dd677963d0b2c135945)
+
+### Bug Fixes
+
+- **web:** make controls touch-sized across the app: [a31c1f2](https://github.com/manu14357/Margaya/commit/a31c1f2b7a8fd8d8871e6bc0f56f98c0e040ebfb)
+- **web:** name sliders and keep app shortcuts out of focused widgets: [af99694](https://github.com/manu14357/Margaya/commit/af99694b82a0a1ede790782bf2d2a205104480c9)
+- **web:** save downloads by name in the desktop app: [362830d](https://github.com/manu14357/Margaya/commit/362830dc127b40c9a4a9a91cc39002bd64172239)
+- **api:** read every recipient's quiet-time settings in one query: [5a299c8](https://github.com/manu14357/Margaya/commit/5a299c8f08446dcbe1107431fb7107e3160624b6)
+
+### Documentation
+
+- add the whiteboards guide with screenshots: [dca5560](https://github.com/manu14357/Margaya/commit/dca556005344e27c421ad617bd30501166fd690b)
+- **api:** describe the project update follow and reminder reads: [5cc1d1c](https://github.com/manu14357/Margaya/commit/5cc1d1cea8dc45288ce02b4f0abcac2181a2bce6)
+- start the desktop release by hand without a release token: [d41dbdf](https://github.com/manu14357/Margaya/commit/d41dbdfa5c2a6386cdb1194eff9b75957b01d875)
+
 ### Documentation
 
 - define the release version format and bump rules in the skills: [9c22666](https://github.com/manu14357/Margaya/commit/9c226669a38673bf86be824ef258fc7b6fc9250f)
