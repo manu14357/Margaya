@@ -1,15 +1,14 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { Maximize2, X } from "lucide-react";
+import { SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  SHEET_HEADER_PANEL_GROUP,
+  type SheetHeaderAction,
+  SheetHeaderBar,
+  type SheetHeaderMenu,
+} from "@/components/ui/sheet-header-bar";
 import {
   useRecordVisit,
   visitArchiveState,
@@ -17,6 +16,7 @@ import {
 import useGetProject from "@/hooks/queries/project/use-get-project";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { ProjectScope } from "@/hooks/use-project-scope";
+import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import TaskActionsMenu from "./task-actions-menu";
 import TaskDeleteButton from "./task-delete-button";
 import TaskDetailsContent from "./task-details-content";
@@ -26,7 +26,9 @@ import TaskPropertiesSidebar from "./task-properties-sidebar";
 import TaskSurfaceShortcuts from "./task-shortcuts/task-surface-shortcuts";
 import TaskStatusChip from "./task-status-chip";
 import TaskStepper from "./task-stepper";
-import TaskSubscribeButton from "./task-subscribe-button";
+import TaskSubscribeButton, {
+  useTaskSubscriptionToggle,
+} from "./task-subscribe-button";
 
 type TaskDetailsSheetProps = {
   taskId: string | undefined;
@@ -37,9 +39,12 @@ type TaskDetailsSheetProps = {
 
 /**
  * The task as a right sheet (560px; full screen below 768px) over the
- * current view. Header: key, status, previous/next, subscribe, more,
- * delete, "Open in full page" and close. Body: the task, with the property
- * grid after the description.
+ * current view. Header (SheetHeaderBar): key and status; previous/next with
+ * "N of M"; watch and more | delete | "Open in full page" and close panel.
+ * In the desktop shell the key and status share the title row with the
+ * window buttons and the toolbar sits under it; on narrow panels delete,
+ * then "Open in full page", then watch move into "…". Body: the task, with
+ * the property grid after the description.
  */
 export default function TaskDetailsSheet({
   taskId,
@@ -121,76 +126,16 @@ export default function TaskDetailsSheet({
         <SheetContent
           side="right"
           aria-label={t("tasks:detail.sheetLabel")}
-          className="w-full max-w-full gap-0 p-0 md:max-w-[560px] [&>button]:hidden"
+          className="w-full max-w-full gap-0 p-0 md:max-w-[560px]"
         >
-          <header className="flex h-12 shrink-0 items-center gap-2 border-border border-b bg-background px-3">
-            <div className="flex min-w-0 flex-1 items-center gap-2">
-              <TaskKeyCopyButton
-                slug={project?.slug}
-                number={task?.number}
-                className="shrink-0 font-medium font-mono text-muted-foreground text-xs"
-              />
-              {task && (
-                <TaskStatusChip
-                  status={task.status}
-                  projectId={task.projectId ?? projectId}
-                />
-              )}
-              <TaskStepper
-                projectId={projectId}
-                taskId={currentTaskId}
-                onNavigate={handleStep}
-                className="ml-1"
-              />
-            </div>
-            <div className="flex shrink-0 items-center gap-0.5">
-              <TaskSubscribeButton taskId={currentTaskId} size="icon" />
-              {currentTaskId && (
-                <TaskActionsMenu
-                  taskId={currentTaskId}
-                  projectId={projectId}
-                  workspaceId={workspaceId}
-                />
-              )}
-              {currentTaskId && (
-                <span data-task-delete="" className="contents">
-                  <TaskDeleteButton
-                    taskId={currentTaskId}
-                    onDeleted={onClose}
-                    iconOnly
-                  />
-                </span>
-              )}
-              <span aria-hidden className="mx-1 h-4 w-px bg-border" />
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      onClick={handleOpenFullPage}
-                      className="text-foreground"
-                      aria-label={t("tasks:detail.openInFullPage")}
-                    >
-                      <Maximize2 className="size-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    {t("tasks:detail.openInFullPage")}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={onClose}
-                className="text-foreground"
-                aria-label={t("common:actions.close")}
-              >
-                <X className="size-4" />
-              </Button>
-            </div>
-          </header>
+          <TaskSheetHeader
+            taskId={currentTaskId}
+            projectId={projectId}
+            workspaceId={workspaceId}
+            onStep={handleStep}
+            onOpenFullPage={handleOpenFullPage}
+            onDeleted={onClose}
+          />
 
           <TaskSurfaceShortcuts
             taskId={taskId ? currentTaskId : undefined}
@@ -228,5 +173,141 @@ export default function TaskDetailsSheet({
         </SheetContent>
       </Sheet>
     </ProjectScope>
+  );
+}
+
+/**
+ * The sheet's header, inside the task's project scope so the delete
+ * permission is the project's (restricted projects included).
+ */
+function TaskSheetHeader({
+  taskId,
+  projectId,
+  workspaceId,
+  onStep,
+  onOpenFullPage,
+  onDeleted,
+}: {
+  taskId: string | undefined;
+  projectId: string;
+  workspaceId: string;
+  onStep: (taskId: string) => void;
+  onOpenFullPage: () => void;
+  onDeleted: () => void;
+}) {
+  const { t } = useTranslation();
+  const { data: task } = useGetTask(taskId ?? "");
+  const { data: project } = useGetProject({ id: projectId, workspaceId });
+  const { canDeleteTasks, isCheckingPermissions } = useWorkspacePermission();
+  const canDelete = !isCheckingPermissions && canDeleteTasks();
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const subscription = useTaskSubscriptionToggle(taskId);
+
+  const openFullPageLabel = t("tasks:detail.openInFullPage");
+  const deleteLabel = t("tasks:delete.action");
+  const headerActions: (SheetHeaderAction | SheetHeaderMenu)[] = [];
+  if (taskId) {
+    if (subscription) {
+      const WatchIcon = subscription.icon;
+      headerActions.push({
+        id: "watch",
+        label: subscription.label,
+        icon: <WatchIcon className="size-4" />,
+        onSelect: subscription.toggle,
+        render: <TaskSubscribeButton taskId={taskId} size="icon" />,
+        priority: 3,
+      });
+    }
+    headerActions.push({
+      id: "more",
+      menu: (collapsed) => (
+        <>
+          <TaskActionsMenu
+            taskId={taskId}
+            projectId={projectId}
+            workspaceId={workspaceId}
+            extraItems={collapsed}
+            triggerSize="icon-sm"
+          />
+          {canDelete && collapsed.some((item) => item.id === "delete") && (
+            // Delete lives in "…" now: its confirm, and a target for the
+            // delete shortcut, stay mounted here.
+            <span data-task-delete="" hidden>
+              <button
+                type="button"
+                tabIndex={-1}
+                aria-hidden="true"
+                onClick={() => setDeleteOpen(true)}
+              />
+              <TaskDeleteButton
+                taskId={taskId}
+                onDeleted={onDeleted}
+                showTrigger={false}
+                open={deleteOpen}
+                onOpenChange={setDeleteOpen}
+              />
+            </span>
+          )}
+        </>
+      ),
+    });
+    if (canDelete) {
+      headerActions.push({
+        id: "delete",
+        group: "danger",
+        label: deleteLabel,
+        icon: <Trash2 className="size-4" />,
+        onSelect: () => setDeleteOpen(true),
+        destructive: true,
+        render: (
+          <span data-task-delete="" className="contents">
+            <TaskDeleteButton
+              taskId={taskId}
+              onDeleted={onDeleted}
+              iconOnly
+              open={deleteOpen}
+              onOpenChange={setDeleteOpen}
+            />
+          </span>
+        ),
+        priority: 1,
+      });
+    }
+    headerActions.push({
+      id: "full-page",
+      group: SHEET_HEADER_PANEL_GROUP,
+      label: openFullPageLabel,
+      icon: <SquareArrowOutUpRight className="size-4" />,
+      onSelect: onOpenFullPage,
+      priority: 2,
+    });
+  }
+
+  return (
+    <SheetHeaderBar
+      identity={
+        <>
+          <TaskKeyCopyButton
+            slug={project?.slug}
+            number={task?.number}
+            className="shrink-0 font-medium font-mono text-muted-foreground text-xs"
+          />
+          {task && (
+            <TaskStatusChip
+              status={task.status}
+              projectId={task.projectId ?? projectId}
+            />
+          )}
+        </>
+      }
+      navigation={
+        <TaskStepper
+          projectId={projectId}
+          taskId={taskId}
+          onNavigate={onStep}
+        />
+      }
+      actions={headerActions}
+    />
   );
 }

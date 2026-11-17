@@ -1,12 +1,6 @@
 import { useTranslation } from "react-i18next";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetPanel,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetPanel } from "@/components/ui/sheet";
+import { SheetHeaderBar } from "@/components/ui/sheet-header-bar";
 import { useInstanceUser } from "@/hooks/queries/instance-admin/use-instance-admin";
 import { formatDateMedium } from "@/lib/format";
 import type { InstanceUser } from "@/types/instance-admin";
@@ -26,10 +20,7 @@ export function UserDetailSheet({
   return (
     <Sheet open onOpenChange={(open) => !open && onClose()}>
       <SheetContent side="right" className="sm:max-w-md">
-        <SheetHeader>
-          <SheetTitle>{user.name}</SheetTitle>
-          <SheetDescription>{user.email}</SheetDescription>
-        </SheetHeader>
+        <SheetHeaderBar title={user.name} description={user.email} />
         <SheetPanel className="space-y-5">
           {detail.data ? (
             <>

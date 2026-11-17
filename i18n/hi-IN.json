@@ -11,7 +11,8 @@
 			"remove": "निकालें",
 			"reset": "रीसेट करें",
 			"undo": "पूर्ववत करें",
-			"closePanel": "पैनल बंद करें"
+			"closePanel": "पैनल बंद करें",
+			"moreActions": "और कार्रवाइयाँ"
 		},
 		"a11y": {
 			"toggleSidebar": "साइडबार टॉगल करें"

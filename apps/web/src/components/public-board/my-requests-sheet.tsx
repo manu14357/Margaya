@@ -11,13 +11,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetPanel,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetPanel } from "@/components/ui/sheet";
+import { SheetHeaderBar } from "@/components/ui/sheet-header-bar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePublicBoardRequestMutations } from "@/hooks/mutations/public-board/use-public-board-requests";
 import { useMyPublicBoardRequests } from "@/hooks/queries/public-board/use-public-board-task";
@@ -84,9 +79,7 @@ export default function MyRequestsSheet({
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right">
-        <SheetHeader>
-          <SheetTitle>{t("publicProject:myRequests.title")}</SheetTitle>
-        </SheetHeader>
+        <SheetHeaderBar title={t("publicProject:myRequests.title")} />
         <SheetPanel>
           {requests.isLoading ? (
             <div className="space-y-2">

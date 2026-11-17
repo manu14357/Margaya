@@ -125,6 +125,18 @@ describe("InboxPreview", () => {
     expect(screen.getByText("properties:task-2")).toBeInTheDocument();
   });
 
+  it("opens the task in full page with an arrow out of a square, never a maximize glyph", () => {
+    renderPreview();
+    const button = screen.getByRole("button", {
+      name: "notifications:inbox.actions.openFullPage",
+    });
+    // In the desktop app this row sits under the window's own maximize.
+    expect(
+      button.querySelector(".lucide-square-arrow-out-up-right"),
+    ).not.toBeNull();
+    expect(button.querySelector(".lucide-maximize-2")).toBeNull();
+  });
+
   it("names the task in the header, with the project still on the toggle", () => {
     renderPreview();
     expect(screen.getByTitle("Ship it now")).toHaveTextContent("Ship it now");

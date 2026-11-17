@@ -4,12 +4,10 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetFooter,
-  SheetHeader,
   SheetPanel,
-  SheetTitle,
 } from "@/components/ui/sheet";
+import { SheetHeaderBar } from "@/components/ui/sheet-header-bar";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
@@ -276,14 +274,10 @@ export function WebhookDeliverySheet({
       }}
     >
       <SheetContent side="right" className="sm:max-w-xl">
-        <SheetHeader>
-          <SheetTitle>
-            {t("settings:workspaceWebhooks.delivery.title")}
-          </SheetTitle>
-          <SheetDescription>
-            {t("settings:workspaceWebhooks.delivery.description")}
-          </SheetDescription>
-        </SheetHeader>
+        <SheetHeaderBar
+          title={t("settings:workspaceWebhooks.delivery.title")}
+          description={t("settings:workspaceWebhooks.delivery.description")}
+        />
         <SheetPanel>
           {query.isLoading ? (
             <div className="space-y-3">

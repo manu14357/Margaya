@@ -1,5 +1,14 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  SettingsRowActions,
+  SettingsTable,
+  SettingsTableBody,
+  SettingsTableCell,
+  SettingsTableHead,
+  SettingsTableHeader,
+  SettingsTableRow,
+} from "@/components/settings/settings-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,20 +17,10 @@ import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetFooter,
-  SheetHeader,
   SheetPanel,
-  SheetTitle,
 } from "@/components/ui/sheet";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { SheetHeaderBar } from "@/components/ui/sheet-header-bar";
 import { Textarea } from "@/components/ui/textarea";
 import {
   useCreateSamlConnection,
@@ -122,59 +121,65 @@ export function SamlConnectionsSection() {
           {t("instanceAdmin:identity.saml.none")}
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-md border border-border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>
-                  {t("instanceAdmin:identity.saml.columns.name")}
-                </TableHead>
-                <TableHead>
-                  {t("instanceAdmin:identity.saml.columns.domains")}
-                </TableHead>
-                <TableHead>
-                  {t("instanceAdmin:identity.saml.columns.certificate")}
-                </TableHead>
-                <TableHead className="w-0" />
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {items.map((connection) => (
-                <TableRow key={connection.id}>
-                  <TableCell className="text-sm font-medium">
-                    {connection.name}
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {connection.domains.join(", ")}
-                  </TableCell>
-                  <TableCell>
-                    <CertificateExpiry
-                      expiresAt={connection.certificateExpiresAt}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="xs"
-                        onClick={() => setEditing(connection)}
-                      >
-                        {t("instanceAdmin:identity.saml.edit")}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="xs"
-                        onClick={() => setRemoving(connection)}
-                      >
-                        {t("instanceAdmin:identity.remove")}
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <SettingsTable>
+          <SettingsTableHeader>
+            <SettingsTableRow>
+              <SettingsTableHead>
+                {t("instanceAdmin:identity.saml.columns.name")}
+              </SettingsTableHead>
+              <SettingsTableHead>
+                {t("instanceAdmin:identity.saml.columns.domains")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-40">
+                {t("instanceAdmin:identity.saml.columns.certificate")}
+              </SettingsTableHead>
+              <SettingsTableHead className="w-14">
+                <span className="sr-only">{t("settings:table.actions")}</span>
+              </SettingsTableHead>
+            </SettingsTableRow>
+          </SettingsTableHeader>
+          <SettingsTableBody>
+            {items.map((connection) => (
+              <SettingsTableRow key={connection.id}>
+                <SettingsTableCell
+                  kind="primary"
+                  className="font-medium text-sm"
+                >
+                  {connection.name}
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("instanceAdmin:identity.saml.columns.domains")}
+                  className="text-muted-foreground"
+                >
+                  {connection.domains.join(", ")}
+                </SettingsTableCell>
+                <SettingsTableCell
+                  label={t("instanceAdmin:identity.saml.columns.certificate")}
+                >
+                  <CertificateExpiry
+                    expiresAt={connection.certificateExpiresAt}
+                  />
+                </SettingsTableCell>
+                <SettingsTableCell kind="actions">
+                  <SettingsRowActions
+                    name={connection.name}
+                    actions={[
+                      {
+                        label: t("instanceAdmin:identity.saml.edit"),
+                        onClick: () => setEditing(connection),
+                      },
+                      {
+                        label: t("instanceAdmin:identity.remove"),
+                        onClick: () => setRemoving(connection),
+                        destructive: true,
+                      },
+                    ]}
+                  />
+                </SettingsTableCell>
+              </SettingsTableRow>
+            ))}
+          </SettingsTableBody>
+        </SettingsTable>
       )}
 
       <Sheet
@@ -289,18 +294,16 @@ function ConnectionForm({
 
   return (
     <>
-      <SheetHeader>
-        <SheetTitle>
-          {connection
+      <SheetHeaderBar
+        title={
+          connection
             ? t("instanceAdmin:identity.saml.editTitle", {
                 name: connection.name,
               })
-            : t("instanceAdmin:identity.saml.connect")}
-        </SheetTitle>
-        <SheetDescription>
-          {t("instanceAdmin:identity.saml.formDescription")}
-        </SheetDescription>
-      </SheetHeader>
+            : t("instanceAdmin:identity.saml.connect")
+        }
+        description={t("instanceAdmin:identity.saml.formDescription")}
+      />
       <SheetPanel>
         <form
           id="saml-connection"

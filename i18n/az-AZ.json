@@ -11,7 +11,8 @@
 			"remove": "Çıxar",
 			"reset": "Sıfırla",
 			"undo": "Geri al",
-			"closePanel": "Paneli bağla"
+			"closePanel": "Paneli bağla",
+			"moreActions": "Digər əməliyyatlar"
 		},
 		"a11y": {
 			"toggleSidebar": "Yan paneli aç/bağla"

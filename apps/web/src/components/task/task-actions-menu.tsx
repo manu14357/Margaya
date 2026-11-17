@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
+import type { SheetHeaderMenuItem } from "@/components/ui/sheet-header-bar";
 import useGetProject from "@/hooks/queries/project/use-get-project";
 import useGetTask from "@/hooks/queries/task/use-get-task";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -21,13 +22,37 @@ type TaskActionsMenuProps = {
   /** The project the task is shown in; the task's own project wins once loaded. */
   projectId: string;
   workspaceId: string;
+  /**
+   * Header actions that did not fit the task panel's toolbar: the others
+   * first, a destructive one (delete) last.
+   */
+  extraItems?: SheetHeaderMenuItem[];
+  /** The panel header's icon buttons are square. */
+  triggerSize?: "sm" | "icon-sm";
 };
+
+function extraItem(item: SheetHeaderMenuItem) {
+  return (
+    <DropdownMenuItem
+      key={item.id}
+      className="gap-2"
+      variant={item.destructive ? "destructive" : undefined}
+      disabled={item.disabled}
+      onClick={item.onSelect}
+    >
+      {item.icon}
+      {item.label}
+    </DropdownMenuItem>
+  );
+}
 
 /** The "⋯" menu of the task sheet and page: copy link or key, make a copy. */
 export default function TaskActionsMenu({
   taskId,
   projectId,
   workspaceId,
+  extraItems = [],
+  triggerSize = "sm",
 }: TaskActionsMenuProps) {
   const { t } = useTranslation();
   const { data: task } = useGetTask(taskId);
@@ -49,7 +74,7 @@ export default function TaskActionsMenu({
         render={
           <Button
             variant="ghost"
-            size="sm"
+            size={triggerSize}
             className="text-foreground"
             aria-label={t("tasks:actions.moreActions")}
             title={t("tasks:actions.moreActions")}
@@ -71,6 +96,12 @@ export default function TaskActionsMenu({
                 {item.label}
               </DropdownMenuItem>
             ))}
+            <DropdownMenuSeparator />
+          </>
+        )}
+        {extraItems.some((item) => !item.destructive) && (
+          <>
+            {extraItems.filter((item) => !item.destructive).map(extraItem)}
             <DropdownMenuSeparator />
           </>
         )}
@@ -120,6 +151,12 @@ export default function TaskActionsMenu({
               <CopyPlus className="size-4" />
               {t("tasks:actions.makeCopy")}
             </DropdownMenuItem>
+          </>
+        )}
+        {extraItems.some((item) => item.destructive) && (
+          <>
+            <DropdownMenuSeparator />
+            {extraItems.filter((item) => item.destructive).map(extraItem)}
           </>
         )}
       </DropdownMenuContent>

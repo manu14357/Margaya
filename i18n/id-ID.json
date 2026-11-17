@@ -11,7 +11,8 @@
 			"remove": "Hapus",
 			"reset": "Atur ulang",
 			"undo": "Urungkan",
-			"closePanel": "Tutup panel"
+			"closePanel": "Tutup panel",
+			"moreActions": "Tindakan lain"
 		},
 		"a11y": {
 			"toggleSidebar": "Tampilkan/sembunyikan panel samping"

@@ -7,12 +7,10 @@ import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetFooter,
-  SheetHeader,
   SheetPanel,
-  SheetTitle,
 } from "@/components/ui/sheet";
+import { SheetHeaderBar } from "@/components/ui/sheet-header-bar";
 import { Switch } from "@/components/ui/switch";
 import {
   CUSTOM_OAUTH_TEXT_FIELDS,
@@ -217,16 +215,12 @@ function ProviderForm({
 
   return (
     <>
-      <SheetHeader>
-        <SheetTitle>
-          {t("instanceAdmin:oauth.sheetTitle", { provider: providerName })}
-        </SheetTitle>
-        <SheetDescription>
-          {t("instanceAdmin:oauth.sheetDescription", {
-            provider: providerName,
-          })}
-        </SheetDescription>
-      </SheetHeader>
+      <SheetHeaderBar
+        title={t("instanceAdmin:oauth.sheetTitle", { provider: providerName })}
+        description={t("instanceAdmin:oauth.sheetDescription", {
+          provider: providerName,
+        })}
+      />
       <SheetPanel className="space-y-5">
         {state.managedByEnvironment && (
           <LockedCallout>

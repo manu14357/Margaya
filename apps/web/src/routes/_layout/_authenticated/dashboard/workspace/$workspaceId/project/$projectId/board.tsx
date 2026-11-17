@@ -269,6 +269,8 @@ function RouteComponent() {
             ref={boardSearchButton}
             variant="outline"
             size="icon-xs"
+            // Square with Filter and Display (28px), not a size smaller.
+            className="size-7 sm:size-7"
             aria-label={t("tasks:boardSearchOpen")}
             onClick={openBoardSearch}
           />

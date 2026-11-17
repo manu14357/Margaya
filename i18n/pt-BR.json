@@ -11,7 +11,8 @@
 			"remove": "Remover",
 			"reset": "Redefinir",
 			"undo": "Desfazer",
-			"closePanel": "Fechar o painel"
+			"closePanel": "Fechar o painel",
+			"moreActions": "Mais ações"
 		},
 		"a11y": {
 			"toggleSidebar": "Alternar barra lateral"

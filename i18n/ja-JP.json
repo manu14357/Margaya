@@ -11,7 +11,8 @@
 			"remove": "削除",
 			"reset": "リセット",
 			"undo": "元に戻す",
-			"closePanel": "パネルを閉じる"
+			"closePanel": "パネルを閉じる",
+			"moreActions": "その他の操作"
 		},
 		"a11y": {
 			"toggleSidebar": "サイドバーを切り替え"

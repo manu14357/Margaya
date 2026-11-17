@@ -1,7 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { PanelRight } from "lucide-react";
+import { PanelRight, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useTopBarDensity } from "@/components/common/header/top-bar-density";
 import { TopBarRoomy } from "@/components/common/header/top-bar-label";
 import TaskLayout from "@/components/common/task-layout";
 import PageTitle from "@/components/page-title";
@@ -31,12 +32,28 @@ import {
 import useGetActivitiesByTaskId from "@/hooks/queries/activity/use-get-activities-by-task-id";
 import useGetProject from "@/hooks/queries/project/use-get-project";
 import useGetTask from "@/hooks/queries/task/use-get-task";
+import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 
 export const Route = createFileRoute(
   "/_layout/_authenticated/dashboard/workspace/$workspaceId/project/$projectId/task/$taskId_",
 )({
   component: RouteComponent,
 });
+
+/**
+ * Subscribe, labelled while the bar has room: the bar then also shows the
+ * notifications bell, and two bare bells side by side read as one. Once the
+ * bar is crowded the notifications bell steps out and this one is the icon.
+ */
+function SubscribeAction({ taskId }: { taskId: string }) {
+  const density = useTopBarDensity();
+  return (
+    <TaskSubscribeButton
+      taskId={taskId}
+      size={density === "full" ? "sm" : "icon"}
+    />
+  );
+}
 
 function RouteComponent() {
   const { t } = useTranslation();
@@ -52,6 +69,9 @@ function RouteComponent() {
     workspaceId,
   });
   const { isLoading: isActivitiesLoading } = useGetActivitiesByTaskId(taskId);
+  const { canDeleteTasks, isCheckingPermissions } = useWorkspacePermission();
+  const canDelete = !isCheckingPermissions && canDeleteTasks();
+  const [deleteOpen, setDeleteOpen] = useState(false);
   useRecordVisit({
     workspaceId,
     entityType: "task",
@@ -156,15 +176,46 @@ function RouteComponent() {
                 </Tooltip>
               </TooltipProvider>
             </TopBarRoomy>
-            <TaskSubscribeButton taskId={taskId} size="icon" />
+            <SubscribeAction taskId={taskId} />
+            {/* Delete waits in "…" (last, apart from the rest) rather than
+                at the bar's end, next to the account menu and, in the
+                desktop app, the window's close button. */}
             <TaskActionsMenu
               taskId={taskId}
               projectId={projectId}
               workspaceId={workspaceId}
+              extraItems={
+                canDelete
+                  ? [
+                      {
+                        id: "delete",
+                        label: t("tasks:delete.action"),
+                        icon: <Trash2 className="size-4" />,
+                        onSelect: () => setDeleteOpen(true),
+                        destructive: true,
+                      },
+                    ]
+                  : []
+              }
             />
-            <span data-task-delete="" className="contents">
-              <TaskDeleteButton taskId={taskId} onDeleted={handleDeleted} />
-            </span>
+            {canDelete && (
+              // The confirm, and a target for the delete shortcut.
+              <span data-task-delete="" hidden>
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  onClick={() => setDeleteOpen(true)}
+                />
+                <TaskDeleteButton
+                  taskId={taskId}
+                  onDeleted={handleDeleted}
+                  showTrigger={false}
+                  open={deleteOpen}
+                  onOpenChange={setDeleteOpen}
+                />
+              </span>
+            )}
           </div>
         ) : null
       }

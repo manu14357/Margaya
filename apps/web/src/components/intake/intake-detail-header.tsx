@@ -25,6 +25,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/menu";
+import { useSheetContext } from "@/components/ui/sheet";
+import {
+  type SheetHeaderAction,
+  SheetHeaderBar,
+  type SheetHeaderMenu,
+  SheetHeaderMenuItems,
+} from "@/components/ui/sheet-header-bar";
 import {
   Tooltip,
   TooltipContent,
@@ -112,7 +119,12 @@ type IntakeDetailHeaderProps = {
   onSnoozeOpenChange?: (open: boolean) => void;
 };
 
-/** Key, status and navigation on the left; the request's actions right. */
+/**
+ * Key, status and navigation on the left; the request's actions right, on
+ * the shared panel header (SheetHeaderBar). In the sheet on narrow screens
+ * close panel closes it; in the split view a back arrow returns to the
+ * list. Actions that do not fit move into "…", the first and Snooze last.
+ */
 export default function IntakeDetailHeader({
   item,
   actions,
@@ -126,110 +138,128 @@ export default function IntakeDetailHeader({
 }: IntakeDetailHeaderProps) {
   const { t } = useTranslation();
   const status = effectiveIntakeStatus(item);
+  const inSheet = useSheetContext() !== null;
+
+  const headerActions: (SheetHeaderAction | SheetHeaderMenu)[] = (
+    actions?.buttons ?? []
+  ).map((action, index) => {
+    const meta = ACTION_META[action];
+    const Icon = meta.icon;
+    return {
+      id: action,
+      label: t(meta.labelKey),
+      icon: <Icon className="size-4" />,
+      onSelect: () => onAction(action),
+      destructive: meta.destructive,
+      // The primary action stays, and Snooze needs its popover's button.
+      pinned: index === 0 || action === "snooze",
+      priority: -index,
+      render:
+        action === "snooze" ? (
+          <SnoozeIntakePopover
+            item={item}
+            onSnoozed={onSnoozed}
+            open={snoozeOpen}
+            onOpenChange={onSnoozeOpenChange}
+          />
+        ) : (
+          <Button
+            variant={index === 0 && action !== "edit" ? "default" : "outline"}
+            size="xs"
+            className="gap-1"
+            onClick={() => onAction(action)}
+          >
+            <Icon className="size-3" />
+            {t(meta.labelKey)}
+          </Button>
+        ),
+    };
+  });
+  if (actions) {
+    headerActions.push({
+      id: "more",
+      menu: (collapsed) =>
+        actions.menu.length + collapsed.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={t("intake:detail.moreActions")}
+                  title={t("intake:detail.moreActions")}
+                />
+              }
+            >
+              <Ellipsis className="size-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-52">
+              <SheetHeaderMenuItems items={collapsed} />
+              {actions.menu.map((action) => {
+                const meta = ACTION_META[action];
+                const Icon = meta.icon;
+                return (
+                  <DropdownMenuItem
+                    key={action}
+                    className="gap-2"
+                    variant={meta.destructive ? "destructive" : undefined}
+                    onClick={() => onAction(action)}
+                  >
+                    <Icon className="size-4" />
+                    {t(meta.labelKey)}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ),
+    });
+  }
 
   return (
     <TooltipProvider>
-      <div className="flex min-h-11 shrink-0 flex-wrap items-center gap-x-2 gap-y-1 border-border border-b px-3 py-1.5">
-        <div className="flex min-w-40 flex-1 items-center gap-2">
-          {onClose && (
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              aria-label={t("intake:triage.backToList")}
-              onClick={onClose}
-              className="text-muted-foreground lg:hidden"
-            >
-              <ArrowLeft />
-            </Button>
-          )}
-          <span className="shrink-0 font-medium text-muted-foreground text-sm tabular-nums">
-            {formatIntakeKey(item.task.key)}
-          </span>
-          <IntakeStatusBadge status={status} />
-          <div className="hidden items-center md:flex">
-            <NavButton
-              label={t("intake:detail.previous")}
-              disabled={!onPrevious}
-              onClick={() => onPrevious?.()}
-            >
-              <ChevronUp />
-            </NavButton>
-            <NavButton
-              label={t("intake:detail.next")}
-              disabled={!onNext}
-              onClick={() => onNext?.()}
-            >
-              <ChevronDown />
-            </NavButton>
-          </div>
-        </div>
-        {actions && (
-          <div className="ms-auto flex shrink-0 items-center gap-1">
-            {actions.buttons.map((action, index) => {
-              const meta = ACTION_META[action];
-              const Icon = meta.icon;
-              if (action === "snooze") {
-                return (
-                  <SnoozeIntakePopover
-                    key={action}
-                    item={item}
-                    onSnoozed={onSnoozed}
-                    open={snoozeOpen}
-                    onOpenChange={onSnoozeOpenChange}
-                  />
-                );
-              }
-              return (
-                <Button
-                  key={action}
-                  variant={
-                    index === 0 && action !== "edit" ? "default" : "outline"
-                  }
-                  size="xs"
-                  className="gap-1"
-                  onClick={() => onAction(action)}
-                >
-                  <Icon className="size-3" />
-                  {t(meta.labelKey)}
-                </Button>
-              );
-            })}
-            {actions.menu.length > 0 && (
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      aria-label={t("intake:detail.moreActions")}
-                      title={t("intake:detail.moreActions")}
-                    />
-                  }
-                >
-                  <Ellipsis className="size-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-52">
-                  {actions.menu.map((action) => {
-                    const meta = ACTION_META[action];
-                    const Icon = meta.icon;
-                    return (
-                      <DropdownMenuItem
-                        key={action}
-                        className="gap-2"
-                        variant={meta.destructive ? "destructive" : undefined}
-                        onClick={() => onAction(action)}
-                      >
-                        <Icon className="size-4" />
-                        {t(meta.labelKey)}
-                      </DropdownMenuItem>
-                    );
-                  })}
-                </DropdownMenuContent>
-              </DropdownMenu>
+      <SheetHeaderBar
+        identity={
+          <>
+            {onClose && !inSheet && (
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                aria-label={t("intake:triage.backToList")}
+                onClick={onClose}
+                className="text-muted-foreground lg:hidden"
+              >
+                <ArrowLeft />
+              </Button>
             )}
-          </div>
-        )}
-      </div>
+            <span className="shrink-0 font-medium text-muted-foreground text-sm tabular-nums">
+              {formatIntakeKey(item.task.key)}
+            </span>
+            <IntakeStatusBadge status={status} />
+          </>
+        }
+        navigation={
+          (onPrevious || onNext) && (
+            <div className="flex items-center gap-0.5 pointer-coarse:gap-4">
+              <NavButton
+                label={t("intake:detail.previous")}
+                disabled={!onPrevious}
+                onClick={() => onPrevious?.()}
+              >
+                <ChevronUp />
+              </NavButton>
+              <NavButton
+                label={t("intake:detail.next")}
+                disabled={!onNext}
+                onClick={() => onNext?.()}
+              >
+                <ChevronDown />
+              </NavButton>
+            </div>
+          )
+        }
+        actions={headerActions}
+      />
     </TooltipProvider>
   );
 }

@@ -11,7 +11,8 @@
 			"remove": "Gỡ bỏ",
 			"reset": "Đặt lại",
 			"undo": "Hoàn tác",
-			"closePanel": "Đóng bảng bên"
+			"closePanel": "Đóng bảng bên",
+			"moreActions": "Thêm hành động"
 		},
 		"a11y": {
 			"toggleSidebar": "Bật/tắt thanh bên"

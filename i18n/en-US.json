@@ -11,7 +11,8 @@
 			"remove": "Remove",
 			"reset": "Reset",
 			"undo": "Undo",
-			"closePanel": "Close panel"
+			"closePanel": "Close panel",
+			"moreActions": "More actions"
 		},
 		"a11y": {
 			"toggleSidebar": "Toggle sidebar"

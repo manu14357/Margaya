@@ -4,14 +4,8 @@ import { cn } from "@/lib/cn";
 import { formatDateTime } from "@/lib/format";
 import type { ApiKey } from "@/types/api-key";
 import { Button } from "../ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetPanel,
-  SheetTitle,
-} from "../ui/sheet";
+import { Sheet, SheetContent, SheetPanel } from "../ui/sheet";
+import { SheetHeaderBar } from "../ui/sheet-header-bar";
 import {
   Table,
   TableBody,
@@ -38,16 +32,14 @@ export function ApiKeyRequestsSheet({
   return (
     <Sheet open onOpenChange={(open) => !open && onClose()}>
       <SheetContent side="right" className="sm:max-w-2xl">
-        <SheetHeader>
-          <SheetTitle>
-            {t("accountSecurity:platform.apiKeys.requestsTitle", {
-              name: apiKey.name || t("settings:apiKey.table.unnamedKey"),
-            })}
-          </SheetTitle>
-          <SheetDescription>
-            {t("accountSecurity:platform.apiKeys.requestsDescription")}
-          </SheetDescription>
-        </SheetHeader>
+        <SheetHeaderBar
+          title={t("accountSecurity:platform.apiKeys.requestsTitle", {
+            name: apiKey.name || t("settings:apiKey.table.unnamedKey"),
+          })}
+          description={t(
+            "accountSecurity:platform.apiKeys.requestsDescription",
+          )}
+        />
         <SheetPanel className="space-y-3">
           {query.isLoading ? (
             <p className="text-sm text-muted-foreground">

@@ -1,9 +1,8 @@
 import type { Editor } from "@tiptap/core";
-import { PanelRightClose } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { SheetHeaderBar } from "@/components/ui/sheet-header-bar";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
 import type { Page, PagePanel } from "@/types/page";
 import PageComments from "./page-comments";
@@ -112,17 +111,12 @@ export default function PageSidePanel({
       onValueChange={(value) => onPanelChange(value as PagePanel)}
       className="flex h-full min-h-0 flex-col gap-0"
     >
-      <div className="flex h-10 shrink-0 items-center px-3">
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label={t("pages:panel.close")}
-          className="text-muted-foreground"
-          onClick={close}
-        >
-          <PanelRightClose className="size-4" />
-        </Button>
-      </div>
+      {/* In the sheet its close panel closes the sheet (onOpenChange). */}
+      <SheetHeaderBar
+        title={t(PANEL_KEYS[shownPanel])}
+        onClose={close}
+        className="border-b-0 ps-4"
+      />
       <div className="shrink-0 px-3 pt-2">
         <TabsList className="h-7 w-full rounded-md">
           {PANELS.map((value) => (
@@ -186,7 +180,6 @@ export default function PageSidePanel({
       }}
     >
       <SheetContent side="right" className="p-0" showCloseButton={false}>
-        <SheetTitle className="sr-only">{t(PANEL_KEYS[panel])}</SheetTitle>
         {content}
       </SheetContent>
     </Sheet>

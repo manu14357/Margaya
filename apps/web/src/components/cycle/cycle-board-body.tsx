@@ -10,7 +10,8 @@ import CreateTaskModal from "@/components/shared/modals/create-task-modal";
 import TaskDetailsSheet from "@/components/task/task-details-sheet";
 import { Alert, AlertAction, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { SheetHeaderBar } from "@/components/ui/sheet-header-bar";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { canEditCycle, canTransfer } from "@/lib/cycle/status";
 import { useUserPreferencesStore } from "@/store/user-preferences";
@@ -171,11 +172,9 @@ export default function CycleBoardBody({
       </div>
 
       <Sheet open={isSheetOpen} onOpenChange={onSheetOpenChange}>
-        <SheetContent side="right" className="overflow-y-auto p-0 lg:hidden">
-          <SheetTitle className="sr-only">
-            {t("cycles:sidebar.title")}
-          </SheetTitle>
-          {sidebar}
+        <SheetContent side="right" className="gap-0 p-0 lg:hidden">
+          <SheetHeaderBar title={t("cycles:sidebar.title")} className="ps-4" />
+          <div className="min-h-0 flex-1 overflow-y-auto">{sidebar}</div>
         </SheetContent>
       </Sheet>
 

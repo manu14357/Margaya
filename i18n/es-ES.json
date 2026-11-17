@@ -11,7 +11,8 @@
 			"remove": "Borrar",
 			"reset": "Restablecer",
 			"undo": "Deshacer",
-			"closePanel": "Cerrar el panel"
+			"closePanel": "Cerrar el panel",
+			"moreActions": "Más acciones"
 		},
 		"a11y": {
 			"toggleSidebar": "Mostrar barra lateral"

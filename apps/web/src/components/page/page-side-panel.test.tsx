@@ -98,7 +98,9 @@ describe("PageSidePanel", () => {
 
   it("closes from the button at the top and hands focus back", () => {
     const { onPanelChange, onClose } = renderPanel("history");
-    fireEvent.click(screen.getByRole("button", { name: "pages:panel.close" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "common:actions.closePanel" }),
+    );
     expect(onPanelChange).toHaveBeenCalledWith(undefined);
     expect(onClose).toHaveBeenCalledTimes(1);
   });

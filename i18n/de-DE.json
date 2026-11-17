@@ -11,7 +11,8 @@
 			"remove": "Entfernen",
 			"reset": "Zurücksetzen",
 			"undo": "Rückgängig",
-			"closePanel": "Bereich schließen"
+			"closePanel": "Bereich schließen",
+			"moreActions": "Weitere Aktionen"
 		},
 		"a11y": {
 			"toggleSidebar": "Sidebar umschalten"

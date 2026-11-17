@@ -11,7 +11,8 @@
 			"remove": "Usuń",
 			"reset": "Resetuj",
 			"undo": "Cofnij",
-			"closePanel": "Zamknij panel"
+			"closePanel": "Zamknij panel",
+			"moreActions": "Więcej akcji"
 		},
 		"a11y": {
 			"toggleSidebar": "Przełącz pasek boczny"

@@ -11,7 +11,8 @@
 			"remove": "Retirer",
 			"reset": "Réinitialiser",
 			"undo": "Annuler",
-			"closePanel": "Fermer le panneau"
+			"closePanel": "Fermer le panneau",
+			"moreActions": "Plus d'actions"
 		},
 		"a11y": {
 			"toggleSidebar": "Basculer la barre latérale"

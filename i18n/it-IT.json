@@ -11,7 +11,8 @@
 			"remove": "Rimuovi",
 			"reset": "Reimposta",
 			"undo": "Annulla",
-			"closePanel": "Chiudi il pannello"
+			"closePanel": "Chiudi il pannello",
+			"moreActions": "Altre azioni"
 		},
 		"a11y": {
 			"toggleSidebar": "Attiva/disattiva barra laterale"

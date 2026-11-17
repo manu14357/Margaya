@@ -11,7 +11,8 @@
 			"remove": "Verwijderen",
 			"reset": "Herstellen",
 			"undo": "Ongedaan maken",
-			"closePanel": "Paneel sluiten"
+			"closePanel": "Paneel sluiten",
+			"moreActions": "Meer acties"
 		},
 		"a11y": {
 			"toggleSidebar": "Zijbalk in-/uitschakelen"

@@ -1,4 +1,4 @@
-import { Link2, X } from "lucide-react";
+import { Link2 } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { MarkdownRenderer } from "@/components/public-project/markdown-renderer";
@@ -7,11 +7,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { SheetHeaderBar } from "@/components/ui/sheet-header-bar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useTogglePublicBoardReaction } from "@/hooks/mutations/public-board/use-public-board-reactions";
@@ -249,49 +249,50 @@ export default function PublicTaskPeek({
       >
         <TooltipProvider>
           <div className="flex h-full min-h-0 flex-col">
-            <div className="flex h-12 shrink-0 items-center gap-2 border-border border-b px-3 md:px-4">
-              <span className="font-medium font-mono text-muted-foreground text-xs">
-                {task?.key}
-              </span>
-              {task && (
-                <span className="flex min-w-0 items-center gap-1.5 truncate rounded-md bg-muted px-2 py-0.5 text-muted-foreground text-xs">
-                  {getColumnIcon(
-                    task.status,
-                    task.column.isFinal,
-                    task.column.icon,
-                    task.column.group,
+            <SheetHeaderBar
+              identity={
+                <>
+                  <span className="shrink-0 font-medium font-mono text-muted-foreground text-xs">
+                    {task?.key}
+                  </span>
+                  {task && (
+                    <span className="flex min-w-0 items-center gap-1.5 truncate rounded-md bg-muted px-2 py-0.5 text-muted-foreground text-xs">
+                      {getColumnIcon(
+                        task.status,
+                        task.column.isFinal,
+                        task.column.icon,
+                        task.column.group,
+                      )}
+                      <span className="truncate">
+                        {columnName(task, t("publicProject:board.backlog"))}
+                      </span>
+                    </span>
                   )}
-                  <span className="truncate">
-                    {columnName(task, t("publicProject:board.backlog"))}
-                  </span>
-                </span>
-              )}
-              <div className="ml-auto flex shrink-0 items-center gap-1">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 gap-1.5"
-                  onClick={copyLink}
-                  aria-label={t("publicProject:peek.copyLink")}
-                >
-                  <Link2 className="size-3.5" />
-                  <span className="text-xs max-sm:hidden">
-                    {t("publicProject:peek.copyLink")}
-                  </span>
-                </Button>
-                <SheetClose
-                  render={
+                </>
+              }
+              actions={[
+                {
+                  id: "copy-link",
+                  label: t("publicProject:peek.copyLink"),
+                  icon: <Link2 className="size-4" />,
+                  onSelect: copyLink,
+                  render: (
                     <Button
                       variant="ghost"
-                      size="icon-sm"
-                      aria-label={t("publicProject:peek.close")}
-                    />
-                  }
-                >
-                  <X className="size-4" />
-                </SheetClose>
-              </div>
-            </div>
+                      size="sm"
+                      className="h-8 gap-1.5"
+                      onClick={copyLink}
+                      aria-label={t("publicProject:peek.copyLink")}
+                    >
+                      <Link2 className="size-3.5" />
+                      <span className="text-xs max-sm:hidden">
+                        {t("publicProject:peek.copyLink")}
+                      </span>
+                    </Button>
+                  ),
+                },
+              ]}
+            />
 
             {query.isLoading ? (
               <div className="space-y-3 px-5 py-5">

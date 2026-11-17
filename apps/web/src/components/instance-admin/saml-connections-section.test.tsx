@@ -26,6 +26,16 @@ vi.mock("react-i18next", () => ({
   }),
 }));
 vi.mock("@/lib/i18n", () => ({ i18n: { t: (key: string) => key } }));
+
+/** Rows keep their actions in a "…" menu. */
+async function chooseRowAction(name: string) {
+  fireEvent.click(
+    screen.getByRole("button", {
+      name: "settings:table.actionsFor:Company sign-in",
+    }),
+  );
+  fireEvent.click(await screen.findByRole("menuitem", { name }));
+}
 vi.mock("@/lib/toast", () => ({
   toast: { success: m.success, error: m.error },
 }));
@@ -185,7 +195,7 @@ describe("SamlConnectionsSection", () => {
     items = [CONNECTION];
     m.update.mockResolvedValue(CONNECTION);
     render(<SamlConnectionsSection />);
-    fireEvent.click(screen.getByRole("button", { name: `${KEY}.edit` }));
+    await chooseRowAction(`${KEY}.edit`);
 
     expect(await screen.findByLabelText(`${KEY}.acsUrl`)).toHaveValue(
       "https://api.example/acs/conn",
@@ -205,7 +215,7 @@ describe("SamlConnectionsSection", () => {
     items = [CONNECTION];
     m.update.mockResolvedValue(CONNECTION);
     render(<SamlConnectionsSection />);
-    fireEvent.click(screen.getByRole("button", { name: `${KEY}.edit` }));
+    await chooseRowAction(`${KEY}.edit`);
     await screen.findByLabelText(`${KEY}.acsUrl`);
     type(label("certificate"), "new certificate");
     fireEvent.click(screen.getByRole("button", { name: "instanceAdmin:save" }));
@@ -242,9 +252,7 @@ describe("SamlConnectionsSection", () => {
     items = [CONNECTION];
     m.remove.mockResolvedValue({ id: "conn-1", deleted: true });
     render(<SamlConnectionsSection />);
-    fireEvent.click(
-      screen.getByRole("button", { name: "instanceAdmin:identity.remove" }),
-    );
+    await chooseRowAction("instanceAdmin:identity.remove");
     expect(m.remove).not.toHaveBeenCalled();
 
     const dialog = await screen.findByRole("alertdialog");

@@ -11,7 +11,8 @@
 			"remove": "Kaldır",
 			"reset": "Sıfırla",
 			"undo": "Geri al",
-			"closePanel": "Paneli kapat"
+			"closePanel": "Paneli kapat",
+			"moreActions": "Diğer işlemler"
 		},
 		"a11y": {
 			"toggleSidebar": "Kenar çubuğunu aç/kapat"

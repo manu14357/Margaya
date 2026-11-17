@@ -4,7 +4,7 @@ import {
   Bell,
   ChevronDown,
   ChevronRight,
-  Maximize2,
+  SquareArrowOutUpRight,
   X,
 } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
@@ -154,7 +154,9 @@ function PreviewHeader({
                   onClick={onOpenFullPage}
                   className="text-foreground"
                 >
-                  <Maximize2 className="size-4" />
+                  {/* Not a maximize glyph: in the desktop app this row sits
+                      under the window's own maximize button. */}
+                  <SquareArrowOutUpRight className="size-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>

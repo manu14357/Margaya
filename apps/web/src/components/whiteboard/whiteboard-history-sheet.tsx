@@ -1,14 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetPanel,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetPanel } from "@/components/ui/sheet";
+import { SheetHeaderBar } from "@/components/ui/sheet-header-bar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useWhiteboardActivity } from "@/hooks/queries/whiteboard/use-whiteboard-activity";
 import { formatDateTime, formatRelativeTime } from "@/lib/format";
@@ -138,12 +132,10 @@ export default function WhiteboardHistorySheet({
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right">
-        <SheetHeader>
-          <SheetTitle>{t("whiteboards:history.title")}</SheetTitle>
-          <SheetDescription>
-            {t("whiteboards:history.description")}
-          </SheetDescription>
-        </SheetHeader>
+        <SheetHeaderBar
+          title={t("whiteboards:history.title")}
+          description={t("whiteboards:history.description")}
+        />
         <SheetPanel>{body()}</SheetPanel>
       </SheetContent>
     </Sheet>
