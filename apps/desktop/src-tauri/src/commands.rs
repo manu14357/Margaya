@@ -1,6 +1,7 @@
-//! Commands. The launcher and quick-add windows may call all of them except
-//! `bridge_message`; server pages may call only `bridge_message`
-//! (capabilities/launcher.json and capabilities/server-bridge.json).
+//! Commands. Each bundled window may call only its own: the launcher
+//! (capabilities/launcher.json), quick add, search and Today (quick-add.json,
+//! search.json, today.json) and the offline page (offline.json). Server pages
+//! may call only `bridge_message`, granted at runtime (acl.rs).
 
 use serde::Serialize;
 use tauri::{AppHandle, Emitter, Manager, State, Webview};
@@ -162,9 +163,17 @@ pub fn cancel_sign_in(state: State<'_, AppState>, id: String) {
 }
 
 pub async fn sign_out_server(app: &AppHandle, state: &AppState, server: &Server) {
+    // First, so snapshots still on their way (the window stays open) are
+    // refused from here on.
+    state.mark_signed_out(&server.id);
     socket::stop(app, &server.id);
     windows::close_popups(app, &server.id);
     lock(&state.handoff_secrets).remove(&server.id);
+    // Saved offline copies, the tray's recent items and search's workspace
+    // list go with the session (sign-out and removal).
+    crate::offline_cache::forget(app, &server.id);
+    crate::search_window::forget_server(&server.id);
+    menus::forget_server(app, &server.id);
     if let Some(token) = tokens::get(&server.id) {
         // Revoke on the server too; a server that can't be reached still
         // loses the token here.
@@ -213,6 +222,9 @@ pub struct Settings {
     /// False for a Linux .deb or .rpm: a new version comes from the
     /// download page, not from the app.
     self_update: bool,
+    /// The login item starts the app in the tray, without windows.
+    start_minimized: bool,
+    update_channel: crate::prefs::UpdateChannel,
 }
 
 #[tauri::command]
@@ -226,12 +238,20 @@ pub fn get_settings(app: AppHandle) -> Settings {
     } else {
         "other"
     };
+    let prefs = crate::prefs::get(&app);
     Settings {
         version: app.package_info().version.to_string(),
         platform,
         autostart: app.autolaunch().is_enabled().unwrap_or(false),
         self_update: updates::self_update_supported(),
+        start_minimized: prefs.start_minimized,
+        update_channel: prefs.update_channel,
     }
+}
+
+#[tauri::command]
+pub fn set_start_minimized(app: AppHandle, enabled: bool) -> AppResult<()> {
+    crate::prefs::update(&app, |prefs| prefs.start_minimized = enabled)
 }
 
 #[tauri::command]
@@ -273,12 +293,18 @@ pub async fn quick_add_targets(
 }
 
 #[tauri::command]
+#[allow(clippy::too_many_arguments)]
 pub async fn quick_add_create(
+    app: AppHandle,
     state: State<'_, AppState>,
     server_id: String,
     workspace_id: String,
     project_id: String,
     title: String,
+    // Parsed from the title (due date, priority, assignees) or taken from
+    // the clipboard; older pages send neither.
+    details: Option<api::TaskDetails>,
+    attachment_ids: Option<Vec<String>>,
 ) -> AppResult<api::QuickAddResult> {
     let title = title.trim();
     if title.is_empty() {
@@ -286,13 +312,16 @@ pub async fn quick_add_create(
     }
     let server = state.server(&server_id)?;
     let token = token_for(&server_id)?;
-    api::create_task(
-        &state.http,
+    crate::quick_add::create(
+        &app,
+        &state,
         &server,
         &token,
         &workspace_id,
         &project_id,
         title,
+        &details.unwrap_or_default(),
+        &attachment_ids.unwrap_or_default(),
     )
     .await
 }
@@ -428,6 +457,9 @@ pub async fn bridge_message(
             return Ok(Value::Bool(
                 window.is_some_and(|window| window.is_maximized().unwrap_or(false)),
             ));
+        }
+        BridgeMessage::OfflineSnapshot { snapshot } => {
+            crate::offline_cache::save_snapshot(&app, &server, snapshot);
         }
     }
     Ok(Value::Null)

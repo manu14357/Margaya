@@ -57,6 +57,11 @@ pub enum BridgeMessage {
     Close,
     StartDragging,
     IsMaximized,
+    /// A read-only copy of the task or page on screen, for offline reading.
+    /// Plain text only; validated and capped in offline_cache.rs.
+    OfflineSnapshot {
+        snapshot: crate::offline_cache::Snapshot,
+    },
 }
 
 /// `platform` on the bridge. The BSDs (test builds only) say "linux": the
@@ -134,6 +139,9 @@ pub fn init_script(web: &Url, version: &str) -> String {
     openSignInPopup: function (url) {{ send({{ kind: "openSignInPopup", url: String(url) }}); }},
     signedOut: function () {{ send({{ kind: "signedOut" }}); }},
     setSoundMuted: function (muted) {{ send({{ kind: "soundMuted", muted: muted === true }}); }},
+    saveOfflineSnapshot: function (snapshot) {{
+      if (snapshot && typeof snapshot === "object") send({{ kind: "offlineSnapshot", snapshot: snapshot }});
+    }},
     ready: function (info) {{
       var options = info && typeof info === "object" ? info : {{}};
       send({{ kind: "ready", navigate: options.navigate !== false, titleBar: options.titleBar !== false }});
@@ -298,6 +306,29 @@ mod tests {
         assert_eq!(read(r#"{"kind":"soundMuted","muted":"yes"}"#), None);
         assert_eq!(read(r#"{"kind":"readFile","path":"/etc/passwd"}"#), None);
         assert_eq!(read(r#"{"kind":"setPosition","x":0,"y":0}"#), None);
+    }
+
+    #[test]
+    fn reads_offline_snapshots_strictly() {
+        let read = |json: &str| serde_json::from_str::<BridgeMessage>(json).ok();
+        let Some(BridgeMessage::OfflineSnapshot { snapshot }) = read(
+            r#"{"kind":"offlineSnapshot","snapshot":{"kind":"page","id":"p1","path":"/dashboard/p","title":"Notes","bodyText":"hi"}}"#,
+        ) else {
+            panic!("an offline snapshot should parse");
+        };
+        assert_eq!(snapshot.kind, crate::offline_cache::ItemKind::Page);
+        // Unknown item kinds, unknown fields and a missing snapshot are refused.
+        assert_eq!(
+            read(r#"{"kind":"offlineSnapshot","snapshot":{"kind":"file","id":"p1","path":"/x","title":"T"}}"#),
+            None
+        );
+        assert_eq!(
+            read(r#"{"kind":"offlineSnapshot","snapshot":{"kind":"page","id":"p1","path":"/x","title":"T","html":"<script>"}}"#),
+            None
+        );
+        assert_eq!(read(r#"{"kind":"offlineSnapshot"}"#), None);
+        assert!(init_script(&Url::parse("https://a.example").unwrap(), "0.1.0")
+            .contains(r#"saveOfflineSnapshot:"#));
     }
 
     #[test]

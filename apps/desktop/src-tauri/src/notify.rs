@@ -22,6 +22,16 @@
 //! (`show_download`); a click shows the file in its folder through
 //! `margaya://download` or the plugin's `tap` (see downloads.rs).
 //!
+//! Task alerts can carry buttons ("Mark done", "Snooze 1 hour", "Reply"; see
+//! notification_actions.rs): on Windows toast actions that open
+//! `margaya://notification-action` links, on macOS and Linux the plugin's
+//! action buttons (Linux: one button each; macOS: an "Options" menu).
+//!
+//! Paused notifications (pause.rs) show nothing. Windows: no toast either
+//! while Windows holds notifications back (Do Not Disturb or Focus, a
+//! presentation or a full-screen app); Linux: none while GNOME's Do Not
+//! Disturb is on. macOS applies Focus itself. The badge still updates.
+//!
 //! Sound: the alert makes a sound when the server says the user's Margaya
 //! sound settings call for one (`sound` in
 //! `GET /api/notification/{id}/desktop`), unless sounds are muted on this
@@ -41,6 +51,7 @@ use tauri::{AppHandle, Manager};
 use url::Url;
 
 use crate::auth::ALIAS_SCHEME;
+use crate::notification_actions::{self, Action};
 use crate::servers::Server;
 use crate::sound::Tone;
 use crate::state::{lock, AppState};
@@ -167,10 +178,31 @@ fn escape_xml(text: &str) -> String {
     out
 }
 
-/// A protocol-activated toast: a click opens `launch`. Always silent: the
-/// app plays the Margaya sound itself.
+/// A protocol-activated toast: a click opens `launch`, each button (label,
+/// link) its own link. Always silent: the app plays the Margaya sound itself.
 #[cfg_attr(not(windows), allow(dead_code))]
-fn toast_document(title: &str, body: &str, attribution: Option<&str>, launch: &str) -> String {
+fn toast_document(
+    title: &str,
+    body: &str,
+    attribution: Option<&str>,
+    launch: &str,
+    buttons: &[(String, String)],
+) -> String {
+    let actions = if buttons.is_empty() {
+        String::new()
+    } else {
+        let list: String = buttons
+            .iter()
+            .map(|(label, link)| {
+                format!(
+                    r#"<action content="{}" arguments="{}" activationType="protocol"/>"#,
+                    escape_xml(label),
+                    escape_xml(link)
+                )
+            })
+            .collect();
+        format!("<actions>{list}</actions>")
+    };
     let launch = escape_xml(launch);
     let title = escape_xml(title);
     let body = escape_xml(body);
@@ -181,22 +213,33 @@ fn toast_document(title: &str, body: &str, attribution: Option<&str>, launch: &s
         )
     });
     format!(
-        r#"<toast launch="{launch}" activationType="protocol"><visual><binding template="ToastGeneric"><text hint-maxLines="2">{title}</text><text>{body}</text>{source}</binding></visual><audio silent="true"/></toast>"#
+        r#"<toast launch="{launch}" activationType="protocol"><visual><binding template="ToastGeneric"><text hint-maxLines="2">{title}</text><text>{body}</text>{source}</binding></visual>{actions}<audio silent="true"/></toast>"#
     )
 }
 
 /// The toast's XML. `attribution` (the server's name) is shown when the
 /// person uses more than one server.
-#[cfg_attr(not(windows), allow(dead_code))]
+#[cfg(test)]
 pub fn toast_xml(alert: &Alert, launch: &str, attribution: bool) -> String {
+    toast_xml_with_buttons(alert, launch, attribution, &[])
+}
+
+/// The toast's XML with buttons, as (label, link) pairs.
+#[cfg_attr(not(windows), allow(dead_code))]
+pub fn toast_xml_with_buttons(
+    alert: &Alert,
+    launch: &str,
+    attribution: bool,
+    buttons: &[(String, String)],
+) -> String {
     let source = attribution.then_some(alert.server_label.as_str());
-    toast_document(&alert.title, &alert.body, source, launch)
+    toast_document(&alert.title, &alert.body, source, launch, buttons)
 }
 
 /// A download's toast: the file name in the title, what a click does below.
 #[cfg_attr(not(windows), allow(dead_code))]
 pub fn download_toast_xml(title: &str, body: &str, launch: &str) -> String {
-    toast_document(title, body, None, launch)
+    toast_document(title, body, None, launch, &[])
 }
 
 /// The toast group of download notifications. Each has its own tag (its id),
@@ -261,21 +304,92 @@ pub fn show_download(app: &AppHandle, title: String, body: String, id: Option<St
     }
 }
 
+/// What an alert's buttons act on (from the server's `taskId` and
+/// `actions`).
+#[derive(Debug, Clone)]
+pub struct ActionOffer {
+    pub notification_id: String,
+    pub task_id: String,
+    pub actions: Vec<Action>,
+}
+
 /// Shows an alert natively.
 pub fn show(app: &AppHandle, server: &Server, alert: Alert) {
+    show_with_actions(app, server, alert, None);
+}
+
+/// Windows' toast actions for an alert: (label, link) per button.
+#[cfg_attr(not(windows), allow(dead_code))]
+fn toast_buttons(id: &str, actions: &[Action]) -> Vec<(String, String)> {
+    actions
+        .iter()
+        .map(|action| {
+            (
+                action.label(),
+                notification_actions::action_link(id, *action),
+            )
+        })
+        .collect()
+}
+
+/// The plugin's action type for a set of buttons (macOS and Linux): one per
+/// combination, registered again on use (registering replaces).
+#[cfg(not(windows))]
+fn action_type_id(app: &AppHandle, actions: &[Action]) -> String {
+    use tauri_plugin_notification::{Action as PluginAction, ActionType, NotificationExt};
+    let names: Vec<&str> = actions.iter().map(|action| action.name()).collect();
+    let id = format!("margaya-{}", names.join("-"));
+    let buttons = actions
+        .iter()
+        .map(|action| PluginAction::builder(action.name(), action.label()).build())
+        .collect();
+    let _ = app
+        .notification()
+        .register_action_types(vec![ActionType::builder(&id).actions(buttons).build()]);
+    id
+}
+
+/// Shows an alert natively, with buttons when `offer` has any.
+pub fn show_with_actions(
+    app: &AppHandle,
+    server: &Server,
+    alert: Alert,
+    offer: Option<ActionOffer>,
+) {
     let state = app.state::<AppState>();
     let several = state.servers().len() > 1;
     let link = click_link(server, alert.url.as_ref());
-    #[cfg(feature = "e2e")]
-    e2e_record(&alert, &link);
+    let target = offer
+        .filter(|offer| !offer.actions.is_empty())
+        .map(|offer| notification_actions::Target {
+            server_id: alert.server_id.clone(),
+            notification_id: offer.notification_id,
+            task_id: offer.task_id,
+            url: alert.url.clone(),
+            tag: alert.tag.clone(),
+            actions: offer.actions,
+        });
 
     #[cfg(windows)]
     {
+        let buttons = target.map_or_else(Vec::new, |target| {
+            let actions = target.actions.clone();
+            let id = notification_actions::remember(target, None);
+            toast_buttons(&id, &actions)
+        });
+        #[cfg(feature = "e2e")]
+        e2e_record(&alert, &link, &buttons);
         let app_id = app.config().identifier.clone();
-        let xml = toast_xml(&alert, &link, several);
+        let xml = toast_xml_with_buttons(&alert, &link, several, &buttons);
         let (tag, group) = (toast_key(&alert.tag), toast_key(&alert.server_id));
         let tone = alert.sound;
         tauri::async_runtime::spawn_blocking(move || {
+            // Do Not Disturb, Focus, a presentation or a full-screen app:
+            // Windows says not now, so no toast and no sound.
+            if crate::sound::windows_holds_toasts() {
+                log::info!("notification not shown: Windows is holding notifications back");
+                return;
+            }
             match toast::show(&app_id, &xml, &tag, &group) {
                 Ok(enabled) => {
                     if let Some(tone) = tone {
@@ -296,33 +410,111 @@ pub fn show(app: &AppHandle, server: &Server, alert: Alert) {
     #[cfg(not(windows))]
     {
         use tauri_plugin_notification::NotificationExt;
-        let _ = (several, link);
+        let _ = several;
+        #[cfg(feature = "e2e")]
+        e2e_record(&alert, &link, &[]);
+        let _ = link;
         let local_id = state.remember_notification(crate::state::NotificationTarget::Page {
             server_id: alert.server_id.clone(),
             url: alert.url.as_ref().map(Url::to_string),
         });
-        #[cfg_attr(not(target_os = "macos"), allow(unused_mut))]
-        let mut builder = app
-            .notification()
-            .builder()
-            .id(local_id)
-            .title(alert.title)
-            .body(alert.body);
-        #[cfg(target_os = "macos")]
-        if alert.sound.is_some() {
-            builder = builder.sound("default");
-        }
-        #[cfg(target_os = "linux")]
-        if let Some(icon) = linux_icon(app) {
-            builder = builder.icon(icon);
-        }
-        match builder.show() {
+        let action_type = target.map(|target| {
+            let id = action_type_id(app, &target.actions);
+            notification_actions::remember(target, Some(local_id));
+            id
+        });
+        let app = app.clone();
+        // Off the async runtime's threads: GNOME's Do Not Disturb is read by
+        // running gsettings, and the plugin talks to the notification server.
+        tauri::async_runtime::spawn_blocking(move || {
             #[cfg(target_os = "linux")]
-            Ok(()) => play_linux_sound(alert.sound),
-            #[cfg(not(target_os = "linux"))]
-            Ok(()) => {}
-            Err(error) => log::warn!("could not show a notification: {error}"),
-        }
+            if crate::sound::system_quiet() {
+                log::info!("notification not shown: Do Not Disturb is on");
+                return;
+            }
+            let mut builder = app
+                .notification()
+                .builder()
+                .id(local_id)
+                .title(alert.title)
+                .body(alert.body);
+            if let Some(action_type) = action_type {
+                builder = builder.action_type_id(action_type);
+            }
+            #[cfg(target_os = "macos")]
+            if alert.sound.is_some() {
+                builder = builder.sound("default");
+            }
+            #[cfg(target_os = "linux")]
+            if let Some(icon) = linux_icon(&app) {
+                builder = builder.icon(icon);
+            }
+            match builder.show() {
+                // Do Not Disturb was checked just above.
+                #[cfg(target_os = "linux")]
+                Ok(()) => {
+                    if let Some(tone) = alert.sound {
+                        crate::sound::play(tone);
+                    }
+                }
+                #[cfg(not(target_os = "linux"))]
+                Ok(()) => {}
+                Err(error) => log::warn!("could not show a notification: {error}"),
+            }
+        });
+    }
+}
+
+/// A short silent notification after a button ran (or failed): it replaces
+/// the alert (same tag) and a click opens the alert's page. Shown even while
+/// notifications are paused: the person just pressed the button.
+pub fn show_confirmation(
+    app: &AppHandle,
+    server: &Server,
+    title: String,
+    body: String,
+    url: Option<Url>,
+    tag: &str,
+) {
+    let link = click_link(server, url.as_ref());
+    #[cfg(windows)]
+    {
+        let app_id = app.config().identifier.clone();
+        let xml = toast_document(&title, &body, None, &link, &[]);
+        let (tag, group) = (toast_key(tag), toast_key(&server.id));
+        tauri::async_runtime::spawn_blocking(move || {
+            if let Err(error) = toast::show(&app_id, &xml, &tag, &group) {
+                log::warn!("could not show a confirmation: {error}");
+            }
+        });
+    }
+    #[cfg(not(windows))]
+    {
+        use tauri_plugin_notification::NotificationExt;
+        let _ = (link, tag);
+        let local_id =
+            app.state::<AppState>()
+                .remember_notification(crate::state::NotificationTarget::Page {
+                    server_id: server.id.clone(),
+                    url: url.as_ref().map(Url::to_string),
+                });
+        let app = app.clone();
+        tauri::async_runtime::spawn_blocking(move || {
+            #[cfg_attr(not(target_os = "linux"), allow(unused_mut))]
+            let mut builder = app
+                .notification()
+                .builder()
+                .id(local_id)
+                .title(title)
+                .body(body);
+            #[cfg(target_os = "linux")]
+            if let Some(icon) = linux_icon(&app) {
+                builder = builder.icon(icon);
+            }
+            if let Err(error) = builder.show() {
+                log::warn!("could not show a confirmation: {error}");
+            }
+        });
     }
 }
 
@@ -330,7 +522,7 @@ pub fn show(app: &AppHandle, server: &Server, alert: Alert) {
 /// `MARGAYA_E2E_NOTIFY_LOG`, so a test can "click" it by starting the app
 /// with that link (what Windows does) without touching the person's mouse.
 #[cfg(feature = "e2e")]
-fn e2e_record(alert: &Alert, link: &str) {
+fn e2e_record(alert: &Alert, link: &str, buttons: &[(String, String)]) {
     use std::io::Write;
     let Ok(path) = std::env::var("MARGAYA_E2E_NOTIFY_LOG") else {
         return;
@@ -342,6 +534,7 @@ fn e2e_record(alert: &Alert, link: &str) {
         "soundName": alert.sound.map(|tone| tone.id.name()),
         "volume": alert.sound.map(|tone| tone.volume),
         "link": link,
+        "actions": buttons.iter().map(|(_, link)| link.as_str()).collect::<Vec<_>>(),
     });
     if let Ok(mut file) = std::fs::OpenOptions::new()
         .create(true)
@@ -366,21 +559,6 @@ fn e2e_record_download(link: &str) {
         .open(path)
     {
         let _ = writeln!(file, "{line}");
-    }
-}
-
-/// Linux: the Margaya sound, after the notification showed, unless GNOME's
-/// Do Not Disturb is on. Off the UI thread: the player runs until it ends.
-#[cfg(target_os = "linux")]
-fn play_linux_sound(tone: Option<Tone>) {
-    if let Some(tone) = tone {
-        tauri::async_runtime::spawn_blocking(move || {
-            if crate::sound::system_quiet() {
-                log::info!("no sound: Do Not Disturb is on");
-            } else {
-                crate::sound::play(tone);
-            }
-        });
     }
 }
 
@@ -589,6 +767,32 @@ mod tests {
             false
         )
         .contains('\u{0}'));
+    }
+
+    #[test]
+    fn puts_protocol_buttons_on_a_task_alert() {
+        let id = "5b0c8a52-3f7e-4c1d-9a7e-2d4f1c6b8e91";
+        let buttons = toast_buttons(id, &[Action::Done, Action::Snooze, Action::Reply]);
+        let xml = toast_xml_with_buttons(&alert(None), "margaya://open?server=x", false, &buttons);
+        assert!(xml.contains("</visual><actions><action content="));
+        assert!(xml.contains("</actions><audio silent=\"true\"/></toast>"));
+        assert_eq!(xml.matches("<action ").count(), 3);
+        assert_eq!(xml.matches(r#"activationType="protocol""#).count(), 4);
+        for action in ["done", "snooze", "reply"] {
+            assert!(
+                xml.contains(&format!(
+                    r#"arguments="margaya://notification-action?id={id}&amp;action={action}""#
+                )),
+                "{action}"
+            );
+        }
+        // Labels are the app's own copy, escaped like any text.
+        assert!(xml.contains(&format!(
+            r#"content="{}""#,
+            escape_xml(&Action::Snooze.label())
+        )));
+        // Without buttons nothing changes.
+        assert!(!toast_xml(&alert(None), "x", false).contains("<actions>"));
     }
 
     #[test]

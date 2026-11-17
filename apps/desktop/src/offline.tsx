@@ -1,18 +1,28 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { OfflineReader, RecentList } from "./components/offline-reader";
 import { errorMessage } from "./lib/errors";
 import { useT } from "./lib/i18n";
-import { api, type OfflineState } from "./lib/ipc";
+import {
+  api,
+  type OfflineItem,
+  type OfflineItemSummary,
+  type OfflineState,
+} from "./lib/ipc";
 
 /**
  * Shown inside a server window (index.html#offline) when the server can't be
  * reached. Counts down to an automatic retry, which the Rust core checks
- * before leaving; "Try again" always reloads the server page.
+ * before leaving; "Try again" always reloads the server page. Below, the
+ * server's recently opened tasks and pages, readable as saved copies.
  */
 export function Offline() {
   const t = useT();
   const [state, setState] = useState<OfflineState | null>(null);
   const [seconds, setSeconds] = useState(0);
   const [retrying, setRetrying] = useState(false);
+  const [recent, setRecent] = useState<OfflineItemSummary[]>([]);
+  const [reading, setReading] = useState<OfflineItem | null>(null);
+  const [missing, setMissing] = useState(false);
   const busy = useRef(false);
 
   const retry = useCallback(async (manual: boolean) => {
@@ -36,6 +46,11 @@ export function Offline() {
       .offlineState()
       .then(setState)
       .catch(() => {});
+    // An older core has no saved copies: the list just stays empty.
+    api
+      .offlineItems()
+      .then((items) => setRecent(Array.isArray(items) ? items : []))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -55,17 +70,41 @@ export function Offline() {
     return () => window.clearInterval(timer);
   }, [state, retry]);
 
+  const open = useCallback(async (summary: OfflineItemSummary) => {
+    setMissing(false);
+    try {
+      const item = await api.offlineItem(summary.kind, summary.id);
+      if (item) setReading(item);
+      else setMissing(true);
+    } catch {
+      setMissing(true);
+    }
+  }, []);
+
   if (!state) return null;
+
+  if (reading) {
+    return (
+      <main className="offline offline-reading">
+        <OfflineReader
+          item={reading}
+          retrying={retrying}
+          onRetry={() => void retry(true)}
+          onBack={() => setReading(null)}
+        />
+      </main>
+    );
+  }
 
   const reason = errorMessage(t, { kind: state.errorKind, message: "" });
 
   return (
-    <main className="offline" aria-live="polite">
+    <main className="offline">
       <img src="./logo.svg" alt="" width={40} height={40} />
       <h1>{t("offline.title", { name: state.serverName })}</h1>
       <p className="muted">{t("offline.body")}</p>
       <p className="offline-url">{state.webUrl}</p>
-      <p className="message error">
+      <p className="message error" aria-live="polite">
         {t("offline.lastError", { error: reason })}
       </p>
       <p className="muted" role="status">
@@ -90,6 +129,12 @@ export function Offline() {
           {t("offline.switchServer")}
         </button>
       </div>
+      {missing ? (
+        <p className="message error" role="alert">
+          {t("offline.copyMissing")}
+        </p>
+      ) : null}
+      <RecentList items={recent} onOpen={(item) => void open(item)} />
     </main>
   );
 }

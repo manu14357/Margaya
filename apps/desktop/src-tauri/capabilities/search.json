@@ -1,0 +1,14 @@
+{
+	"$schema": "../gen/schemas/desktop-schema.json",
+	"identifier": "search",
+	"description": "The bundled global search window (index.html#search): only its own commands, the server list it labels results with, and events.",
+	"windows": ["search"],
+	"permissions": [
+		"core:event:default",
+		"allow-list-servers",
+		"allow-search-query",
+		"allow-search-recent",
+		"allow-search-open",
+		"allow-close-search"
+	]
+}

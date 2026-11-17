@@ -115,6 +115,27 @@ pub fn open_outside(app: &AppHandle, scope: &str, url: &Url) {
     }
 }
 
+/// The Windows screen snip overlay, which puts the picked area on the
+/// clipboard (capture.rs).
+#[cfg(windows)]
+pub const SCREEN_SNIP: &str = "ms-screenclip:";
+
+/// Opens one of the system's own tools by a fixed link, on its own thread
+/// like [`open_outside`]. Takes only constants, never a link from a page.
+#[cfg(windows)]
+pub fn open_system_tool(link: &'static str) {
+    let spawned = std::thread::Builder::new()
+        .name("open-system-tool".into())
+        .spawn(move || {
+            if let Err(error) = platform_open(link) {
+                log::warn!("could not open a system tool: {error}");
+            }
+        });
+    if let Err(error) = spawned {
+        log::warn!("could not start a thread to open a system tool: {error}");
+    }
+}
+
 /// Test builds (`--features e2e`) never start a browser: they append the link
 /// to the file named by `MARGAYA_E2E_OPEN_LOG`, after an optional
 /// `MARGAYA_E2E_OPEN_DELAY_MS` pause that stands in for a slow shell.

@@ -2,12 +2,14 @@
 //! server down, untrusted certificate), the window shows the launcher bundle's
 //! offline page (`index.html#offline`) instead of the webview's own error
 //! page. It retries with a growing delay and goes back to the page it was on
-//! once the server answers.
+//! once the server answers. It also lists the server's recently opened tasks
+//! and pages (offline_cache.rs) and shows their saved copies, read-only.
 //!
 //! The page runs on the app's own origin in the server window, so it may call
-//! only `offline_state`, `offline_retry` and `show_servers`
-//! (capabilities/offline.json, local pages only), and Rust answers only the
-//! window that is actually showing it.
+//! only `offline_state`, `offline_retry`, `show_servers`, `offline_items` and
+//! `offline_item` (capabilities/offline.json, local pages only), and Rust
+//! answers only the window that is actually showing it, with that window's
+//! own server's copies.
 
 use std::time::Duration;
 
@@ -19,7 +21,7 @@ use crate::error::{AppError, AppResult, ErrorKind};
 use crate::routing;
 use crate::servers::{self, Server};
 use crate::state::{AppState, Offline};
-use crate::{discovery, windows};
+use crate::{discovery, offline_cache, windows};
 
 const PROBE_TIMEOUT: Duration = Duration::from_secs(8);
 
@@ -227,4 +229,45 @@ pub fn show_servers(app: AppHandle, webview: Webview, state: State<'_, AppState>
     caller(&state, &webview)?;
     windows::show_launcher(&app);
     Ok(())
+}
+
+/// The calling window's server cache, when "Keep recent items for offline
+/// reading" is on. Only the window showing the offline page may ask, and it
+/// only ever gets its own server's copies (window label → server id).
+fn caller_cache(
+    app: &AppHandle,
+    state: &AppState,
+    webview: &Webview,
+) -> AppResult<Option<offline_cache::Cache>> {
+    caller(state, webview)?;
+    if !offline_cache::enabled(app) {
+        return Ok(None);
+    }
+    let profiles = offline_cache::profiles_dir(app)?;
+    Ok(offline_cache::cache_for_window(&profiles, webview.label()))
+}
+
+/// "Recently opened" on the offline page: this server's saved copies, most
+/// recent first.
+#[tauri::command]
+pub async fn offline_items(
+    app: AppHandle,
+    webview: Webview,
+    state: State<'_, AppState>,
+) -> AppResult<Vec<offline_cache::ItemSummary>> {
+    Ok(caller_cache(&app, &state, &webview)?
+        .map(|cache| cache.list())
+        .unwrap_or_default())
+}
+
+/// One saved copy of this server, read-only.
+#[tauri::command]
+pub async fn offline_item(
+    app: AppHandle,
+    webview: Webview,
+    state: State<'_, AppState>,
+    kind: offline_cache::ItemKind,
+    id: String,
+) -> AppResult<Option<offline_cache::Item>> {
+    Ok(caller_cache(&app, &state, &webview)?.and_then(|cache| cache.get(kind, &id)))
 }

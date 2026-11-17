@@ -1,0 +1,182 @@
+/* The Today mini window (#today). Uses the launcher's tokens from
+   styles.css. */
+
+.today {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 100vh;
+  padding: 12px 12px 16px;
+}
+
+.today-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.today-header h1 {
+  font-size: 16px;
+}
+
+.today-refresh {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  padding: 0;
+}
+
+.today-refresh .spinning {
+  animation: today-spin 900ms linear infinite;
+}
+
+@keyframes today-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.today-message {
+  font-size: 13px;
+}
+
+.today-status {
+  padding: 32px 8px;
+  color: var(--muted-foreground);
+  text-align: center;
+}
+
+.today-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.today-section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 4px 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.today-section-title.overdue {
+  color: var(--destructive-foreground);
+}
+
+.today-count {
+  padding: 0 6px;
+  color: var(--muted-foreground);
+  background: var(--muted);
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.today-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.today-task {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+}
+
+.today-task + .today-task {
+  border-top: 1px solid var(--border);
+}
+
+.today-check {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.today-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.today-title {
+  padding: 0;
+  overflow: hidden;
+  color: var(--foreground);
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  font: inherit;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.today-title:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.today-key {
+  margin-right: 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.today-meta {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.today-due {
+  margin-right: 6px;
+  color: var(--destructive-foreground);
+  font-weight: 500;
+}
+
+@media (pointer: coarse) {
+  .today-task {
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .today-check {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+  }
+
+  .today-title,
+  .today-refresh {
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .today-refresh .spinning {
+    animation: none;
+  }
+}

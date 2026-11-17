@@ -25,7 +25,7 @@
 		],
 		"security": {
 			"csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost",
-			"capabilities": ["launcher", "offline"]
+			"capabilities": ["launcher", "quick-add", "search", "today", "offline"]
 		}
 	},
 	"bundle": {
@@ -51,7 +51,8 @@
 		},
 		"windows": {
 			"nsis": {
-				"installMode": "currentUser"
+				"installMode": "currentUser",
+				"installerHooks": "./windows/installer-hooks.nsh"
 			}
 		},
 		"linux": {

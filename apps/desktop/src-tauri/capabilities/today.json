@@ -1,0 +1,14 @@
+{
+	"$schema": "../gen/schemas/desktop-schema.json",
+	"identifier": "today",
+	"description": "The bundled Today window (index.html#today): only its own commands, the server list, and events.",
+	"windows": ["today"],
+	"permissions": [
+		"core:event:default",
+		"allow-list-servers",
+		"allow-today-tasks",
+		"allow-today-complete",
+		"allow-today-open",
+		"allow-close-today"
+	]
+}

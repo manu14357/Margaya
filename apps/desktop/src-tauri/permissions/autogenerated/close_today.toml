@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-close-today"
+description = "Enables the close_today command without any pre-configured scope."
+commands.allow = ["close_today"]
+
+[[permission]]
+identifier = "deny-close-today"
+description = "Denies the close_today command without any pre-configured scope."
+commands.deny = ["close_today"]

@@ -21,6 +21,14 @@ pub enum ErrorKind {
     /// The token couldn't be stored: on Linux, usually no Secret Service
     /// (GNOME Keyring, KWallet) is running.
     KeychainUnavailable,
+    /// A keyboard shortcut the app can't use: not a combination, no
+    /// Ctrl/Alt/Cmd, reserved by the system, already another action's, or
+    /// refused by the system (another app holds it).
+    ShortcutInvalid,
+    ShortcutNoModifier,
+    ShortcutReserved,
+    ShortcutInUse,
+    ShortcutTaken,
     Internal,
 }
 

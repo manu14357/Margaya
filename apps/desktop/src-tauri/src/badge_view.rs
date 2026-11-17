@@ -13,6 +13,8 @@ pub fn apply(app: &AppHandle) {
         return;
     };
     let total = state.total_unread();
+    // The tray lists each server's own count.
+    crate::menus::unread_changed(app);
 
     #[cfg(target_os = "macos")]
     if let Some(window) = app.webview_windows().values().next() {
@@ -42,6 +44,13 @@ pub fn apply(app: &AppHandle) {
 
     #[cfg(not(any(windows, target_os = "macos", target_os = "linux")))]
     let _ = total;
+}
+
+/// Linux: download progress (0 to 1) on the docks that show the count, or
+/// none (download_progress.rs). Blocking: call it off the UI thread.
+#[cfg(target_os = "linux")]
+pub fn show_progress(value: Option<f64>) {
+    launcher_entry::progress(value);
 }
 
 /// The `com.canonical.Unity.LauncherEntry` signal. Docks match it to the
@@ -96,6 +105,39 @@ mod launcher_entry {
         });
     }
 
+    /// Download progress (0 to 1), or none, on the same connection as the
+    /// count. Blocking: call it off the UI thread.
+    pub fn progress(value: Option<f64>) {
+        let _sending = SENDING
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner());
+        let connection = CONNECTION.get_or_init(|| {
+            zbus::blocking::Connection::session()
+                .map_err(|error| log::info!("no session bus for the dock badge: {error}"))
+                .ok()
+        });
+        let Some(connection) = connection else {
+            return;
+        };
+        let sent = connection.emit_signal(
+            None::<&str>,
+            PATH,
+            "com.canonical.Unity.LauncherEntry",
+            "Update",
+            &(APP_URI, progress_properties(value)),
+        );
+        if let Err(error) = sent {
+            log::debug!("could not update the dock's download progress: {error}");
+        }
+    }
+
+    pub fn progress_properties(value: Option<f64>) -> HashMap<&'static str, Value<'static>> {
+        HashMap::from([
+            ("progress", Value::from(value.unwrap_or(0.0).clamp(0.0, 1.0))),
+            ("progress-visible", Value::from(value.is_some())),
+        ])
+    }
+
     pub fn properties(count: u32) -> HashMap<&'static str, Value<'static>> {
         HashMap::from([
             ("count", Value::from(i64::from(count))),
@@ -113,6 +155,14 @@ mod launcher_entry {
             assert_eq!(properties(3)["count-visible"], Value::from(true));
             assert_eq!(properties(0)["count-visible"], Value::from(false));
             assert_eq!(APP_URI, "application://Margaya.desktop");
+        }
+
+        #[test]
+        fn shows_download_progress_only_while_known() {
+            assert_eq!(progress_properties(Some(0.25))["progress"], Value::from(0.25));
+            assert_eq!(progress_properties(Some(0.25))["progress-visible"], Value::from(true));
+            assert_eq!(progress_properties(Some(7.0))["progress"], Value::from(1.0));
+            assert_eq!(progress_properties(None)["progress-visible"], Value::from(false));
         }
     }
 }

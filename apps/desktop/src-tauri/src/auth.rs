@@ -131,6 +131,13 @@ pub enum DeepLink {
     /// Only an id this process handed out shows a file; no id, or one it
     /// doesn't know, shows the Downloads folder (see downloads.rs).
     Download { id: Option<String> },
+    /// margaya://notification-action?id=<uuid>&action=<done|snooze|reply>:
+    /// a button on a notification (see notification_actions.rs). Only an id
+    /// this process handed out acts; any other brings the app forward.
+    NotificationAction {
+        id: Option<String>,
+        action: crate::notification_actions::Action,
+    },
 }
 
 pub const AUTH_SCHEME: &str = "com.margaya.desktop";
@@ -169,6 +176,10 @@ pub fn parse_deep_link(url: &Url) -> Option<DeepLink> {
                 None => None,
             };
             Some(DeepLink::Download { id })
+        }
+        ALIAS_SCHEME if host == crate::notification_actions::LINK_HOST => {
+            crate::notification_actions::parse_link(url)
+                .map(|(id, action)| DeepLink::NotificationAction { id, action })
         }
         _ => None,
     }

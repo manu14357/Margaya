@@ -93,6 +93,11 @@ pub struct AppState {
     pub last_alert_sound: Mutex<Option<std::time::Instant>>,
     /// Held while a server's main window is found or created.
     pub opening_windows: Mutex<()>,
+    /// Servers signed in natively (a token in the keychain), each with the
+    /// generation of that sign-in, so hot paths need no keychain read and
+    /// work started under an earlier session can tell it is stale.
+    sessions: Mutex<HashMap<String, u64>>,
+    next_session: AtomicU64,
     next_window: AtomicU32,
     next_navigation: AtomicU64,
 }
@@ -132,6 +137,8 @@ impl AppState {
             downloads: Mutex::default(),
             last_alert_sound: Mutex::default(),
             opening_windows: Mutex::default(),
+            sessions: Mutex::default(),
+            next_session: AtomicU64::new(1),
             next_window: AtomicU32::new(1),
             next_navigation: AtomicU64::new(1),
         }
@@ -146,6 +153,24 @@ impl AppState {
 
     pub fn servers(&self) -> Vec<Server> {
         lock(&self.store).list().to_vec()
+    }
+
+    /// Records that a server's token was stored (sign-in, or found in the
+    /// keychain at start) and returns this session's generation.
+    pub fn mark_signed_in(&self, server_id: &str) -> u64 {
+        let generation = self.next_session.fetch_add(1, Ordering::Relaxed);
+        lock(&self.sessions).insert(server_id.to_string(), generation);
+        generation
+    }
+
+    /// Records that a server's token is gone (sign-out, removal, refused).
+    pub fn mark_signed_out(&self, server_id: &str) {
+        lock(&self.sessions).remove(server_id);
+    }
+
+    /// The generation of a server's current native sign-in, if any.
+    pub fn session(&self, server_id: &str) -> Option<u64> {
+        lock(&self.sessions).get(server_id).copied()
     }
 
     /// A number for the next additional window or popup label.

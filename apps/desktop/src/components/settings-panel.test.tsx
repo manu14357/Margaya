@@ -18,6 +18,8 @@ function answer(settings: Record<string, unknown>) {
     if (command === "install_update") return null;
     if (command === "set_autostart") return null;
     if (command === "copy_diagnostics") return null;
+    if (command === "set_start_minimized") return null;
+    if (command === "set_update_channel") return null;
     throw new Error(`unexpected command ${command}`);
   });
 }
@@ -94,5 +96,60 @@ describe("SettingsPanel updates", () => {
     expect((await screen.findByRole("status")).textContent).toBe(
       "settings.copied",
     );
+  });
+
+  it("starts minimized only when opening at login", async () => {
+    answer({
+      platform: "windows",
+      selfUpdate: true,
+      startMinimized: true,
+      updateChannel: "stable",
+    });
+    render(<SettingsPanel />);
+    const toggle = (await screen.findByRole("switch", {
+      name: "settings.startMinimized",
+    })) as HTMLInputElement;
+    expect(toggle.checked).toBe(true);
+    expect(toggle.disabled).toBe(true);
+    fireEvent.click(
+      screen.getByRole("switch", { name: "settings.openAtLogin" }),
+    );
+    await vi.waitFor(() => expect(toggle.disabled).toBe(false));
+    fireEvent.click(toggle);
+    await vi.waitFor(() =>
+      expect(invoke).toHaveBeenCalledWith("set_start_minimized", {
+        enabled: false,
+      }),
+    );
+    await vi.waitFor(() => expect(toggle.checked).toBe(false));
+  });
+
+  it("switches the update channel", async () => {
+    answer({
+      platform: "linux",
+      selfUpdate: true,
+      startMinimized: true,
+      updateChannel: "stable",
+    });
+    render(<SettingsPanel />);
+    const select = (await screen.findByRole("combobox", {
+      name: "settings.updateChannel",
+    })) as HTMLSelectElement;
+    expect(select.value).toBe("stable");
+    fireEvent.change(select, { target: { value: "beta" } });
+    await vi.waitFor(() =>
+      expect(invoke).toHaveBeenCalledWith("set_update_channel", {
+        channel: "beta",
+      }),
+    );
+    await vi.waitFor(() => expect(select.value).toBe("beta"));
+  });
+
+  it("hides the newer rows with an older core", async () => {
+    answer({ platform: "windows", selfUpdate: true });
+    render(<SettingsPanel />);
+    await screen.findByText("settings.version");
+    expect(screen.queryByText("settings.startMinimized")).toBeNull();
+    expect(screen.queryByText("settings.updateChannel")).toBeNull();
   });
 });

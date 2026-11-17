@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-offline-item"
+description = "Enables the offline_item command without any pre-configured scope."
+commands.allow = ["offline_item"]
+
+[[permission]]
+identifier = "deny-offline-item"
+description = "Denies the offline_item command without any pre-configured scope."
+commands.deny = ["offline_item"]

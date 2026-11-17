@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-today-tasks"
+description = "Enables the today_tasks command without any pre-configured scope."
+commands.allow = ["today_tasks"]
+
+[[permission]]
+identifier = "deny-today-tasks"
+description = "Denies the today_tasks command without any pre-configured scope."
+commands.deny = ["today_tasks"]

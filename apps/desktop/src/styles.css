@@ -457,6 +457,99 @@ select {
   padding: 16px;
 }
 
+/* Quick add: chips for what the title says, attachments and notices. */
+.quick-add .small {
+  font-size: 12px;
+}
+
+.quick-add textarea {
+  padding: 8px 10px;
+  color: var(--foreground);
+  background: var(--card);
+  border: 1px solid var(--input);
+  border-radius: calc(var(--radius) - 2px);
+  font: inherit;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.chips,
+.attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px 2px 1px 8px;
+  color: var(--accent-foreground);
+  background: var(--accent);
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.chip.warning {
+  color: var(--warning-foreground);
+  background: var(--muted);
+}
+
+.chip-remove {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.chip-remove:hover {
+  background: var(--muted);
+}
+
+.attachments {
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.attachment {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  font-size: 13px;
+}
+
+.attachment-preview {
+  max-width: 120px;
+  max-height: 68px;
+  border-radius: 4px;
+  object-fit: contain;
+  background: var(--muted);
+}
+
+.attachment-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .offline {
   display: flex;
   flex-direction: column;
@@ -487,6 +580,225 @@ select {
 
 .offline .row {
   margin-top: 8px;
+}
+
+/* Offline reading: the recently opened list and a saved copy. */
+.offline-recent {
+  width: 100%;
+  margin-top: 24px;
+  text-align: start;
+}
+
+.offline-recent h2 {
+  margin-bottom: 2px;
+}
+
+.offline-recent ul {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+}
+
+.offline-recent li + li {
+  border-top: 1px solid var(--border);
+}
+
+.offline-recent-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  color: var(--foreground);
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.offline-recent-item:hover {
+  background: var(--muted);
+}
+
+.offline-recent-title {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.offline-recent-meta {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.offline.offline-reading {
+  justify-content: flex-start;
+  align-items: stretch;
+  max-width: 760px;
+  text-align: start;
+}
+
+.offline-reader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.offline-reader h1 {
+  font-size: 22px;
+  overflow-wrap: anywhere;
+}
+
+.offline-reader h1:focus {
+  outline: none;
+}
+
+.offline-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 10px 12px;
+  color: var(--warning-foreground);
+  background: color-mix(in srgb, var(--warning) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--warning) 40%, transparent);
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.offline-banner p {
+  flex: 1 1 240px;
+  font-weight: 500;
+}
+
+.offline-banner .row {
+  margin-top: 0;
+}
+
+.offline-reader-context {
+  font-size: 12px;
+}
+
+.offline-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px 16px;
+  margin: 0;
+}
+
+.offline-meta dt {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.offline-meta dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.offline-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+
+.offline-text h2,
+.offline-text h3,
+.offline-text h4 {
+  margin: 8px 0 0;
+}
+
+.offline-text-paragraph {
+  white-space: pre-wrap;
+}
+
+.offline-text-item {
+  display: flex;
+  gap: 8px;
+}
+
+.offline-text-marker {
+  flex: none;
+  min-width: 1em;
+  color: var(--muted-foreground);
+}
+
+/* Settings: keyboard shortcuts, the update channel and "What's new". */
+.row.gap {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.warning-text {
+  color: var(--warning-foreground);
+}
+
+.shortcut-settings {
+  margin-top: 16px;
+}
+
+.shortcut-intro {
+  margin-bottom: 8px;
+}
+
+.shortcut-keys {
+  display: inline-block;
+  padding: 1px 6px;
+  font-family: inherit;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--background);
+}
+
+.shortcut-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.whats-new h2 {
+  font-size: 16px;
+}
+
+.release-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+}
+
+.release-notes h3 {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.release-note-item {
+  position: relative;
+  padding-left: 14px;
+}
+
+.release-note-item::before {
+  content: "•";
+  position: absolute;
+  left: 2px;
+  color: var(--muted-foreground);
+}
+
+.release-note-item[data-depth="1"] {
+  margin-left: 14px;
+}
+
+.release-note-item[data-depth="2"] {
+  margin-left: 28px;
 }
 
 @media (pointer: coarse) {

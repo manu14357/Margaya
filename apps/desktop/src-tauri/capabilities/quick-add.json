@@ -1,0 +1,18 @@
+{
+	"$schema": "../gen/schemas/desktop-schema.json",
+	"identifier": "quick-add",
+	"description": "The bundled quick-add window (index.html#quick-add): only its own commands, the server list, and events.",
+	"windows": ["quick-add"],
+	"permissions": [
+		"core:event:default",
+		"allow-list-servers",
+		"allow-quick-add-targets",
+		"allow-quick-add-create",
+		"allow-quick-add-open",
+		"allow-close-quick-add",
+		"allow-quick-add-draft",
+		"allow-quick-add-remove-attachment",
+		"allow-quick-add-members",
+		"allow-quick-add-prefs"
+	]
+}

@@ -426,6 +426,30 @@ pub fn system_quiet() -> bool {
     busy || focus_profile().is_some_and(|profile| profile != 0)
 }
 
+/// Whether Windows says not to show notifications at all now: Do Not
+/// Disturb or Focus, a presentation, a full-screen app or the quiet hour
+/// after a first sign-in. Then the app shows no toast (and plays nothing);
+/// the badge still updates. A locked or unattended screen doesn't count:
+/// those toasts wait in the notification centre.
+#[cfg(windows)]
+pub fn windows_holds_toasts() -> bool {
+    use ::windows::Win32::UI::Shell::SHQueryUserNotificationState;
+    let state = unsafe { SHQueryUserNotificationState() }
+        .ok()
+        .map(|state| state.0);
+    holds_toasts(state, focus_profile())
+}
+
+/// `SHQueryUserNotificationState`'s answer (QUNS_*) and the Do Not Disturb
+/// profile, as [`windows_holds_toasts`] reads them.
+#[cfg_attr(not(windows), allow(dead_code))]
+pub fn holds_toasts(state: Option<i32>, focus_profile: Option<u32>) -> bool {
+    // QUNS_BUSY, QUNS_RUNNING_D3D_FULL_SCREEN, QUNS_PRESENTATION_MODE,
+    // QUNS_QUIET_TIME; not QUNS_NOT_PRESENT (1), QUNS_ACCEPTS_NOTIFICATIONS
+    // (5) or QUNS_APP (7).
+    matches!(state, Some(2 | 3 | 4 | 6)) || focus_profile.is_some_and(|profile| profile != 0)
+}
+
 /// Whether GNOME's Do Not Disturb is on (`show-banners` off), when the
 /// notification itself stays quiet and so should our sound. Other desktops
 /// keep their own setting, which the app can't read; their notification
@@ -505,6 +529,20 @@ mod tests {
     fn rms(samples: &[i16]) -> f64 {
         let sum: f64 = samples.iter().map(|s| f64::from(*s).powi(2)).sum();
         (sum / samples.len() as f64).sqrt()
+    }
+
+    #[test]
+    fn windows_holds_toasts_for_do_not_disturb_and_full_screen_but_not_a_locked_screen() {
+        assert!(!holds_toasts(Some(5), Some(0)));
+        assert!(!holds_toasts(Some(7), None));
+        // Locked or away: the toast waits in the notification centre.
+        assert!(!holds_toasts(Some(1), Some(0)));
+        for busy in [2, 3, 4, 6] {
+            assert!(holds_toasts(Some(busy), Some(0)), "{busy}");
+        }
+        assert!(holds_toasts(Some(5), Some(1)));
+        assert!(holds_toasts(None, Some(2)));
+        assert!(!holds_toasts(None, None));
     }
 
     #[test]

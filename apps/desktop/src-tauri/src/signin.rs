@@ -9,7 +9,7 @@ use url::Url;
 use crate::auth::{self, DeepLink, PendingSignIn};
 use crate::error::{AppError, AppResult, ErrorKind};
 use crate::state::{lock, AppState};
-use crate::{menus, opener, socket, tokens, urls, windows};
+use crate::{api, menus, opener, socket, tokens, urls, windows};
 
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -58,6 +58,13 @@ pub async fn finish(app: &AppHandle, pending: PendingSignIn, code: &str) -> AppR
             "could not store the token in the keychain",
         ));
     }
+    // A new session: work still running for an earlier one (offline
+    // snapshots on their way) is now stale.
+    state.mark_signed_in(&server.id);
+    // The token may be another account's than the one whose offline copies
+    // are kept: those go unless the server confirms it is the same person.
+    let user = api::session_user_id(&state.http, &server, &response.token).await;
+    crate::offline_cache::claim(app, &server.id, user.as_deref());
     match response.webview_secret {
         Some(secret) => lock(&state.handoff_secrets).insert(server.id.clone(), secret),
         None => lock(&state.handoff_secrets).remove(&server.id),
@@ -112,6 +119,9 @@ pub fn handle_deep_links(app: &AppHandle, links: Vec<Url>) {
             }) => handle_callback(app, code, state, server),
             Some(DeepLink::Open { server, path }) => handle_open(app, &server, &path),
             Some(DeepLink::Download { id }) => crate::downloads::show(app, id.as_deref()),
+            Some(DeepLink::NotificationAction { id, action }) => {
+                crate::notification_actions::handle(app, id.as_deref(), action)
+            }
             None => log::warn!("ignored a deep link the app does not understand"),
         }
     }

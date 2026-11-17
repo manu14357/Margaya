@@ -28,6 +28,10 @@ tauri-plugin-single-instance = { version = "2.5", features = ["deep-link"] }
 tauri-plugin-updater = "2.14"
 tauri-plugin-window-state = "2.5"
 base64 = "0.22"
+# Local time for "Pause notifications until tomorrow" (08:00 here) and the
+# snooze time. Already in the build through other crates; its Local reads
+# the zone itself, without libc's localtime.
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
 futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 getrandom = "0.3"
 iana-time-zone = "0.1"
@@ -35,6 +39,8 @@ iana-time-zone = "0.1"
 # libdbus Tauri already links, with pure-Rust session encryption.
 keyring = { version = "3", features = ["windows-native", "apple-native", "sync-secret-service", "crypto-rust"] }
 log = "0.4"
+# Quick add's screenshots: clipboard images to PNG, and small previews.
+png = "0.18"
 reqwest = { version = "0.13", default-features = false, features = ["json", "native-tls", "http2", "charset", "system-proxy"] }
 semver = "1"
 serde = { version = "1", features = ["derive"] }
@@ -50,14 +56,19 @@ uuid = { version = "1", features = ["v4", "serde"] }
 [target.'cfg(windows)'.dependencies]
 # ShellExecuteExW with COM for opening links, WebView2's load-failure
 # status for the offline page, toast notifications (WinRT) and their sound
-# (PlaySoundW). The same versions Tauri itself uses.
+# (PlaySoundW), and the taskbar jump list (ICustomDestinationList with
+# IShellLinkW tasks titled through their property store). The same versions
+# Tauri itself uses.
 webview2-com = "0.39"
-windows = { version = "0.62", features = ["Data_Xml_Dom", "UI_Notifications", "Win32_Foundation", "Win32_Media_Audio", "Win32_System_Com", "Win32_System_LibraryLoader", "Win32_System_Registry", "Win32_UI_Shell", "Win32_UI_WindowsAndMessaging"] }
+windows = { version = "0.62", features = ["Data_Xml_Dom", "UI_Notifications", "Win32_Foundation", "Win32_Media_Audio", "Win32_Storage_EnhancedStorage", "Win32_System_Com", "Win32_System_Com_StructuredStorage", "Win32_System_LibraryLoader", "Win32_System_Registry", "Win32_System_Variant", "Win32_UI_Shell", "Win32_UI_Shell_Common", "Win32_UI_Shell_PropertiesSystem", "Win32_UI_WindowsAndMessaging"] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 # The unread count on the dock icon (com.canonical.Unity.LauncherEntry). The
 # same zbus Tauri's plugins already use.
 zbus = "5"
+# Download progress and the spell-check language through the webview Tauri
+# hands out (`with_webview`). The same webkit2gtk wry already uses.
+webkit2gtk = "2"
 
 [features]
 # Test builds only, never in release CI: links that would open outside the

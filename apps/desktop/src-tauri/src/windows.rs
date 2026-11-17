@@ -435,10 +435,20 @@ fn build_server_window(
             builder = builder.data_store_identifier(identifier);
         }
     }
+    // The spell-check language. Every window on this profile must pass the
+    // same arguments (see spellcheck.rs).
+    #[cfg(windows)]
+    if let Some(args) = crate::spellcheck::browser_args(app, &server.id) {
+        builder = builder.additional_browser_args(&args);
+    }
 
     let window = builder.build()?;
     // The saved size and place were restored during build; keep them on screen.
     fit_on_screen(&window);
+    #[cfg(any(windows, target_os = "linux"))]
+    crate::download_progress::watch(app, &window);
+    #[cfg(target_os = "linux")]
+    crate::spellcheck::apply(app, &window);
     #[cfg(windows)]
     offline::watch_load_failures(app, &window, server);
 
@@ -583,6 +593,11 @@ fn build_popup(
             #[cfg(not(target_os = "macos"))]
             if let Ok(dir) = profile_dir(app, &server.id) {
                 builder = builder.data_directory(dir);
+                // The profile's browser process takes only its own arguments.
+                #[cfg(windows)]
+                if let Some(args) = crate::spellcheck::browser_args(app, &server.id) {
+                    builder = builder.additional_browser_args(&args);
+                }
             }
             #[cfg(target_os = "macos")]
             if let Some(identifier) = server.store_identifier() {
@@ -849,6 +864,13 @@ fn handle_download(app: &AppHandle, label: &str, event: DownloadEvent<'_>) -> bo
             }
             downloads.started(label, url.as_str(), destination.clone());
             drop(downloads);
+            // Windows and Linux follow the bytes from the webview itself
+            // (download_progress::watch); macOS knows only start and end.
+            #[cfg(target_os = "macos")]
+            crate::download_progress::started(
+                app,
+                crate::download_progress::key(label, url.as_str()),
+            );
             state.with_window(label, |info| {
                 info.downloads += 1;
                 // A window opened for a link that turned out to be a file
@@ -863,6 +885,11 @@ fn handle_download(app: &AppHandle, label: &str, event: DownloadEvent<'_>) -> bo
         DownloadEvent::Finished { url, path, success } => {
             // macOS reports no path here: use the one chosen at the start.
             let started = lock(&state.downloads).finished(label, url.as_str());
+            #[cfg(target_os = "macos")]
+            crate::download_progress::ended(
+                app,
+                crate::download_progress::key(label, url.as_str()),
+            );
             let known = path.or(started);
             // A failed blob: download has no name in its URL; keep the one
             // it was going to be saved under.

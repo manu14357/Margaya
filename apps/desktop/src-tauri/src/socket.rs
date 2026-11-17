@@ -67,9 +67,9 @@ pub fn read_hint(text: &str) -> Hint {
                 .map(str::to_string),
         ),
         Some("NOTIFICATIONS_UPDATED") => Hint::NotificationsUpdated,
-        Some("NOTIFICATIONS_RELEASED") => Hint::NotificationsReleased(
-            value.get("count").and_then(Value::as_u64).unwrap_or(0),
-        ),
+        Some("NOTIFICATIONS_RELEASED") => {
+            Hint::NotificationsReleased(value.get("count").and_then(Value::as_u64).unwrap_or(0))
+        }
         _ => Hint::Other,
     }
 }
@@ -112,7 +112,10 @@ async fn run(app: AppHandle, server_id: String) {
         match connect(&app, &server, &token, &mut attempt).await {
             Ended::Unauthorized => {
                 log::info!("a server refused the stored token; signing out locally");
+                app.state::<AppState>().mark_signed_out(&server_id);
                 tokens::delete(&server_id);
+                crate::search_window::forget_server(&server_id);
+                crate::menus::forget_server(&app, &server_id);
                 lock(&app.state::<AppState>().unread).remove(&server_id);
                 badge_view::apply(&app);
                 let _ = app.emit("servers-changed", ());
@@ -204,7 +207,13 @@ pub async fn refresh_unread(app: &AppHandle, server: &Server, token: &str) {
     }
 }
 
-async fn show_notification(app: &AppHandle, server: &Server, token: &str, id: &str) {
+/// Fetches one notification's text and shows it natively. Nothing while the
+/// person paused notifications in the app (the badge still updates).
+pub(crate) async fn show_notification(app: &AppHandle, server: &Server, token: &str, id: &str) {
+    if crate::pause::is_paused(app) {
+        log::info!("notification not shown: notifications are paused");
+        return;
+    }
     let state = app.state::<AppState>();
     let notification = match api::desktop_notification(&state.http, server, token, id).await {
         Ok(notification) => notification,
@@ -236,6 +245,12 @@ async fn show_notification(app: &AppHandle, server: &Server, token: &str, id: &s
         ),
         None => log::info!("showing a notification (sound: {sound:?})"),
     }
+    // Buttons only for a task the server names, as far as it says they apply.
+    let offer = notification.task_id.map(|task_id| notify::ActionOffer {
+        notification_id: id.to_string(),
+        task_id,
+        actions: crate::notification_actions::offered(&notification.actions, url.is_some()),
+    });
     let alert = notify::Alert {
         server_id: server.id.clone(),
         server_label: server.label.clone(),
@@ -245,13 +260,17 @@ async fn show_notification(app: &AppHandle, server: &Server, token: &str, id: &s
         tag: notification.tag.unwrap_or_else(|| id.to_string()),
         sound: tone,
     };
-    notify::show(app, &server, alert);
+    notify::show_with_actions(app, &server, alert, offer);
 }
 
 /// One silent alert when the user's quiet hours or focus mode end, for the
 /// alerts the server held back meanwhile (it sends no id for those). A
 /// click opens the server's window.
 fn show_release_summary(app: &AppHandle, server: &Server, count: u64) {
+    if crate::pause::is_paused(app) {
+        log::info!("quiet-time summary not shown: notifications are paused");
+        return;
+    }
     let state = app.state::<AppState>();
     let server = state.server(&server.id).unwrap_or_else(|_| server.clone());
     log::info!("showing the quiet-time summary");
@@ -259,7 +278,10 @@ fn show_release_summary(app: &AppHandle, server: &Server, count: u64) {
         server_id: server.id.clone(),
         server_label: server.label.clone(),
         title: i18n::t("notifications.releasedTitle"),
-        body: i18n::tv("notifications.releasedBody", &[("count", &count.to_string())]),
+        body: i18n::tv(
+            "notifications.releasedBody",
+            &[("count", &count.to_string())],
+        ),
         url: None,
         tag: "margaya-quiet-summary".to_string(),
         sound: None,

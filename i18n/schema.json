@@ -42,6 +42,15 @@
 						},
 						"undo": {
 							"type": "string"
+						},
+						"closePanel": {
+							"type": "string"
+						},
+						"moreActions": {
+							"type": "string"
+						},
+						"openInNewWindow": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -53,7 +62,10 @@
 						"markAllRead",
 						"remove",
 						"reset",
-						"undo"
+						"undo",
+						"closePanel",
+						"moreActions",
+						"openInNewWindow"
 					]
 				},
 				"a11y": {
@@ -15713,6 +15725,19 @@
 						"mailbox",
 						"form"
 					]
+				},
+				"table": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"actions": {
+							"type": "string"
+						},
+						"actionsFor": {
+							"type": "string"
+						}
+					},
+					"required": ["actions", "actionsFor"]
 				}
 			},
 			"required": [
@@ -15771,7 +15796,8 @@
 				"save",
 				"unsavedChanges",
 				"readOnly",
-				"projectIntake"
+				"projectIntake",
+				"table"
 			]
 		},
 		"navigation": {
@@ -16803,6 +16829,9 @@
 						},
 						"backlog": {
 							"type": "string"
+						},
+						"moreTabs": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -16840,7 +16869,8 @@
 						"filters",
 						"unreadOnly",
 						"workspaceAnalytics",
-						"backlog"
+						"backlog",
+						"moreTabs"
 					]
 				},
 				"focus": {
@@ -42160,6 +42190,42 @@
 						"more"
 					]
 				},
+				"present": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"start": {
+							"type": "string"
+						},
+						"newWindow": {
+							"type": "string"
+						},
+						"controls": {
+							"type": "string"
+						},
+						"previous": {
+							"type": "string"
+						},
+						"next": {
+							"type": "string"
+						},
+						"position": {
+							"type": "string"
+						},
+						"exit": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"start",
+						"newWindow",
+						"controls",
+						"previous",
+						"next",
+						"position",
+						"exit"
+					]
+				},
 				"dialogs": {
 					"type": "object",
 					"additionalProperties": false,
@@ -42656,6 +42722,7 @@
 				"list",
 				"templates",
 				"actions",
+				"present",
 				"dialogs",
 				"toasts",
 				"share",
@@ -55209,6 +55276,21 @@
 								},
 								"keychainUnavailable": {
 									"type": "string"
+								},
+								"shortcutInvalid": {
+									"type": "string"
+								},
+								"shortcutNoModifier": {
+									"type": "string"
+								},
+								"shortcutReserved": {
+									"type": "string"
+								},
+								"shortcutInUse": {
+									"type": "string"
+								},
+								"shortcutTaken": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -55226,7 +55308,12 @@
 								"codeInvalid",
 								"quickAddFailed",
 								"generic",
-								"keychainUnavailable"
+								"keychainUnavailable",
+								"shortcutInvalid",
+								"shortcutNoModifier",
+								"shortcutReserved",
+								"shortcutInUse",
+								"shortcutTaken"
 							]
 						},
 						"signIn": {
@@ -55338,6 +55425,126 @@
 								},
 								"diagnosticsHint": {
 									"type": "string"
+								},
+								"offlineReading": {
+									"type": "string"
+								},
+								"offlineReadingHint": {
+									"type": "string"
+								},
+								"offlineCopiesLabel": {
+									"type": "string"
+								},
+								"offlineCopiesHint": {
+									"type": "string"
+								},
+								"offlineClear": {
+									"type": "string"
+								},
+								"offlineCleared": {
+									"type": "string"
+								},
+								"spellcheckLabel": {
+									"type": "string"
+								},
+								"spellcheckHint": {
+									"type": "string"
+								},
+								"spellcheckSystem": {
+									"type": "string"
+								},
+								"spellcheckSystemNamed": {
+									"type": "string"
+								},
+								"spellcheckRestart": {
+									"type": "string"
+								},
+								"startMinimized": {
+									"type": "string"
+								},
+								"startMinimizedHint": {
+									"type": "string"
+								},
+								"updateChannel": {
+									"type": "string"
+								},
+								"updateChannelHint": {
+									"type": "string"
+								},
+								"channelStable": {
+									"type": "string"
+								},
+								"channelBeta": {
+									"type": "string"
+								},
+								"whatsNew": {
+									"type": "string"
+								},
+								"shortcutsHeading": {
+									"type": "string"
+								},
+								"shortcutsHint": {
+									"type": "string"
+								},
+								"shortcutQuickAdd": {
+									"type": "string"
+								},
+								"shortcutSearch": {
+									"type": "string"
+								},
+								"shortcutScreenshot": {
+									"type": "string"
+								},
+								"shortcutToday": {
+									"type": "string"
+								},
+								"shortcutNone": {
+									"type": "string"
+								},
+								"shortcutChange": {
+									"type": "string"
+								},
+								"shortcutRecording": {
+									"type": "string"
+								},
+								"shortcutRecordingHint": {
+									"type": "string"
+								},
+								"shortcutClear": {
+									"type": "string"
+								},
+								"shortcutReset": {
+									"type": "string"
+								},
+								"shortcutInactive": {
+									"type": "string"
+								},
+								"shortcutSaved": {
+									"type": "string"
+								},
+								"pauseLabel": {
+									"type": "string"
+								},
+								"pauseHint": {
+									"type": "string"
+								},
+								"pauseOff": {
+									"type": "string"
+								},
+								"pauseHour": {
+									"type": "string"
+								},
+								"pauseTomorrow": {
+									"type": "string"
+								},
+								"pauseForever": {
+									"type": "string"
+								},
+								"pausedUntil": {
+									"type": "string"
+								},
+								"pausedForever": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -55357,7 +55564,271 @@
 								"openAtLoginHint",
 								"updatesLabel",
 								"diagnosticsLabel",
-								"diagnosticsHint"
+								"diagnosticsHint",
+								"offlineReading",
+								"offlineReadingHint",
+								"offlineCopiesLabel",
+								"offlineCopiesHint",
+								"offlineClear",
+								"offlineCleared",
+								"spellcheckLabel",
+								"spellcheckHint",
+								"spellcheckSystem",
+								"spellcheckSystemNamed",
+								"spellcheckRestart",
+								"startMinimized",
+								"startMinimizedHint",
+								"updateChannel",
+								"updateChannelHint",
+								"channelStable",
+								"channelBeta",
+								"whatsNew",
+								"shortcutsHeading",
+								"shortcutsHint",
+								"shortcutQuickAdd",
+								"shortcutSearch",
+								"shortcutScreenshot",
+								"shortcutToday",
+								"shortcutNone",
+								"shortcutChange",
+								"shortcutRecording",
+								"shortcutRecordingHint",
+								"shortcutClear",
+								"shortcutReset",
+								"shortcutInactive",
+								"shortcutSaved",
+								"pauseLabel",
+								"pauseHint",
+								"pauseOff",
+								"pauseHour",
+								"pauseTomorrow",
+								"pauseForever",
+								"pausedUntil",
+								"pausedForever"
+							]
+						},
+						"whatsNew": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"loading": {
+									"type": "string"
+								},
+								"unavailable": {
+									"type": "string"
+								},
+								"openRelease": {
+									"type": "string"
+								},
+								"close": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"title",
+								"loading",
+								"unavailable",
+								"openRelease",
+								"close"
+							]
+						},
+						"jumpList": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"quickAdd": {
+									"type": "string"
+								},
+								"search": {
+									"type": "string"
+								},
+								"inbox": {
+									"type": "string"
+								},
+								"myTasks": {
+									"type": "string"
+								}
+							},
+							"required": ["quickAdd", "search", "inbox", "myTasks"]
+						},
+						"search": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"label": {
+									"type": "string"
+								},
+								"placeholder": {
+									"type": "string"
+								},
+								"recent": {
+									"type": "string"
+								},
+								"results": {
+									"type": "string"
+								},
+								"loading": {
+									"type": "string"
+								},
+								"searching": {
+									"type": "string"
+								},
+								"noResults": {
+									"type": "string"
+								},
+								"noRecent": {
+									"type": "string"
+								},
+								"noServers": {
+									"type": "string"
+								},
+								"unavailable": {
+									"type": "string"
+								},
+								"failed": {
+									"type": "string"
+								},
+								"openFailed": {
+									"type": "string"
+								},
+								"hint": {
+									"type": "string"
+								},
+								"group": {
+									"type": "string"
+								},
+								"kinds": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"task": {
+											"type": "string"
+										},
+										"project": {
+											"type": "string"
+										},
+										"page": {
+											"type": "string"
+										},
+										"cycle": {
+											"type": "string"
+										},
+										"module": {
+											"type": "string"
+										},
+										"view": {
+											"type": "string"
+										},
+										"intake": {
+											"type": "string"
+										},
+										"comment": {
+											"type": "string"
+										},
+										"activity": {
+											"type": "string"
+										},
+										"workspace": {
+											"type": "string"
+										},
+										"other": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"task",
+										"project",
+										"page",
+										"cycle",
+										"module",
+										"view",
+										"intake",
+										"comment",
+										"activity",
+										"workspace",
+										"other"
+									]
+								}
+							},
+							"required": [
+								"title",
+								"label",
+								"placeholder",
+								"recent",
+								"results",
+								"loading",
+								"searching",
+								"noResults",
+								"noRecent",
+								"noServers",
+								"unavailable",
+								"failed",
+								"openFailed",
+								"hint",
+								"group",
+								"kinds"
+							]
+						},
+						"today": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"overdue": {
+									"type": "string"
+								},
+								"dueToday": {
+									"type": "string"
+								},
+								"loading": {
+									"type": "string"
+								},
+								"empty": {
+									"type": "string"
+								},
+								"noServers": {
+									"type": "string"
+								},
+								"refresh": {
+									"type": "string"
+								},
+								"markDone": {
+									"type": "string"
+								},
+								"completeFailed": {
+									"type": "string"
+								},
+								"openFailed": {
+									"type": "string"
+								},
+								"unavailable": {
+									"type": "string"
+								},
+								"failed": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"title",
+								"overdue",
+								"dueToday",
+								"loading",
+								"empty",
+								"noServers",
+								"refresh",
+								"markDone",
+								"completeFailed",
+								"openFailed",
+								"unavailable",
+								"failed"
 							]
 						},
 						"quickAdd": {
@@ -55399,6 +55870,117 @@
 								},
 								"loading": {
 									"type": "string"
+								},
+								"hint": {
+									"type": "string"
+								},
+								"detected": {
+									"type": "string"
+								},
+								"dueChip": {
+									"type": "string"
+								},
+								"priorityChip": {
+									"type": "string"
+								},
+								"priorities": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"urgent": {
+											"type": "string"
+										},
+										"high": {
+											"type": "string"
+										},
+										"medium": {
+											"type": "string"
+										},
+										"low": {
+											"type": "string"
+										}
+									},
+									"required": ["urgent", "high", "medium", "low"]
+								},
+								"assigneeChip": {
+									"type": "string"
+								},
+								"unknownAssignee": {
+									"type": "string"
+								},
+								"removeChip": {
+									"type": "string"
+								},
+								"description": {
+									"type": "string"
+								},
+								"addDescription": {
+									"type": "string"
+								},
+								"attachments": {
+									"type": "string"
+								},
+								"previewAlt": {
+									"type": "string"
+								},
+								"removeAttachment": {
+									"type": "string"
+								},
+								"uploadHint": {
+									"type": "string"
+								},
+								"attachmentsFailed": {
+									"type": "string"
+								},
+								"screenshotName": {
+									"type": "string"
+								},
+								"clipboardImageName": {
+									"type": "string"
+								},
+								"notices": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"titleTrimmed": {
+											"type": "string"
+										},
+										"descriptionTrimmed": {
+											"type": "string"
+										},
+										"tooLarge": {
+											"type": "string"
+										},
+										"tooMany": {
+											"type": "string"
+										},
+										"notAFile": {
+											"type": "string"
+										},
+										"unreadable": {
+											"type": "string"
+										},
+										"clipboardEmpty": {
+											"type": "string"
+										},
+										"screenPermission": {
+											"type": "string"
+										},
+										"screenshotFailed": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"titleTrimmed",
+										"descriptionTrimmed",
+										"tooLarge",
+										"tooMany",
+										"notAFile",
+										"unreadable",
+										"clipboardEmpty",
+										"screenPermission",
+										"screenshotFailed"
+									]
 								}
 							},
 							"required": [
@@ -55413,7 +55995,25 @@
 								"open",
 								"noServers",
 								"noProjects",
-								"loading"
+								"loading",
+								"hint",
+								"detected",
+								"dueChip",
+								"priorityChip",
+								"priorities",
+								"assigneeChip",
+								"unknownAssignee",
+								"removeChip",
+								"description",
+								"addDescription",
+								"attachments",
+								"previewAlt",
+								"removeAttachment",
+								"uploadHint",
+								"attachmentsFailed",
+								"screenshotName",
+								"clipboardImageName",
+								"notices"
 							]
 						},
 						"downloads": {
@@ -55462,9 +56062,51 @@
 								},
 								"releasedBody_other": {
 									"type": "string"
+								},
+								"actionDone": {
+									"type": "string"
+								},
+								"actionSnooze": {
+									"type": "string"
+								},
+								"actionReply": {
+									"type": "string"
+								},
+								"doneTitle": {
+									"type": "string"
+								},
+								"doneBody": {
+									"type": "string"
+								},
+								"snoozedTitle": {
+									"type": "string"
+								},
+								"snoozedBody": {
+									"type": "string"
+								},
+								"doneFailedTitle": {
+									"type": "string"
+								},
+								"snoozeFailedTitle": {
+									"type": "string"
+								},
+								"actionFailedBody": {
+									"type": "string"
 								}
 							},
-							"required": ["releasedTitle"]
+							"required": [
+								"releasedTitle",
+								"actionDone",
+								"actionSnooze",
+								"actionReply",
+								"doneTitle",
+								"doneBody",
+								"snoozedTitle",
+								"snoozedBody",
+								"doneFailedTitle",
+								"snoozeFailedTitle",
+								"actionFailedBody"
+							]
 						},
 						"menu": {
 							"type": "object",
@@ -55590,6 +56232,42 @@
 								},
 								"updateDownload": {
 									"type": "string"
+								},
+								"search": {
+									"type": "string"
+								},
+								"today": {
+									"type": "string"
+								},
+								"clipboardTask": {
+									"type": "string"
+								},
+								"screenshot": {
+									"type": "string"
+								},
+								"recent": {
+									"type": "string"
+								},
+								"recentEmpty": {
+									"type": "string"
+								},
+								"settings": {
+									"type": "string"
+								},
+								"pauseNotifications": {
+									"type": "string"
+								},
+								"pauseOff": {
+									"type": "string"
+								},
+								"pauseHour": {
+									"type": "string"
+								},
+								"pauseTomorrow": {
+									"type": "string"
+								},
+								"pauseForever": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -55599,7 +56277,19 @@
 								"updateReady",
 								"quit",
 								"servers",
-								"updateDownload"
+								"updateDownload",
+								"search",
+								"today",
+								"clipboardTask",
+								"screenshot",
+								"recent",
+								"recentEmpty",
+								"settings",
+								"pauseNotifications",
+								"pauseOff",
+								"pauseHour",
+								"pauseTomorrow",
+								"pauseForever"
 							]
 						},
 						"offline": {
@@ -55641,6 +56331,48 @@
 								},
 								"switchServer": {
 									"type": "string"
+								},
+								"recentHeading": {
+									"type": "string"
+								},
+								"recentHint": {
+									"type": "string"
+								},
+								"savedAt": {
+									"type": "string"
+								},
+								"savedCopy": {
+									"type": "string"
+								},
+								"back": {
+									"type": "string"
+								},
+								"kindTask": {
+									"type": "string"
+								},
+								"kindPage": {
+									"type": "string"
+								},
+								"untitled": {
+									"type": "string"
+								},
+								"status": {
+									"type": "string"
+								},
+								"priority": {
+									"type": "string"
+								},
+								"due": {
+									"type": "string"
+								},
+								"assignees": {
+									"type": "string"
+								},
+								"noText": {
+									"type": "string"
+								},
+								"copyMissing": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -55649,7 +56381,21 @@
 								"lastError",
 								"retry",
 								"retrying",
-								"switchServer"
+								"switchServer",
+								"recentHeading",
+								"recentHint",
+								"savedAt",
+								"savedCopy",
+								"back",
+								"kindTask",
+								"kindPage",
+								"untitled",
+								"status",
+								"priority",
+								"due",
+								"assignees",
+								"noText",
+								"copyMissing"
 							]
 						}
 					},
@@ -55660,6 +56406,10 @@
 						"signIn",
 						"deepLink",
 						"settings",
+						"whatsNew",
+						"jumpList",
+						"search",
+						"today",
 						"quickAdd",
 						"downloads",
 						"notifications",
@@ -56996,9 +57746,22 @@
 						},
 						"highlighter": {
 							"type": "string"
+						},
+						"penOnly": {
+							"type": "string"
+						},
+						"penOnlyHint": {
+							"type": "string"
 						}
 					},
-					"required": ["label", "pen", "marker", "highlighter"]
+					"required": [
+						"label",
+						"pen",
+						"marker",
+						"highlighter",
+						"penOnly",
+						"penOnlyHint"
+					]
 				},
 				"background": {
 					"type": "object",

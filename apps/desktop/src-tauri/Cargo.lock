@@ -2554,11 +2554,13 @@ name = "margaya-desktop"
 version = "0.1.0"
 dependencies = [
  "base64 0.22.1",
+ "chrono",
  "futures-util",
  "getrandom 0.3.4",
  "iana-time-zone",
  "keyring",
  "log",
+ "png",
  "reqwest",
  "semver",
  "serde",
@@ -2583,6 +2585,7 @@ dependencies = [
  "tokio-tungstenite",
  "url",
  "uuid",
+ "webkit2gtk",
  "webview2-com",
  "windows",
  "zbus 5.19.0",

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-today-open"
+description = "Enables the today_open command without any pre-configured scope."
+commands.allow = ["today_open"]
+
+[[permission]]
+identifier = "deny-today-open"
+description = "Denies the today_open command without any pre-configured scope."
+commands.deny = ["today_open"]

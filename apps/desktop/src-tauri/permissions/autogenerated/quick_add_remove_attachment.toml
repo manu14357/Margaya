@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-quick-add-remove-attachment"
+description = "Enables the quick_add_remove_attachment command without any pre-configured scope."
+commands.allow = ["quick_add_remove_attachment"]
+
+[[permission]]
+identifier = "deny-quick-add-remove-attachment"
+description = "Denies the quick_add_remove_attachment command without any pre-configured scope."
+commands.deny = ["quick_add_remove_attachment"]

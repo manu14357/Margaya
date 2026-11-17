@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-get-offline-reading"
+description = "Enables the get_offline_reading command without any pre-configured scope."
+commands.allow = ["get_offline_reading"]
+
+[[permission]]
+identifier = "deny-get-offline-reading"
+description = "Denies the get_offline_reading command without any pre-configured scope."
+commands.deny = ["get_offline_reading"]

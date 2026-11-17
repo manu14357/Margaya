@@ -23,6 +23,11 @@ export function errorMessage(t: Translate, error: unknown): string {
     case "codeInvalid":
     case "quickAddFailed":
     case "keychainUnavailable":
+    case "shortcutInvalid":
+    case "shortcutNoModifier":
+    case "shortcutReserved":
+    case "shortcutInUse":
+    case "shortcutTaken":
       return t(`errors.${error.kind}`);
     case "desktopTooOld":
       return t("errors.desktopTooOld", { version: error.detail ?? "" });

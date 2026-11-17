@@ -1,8 +1,8 @@
 {
 	"$schema": "../gen/schemas/desktop-schema.json",
 	"identifier": "launcher",
-	"description": "The bundled launcher and quick-add windows.",
-	"windows": ["main", "quick-add"],
+	"description": "The bundled launcher (the server list and settings). Quick add, search and Today have their own capabilities.",
+	"windows": ["main"],
 	"permissions": [
 		"core:default",
 		"allow-list-servers",
@@ -22,9 +22,21 @@
 		"allow-copy-diagnostics",
 		"allow-check-for-update",
 		"allow-install-update",
-		"allow-quick-add-targets",
-		"allow-quick-add-create",
-		"allow-quick-add-open",
-		"allow-close-quick-add"
+		"allow-set-start-minimized",
+		"allow-get-shortcuts",
+		"allow-set-shortcut",
+		"allow-reset-shortcut",
+		"allow-pause-shortcuts",
+		"allow-set-update-channel",
+		"allow-whats-new-state",
+		"allow-dismiss-whats-new",
+		"allow-release-notes",
+		"allow-get-offline-reading",
+		"allow-set-offline-reading",
+		"allow-clear-offline-copies",
+		"allow-get-spellcheck",
+		"allow-set-spellcheck",
+		"allow-get-notification-pause",
+		"allow-set-notification-pause"
 	]
 }

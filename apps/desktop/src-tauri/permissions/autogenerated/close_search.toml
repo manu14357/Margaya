@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-close-search"
+description = "Enables the close_search command without any pre-configured scope."
+commands.allow = ["close_search"]
+
+[[permission]]
+identifier = "deny-close-search"
+description = "Denies the close_search command without any pre-configured scope."
+commands.deny = ["close_search"]

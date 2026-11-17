@@ -5,7 +5,7 @@ use std::path::PathBuf;
 // `allow-<command>` permission for each, so the capability files decide which
 // window may call which command: the launcher gets its own commands, remote
 // server pages only `bridge_message`, and the bundled offline page shown in a
-// server window only the three offline commands.
+// server window only the offline commands.
 const COMMANDS: &[&str] = &[
     "list_servers",
     "discover_server",
@@ -24,14 +24,44 @@ const COMMANDS: &[&str] = &[
     "copy_diagnostics",
     "check_for_update",
     "install_update",
+    "set_start_minimized",
+    "get_shortcuts",
+    "set_shortcut",
+    "reset_shortcut",
+    "pause_shortcuts",
+    "set_update_channel",
+    "whats_new_state",
+    "dismiss_whats_new",
+    "release_notes",
     "quick_add_targets",
     "quick_add_create",
     "quick_add_open",
     "close_quick_add",
+    "quick_add_draft",
+    "quick_add_remove_attachment",
+    "quick_add_members",
+    "quick_add_prefs",
     "bridge_message",
+    "search_query",
+    "search_recent",
+    "search_open",
+    "close_search",
+    "today_tasks",
+    "today_complete",
+    "today_open",
+    "close_today",
     "offline_state",
     "offline_retry",
     "show_servers",
+    "offline_items",
+    "offline_item",
+    "get_offline_reading",
+    "set_offline_reading",
+    "clear_offline_copies",
+    "get_spellcheck",
+    "set_spellcheck",
+    "get_notification_pause",
+    "set_notification_pause",
 ];
 
 /// Copies `desktop.launcher` from every locale file in the repo's i18n folder

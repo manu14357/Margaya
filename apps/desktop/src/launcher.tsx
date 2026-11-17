@@ -3,6 +3,7 @@ import { AddServer } from "./components/add-server";
 import { ServerList } from "./components/server-list";
 import { SettingsPanel } from "./components/settings-panel";
 import { SignInPanel } from "./components/sign-in-panel";
+import { WhatsNew } from "./components/whats-new";
 import { errorMessage } from "./lib/errors";
 import { useT } from "./lib/i18n";
 import { api, events, type ServerView } from "./lib/ipc";
@@ -65,6 +66,8 @@ export function Launcher() {
         <img src="./logo.svg" alt="" width={28} height={28} />
         <h1>Margaya</h1>
       </header>
+
+      <WhatsNew />
 
       {linkPrompt ? (
         <section

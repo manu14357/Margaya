@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-quick-add-prefs"
+description = "Enables the quick_add_prefs command without any pre-configured scope."
+commands.allow = ["quick_add_prefs"]
+
+[[permission]]
+identifier = "deny-quick-add-prefs"
+description = "Denies the quick_add_prefs command without any pre-configured scope."
+commands.deny = ["quick_add_prefs"]

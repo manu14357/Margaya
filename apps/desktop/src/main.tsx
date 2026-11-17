@@ -5,6 +5,8 @@ import { Launcher } from "./launcher";
 import { createTranslator, I18nContext, resolveLocale } from "./lib/i18n";
 import { Offline } from "./offline";
 import { QuickAdd } from "./quick-add";
+import { Search } from "./search";
+import { Today } from "./today";
 import "./styles.css";
 
 const locale = resolveLocale(
@@ -23,6 +25,9 @@ const quickAdd = hash.startsWith("quick-add");
 const quickAddServer = hash.startsWith("quick-add=")
   ? decodeURIComponent(hash.slice("quick-add=".length))
   : null;
+// Global search (#search) and the Today mini window (#today).
+const search = hash === "search";
+const today = hash === "today";
 
 const root = document.getElementById("root");
 if (root) {
@@ -33,6 +38,10 @@ if (root) {
           <Offline />
         ) : quickAdd ? (
           <QuickAdd initialServerId={quickAddServer} />
+        ) : search ? (
+          <Search />
+        ) : today ? (
+          <Today />
         ) : (
           <Launcher />
         )}
