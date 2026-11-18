@@ -347,6 +347,13 @@
 			"languageCurrent": "Dil: {{language}}",
 			"themeCurrent": "Tema: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "{{filename}} yükleniyor…",
+			"uploadingProgress": "{{current}} / {{total}} yükleniyor…",
+			"cancelled": "Yükleme iptal edildi",
+			"tooLarge": "{{filename}}, {{limit}} yükleme sınırını aşıyor",
+			"forbidden": "Buraya dosya yükleme izniniz yok"
+		},
 		"files": {
 			"download": "{{name}} dosyasını indir"
 		},
@@ -4710,7 +4717,6 @@
 			"submitShortcut": "Yorumu gönder",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "Dosya yüklemeleri yalnızca kaydedilmiş görevlerde kullanılabilir.",
-				"uploadingFile": "Dosya yükleniyor...",
 				"imageUploaded": "Görsel yüklendi",
 				"fileAttached": "Dosya eklendi",
 				"failedToUploadFile": "Dosya yüklenemedi",
@@ -5128,7 +5134,6 @@
 					"markComplete": "Görevi tamamlandı olarak işaretle"
 				},
 				"upload": {
-					"loading": "Dosya yükleniyor...",
 					"failed": "Dosya yüklenemedi",
 					"imageSuccess": "Görsel yüklendi",
 					"fileSuccess": "Dosya eklendi"
@@ -9174,9 +9179,11 @@
 			"toast": "İstek gönderildi",
 			"toastView": "Görüntüle",
 			"pastedImages": "Yapıştırılan görseller",
-			"pasteHint": "İsteğe eklemek için ekran görüntülerini yapıştırın.",
-			"removeImage": "{{name}} öğesini kaldır",
-			"attachFailed": "İstek gönderildi ancak bazı görseller eklenemedi."
+			"fileHint": "Ekran görüntülerini yapıştırın ya da dosyaları sürükleyip bırakın veya ekleyin. İsteği gönderdiğinizde eklenirler.",
+			"attachFiles": "Dosya ekle",
+			"queuedFiles": "Eklenecek dosyalar",
+			"filesAfterSubmit": "İstek gönderildikten sonra açıklamaya dosya ekleyebilirsiniz.",
+			"removeImage": "{{name}} öğesini kaldır"
 		},
 		"decline": {
 			"description": "İstek kapatılır ve panoya alınmaz. Daha sonra yeniden açabilirsiniz.",

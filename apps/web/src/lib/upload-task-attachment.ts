@@ -17,9 +17,12 @@ export class StorageUploadError extends Error {
 export async function uploadTaskAttachment({
   taskId,
   file,
+  signal,
 }: {
   taskId: string;
   file: File;
+  /** Cancels the byte transfer, the long part of an upload. */
+  signal?: AbortSignal;
 }) {
   const filename = file.name || "file";
   const contentType = file.type || "application/octet-stream";
@@ -35,6 +38,7 @@ export async function uploadTaskAttachment({
     method: "PUT",
     headers: upload.headers,
     body: file,
+    signal,
   });
   if (!response.ok) {
     throw new StorageUploadError(response.status);

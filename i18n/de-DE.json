@@ -347,6 +347,13 @@
 			"languageCurrent": "Sprache: {{language}}",
 			"themeCurrent": "Design: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "{{filename}} wird hochgeladen…",
+			"uploadingProgress": "{{current}} von {{total}} wird hochgeladen…",
+			"cancelled": "Upload abgebrochen",
+			"tooLarge": "{{filename}} überschreitet das Upload-Limit von {{limit}}",
+			"forbidden": "Du darfst hier keine Dateien hochladen"
+		},
 		"files": {
 			"download": "{{name}} herunterladen"
 		},
@@ -4710,7 +4717,6 @@
 			"submitShortcut": "Kommentar absenden",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "Datei-Uploads sind nur bei gespeicherten Aufgaben verfügbar.",
-				"uploadingFile": "Datei wird hochgeladen...",
 				"imageUploaded": "Bild hochgeladen",
 				"fileAttached": "Datei angehängt",
 				"failedToUploadFile": "Datei konnte nicht hochgeladen werden",
@@ -5128,7 +5134,6 @@
 					"markComplete": "Aufgabe als abgeschlossen markieren"
 				},
 				"upload": {
-					"loading": "Datei wird hochgeladen...",
 					"failed": "Datei konnte nicht hochgeladen werden",
 					"imageSuccess": "Bild hochgeladen",
 					"fileSuccess": "Datei angehängt"
@@ -9174,9 +9179,11 @@
 			"toast": "Anfrage gesendet",
 			"toastView": "Ansehen",
 			"pastedImages": "Eingefügte Bilder",
-			"pasteHint": "Füge Screenshots ein, um sie an die Anfrage anzuhängen.",
-			"removeImage": "{{name}} entfernen",
-			"attachFailed": "Die Anfrage wurde eingereicht, aber einige Bilder konnten nicht angehängt werden."
+			"fileHint": "Füge Screenshots ein oder ziehe Dateien hierher oder hänge sie an. Sie werden beim Absenden der Anfrage angehängt.",
+			"attachFiles": "Dateien anhängen",
+			"queuedFiles": "Anzuhängende Dateien",
+			"filesAfterSubmit": "Sobald die Anfrage abgeschickt ist, kannst du der Beschreibung Dateien hinzufügen.",
+			"removeImage": "{{name}} entfernen"
 		},
 		"decline": {
 			"description": "Die Anfrage wird geschlossen und bleibt vom Board fern. Du kannst sie später wieder öffnen.",

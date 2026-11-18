@@ -341,6 +341,13 @@
 			"languageCurrent": "语言：{{language}}",
 			"themeCurrent": "主题：{{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "正在上传 {{filename}}…",
+			"uploadingProgress": "正在上传第 {{current}} 个，共 {{total}} 个…",
+			"cancelled": "已取消上传",
+			"tooLarge": "{{filename}} 超过了 {{limit}} 的上传上限",
+			"forbidden": "你没有在此上传文件的权限"
+		},
 		"files": {
 			"download": "下载 {{name}}"
 		},
@@ -4630,7 +4637,6 @@
 			"submitShortcut": "提交评论",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "仅在已保存的任务上可上传文件。",
-				"uploadingFile": "正在上传文件…",
 				"imageUploaded": "图片已上传",
 				"fileAttached": "文件已附加",
 				"failedToUploadFile": "上传文件失败",
@@ -5039,7 +5045,6 @@
 					"markComplete": "将任务标记为已完成"
 				},
 				"upload": {
-					"loading": "正在上传文件…",
 					"failed": "上传文件失败",
 					"imageSuccess": "图片已上传",
 					"fileSuccess": "文件已附加"
@@ -9025,9 +9030,11 @@
 			"toast": "请求已提交",
 			"toastView": "查看",
 			"pastedImages": "已粘贴的图片",
-			"pasteHint": "粘贴截图即可将其附加到请求中。",
-			"removeImage": "移除 {{name}}",
-			"attachFailed": "请求已提交，但部分图片未能附加。"
+			"fileHint": "粘贴截图，或拖放、附加文件。提交请求时会一并附上。",
+			"attachFiles": "附加文件",
+			"queuedFiles": "待附加的文件",
+			"filesAfterSubmit": "提交请求后，即可在描述中添加文件。",
+			"removeImage": "移除 {{name}}"
 		},
 		"decline": {
 			"description": "请求将被关闭，不会进入看板。你之后可以重新打开。",

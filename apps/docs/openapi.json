@@ -46419,7 +46419,7 @@
           "Tasks"
         ],
         "summary": "Create image upload URL",
-        "description": "Get a presigned URL for uploading an image used in a task description or comment. PUT the bytes to it, then call the finalize route.",
+        "description": "Get a presigned URL for uploading an image or file used in a task description or comment. PUT the bytes to it, then call the finalize route. Allowed with task:update, or for the requester (intake:create) of an open request on the task, who edits its description.",
         "parameters": [
           {
             "schema": {
@@ -46490,7 +46490,7 @@
             "description": "Missing or invalid credentials"
           },
           "403": {
-            "description": "No workspace access, or missing task:update permission",
+            "description": "No workspace access, or neither task:update nor the requester of an open request on the task",
             "content": {
               "text/plain": {
                 "schema": {
@@ -46529,7 +46529,7 @@
           "Tasks"
         ],
         "summary": "Finalize image upload",
-        "description": "Record an uploaded image as a private asset and return the URL to reference it by.",
+        "description": "Record an uploaded image or file as a private asset and return the URL to reference it by. Allowed to the same callers as the upload route.",
         "parameters": [
           {
             "schema": {
@@ -46605,7 +46605,7 @@
             "description": "Missing or invalid credentials"
           },
           "403": {
-            "description": "No workspace access, or missing task:update permission",
+            "description": "No workspace access, or neither task:update nor the requester of an open request on the task",
             "content": {
               "text/plain": {
                 "schema": {

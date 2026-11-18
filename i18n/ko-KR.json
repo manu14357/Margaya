@@ -341,6 +341,13 @@
 			"languageCurrent": "언어: {{language}}",
 			"themeCurrent": "테마: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "{{filename}} 업로드 중…",
+			"uploadingProgress": "{{total}}개 중 {{current}}번째 업로드 중…",
+			"cancelled": "업로드가 취소되었습니다",
+			"tooLarge": "{{filename}} 파일이 업로드 한도({{limit}})를 초과합니다",
+			"forbidden": "여기에 파일을 업로드할 권한이 없습니다"
+		},
 		"files": {
 			"download": "{{name}} 다운로드"
 		},
@@ -4630,7 +4637,6 @@
 			"submitShortcut": "댓글 제출",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "파일 업로드는 저장된 작업에서만 가능합니다.",
-				"uploadingFile": "파일 업로드 중...",
 				"imageUploaded": "이미지가 업로드되었습니다",
 				"fileAttached": "파일이 첨부되었습니다",
 				"failedToUploadFile": "파일 업로드에 실패했습니다",
@@ -5039,7 +5045,6 @@
 					"markComplete": "작업을 완료로 표시"
 				},
 				"upload": {
-					"loading": "파일 업로드 중...",
 					"failed": "파일 업로드에 실패했습니다",
 					"imageSuccess": "이미지가 업로드되었습니다",
 					"fileSuccess": "파일이 첨부되었습니다"
@@ -9025,9 +9030,11 @@
 			"toast": "요청을 제출했습니다",
 			"toastView": "보기",
 			"pastedImages": "붙여넣은 이미지",
-			"pasteHint": "스크린샷을 붙여넣으면 요청에 첨부됩니다.",
-			"removeImage": "{{name}} 제거",
-			"attachFailed": "요청은 제출되었지만 일부 이미지를 첨부하지 못했습니다."
+			"fileHint": "스크린샷을 붙여넣거나 파일을 끌어다 놓거나 첨부하세요. 요청을 제출할 때 첨부됩니다.",
+			"attachFiles": "파일 첨부",
+			"queuedFiles": "첨부할 파일",
+			"filesAfterSubmit": "요청을 제출한 후 설명에 파일을 추가할 수 있습니다.",
+			"removeImage": "{{name}} 제거"
 		},
 		"decline": {
 			"description": "요청이 종료되며 보드에 추가되지 않습니다. 나중에 다시 열 수 있습니다.",

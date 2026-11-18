@@ -54,12 +54,34 @@ const warning: ToastFn = (title, options) =>
   addToast(title, "warning", options);
 const message: ToastFn = (title, options) =>
   addToast(title, undefined, options);
-const loading: ToastFn = (title, options) =>
-  toastManager.add({
+const loading: ToastFn = (title, options) => {
+  let id = "";
+  const action = options?.action ?? options?.cancel;
+  id = toastManager.add({
     title,
     description: options?.description,
     type: "loading",
+    ...(options?.persistent ? { timeout: 0 } : {}),
+    actionProps: action
+      ? {
+          children: action.label,
+          onClick: () => {
+            action.onClick?.();
+            toastManager.close(id);
+          },
+        }
+      : undefined,
   });
+  return id;
+};
+/** Changes a shown toast's text, such as a loading toast's progress. */
+const update = (
+  id: ToastId,
+  changes: { title?: string; description?: string },
+) => {
+  if (!id) return;
+  toastManager.update(id, changes);
+};
 const dismiss = (id?: ToastId) => {
   if (!id) return;
   toastManager.close(id);
@@ -72,6 +94,7 @@ const toast = Object.assign(message, {
   warning,
   message,
   loading,
+  update,
   dismiss,
 });
 

@@ -353,6 +353,13 @@
 			"languageCurrent": "Langue: {{language}}",
 			"themeCurrent": "Thème: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "Téléversement de {{filename}}…",
+			"uploadingProgress": "Téléversement de {{current}} sur {{total}}…",
+			"cancelled": "Téléversement annulé",
+			"tooLarge": "{{filename}} dépasse la limite de téléversement de {{limit}}",
+			"forbidden": "Vous n'avez pas l'autorisation de téléverser des fichiers ici"
+		},
 		"files": {
 			"download": "Télécharger {{name}}"
 		},
@@ -4792,7 +4799,6 @@
 			"submitShortcut": "Soumettre le commentaire",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "Les téléversements de fichiers sont uniquement disponibles sur les tâches enregistrées.",
-				"uploadingFile": "Téléversement du fichier...",
 				"imageUploaded": "Image téléversée",
 				"fileAttached": "Fichier joint",
 				"failedToUploadFile": "Échec du téléversement du fichier",
@@ -5219,7 +5225,6 @@
 					"markComplete": "Marquer la tâche comme terminée"
 				},
 				"upload": {
-					"loading": "Téléversement du fichier...",
 					"failed": "Échec du téléversement du fichier",
 					"imageSuccess": "Image téléversée",
 					"fileSuccess": "Fichier joint"
@@ -9325,9 +9330,11 @@
 			"toast": "Demande envoyée",
 			"toastView": "Voir",
 			"pastedImages": "Images collées",
-			"pasteHint": "Collez des captures d'écran pour les joindre à la demande.",
-			"removeImage": "Retirer {{name}}",
-			"attachFailed": "La demande a été envoyée, mais certaines images n'ont pas pu être jointes."
+			"fileHint": "Collez des captures d'écran, ou déposez ou joignez des fichiers. Ils sont joints à l'envoi de la demande.",
+			"attachFiles": "Joindre des fichiers",
+			"queuedFiles": "Fichiers à joindre",
+			"filesAfterSubmit": "Vous pourrez ajouter des fichiers à la description une fois la demande envoyée.",
+			"removeImage": "Retirer {{name}}"
 		},
 		"decline": {
 			"description": "La demande est close et reste hors du tableau. Vous pourrez la rouvrir plus tard.",

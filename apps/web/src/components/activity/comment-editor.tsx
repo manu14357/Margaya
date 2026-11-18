@@ -75,6 +75,7 @@ import {
 import { isInCodeBlockLanguagePicker } from "@/lib/is-in-codeblock-language-picker";
 import { normalizeCommentMarkdown } from "@/lib/normalize-comment-markdown";
 import { toast } from "@/lib/toast";
+import { uploadFilesWithProgress } from "@/lib/upload-files";
 import { uploadTaskImage } from "@/lib/upload-task-image";
 
 type CommentEditorProps = {
@@ -103,6 +104,13 @@ type CommentEditorProps = {
   allowFileUploads?: boolean;
   /** Toast shown when a file is pasted or dropped with uploads off. */
   fileUploadsDisabledMessage?: string;
+  /**
+   * With no task to hold files yet (a new request), picked, pasted and
+   * dropped files go here to wait for the save instead of uploading.
+   */
+  onQueueFiles?: (files: File[]) => void;
+  /** Hands out the editor's upload, for drop zones around it. */
+  onUploadFilesChange?: (upload: ((files: File[]) => void) | null) => void;
   /** Called once the editor exists and holds `value`, before any edit. */
   onEditorReady?: (editor: Editor) => void;
 };
@@ -192,6 +200,8 @@ export default function CommentEditor({
   onAttachActionChange,
   allowFileUploads = true,
   fileUploadsDisabledMessage,
+  onQueueFiles,
+  onUploadFilesChange,
   onEditorReady,
 }: CommentEditorProps) {
   const { t } = useTranslation();
@@ -215,6 +225,8 @@ export default function CommentEditor({
   allowFileUploadsRef.current = allowFileUploads;
   const fileUploadsDisabledMessageRef = useRef(fileUploadsDisabledMessage);
   fileUploadsDisabledMessageRef.current = fileUploadsDisabledMessage;
+  const onQueueFilesRef = useRef(onQueueFiles);
+  onQueueFilesRef.current = onQueueFiles;
   const onSubmitShortcutRef = useRef(onSubmitShortcut);
   const onCancelShortcutRef = useRef(onCancelShortcut);
   onSubmitShortcutRef.current = onSubmitShortcut;
@@ -329,53 +341,64 @@ export default function CommentEditor({
     [],
   );
 
-  const handleAssetFileUpload = useCallback(
-    async (file: File, targetEditor?: Editor | null, range?: SlashRange) => {
+  const handleAssetFileUploads = useCallback(
+    async (files: File[], targetEditor?: Editor | null, range?: SlashRange) => {
+      if (files.length === 0) return;
       if (!allowFileUploadsRef.current) {
         const message = fileUploadsDisabledMessageRef.current;
         if (message) toast.error(message);
         return;
       }
+      if (!taskIdRef.current && onQueueFilesRef.current) {
+        onQueueFilesRef.current(files);
+        return;
+      }
       const activeEditor = targetEditor || lastEditorRef.current;
-      const resolvedTaskId =
-        taskIdRef.current ?? (await ensureTaskIdRef.current?.());
-
-      if (!activeEditor || !resolvedTaskId) {
-        toast.error(t("activity:comment.editor.uploadsOnlyOnSavedTasks"));
+      if (!activeEditor) {
+        toast.error(t("activity:comment.editor.failedToUploadFile"));
+        return;
+      }
+      const ensureTaskId = ensureTaskIdRef.current;
+      const resolvedTaskId = taskIdRef.current ?? (await ensureTaskId?.());
+      if (!resolvedTaskId) {
+        // ensureTaskId explains its own refusals (no project, a draft).
+        if (!ensureTaskId) {
+          toast.error(t("activity:comment.editor.uploadsOnlyOnSavedTasks"));
+        }
         return;
       }
 
-      const loadingToast = toast.loading(
-        t("activity:comment.editor.uploadingFile"),
-      );
-
-      try {
-        const uploadedAsset = await uploadTaskImage({
-          taskId: resolvedTaskId,
-          surface: uploadSurfaceRef.current,
-          file,
-        });
-        insertUploadedAsset(activeEditor, uploadedAsset, range);
-
-        toast.dismiss(loadingToast);
-        toast.success(
-          uploadedAsset.kind === "image"
-            ? t("activity:comment.editor.imageUploaded")
-            : t("activity:comment.editor.fileAttached"),
-        );
-      } catch (error) {
-        toast.dismiss(loadingToast);
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : t("activity:comment.editor.failedToUploadFile"),
-        );
-      }
+      // The first file lands where it was dropped; each next one follows it.
+      let insertAt = range;
+      await uploadFilesWithProgress({
+        files,
+        t,
+        upload: (file, signal) =>
+          uploadTaskImage({
+            taskId: resolvedTaskId,
+            surface: uploadSurfaceRef.current,
+            file,
+            signal,
+          }),
+        onUploaded: (asset) => {
+          if (activeEditor.isDestroyed) return false;
+          insertUploadedAsset(activeEditor, asset, insertAt);
+          insertAt = undefined;
+          return undefined;
+        },
+        successMessage: (assets) =>
+          assets.length > 1
+            ? t("tasks:attachments.toast.attached", { count: assets.length })
+            : assets[0]?.kind === "image"
+              ? t("activity:comment.editor.imageUploaded")
+              : t("activity:comment.editor.fileAttached"),
+      });
     },
     [insertUploadedAsset, t],
   );
 
-  const canUploadFiles = allowFileUploads && Boolean(taskId || ensureTaskId);
+  const canUploadFiles =
+    allowFileUploads && Boolean(taskId || ensureTaskId || onQueueFiles);
 
   const openImagePicker = useCallback(
     (activeEditor?: Editor | null, range?: SlashRange) => {
@@ -440,8 +463,13 @@ export default function CommentEditor({
       }
       dragDepthRef.current = 0;
       setIsDragActive(false);
+      // The text area took it already; a drop on the shell around it (the
+      // padding, the attach button) is still meant for this editor.
+      if (event.nativeEvent.defaultPrevented) return;
+      event.preventDefault();
+      void handleAssetFileUploads(Array.from(event.dataTransfer.files));
     },
-    [canUploadFiles, disabled, hasFileDrag, readOnly],
+    [canUploadFiles, disabled, handleAssetFileUploads, hasFileDrag, readOnly],
   );
 
   const slashCommands = useMemo<SlashCommand[]>(
@@ -558,7 +586,7 @@ export default function CommentEditor({
             .run();
         },
       },
-      ...(allowFileUploads
+      ...(canUploadFiles
         ? [
             {
               id: "file",
@@ -573,7 +601,7 @@ export default function CommentEditor({
           ]
         : []),
     ],
-    [allowFileUploads, openImagePicker, t],
+    [canUploadFiles, openImagePicker, t],
   );
 
   useEffect(() => {
@@ -679,11 +707,10 @@ export default function CommentEditor({
           if (readOnly || disabled) return false;
 
           const pastedFiles = Array.from(event.clipboardData?.files || []);
-          const pastedFile = pastedFiles[0];
 
-          if (pastedFile) {
+          if (pastedFiles.length > 0) {
             event.preventDefault();
-            void handleAssetFileUpload(pastedFile, editor);
+            void handleAssetFileUploads(pastedFiles, editor);
             return true;
           }
 
@@ -764,9 +791,8 @@ export default function CommentEditor({
           if (readOnly || disabled) return false;
 
           const droppedFiles = Array.from(event.dataTransfer?.files || []);
-          const droppedFile = droppedFiles[0];
 
-          if (!droppedFile) return false;
+          if (droppedFiles.length === 0) return false;
 
           event.preventDefault();
           const coordinates = view.posAtCoords({
@@ -778,7 +804,7 @@ export default function CommentEditor({
             ? { from: coordinates.pos, to: coordinates.pos }
             : undefined;
 
-          void handleAssetFileUpload(droppedFile, editor, dropRange);
+          void handleAssetFileUploads(droppedFiles, editor, dropRange);
           return true;
         },
         handleTextInput: (view, _from, _to, text) => {
@@ -920,7 +946,7 @@ export default function CommentEditor({
         onChange(markdown);
       },
     },
-    [handleAssetFileUpload, resolvedPlaceholder, toShikiLanguage],
+    [handleAssetFileUploads, resolvedPlaceholder, toShikiLanguage],
   );
 
   // With immediatelyRender: false, TipTap's own autofocus runs before the
@@ -938,13 +964,32 @@ export default function CommentEditor({
     if (!onAttachActionChange) return;
 
     onAttachActionChange(
-      editor && allowFileUploads ? () => openImagePicker(editor) : null,
+      editor && canUploadFiles ? () => openImagePicker(editor) : null,
     );
 
     return () => {
       onAttachActionChange(null);
     };
-  }, [allowFileUploads, editor, onAttachActionChange, openImagePicker]);
+  }, [canUploadFiles, editor, onAttachActionChange, openImagePicker]);
+
+  useEffect(() => {
+    if (!onUploadFilesChange) return;
+    onUploadFilesChange(
+      editor && canUploadFiles && !readOnly && !disabled
+        ? (files) => void handleAssetFileUploads(files, editor)
+        : null,
+    );
+    return () => {
+      onUploadFilesChange(null);
+    };
+  }, [
+    canUploadFiles,
+    disabled,
+    editor,
+    handleAssetFileUploads,
+    onUploadFilesChange,
+    readOnly,
+  ]);
 
   useEffect(() => {
     if (!editor || !shikiHighlighter) return;
@@ -1462,20 +1507,25 @@ export default function CommentEditor({
         <input
           ref={imageInputRef}
           type="file"
+          multiple
           className="sr-only"
+          // The attach button and the File command are the way in.
+          tabIndex={-1}
+          aria-hidden
+          data-testid="comment-editor-file-input"
           onChange={(event) => {
-            const file = event.target.files?.[0];
-            if (!file) return;
+            const files = Array.from(event.target.files ?? []);
+            // Picking the same file again must fire change again.
+            event.target.value = "";
+            if (files.length === 0) return;
 
             const pendingInsert = pendingImageInsertRef.current;
             pendingImageInsertRef.current = null;
-            void handleAssetFileUpload(
-              file,
+            void handleAssetFileUploads(
+              files,
               pendingInsert?.editor,
               pendingInsert?.range,
             );
-
-            event.target.value = "";
           }}
         />
       )}
@@ -1933,7 +1983,7 @@ export default function CommentEditor({
         onMouseMove={handleEditorMouseMove}
         onMouseLeave={handleEditorMouseLeave}
       />
-      {!readOnly && !disabled && allowFileUploads && showQuickAttachButton && (
+      {!readOnly && !disabled && canUploadFiles && showQuickAttachButton && (
         <button
           type="button"
           className="margaya-editor-quick-attach"
@@ -1942,6 +1992,7 @@ export default function CommentEditor({
           }}
           onClick={() => openImagePicker(editor)}
           aria-label={t("activity:comment.attachFile")}
+          title={t("activity:comment.attachFile")}
         >
           <Paperclip className="size-3.5" />
         </button>

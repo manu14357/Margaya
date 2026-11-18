@@ -353,6 +353,13 @@
 			"languageCurrent": "Idioma: {{language}}",
 			"themeCurrent": "Tema: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "Enviando {{filename}}…",
+			"uploadingProgress": "Enviando {{current}} de {{total}}…",
+			"cancelled": "Envio cancelado",
+			"tooLarge": "{{filename}} excede o limite de envio de {{limit}}",
+			"forbidden": "Você não tem permissão para enviar arquivos aqui"
+		},
 		"files": {
 			"download": "Baixar {{name}}"
 		},
@@ -4792,7 +4799,6 @@
 			"submitShortcut": "Enviar comentário",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "O envio de arquivos está disponível apenas em tarefas salvas.",
-				"uploadingFile": "Enviando arquivo...",
 				"imageUploaded": "Imagem enviada",
 				"fileAttached": "Arquivo anexado",
 				"failedToUploadFile": "Falha ao enviar arquivo",
@@ -5219,7 +5225,6 @@
 					"markComplete": "Marcar tarefa como concluída"
 				},
 				"upload": {
-					"loading": "Enviando arquivo...",
 					"failed": "Falha ao enviar arquivo",
 					"imageSuccess": "Imagem enviada",
 					"fileSuccess": "Arquivo anexado"
@@ -9325,9 +9330,11 @@
 			"toast": "Solicitação enviada",
 			"toastView": "Ver",
 			"pastedImages": "Imagens coladas",
-			"pasteHint": "Cole capturas de tela para anexá-las à solicitação.",
-			"removeImage": "Remover {{name}}",
-			"attachFailed": "A solicitação foi enviada, mas algumas imagens não puderam ser anexadas."
+			"fileHint": "Cole capturas de tela, ou arraste ou anexe arquivos. Eles são anexados quando você envia a solicitação.",
+			"attachFiles": "Anexar arquivos",
+			"queuedFiles": "Arquivos para anexar",
+			"filesAfterSubmit": "Você pode adicionar arquivos à descrição depois que a solicitação for enviada.",
+			"removeImage": "Remover {{name}}"
 		},
 		"decline": {
 			"description": "A solicitação é encerrada e não vai para o quadro. Você pode reabri-la depois.",

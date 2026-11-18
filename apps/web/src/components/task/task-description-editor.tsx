@@ -10,6 +10,10 @@ type TaskDescriptionEditorProps = {
   /** False refuses files (a draft has no task to hold them). */
   allowFileUploads?: boolean;
   fileUploadsDisabledMessage?: string;
+  /** Files picked or dropped before there is a task wait here. */
+  onQueueFiles?: (files: File[]) => void;
+  /** Hands out the editor's upload, for drop zones around it. */
+  onUploadFilesChange?: (upload: ((files: File[]) => void) | null) => void;
 };
 
 export default function TaskDescriptionEditor({
@@ -20,6 +24,8 @@ export default function TaskDescriptionEditor({
   ensureTaskId,
   allowFileUploads,
   fileUploadsDisabledMessage,
+  onQueueFiles,
+  onUploadFilesChange,
 }: TaskDescriptionEditorProps) {
   const { t } = useTranslation();
 
@@ -32,6 +38,8 @@ export default function TaskDescriptionEditor({
       ensureTaskId={ensureTaskId}
       allowFileUploads={allowFileUploads}
       fileUploadsDisabledMessage={fileUploadsDisabledMessage}
+      onQueueFiles={onQueueFiles}
+      onUploadFilesChange={onUploadFilesChange}
       uploadSurface="description"
       className="[&_.margaya-comment-editor-content_.ProseMirror]:min-h-[11rem] [&_.margaya-comment-editor-content_.ProseMirror]:max-h-none [&_.margaya-comment-editor-content_.ProseMirror]:overflow-visible [&_.margaya-comment-editor-content_.ProseMirror]:px-0 [&_.margaya-comment-editor-content_.ProseMirror]:pt-1 [&_.margaya-comment-editor-content_.ProseMirror]:pb-2"
     />

@@ -347,6 +347,13 @@
 			"languageCurrent": "Dil: {{language}}",
 			"themeCurrent": "Tema: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "{{filename}} yüklənir…",
+			"uploadingProgress": "Yüklənir: {{current}} / {{total}}…",
+			"cancelled": "Yükləmə ləğv edildi",
+			"tooLarge": "{{filename}} {{limit}} yükləmə limitindən böyükdür",
+			"forbidden": "Burada fayl yükləmək icazəniz yoxdur"
+		},
 		"files": {
 			"download": "{{name}} faylını endir"
 		},
@@ -4710,7 +4717,6 @@
 			"submitShortcut": "Şərhi göndər",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "Faylları yalnız yadda saxlanmış tapşırıqlara yükləmək olar.",
-				"uploadingFile": "Fayl yüklənir...",
 				"imageUploaded": "Şəkil yükləndi",
 				"fileAttached": "Fayl əlavə edildi",
 				"failedToUploadFile": "Faylı yükləmək alınmadı",
@@ -5128,7 +5134,6 @@
 					"markComplete": "Tapşırığı tamamlanmış kimi işarələ"
 				},
 				"upload": {
-					"loading": "Fayl yüklənir...",
 					"failed": "Faylı yükləmək alınmadı",
 					"imageSuccess": "Şəkil yükləndi",
 					"fileSuccess": "Fayl əlavə edildi"
@@ -9174,9 +9179,11 @@
 			"toast": "Sorğu göndərildi",
 			"toastView": "Bax",
 			"pastedImages": "Yapışdırılmış şəkillər",
-			"pasteHint": "Sorğuya qoşmaq üçün ekran şəkillərini yapışdırın.",
-			"removeImage": "{{name}} faylını sil",
-			"attachFailed": "Sorğu göndərildi, lakin bəzi şəkilləri qoşmaq mümkün olmadı."
+			"fileHint": "Ekran görüntülərini yapışdırın, ya da faylları sürükləyib buraxın və ya əlavə edin. Onlar sorğunu göndərəndə əlavə olunur.",
+			"attachFiles": "Fayl əlavə et",
+			"queuedFiles": "Əlavə ediləcək fayllar",
+			"filesAfterSubmit": "Sorğu göndərildikdən sonra təsvirə fayl əlavə edə bilərsiniz.",
+			"removeImage": "{{name}} faylını sil"
 		},
 		"decline": {
 			"description": "Sorğu bağlanır və lövhədən kənarda qalır. Sonra yenidən aça bilərsiniz.",

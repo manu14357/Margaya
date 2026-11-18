@@ -359,6 +359,13 @@
 			"languageCurrent": "Język: {{language}}",
 			"themeCurrent": "Motyw: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "Przesyłanie {{filename}}…",
+			"uploadingProgress": "Przesyłanie {{current}} z {{total}}…",
+			"cancelled": "Przesyłanie anulowane",
+			"tooLarge": "{{filename}} przekracza limit przesyłania wynoszący {{limit}}",
+			"forbidden": "Nie masz uprawnień do przesyłania tutaj plików"
+		},
 		"files": {
 			"download": "Pobierz {{name}}"
 		},
@@ -2000,7 +2007,6 @@
 					"deleteRow": "Usuń wiersz",
 					"deleteTable": "Usuń tabelę"
 				},
-				"uploadingFile": "Przesyłanie pliku...",
 				"uploadsOnlyOnSavedTasks": "Przesyłanie plików jest dostępne tylko dla zapisanych zadań."
 			},
 			"editPlaceholder": "Edytuj komentarz...",
@@ -5834,8 +5840,7 @@
 				"upload": {
 					"failed": "Nie udało się przesłać pliku",
 					"fileSuccess": "Dołączono plik",
-					"imageSuccess": "Przesłano obraz",
-					"loading": "Przesyłanie pliku..."
+					"imageSuccess": "Przesłano obraz"
 				},
 				"block": {
 					"delete": "Usuń",
@@ -9476,9 +9481,11 @@
 			"toast": "Zgłoszenie wysłane",
 			"toastView": "Zobacz",
 			"pastedImages": "Wklejone obrazy",
-			"pasteHint": "Wklej zrzuty ekranu, aby załączyć je do zgłoszenia.",
-			"removeImage": "Usuń {{name}}",
-			"attachFailed": "Zgłoszenie zostało wysłane, ale nie udało się załączyć niektórych obrazów."
+			"fileHint": "Wklej zrzuty ekranu albo upuść lub załącz pliki. Zostaną załączone po wysłaniu zgłoszenia.",
+			"attachFiles": "Załącz pliki",
+			"queuedFiles": "Pliki do załączenia",
+			"filesAfterSubmit": "Pliki możesz dodać do opisu po wysłaniu zgłoszenia.",
+			"removeImage": "Usuń {{name}}"
 		},
 		"decline": {
 			"description": "Zgłoszenie zostanie zamknięte i nie trafi na tablicę. Możesz je później otworzyć ponownie.",

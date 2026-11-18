@@ -341,6 +341,13 @@
 			"languageCurrent": "言語：{{language}}",
 			"themeCurrent": "テーマ：{{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "{{filename}} をアップロード中…",
+			"uploadingProgress": "{{total}} 件中 {{current}} 件目をアップロード中…",
+			"cancelled": "アップロードをキャンセルしました",
+			"tooLarge": "{{filename}} はアップロード上限の {{limit}} を超えています",
+			"forbidden": "ここにファイルをアップロードする権限がありません"
+		},
 		"files": {
 			"download": "{{name}} をダウンロード"
 		},
@@ -4630,7 +4637,6 @@
 			"submitShortcut": "コメントを送信",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "ファイルのアップロードは保存済みのタスクでのみ利用できます。",
-				"uploadingFile": "ファイルをアップロード中...",
 				"imageUploaded": "画像をアップロードしました",
 				"fileAttached": "ファイルを添付しました",
 				"failedToUploadFile": "ファイルのアップロードに失敗しました",
@@ -5039,7 +5045,6 @@
 					"markComplete": "タスクを完了にする"
 				},
 				"upload": {
-					"loading": "ファイルをアップロード中...",
 					"failed": "ファイルのアップロードに失敗しました",
 					"imageSuccess": "画像をアップロードしました",
 					"fileSuccess": "ファイルを添付しました"
@@ -9025,9 +9030,11 @@
 			"toast": "リクエストを送信しました",
 			"toastView": "表示",
 			"pastedImages": "貼り付けた画像",
-			"pasteHint": "スクリーンショットを貼り付けると、リクエストに添付されます。",
-			"removeImage": "{{name}} を削除",
-			"attachFailed": "リクエストは送信されましたが、一部の画像を添付できませんでした。"
+			"fileHint": "スクリーンショットを貼り付けるか、ファイルをドロップまたは添付してください。リクエストの送信時に添付されます。",
+			"attachFiles": "ファイルを添付",
+			"queuedFiles": "添付するファイル",
+			"filesAfterSubmit": "リクエストを送信すると、説明にファイルを追加できます。",
+			"removeImage": "{{name}} を削除"
 		},
 		"decline": {
 			"description": "リクエストはクローズされ、ボードには追加されません。後で再オープンできます。",

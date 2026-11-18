@@ -2,7 +2,7 @@ import type { Editor } from "@tiptap/core";
 import type { DragEvent } from "react";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "@/lib/toast";
+import { uploadFilesWithProgress } from "@/lib/upload-files";
 
 export type EditorRange = { from: number; to: number };
 
@@ -17,11 +17,13 @@ export type UploadedEditorAsset = {
 
 type Options = {
   /** Uploads one file and answers where it is stored. */
-  upload: (file: File) => Promise<UploadedEditorAsset>;
+  upload: (file: File, signal: AbortSignal) => Promise<UploadedEditorAsset>;
   /** Read at call time: uploads are refused while it is false. */
   canUpload: () => boolean;
   /** An id of what the editor shows; an answer for another one is dropped. */
   scopeId: string;
+  /** The editor a drop on the shell around the text goes to. */
+  getEditor: () => Editor | null;
 };
 
 /** Inserts an uploaded image as an image, anything else as a file card. */
@@ -64,7 +66,12 @@ function hasFileDrag(event: DragEvent<HTMLElement>) {
  * input, the drag-over state of the editor shell, and the upload itself
  * (toasts included), parameterized by where files are stored.
  */
-export function useEditorAssetUpload({ upload, canUpload, scopeId }: Options) {
+export function useEditorAssetUpload({
+  upload,
+  canUpload,
+  scopeId,
+  getEditor,
+}: Options) {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dragDepthRef = useRef(0);
@@ -74,6 +81,8 @@ export function useEditorAssetUpload({ upload, canUpload, scopeId }: Options) {
   uploadRef.current = upload;
   const canUploadRef = useRef(canUpload);
   canUploadRef.current = canUpload;
+  const getEditorRef = useRef(getEditor);
+  getEditorRef.current = getEditor;
   const pendingInsertRef = useRef<{
     editor: Editor;
     range?: EditorRange;
@@ -81,31 +90,29 @@ export function useEditorAssetUpload({ upload, canUpload, scopeId }: Options) {
   } | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
 
-  const uploadFile = useCallback(
-    async (file: File, editor: Editor | null, range?: EditorRange) => {
-      if (!canUploadRef.current() || !editor) return;
+  const uploadFiles = useCallback(
+    async (files: File[], editor: Editor | null, range?: EditorRange) => {
+      if (!canUploadRef.current() || !editor || files.length === 0) return;
       const scope = scopeRef.current;
-      const loadingToast = toast.loading(
-        t("tasks:detail.editor.upload.loading"),
-      );
-      try {
-        const asset = await uploadRef.current(file);
-        toast.dismiss(loadingToast);
-        if (editor.isDestroyed || scopeRef.current !== scope) return;
-        insertUploadedAsset(editor, asset, range);
-        toast.success(
-          asset.kind === "image"
-            ? t("tasks:detail.editor.upload.imageSuccess")
-            : t("tasks:detail.editor.upload.fileSuccess"),
-        );
-      } catch (error) {
-        toast.dismiss(loadingToast);
-        toast.error(
-          error instanceof Error && error.message
-            ? error.message
-            : t("tasks:detail.editor.upload.failed"),
-        );
-      }
+      // The first file lands where it was dropped; each next one follows it.
+      let insertAt = range;
+      await uploadFilesWithProgress({
+        files,
+        t,
+        upload: (file, signal) => uploadRef.current(file, signal),
+        onUploaded: (asset) => {
+          if (editor.isDestroyed || scopeRef.current !== scope) return false;
+          insertUploadedAsset(editor, asset, insertAt);
+          insertAt = undefined;
+          return undefined;
+        },
+        successMessage: (assets) =>
+          assets.length > 1
+            ? t("tasks:attachments.toast.attached", { count: assets.length })
+            : assets[0]?.kind === "image"
+              ? t("tasks:detail.editor.upload.imageSuccess")
+              : t("tasks:detail.editor.upload.fileSuccess"),
+      });
     },
     [t],
   );
@@ -121,14 +128,16 @@ export function useEditorAssetUpload({ upload, canUpload, scopeId }: Options) {
 
   const onFileInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
+      const files = Array.from(event.target.files ?? []);
+      // Picking the same file again must fire change again.
       event.target.value = "";
       const pending = pendingInsertRef.current;
       pendingInsertRef.current = null;
-      if (!file || !pending || pending.scopeId !== scopeRef.current) return;
-      void uploadFile(file, pending.editor, pending.range);
+      if (files.length === 0 || !pending) return;
+      if (pending.scopeId !== scopeRef.current) return;
+      void uploadFiles(files, pending.editor, pending.range);
     },
-    [uploadFile],
+    [uploadFiles],
   );
 
   const shellDragHandlers = {
@@ -154,13 +163,21 @@ export function useEditorAssetUpload({ upload, canUpload, scopeId }: Options) {
       if (!hasFileDrag(event)) return;
       dragDepthRef.current = 0;
       setIsDragActive(false);
+      // The text area took it already; a drop on the shell around it (the
+      // padding, the attach button) is still meant for this editor.
+      if (!canUploadRef.current() || event.nativeEvent.defaultPrevented) return;
+      event.preventDefault();
+      void uploadFiles(
+        Array.from(event.dataTransfer.files),
+        getEditorRef.current(),
+      );
     },
   };
 
   return {
     fileInputRef,
     onFileInputChange,
-    uploadFile,
+    uploadFiles,
     openFilePicker,
     isDragActive,
     shellDragHandlers,

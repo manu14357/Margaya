@@ -347,6 +347,13 @@
 			"apply": "Apply",
 			"remove": "Remove link"
 		},
+		"uploads": {
+			"uploadingFile": "Uploading {{filename}}…",
+			"uploadingProgress": "Uploading {{current}} of {{total}}…",
+			"cancelled": "Upload cancelled",
+			"tooLarge": "{{filename}} is larger than the {{limit}} upload limit",
+			"forbidden": "You don't have permission to upload files here"
+		},
 		"files": {
 			"download": "Download {{name}}"
 		},
@@ -4713,7 +4720,6 @@
 			"submitShortcut": "Submit comment",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "File uploads are only available on saved tasks.",
-				"uploadingFile": "Uploading file...",
 				"imageUploaded": "Image uploaded",
 				"fileAttached": "File attached",
 				"failedToUploadFile": "Failed to upload file",
@@ -5128,7 +5134,6 @@
 					"markComplete": "Mark task as complete"
 				},
 				"upload": {
-					"loading": "Uploading file...",
 					"failed": "Failed to upload file",
 					"imageSuccess": "Image uploaded",
 					"fileSuccess": "File attached"
@@ -8684,9 +8689,11 @@
 			"discard": "Discard",
 			"keepEditing": "Keep editing",
 			"pastedImages": "Pasted images",
-			"pasteHint": "Paste screenshots to attach them to the request.",
-			"removeImage": "Remove {{name}}",
-			"attachFailed": "The request was filed, but some images couldn't be attached."
+			"fileHint": "Paste screenshots, or drop or attach files. They're attached when you submit the request.",
+			"attachFiles": "Attach files",
+			"queuedFiles": "Files to attach",
+			"filesAfterSubmit": "You can add files to the description once the request is submitted.",
+			"removeImage": "Remove {{name}}"
 		},
 		"empty": {
 			"noRequests": {

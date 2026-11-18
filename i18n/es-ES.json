@@ -353,6 +353,13 @@
 			"languageCurrent": "Idioma: {{language}}",
 			"themeCurrent": "Tema: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "Subiendo {{filename}}…",
+			"uploadingProgress": "Subiendo {{current}} de {{total}}…",
+			"cancelled": "Subida cancelada",
+			"tooLarge": "{{filename}} supera el límite de subida de {{limit}}",
+			"forbidden": "No tienes permiso para subir archivos aquí"
+		},
 		"files": {
 			"download": "Descargar {{name}}"
 		},
@@ -4792,7 +4799,6 @@
 			"submitShortcut": "Enviar comentario",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "Adjuntar archivos sólo está disponible en tareas guardadas.",
-				"uploadingFile": "Subiendo archivo...",
 				"imageUploaded": "Imagen subida",
 				"fileAttached": "Fichero adjuntado",
 				"failedToUploadFile": "Error al subir fichero",
@@ -5219,7 +5225,6 @@
 					"markComplete": "Marcar tarea como completa"
 				},
 				"upload": {
-					"loading": "Subiendo fichero...",
 					"failed": "Error al subir fichero",
 					"imageSuccess": "Imagen subida",
 					"fileSuccess": "Fichero adjunto"
@@ -9325,9 +9330,11 @@
 			"toast": "Solicitud enviada",
 			"toastView": "Ver",
 			"pastedImages": "Imágenes pegadas",
-			"pasteHint": "Pega capturas de pantalla para adjuntarlas a la solicitud.",
-			"removeImage": "Quitar {{name}}",
-			"attachFailed": "La solicitud se ha enviado, pero no se han podido adjuntar algunas imágenes."
+			"fileHint": "Pega capturas de pantalla, o arrastra o adjunta archivos. Se adjuntan al enviar la solicitud.",
+			"attachFiles": "Adjuntar archivos",
+			"queuedFiles": "Archivos para adjuntar",
+			"filesAfterSubmit": "Podrás añadir archivos a la descripción cuando se envíe la solicitud.",
+			"removeImage": "Quitar {{name}}"
 		},
 		"decline": {
 			"description": "La solicitud se cierra y no pasa al tablero. Puedes reabrirla más tarde.",

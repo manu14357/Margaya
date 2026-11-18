@@ -67,22 +67,60 @@ describe("installDesktopFileDropGuard", () => {
       expect(over.dataTransfer.dropEffect).toBe("copy");
     });
 
-    it("lets editors and fields decide while hovered, but never open the file", () => {
+    it("lets an editor that takes files keep the drag and the drop", () => {
+      // An editable editor claims a file drag itself, as ProseMirror does.
       const editor = document.createElement("div");
+      editor.className = "ProseMirror";
       editor.setAttribute("contenteditable", "true");
       const child = document.createElement("p");
       editor.append(child);
       document.body.append(editor);
+      const claim = (event: Event) => event.preventDefault();
+      editor.addEventListener("dragover", claim);
+      editor.addEventListener("drop", claim);
       const over = drag("dragover", ["Files"], child);
-      expect(over.event.defaultPrevented).toBe(false);
+      expect(over.event.defaultPrevented).toBe(true);
       expect(over.dataTransfer.dropEffect).toBe("copy");
-      expect(drag("drop", ["Files"], child).event.defaultPrevented).toBe(true);
+      const dropped = drag("drop", ["Files"], child);
+      expect(dropped.event.defaultPrevented).toBe(true);
     });
 
-    it("leaves a file input's own drop alone", () => {
+    it("lets a dialog's drop zone take a file it claims only on dragover", () => {
+      const dialog = document.createElement("div");
+      dialog.setAttribute("role", "dialog");
+      const field = document.createElement("input");
+      dialog.append(field);
+      document.body.append(dialog);
+      dialog.addEventListener("dragover", (event) => event.preventDefault());
+      const over = drag("dragover", ["Files"], field);
+      expect(over.dataTransfer.dropEffect).toBe("copy");
+    });
+
+    it("never leaves a file drag open over text that takes no files", () => {
+      // Read-only text (a posted comment) and plain fields don't take files:
+      // left alone, the webview would open the dropped file.
+      const viewer = document.createElement("div");
+      viewer.className = "ProseMirror";
+      viewer.setAttribute("contenteditable", "false");
+      const field = document.createElement("textarea");
+      document.body.append(viewer, field);
+      for (const target of [viewer, field]) {
+        const over = drag("dragover", ["Files"], target);
+        expect(over.event.defaultPrevented).toBe(true);
+        expect(over.dataTransfer.dropEffect).toBe("none");
+        expect(drag("drop", ["Files"], target).event.defaultPrevented).toBe(
+          true,
+        );
+      }
+    });
+
+    it("leaves a file input's own drag and drop alone", () => {
       const input = document.createElement("input");
       input.type = "file";
       document.body.append(input);
+      expect(drag("dragover", ["Files"], input).event.defaultPrevented).toBe(
+        false,
+      );
       expect(drag("drop", ["Files"], input).event.defaultPrevented).toBe(false);
     });
 

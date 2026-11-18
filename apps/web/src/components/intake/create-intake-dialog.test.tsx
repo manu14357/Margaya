@@ -6,6 +6,7 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
+import { useEffect } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import CreateIntakeDialog from "./create-intake-dialog";
 import { intakeItem } from "./intake-test-fixtures";
@@ -15,9 +16,11 @@ const api = vi.hoisted(() => ({
   update: vi.fn(),
   toastSuccess: vi.fn(),
   toastError: vi.fn(),
+  toastInfo: vi.fn(),
   upload: vi.fn(),
   analyze: vi.fn(),
   prepare: vi.fn(),
+  editorUpload: vi.fn(),
   canUpdateTasks: true,
   aiAvailable: false,
 }));
@@ -53,28 +56,46 @@ vi.mock("@/lib/toast", () => ({
     success: api.toastSuccess,
     error: api.toastError,
     warning: vi.fn(),
-    info: vi.fn(),
+    info: api.toastInfo,
+    loading: vi.fn(() => "toast-1"),
+    update: vi.fn(),
+    dismiss: vi.fn(),
   },
 }));
-// The rich editor is out of scope here; the dialog passes no task id, so
-// the real one offers no uploads.
+// The rich editor is out of scope here (comment-editor.test.tsx covers its
+// uploads): this one shows what the dialog hands it, and offers an edit's
+// description upload as the real one does.
 vi.mock("@/components/task/task-description-editor", () => ({
-  default: ({
+  default: function DescriptionEditor({
     value,
     onChange,
     taskId,
+    allowFileUploads = true,
+    onQueueFiles,
+    onUploadFilesChange,
   }: {
     value: string;
     onChange: (value: string) => void;
     taskId?: string;
-  }) => (
-    <textarea
-      aria-label="description"
-      data-task-id={taskId ?? "none"}
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-    />
-  ),
+    allowFileUploads?: boolean;
+    onQueueFiles?: (files: File[]) => void;
+    onUploadFilesChange?: (upload: ((files: File[]) => void) | null) => void;
+  }) {
+    useEffect(() => {
+      onUploadFilesChange?.(api.editorUpload);
+      return () => onUploadFilesChange?.(null);
+    }, [onUploadFilesChange]);
+    return (
+      <textarea
+        aria-label="description"
+        data-task-id={taskId ?? "none"}
+        data-uploads={String(allowFileUploads)}
+        data-queues={onQueueFiles ? "yes" : "no"}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      />
+    );
+  },
 }));
 vi.mock("react-i18next", () => ({
   initReactI18next: { type: "3rdParty", init: vi.fn() },
@@ -143,7 +164,9 @@ describe("CreateIntakeDialog pasted images", () => {
     fireEvent.change(titleInput(), { target: { value: "Export fails" } });
     fireEvent.click(submitButton());
     await waitFor(() =>
-      expect(api.upload).toHaveBeenCalledWith({ taskId: "task-1", file }),
+      expect(api.upload).toHaveBeenCalledWith(
+        expect.objectContaining({ taskId: "task-1", file }),
+      ),
     );
   });
 
@@ -193,12 +216,121 @@ describe("CreateIntakeDialog pasted images", () => {
     renderDialog();
     pasteScreenshot();
     expect(api.prepare).not.toHaveBeenCalled();
-    expect(screen.queryByText("intake:create.pasteHint")).toBeNull();
+    expect(screen.queryByText("intake:create.fileHint")).toBeNull();
+  });
+});
+
+const pdf = () => new File(["%PDF"], "spec.pdf", { type: "application/pdf" });
+const notes = () => new File(["notes"], "notes.txt", { type: "text/plain" });
+
+function dropFiles(target: Element, files: File[]) {
+  fireEvent.drop(target, { dataTransfer: { files, types: ["Files"] } });
+}
+
+describe("CreateIntakeDialog files", () => {
+  it("queues dropped and picked files, then attaches them once filed", async () => {
+    api.create.mockResolvedValue(intakeItem());
+    api.upload.mockResolvedValue({});
+    renderDialog();
+    expect(screen.getByLabelText("description")).toHaveAttribute(
+      "data-queues",
+      "yes",
+    );
+    expect(screen.getByText("intake:create.fileHint")).toBeInTheDocument();
+
+    // Dropped anywhere on the dialog, not only on the editor.
+    const first = pdf();
+    dropFiles(titleInput(), [first]);
+    const second = notes();
+    fireEvent.change(screen.getByTestId("intake-file-input"), {
+      target: { files: [second] },
+    });
+
+    expect(await screen.findByText("spec.pdf")).toBeInTheDocument();
+    expect(screen.getByText("notes.txt")).toBeInTheDocument();
+    expect(api.upload).not.toHaveBeenCalled();
+    expect(api.toastError).not.toHaveBeenCalled();
+
+    fireEvent.change(titleInput(), { target: { value: "Export fails" } });
+    fireEvent.click(submitButton());
+    await waitFor(() => expect(api.upload).toHaveBeenCalledTimes(2));
+    expect(api.upload.mock.calls.map(([args]) => args.file)).toEqual([
+      first,
+      second,
+    ]);
+    expect(api.upload.mock.calls[0]?.[0].taskId).toBe("task-1");
+  });
+
+  it("lets a queued file be removed before filing", async () => {
+    api.create.mockResolvedValue(intakeItem());
+    renderDialog();
+    dropFiles(titleInput(), [pdf()]);
+    fireEvent.click(
+      await screen.findByRole("button", { name: "intake:create.removeImage" }),
+    );
+    expect(screen.queryByText("spec.pdf")).toBeNull();
+    fireEvent.change(titleInput(), { target: { value: "Export fails" } });
+    fireEvent.click(submitButton());
+    await waitFor(() => expect(api.create).toHaveBeenCalled());
+    expect(api.upload).not.toHaveBeenCalled();
+  });
+
+  it("uploads into the saved request's description when editing", async () => {
+    renderDialog({ intakeItem: intakeItem(), description: "Steps" });
+    // The request is saved: the editor gets its task and uploads.
+    const editor = screen.getByLabelText("description");
+    expect(editor).toHaveAttribute("data-task-id", "task-1");
+    expect(editor).toHaveAttribute("data-uploads", "true");
+    expect(editor).toHaveAttribute("data-queues", "no");
+
+    const files = [pdf(), notes()];
+    dropFiles(titleInput(), files);
+    expect(api.editorUpload).toHaveBeenCalledWith(files);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "intake:create.attachFiles" }),
+    );
+    const picked = [notes()];
+    fireEvent.change(screen.getByTestId("intake-file-input"), {
+      target: { files: picked },
+    });
+    expect(api.editorUpload).toHaveBeenLastCalledWith(picked);
+    expect(api.toastError).not.toHaveBeenCalled();
+  });
+
+  it("lets the requester upload into their request without task:update", () => {
+    // Edit request is the requester's dialog: viewers file and edit requests.
+    api.canUpdateTasks = false;
+    renderDialog({ intakeItem: intakeItem(), description: "Steps" });
+    expect(screen.getByLabelText("description")).toHaveAttribute(
+      "data-uploads",
+      "true",
+    );
+    const files = [pdf()];
+    dropFiles(titleInput(), files);
+    expect(api.editorUpload).toHaveBeenCalledWith(files);
+  });
+
+  it("explains, without task:update, that a new request takes files later", () => {
+    api.canUpdateTasks = false;
+    renderDialog();
+    expect(screen.getByLabelText("description")).toHaveAttribute(
+      "data-uploads",
+      "false",
+    );
+    expect(
+      screen.queryByRole("button", { name: "intake:create.attachFiles" }),
+    ).toBeNull();
+    dropFiles(titleInput(), [pdf()]);
+    expect(api.toastInfo).toHaveBeenCalledWith(
+      "intake:create.filesAfterSubmit",
+    );
+    expect(screen.queryByText("spec.pdf")).toBeNull();
   });
 });
 
 describe("CreateIntakeDialog", () => {
-  it("needs a title and offers no uploads", () => {
+  it("needs a title, and has no task for uploads until filed", () => {
     renderDialog();
     expect(submitButton()).toBeDisabled();
     fireEvent.change(titleInput(), { target: { value: "  " } });

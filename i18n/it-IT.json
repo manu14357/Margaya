@@ -353,6 +353,13 @@
 			"languageCurrent": "Lingua: {{language}}",
 			"themeCurrent": "Tema: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "Caricamento di {{filename}}…",
+			"uploadingProgress": "Caricamento {{current}} di {{total}}…",
+			"cancelled": "Caricamento annullato",
+			"tooLarge": "{{filename}} supera il limite di caricamento di {{limit}}",
+			"forbidden": "Non hai il permesso di caricare file qui"
+		},
 		"files": {
 			"download": "Scarica {{name}}"
 		},
@@ -4792,7 +4799,6 @@
 			"submitShortcut": "Invia commento",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "Il caricamento di file è disponibile solo su attività salvate.",
-				"uploadingFile": "Caricamento file in corso...",
 				"imageUploaded": "Immagine caricata",
 				"fileAttached": "File allegato",
 				"failedToUploadFile": "Caricamento file fallito",
@@ -5219,7 +5225,6 @@
 					"markComplete": "Segna attività come completata"
 				},
 				"upload": {
-					"loading": "Caricamento file in corso...",
 					"failed": "Caricamento file fallito",
 					"imageSuccess": "Immagine caricata",
 					"fileSuccess": "File allegato"
@@ -9325,9 +9330,11 @@
 			"toast": "Richiesta inviata",
 			"toastView": "Visualizza",
 			"pastedImages": "Immagini incollate",
-			"pasteHint": "Incolla degli screenshot per allegarli alla richiesta.",
-			"removeImage": "Rimuovi {{name}}",
-			"attachFailed": "La richiesta è stata inviata, ma non è stato possibile allegare alcune immagini."
+			"fileHint": "Incolla screenshot, oppure trascina o allega file. Vengono allegati quando invii la richiesta.",
+			"attachFiles": "Allega file",
+			"queuedFiles": "File da allegare",
+			"filesAfterSubmit": "Potrai aggiungere file alla descrizione dopo aver inviato la richiesta.",
+			"removeImage": "Rimuovi {{name}}"
 		},
 		"decline": {
 			"description": "La richiesta viene chiusa e non arriva sulla board. Potrai riaprirla più tardi.",

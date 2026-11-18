@@ -1,6 +1,7 @@
 import createImageUpload, {
   finalizeImageUpload,
 } from "@/fetchers/task/create-image-upload";
+import { StorageUploadError } from "@/lib/upload-task-attachment";
 
 const allowedImageMimeTypes = new Set([
   "image/apng",
@@ -35,10 +36,13 @@ export async function uploadTaskImage({
   taskId,
   surface,
   file,
+  signal,
 }: {
   taskId: string;
   surface: UploadSurface;
   file: File;
+  /** Cancels the byte transfer, the long part of an upload. */
+  signal?: AbortSignal;
 }) {
   if (!isSupportedImageFile(file)) {
     if (!isSupportedTaskAsset(file)) {
@@ -61,10 +65,11 @@ export async function uploadTaskImage({
     method: "PUT",
     headers: upload.headers,
     body: file,
+    signal,
   });
 
   if (!response.ok) {
-    throw new Error("Failed to upload file to storage.");
+    throw new StorageUploadError(response.status);
   }
 
   const asset = await finalizeImageUpload({

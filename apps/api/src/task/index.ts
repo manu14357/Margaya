@@ -13,6 +13,7 @@ import {
   updateTaskEstimateHandler,
   updateTaskEstimateRoute,
 } from "../estimate/task-estimate-route";
+import { requireTaskUpdateOrOpenRequester } from "../intake/requester-upload";
 import {
   apiRouter,
   type BaseVariables,
@@ -720,10 +721,10 @@ const createTaskImageUploadRoute = createRoute({
   tags: ["Tasks"],
   summary: "Create image upload URL",
   description:
-    "Get a presigned URL for uploading an image used in a task description or comment. PUT the bytes to it, then call the finalize route.",
+    "Get a presigned URL for uploading an image or file used in a task description or comment. PUT the bytes to it, then call the finalize route. Allowed with task:update, or for the requester (intake:create) of an open request on the task, who edits its description.",
   middleware: [
     workspaceAccess.fromTask(),
-    requireWorkspacePermission({ task: ["update"] }),
+    requireTaskUpdateOrOpenRequester(),
     requireEntitlement,
   ] as const,
   request: {
@@ -737,7 +738,7 @@ const createTaskImageUploadRoute = createRoute({
     200: jsonResponse("The presigned upload", imageUploadSchema),
     400: errorResponse("Unsupported content type, or the file is too large"),
     403: errorResponse(
-      "No workspace access, or missing task:update permission",
+      "No workspace access, or neither task:update nor the requester of an open request on the task",
     ),
     404: errorResponse("Task not found"),
     503: errorResponse("Image uploads are not configured on this instance"),
@@ -751,10 +752,10 @@ const finalizeTaskImageUploadRoute = createRoute({
   tags: ["Tasks"],
   summary: "Finalize image upload",
   description:
-    "Record an uploaded image as a private asset and return the URL to reference it by.",
+    "Record an uploaded image or file as a private asset and return the URL to reference it by. Allowed to the same callers as the upload route.",
   middleware: [
     workspaceAccess.fromTask(),
-    requireWorkspacePermission({ task: ["update"] }),
+    requireTaskUpdateOrOpenRequester(),
     requireEntitlement,
   ] as const,
   request: {
@@ -770,7 +771,7 @@ const finalizeTaskImageUploadRoute = createRoute({
       "Invalid upload, or the key does not belong to this task",
     ),
     403: errorResponse(
-      "No workspace access, or missing task:update permission",
+      "No workspace access, or neither task:update nor the requester of an open request on the task",
     ),
     404: errorResponse("Task not found"),
     503: errorResponse(
@@ -1335,10 +1336,22 @@ const task = apiRouter<BaseVariables & { workspaceId: string }>()
     }
 
     const [existingAsset] = await db
-      .select({ id: assetTable.id })
+      .select({ id: assetTable.id, createdBy: assetTable.createdBy })
       .from(assetTable)
       .where(eq(assetTable.objectKey, normalizedKey))
       .limit(1);
+
+    // Finalizing again is a retry by the uploader; never re-label or take
+    // over an asset someone else recorded.
+    if (
+      existingAsset?.createdBy &&
+      userId &&
+      existingAsset.createdBy !== userId
+    ) {
+      throw new HTTPException(400, {
+        message: "Image upload key does not match the task context.",
+      });
+    }
 
     const [asset] = existingAsset
       ? await db

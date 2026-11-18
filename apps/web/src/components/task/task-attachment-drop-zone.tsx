@@ -57,10 +57,12 @@ export default function TaskAttachmentDropZone({
       }}
       onDrop={(event) => {
         if (!carriesFiles(event)) return;
-        event.preventDefault();
-        event.stopPropagation();
         depth.current = 0;
         setIsOver(false);
+        // An editor inside took the files already.
+        if (event.nativeEvent.defaultPrevented) return;
+        event.preventDefault();
+        event.stopPropagation();
         const files = Array.from(event.dataTransfer.files ?? []);
         if (files.length > 0) onFiles(files);
       }}

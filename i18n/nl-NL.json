@@ -347,6 +347,13 @@
 			"languageCurrent": "Taal: {{language}}",
 			"themeCurrent": "Thema: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "{{filename}} uploaden…",
+			"uploadingProgress": "{{current}} van {{total}} uploaden…",
+			"cancelled": "Upload geannuleerd",
+			"tooLarge": "{{filename}} is groter dan de uploadlimiet van {{limit}}",
+			"forbidden": "Je hebt geen toestemming om hier bestanden te uploaden"
+		},
 		"files": {
 			"download": "{{name}} downloaden"
 		},
@@ -4710,7 +4717,6 @@
 			"submitShortcut": "Reactie plaatsen",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "Bestandsuploads zijn alleen beschikbaar bij opgeslagen taken.",
-				"uploadingFile": "Bestand uploaden...",
 				"imageUploaded": "Afbeelding geüpload",
 				"fileAttached": "Bestand bijgevoegd",
 				"failedToUploadFile": "Uploaden bestand mislukt",
@@ -5128,7 +5134,6 @@
 					"markComplete": "Markeer taak als voltooid"
 				},
 				"upload": {
-					"loading": "Bestand uploaden...",
 					"failed": "Uploaden bestand mislukt",
 					"imageSuccess": "Afbeelding geüpload",
 					"fileSuccess": "Bestand bijgevoegd"
@@ -9174,9 +9179,11 @@
 			"toast": "Verzoek ingediend",
 			"toastView": "Bekijken",
 			"pastedImages": "Geplakte afbeeldingen",
-			"pasteHint": "Plak schermafbeeldingen om ze bij het verzoek te voegen.",
-			"removeImage": "{{name}} verwijderen",
-			"attachFailed": "Het verzoek is ingediend, maar sommige afbeeldingen konden niet worden bijgevoegd."
+			"fileHint": "Plak schermafbeeldingen, of sleep of voeg bestanden toe. Ze worden bijgevoegd wanneer je het verzoek indient.",
+			"attachFiles": "Bestanden bijvoegen",
+			"queuedFiles": "Bij te voegen bestanden",
+			"filesAfterSubmit": "Je kunt bestanden aan de beschrijving toevoegen zodra het verzoek is ingediend.",
+			"removeImage": "{{name}} verwijderen"
 		},
 		"decline": {
 			"description": "Het verzoek wordt gesloten en komt niet op het bord. Je kunt het later heropenen.",

@@ -341,6 +341,13 @@
 			"languageCurrent": "Bahasa: {{language}}",
 			"themeCurrent": "Tema: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "Mengunggah {{filename}}…",
+			"uploadingProgress": "Mengunggah {{current}} dari {{total}}…",
+			"cancelled": "Unggahan dibatalkan",
+			"tooLarge": "{{filename}} melebihi batas unggahan {{limit}}",
+			"forbidden": "Anda tidak memiliki izin untuk mengunggah file di sini"
+		},
 		"files": {
 			"download": "Unduh {{name}}"
 		},
@@ -4630,7 +4637,6 @@
 			"submitShortcut": "Kirim komentar",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "Unggahan file hanya tersedia pada tugas yang sudah disimpan.",
-				"uploadingFile": "Mengunggah file...",
 				"imageUploaded": "Gambar diunggah",
 				"fileAttached": "File dilampirkan",
 				"failedToUploadFile": "Gagal mengunggah file",
@@ -5039,7 +5045,6 @@
 					"markComplete": "Tandai tugas selesai"
 				},
 				"upload": {
-					"loading": "Mengunggah file...",
 					"failed": "Gagal mengunggah file",
 					"imageSuccess": "Gambar diunggah",
 					"fileSuccess": "File dilampirkan"
@@ -9025,9 +9030,11 @@
 			"toast": "Permintaan dikirim",
 			"toastView": "Lihat",
 			"pastedImages": "Gambar yang ditempel",
-			"pasteHint": "Tempel tangkapan layar untuk melampirkannya ke permintaan.",
-			"removeImage": "Hapus {{name}}",
-			"attachFailed": "Permintaan telah diajukan, tetapi beberapa gambar tidak dapat dilampirkan."
+			"fileHint": "Tempel tangkapan layar, atau seret atau lampirkan file. File dilampirkan saat Anda mengirim permintaan.",
+			"attachFiles": "Lampirkan file",
+			"queuedFiles": "File yang akan dilampirkan",
+			"filesAfterSubmit": "Anda dapat menambahkan file ke deskripsi setelah permintaan dikirim.",
+			"removeImage": "Hapus {{name}}"
 		},
 		"decline": {
 			"description": "Permintaan ditutup dan tidak masuk ke papan. Anda dapat membukanya kembali nanti.",

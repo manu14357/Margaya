@@ -4,13 +4,11 @@ import { useTranslation } from "react-i18next";
 import { taskAttachmentsQueryKey } from "@/hooks/queries/task-attachment/use-get-task-attachments";
 import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
-import {
-  StorageUploadError,
-  uploadTaskAttachment,
-} from "@/lib/upload-task-attachment";
+import { MAX_FILES_PER_UPLOAD, uploadFailureMessage } from "@/lib/upload-files";
+import { uploadTaskAttachment } from "@/lib/upload-task-attachment";
 
 /** Files taken from one pick or drop; the rest are dropped with a notice. */
-export const MAX_FILES_PER_BATCH = 10;
+export const MAX_FILES_PER_BATCH = MAX_FILES_PER_UPLOAD;
 
 export type PendingUpload = { id: string; filename: string };
 
@@ -27,17 +25,6 @@ export function useUploadTaskAttachments(taskId: string) {
   const [pending, setPending] = useState<PendingUpload[]>([]);
   const queue = useRef<Promise<void>>(Promise.resolve());
   const nextId = useRef(0);
-
-  const failureReason = useCallback(
-    (error: unknown) => {
-      if (error instanceof StorageUploadError) {
-        return t("tasks:attachments.toast.storageError");
-      }
-      if (error instanceof Error && error.message) return error.message;
-      return t("tasks:attachments.toast.unknownError");
-    },
-    [t],
-  );
 
   const runBatch = useCallback(
     async (entries: Entry[]) => {
@@ -64,12 +51,8 @@ export function useUploadTaskAttachments(taskId: string) {
             drop(entries.slice(index).map((rest) => rest.id));
             break;
           }
-          toast.error(
-            t("tasks:attachments.toast.failed", {
-              filename: entry.filename,
-              reason: failureReason(error),
-            }),
-          );
+          // Names the size limit when the file is too large.
+          toast.error(uploadFailureMessage(error, entry.filename, t));
           drop([entry.id]);
         }
       }
@@ -79,7 +62,7 @@ export function useUploadTaskAttachments(taskId: string) {
         );
       }
     },
-    [failureReason, queryClient, t, taskId],
+    [queryClient, t, taskId],
   );
 
   const upload = useCallback(

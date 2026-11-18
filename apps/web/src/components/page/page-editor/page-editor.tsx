@@ -134,11 +134,12 @@ export default function PageEditor({
   }, []);
 
   const upload = useEditorAssetUpload({
-    upload: (file) => uploadPageAsset(pageId, file),
+    upload: (file, signal) => uploadPageAsset(pageId, file, signal),
     canUpload: () => editableRef.current,
     scopeId: pageId,
+    getEditor: () => editorRef.current,
   });
-  const { uploadFile, openFilePicker } = upload;
+  const { uploadFiles, openFilePicker } = upload;
 
   // Handlers read through refs: the editor is built once per document (or
   // per mount without one; parents remount it with a key for new content).
@@ -175,10 +176,10 @@ export default function PageEditor({
         },
         handlePaste: (view, event) => {
           if (!editableRef.current) return false;
-          const file = event.clipboardData?.files?.[0];
-          if (file) {
+          const files = Array.from(event.clipboardData?.files ?? []);
+          if (files.length > 0) {
             event.preventDefault();
-            void uploadFile(file, editorRef.current);
+            void uploadFiles(files, editorRef.current);
             return true;
           }
           const plainText = event.clipboardData?.getData("text/plain") || "";
@@ -253,15 +254,15 @@ export default function PageEditor({
           return true;
         },
         handleDrop: (view, event) => {
-          const file = event.dataTransfer?.files?.[0];
-          if (!file || !editableRef.current) return false;
+          const files = Array.from(event.dataTransfer?.files ?? []);
+          if (files.length === 0 || !editableRef.current) return false;
           event.preventDefault();
           const coordinates = view.posAtCoords({
             left: event.clientX,
             top: event.clientY,
           });
-          void uploadFile(
-            file,
+          void uploadFiles(
+            files,
             editorRef.current,
             coordinates
               ? { from: coordinates.pos, to: coordinates.pos }
@@ -449,8 +450,10 @@ export default function PageEditor({
       <input
         ref={upload.fileInputRef}
         type="file"
+        multiple
         className="sr-only"
         tabIndex={-1}
+        aria-hidden
         onChange={upload.onFileInputChange}
       />
       {codeBlocks.toolbar}
@@ -509,6 +512,7 @@ export default function PageEditor({
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => openFilePicker(editor)}
           aria-label={t("tasks:detail.editor.attachFile")}
+          title={t("tasks:detail.editor.attachFile")}
         >
           <Paperclip className="size-3.5" />
         </button>

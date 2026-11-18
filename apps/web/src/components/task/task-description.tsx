@@ -84,6 +84,7 @@ import {
 } from "@/lib/editor-url-utils";
 import { isInCodeBlockLanguagePicker } from "@/lib/is-in-codeblock-language-picker";
 import { toast } from "@/lib/toast";
+import { uploadFilesWithProgress } from "@/lib/upload-files";
 import { uploadTaskImage } from "@/lib/upload-task-image";
 import { AttachmentCard } from "./extensions/attachment-card";
 import { EmbedBlock } from "./extensions/embed-block";
@@ -441,9 +442,9 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
     [],
   );
 
-  const handleAssetFileUpload = useCallback(
-    async (file: File, targetEditor?: Editor | null, range?: SlashRange) => {
-      if (!canEditRef.current) return;
+  const handleAssetFileUploads = useCallback(
+    async (files: File[], targetEditor?: Editor | null, range?: SlashRange) => {
+      if (!canEditRef.current || files.length === 0) return;
       const activeEditor = targetEditor || lastEditorRef.current;
 
       if (!activeEditor) {
@@ -452,38 +453,34 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
       }
 
       const uploadTaskId = taskIdRef.current;
-      const loadingToast = toast.loading(
-        t("tasks:detail.editor.upload.loading"),
-      );
-
-      try {
-        const uploadedAsset = await uploadTaskImage({
-          taskId: uploadTaskId,
-          surface: "description",
-          file,
-        });
-
-        if (activeEditor.isDestroyed || taskIdRef.current !== uploadTaskId) {
-          toast.dismiss(loadingToast);
-          return;
-        }
-
-        insertUploadedAsset(activeEditor, uploadedAsset, range);
-
-        toast.dismiss(loadingToast);
-        toast.success(
-          uploadedAsset.kind === "image"
-            ? t("tasks:detail.editor.upload.imageSuccess")
-            : t("tasks:detail.editor.upload.fileSuccess"),
-        );
-      } catch (error) {
-        toast.dismiss(loadingToast);
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : t("tasks:detail.editor.upload.failed"),
-        );
-      }
+      // The first file lands where it was dropped; each next one follows it.
+      let insertAt = range;
+      await uploadFilesWithProgress({
+        files,
+        t,
+        upload: (file, signal) =>
+          uploadTaskImage({
+            taskId: uploadTaskId,
+            surface: "description",
+            file,
+            signal,
+          }),
+        onUploaded: (asset) => {
+          // Another task opened in this editor meanwhile: keep it clean.
+          if (activeEditor.isDestroyed || taskIdRef.current !== uploadTaskId) {
+            return false;
+          }
+          insertUploadedAsset(activeEditor, asset, insertAt);
+          insertAt = undefined;
+          return undefined;
+        },
+        successMessage: (assets) =>
+          assets.length > 1
+            ? t("tasks:attachments.toast.attached", { count: assets.length })
+            : assets[0]?.kind === "image"
+              ? t("tasks:detail.editor.upload.imageSuccess")
+              : t("tasks:detail.editor.upload.fileSuccess"),
+      });
     },
     [insertUploadedAsset, t],
   );
@@ -544,8 +541,13 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
       if (!canEditRef.current || !taskId || !hasFileDrag(event)) return;
       dragDepthRef.current = 0;
       setIsDragActive(false);
+      // The text area took it already; a drop on the shell around it (the
+      // padding, the attach button) is still meant for this description.
+      if (event.nativeEvent.defaultPrevented) return;
+      event.preventDefault();
+      void handleAssetFileUploads(Array.from(event.dataTransfer.files));
     },
-    [hasFileDrag, taskId],
+    [handleAssetFileUploads, hasFileDrag, taskId],
   );
 
   const slashCommands = useMemo(
@@ -689,11 +691,10 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
         },
         handlePaste: (view, event) => {
           const pastedFiles = Array.from(event.clipboardData?.files || []);
-          const pastedFile = pastedFiles[0];
 
-          if (pastedFile) {
+          if (pastedFiles.length > 0) {
             event.preventDefault();
-            void handleAssetFileUpload(pastedFile, editor);
+            void handleAssetFileUploads(pastedFiles, editor);
             return true;
           }
 
@@ -763,9 +764,8 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
         },
         handleDrop: (view, event) => {
           const droppedFiles = Array.from(event.dataTransfer?.files || []);
-          const droppedFile = droppedFiles[0];
 
-          if (!droppedFile) return false;
+          if (droppedFiles.length === 0) return false;
 
           event.preventDefault();
           const coordinates = view.posAtCoords({
@@ -776,7 +776,7 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
             ? { from: coordinates.pos, to: coordinates.pos }
             : undefined;
 
-          void handleAssetFileUpload(droppedFile, editor, dropRange);
+          void handleAssetFileUploads(droppedFiles, editor, dropRange);
           return true;
         },
         handleTextInput: (view, _from, _to, text) => {
@@ -844,7 +844,7 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
         scheduleDescriptionSave(markdown);
       },
     },
-    [getOverlayPosition, handleAssetFileUpload, t, toShikiLanguage],
+    [getOverlayPosition, handleAssetFileUploads, t, toShikiLanguage],
   );
 
   useEffect(() => {
@@ -1421,11 +1421,17 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
       <input
         ref={imageInputRef}
         type="file"
+        multiple
         className="sr-only"
+        // The attach button and the File command are the way in.
+        tabIndex={-1}
+        aria-hidden
+        data-testid="task-description-file-input"
         onChange={(event) => {
-          const file = event.target.files?.[0];
+          const files = Array.from(event.target.files ?? []);
+          // Picking the same file again must fire change again.
           event.target.value = "";
-          if (!file) return;
+          if (files.length === 0) return;
 
           const pendingInsert = pendingImageInsertRef.current;
           pendingImageInsertRef.current = null;
@@ -1433,8 +1439,8 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
             return;
           }
 
-          void handleAssetFileUpload(
-            file,
+          void handleAssetFileUploads(
+            files,
             pendingInsert.editor,
             pendingInsert.range,
           );
@@ -1969,6 +1975,7 @@ export default function TaskDescription({ taskId }: TaskDescriptionProps) {
           }}
           onClick={() => openImagePicker(editor)}
           aria-label={t("tasks:detail.editor.attachFile")}
+          title={t("tasks:detail.editor.attachFile")}
         >
           <Paperclip className="size-3.5" />
         </button>

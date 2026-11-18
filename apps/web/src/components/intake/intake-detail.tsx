@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import DescriptionTranslation from "@/components/ai/translate/description-translation";
 import TriageSuggestions from "@/components/ai/triage/triage-suggestions";
 import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
+import TaskAttachments from "@/components/task/task-attachments";
 import TaskDescription from "@/components/task/task-description";
 import {
   TaskDetailsSkeleton,
@@ -254,6 +255,8 @@ export default function IntakeDetail({
                 />
               ) : null}
               <IntakeRequestMeta item={item} />
+              {/* Files filed with the request land here. */}
+              <TaskAttachments taskId={item.taskId} />
               {task && (status === "pending" || status === "snoozed") && (
                 <TriageSuggestions
                   task={task}

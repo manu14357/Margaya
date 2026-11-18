@@ -341,6 +341,13 @@
 			"languageCurrent": "Ngôn ngữ: {{language}}",
 			"themeCurrent": "Chủ đề: {{theme}}"
 		},
+		"uploads": {
+			"uploadingFile": "Đang tải lên {{filename}}…",
+			"uploadingProgress": "Đang tải lên {{current}}/{{total}}…",
+			"cancelled": "Đã hủy tải lên",
+			"tooLarge": "{{filename}} vượt quá giới hạn tải lên {{limit}}",
+			"forbidden": "Bạn không có quyền tải tệp lên tại đây"
+		},
 		"files": {
 			"download": "Tải xuống {{name}}"
 		},
@@ -4630,7 +4637,6 @@
 			"submitShortcut": "Gửi bình luận",
 			"editor": {
 				"uploadsOnlyOnSavedTasks": "Chỉ có thể tải file lên các công việc đã lưu.",
-				"uploadingFile": "Đang tải file lên...",
 				"imageUploaded": "Đã tải ảnh lên",
 				"fileAttached": "Đã đính kèm file",
 				"failedToUploadFile": "Không thể tải file lên",
@@ -5039,7 +5045,6 @@
 					"markComplete": "Đánh dấu công việc đã hoàn thành"
 				},
 				"upload": {
-					"loading": "Đang tải file lên...",
 					"failed": "Không thể tải file lên",
 					"imageSuccess": "Đã tải ảnh lên",
 					"fileSuccess": "Đã đính kèm file"
@@ -9025,9 +9030,11 @@
 			"toast": "Đã gửi yêu cầu",
 			"toastView": "Xem",
 			"pastedImages": "Ảnh đã dán",
-			"pasteHint": "Dán ảnh chụp màn hình để đính kèm vào yêu cầu.",
-			"removeImage": "Xóa {{name}}",
-			"attachFailed": "Yêu cầu đã được gửi, nhưng không thể đính kèm một số ảnh."
+			"fileHint": "Dán ảnh chụp màn hình, hoặc kéo thả hay đính kèm tệp. Tệp được đính kèm khi bạn gửi yêu cầu.",
+			"attachFiles": "Đính kèm tệp",
+			"queuedFiles": "Tệp sẽ đính kèm",
+			"filesAfterSubmit": "Bạn có thể thêm tệp vào phần mô tả sau khi gửi yêu cầu.",
+			"removeImage": "Xóa {{name}}"
 		},
 		"decline": {
 			"description": "Yêu cầu sẽ được đóng và không xuất hiện trên bảng. Bạn có thể mở lại sau.",

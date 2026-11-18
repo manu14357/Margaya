@@ -1400,6 +1400,34 @@
 						"remove"
 					]
 				},
+				"uploads": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"uploadingFile": {
+							"type": "string"
+						},
+						"uploadingProgress": {
+							"type": "string"
+						},
+						"cancelled": {
+							"type": "string"
+						},
+						"tooLarge": {
+							"type": "string"
+						},
+						"forbidden": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"uploadingFile",
+						"uploadingProgress",
+						"cancelled",
+						"tooLarge",
+						"forbidden"
+					]
+				},
 				"files": {
 					"type": "object",
 					"additionalProperties": false,
@@ -1692,6 +1720,7 @@
 				"modals",
 				"projectArchived",
 				"linkDialog",
+				"uploads",
 				"files",
 				"filePreview"
 			]
@@ -19391,9 +19420,6 @@
 								"uploadsOnlyOnSavedTasks": {
 									"type": "string"
 								},
-								"uploadingFile": {
-									"type": "string"
-								},
 								"imageUploaded": {
 									"type": "string"
 								},
@@ -19659,7 +19685,6 @@
 							},
 							"required": [
 								"uploadsOnlyOnSavedTasks",
-								"uploadingFile",
 								"imageUploaded",
 								"fileAttached",
 								"failedToUploadFile",
@@ -21148,9 +21173,6 @@
 									"type": "object",
 									"additionalProperties": false,
 									"properties": {
-										"loading": {
-											"type": "string"
-										},
 										"failed": {
 											"type": "string"
 										},
@@ -21161,12 +21183,7 @@
 											"type": "string"
 										}
 									},
-									"required": [
-										"loading",
-										"failed",
-										"imageSuccess",
-										"fileSuccess"
-									]
+									"required": ["failed", "imageSuccess", "fileSuccess"]
 								},
 								"slash": {
 									"type": "object",
@@ -35551,13 +35568,19 @@
 						"pastedImages": {
 							"type": "string"
 						},
-						"pasteHint": {
+						"fileHint": {
+							"type": "string"
+						},
+						"attachFiles": {
+							"type": "string"
+						},
+						"queuedFiles": {
+							"type": "string"
+						},
+						"filesAfterSubmit": {
 							"type": "string"
 						},
 						"removeImage": {
-							"type": "string"
-						},
-						"attachFailed": {
 							"type": "string"
 						}
 					},
@@ -35580,9 +35603,11 @@
 						"discard",
 						"keepEditing",
 						"pastedImages",
-						"pasteHint",
-						"removeImage",
-						"attachFailed"
+						"fileHint",
+						"attachFiles",
+						"queuedFiles",
+						"filesAfterSubmit",
+						"removeImage"
 					]
 				},
 				"empty": {

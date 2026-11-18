@@ -1,12 +1,14 @@
 import type { UploadedEditorAsset } from "@/components/editor/use-editor-asset-upload";
 import createPageAssetUpload from "@/fetchers/page/create-page-asset-upload";
 import finalizePageAssetUpload from "@/fetchers/page/finalize-page-asset-upload";
+import { StorageUploadError } from "@/lib/upload-task-attachment";
 import { getImageAltText, isSupportedImageFile } from "@/lib/upload-task-image";
 
 /** Uploads an image or file into a page: presign, PUT, finalize. */
 export async function uploadPageAsset(
   pageId: string,
   file: File,
+  signal?: AbortSignal,
 ): Promise<UploadedEditorAsset> {
   if (file.size <= 0) {
     throw new Error("Only non-empty file uploads are supported.");
@@ -23,9 +25,10 @@ export async function uploadPageAsset(
     method: "PUT",
     headers: upload.headers,
     body: file,
+    signal,
   });
   if (!response.ok) {
-    throw new Error("Failed to upload file to storage.");
+    throw new StorageUploadError(response.status);
   }
   const asset = await finalizePageAssetUpload(pageId, {
     key: upload.key,
