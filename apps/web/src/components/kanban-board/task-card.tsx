@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { type CSSProperties, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useShallow } from "zustand/react/shallow";
 import { RecurringIndicator } from "@/components/task/recurring-indicator";
 import {
   AlertDialog,
@@ -89,8 +90,13 @@ function TaskCard({
     id: overlay ? `overlay:${task.id}` : task.id,
     disabled: disableDragDrop || overlay,
   });
-  const { project } = useProjectStore();
-  const taskIsCompleted = isTaskCompleted(task.status, project?.columns);
+  // Narrow selections: a board reload or a preference change re-renders only
+  // the cards whose own values changed, not every card.
+  const projectId = useProjectStore((state) => state.project?.id);
+  const projectSlug = useProjectStore((state) => state.project?.slug);
+  const taskIsCompleted = useProjectStore((state) =>
+    isTaskCompleted(task.status, state.project?.columns),
+  );
   const { data: workspace } = useActiveWorkspace();
   const { mutateAsync: deleteTask } = useDeleteTask();
   const navigate = useNavigate();
@@ -101,7 +107,16 @@ function TaskCard({
     showLabels,
     showTaskNumbers,
     showTaskItemCounts,
-  } = useUserPreferencesStore();
+  } = useUserPreferencesStore(
+    useShallow((state) => ({
+      showAssignees: state.showAssignees,
+      showPriority: state.showPriority,
+      showDueDates: state.showDueDates,
+      showLabels: state.showLabels,
+      showTaskNumbers: state.showTaskNumbers,
+      showTaskItemCounts: state.showTaskItemCounts,
+    })),
+  );
   const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
   // Select the values: the React Compiler memoizes calls to the store's
   // stable getters, so the card would not update on selection.
@@ -187,19 +202,19 @@ function TaskCard({
 
   const assignees = useTaskAssignees(task, workspace?.id ?? "");
   const openTaskInNewWindow = (event: React.MouseEvent) =>
-    Boolean(project && workspace) &&
+    Boolean(projectId && workspace) &&
     openInNewWindowOnClick(
       event,
       taskPagePath({
         workspaceId: workspace?.id ?? "",
-        projectId: task.projectId || (project?.id ?? ""),
+        projectId: task.projectId || (projectId ?? ""),
         taskId: task.id,
       }),
     );
   function handleTaskCardClick(
     e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>,
   ) {
-    if (!project || !task || !workspace) return;
+    if (!projectId || !task || !workspace) return;
 
     // Desktop app: Shift+click opens the task's page in a new window.
     if ("button" in e && openTaskInNewWindow(e)) return;
@@ -300,7 +315,7 @@ function TaskCard({
 
             {showTaskNumbers && (
               <div className="mb-1 font-mono text-[11px] text-muted-foreground leading-4">
-                {project?.slug}-{task.number}
+                {projectSlug}-{task.number}
               </div>
             )}
 
@@ -554,11 +569,11 @@ function TaskCard({
           </div>
         </ContextMenuTrigger>
 
-        {project && workspace && (
+        {projectId && workspace && (
           <TaskCardContextMenuContent
             task={task}
             taskCardContext={{
-              projectId: project.id,
+              projectId,
               worskpaceId: workspace.id,
             }}
             onDeleteClick={() => setIsDeleteTaskModalOpen(true)}

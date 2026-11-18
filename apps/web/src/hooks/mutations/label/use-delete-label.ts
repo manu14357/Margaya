@@ -6,6 +6,7 @@ function useDeleteLabel() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: deleteLabel,
     onError: () => {
       // A preceding batch may have succeeded before the connection failed.

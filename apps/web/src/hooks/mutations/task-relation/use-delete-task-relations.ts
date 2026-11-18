@@ -17,6 +17,7 @@ function useDeleteTaskRelations() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: async (relations: readonly RelationToDelete[]) => {
       const results = await Promise.allSettled(
         relations.map((relation) => deleteTaskRelation(relation.id)),

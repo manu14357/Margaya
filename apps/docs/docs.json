@@ -1053,6 +1053,7 @@
 						"pages": [
 							"api-reference/endpoints/workspaces/getWorkspaceMembers",
 							"api-reference/endpoints/workspaces/getWorkspaceMember",
+							"api-reference/endpoints/workspaces/getMyWorkspacePermissions",
 							"api-reference/endpoints/workspaces/getWorkspaceSettings",
 							"api-reference/endpoints/workspaces/updateWorkspaceSettings",
 							"api-reference/endpoints/workspaces/getWorkspaceDeletion",

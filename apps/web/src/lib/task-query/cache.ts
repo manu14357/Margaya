@@ -68,6 +68,20 @@ function hasTasks(data: unknown): data is Pick<TaskQueryResult, "tasks"> {
   );
 }
 
+/** True when some cached task query result holds the task. */
+export function isTaskInQueryCache(
+  queryClient: QueryClient,
+  taskId: string,
+): boolean {
+  return queryClient
+    .getQueryCache()
+    .findAll({ predicate: (query) => isTaskQueryKey(query.queryKey) })
+    .some((query) => {
+      const data = query.state.data;
+      return hasTasks(data) && Boolean(data.tasks[taskId]);
+    });
+}
+
 /**
  * Patches one task in every cached query result (an optimistic cell edit).
  * Returns a function that restores what was there.

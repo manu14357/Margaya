@@ -6,7 +6,9 @@ import {
 import archiveTask from "@/fetchers/task/archive-task";
 import unarchiveTask from "@/fetchers/task/unarchive-task";
 import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
+import { scheduleBoardRefresh } from "@/lib/board-cache";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
+import { boardTaskEdit } from "./board-task-edit";
 
 type ArchiveVariables = {
   taskId: string;
@@ -21,8 +23,8 @@ export function invalidateAfterArchive(
   taskId: string,
   projectId: string,
 ) {
+  scheduleBoardRefresh(queryClient, projectId);
   for (const queryKey of [
-    ["tasks", projectId],
     ["task", taskId],
     ["activities", taskId],
     ["projects"],
@@ -42,12 +44,24 @@ export function invalidateAfterArchive(
  */
 export function useArchiveTask() {
   const queryClient = useQueryClient();
+  const board = boardTaskEdit<unknown, ArchiveVariables>(
+    queryClient,
+    ({ taskId, projectId, archived }) => ({
+      projectId,
+      taskId,
+      patch: { archivedAt: archived ? new Date().toISOString() : null },
+    }),
+  );
 
   return useMutation({
     mutationFn: ({ taskId, archived }: ArchiveVariables) =>
       archived ? archiveTask(taskId) : unarchiveTask(taskId),
-    onSuccess: (_task, { taskId, projectId }) =>
-      invalidateAfterArchive(queryClient, taskId, projectId),
+    onMutate: board.onMutate,
+    onSuccess: (task, { taskId, projectId }, context) => {
+      board.onSaved(task, context);
+      invalidateAfterArchive(queryClient, taskId, projectId);
+    },
+    onError: (_error, _variables, context) => board.onFailed(context),
   });
 }
 

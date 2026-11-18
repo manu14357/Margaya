@@ -3,12 +3,13 @@ import createTask, {
   type CreateTaskRequest,
 } from "@/fetchers/task/create-task";
 import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
-import { invalidateTaskQueries } from "@/lib/task-query/cache";
+import { scheduleBoardRefresh } from "@/lib/board-cache";
 
 function useCreateTask() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       title,
       description,
@@ -38,9 +39,7 @@ function useCreateTask() {
         aiAssist,
       ),
     onSuccess: (data, variables) => {
-      void queryClient.invalidateQueries({
-        queryKey: ["tasks", variables.projectId],
-      });
+      scheduleBoardRefresh(queryClient, variables.projectId);
       void queryClient.invalidateQueries({
         queryKey: ["custom-field-values", variables.projectId],
       });
@@ -60,7 +59,6 @@ function useCreateTask() {
         void queryClient.invalidateQueries({
           queryKey: ["task-relations", "project"],
         });
-        void invalidateTaskQueries(queryClient, variables.projectId);
       }
     },
   });

@@ -5,6 +5,7 @@ function useUpdateCustomField(projectId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: updateCustomField,
     onSuccess: (updated) => {
       queryClient.setQueryData(

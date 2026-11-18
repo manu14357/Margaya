@@ -1,0 +1,1 @@
+CREATE INDEX "task_projectId_live_position_idx" ON "task" USING btree ("project_id","position","id") WHERE "task"."deleted_at" is null;

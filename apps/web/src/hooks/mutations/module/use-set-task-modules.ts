@@ -29,6 +29,7 @@ export function useSetTaskModules() {
   const queryClient = useQueryClient();
 
   return useMutation<TaskModuleRef[], Error, Variables, Context>({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ taskId, addModuleIds, removeModuleIds }) =>
       setTaskModules(taskId, {
         ...(addModuleIds?.length ? { addModuleIds } : {}),

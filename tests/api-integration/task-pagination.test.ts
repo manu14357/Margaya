@@ -196,6 +196,48 @@ describe("bounded task pages", () => {
       }
     }
   });
+  it("pages in board order (position, then id) and leaves out trashed tasks", async () => {
+    const member = await createWorkspaceMember();
+    const { project } = await createProjectFixture({
+      workspaceId: member.workspace.id,
+    });
+    const rows = Array.from({ length: 23 }, (_, index) => ({
+      id: `order-${String(index).padStart(2, "0")}`,
+      projectId: project.id,
+      title: `Task ${index}`,
+      number: index + 1,
+      // Ties and a reversed order, so neither id nor insertion order alone
+      // gives the expected sequence.
+      position: (22 - index) % 5,
+      status: "to-do",
+      archivedAt: index % 7 === 0 ? new Date() : null,
+      deletedAt: index === 4 ? new Date() : null,
+    }));
+    await db.insert(schema.taskTable).values(rows);
+    mockAuthenticatedSession(member.user);
+    const { app } = createApp();
+    const expected = rows
+      .filter((row) => !row.deletedAt)
+      .sort((a, b) => a.position - b.position || (a.id < b.id ? -1 : 1))
+      .map((row) => row.id);
+    for (let page = 1; page <= 5; page++) {
+      const response = await app.request(
+        `/api/task/tasks/${project.id}?page=${page}&limit=5`,
+      );
+      const payload = await response.json();
+      expect(payload.pagination).toMatchObject({
+        page,
+        pageSize: 5,
+        total: 22,
+        totalPages: 5,
+      });
+      const pageIds = new Set(allTasks(payload.data).map((task) => task.id));
+      // Buckets regroup a page; the page itself is the next slice in order.
+      expect([...pageIds].sort()).toEqual(
+        expected.slice((page - 1) * 5, page * 5).sort(),
+      );
+    }
+  });
   it("returns empty pages and an empty project without inventing tasks", async () => {
     const { project, app } = await fixture(0);
     for (const page of [1, 10]) {

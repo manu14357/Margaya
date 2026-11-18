@@ -3,6 +3,7 @@ import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 import { handleUnauthorized, isUnauthorizedError } from "@/lib/http-error";
 import {
   invalidateTaskQueries,
+  isTaskInQueryCache,
   patchTaskInQueryCache,
   taskPatchFromVariables,
 } from "@/lib/task-query/cache";
@@ -74,6 +75,11 @@ function scheduleTaskQueryRefresh() {
   }, TASK_QUERY_REFRESH_DELAY_MS);
 }
 
+// Variables of mutations whose optimistic patch changed a cached task row:
+// they refresh task lists whether or not they opted in, so a failed edit
+// does not stay on screen.
+const patchedTaskEdits = new WeakSet<object>();
+
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => {
@@ -91,15 +97,26 @@ const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     // Task edits show at once in every cached task query result (lists,
     // spreadsheets, views); the refetch after the mutation settles is the
-    // source of truth, so every task mutation, whichever slice owns it,
-    // keeps those results current.
+    // source of truth.
     onMutate: (variables) => {
       const edit = taskPatchFromVariables(variables);
-      if (edit) patchTaskInQueryCache(queryClient, edit.taskId, edit.patch);
+      if (edit && isTaskInQueryCache(queryClient, edit.taskId)) {
+        patchTaskInQueryCache(queryClient, edit.taskId, edit.patch);
+        patchedTaskEdits.add(variables as object);
+      }
     },
-    onSettled: (_data, _error, _variables, _result, mutation) => {
-      if (mutation.meta?.refreshTaskQueries === false) return;
-      scheduleTaskQueryRefresh();
+    // Task lists refresh only after mutations that can change tasks: those
+    // that opt in with `meta: { refreshTaskQueries: true }`, and any whose
+    // optimistic patch above changed a row (it may need undoing). Comments,
+    // reactions, favorites and settings leave them alone.
+    onSettled: (_data, _error, variables, _result, mutation) => {
+      const patched =
+        typeof variables === "object" &&
+        variables !== null &&
+        patchedTaskEdits.has(variables);
+      if (mutation.meta?.refreshTaskQueries === true || patched) {
+        scheduleTaskQueryRefresh();
+      }
     },
     onError: (error) => {
       if (isUnauthorizedError(error)) {

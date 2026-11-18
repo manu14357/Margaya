@@ -181,8 +181,8 @@ export function useUserWebSocket() {
               ["workspace-users"],
               ["active-workspace-users"],
               ["workspace-member"],
-              ["workspace-user", "active"],
               ["workspace", "full"],
+              // My role and permissions: one request answers both.
               ["workspace-capabilities"],
               ["project-rights"],
               ["project-audience"],

@@ -24,6 +24,7 @@ type Change =
 function useProjectAccessMutation(projectId: string) {
   const queryClient = useQueryClient();
   return useMutation<ProjectAccess, Error, Change>({
+    meta: { refreshTaskQueries: true },
     mutationFn: (change) => {
       switch (change.kind) {
         case "visibility":

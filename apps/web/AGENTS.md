@@ -19,7 +19,8 @@ Example chain, task detail page:
 
 - Keys are arrays whose first element is the resource: `["task", id]`, `["tasks", projectId]`, `["projects"]`, `["activities", taskId]`. Newer features use key factories (`hooks/queries/module/module-query-keys.ts`, `intake-query-keys.ts`, `page-query-keys.ts`, ...) and shared helpers (`hooks/mutations/*/invalidate-*-queries.ts`). Use the factory when one exists, and design keys so one prefix invalidation refreshes a whole feature.
 - `src/query-client/index.ts` sets `refetchOnMount: false` and `refetchOnWindowFocus: false`. Data stays fresh only through mutation invalidation and realtime messages, so a mutation that skips invalidation leaves stale screens.
-- The global `MutationCache` does two things to every mutation. `onMutate` optimistically patches task-query rows when the variables look like `{ id, title | status | priority | startDate | dueDate }` (`taskPatchFromVariables` in `lib/task-query/cache.ts`). `onSettled` schedules a debounced `invalidateTaskQueries`. Pass `meta: { refreshTaskQueries: false }` for mutations that cannot affect tasks.
+- The global `MutationCache` does two things to every mutation. `onMutate` optimistically patches task-query rows when the variables look like `{ id, title | status | priority | startDate | dueDate }` (`taskPatchFromVariables` in `lib/task-query/cache.ts`). `onSettled` schedules a debounced `invalidateTaskQueries` only for mutations that opt in with `meta: { refreshTaskQueries: true }` (anything that can change tasks, their grouping or their visibility) or whose optimistic patch changed a row; other mutations leave task lists alone.
+- The board cache `["tasks", projectId]` is a whole project loaded in many pages. Task edits patch it through `startBoardEdit` (`lib/board-cache.ts`, or `boardTaskEdit` in `hooks/mutations/task/board-task-edit.ts`) and reload it with `scheduleBoardRefresh`, which batches bursts into one reload; do not invalidate it per edit.
 - A 401 from any query or mutation goes through `handleUnauthorized()`. Do not add per-hook sign-out logic.
 
 ## Realtime
@@ -34,13 +35,14 @@ The same build runs inside the desktop app (`apps/desktop`), which injects `wind
 
 ## Capabilities are not authorization
 
-- `useWorkspacePermission()` (`hooks/use-workspace-permission.ts`) asks the server through `authClient.organization.hasPermission`, so custom roles work. Gate UI with its `can*()` helpers, never with `role`, `isOwner` or `isAdmin`.
+- `useWorkspacePermission()` (`hooks/use-workspace-permission.ts`) asks the server once per workspace (`GET /api/workspace/{id}/permissions`, the API's own rules), so custom roles work. Gate UI with its `can*()` helpers, never with `role`, `isOwner` or `isAdmin`.
 - Capabilities are `false` until loaded. Use `isCheckingPermissions` to hide actions instead of flashing them.
 - A new capability goes into `CAPABILITIES` plus a helper, using the vocabulary from `@margaya/permissions`. Hiding a control is UX only: the API route must still enforce the permission. Skill: `permissions`.
 
 ## i18n
 
 - Copy lives in `i18n/<locale>.json` at the repo root (alias `@i18n`), loaded by `src/lib/i18n/`. `i18n/en-US.json` is the source of truth. Top-level keys are namespaces: the default is `common`, others are addressed as `t("activity:...")`.
+- Large, rarely used namespaces (`LAZY_NAMESPACES` in `src/lib/i18n/lazy-namespaces.ts`) are split out of the startup bundle by `vite-i18n-split.ts` and load on demand. A screen that uses one must ask for it: `useTranslation(["common", ns], { useSuspense: false })`, a Suspense-wrapped `useTranslation(ns)`, or `i18n.loadNamespaces(ns)` in its route loader.
 - Use static keys. `pnpm i18n:report` lists template-literal keys as dynamic calls and exits non-zero.
 - Every new key needs a real translation in every locale listed in `i18n/resources.ts`, never an English copy. `pnpm i18n:check:fix` fills missing keys with the English text, and `pnpm i18n:report` then lists them as untranslated; translate them before you finish. CI runs `pnpm i18n:check`.
 - Respect plural forms per locale (`_one`, `_few`, `_many`, ...); `scripts/i18n/check.mjs` validates them. Skill: `i18n`.

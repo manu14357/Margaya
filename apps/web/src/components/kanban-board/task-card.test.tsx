@@ -59,9 +59,13 @@ vi.mock("@/hooks/queries/project/use-get-project", () => ({
 vi.mock("./task-card-context-menu/task-card-context-menu-content", () => ({
   default: () => null,
 }));
-vi.mock("@/store/project", () => ({
-  default: () => ({ project: { id: "project-1", slug: "kan" } }),
-}));
+vi.mock("@/store/project", () => {
+  const state = { project: { id: "project-1", slug: "kan" } };
+  return {
+    default: (selector?: (value: typeof state) => unknown) =>
+      selector ? selector(state) : state,
+  };
+});
 vi.mock("@/store/user-preferences", () => ({
   useUserPreferencesStore: (
     selector?: (state: Record<string, boolean>) => unknown,

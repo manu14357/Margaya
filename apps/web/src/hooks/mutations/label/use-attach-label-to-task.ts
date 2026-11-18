@@ -6,6 +6,7 @@ export default function useAttachLabelToTask() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: attachLabelToTask,
     onSuccess: (attachedLabel) => {
       if (!attachedLabel.taskId) return;

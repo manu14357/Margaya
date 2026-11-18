@@ -61,6 +61,7 @@ function useUpdateProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: updateProject,
     onSuccess: (project) => {
       syncSavedProject(queryClient, project);

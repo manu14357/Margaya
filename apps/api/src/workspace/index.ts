@@ -9,6 +9,7 @@ import {
 import { applyStarterRoute } from "../project-template";
 import { requestLocale } from "../project-template/create";
 import { applyStarter } from "../project-template/starters";
+import { requireUserSession } from "../utils/require-user-session";
 import { hasWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
 import {
@@ -16,6 +17,7 @@ import {
   getWorkspaceDeletion,
   scheduleWorkspaceDeletion,
 } from "../workspace-deletion/service";
+import getMyWorkspacePermissionsCtrl from "./controllers/get-my-workspace-permissions";
 import getWorkspaceMemberCtrl from "./controllers/get-workspace-member";
 import getWorkspaceMembersCtrl from "./controllers/get-workspace-members";
 import {
@@ -30,6 +32,7 @@ import {
 import {
   workspaceMemberListSchema,
   workspaceMemberProfileSchema,
+  workspacePermissionsSchema,
 } from "./response";
 import { workspaceIdParam, workspaceMemberParam } from "./schema";
 import {
@@ -68,6 +71,31 @@ const getWorkspaceMemberRoute = createRoute({
     400: errorResponse("Workspace ID could not be determined"),
     403: errorResponse("No access to the workspace"),
     404: errorResponse("Not a member of this workspace"),
+  },
+});
+
+const getMyWorkspacePermissionsRoute = createRoute({
+  method: "get",
+  operationId: "getMyWorkspacePermissions",
+  path: "/{workspaceId}/permissions",
+  tags: ["Workspaces"],
+  summary: "Get my workspace permissions",
+  description:
+    "Your role in the workspace and every permission you hold there, in one response, resolved by the same rules the API uses to authorize each request (custom roles included). Clients use it to show only the actions the API will accept; the API still checks every request. Needs a signed-in session (API keys are refused) and membership of the workspace.",
+  middleware: [
+    requireUserSession,
+    workspaceAccess.fromParam("workspaceId"),
+  ] as const,
+  request: { params: workspaceIdParam },
+  responses: {
+    200: jsonResponse(
+      "Your role and permissions in the workspace",
+      workspacePermissionsSchema,
+    ),
+    401: errorResponse("Not signed in"),
+    403: errorResponse(
+      "Not a member of the workspace, or the request used an API key",
+    ),
   },
 });
 
@@ -136,6 +164,9 @@ const workspace = apiRouter<BaseVariables & { workspaceId: string }>()
     });
     return c.json({ projects }, 200);
   })
+  .openapi(getMyWorkspacePermissionsRoute, async (c) =>
+    c.json(await getMyWorkspacePermissionsCtrl(c), 200),
+  )
   .openapi(getWorkspaceMembersRoute, async (c) =>
     c.json(await getWorkspaceMembersCtrl(c.get("workspaceId")), 200),
   )

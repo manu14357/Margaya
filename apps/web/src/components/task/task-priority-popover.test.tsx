@@ -9,24 +9,24 @@ import TaskPriorityPopover from "./task-priority-popover";
 // project gets the read-only priority, as the API refuses the edit there.
 
 const mocks = vi.hoisted(() => ({
-  hasPermission: vi.fn(),
+  getMyWorkspacePermissions: vi.fn(),
   getMyProjectRights: vi.fn(),
 }));
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
-vi.mock("@/lib/auth-client", () => ({
-  authClient: { organization: { hasPermission: mocks.hasPermission } },
+vi.mock("@/fetchers/workspace/get-my-workspace-permissions", () => ({
+  default: mocks.getMyWorkspacePermissions,
+}));
+vi.mock("@/components/providers/auth-provider/hooks/use-auth", () => ({
+  default: () => ({ user: { id: "user-1" } }),
 }));
 vi.mock("@/fetchers/project/project-rights", () => ({
   getMyProjectRights: mocks.getMyProjectRights,
 }));
 vi.mock("@/hooks/queries/workspace/use-active-workspace", () => ({
   default: () => ({ data: { id: "workspace-1" } }),
-}));
-vi.mock("@/hooks/queries/workspace-users/use-active-workspace-user", () => ({
-  useGetActiveWorkspaceUser: () => ({ data: { role: "member" } }),
 }));
 vi.mock("@/hooks/mutations/task/use-update-task-status-priority", () => ({
   useUpdateTaskPriority: () => ({ mutateAsync: vi.fn() }),
@@ -54,17 +54,13 @@ const trigger = () => screen.getByRole("button", { name: "priority" });
 describe("TaskPriorityPopover in a project", () => {
   beforeEach(() => {
     // A workspace member: tasks may be updated workspace-wide.
-    mocks.hasPermission.mockImplementation(
-      async ({ permissions }: { permissions: Record<string, string[]> }) => ({
-        data: {
-          success: Object.entries(permissions).every(
-            ([resource, actions]) =>
-              resource === "task" &&
-              actions.every((action) => action !== "delete"),
-          ),
-        },
-      }),
-    );
+    mocks.getMyWorkspacePermissions.mockResolvedValue({
+      workspaceId: "workspace-1",
+      userId: "user-1",
+      role: "member",
+      joinedAt: "2026-01-01T00:00:00.000Z",
+      permissions: { task: ["create", "read", "update", "assign"] },
+    });
   });
 
   afterEach(() => {
@@ -84,7 +80,9 @@ describe("TaskPriorityPopover in a project", () => {
     await waitFor(() =>
       expect(mocks.getMyProjectRights).toHaveBeenCalledWith("workspace-1"),
     );
-    await waitFor(() => expect(mocks.hasPermission).toHaveBeenCalled());
+    await waitFor(() =>
+      expect(mocks.getMyWorkspacePermissions).toHaveBeenCalled(),
+    );
     // Give the capability map time to settle, then check it stayed off.
     await new Promise((resolve) => setTimeout(resolve, 50));
     expect(trigger()).not.toHaveAttribute("aria-expanded");

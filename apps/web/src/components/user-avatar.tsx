@@ -28,7 +28,7 @@ export function UserAvatar() {
   const { mutateAsync: signOut, isPending } = useSignOut(
     config?.customOAuthLogoutUrl,
   );
-  const { setProject } = useProjectStore();
+  const setProject = useProjectStore((state) => state.setProject);
   const navigate = useNavigate();
 
   if (!user) {

@@ -1,20 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
+import useAuth from "@/components/providers/auth-provider/hooks/use-auth";
 import useProjectRights from "@/hooks/queries/project/use-project-rights";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
-import { useGetActiveWorkspaceUser } from "@/hooks/queries/workspace-users/use-active-workspace-user";
+import { myWorkspacePermissionsQuery } from "@/hooks/queries/workspace/use-my-workspace-permissions";
 import { useProjectScope } from "@/hooks/use-project-scope";
-import { authClient } from "@/lib/auth-client";
 import { isGuestRole } from "@/lib/guest-access";
 
 export type PermissionLevel = "owner" | "admin" | "member";
 
-// Capabilities are named permission bundles checked against the SERVER via
-// better-auth's `/organization/has-permission` endpoint. Going through the
-// server is what makes custom workspace roles work in the UI: the local
-// `checkRolePermission` only knows about the four static roles compiled
-// into the auth client, so it would silently return false for any custom
-// role that grants the permission.
+// Capabilities are named permission bundles checked against what the SERVER
+// says I hold: one `GET /api/workspace/{id}/permissions` answers every
+// permission with the API's own rules. Going through the server is what makes
+// custom workspace roles work in the UI: the local `checkRolePermission` only
+// knows about the static roles compiled into the auth client, so it would
+// silently return false for any custom role that grants the permission.
 const CAPABILITIES = {
   manageProjects: { project: ["create", "update", "delete"] },
   createProjects: { project: ["create"] },
@@ -68,13 +68,6 @@ const CAPABILITIES = {
   removeMembers: { member: ["delete"] },
 } as const satisfies Record<string, Record<string, string[]>>;
 
-// A permission check is a read. Better Auth's client otherwise toggles its
-// active-organization signal after every `/organization/*` call, so each of
-// the checks below made the active workspace store refetch
-// get-full-organization (a burst of ~38, which turned into 401s when the
-// user signed out meanwhile).
-const READ_ONLY = { disableSignal: true } as const;
-
 export type Capability = keyof typeof CAPABILITIES;
 
 type CapabilityMap = Record<Capability, boolean>;
@@ -109,6 +102,14 @@ function emptyCapabilityMap(): CapabilityMap {
   return out;
 }
 
+function toCapabilityMap(granted: Statements): CapabilityMap {
+  const out = {} as CapabilityMap;
+  for (const key of Object.keys(CAPABILITIES) as Capability[]) {
+    out[key] = grants(granted, CAPABILITIES[key]);
+  }
+  return out;
+}
+
 /**
  * What I may do, asked of the server. Inside a project (ProjectScope: project
  * routes, a task sheet) the project's capabilities are also capped by my
@@ -116,10 +117,10 @@ function emptyCapabilityMap(): CapabilityMap {
  * project's member, added as viewer gets no edit controls in that project.
  */
 export function useWorkspacePermission() {
+  const queryClient = useQueryClient();
+  const { user } = useAuth();
   const { data: activeWorkspace } = useActiveWorkspace();
-  const { data: activeMember } = useGetActiveWorkspaceUser();
   const workspaceId = activeWorkspace?.id;
-  const role = activeMember?.role as string | undefined;
   const scopeProjectId = useProjectScope();
   // One map for the whole workspace, so a list over many projects (and each
   // of its rows) asks once.
@@ -133,44 +134,32 @@ export function useWorkspacePermission() {
     Boolean(scopeProjectId) && rights.isPending && !rights.isError;
   const ceiling: Statements | null = scopeRights?.statements ?? null;
 
-  // One query that fans out to all capability checks in parallel and caches
-  // the resulting map by (workspaceId, role). Refetches when either changes,
-  // e.g., when the admin edits the role's permissions in the Roles UI and
-  // we invalidate this key.
+  // One request for my role and every permission it grants, cached per
+  // workspace. Role edits, role changes and membership changes invalidate it
+  // (mutations, and WORKSPACE_MEMBERS_UPDATED on the user socket).
+  const userId = user?.id;
+  const permissionsQuery = useMemo(
+    () => myWorkspacePermissionsQuery(workspaceId, userId),
+    [workspaceId, userId],
+  );
   const {
-    data: capabilities,
-    isLoading,
+    data: mine,
+    isPending,
+    isError,
     isFetching,
-  } = useQuery({
-    queryKey: ["workspace-capabilities", workspaceId, role],
-    enabled: Boolean(workspaceId && role),
-    staleTime: 5 * 60 * 1000,
-    queryFn: async (): Promise<CapabilityMap> => {
-      const entries = Object.entries(CAPABILITIES) as Array<
-        [Capability, Record<string, string[]>]
-      >;
-      const results = await Promise.all(
-        entries.map(async ([key, permissions]) => {
-          try {
-            const res = await authClient.organization.hasPermission({
-              organizationId: workspaceId,
-              permissions,
-              fetchOptions: READ_ONLY,
-            });
-            return [key, res.data?.success === true] as const;
-          } catch (error) {
-            console.error(`hasPermission check failed for ${key}:`, error);
-            return [key, false] as const;
-          }
-        }),
-      );
-      const map = emptyCapabilityMap();
-      for (const [key, value] of results) {
-        map[key] = value;
-      }
-      return map;
-    },
-  });
+  } = useQuery(permissionsQuery);
+  const role = mine?.role;
+  const activeMember = useMemo(
+    () =>
+      mine
+        ? { userId: mine.userId, role: mine.role, createdAt: mine.joinedAt }
+        : undefined,
+    [mine],
+  );
+  const capabilities = useMemo(
+    () => (mine ? toCapabilityMap(mine.permissions) : undefined),
+    [mine],
+  );
 
   const can: CapabilityMap = useMemo(() => {
     const base = capabilities ?? emptyCapabilityMap();
@@ -248,17 +237,14 @@ export function useWorkspacePermission() {
       canManageInvitations: () => can.manageInvitations,
       canManageTeam: () => can.manageTeam,
       canRemoveMembers: () => can.removeMembers,
-      // Escape hatch for ad-hoc permission checks (uncached). Prefer adding
-      // a capability above.
+      // Escape hatch for ad-hoc permission checks, answered from the same
+      // cached permissions. Prefer adding a capability above.
       hasPermission: async (permissions: Record<string, string[]>) => {
+        if (!permissionsQuery.enabled) return false;
         try {
-          const res = await authClient.organization.hasPermission({
-            organizationId: workspaceId,
-            permissions,
-            fetchOptions: READ_ONLY,
-          });
+          const granted = await queryClient.ensureQueryData(permissionsQuery);
           return (
-            res.data?.success === true &&
+            grants(granted.permissions, permissions) &&
             (!ceiling || grants(ceiling, permissions))
           );
         } catch (error) {
@@ -267,7 +253,7 @@ export function useWorkspacePermission() {
         }
       },
     };
-  }, [can, ceiling, workspaceId]);
+  }, [can, ceiling, permissionsQuery, queryClient]);
 
   return {
     ...helpers,
@@ -284,7 +270,7 @@ export function useWorkspacePermission() {
     // action UI during the initial render instead of flashing it on then
     // off when the server check resolves.
     isCheckingPermissions:
-      (Boolean(workspaceId && role) && (isLoading || !capabilities)) ||
+      (Boolean(permissionsQuery.enabled) && isPending && !isError) ||
       rightsPending,
     isRefetchingPermissions: isFetching,
   };

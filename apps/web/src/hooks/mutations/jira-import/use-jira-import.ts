@@ -26,6 +26,7 @@ export function usePreviewJiraImport() {
 export function useImportJiraIssues() {
   const queryClient = useQueryClient();
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: importJiraIssues,
     onSettled: (_data, _error, { projectId }) => {
       void queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });

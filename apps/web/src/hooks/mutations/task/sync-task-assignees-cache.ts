@@ -1,5 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
 import { invalidateDeliveryQueries } from "@/hooks/mutations/delivery/invalidate-delivery-queries";
+import { scheduleBoardRefresh } from "@/lib/board-cache";
 import {
   type AssigneeFields,
   assigneesOfTask,
@@ -103,22 +104,24 @@ export async function cancelTaskQueries(
   ]);
 }
 
-/** Everything an assignee change can show up in. */
+/**
+ * Everything an assignee change can show up in. Notifications for whoever
+ * was assigned reach them through the user socket.
+ */
 export function invalidateAssigneeQueries(
   queryClient: QueryClient,
   { taskId, projectId }: TaskAssigneesTarget,
 ) {
   for (const queryKey of [
     ["task", taskId],
-    ["tasks", projectId],
     ["activities", taskId],
     ["task-relations"],
-    ["notifications"],
     // Being assigned subscribes the new assignee.
     ["task-subscription", taskId],
   ]) {
     void queryClient.invalidateQueries({ queryKey });
   }
+  scheduleBoardRefresh(queryClient, projectId);
   // Risk radars flag unowned work and group overdue work by assignee.
   invalidateDeliveryQueries(queryClient, projectId);
 }

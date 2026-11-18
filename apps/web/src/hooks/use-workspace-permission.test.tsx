@@ -5,12 +5,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ProjectScope } from "./use-project-scope";
 import { useWorkspacePermission } from "./use-workspace-permission";
 
-const { hasPermission, getMyProjectRights } = vi.hoisted(() => ({
-  hasPermission: vi.fn(),
+const { getMyWorkspacePermissions, getMyProjectRights } = vi.hoisted(() => ({
+  getMyWorkspacePermissions: vi.fn(),
   getMyProjectRights: vi.fn(),
 }));
 
 vi.mock("@/fetchers/project/project-rights", () => ({ getMyProjectRights }));
+vi.mock("@/fetchers/workspace/get-my-workspace-permissions", () => ({
+  default: getMyWorkspacePermissions,
+}));
 
 const VIEWER_STATEMENTS = {
   project: ["read"],
@@ -27,15 +30,20 @@ vi.mock("@/hooks/queries/workspace/use-active-workspace", () => ({
   default: () => ({ data: { id: "workspace-1" } }),
 }));
 
-vi.mock("@/hooks/queries/workspace-users/use-active-workspace-user", () => ({
-  useGetActiveWorkspaceUser: () => ({ data: { role: "member" } }),
+vi.mock("@/components/providers/auth-provider/hooks/use-auth", () => ({
+  default: () => ({ user: { id: "user-1" } }),
 }));
 
-vi.mock("@/lib/auth-client", () => ({
-  authClient: {
-    organization: { hasPermission },
-  },
-}));
+/** The API's answer for a member whose role grants `permissions`. */
+function answer(permissions: Record<string, string[]>, role = "member") {
+  getMyWorkspacePermissions.mockResolvedValue({
+    workspaceId: "workspace-1",
+    userId: "user-1",
+    role,
+    joinedAt: "2026-01-01T00:00:00.000Z",
+    permissions,
+  });
+}
 
 function createWrapper(projectId?: string) {
   const queryClient = new QueryClient({
@@ -53,51 +61,32 @@ function createWrapper(projectId?: string) {
 
 /** A workspace role that grants what a member gets by default. */
 function grantMember() {
-  const granted: Record<string, Set<string>> = {
-    project: new Set(["create", "read"]),
-    task: new Set(["create", "read", "update"]),
-    label: new Set(["create", "read", "update", "delete"]),
-    cycle: new Set(["create", "read", "update"]),
-    module: new Set(["create", "read", "update"]),
-    view: new Set(["create", "read", "update"]),
-    page: new Set(["create", "read", "update"]),
-    analytics: new Set(["read"]),
-    invitation: new Set(["create"]),
-  };
-  hasPermission.mockImplementation(
-    async ({ permissions }: { permissions: Record<string, string[]> }) => ({
-      data: {
-        success: Object.entries(permissions).every(([resource, actions]) =>
-          actions.every((action) => granted[resource]?.has(action)),
-        ),
-      },
-    }),
-  );
+  answer({
+    project: ["create", "read"],
+    task: ["create", "read", "update"],
+    label: ["create", "read", "update", "delete"],
+    cycle: ["create", "read", "update"],
+    module: ["create", "read", "update"],
+    view: ["create", "read", "update"],
+    page: ["create", "read", "update"],
+    analytics: ["read"],
+    invitation: ["create"],
+  });
 }
 
 describe("useWorkspacePermission", () => {
   beforeEach(() => {
-    hasPermission.mockReset();
+    getMyWorkspacePermissions.mockReset();
     getMyProjectRights.mockReset();
     getMyProjectRights.mockResolvedValue([]);
   });
 
   it("keeps update capabilities independent from delete capabilities", async () => {
-    const granted = {
-      task: new Set(["create", "read", "update"]),
-      label: new Set(["create", "read", "update"]),
-      module: new Set(["create", "read", "update"]),
-    } as Record<string, Set<string>>;
-
-    hasPermission.mockImplementation(
-      async ({ permissions }: { permissions: Record<string, string[]> }) => ({
-        data: {
-          success: Object.entries(permissions).every(([resource, actions]) =>
-            actions.every((action) => granted[resource]?.has(action)),
-          ),
-        },
-      }),
-    );
+    answer({
+      task: ["create", "read", "update"],
+      label: ["create", "read", "update"],
+      module: ["create", "read", "update"],
+    });
 
     const { result } = renderHook(() => useWorkspacePermission(), {
       wrapper: createWrapper(),
@@ -118,22 +107,49 @@ describe("useWorkspacePermission", () => {
     expect(result.current.canDeleteModules()).toBe(false);
   });
 
-  // Each `/organization/*` call otherwise toggles Better Auth's active
-  // organization signal, so every check refetched get-full-organization.
-  it("checks permissions without signalling the active organization store", async () => {
-    hasPermission.mockResolvedValue({ data: { success: true } });
+  it("answers every capability, my role and my membership from one request", async () => {
+    grantMember();
+    const { result } = renderHook(() => useWorkspacePermission(), {
+      wrapper: createWrapper(),
+    });
+    expect(result.current.isCheckingPermissions).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isCheckingPermissions).toBe(false);
+    });
+
+    expect(getMyWorkspacePermissions).toHaveBeenCalledTimes(1);
+    expect(getMyWorkspacePermissions).toHaveBeenCalledWith("workspace-1");
+    expect(result.current.role).toBe("member");
+    expect(result.current.isAdmin).toBe(false);
+    expect(result.current.member).toMatchObject({
+      userId: "user-1",
+      role: "member",
+    });
+    expect(result.current.canCreateProjects()).toBe(true);
+    expect(result.current.canManageProjects()).toBe(false);
+    expect(result.current.canInviteUsers()).toBe(true);
+    expect(result.current.canManageInvitations()).toBe(false);
+    expect(result.current.canReadAuditLog()).toBe(false);
+    // Ad-hoc checks reuse the cached answer.
+    await expect(
+      result.current.hasPermission({ task: ["create", "update"] }),
+    ).resolves.toBe(true);
+    await expect(
+      result.current.hasPermission({ task: ["delete"] }),
+    ).resolves.toBe(false);
+    expect(getMyWorkspacePermissions).toHaveBeenCalledTimes(1);
+  });
+
+  it("grants nothing and stops checking when the request fails", async () => {
+    getMyWorkspacePermissions.mockRejectedValue(new Error("403"));
     const { result } = renderHook(() => useWorkspacePermission(), {
       wrapper: createWrapper(),
     });
     await waitFor(() => {
       expect(result.current.isCheckingPermissions).toBe(false);
     });
-    await result.current.hasPermission({ project: ["read"] });
-
-    expect(hasPermission.mock.calls.length).toBeGreaterThan(30);
-    for (const [request] of hasPermission.mock.calls) {
-      expect(request.fetchOptions).toEqual({ disableSignal: true });
-    }
+    expect(result.current.role).toBeUndefined();
+    expect(result.current.canCreateTasks()).toBe(false);
   });
 
   it("caps a project's capabilities by my viewer role there, and not the workspace's", async () => {
@@ -223,7 +239,7 @@ describe("useWorkspacePermission", () => {
       wrapper: createWrapper("project-1"),
     });
     await waitFor(() => {
-      expect(hasPermission).toHaveBeenCalled();
+      expect(result.current.role).toBe("member");
     });
     expect(result.current.isCheckingPermissions).toBe(true);
     expect(result.current.canUpdateTasks()).toBe(false);

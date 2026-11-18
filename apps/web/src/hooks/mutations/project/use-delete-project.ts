@@ -5,6 +5,7 @@ import { invalidateProjectListQueries } from "./invalidate-project-list-queries"
 function useDeleteProject() {
   const queryClient = useQueryClient();
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: deleteProject,
     // The trashed project leaves lists, favorites and recents, and joins
     // the trash.

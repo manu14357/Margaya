@@ -26,6 +26,8 @@ const GUEST_WORKSPACE_ROUTES: readonly RegExp[] = [
   /^(GET|POST) \/api\/calendar-feed\/workspace\/[^/]+$/,
   // The caller's own project roles (cappingProjectRoles).
   /^GET \/api\/project\/access\/mine$/,
+  // The caller's own workspace role and what it grants.
+  /^GET \/api\/workspace\/[^/]+\/permissions$/,
   // No workspace data: view definitions, the time zone, AI on or off.
   /^GET \/api\/view\/built-in$/,
   /^GET \/api\/workspace\/[^/]+\/settings$/,

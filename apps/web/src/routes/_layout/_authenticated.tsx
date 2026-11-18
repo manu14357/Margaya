@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { usePreferencesSync } from "@/hooks/use-preferences-sync";
-import { authClient } from "@/lib/auth-client";
+import { routeSession } from "@/lib/route-session";
 import { needsTwoFactorSetup } from "@/lib/two-factor-required";
 
 // protects all child routes, must be logged in
@@ -9,8 +9,9 @@ export const Route = createFileRoute("/_layout/_authenticated")({
     let session = null;
     let sessionError = false;
     try {
-      const { data } = await authClient.getSession();
-      session = data;
+      // The session the auth store holds, else one request: this runs on
+      // every navigation and hover preload.
+      session = await routeSession();
     } catch (error) {
       sessionError = true;
       if (import.meta.env.DEV) console.warn("getSession failed", error);

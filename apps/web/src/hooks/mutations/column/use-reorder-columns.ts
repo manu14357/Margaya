@@ -5,6 +5,7 @@ export function useReorderColumns() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       projectId,
       columns,

@@ -46,7 +46,7 @@ function KanbanBoard({
   capture = false,
 }: KanbanBoardProps) {
   const queryClient = useQueryClient();
-  const { setProject } = useProjectStore();
+  const setProject = useProjectStore((state) => state.setProject);
   // Select the actions only: reading the whole store would re-render the
   // board on every selection and focus change.
   const setAvailableTasks = useBulkSelectionStore(

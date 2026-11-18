@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { authClient } from "@/lib/auth-client";
+import { AUTH_READ, authClient } from "@/lib/auth-client";
 
 export type WorkspaceRole = {
   id: string;
@@ -36,6 +36,7 @@ function useWorkspaceRoles(workspaceId: string | undefined) {
       if (!workspaceId) return [];
       const result = await authClient.organization.listRoles({
         query: { organizationId: workspaceId },
+        fetchOptions: AUTH_READ,
       });
       if (result.error) throw new Error(result.error.message);
       const roles = result.data ?? [];

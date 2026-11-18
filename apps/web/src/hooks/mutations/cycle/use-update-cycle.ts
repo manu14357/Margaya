@@ -8,6 +8,7 @@ export function useUpdateCycle() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       cycleId,
       json,

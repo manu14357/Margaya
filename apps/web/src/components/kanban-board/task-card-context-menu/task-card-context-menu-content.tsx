@@ -51,15 +51,23 @@ export default function TaskCardContextMenuContent({
   onDeleteClick,
 }: TaskCardContextMenuContentProps) {
   const { t } = useTranslation();
-  const { project } = useProjectStore();
   // The task's own project: a card can show a task of another project.
   const taskProjectId = task.projectId || taskCardContext.projectId;
   const { data: columnsData = [] } = useGetColumns(taskProjectId);
+  // One of these mounts with every card, so it reads the board in the store
+  // only while the column list loads, and only what it needs: a board reload
+  // must not re-render every card's menu.
+  const boardColumns = useProjectStore((state) =>
+    columnsData.length === 0 && state.project?.id === taskProjectId
+      ? state.project.columns
+      : undefined,
+  );
+  const boardSlug = useProjectStore((state) =>
+    state.project?.id === taskProjectId ? state.project.slug : undefined,
+  );
   const columns =
-    project?.id === taskProjectId &&
-    project?.columns &&
-    project.columns.length > 0
-      ? project.columns.map((col) => ({
+    boardColumns && boardColumns.length > 0
+      ? boardColumns.map((col) => ({
           slug: col.id,
           name: col.name,
           icon: col.icon,
@@ -92,9 +100,7 @@ export default function TaskCardContextMenuContent({
     id: taskProjectId,
     workspaceId: taskCardContext.worskpaceId,
   });
-  const taskSlug =
-    taskProject?.slug ??
-    (project?.id === taskProjectId ? project.slug : undefined);
+  const taskSlug = taskProject?.slug ?? boardSlug;
 
   const handleCopyTaskLink = () => {
     void copyTaskLink(

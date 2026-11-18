@@ -4,6 +4,7 @@ import queryClient from "@/query-client";
 
 function useImportGithubIssues() {
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: importGithubIssues,
     onSettled: async (_data, _error, variables) => {
       // A failed request can follow successfully persisted pages.

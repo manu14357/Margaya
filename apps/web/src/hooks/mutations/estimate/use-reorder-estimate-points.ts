@@ -17,6 +17,7 @@ export function useReorderEstimatePoints() {
     Variables,
     { previous?: EstimateList }
   >({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ projectId, estimateId, pointIds }) =>
       reorderEstimatePoints(projectId, estimateId, pointIds),
     onMutate: async ({ projectId, estimateId, pointIds }) => {

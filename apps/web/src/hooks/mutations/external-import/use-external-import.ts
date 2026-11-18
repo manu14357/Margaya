@@ -27,6 +27,7 @@ export function usePreviewExternalImport() {
 export function useImportExternalItems() {
   const queryClient = useQueryClient();
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: importExternalItems,
     onSettled: (_data, _error, { projectId }) => {
       void queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });

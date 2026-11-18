@@ -192,7 +192,7 @@ function BacklogListView({
   const { mutate: updateTaskPosition } = useUpdateTaskPosition();
   const { mutateAsync: setArchived } = useArchiveTask();
   const { mutateAsync: updateTaskStatus } = useUpdateTaskStatus();
-  const { setProject } = useProjectStore();
+  const setProject = useProjectStore((state) => state.setProject);
   // Select the actions only: reading the whole store would re-render the
   // list on every selection and focus change.
   const setAvailableTasks = useBacklogBulkSelectionStore(

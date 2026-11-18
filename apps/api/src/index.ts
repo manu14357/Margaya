@@ -364,6 +364,10 @@ export function createApp() {
     cors({
       credentials: true,
       exposeHeaders: [REQUEST_ID_HEADER],
+      // A separately hosted web app preflights nearly every request (it sends
+      // X-Margaya-Window-Id); browsers may reuse a preflight this long (some
+      // cap it at 2 hours).
+      maxAge: 7200,
       origin: (origin) => {
         // Reflecting an arbitrary origin alongside credentials lets any site
         // read authenticated responses, so it stays a development convenience.

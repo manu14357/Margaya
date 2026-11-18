@@ -10,6 +10,7 @@ import {
   DESKTOP_DISCOVERY_FILE,
   desktopDiscoveryDocument,
 } from "./src/lib/desktop-discovery";
+import { i18nSplit } from "./vite-i18n-split";
 
 const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN;
 const sentryOrg = process.env.SENTRY_ORG;
@@ -66,6 +67,7 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] }),
     desktopDiscovery(),
+    i18nSplit(path.resolve(__dirname, "../../i18n")),
     // Hidden when Sentry env vars are absent so local dev does not depend on it.
     ...(uploadSourceMaps
       ? [

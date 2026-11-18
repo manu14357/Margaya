@@ -9,6 +9,7 @@ export function useDeleteModule() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ moduleId }: { moduleId: string; projectId: string }) =>
       deleteModule(moduleId),
     onSuccess: (result, { projectId }) => {

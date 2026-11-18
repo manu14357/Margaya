@@ -11,6 +11,7 @@ export function useArchiveProject() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       projectId,
       archive,

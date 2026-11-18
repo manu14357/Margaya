@@ -12,6 +12,7 @@ export function useActivateEstimate() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       projectId,
       estimateId,

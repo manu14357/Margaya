@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useSyncExternalStore } from "react";
 import getTasks from "@/fetchers/task/get-tasks";
+import { boardQueryKey, withLocalBoardEdits } from "@/lib/board-cache";
 import { isUnauthorizedError } from "@/lib/http-error";
 import {
   isProjectSocketLive,
@@ -15,21 +16,31 @@ export const BOARD_POLL_MS = 30_000;
  */
 export const BOARD_SAFETY_POLL_MS = 5 * 60_000;
 
-export function useGetTasks(projectId: string) {
+export function useGetTasks(
+  projectId: string,
+  /** false reads only what is cached: pickers load the board when opened. */
+  { enabled = true }: { enabled?: boolean } = {},
+) {
   const socketLive = useSyncExternalStore(
     subscribeToProjectSockets,
     useCallback(() => isProjectSocketLive(projectId), [projectId]),
   );
 
   return useQuery({
-    queryKey: ["tasks", projectId],
-    queryFn: ({ signal }) => getTasks(projectId, signal),
+    queryKey: boardQueryKey(projectId),
+    queryFn: async ({ signal }) => {
+      const startedAt = Date.now();
+      const board = await getTasks(projectId, signal);
+      // A load takes many requests; edits this tab saved meanwhile may be
+      // missing from it, and no realtime echo of them will come.
+      return withLocalBoardEdits(projectId, board, startedAt);
+    },
     refetchInterval: (query) => {
       if (isUnauthorizedError(query.state.error)) return false;
       return socketLive && !query.state.error
         ? BOARD_SAFETY_POLL_MS
         : BOARD_POLL_MS;
     },
-    enabled: !!projectId,
+    enabled: !!projectId && enabled,
   });
 }

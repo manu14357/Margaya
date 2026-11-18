@@ -6,7 +6,7 @@ type LogoProps = {
 };
 
 export function Logo({ className = "" }: LogoProps) {
-  const { setProject } = useProjectStore();
+  const setProject = useProjectStore((state) => state.setProject);
 
   return (
     <Link

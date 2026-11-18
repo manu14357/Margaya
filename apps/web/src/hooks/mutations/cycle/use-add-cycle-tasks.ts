@@ -13,6 +13,7 @@ export function useAddCycleTasks() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: async ({
       cycleId,
       taskIds,

@@ -23,6 +23,7 @@ const useImportTasks = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       projectId,
       tasks,

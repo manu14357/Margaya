@@ -78,3 +78,25 @@ export const workspaceDeletionSchema = z
     }),
   })
   .openapi("WorkspaceDeletion");
+
+export const workspacePermissionsSchema = z
+  .object({
+    workspaceId: z.string(),
+    userId: z.string(),
+    role: z.string().openapi({
+      description:
+        "Your workspace role: a built-in role (owner, admin, member, viewer, guest) or a custom role name.",
+    }),
+    joinedAt: responseTimestamp.openapi({
+      description: "When you joined the workspace.",
+    }),
+    permissions: z.record(z.string(), z.array(z.string())).openapi({
+      description:
+        "What you may do across the workspace: each resource of the permission vocabulary with the actions granted to you, resolved by the same rules the API enforces (stored or custom role first, built-in role otherwise). A resource with no granted action is left out. In a restricted project, or as a guest, your project role there can cap these further (getMyProjectRights).",
+      example: {
+        project: ["create", "read"],
+        task: ["create", "read", "update"],
+      },
+    }),
+  })
+  .openapi("WorkspacePermissions");

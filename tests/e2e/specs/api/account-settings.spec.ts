@@ -115,6 +115,37 @@ test(
 );
 
 test(
+  "each member reads their own role and permissions in one call",
+  covers("getMyWorkspacePermissions"),
+  async () => {
+    type Permissions = {
+      role: string;
+      permissions: Record<string, string[]>;
+    };
+    const path = `/api/workspace/${world.workspace.id}/permissions`;
+    const owner = await expectJson<Permissions>(
+      await world.as("owner").get(path),
+    );
+    expect(owner.role).toBe("owner");
+    expect(owner.permissions.workspace).toContain("delete");
+
+    const viewer = await expectJson<Permissions>(
+      await world.as("viewer").get(path),
+    );
+    expect(viewer.role).toBe("viewer");
+    expect(viewer.permissions.task).toEqual(["read"]);
+
+    await expectStatus(await world.anonymous.get(path), 401);
+    const outsider = await signUpUser("Permissions outsider");
+    try {
+      await expectStatus(await outsider.ctx.get(path), 403);
+    } finally {
+      await outsider.ctx.dispose();
+    }
+  },
+);
+
+test(
   "a user stores, changes and clears their time zone",
   covers("getUserTimezone", "updateUserTimezone"),
   async () => {

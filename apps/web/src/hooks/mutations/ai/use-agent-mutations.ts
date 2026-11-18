@@ -105,6 +105,7 @@ export function useCancelAgentRun() {
 export function useUndoAgentChange() {
   const invalidate = useInvalidateRuns();
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: (input: { workspaceId: string; stepId: string }) =>
       undoAgentChange(input.workspaceId, input.stepId),
     onSuccess: (_result, input) => invalidate(input.workspaceId),
@@ -114,6 +115,7 @@ export function useUndoAgentChange() {
 export function useDecideAgentApproval() {
   const invalidate = useInvalidateRuns();
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: decideAgentApproval,
     onSuccess: (_result, input) => invalidate(input.workspaceId),
   });

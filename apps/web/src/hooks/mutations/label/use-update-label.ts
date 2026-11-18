@@ -5,6 +5,7 @@ function useUpdateLabel() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: updateLabel,
     onSuccess: (_updatedLabel) => {
       void queryClient.invalidateQueries({

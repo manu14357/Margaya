@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import restoreDescriptionVersion from "@/fetchers/task-description-version/restore-description-version";
 import { descriptionVersionKeys } from "@/hooks/queries/task-description-version/keys";
+import { scheduleBoardRefresh } from "@/lib/board-cache";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
 
 /**
@@ -21,7 +22,7 @@ export function useRestoreDescriptionVersion() {
     }) => restoreDescriptionVersion(taskId, versionId),
     onSuccess: (_, { taskId, projectId }) => {
       queryClient.invalidateQueries({ queryKey: ["task", taskId] });
-      queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
+      scheduleBoardRefresh(queryClient, projectId);
       queryClient.invalidateQueries({ queryKey: ["activities", taskId] });
       queryClient.invalidateQueries({
         queryKey: descriptionVersionKeys.list(taskId),

@@ -8,6 +8,7 @@ import setTaskRecurrence, {
   type SetTaskRecurrenceBody,
 } from "@/fetchers/task-recurrence/set-task-recurrence";
 import { taskRecurrenceQueryKey } from "@/hooks/queries/task-recurrence/use-task-recurrence";
+import { scheduleBoardRefresh } from "@/lib/board-cache";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
 
 type Target = { taskId: string; projectId: string };
@@ -17,7 +18,7 @@ function refreshAfterChange(
   queryClient: QueryClient,
   { taskId, projectId }: Target,
 ) {
-  void queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
+  scheduleBoardRefresh(queryClient, projectId);
   void queryClient.invalidateQueries({ queryKey: ["activities", taskId] });
   void invalidateTaskQueries(queryClient, projectId);
 }

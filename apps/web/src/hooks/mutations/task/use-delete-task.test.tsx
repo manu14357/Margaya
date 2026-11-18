@@ -111,9 +111,12 @@ describe("useDeleteTask", () => {
     expect(cachedProject?.plannedTasks).toEqual([]);
     expect(cachedProject?.archivedTasks).toEqual([]);
     expect(queryClient.getQueryData(["task", deletedTask.id])).toBeUndefined();
-    expect(
-      queryClient.getQueryState(["tasks", project.id])?.isInvalidated,
-    ).toBe(true);
+    // The reload is batched with other edits, so it follows shortly.
+    await vi.waitFor(() =>
+      expect(
+        queryClient.getQueryState(["tasks", project.id])?.isInvalidated,
+      ).toBe(true),
+    );
 
     const storedProject = useProjectStore.getState().project;
     expect(storedProject?.columns[0]?.tasks.map(({ id }) => id)).toEqual([

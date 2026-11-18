@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { i18n } from "@/lib/i18n";
 
 export const Route = createFileRoute(
   "/_layout/_authenticated/dashboard/settings/instance",
@@ -12,6 +13,9 @@ export const Route = createFileRoute(
       throw redirect({ to: "/dashboard/settings/account/information" });
     }
   },
+  // Its copy is a lazy namespace (lib/i18n/lazy-namespaces.ts): ready before
+  // the first screen renders.
+  loader: () => i18n.loadNamespaces("instanceAdmin"),
   // The navigation lives in the settings frame (settings.tsx).
   component: Outlet,
 });

@@ -69,7 +69,8 @@ export default function TaskRelationPicker({
   const [relationKey, setRelationKey] = useState(
     initialRelationKey ?? rememberedRelationKey,
   );
-  const { data: board } = useGetTasks(projectId);
+  // Mounted with the task; the board loads only while the picker is open.
+  const { data: board } = useGetTasks(projectId, { enabled: open });
   const { data: project } = useGetProject({ id: projectId, workspaceId });
   const createRelation = useCreateTaskRelation();
 

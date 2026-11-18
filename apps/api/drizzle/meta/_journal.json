@@ -365,6 +365,13 @@
 			"when": 1794935264405,
 			"tag": "0051_project_template_application",
 			"breakpoints": true
+		},
+		{
+			"idx": 52,
+			"version": "7",
+			"when": 1795095555491,
+			"tag": "0052_board_position_index",
+			"breakpoints": true
 		}
 	]
 }

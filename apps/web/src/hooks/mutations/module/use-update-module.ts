@@ -29,6 +29,7 @@ export function useUpdateModule() {
   const queryClient = useQueryClient();
 
   return useMutation<Module, Error, Variables, Context>({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ moduleId, json }) => updateModule(moduleId, json),
     onMutate: async ({ moduleId, projectId, json }) => {
       const { status } = json;

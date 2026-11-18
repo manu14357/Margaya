@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { type CSSProperties, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useShallow } from "zustand/react/shallow";
 import { RecurringIndicator } from "@/components/task/recurring-indicator";
 import {
   AlertDialog,
@@ -83,10 +84,27 @@ function TaskRow({
     isDragging,
   } = useSortable({ id: task.id });
 
-  const { project } = useProjectStore();
-  const taskIsCompleted = isTaskCompleted(task.status, project?.columns);
-  const column = project?.columns?.find(
-    (candidate) => candidate.slug === task.status,
+  // Narrow selections: a board reload re-renders only rows whose own values
+  // changed, not every row.
+  const projectId = useProjectStore((state) => state.project?.id);
+  const taskIsCompleted = useProjectStore((state) =>
+    isTaskCompleted(task.status, state.project?.columns),
+  );
+  const column = useProjectStore(
+    useShallow((state) => {
+      const found = state.project?.columns?.find(
+        (candidate) => candidate.slug === task.status,
+      );
+      return found
+        ? {
+            id: found.id,
+            name: found.name,
+            icon: found.icon,
+            group: found.group,
+            isFinal: found.isFinal,
+          }
+        : undefined;
+    }),
   );
   const { data: workspace } = useActiveWorkspace();
   const {
@@ -95,7 +113,15 @@ function TaskRow({
     showDueDates,
     showLabels,
     showTaskNumbers,
-  } = useUserPreferencesStore();
+  } = useUserPreferencesStore(
+    useShallow((state) => ({
+      showAssignees: state.showAssignees,
+      showPriority: state.showPriority,
+      showDueDates: state.showDueDates,
+      showLabels: state.showLabels,
+      showTaskNumbers: state.showTaskNumbers,
+    })),
+  );
   const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
   const { mutateAsync: deleteTask } = useDeleteTask();
   // Select the values: the React Compiler memoizes calls to the store's
@@ -157,19 +183,19 @@ function TaskRow({
   // Desktop app: Shift+click or a middle click opens the task's page in a
   // new window.
   const openTaskInNewWindow = (e: React.MouseEvent) =>
-    Boolean(project && workspace) &&
+    Boolean(projectId && workspace) &&
     !e.defaultPrevented &&
     openInNewWindowOnClick(
       e,
       taskPagePath({
         workspaceId: workspace?.id ?? "",
-        projectId: task.projectId || (project?.id ?? ""),
+        projectId: task.projectId || (projectId ?? ""),
         taskId: task.id,
       }),
     );
 
   const handleClick = (e: React.MouseEvent) => {
-    if (!project || !task) return;
+    if (!projectId || !task) return;
     if (e.defaultPrevented) return;
     if (openTaskInNewWindow(e)) return;
 
@@ -429,11 +455,11 @@ function TaskRow({
           </div>
         </ContextMenuTrigger>
 
-        {project && workspace && (
+        {projectId && workspace && (
           <TaskCardContextMenuContent
             task={task}
             taskCardContext={{
-              projectId: project.id,
+              projectId,
               worskpaceId: workspace.id,
             }}
             onDeleteClick={() => setIsDeleteTaskModalOpen(true)}

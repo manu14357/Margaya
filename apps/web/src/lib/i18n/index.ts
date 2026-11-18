@@ -1,13 +1,14 @@
+import { loadLocalePart } from "virtual:margaya-i18n";
 import {
   type AppLocale,
   defaultLocale,
   isSupportedLocale,
-  loadLocale,
   supportedLocales,
 } from "@i18n/resources";
 import i18n from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
+import { LAZY_NAMESPACES } from "./lazy-namespaces";
 
 function getLanguageCode(locale: string) {
   return locale.toLowerCase().split("-")[0];
@@ -69,24 +70,29 @@ export function getPreferredGuestLocale(): string | null {
 
 // Components subscribe to the default namespace only, so any other namespace
 // they reference through `t("ns:key")` must be preloaded after init and on
-// every locale change. The lazy backend already returns the whole locale JSON,
-// so cache it once per locale to avoid a fresh dynamic import per namespace.
-const localeResources = new Map<AppLocale, Promise<Record<string, unknown>>>();
+// every locale change. The core part of a locale holds every namespace but
+// the lazy ones in one module, so cache it once per locale rather than import
+// it again per namespace. A lazy namespace loads the first time i18next is
+// asked for it (`i18n.loadNamespaces`, or `useTranslation` naming it).
+const coreResources = new Map<AppLocale, Promise<Record<string, unknown>>>();
+const lazyNamespaces: ReadonlySet<string> = new Set(LAZY_NAMESPACES);
 
-function loadLocaleResources(
+function loadCoreResources(
   locale: AppLocale,
 ): Promise<Record<string, unknown>> {
-  const cached = localeResources.get(locale);
+  const cached = coreResources.get(locale);
   if (cached) return cached;
-  const pending = loadLocale(locale).then(
-    (resources) => resources as Record<string, unknown>,
+  const pending = loadLocalePart(locale, "core").then(
+    (resources) => resources ?? {},
   );
-  localeResources.set(locale, pending);
+  // A failed load (a dropped connection) may be retried later.
+  pending.catch(() => coreResources.delete(locale));
+  coreResources.set(locale, pending);
   return pending;
 }
 
 export function preloadNamespaces(locale: AppLocale): Promise<void> {
-  return loadLocaleResources(locale).then((resources) =>
+  return loadCoreResources(locale).then((resources) =>
     i18n.loadNamespaces(Object.keys(resources)),
   );
 }
@@ -97,7 +103,10 @@ void i18n
   .use(
     resourcesToBackend((language: string, namespace: string) => {
       const locale = isSupportedLocale(language) ? language : defaultLocale;
-      return loadLocaleResources(locale).then(
+      if (lazyNamespaces.has(namespace)) {
+        return loadLocalePart(locale, namespace);
+      }
+      return loadCoreResources(locale).then(
         (resources) => resources[namespace],
       );
     }),
@@ -109,6 +118,11 @@ void i18n
     defaultNS: "common",
     interpolation: {
       escapeValue: false,
+    },
+    // Re-render on "loaded" too: a lazy namespace arriving updates every
+    // component already showing its keys, not only the one that asked.
+    react: {
+      bindI18n: "languageChanged loaded",
     },
   })
   .then(() => preloadNamespaces(initialLocale));

@@ -244,34 +244,55 @@ async function getTasksPage(
     isRecurring: isRecurringSql,
   };
 
-  // The totals ride along as window counts (taken before LIMIT/OFFSET), so a
-  // page costs one statement per collection instead of two; a separate count
-  // runs only for a page past the end. Each board load is dozens of pages.
-  const query = db
-    .select({ ...taskSelection, total: windowTotal })
-    .from(taskTable)
-    .leftJoin(userTable, eq(taskTable.userId, userTable.id))
-    .leftJoin(projectTable, eq(taskTable.projectId, projectTable.id))
-    .leftJoin(cycleTaskTable, eq(cycleTaskTable.taskId, taskTable.id))
-    .leftJoin(
-      cycleTable,
-      and(
-        eq(cycleTable.id, cycleTaskTable.cycleId),
-        eq(cycleTable.projectId, taskTable.projectId),
-      ),
-    )
-    .where(whereClause)
-    .orderBy(orderByClause, asc(taskTable.id));
-
-  const pageWithTotals = await query.limit(pageSize).offset(offset);
-  const total = await totalOf(pageWithTotals, offset, async () => {
-    const [taskCount] = await db
-      .select({ count: sql<number>`count(*)` })
+  // The page is picked from the task table alone, so the default board order
+  // reads task_projectId_live_position_idx and stops after the page instead
+  // of joining, describing and sorting every task of the project for each
+  // page; the joins and per-row expressions then run for this page only.
+  const pageIds = (
+    await db
+      .select({ id: taskTable.id })
       .from(taskTable)
-      .where(whereClause);
-    return taskCount?.count;
-  });
-  const pageRows = pageWithTotals.map(({ total: _total, ...row }) => row);
+      .where(whereClause)
+      .orderBy(orderByClause, asc(taskTable.id))
+      .limit(pageSize)
+      .offset(offset)
+  ).map((row) => row.id);
+
+  // A short page that is not past the end gives the total by itself; any
+  // other page counts the filtered tasks, without the joins.
+  const total =
+    pageIds.length < pageSize && (pageIds.length > 0 || offset === 0)
+      ? offset + pageIds.length
+      : Number(
+          (
+            await db
+              .select({ count: sql<number>`count(*)` })
+              .from(taskTable)
+              .where(whereClause)
+          )[0]?.count ?? 0,
+        );
+
+  const pageDetails =
+    pageIds.length > 0
+      ? await db
+          .select(taskSelection)
+          .from(taskTable)
+          .leftJoin(userTable, eq(taskTable.userId, userTable.id))
+          .leftJoin(cycleTaskTable, eq(cycleTaskTable.taskId, taskTable.id))
+          .leftJoin(
+            cycleTable,
+            and(
+              eq(cycleTable.id, cycleTaskTable.cycleId),
+              eq(cycleTable.projectId, taskTable.projectId),
+            ),
+          )
+          .where(inArray(taskTable.id, pageIds))
+      : [];
+  const pageOrder = new Map(pageIds.map((id, index) => [id, index]));
+  const pageRows = pageDetails.sort(
+    (left, right) =>
+      (pageOrder.get(left.id) ?? 0) - (pageOrder.get(right.id) ?? 0),
+  );
   // Assignees are never split across related pages: at most 20 per task.
   const assigneesByTask = await assigneeDetailsOfTasks(
     pageRows.map((task) => task.id),

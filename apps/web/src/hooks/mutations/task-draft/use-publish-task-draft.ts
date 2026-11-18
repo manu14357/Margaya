@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import publishTaskDraft from "@/fetchers/task-draft/publish-task-draft";
 import { taskDraftQueryKeys } from "@/hooks/queries/task-draft/task-draft-query-keys";
+import { scheduleBoardRefresh } from "@/lib/board-cache";
 import { invalidateTaskQueries } from "@/lib/task-query/cache";
 import type { TaskDraftPatch } from "@/types/task-draft";
 import { removeDraftFromCache } from "./remove-draft-from-cache";
@@ -28,9 +29,7 @@ export function usePublishTaskDraft() {
       void queryClient.invalidateQueries({
         queryKey: taskDraftQueryKeys.count(workspaceId),
       });
-      void queryClient.invalidateQueries({
-        queryKey: ["tasks", task.projectId],
-      });
+      scheduleBoardRefresh(queryClient, task.projectId);
       void queryClient.invalidateQueries({
         queryKey: ["projects", workspaceId],
       });

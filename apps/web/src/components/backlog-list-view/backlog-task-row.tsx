@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { type CSSProperties, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useShallow } from "zustand/react/shallow";
 import { RecurringIndicator } from "@/components/task/recurring-indicator";
 import {
   AlertDialog,
@@ -71,8 +72,13 @@ export default function BacklogTaskRow({
     isDragging,
   } = useSortable({ id: task.id });
 
-  const { project } = useProjectStore();
-  const taskIsCompleted = isTaskCompleted(task.status, project?.columns);
+  // Narrow selections: a board reload re-renders only rows whose own values
+  // changed, not every row.
+  const projectId = useProjectStore((state) => state.project?.id);
+  const projectSlug = useProjectStore((state) => state.project?.slug);
+  const taskIsCompleted = useProjectStore((state) =>
+    isTaskCompleted(task.status, state.project?.columns),
+  );
   const { data: workspace } = useActiveWorkspace();
   const {
     showAssignees,
@@ -80,7 +86,15 @@ export default function BacklogTaskRow({
     showDueDates,
     showLabels,
     showTaskNumbers,
-  } = useUserPreferencesStore();
+  } = useUserPreferencesStore(
+    useShallow((state) => ({
+      showAssignees: state.showAssignees,
+      showPriority: state.showPriority,
+      showDueDates: state.showDueDates,
+      showLabels: state.showLabels,
+      showTaskNumbers: state.showTaskNumbers,
+    })),
+  );
   const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
   const { mutateAsync: deleteTask } = useDeleteTask();
   // Select the values: the React Compiler memoizes calls to the store's
@@ -123,7 +137,7 @@ export default function BacklogTaskRow({
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    if (!project || !task) return;
+    if (!projectId || !task) return;
     if (e.defaultPrevented) return;
 
     if (e.metaKey || e.ctrlKey) {
@@ -225,7 +239,7 @@ export default function BacklogTaskRow({
             )}
             {showTaskNumbers && (
               <div className="w-16 shrink-0 truncate font-mono text-muted-foreground text-xs">
-                {project?.slug}-{task.number}
+                {projectSlug}-{task.number}
               </div>
             )}
 
@@ -331,11 +345,11 @@ export default function BacklogTaskRow({
           </div>
         </ContextMenuTrigger>
 
-        {project && workspace && (
+        {projectId && workspace && (
           <TaskCardContextMenuContent
             task={task}
             taskCardContext={{
-              projectId: project.id,
+              projectId,
               worskpaceId: workspace.id,
             }}
             onDeleteClick={() => setIsDeleteTaskModalOpen(true)}

@@ -14,6 +14,7 @@ function useDeleteTaskRelation(taskId: string) {
   const key = ["task-relations", taskId];
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: deleteTaskRelation,
     onMutate: async (relationId: string): Promise<Context> => {
       await queryClient.cancelQueries({ queryKey: key });

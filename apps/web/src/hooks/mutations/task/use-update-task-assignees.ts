@@ -28,6 +28,7 @@ export function useUpdateTaskAssignees() {
     UpdateTaskAssigneesInput,
     Context
   >({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ taskId, add, remove }) =>
       updateTaskAssignees(taskId, { add, remove }),
     onMutate: async (input) => {

@@ -7,6 +7,7 @@ function useCreateLabel() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: createLabel,
     onSuccess: (createdLabel, variables: CreateLabelRequest) => {
       queryClient.setQueryData(

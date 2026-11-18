@@ -7,6 +7,7 @@ export function useBulkUpdateTaskEstimate() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       taskIds,
       estimatePointId,

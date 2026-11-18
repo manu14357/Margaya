@@ -30,7 +30,9 @@ export function ColumnHeader({
   onAddTask,
 }: ColumnHeaderProps) {
   const { t } = useTranslation();
-  const { project, setProject } = useProjectStore();
+  // Read the board only when archiving: subscribing to it would re-render
+  // every column header on each board reload.
+  const setProject = useProjectStore((state) => state.setProject);
   const { bulkArchive } = useBulkOperations();
   const { canUpdateTasks } = useWorkspacePermission();
   const canTask = canUpdateTasks();
@@ -38,6 +40,7 @@ export function ColumnHeader({
   const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false);
 
   const handleConfirmArchive = () => {
+    const { project } = useProjectStore.getState();
     if (!column.isFinal || !project) return;
 
     // Archived tasks keep their column and leave the board (D7).

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import deleteTask from "@/fetchers/task/delete-task";
+import { scheduleBoardRefresh } from "@/lib/board-cache";
 import useProjectStore from "@/store/project";
 import type { ProjectWithTasks } from "@/types/project";
 import { invalidatePlanningProgress } from "./invalidate-planning-progress";
@@ -9,6 +10,7 @@ export function useDeleteTask() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: deleteTask,
     onSuccess: (deletedTask) => {
       queryClient.setQueryData<ProjectWithTasks | undefined>(
@@ -20,9 +22,7 @@ export function useDeleteTask() {
         queryKey: ["task", deletedTask.id],
         exact: true,
       });
-      void queryClient.invalidateQueries({
-        queryKey: ["tasks", deletedTask.projectId],
-      });
+      scheduleBoardRefresh(queryClient, deletedTask.projectId);
       // A trashed task leaves its cycles, modules, forecasts and risks.
       invalidatePlanningProgress(queryClient, deletedTask.projectId);
 

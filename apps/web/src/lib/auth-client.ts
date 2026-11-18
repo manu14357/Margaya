@@ -31,6 +31,14 @@ const getBaseURL = () => {
 
 const BASE_PATH = "/api/auth";
 
+/**
+ * Fetch options for read-only `/organization/*` calls. Better Auth's client
+ * otherwise toggles its active-organization signal after every
+ * `/organization/*` call, so each read made the active workspace store
+ * refetch get-full-organization (and the active member stores with it).
+ */
+export const AUTH_READ = { disableSignal: true } as const;
+
 /** For the one request that can't wait for the client (use-sign-out.ts). */
 export const AUTH_BASE_URL = `${getBaseURL()}${BASE_PATH}`;
 

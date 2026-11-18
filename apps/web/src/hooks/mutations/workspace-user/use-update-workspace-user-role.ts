@@ -39,13 +39,9 @@ function useUpdateWorkspaceUserRole() {
       queryClient.invalidateQueries({
         queryKey: ["workspace-users", variables.workspaceId],
       });
-      // useGetActiveWorkspaceUser is keyed ["workspace-user", "active", ...]
-      // and drives sidebar/role badges for the current user.
-      queryClient.invalidateQueries({
-        queryKey: ["workspace-user", "active"],
-      });
-      // The active user's role may have changed; capability cache is keyed
-      // by (workspaceId, role) so we drop the per-workspace cache.
+      // The active user's role may have changed: my role and permissions
+      // (useMyWorkspacePermissions, which useGetActiveWorkspaceUser and the
+      // capability checks read) refetch.
       queryClient.invalidateQueries({
         queryKey: ["workspace-capabilities", variables.workspaceId],
       });

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import setTaskParent from "@/fetchers/task-relation/set-task-parent";
+import { scheduleBoardRefresh } from "@/lib/board-cache";
 import { parentRows, type RelationLike } from "@/lib/task-relations";
 
 type Variables = {
@@ -19,6 +20,7 @@ function useSetTaskParent() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ taskId, parentTaskId }: Variables) =>
       setTaskParent({ taskId, parentTaskId }),
     onMutate: ({ taskId }: Variables): Context => {
@@ -41,7 +43,7 @@ function useSetTaskParent() {
         queryClient.invalidateQueries({ queryKey: ["activities", id] });
       }
       queryClient.invalidateQueries({ queryKey: ["task", taskId] });
-      queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
+      scheduleBoardRefresh(queryClient, projectId);
     },
   });
 }

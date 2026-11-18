@@ -55,9 +55,7 @@ function useTransferWorkspaceOwnership() {
       queryClient.invalidateQueries({
         queryKey: ["workspace-users", variables.workspaceId],
       });
-      queryClient.invalidateQueries({
-        queryKey: ["workspace-user", "active"],
-      });
+      // My role and permissions (useMyWorkspacePermissions).
       queryClient.invalidateQueries({
         queryKey: ["workspace-capabilities", variables.workspaceId],
       });

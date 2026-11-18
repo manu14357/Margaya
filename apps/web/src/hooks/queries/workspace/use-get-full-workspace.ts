@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { authClient } from "@/lib/auth-client";
+import { AUTH_READ, authClient } from "@/lib/auth-client";
 
 type GetFullWorkspaceRequest = {
   workspaceId?: string;
@@ -22,6 +22,7 @@ function useGetFullWorkspace({
             organizationId: workspaceId,
             membersLimit,
           },
+          fetchOptions: AUTH_READ,
         },
       );
 

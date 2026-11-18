@@ -724,6 +724,11 @@ export const taskTable = pgTable(
     index("task_projectId_active_position_idx")
       .on(table.projectId, table.position)
       .where(sql`${table.archivedAt} is null`),
+    // The board (GET /task/tasks/{projectId}): live tasks, archived ones
+    // included, in (position, id) order, read page by page.
+    index("task_projectId_live_position_idx")
+      .on(table.projectId, table.position, table.id)
+      .where(sql`${table.deletedAt} is null`),
     index("task_projectId_archivedAt_idx")
       .on(table.projectId, table.archivedAt)
       .where(sql`${table.archivedAt} is not null`),

@@ -182,7 +182,11 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
   } = props;
   // Present mode shows the board read-only, whatever the viewer may do.
   const readOnly = boardReadOnly || presenting;
-  const { t } = useTranslation();
+  // The editor's copy is a lazy namespace: this asks for it, and the "loaded"
+  // binding (lib/i18n) re-renders the editor's parts once it arrives.
+  const { t } = useTranslation(["common", "whiteboardEditor"], {
+    useSuspense: false,
+  });
   const navigate = useNavigate();
   const createRelation = useCreateTaskRelation();
 

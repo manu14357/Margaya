@@ -44,7 +44,12 @@ export function StatusTrigger({
   hue,
 }: {
   task: Task;
-  column: ProjectWithTasks["columns"][number] | undefined;
+  column:
+    | Pick<
+        ProjectWithTasks["columns"][number],
+        "id" | "name" | "icon" | "group" | "isFinal"
+      >
+    | undefined;
   /** The colour the board gives this column. */
   hue?: string;
 }) {

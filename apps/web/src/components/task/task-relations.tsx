@@ -9,7 +9,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import useDeleteTaskRelation from "@/hooks/mutations/task-relation/use-delete-task-relation";
-import { useGetTasks } from "@/hooks/queries/task/use-get-tasks";
+import { useGetColumns } from "@/hooks/queries/column/use-get-columns";
 import useGetTaskRelations from "@/hooks/queries/task-relation/use-get-task-relations";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 import { useAssigneePeople } from "@/hooks/use-task-assignees";
@@ -53,7 +53,8 @@ export default function TaskRelations({
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const { data: relations = [] } = useGetTaskRelations(taskId);
-  const { data: board } = useGetTasks(projectId);
+  // Rows only need the columns' look; the board itself is not loaded.
+  const { data: projectColumns } = useGetColumns(projectId);
   const { data: workspace } = useActiveWorkspace();
   const { people, audience } = useAssigneePeople(workspace?.id ?? workspaceId);
   const deleteRelation = useDeleteTaskRelation(taskId);
@@ -81,9 +82,9 @@ export default function TaskRelations({
   const columns = useMemo(
     () =>
       new Map<string, ColumnLook>(
-        (board?.columns ?? []).map((column) => [column.id, column]),
+        (projectColumns ?? []).map((column) => [column.slug, column]),
       ),
-    [board],
+    [projectColumns],
   );
 
   // Summaries carry every assignee id but only the first one's name.

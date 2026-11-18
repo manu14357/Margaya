@@ -16,6 +16,7 @@ export function useRemoveCycleTasks() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: async ({
       taskIdsByCycle,
     }: {

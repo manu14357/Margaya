@@ -48,6 +48,21 @@ vi.mock("@/hooks/queries/task/use-get-tasks", () => ({
     },
   }),
 }));
+vi.mock("@/hooks/queries/column/use-get-columns", () => ({
+  useGetColumns: () => ({
+    data: [
+      {
+        id: "column-1",
+        slug: "to-do",
+        name: "To do",
+        position: 0,
+        isFinal: false,
+        group: "unstarted",
+        icon: null,
+      },
+    ],
+  }),
+}));
 vi.mock("@/hooks/queries/project/use-get-project", () => ({
   default: () => ({ data: { id: "p-web", slug: "web" } }),
 }));

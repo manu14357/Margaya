@@ -10,6 +10,7 @@ export function useArchiveModule() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       moduleId,
       archive,

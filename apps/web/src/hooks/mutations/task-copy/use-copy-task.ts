@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import copyTask, { type CopyOption } from "@/fetchers/task-copy/copy-task";
 import { invalidatePlanningProgress } from "@/hooks/mutations/task/invalidate-planning-progress";
+import { scheduleBoardRefresh } from "@/lib/board-cache";
 
 type Variables = {
   taskId: string;
@@ -16,10 +17,11 @@ function useCopyTask() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ taskId, projectId, title, include }: Variables) =>
       copyTask({ taskId, body: { projectId, title, include } }),
     onSuccess: (result, { taskId, projectId, include, parentTaskId }) => {
-      queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
+      scheduleBoardRefresh(queryClient, projectId);
       queryClient.invalidateQueries({ queryKey: ["activities", taskId] });
       // The copy counts in the project's forecast, and with its planning
       // in the cycle's and modules' progress.

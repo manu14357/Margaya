@@ -168,13 +168,13 @@ vi.mock("@/hooks/use-workspace-permission", () => ({
   }),
 }));
 
-vi.mock("@/store/project", () => ({
-  default: () => ({
-    project: {
-      columns: [],
-    },
-  }),
-}));
+vi.mock("@/store/project", () => {
+  const state = { project: { columns: [] } };
+  return {
+    default: (selector?: (value: typeof state) => unknown) =>
+      selector ? selector(state) : state,
+  };
+});
 
 // The real module too: the calendar's date formatting loads the i18n setup.
 vi.mock("react-i18next", async (importOriginal) => ({

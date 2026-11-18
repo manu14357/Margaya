@@ -8,6 +8,7 @@ export function useUpdateColumn() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       id,
       data,

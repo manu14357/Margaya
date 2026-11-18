@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { authClient } from "@/lib/auth-client";
+import { AUTH_READ, authClient } from "@/lib/auth-client";
 
 type GetWorkspaceUsersRequest = {
   workspaceId?: string;
@@ -40,6 +40,7 @@ function useGetWorkspaceUsers({
         query: {
           organizationId: workspaceId,
         },
+        fetchOptions: AUTH_READ,
       });
 
       if (error) {

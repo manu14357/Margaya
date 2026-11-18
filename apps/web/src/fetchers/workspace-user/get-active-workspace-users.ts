@@ -1,4 +1,4 @@
-import { authClient } from "@/lib/auth-client";
+import { AUTH_READ, authClient } from "@/lib/auth-client";
 
 export type GetActiveWorkspaceUsersRequest = {
   workspaceId: string;
@@ -11,6 +11,7 @@ async function getActiveWorkspaceUsers({
     query: {
       organizationId: workspaceId,
     },
+    fetchOptions: AUTH_READ,
   });
 
   if (error) {

@@ -16,6 +16,10 @@ export function AppI18nProvider({ children }: PropsWithChildren) {
     () => resolveLocale(user?.locale, getPreferredGuestLocale()),
     [user?.locale],
   );
+  // The admin plugin's role; instance admins see instanceAdmin copy (the
+  // settings menu, the update notice) outside the instance routes too.
+  const isInstanceAdmin =
+    (user as { role?: string | null } | null | undefined)?.role === "admin";
 
   useEffect(() => {
     void i18n
@@ -25,6 +29,10 @@ export function AppI18nProvider({ children }: PropsWithChildren) {
     void loadDayPickerLocale(resolvedLocale);
     document.documentElement.lang = resolvedLocale;
   }, [resolvedLocale]);
+
+  useEffect(() => {
+    if (isInstanceAdmin) void i18n.loadNamespaces("instanceAdmin");
+  }, [isInstanceAdmin]);
 
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 }

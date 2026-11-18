@@ -9143,6 +9143,54 @@
         ],
         "additionalProperties": false
       },
+      "WorkspacePermissions": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "description": "Your workspace role: a built-in role (owner, admin, member, viewer, guest) or a custom role name."
+          },
+          "joinedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When you joined the workspace."
+          },
+          "permissions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "What you may do across the workspace: each resource of the permission vocabulary with the actions granted to you, resolved by the same rules the API enforces (stored or custom role first, built-in role otherwise). A resource with no granted action is left out. In a restricted project, or as a guest, your project role there can cap these further (getMyProjectRights).",
+            "example": {
+              "project": [
+                "create",
+                "read"
+              ],
+              "task": [
+                "create",
+                "read",
+                "update"
+              ]
+            }
+          }
+        },
+        "required": [
+          "workspaceId",
+          "userId",
+          "role",
+          "joinedAt",
+          "permissions"
+        ]
+      },
       "WorkspaceMember": {
         "type": "object",
         "properties": {
@@ -57494,6 +57542,58 @@
           },
           "409": {
             "description": "The workspace already has projects (any project, visible to the caller or not)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace/{workspaceId}/permissions": {
+      "get": {
+        "operationId": "getMyWorkspacePermissions",
+        "tags": [
+          "Workspaces"
+        ],
+        "summary": "Get my workspace permissions",
+        "description": "Your role in the workspace and every permission you hold there, in one response, resolved by the same rules the API uses to authorize each request (custom roles included). Clients use it to show only the actions the API will accept; the API still checks every request. Needs a signed-in session (API keys are refused) and membership of the workspace.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "workspaceId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your role and permissions in the workspace",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspacePermissions"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not a member of the workspace, or the request used an API key",
             "content": {
               "text/plain": {
                 "schema": {

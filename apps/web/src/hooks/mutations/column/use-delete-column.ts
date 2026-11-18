@@ -5,6 +5,7 @@ export function useDeleteColumn() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ id }: { id: string; projectId: string }) => deleteColumn(id),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ refetchType: "all" });

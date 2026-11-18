@@ -50,6 +50,7 @@ export function useUpdateTaskEstimate() {
   const queryClient = useQueryClient();
 
   return useMutation<unknown, Error, Variables, Context>({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ taskId, estimatePointId }) =>
       updateTaskEstimate(taskId, estimatePointId),
     onMutate: async ({ taskId, projectId, estimatePointId }) => {

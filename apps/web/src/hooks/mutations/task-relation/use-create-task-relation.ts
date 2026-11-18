@@ -6,6 +6,7 @@ function useCreateTaskRelation() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: createTaskRelation,
     onSuccess: (_, variables) => {
       // Both tasks list the relation and record it in their history.

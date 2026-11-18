@@ -9,6 +9,7 @@ export function useDeleteCycle() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ cycleId }: { cycleId: string; projectId: string }) =>
       deleteCycle(cycleId),
     onSuccess: (result, { projectId }) => {

@@ -99,8 +99,10 @@ function RouteComponent() {
   const tasksQuery = useGetTasks(projectId);
   const { data } = tasksQuery;
   const loadFailure = useLoadFailure(tasksQuery);
-  const { project, setProject } = useProjectStore();
-  const { viewMode, setViewMode } = useUserPreferencesStore();
+  const project = useProjectStore((state) => state.project);
+  const setProject = useProjectStore((state) => state.setProject);
+  const viewMode = useUserPreferencesStore((state) => state.viewMode);
+  const setViewMode = useUserPreferencesStore((state) => state.setViewMode);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [boardSearchQuery, setBoardSearchQuery] = useState("");
   const [isBoardSearchOpen, setIsBoardSearchOpen] = useState(false);
@@ -167,6 +169,9 @@ function RouteComponent() {
     },
   });
 
+  // The board draws the store's copy, which drag and drop moves at once.
+  // Cards select only their own values, so this copy re-renders just the
+  // cards whose data changed.
   useEffect(() => {
     if (data) {
       setProject(data);

@@ -244,7 +244,7 @@ function ListView({
   capture = false,
 }: ListViewProps) {
   const { t } = useTranslation();
-  const { setProject } = useProjectStore();
+  const setProject = useProjectStore((state) => state.setProject);
   const setAvailableTasks = useBulkSelectionStore(
     (state) => state.setAvailableTasks,
   );

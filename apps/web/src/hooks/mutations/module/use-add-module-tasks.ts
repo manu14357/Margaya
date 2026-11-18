@@ -10,6 +10,7 @@ export function useAddModuleTasks() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: async ({
       moduleId,
       taskIds,

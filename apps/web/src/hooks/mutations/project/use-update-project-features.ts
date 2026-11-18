@@ -24,6 +24,7 @@ function useUpdateProjectFeatures() {
   const queryClient = useQueryClient();
 
   return useMutation<unknown, Error, Variables, Context>({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ projectId, features }) =>
       updateProjectFeatures(projectId, features),
     onMutate: async ({ projectId, workspaceId, features }) => {

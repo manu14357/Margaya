@@ -6,6 +6,7 @@ export default function useDetachLabelFromTask() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: detachLabelFromTask,
     onSuccess: (detachedLabel) => {
       if (!detachedLabel.taskId) return;

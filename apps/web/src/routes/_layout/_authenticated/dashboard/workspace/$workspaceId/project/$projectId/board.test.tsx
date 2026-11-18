@@ -24,15 +24,24 @@ const useGetTasks = vi.fn();
 vi.mock("@/hooks/queries/task/use-get-tasks", () => ({
   useGetTasks: () => useGetTasks(),
 }));
-vi.mock("@/store/project", () => ({
-  default: () => ({ project: state.storeProject, setProject: vi.fn() }),
-}));
-vi.mock("@/store/user-preferences", () => ({
-  useUserPreferencesStore: () => ({
-    viewMode: state.viewMode,
-    setViewMode: vi.fn(),
-  }),
-}));
+vi.mock("@/store/project", () => {
+  const setProject = vi.fn();
+  return {
+    default: (selector?: (value: unknown) => unknown) => {
+      const store = { project: state.storeProject, setProject };
+      return selector ? selector(store) : store;
+    },
+  };
+});
+vi.mock("@/store/user-preferences", () => {
+  const setViewMode = vi.fn();
+  return {
+    useUserPreferencesStore: (selector?: (value: unknown) => unknown) => {
+      const store = { viewMode: state.viewMode, setViewMode };
+      return selector ? selector(store) : store;
+    },
+  };
+});
 vi.mock("@/hooks/use-task-query-state", () => ({
   useTaskQueryState: () => ({
     display: {},

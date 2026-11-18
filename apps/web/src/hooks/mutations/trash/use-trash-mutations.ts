@@ -88,6 +88,7 @@ export function usePurgePage(projectId: string) {
 export function useRestoreProject() {
   const queryClient = useQueryClient();
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: restoreProject,
     onSettled: () => refreshAfterProjectChange(queryClient),
   });
@@ -96,6 +97,7 @@ export function useRestoreProject() {
 export function usePurgeProject() {
   const queryClient = useQueryClient();
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: purgeProject,
     onSettled: () => refreshAfterProjectChange(queryClient),
   });

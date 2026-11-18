@@ -3,6 +3,7 @@ import { getPendingInvitations } from "@/fetchers/invitation/get-pending-invitat
 import getWorkspaces from "@/fetchers/workspace/get-workspaces";
 import { authClient } from "@/lib/auth-client";
 import { handleUnauthorized, isUnauthorizedError } from "@/lib/http-error";
+import { routeSession } from "@/lib/route-session";
 import type Workspace from "@/types/workspace";
 
 export const Route = createFileRoute("/_layout/_authenticated/dashboard/")({
@@ -10,8 +11,10 @@ export const Route = createFileRoute("/_layout/_authenticated/dashboard/")({
     let workspaces: Workspace[];
     let invitations: Awaited<ReturnType<typeof getPendingInvitations>>;
     try {
-      workspaces = await getWorkspaces();
-      invitations = await getPendingInvitations();
+      [workspaces, invitations] = await Promise.all([
+        getWorkspaces(),
+        getPendingInvitations(),
+      ]);
     } catch (error) {
       if (isUnauthorizedError(error)) {
         handleUnauthorized();
@@ -24,8 +27,9 @@ export const Route = createFileRoute("/_layout/_authenticated/dashboard/")({
       throw redirect({ to: "/invitations" });
     }
 
-    const session = await authClient.getSession();
-    const activeWorkspaceId = session?.data?.session?.activeOrganizationId;
+    // Usually the session the authenticated layout just read.
+    const session = await routeSession().catch(() => null);
+    const activeWorkspaceId = session?.session?.activeOrganizationId;
 
     if (workspaces && workspaces.length > 0) {
       if (

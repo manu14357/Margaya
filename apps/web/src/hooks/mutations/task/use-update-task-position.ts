@@ -5,6 +5,7 @@ import updateTaskPosition from "@/fetchers/task/update-task-position";
 import { toast } from "@/lib/toast";
 import useProjectStore from "@/store/project";
 import type { ProjectWithTasks } from "@/types/project";
+import { boardTaskEdit } from "./board-task-edit";
 import { invalidateAfterStatusChange } from "./use-update-task-status";
 
 export type TaskPlacement = {
@@ -25,19 +26,32 @@ export function useUpdateTaskPosition() {
   const { t } = useTranslation();
   // One drop writes many cards; if they all fail, one message is enough.
   const failureToastRef = useRef<string | undefined>(undefined);
+  // The board cache follows the drop at once, so its copy in the store is
+  // not overwritten with the old order before the reload.
+  const board = boardTaskEdit<
+    Awaited<ReturnType<typeof updateTaskPosition>>,
+    TaskPlacement
+  >(queryClient, ({ id, projectId, position, status }) => ({
+    projectId,
+    taskId: id,
+    patch: status === undefined ? { position } : { position, status },
+  }));
 
   return useMutation({
     mutationFn: ({ id, position, status }: TaskPlacement) =>
       updateTaskPosition(id, { position, status }),
-    onSuccess: (_, { id, projectId, status }) => {
+    meta: { refreshTaskQueries: true },
+    onMutate: board.onMutate,
+    onSuccess: (data, { id, projectId, status }, context) => {
+      board.onSaved(data, context);
       if (status !== undefined) {
         invalidateAfterStatusChange(queryClient, { id, projectId });
         return;
       }
       queryClient.invalidateQueries({ queryKey: ["task", id] });
-      queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
     },
-    onError: (_, { projectId }) => {
+    onError: (_, { projectId }, context) => {
+      board.onFailed(context);
       // The board draws the store's optimistic copy, and a refetch that finds
       // nothing new does not replace it, so the card has to be put back here.
       const saved = queryClient.getQueryData<ProjectWithTasks>([
@@ -46,7 +60,6 @@ export function useUpdateTaskPosition() {
       ]);
       const { project, setProject } = useProjectStore.getState();
       if (saved && project?.id === projectId) setProject(saved);
-      queryClient.invalidateQueries({ queryKey: ["tasks", projectId] });
 
       toast.dismiss(failureToastRef.current);
       failureToastRef.current = toast.error(t("tasks:update.error"));

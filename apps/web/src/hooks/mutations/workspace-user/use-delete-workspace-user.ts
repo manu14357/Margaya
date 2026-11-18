@@ -9,6 +9,7 @@ type DeleteWorkspaceUserRequest = {
 
 function useDeleteWorkspaceUser() {
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: async ({ workspaceId, userId }: DeleteWorkspaceUserRequest) => {
       const { data, error } = await authClient.organization.removeMember({
         memberIdOrEmail: userId,

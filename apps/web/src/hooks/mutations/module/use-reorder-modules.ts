@@ -7,6 +7,7 @@ export function useReorderModules() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       projectId,
       moduleIds,

@@ -25,6 +25,7 @@ export function useSetTaskAssignees() {
     SetTaskAssigneesInput,
     Context
   >({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ taskId, assigneeIds }) =>
       setTaskAssignees(taskId, assigneeIds),
     onMutate: async (input) => {

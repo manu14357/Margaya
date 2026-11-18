@@ -7,6 +7,7 @@ export function useArchiveCycle() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({
       cycleId,
       archive,

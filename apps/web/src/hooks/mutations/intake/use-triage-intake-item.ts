@@ -45,6 +45,7 @@ export function useTriageIntakeItem() {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: runTriage,
     onSuccess: (item, input) => {
       queryClient.setQueryData(intakeQueryKeys.item(item.id), item);

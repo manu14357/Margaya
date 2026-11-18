@@ -2,9 +2,10 @@ import os from "node:os";
 import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
+import { i18nSplit } from "./vite-i18n-split";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), i18nSplit(path.resolve(__dirname, "../../i18n"))],
   test: {
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],

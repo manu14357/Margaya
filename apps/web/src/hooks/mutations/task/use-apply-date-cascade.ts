@@ -23,6 +23,7 @@ export function useApplyDateCascade(projectId: string) {
   const boardKey = ["tasks", projectId];
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: async (moves: DateCascadeMove[]) => {
       let moved = 0;
       for (const { task, startDate, dueDate } of moves) {

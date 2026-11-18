@@ -65,8 +65,10 @@ describe("useUpdateTaskPosition", () => {
       param: { id: "t1" },
       json: { position: 3, status: "done" },
     });
-    // A status change refreshes what depends on it.
-    expect(keys()).toContain('["notifications"]');
+    // A status change refreshes what depends on it; notifications follow
+    // the user socket.
+    expect(keys()).toContain('["projects"]');
+    expect(keys()).not.toContain('["notifications"]');
     expect(keys()).toContain('["cycles","p1"]');
   });
 
@@ -86,7 +88,11 @@ describe("useUpdateTaskPosition", () => {
       param: { id: "t1" },
       json: { position: 0, status: undefined },
     });
-    expect(keys()).toEqual(['["task","t1"]', '["tasks","p1"]']);
+    // The board reload is batched with the rest of the drop.
+    expect(keys()).toEqual(['["task","t1"]']);
+    await vi.waitFor(() =>
+      expect(keys()).toEqual(['["task","t1"]', '["tasks","p1"]']),
+    );
   });
 
   it("puts the board back and says so when a move fails", async () => {

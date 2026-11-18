@@ -5,6 +5,7 @@ function useDeleteCustomField(projectId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { refreshTaskQueries: true },
     mutationFn: deleteCustomField,
     onSuccess: (_data, variables) => {
       queryClient.setQueryData(

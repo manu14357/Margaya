@@ -46,6 +46,7 @@ export function useSetTaskCycle() {
   const queryClient = useQueryClient();
 
   return useMutation<unknown, Error, Variables, Context>({
+    meta: { refreshTaskQueries: true },
     mutationFn: ({ taskId, cycleId }) => setTaskCycle(taskId, cycleId),
     onMutate: async ({ taskId, projectId, cycleId }) => {
       const taskKey = ["task", taskId];

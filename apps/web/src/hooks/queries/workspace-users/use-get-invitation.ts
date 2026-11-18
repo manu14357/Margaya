@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { authClient } from "@/lib/auth-client";
+import { AUTH_READ, authClient } from "@/lib/auth-client";
 
 type GetInvitationRequest = {
   invitationId: string;
@@ -14,6 +14,7 @@ function useGetInvitation({ invitationId }: GetInvitationRequest) {
         query: {
           id: invitationId,
         },
+        fetchOptions: AUTH_READ,
       });
 
       if (error) {
