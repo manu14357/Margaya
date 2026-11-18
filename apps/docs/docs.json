@@ -83,6 +83,7 @@
 									"core/functional/custom-fields",
 									"core/functional/time-tracking",
 									"core/functional/description-history",
+									"core/functional/file-preview",
 									"core/functional/collaborate-with-team",
 									"core/functional/configure-workflows",
 									"core/functional/project-features-and-column-groups",

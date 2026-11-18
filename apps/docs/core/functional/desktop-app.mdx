@@ -149,7 +149,7 @@ A server's window looks like Margaya in the browser, without the browser around 
 - **Closing a window** hides it to the tray (Windows, Linux) or the menu bar (macOS), so notifications and quick add keep working. To quit, choose **Quit** from the tray or menu bar icon. On Linux, the tray icon opens its menu on any click; **Open Margaya** is at the top.
 - **More windows.** <Kbd>Ctrl</Kbd>-click (<Kbd>⌘</Kbd>-click on macOS) a link, or choose to open it in a new tab, to open it in a second window of the app. **Open in new window** is in the menus of tasks, projects in the sidebar, pages and whiteboards; for pages and whiteboards it replaces **Open in new tab**. <Kbd>Shift</Kbd>-click or middle-click a task card, a task in a list or a project in the sidebar does the same. On a whiteboard, **Present in new window** opens the board in [present mode](/core/functional/whiteboards/canvas-and-navigation#present-a-board) in its own window, which you can move to a second screen.
 - **Drop files.** Drag files from your computer onto a task's attachments, a task description, a comment, a page or a whiteboard to add them, as in the browser. Files dropped anywhere else are ignored, so a stray drop never replaces Margaya with the file.
-- **Downloads.** Images and PDFs open in a viewer window inside the app. Other attachments, exports and whiteboard images download to your **Downloads** folder, under their own name; a file with the same name already there is kept, and the new one gets a number, such as `report (2).csv`. While files download, the taskbar button (Windows), the Dock icon (macOS) or the dock icon (Linux, in the docks that show the unread count) shows a progress bar; macOS shows that something is downloading, without the percentage. A notification tells you when each download has finished, or if it failed. Click it to show the file, selected, in File Explorer, Finder or your file manager; the file itself never opens. If you have deleted or moved the file since, or restarted Margaya, the click opens the folder instead, and a click on a failed download opens your **Downloads** folder. On Windows this also works from the notification centre after you quit Margaya: the click starts it in the tray and opens the folder.
+- **Downloads.** Clicking an attachment opens the same [file preview](/core/functional/file-preview) as in the browser, inside the window; Ctrl-click and middle-click preview too, since the app has no tabs. The preview offers **Open in browser** only for files on other sites, because your system browser may not be signed in to your server. Files you download, with the preview's **Download** button, an attachment's download button, an export or a whiteboard image, go to your **Downloads** folder, under their own name; a file with the same name already there is kept, and the new one gets a number, such as `report (2).csv`. While files download, the taskbar button (Windows), the Dock icon (macOS) or the dock icon (Linux, in the docks that show the unread count) shows a progress bar; macOS shows that something is downloading, without the percentage. A notification tells you when each download has finished, or if it failed. Click it to show the file, selected, in File Explorer, Finder or your file manager; the file itself never opens. If you have deleted or moved the file since, or restarted Margaya, the click opens the folder instead, and a click on a failed download opens your **Downloads** folder. On Windows this also works from the notification centre after you quit Margaya: the click starts it in the tray and opens the folder.
 - **Spell check.** The spell checker uses your system's language. On Windows and Linux you can pick another one under **Settings** > **Spell-check language**. Linux applies it right away. On Windows, servers whose window you already opened since Margaya started keep the old language until you restart Margaya. On macOS, the system's own spelling settings apply.
 - **Other sites.** Links to other websites open in your browser. Linking your GitHub account opens a small sign-in window inside the app. Billing and installing the GitHub App continue in your browser.
 - **Keyboard.** <Kbd>Ctrl</Kbd> + <Kbd>,</Kbd> (<Kbd>⌘</Kbd> + <Kbd>,</Kbd> on macOS) opens Margaya's settings. On Windows, <Kbd>Ctrl</Kbd> + <Kbd>+</Kbd> and <Kbd>Ctrl</Kbd> + <Kbd>−</Kbd> zoom in and out. The browser's right-click menu and its back and forward shortcuts are switched off, so Margaya's own [keyboard shortcuts](/core/functional/keyboard-shortcuts) and menus work as expected.
@@ -249,6 +249,43 @@ Without opening a server's window, you can:
 
 All of this is in the tray or menu bar icon too, and you can change the shortcuts. See [Quick add, search and Today](/core/functional/desktop-app-quick-add-and-search).
 
+## Files window
+
+The **Files** window browses folders on your computer and previews their files without opening another app. It's read-only: Margaya never changes, moves or deletes anything in it.
+
+Open it from **Files** in the tray or menu bar icon, the **Files** button in the server list, or **Files** in the Windows taskbar jump list (and the Linux launcher's menu). You can give it a keyboard shortcut in [Settings](#settings); it has none by default.
+
+### Add folders
+
+Choose **Add folder…** and pick a folder. Margaya can read only the folders you add (with everything inside them) and the files you drop on the window. It can't read anything else on your computer, and server windows never get access to your files.
+
+- Added folders are listed under **Places** and come back the next time you open the app.
+- **Remove folder** (the **×** next to it, or its right-click menu) takes it off the list. Margaya can't read it again until you add it back. The folder itself is untouched.
+- A folder that was moved, renamed or disconnected shows **Not available**. Remove it and add it again from its new place.
+- Network shares and device paths can't be added.
+- Shortcuts and links inside a folder open only when they point to somewhere inside a folder you added.
+
+### Browse and find files
+
+- Folders come first, then files, with their type, size and date modified. Sort by **Name**, **Date modified**, **Type** or **Size**, in either order, and switch between the list and the grid. The window remembers your choice.
+- Type in the filter box to narrow the current folder by name. Turn on **Include subfolders** to search everything below it; **Stop** ends a long search.
+- **Hidden items** shows files and folders your system hides.
+- Click to select, double-click or press <Kbd>Enter</Kbd> to open a folder or preview a file. The arrow keys move the selection, <Kbd>Backspace</Kbd> goes up one folder, <Kbd>Ctrl</Kbd> + <Kbd>F</Kbd> (<Kbd>⌘</Kbd> + <Kbd>F</Kbd> on macOS) jumps to the filter, and <Kbd>F5</Kbd> refreshes. <Kbd>Delete</Kbd> does nothing here.
+- Right-click a file, or press <Kbd>Shift</Kbd> + <Kbd>F10</Kbd>, for **Preview**, **Open with default app**, **Show in folder**, **Copy path**, **Save a copy…** and **Add to Recent** or **Remove from Recent**.
+- **Recent** lists the last 20 files you previewed.
+
+### Preview files
+
+The preview opens beside the list. Drag its edge to make it wider, or expand it to fill the window. It shows PDFs, Word documents, spreadsheets and CSV files, presentations, images and SVGs, Markdown, text and code, web pages (without scripts or outside content), audio and video, ZIP archives and 3D models (STL, OBJ and glTF).
+
+- **Save a copy…** saves the file wherever you choose. It's the only time the Files window writes anything, and only to the place you pick.
+- **Open with default app** opens the file in the app your system uses for it. Programs and scripts (such as `.exe`, `.bat`, `.ps1` or `.sh` files) are never opened this way; use **Show in folder** instead.
+- Drop files on the window to preview them, even from outside your folders. Drop a folder to add it to **Places**.
+
+### Attach a file to a task
+
+Drag a file from the Files window onto a task, a comment or a description in a server window, just as you would from your system's file manager. Margaya attaches it there.
+
 ## Open Margaya links in the app
 
 Links that start with `margaya://open` open in the app, in the right server's window. If a link points at a server that isn't in your list, the app asks **Add this server?** first. Only add servers you trust; choose **Ignore** for anything you don't recognise.
@@ -284,7 +321,7 @@ Open the settings with <Kbd>Ctrl</Kbd> + <Kbd>,</Kbd> (<Kbd>⌘</Kbd> + <Kbd>,</
 - **Keep recent items for offline reading**, on by default, and **Saved copies** with **Clear saved copies**. See [Read saved copies offline](#read-saved-copies-offline).
 - **Spell-check language** (Windows and Linux): **Same as the system**, or one of the languages Margaya is available in.
 - **Diagnostics**: **Copy diagnostics** copies the app version, your system, your server list and recent log lines for a bug report. Sign-in tokens are never included. **Open logs folder** in the **Help** menu shows the log files.
-- **Keyboard shortcuts** for **Quick add**, **Search**, **Take screenshot to task** and **Today**. See [Keyboard shortcuts](/core/functional/desktop-app-quick-add-and-search#keyboard-shortcuts).
+- **Keyboard shortcuts** for **Quick add**, **Search**, **Take screenshot to task**, **Today** and **Files**. See [Keyboard shortcuts](/core/functional/desktop-app-quick-add-and-search#keyboard-shortcuts).
 
 ## Uninstall
 

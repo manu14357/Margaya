@@ -1,0 +1,49 @@
+---
+title: Preview files
+description: Open attachments and uploaded files right in Margaya, from PDFs, documents, spreadsheets and slides to code, archives, 3D models, audio and video
+---
+
+Click an attached file, on a task or in a page, to preview it without leaving Margaya. The preview opens full size over the page, and the arrows in its header, or the Left and Right arrow keys, step through the other images and files around it. The header also has **Open in new tab** (**Open in browser** in the [desktop app](/core/functional/desktop-app), for files on other sites), **Download** and **Copy link**. Ctrl-click (Cmd-click on a Mac) or middle-click a file to open it in a new browser tab instead.
+
+Every file is drawn inside Margaya from its own bytes, so nothing needs to be installed and the file never leaves your server.
+
+## Supported formats
+
+| Format | Files | What you can do |
+|---|---|---|
+| PDF | `.pdf` | Scroll through the pages, show page thumbnails, jump to a page, zoom, fit to the width or the page, rotate, select and copy text, find text with every match highlighted, full screen |
+| Documents | `.docx` | Read the document with its layout, headings, tables and images; zoom, fit to the width, full screen |
+| Spreadsheets | `.xlsx`, `.xlsm`, `.xlsb`, `.xls`, `.ods` | Switch sheets with the tabs; column letters and row numbers stay in view; values keep their number formats, bold, italics, alignment and fill colours; find in the sheet |
+| CSV and TSV | `.csv`, `.tsv` | The same grid as spreadsheets, with numbers aligned on the right |
+| Slides | `.pptx`, `.ppsx` | One slide at a time with a thumbnail strip, previous and next (arrow keys too), and **Present**, a full-screen slideshow you step through with the arrow keys or a click |
+| Pictures | `.png`, `.jpg`, `.gif`, `.webp`, `.avif`, `.bmp`, `.ico` | Zoom (buttons, <Kbd>+</Kbd> and <Kbd>-</Kbd>, or <Kbd>Ctrl</Kbd> + scroll), fit, rotate, drag to pan, full screen |
+| SVG | `.svg` | The same as pictures. Scripts and event handlers are removed first |
+| Markdown | `.md`, `.markdown`, `.mdx` | Read it formatted, tables included, or switch to **Source**. HTML inside the file is shown as text |
+| Code and data | `.ts`, `.js`, `.py`, `.json`, `.yaml`, `.xml`, `.sql`, `.css` and other source files | Syntax colours that follow your light or dark theme, line numbers and find. JSON is indented for reading |
+| Text | `.txt`, `.log`, `.ini`, `.conf` and other plain text | Line numbers and find |
+| Web pages | `.html`, `.htm` | The page without its scripts, links, forms or anything it would load from other sites, or its **Source** |
+| Archives | `.zip` | Browse the folders, with each file's size and date, and click a file to preview it inside the archive. **Back to the archive** returns to the list |
+| 3D models | `.stl`, `.obj`, `.glb`, `.gltf` | Drag to turn the model, scroll to zoom, right-drag to pan, **Wireframe** and **Reset view** |
+| Video and audio | `.mp4`, `.webm`, `.mov`, `.mp3`, `.wav`, `.ogg`, `.m4a`, `.flac` and similar | Play in your browser's own player. Which formats play depends on your browser |
+
+<Kbd>Ctrl</Kbd> + <Kbd>F</Kbd> (<Kbd>⌘</Kbd> + <Kbd>F</Kbd> on macOS) opens the preview's own find box in PDFs, spreadsheets, code and text, which also finds text that isn't on screen yet.
+
+When the preview is narrow, such as on a phone or in a side panel, the tools you need least, like fit, rotate, full screen and **Present**, move into the **More tools** menu at the end of the toolbar.
+
+Any other file shows a card with its name, type and size, and **Download**.
+
+## Limits
+
+To keep the browser responsive, the preview reads files up to a size that depends on the format, for example 150 MB for a PDF, 40 MB for a spreadsheet and 30 MB for a document. A larger file shows the card with **Download** instead. Text, code, CSV and Markdown files show their first 4 MB with a note, and spreadsheets show at most 100,000 rows per sheet. Very large code files are shown without syntax colours.
+
+Archives are opened with care: an archive that lists more than 10,000 items, an item that would expand far beyond its packed size, and encrypted items are not previewed, and archives inside archives open up to three levels deep.
+
+A damaged file, or one the preview can't read, shows **Couldn't show this file** with **Download**, so you can still open it in another app.
+
+## What the preview never does
+
+- It never runs anything a file contains: no scripts in web pages, SVGs or documents, no macros, and no PDF actions.
+- It never loads anything from other sites on a file's behalf: web pages, slides and documents are shown without their outside images, fonts and media.
+- Links in documents and slides open in a new tab, with no access to Margaya.
+
+Files attached by a link to another site are previewed only when they are pictures, audio or video; anything else from another site offers **Open in new tab** and **Download**.

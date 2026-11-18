@@ -24,9 +24,11 @@ The project gets an **Intake** tab. Its badge shows how many requests are waitin
 
 While a request is open, its requester can still **Edit request** or **Withdraw request**. Requests can also be submitted through the [API](/api-reference/endpoints/intake/createIntakeItem); they show "via API". People outside the workspace can send requests [by email](#receive-requests-by-email) or through a [public request form](#share-a-public-request-form).
 
-### Paste screenshots
+### Add screenshots and files
 
-Paste one or more screenshots (PNG, JPEG or WebP) anywhere in the **New request** dialog. They wait beside the form and are attached to the request once you submit it. Attaching needs permission to edit tasks (**task:update**); without it, pasting does nothing.
+Paste one or more screenshots (PNG, JPEG or WebP) anywhere in the **New request** dialog, drop files onto it, or click **Attach files**. They wait beside the form, where you can remove any of them, and are attached to the request once you submit it, up to 10 at a time. Attaching to a new request needs permission to edit tasks (**task:update**); without it, add files once the request is submitted.
+
+In **Edit request**, the requester can paste, drop or attach images and files straight into the description of their open request, as on a task. A file larger than the server's upload limit is refused with a message that names the limit.
 
 ## Capture requests with AI
 

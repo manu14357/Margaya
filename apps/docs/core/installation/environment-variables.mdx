@@ -150,9 +150,19 @@ If people reach the web app at an address you have not listed, add it to
 `CORS_ORIGINS`.
 
 The API sends a deny-all content security policy, `X-Frame-Options: DENY` and, when
-`MARGAYA_API_URL` starts with `https://`, `Strict-Transport-Security`. The web image's
-nginx adds a page content security policy and HSTS for requests that arrive with
-`X-Forwarded-Proto: https`. TLS itself is handled by your reverse proxy.
+`MARGAYA_API_URL` starts with `https://`, `Strict-Transport-Security`. The one exception
+is an attached PDF shown inline: it may be framed by the API's own origin and the
+addresses in `MARGAYA_CLIENT_URL` and `CORS_ORIGINS`. Uploaded HTML, SVG and scripts are
+always sent as downloads. The web app's [file preview](/core/functional/file-preview)
+reads files with the signed-in session (a cross-origin request with credentials, so
+the web app's address must be in `MARGAYA_CLIENT_URL` or `CORS_ORIGINS`) and draws them
+in the page, sanitising web pages and SVGs first. The web image's nginx adds a page
+content security policy and HSTS for requests that arrive with
+`X-Forwarded-Proto: https`. That policy allows `'wasm-unsafe-eval'` in `script-src`,
+for the PDF reader's image decoders, `blob:` in `connect-src`, for 3D model
+textures, and `http:` in `media-src`, so audio and video play from an API served
+over plain HTTP; keep them if you serve the web app behind your own policy. TLS itself is
+handled by your reverse proxy.
 
 Name | Description | Default |
 --- | --- | --- |
