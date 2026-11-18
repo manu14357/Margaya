@@ -34,6 +34,7 @@ import {
   Wand2,
   Webhook,
 } from "lucide-react";
+import { Fragment, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   PanelHint,
@@ -44,8 +45,6 @@ import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
-  SelectGroup,
-  SelectGroupLabel,
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
@@ -624,77 +623,50 @@ function AreaTab({ item }: { item: NavItem }) {
   );
 }
 
-/** The area's pages as one menu: a row of a dozen chips doesn't fit a phone. */
-function PagePicker({
-  nav,
-  className,
-}: {
-  nav: SettingsNavState;
-  className?: string;
-}) {
+/**
+ * The area's pages as a row of tabs, every page one click away. Groups (for
+ * example Instance and Server) are split by a thin divider; the row scrolls
+ * sideways when it doesn't fit, with the current page kept in view.
+ */
+function PageTabs({ nav }: { nav: SettingsNavState }) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const current = nav.items.find((item) => item.active);
-  const Icon = current?.icon;
+  const rowRef = useRef<HTMLElement>(null);
+  const activeId = nav.items.find((item) => item.active)?.id;
+
+  useEffect(() => {
+    if (!activeId) return;
+    const active = rowRef.current?.querySelector<HTMLElement>(
+      '[aria-current="page"]',
+    );
+    active?.scrollIntoView?.({ block: "nearest", inline: "nearest" });
+  }, [activeId]);
 
   return (
-    <Select
-      value={current?.id ?? ""}
-      onValueChange={(id) => {
-        const target = nav.items.find((item) => item.id === id);
-        if (target && !target.disabled) void navigate({ to: target.to });
-      }}
+    <nav
+      ref={rowRef}
+      aria-label={t("settings:nav.pageLabel")}
+      // On touch the padding holds the tabs' 44px hit areas, which the
+      // scroller would otherwise clip.
+      className="flex min-w-0 items-center gap-1 overflow-x-auto pointer-coarse:-my-2 pointer-coarse:py-2"
     >
-      <SelectTrigger
-        size="sm"
-        aria-label={t("settings:nav.pageLabel")}
-        className={cn("font-normal", className)}
-      >
-        <span className="flex min-w-0 items-center gap-2">
-          {Icon && <Icon className="size-4 shrink-0 opacity-75" />}
-          <span className="truncate text-foreground">
-            {current?.label ?? t("settings:nav.pageLabel")}
-          </span>
-        </span>
-      </SelectTrigger>
-      <SelectContent
-        side="bottom"
-        align="start"
-        sideOffset={6}
-        alignItemWithTrigger={false}
-        className="w-(--anchor-width) min-w-56"
-      >
-        {nav.groups.map((group) => (
-          <SelectGroup key={group.id}>
-            {nav.groups.length > 1 && (
-              <SelectGroupLabel>{group.label}</SelectGroupLabel>
-            )}
-            {group.items.map((item) => {
-              const ItemIcon = item.icon;
-              return (
-                <SelectItem
-                  key={item.id}
-                  value={item.id}
-                  disabled={item.disabled}
-                >
-                  <span className="flex min-w-0 items-center gap-2">
-                    <ItemIcon className="size-4 shrink-0 opacity-75" />
-                    <span className="truncate">{item.label}</span>
-                  </span>
-                </SelectItem>
-              );
-            })}
-          </SelectGroup>
-        ))}
-      </SelectContent>
-    </Select>
+      {nav.groups.map((group, index) => (
+        <Fragment key={group.id}>
+          {index > 0 && (
+            <span aria-hidden className="mx-1 h-4 w-px shrink-0 bg-border" />
+          )}
+          {group.items.map((item) => (
+            <AreaTab key={item.id} item={item} />
+          ))}
+        </Fragment>
+      ))}
+    </nav>
   );
 }
 
 /**
  * The same navigation under the top bar, for when the context panel is
  * closed (phones, or the panel toggled off): the areas as tabs, then the
- * project (for project settings) and the page as menus.
+ * project (for project settings) as a menu and the area's pages as tabs.
  */
 export function SettingsInlineNav() {
   const { t } = useTranslation();
@@ -712,15 +684,10 @@ export function SettingsInlineNav() {
           <AreaTab key={item.id} item={item} />
         ))}
       </nav>
-      <nav
-        aria-label={t("settings:nav.label")}
-        className="flex min-w-0 items-center gap-2"
-      >
-        {nav.area === "project" && (
-          <ProjectPicker nav={nav} className="w-auto min-w-0 flex-1" />
-        )}
-        <PagePicker nav={nav} className="w-auto min-w-0 flex-1" />
-      </nav>
+      {nav.area === "project" && (
+        <ProjectPicker nav={nav} className="w-full min-w-0 sm:w-72" />
+      )}
+      {nav.items.length > 0 && <PageTabs nav={nav} />}
     </div>
   );
 }
