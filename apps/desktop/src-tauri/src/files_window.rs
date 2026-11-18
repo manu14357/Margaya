@@ -20,8 +20,8 @@ use std::fs;
 use std::io::{Read, Seek, SeekFrom};
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Arc, Mutex};
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::sync::{mpsc, Arc, Mutex, OnceLock};
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use serde::{Deserialize, Serialize};
 use tauri::http::{header, Request, Response, StatusCode};
@@ -51,6 +51,11 @@ pub const MAX_READ_BYTES: u64 = 200 * 1024 * 1024;
 const STREAM_CHUNK: u64 = 4 * 1024 * 1024;
 /// Stream ids kept (the newest).
 const MAX_STREAMS: usize = 32;
+/// How long checking the places (and, separately, the Recent files) may
+/// take. A mapped drive whose server is unreachable can hold one
+/// file-system call for the whole network timeout; past this the place or
+/// file shows as unavailable and grants nothing until a later check.
+const DISK_WAIT: Duration = Duration::from_millis(1500);
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -94,12 +99,19 @@ struct Inner {
     /// Stream ids handed out, oldest first.
     streams: VecDeque<(String, PathBuf)>,
     searches: HashMap<u32, Arc<AtomicBool>>,
+    /// Places are checked against the disk once before the first read.
+    roots_checked: bool,
+    /// Counts changes to what `files.json` holds.
+    revision: u64,
 }
 
 /// The Files window's state: places, Recent and what they grant.
 #[derive(Default)]
 pub struct FilesState {
     inner: Mutex<Inner>,
+    /// The revision `files.json` was last written at. Held while writing,
+    /// so an older snapshot never lands after a newer one.
+    written: Mutex<u64>,
 }
 
 fn now_ms() -> u64 {
@@ -109,18 +121,116 @@ fn now_ms() -> u64 {
         .unwrap_or(0)
 }
 
-/// A place's root, granted only while its folder resolves as it did when
-/// it was picked.
-fn root_for(place: &StoredPlace) -> Root {
-    let display = PathBuf::from(&place.path);
+/// A place's root: granted only while its folder resolves (`now`) where it
+/// did when it was picked.
+fn root_with(place: &StoredPlace, now: Option<&Path>) -> Root {
     let canonical = PathBuf::from(&place.canonical);
-    let available = !files_scope::is_remote_or_device_path(&display)
-        && files_scope::canonical(&display).is_ok_and(|now| now == canonical);
     Root {
         id: place.id.clone(),
-        display,
+        display: PathBuf::from(&place.path),
+        available: now.is_some_and(|now| now == canonical),
         canonical,
-        available,
+    }
+}
+
+/// Paths a bounded check is still waiting on. A path stays here until its
+/// call returns, so an unreachable drive ties up at most one thread per
+/// path however often the window asks.
+fn pending_checks() -> &'static Mutex<HashSet<PathBuf>> {
+    static PENDING: OnceLock<Mutex<HashSet<PathBuf>>> = OnceLock::new();
+    PENDING.get_or_init(Mutex::default)
+}
+
+struct PendingGuard(PathBuf);
+
+impl Drop for PendingGuard {
+    fn drop(&mut self) {
+        lock(pending_checks()).remove(&self.0);
+    }
+}
+
+type DiskJob<T> = Box<dyn FnOnce() -> T + Send>;
+
+/// Runs each job on its own thread, keyed by the path it touches, and waits
+/// for them together until `limit` has passed. A job still running then, or
+/// one whose path an earlier call is still waiting on, gives None.
+fn bounded_all<T: Send + 'static>(jobs: Vec<(PathBuf, DiskJob<T>)>, limit: Duration) -> Vec<Option<T>> {
+    let deadline = Instant::now() + limit;
+    let receivers: Vec<Option<mpsc::Receiver<T>>> = jobs
+        .into_iter()
+        .map(|(key, job)| {
+            if !lock(pending_checks()).insert(key.clone()) {
+                return None;
+            }
+            let guard = PendingGuard(key);
+            let (sender, receiver) = mpsc::channel();
+            std::thread::Builder::new()
+                .name("files-check".into())
+                .spawn(move || {
+                    let _guard = guard;
+                    let _ = sender.send(job());
+                })
+                .ok()
+                .map(|_| receiver)
+        })
+        .collect();
+    receivers
+        .into_iter()
+        .map(|receiver| {
+            receiver?
+                .recv_timeout(deadline.saturating_duration_since(Instant::now()))
+                .ok()
+        })
+        .collect()
+}
+
+/// Every place's root, resolved off the state lock and at most
+/// [`DISK_WAIT`] in all. Network and device paths are never touched.
+fn check_roots(places: &[StoredPlace]) -> Vec<Root> {
+    let jobs = places
+        .iter()
+        .map(|place| {
+            let display = PathBuf::from(&place.path);
+            let job: DiskJob<Option<PathBuf>> = Box::new(move || {
+                if files_scope::is_remote_or_device_path(&display) {
+                    return None;
+                }
+                files_scope::canonical(&display).ok()
+            });
+            (PathBuf::from(&place.path), job)
+        })
+        .collect();
+    places
+        .iter()
+        .zip(bounded_all(jobs, DISK_WAIT))
+        .map(|(place, now)| root_with(place, now.flatten().as_deref()))
+        .collect()
+}
+
+/// Checks a folder the person picked or dropped. Touches the disk: call it
+/// without holding the state lock.
+fn check_place(picked: &Path) -> AppResult<PathBuf> {
+    if !picked.is_absolute() || files_scope::is_remote_or_device_path(picked) {
+        return Err(denied(Denied::Outside));
+    }
+    let canonical = files_scope::canonical(picked).map_err(denied)?;
+    if !canonical.is_dir() {
+        return Err(AppError::new(ErrorKind::FileWrongKind, "not a folder"));
+    }
+    Ok(canonical)
+}
+
+fn write_store(file: &Path, stored: &Stored) {
+    let Ok(text) = serde_json::to_string_pretty(stored) else {
+        return;
+    };
+    if let Some(dir) = file.parent() {
+        let _ = fs::create_dir_all(dir);
+    }
+    // Write then rename, so a crash never leaves half a file.
+    let temp = file.with_extension("json.tmp");
+    if let Err(error) = fs::write(&temp, text).and_then(|()| fs::rename(&temp, file)) {
+        log::warn!("could not save the Files window's places: {error}");
     }
 }
 
@@ -139,40 +249,19 @@ impl Inner {
         }
     }
 
-    fn refresh_roots(&mut self) {
-        self.roots = self.places.iter().map(root_for).collect();
-    }
-
-    fn save(&self) {
-        let Some(file) = &self.file else {
-            return;
-        };
-        let stored = Stored {
+    fn stored(&self) -> Stored {
+        Stored {
             places: self.places.clone(),
             recent: self.recent.clone(),
-        };
-        let Ok(text) = serde_json::to_string_pretty(&stored) else {
-            return;
-        };
-        if let Some(dir) = file.parent() {
-            let _ = fs::create_dir_all(dir);
-        }
-        // Write then rename, so a crash never leaves half a file.
-        let temp = file.with_extension("json.tmp");
-        if let Err(error) = fs::write(&temp, text).and_then(|()| fs::rename(&temp, file)) {
-            log::warn!("could not save the Files window's places: {error}");
         }
     }
 
-    /// Adds a folder the person picked; returns its id.
-    fn add_place(&mut self, picked: &Path) -> AppResult<String> {
-        if !picked.is_absolute() || files_scope::is_remote_or_device_path(picked) {
-            return Err(denied(Denied::Outside));
-        }
-        let canonical = files_scope::canonical(picked).map_err(denied)?;
-        if !canonical.is_dir() {
-            return Err(AppError::new(ErrorKind::FileWrongKind, "not a folder"));
-        }
+    fn changed(&mut self) {
+        self.revision += 1;
+    }
+
+    /// Adds a folder [`check_place`] resolved to `canonical`; returns its id.
+    fn insert_place(&mut self, picked: &Path, canonical: PathBuf) -> AppResult<String> {
         let canonical_text = canonical.to_string_lossy().into_owned();
         if let Some(existing) = self.places.iter().find(|place| place.canonical == canonical_text) {
             return Ok(existing.id.clone());
@@ -181,15 +270,23 @@ impl Inner {
             return Err(AppError::new(ErrorKind::FileTooMany, "too many places"));
         }
         let id = uuid::Uuid::new_v4().to_string();
-        self.places.push(StoredPlace {
+        let place = StoredPlace {
             id: id.clone(),
             path: files_scope::simplified(picked).to_string_lossy().into_owned(),
             canonical: canonical_text,
             added_at: now_ms(),
-        });
-        self.refresh_roots();
-        self.save();
+        };
+        // Just resolved, so granted now; the other places keep their check.
+        self.roots.push(root_with(&place, Some(&canonical)));
+        self.places.push(place);
+        self.changed();
         Ok(id)
+    }
+
+    #[cfg(test)]
+    fn add_place(&mut self, picked: &Path) -> AppResult<String> {
+        let canonical = check_place(picked)?;
+        self.insert_place(picked, canonical)
     }
 
     /// Removes a place. Recent files it granted go with it, and so do the
@@ -203,8 +300,8 @@ impl Inner {
         self.recent
             .retain(|item| item.via_drop || !Path::new(&item.canonical).starts_with(&canonical));
         self.streams.retain(|(_, path)| !path.starts_with(&canonical));
-        self.refresh_roots();
-        self.save();
+        self.roots.retain(|root| root.id != place.id);
+        self.changed();
     }
 
     fn add_recent(&mut self, resolved: &files_scope::Resolved) {
@@ -225,7 +322,7 @@ impl Inner {
             },
         );
         self.recent.truncate(RECENT_LIMIT);
-        self.save();
+        self.changed();
     }
 
     fn remove_recent(&mut self, path: &str) {
@@ -239,7 +336,7 @@ impl Inner {
         for item in removed {
             self.dropped.remove(Path::new(&item.canonical));
         }
-        self.save();
+        self.changed();
     }
 }
 
@@ -264,14 +361,62 @@ impl FilesState {
         };
         inner.places.truncate(MAX_PLACES);
         inner.recent.truncate(RECENT_LIMIT);
-        inner.refresh_roots();
+        // Granted only once checked (`scope`): this runs at start, on the
+        // main thread, where an unreachable drive must not hold it.
+        inner.roots = inner.places.iter().map(|place| root_with(place, None)).collect();
         Self {
             inner: Mutex::new(inner),
+            written: Mutex::default(),
         }
     }
 
+    /// What the window may read now. The first call checks the places
+    /// against the disk: call it off the main thread.
     fn scope(&self) -> Scope {
+        if !lock(&self.inner).roots_checked {
+            self.refresh_roots();
+        }
         lock(&self.inner).scope()
+    }
+
+    /// Checks every place against the disk again, without holding the lock
+    /// while it does.
+    fn refresh_roots(&self) {
+        let places = lock(&self.inner).places.clone();
+        let checked = check_roots(&places);
+        let mut inner = lock(&self.inner);
+        // A place added or removed meanwhile keeps what that change set.
+        let roots = inner
+            .places
+            .iter()
+            .map(|place| {
+                checked
+                    .iter()
+                    .chain(inner.roots.iter())
+                    .find(|root| root.id == place.id)
+                    .cloned()
+                    .unwrap_or_else(|| root_with(place, None))
+            })
+            .collect();
+        inner.roots = roots;
+        inner.roots_checked = true;
+    }
+
+    /// Writes `files.json` when it changed since it was last written. Call
+    /// it after a change, off the main thread and without the state lock.
+    fn persist(&self) {
+        let (file, revision, stored) = {
+            let inner = lock(&self.inner);
+            (inner.file.clone(), inner.revision, inner.stored())
+        };
+        let Some(file) = file else {
+            return;
+        };
+        let mut written = lock(&self.written);
+        if revision > *written {
+            write_store(&file, &stored);
+            *written = revision;
+        }
     }
 }
 
@@ -297,6 +442,7 @@ fn resolve(state: &FilesState, path: &str) -> AppResult<files_scope::Resolved> {
     state.scope().resolve(path).map_err(denied)
 }
 
+/// Touches the disk: call it inside [`blocking`].
 fn resolve_file(state: &FilesState, path: &str) -> AppResult<(files_scope::Resolved, fs::Metadata)> {
     let resolved = resolve(state, path)?;
     let meta = fs::metadata(&resolved.canonical).map_err(|_| denied(Denied::Missing))?;
@@ -310,6 +456,15 @@ async fn blocking<T: Send + 'static>(job: impl FnOnce() -> AppResult<T> + Send +
     tauri::async_runtime::spawn_blocking(job)
         .await
         .map_err(AppError::internal)?
+}
+
+/// [`blocking`] with the Files window's state.
+async fn with_state<T: Send + 'static>(
+    app: &AppHandle,
+    job: impl FnOnce(&FilesState) -> AppResult<T> + Send + 'static,
+) -> AppResult<T> {
+    let app = app.clone();
+    blocking(move || job(&app.state::<FilesState>())).await
 }
 
 #[derive(Debug, Serialize)]
@@ -338,12 +493,15 @@ pub struct Overview {
     recent: Vec<RecentView>,
 }
 
+/// Places and Recent as they are on disk now. Every check runs off the
+/// state lock and is bounded by [`DISK_WAIT`].
 fn overview(state: &FilesState) -> Overview {
-    let mut inner = lock(&state.inner);
-    inner.refresh_roots();
-    let scope = inner.scope();
-    let places = inner
-        .roots
+    state.refresh_roots();
+    let (roots, recent, scope) = {
+        let inner = lock(&state.inner);
+        (inner.roots.clone(), inner.recent.clone(), Arc::new(inner.scope()))
+    };
+    let places = roots
         .iter()
         .map(|root| PlaceView {
             id: root.id.clone(),
@@ -352,15 +510,24 @@ fn overview(state: &FilesState) -> Overview {
             available: root.available,
         })
         .collect();
-    let recent = inner
-        .recent
+    let jobs = recent
         .iter()
         .map(|item| {
+            let (scope, path) = (scope.clone(), item.path.clone());
+            let job: DiskJob<Option<Entry>> = Box::new(move || {
+                let resolved = scope.resolve(&path).ok()?;
+                files_scope::entry_for(&resolved.canonical, &resolved.display)
+            });
+            (PathBuf::from(&item.canonical), job)
+        })
+        .collect();
+    let entries = bounded_all(jobs, DISK_WAIT);
+    let recent = recent
+        .iter()
+        .zip(entries)
+        .map(|(item, entry)| {
             let display = PathBuf::from(&item.path);
-            let readable = scope.resolve(&item.path).ok();
-            let entry = readable
-                .as_ref()
-                .and_then(|resolved| files_scope::entry_for(&resolved.canonical, &resolved.display));
+            let entry = entry.flatten();
             RecentView {
                 available: entry.is_some(),
                 entry: entry.unwrap_or_else(|| Entry {
@@ -380,10 +547,13 @@ fn overview(state: &FilesState) -> Overview {
     Overview { places, recent }
 }
 
+// The Files commands that touch the disk are async and do it in `blocking`:
+// a synchronous command runs on the main thread, where a slow or
+// unreachable drive would freeze every window.
 #[tauri::command]
-pub fn files_overview(window: WebviewWindow, state: State<'_, FilesState>) -> AppResult<Overview> {
+pub async fn files_overview(window: WebviewWindow, app: AppHandle) -> AppResult<Overview> {
     check_caller(&window)?;
-    Ok(overview(&state))
+    with_state(&app, |state| Ok(overview(state))).await
 }
 
 /// The folder picker the person uses to add a place. In test builds,
@@ -413,16 +583,24 @@ pub async fn files_add_folder(window: WebviewWindow, app: AppHandle) -> AppResul
     let Some(picked) = blocking(move || Ok(pick_folder(&picker))).await? else {
         return Ok(None);
     };
-    let state = app.state::<FilesState>();
-    let id = lock(&state.inner).add_place(&picked)?;
-    Ok(Some(id))
+    with_state(&app, move |state| {
+        let canonical = check_place(&picked)?;
+        let id = lock(&state.inner).insert_place(&picked, canonical)?;
+        state.persist();
+        Ok(Some(id))
+    })
+    .await
 }
 
 #[tauri::command]
-pub fn files_remove_folder(window: WebviewWindow, state: State<'_, FilesState>, id: String) -> AppResult<()> {
+pub async fn files_remove_folder(window: WebviewWindow, app: AppHandle, id: String) -> AppResult<()> {
     check_caller(&window)?;
-    lock(&state.inner).remove_place(&id);
-    Ok(())
+    with_state(&app, move |state| {
+        lock(&state.inner).remove_place(&id);
+        state.persist();
+        Ok(())
+    })
+    .await
 }
 
 #[derive(Debug, Serialize)]
@@ -436,10 +614,10 @@ pub struct FolderView {
 }
 
 #[tauri::command]
-pub async fn files_list(window: WebviewWindow, state: State<'_, FilesState>, path: String) -> AppResult<FolderView> {
+pub async fn files_list(window: WebviewWindow, app: AppHandle, path: String) -> AppResult<FolderView> {
     check_caller(&window)?;
-    let scope = state.scope();
-    blocking(move || {
+    with_state(&app, move |state| {
+        let scope = state.scope();
         let resolved = scope.resolve(&path).map_err(denied)?;
         if !resolved.canonical.is_dir() {
             return Err(AppError::new(ErrorKind::FileWrongKind, "not a folder"));
@@ -466,13 +644,12 @@ pub async fn files_list(window: WebviewWindow, state: State<'_, FilesState>, pat
 #[tauri::command]
 pub async fn files_read(
     window: WebviewWindow,
-    state: State<'_, FilesState>,
+    app: AppHandle,
     path: String,
 ) -> AppResult<tauri::ipc::Response> {
     check_caller(&window)?;
-    let scope = state.scope();
-    blocking(move || {
-        let resolved = scope.resolve(&path).map_err(denied)?;
+    with_state(&app, move |state| {
+        let resolved = resolve(state, &path)?;
         let meta = fs::metadata(&resolved.canonical).map_err(|_| denied(Denied::Missing))?;
         if !meta.is_file() {
             return Err(AppError::new(ErrorKind::FileWrongKind, "not a file"));
@@ -488,16 +665,19 @@ pub async fn files_read(
 
 /// The address a media file streams from in the Files window.
 #[tauri::command]
-pub fn files_stream_url(window: WebviewWindow, state: State<'_, FilesState>, path: String) -> AppResult<String> {
+pub async fn files_stream_url(window: WebviewWindow, app: AppHandle, path: String) -> AppResult<String> {
     check_caller(&window)?;
-    let (resolved, _) = resolve_file(&state, &path)?;
-    let id = uuid::Uuid::new_v4().simple().to_string();
-    let mut inner = lock(&state.inner);
-    inner.streams.push_back((id.clone(), resolved.canonical));
-    while inner.streams.len() > MAX_STREAMS {
-        inner.streams.pop_front();
-    }
-    Ok(stream_url(&id))
+    with_state(&app, move |state| {
+        let (resolved, _) = resolve_file(state, &path)?;
+        let id = uuid::Uuid::new_v4().simple().to_string();
+        let mut inner = lock(&state.inner);
+        inner.streams.push_back((id.clone(), resolved.canonical));
+        while inner.streams.len() > MAX_STREAMS {
+            inner.streams.pop_front();
+        }
+        Ok(stream_url(&id))
+    })
+    .await
 }
 
 /// `http://margaya-file.localhost/<id>` on Windows (WebView2 serves custom
@@ -584,6 +764,7 @@ fn stream(app: &AppHandle, id: &str, range: Option<&str>) -> Response<Vec<u8>> {
 #[tauri::command]
 pub async fn files_search(
     window: WebviewWindow,
+    app: AppHandle,
     state: State<'_, FilesState>,
     path: String,
     query: String,
@@ -591,7 +772,6 @@ pub async fn files_search(
     search_id: u32,
 ) -> AppResult<SearchOutcome> {
     check_caller(&window)?;
-    let scope = state.scope();
     let stop = Arc::new(AtomicBool::new(false));
     {
         let mut inner = lock(&state.inner);
@@ -602,8 +782,8 @@ pub async fn files_search(
         inner.searches.insert(search_id, stop.clone());
     }
     let flag = stop.clone();
-    let outcome = blocking(move || {
-        let resolved = scope.resolve(&path).map_err(denied)?;
+    let outcome = with_state(&app, move |state| {
+        let resolved = resolve(state, &path)?;
         if !resolved.canonical.is_dir() {
             return Err(AppError::new(ErrorKind::FileWrongKind, "not a folder"));
         }
@@ -632,38 +812,37 @@ pub fn files_cancel_search(window: WebviewWindow, state: State<'_, FilesState>, 
 /// Opens a file with its default app. Files that would run code are never
 /// opened this way; the page offers "Show in folder" for them.
 #[tauri::command]
-pub fn files_open(window: WebviewWindow, state: State<'_, FilesState>, path: String) -> AppResult<()> {
+pub async fn files_open(window: WebviewWindow, app: AppHandle, path: String) -> AppResult<()> {
     check_caller(&window)?;
-    let (resolved, _) = resolve_file(&state, &path)?;
-    if files_scope::runs_code(&files_scope::name_of(&resolved.display)) {
-        return Err(AppError::new(ErrorKind::FileRunsCode, "this file runs code"));
-    }
-    opener::open_file(files_scope::simplified(&resolved.canonical));
-    Ok(())
+    with_state(&app, move |state| {
+        let (resolved, _) = resolve_file(state, &path)?;
+        if files_scope::runs_code(&files_scope::name_of(&resolved.display)) {
+            return Err(AppError::new(ErrorKind::FileRunsCode, "this file runs code"));
+        }
+        opener::open_file(files_scope::simplified(&resolved.canonical));
+        Ok(())
+    })
+    .await
 }
 
 #[tauri::command]
-pub fn files_reveal(window: WebviewWindow, state: State<'_, FilesState>, path: String) -> AppResult<()> {
+pub async fn files_reveal(window: WebviewWindow, app: AppHandle, path: String) -> AppResult<()> {
     check_caller(&window)?;
-    let resolved = resolve(&state, &path)?;
-    let target = crate::downloads::Reveal::Select(files_scope::simplified(&resolved.canonical));
-    std::thread::spawn(move || {
+    with_state(&app, move |state| {
+        let resolved = resolve(state, &path)?;
+        let target = crate::downloads::Reveal::Select(files_scope::simplified(&resolved.canonical));
         if let Err(error) = opener::show_in_folder(&target) {
             log::warn!("could not show a file in its folder: {error}");
         }
-    });
-    Ok(())
+        Ok(())
+    })
+    .await
 }
 
 #[tauri::command]
-pub fn files_copy_path(
-    window: WebviewWindow,
-    app: AppHandle,
-    state: State<'_, FilesState>,
-    path: String,
-) -> AppResult<()> {
+pub async fn files_copy_path(window: WebviewWindow, app: AppHandle, path: String) -> AppResult<()> {
     check_caller(&window)?;
-    let resolved = resolve(&state, &path)?;
+    let resolved = with_state(&app, move |state| resolve(state, &path)).await?;
     app.clipboard()
         .write_text(resolved.display.to_string_lossy().into_owned())
         .map_err(AppError::internal)
@@ -694,8 +873,7 @@ fn pick_save_path(window: &WebviewWindow, name: &str) -> Option<PathBuf> {
 #[tauri::command]
 pub async fn files_save_copy(window: WebviewWindow, app: AppHandle, path: String) -> AppResult<Option<String>> {
     check_caller(&window)?;
-    let state = app.state::<FilesState>();
-    let (resolved, _) = resolve_file(&state, &path)?;
+    let (resolved, _) = with_state(&app, move |state| resolve_file(state, &path)).await?;
     let name = files_scope::name_of(&resolved.display);
     let picker = window.clone();
     blocking(move || {
@@ -718,18 +896,26 @@ pub async fn files_save_copy(window: WebviewWindow, app: AppHandle, path: String
 }
 
 #[tauri::command]
-pub fn files_recent_add(window: WebviewWindow, state: State<'_, FilesState>, path: String) -> AppResult<()> {
+pub async fn files_recent_add(window: WebviewWindow, app: AppHandle, path: String) -> AppResult<()> {
     check_caller(&window)?;
-    let (resolved, _) = resolve_file(&state, &path)?;
-    lock(&state.inner).add_recent(&resolved);
-    Ok(())
+    with_state(&app, move |state| {
+        let (resolved, _) = resolve_file(state, &path)?;
+        lock(&state.inner).add_recent(&resolved);
+        state.persist();
+        Ok(())
+    })
+    .await
 }
 
 #[tauri::command]
-pub fn files_recent_remove(window: WebviewWindow, state: State<'_, FilesState>, path: String) -> AppResult<()> {
+pub async fn files_recent_remove(window: WebviewWindow, app: AppHandle, path: String) -> AppResult<()> {
     check_caller(&window)?;
-    lock(&state.inner).remove_recent(&path);
-    Ok(())
+    with_state(&app, move |state| {
+        lock(&state.inner).remove_recent(&path);
+        state.persist();
+        Ok(())
+    })
+    .await
 }
 
 /// Starts a native file drag of one file out of the Files window, so it can
@@ -737,14 +923,9 @@ pub fn files_recent_remove(window: WebviewWindow, state: State<'_, FilesState>, 
 /// other app). Test builds record `drag <path>` in `MARGAYA_E2E_OPEN_LOG`
 /// instead: a synthetic drag would drop wherever the real pointer is.
 #[tauri::command]
-pub fn files_start_drag(
-    window: WebviewWindow,
-    app: AppHandle,
-    state: State<'_, FilesState>,
-    path: String,
-) -> AppResult<()> {
+pub async fn files_start_drag(window: WebviewWindow, app: AppHandle, path: String) -> AppResult<()> {
     check_caller(&window)?;
-    let (resolved, _) = resolve_file(&state, &path)?;
+    let (resolved, _) = with_state(&app, move |state| resolve_file(state, &path)).await?;
     let file = files_scope::simplified(&resolved.canonical);
     start_drag(&app, window, file)
 }
@@ -809,7 +990,9 @@ pub fn on_drop(app: &AppHandle, paths: Vec<PathBuf>) {
                 continue;
             };
             if canonical.is_dir() {
-                match lock(&state.inner).add_place(&path) {
+                let added = check_place(&path)
+                    .and_then(|canonical| lock(&state.inner).insert_place(&path, canonical));
+                match added {
                     Ok(_) => dropped.places += 1,
                     Err(_) => dropped.refused += 1,
                 }
@@ -823,6 +1006,7 @@ pub fn on_drop(app: &AppHandle, paths: Vec<PathBuf>) {
                 dropped.refused += 1;
             }
         }
+        state.persist();
         let _ = app.emit_to(LABEL, "files-dropped", dropped);
     });
 }
@@ -895,6 +1079,10 @@ mod tests {
         scope.resolve(&path.to_string_lossy()).unwrap()
     }
 
+    fn save(inner: &Inner) {
+        write_store(inner.file.as_ref().unwrap(), &inner.stored());
+    }
+
     #[test]
     fn places_persist_and_come_back_only_where_they_were() {
         let config = tempfile::tempdir().unwrap();
@@ -907,6 +1095,7 @@ mod tests {
         let id = inner.add_place(&place).unwrap();
         assert_eq!(inner.add_place(&place).unwrap(), id, "the same folder twice is one place");
         assert!(inner.scope().resolve(&place.join("a.txt").to_string_lossy()).is_ok());
+        save(&inner);
 
         let loaded = FilesState::load(config.path());
         assert!(loaded.scope().resolve(&place.join("a.txt").to_string_lossy()).is_ok());
@@ -963,6 +1152,7 @@ mod tests {
         let found = resolved(&inner.scope(), &file);
         inner.add_recent(&found);
         assert!(inner.recent[0].via_drop);
+        save(&inner);
 
         // Next run: still readable through Recent.
         let loaded = FilesState::load(config.path());
@@ -971,6 +1161,63 @@ mod tests {
         let path = inner.recent[0].path.clone();
         inner.remove_recent(&path);
         assert!(inner.scope().resolve(&file.to_string_lossy()).is_err());
+    }
+
+    #[test]
+    fn grants_saved_places_only_once_checked_and_writes_each_change_once() {
+        let config = tempfile::tempdir().unwrap();
+        let files = tempfile::tempdir().unwrap();
+        let file = files.path().join("a.txt");
+        fs::write(&file, "a").unwrap();
+
+        let state = FilesState::load(config.path());
+        lock(&state.inner).add_place(files.path()).unwrap();
+        state.persist();
+        let store = config.path().join(STORE_FILE);
+        assert!(store.exists());
+        // Nothing changed since: not written again.
+        fs::remove_file(&store).unwrap();
+        state.persist();
+        assert!(!store.exists());
+        lock(&state.inner).remove_recent("nothing");
+        state.persist();
+        assert!(store.exists());
+
+        // Loading never touches the places (it runs on the main thread at
+        // start); the first read checks them.
+        let loaded = FilesState::load(config.path());
+        assert!(!lock(&loaded.inner).scope().roots[0].available);
+        assert!(loaded.scope().resolve(&file.to_string_lossy()).is_ok());
+        let overview = overview(&loaded);
+        assert_eq!(overview.places.len(), 1);
+        assert!(overview.places[0].available);
+    }
+
+    #[test]
+    fn disk_checks_give_up_on_a_slow_path_and_never_pile_up() {
+        let base = tempfile::tempdir().unwrap();
+        let (fast, slow) = (base.path().join("fast"), base.path().join("slow"));
+        let job = |value: u32, wait: u64| -> DiskJob<u32> {
+            Box::new(move || {
+                std::thread::sleep(Duration::from_millis(wait));
+                value
+            })
+        };
+        let started = Instant::now();
+        let results = bounded_all(
+            vec![(fast.clone(), job(1, 0)), (slow.clone(), job(2, 400))],
+            Duration::from_millis(100),
+        );
+        assert_eq!(results, [Some(1), None]);
+        assert!(started.elapsed() < Duration::from_millis(350), "waited for the slow path");
+
+        // The slow path is still busy: asking again doesn't start another.
+        let again = bounded_all(vec![(slow.clone(), job(3, 0))], Duration::from_millis(100));
+        assert_eq!(again, [None]);
+
+        std::thread::sleep(Duration::from_millis(450));
+        let later = bounded_all(vec![(slow, job(4, 0))], Duration::from_millis(500));
+        assert_eq!(later, [Some(4)]);
     }
 
     #[test]

@@ -115,9 +115,11 @@ export function Search() {
       return;
     }
     setSearching(true);
+    // A newer query, or clearing the field, stops this one in the core.
+    const controller = new AbortController();
     const timer = window.setTimeout(() => {
       searchApi
-        .query(trimmed)
+        .query(trimmed, id, controller.signal)
         .then((outcome) => {
           if (id !== sequence.current) return;
           setResults(outcome);
@@ -131,7 +133,10 @@ export function Search() {
           if (id === sequence.current) setSearching(false);
         });
     }, SEARCH_DEBOUNCE_MS);
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
   }, [query]);
 
   const showingRecent = !query.trim();

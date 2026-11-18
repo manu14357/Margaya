@@ -7,6 +7,7 @@
 		"core:event:default",
 		"allow-list-servers",
 		"allow-search-query",
+		"allow-search-cancel",
 		"allow-search-recent",
 		"allow-search-open",
 		"allow-close-search"

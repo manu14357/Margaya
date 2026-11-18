@@ -156,10 +156,58 @@ pub fn show_launcher(app: &AppHandle) {
 }
 
 fn show_window(window: &WebviewWindow) {
+    if is_server_window(window.label()) {
+        set_memory_target(window, false);
+    }
     let _ = window.unminimize();
     let _ = window.show();
     let _ = window.set_focus();
 }
+
+/// A server's own window (main or additional), not a popup or the app's own.
+fn is_server_window(label: &str) -> bool {
+    matches!(
+        servers::parse_window_label(label),
+        Some(WindowKind::Primary(_) | WindowKind::Secondary(..))
+    )
+}
+
+/// Windows: asks WebView2 to trim a hidden server window's memory, and to
+/// stop when it shows again. The page keeps running, so its socket,
+/// realtime updates and notifications stay live; suspending it would not.
+#[cfg(windows)]
+fn set_memory_target(window: &WebviewWindow, low: bool) {
+    use ::windows::core::Interface;
+    use webview2_com::Microsoft::Web::WebView2::Win32::{
+        ICoreWebView2_19, COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_LOW,
+        COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_NORMAL,
+    };
+    let level = if low {
+        COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_LOW
+    } else {
+        COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_NORMAL
+    };
+    let result = window.with_webview(move |webview| {
+        // SAFETY: the controller belongs to this live webview, on its own thread.
+        let set = unsafe {
+            webview
+                .controller()
+                .CoreWebView2()
+                .and_then(|core| core.cast::<ICoreWebView2_19>())
+                .and_then(|core| core.SetMemoryUsageTargetLevel(level))
+        };
+        // An older WebView2 runtime has no memory target: nothing to do.
+        if let Err(error) = set {
+            log::debug!("could not change a window's memory target: {error}");
+        }
+    });
+    if let Err(error) = result {
+        log::debug!("could not change a window's memory target: {error}");
+    }
+}
+
+#[cfg(not(windows))]
+fn set_memory_target(_window: &WebviewWindow, _low: bool) {}
 
 /// The window background before a page paints: the web app's own light or
 /// dark background, by the system theme.
@@ -262,8 +310,7 @@ pub fn open_server_window(app: &AppHandle, server: &Server, target: Target) -> A
         .ok_or_else(|| AppError::internal("invalid server URL"))?;
     if let Some(state) = app.try_state::<AppState>() {
         let mut store = lock(&state.store);
-        let _ = store.touch(&server.id);
-        let _ = store.set_reopen(&server.id, true);
+        let _ = store.touch_and_reopen(&server.id);
     }
 
     // One opener at a time: a link that starts the app (a notification click
@@ -702,18 +749,47 @@ fn load_finished(app: &AppHandle, server: &Server, window: &WebviewWindow, url: 
         let Some(info) = info else {
             return;
         };
-        if web_page && !info.web_title_bar && info.offline.is_none() {
-            // Give the web app a moment to say it draws the title bar; an
-            // older server never does and gets the native frame.
+        let waiting = web_page && !info.web_title_bar && info.offline.is_none();
+        if waiting {
+            // Give the web app a moment to say it draws the title bar.
             tokio::time::sleep(TITLE_BAR_GRACE).await;
         }
         let info = state.window_info(&label);
-        set_chrome(&window, web_page && info.web_title_bar);
+        if let Some(custom) = settled_chrome(web_page, info.web_title_bar, waiting, false) {
+            set_chrome(&window, custom);
+        }
         if !info.download_only {
             reveal(&app, &window);
         }
         report_chrome(&app, &window, None, true);
+        if waiting && !info.web_title_bar {
+            // Still no word: stay frameless a little longer rather than put
+            // the frame on and take it off again when `ready` comes. An
+            // older server never says it and gets the native frame.
+            tokio::time::sleep(REVEAL_TIMEOUT.saturating_sub(TITLE_BAR_GRACE)).await;
+            let info = state.window_info(&label);
+            if info.load_seq != load {
+                return;
+            }
+            if let Some(custom) = settled_chrome(web_page, info.web_title_bar, waiting, true) {
+                set_chrome(&window, custom);
+                report_chrome(&app, &window, None, true);
+            }
+        }
     });
+}
+
+/// The frame a loaded page gets: `Some(custom)` to set it, or None to leave
+/// the window frameless while a web page may still say it draws the title
+/// bar (`waiting`, until `timed_out`).
+pub fn settled_chrome(web_page: bool, web_title_bar: bool, waiting: bool, timed_out: bool) -> Option<bool> {
+    if web_page && web_title_bar {
+        Some(true)
+    } else if waiting && !timed_out {
+        None
+    } else {
+        Some(false)
+    }
 }
 
 /// Called when the page says it is up (bridge `ready`).
@@ -782,6 +858,7 @@ pub fn close_server_window(app: &AppHandle, window: &WebviewWindow) {
     match servers::parse_window_label(window.label()) {
         Some(WindowKind::Primary(id)) => {
             let _ = window.hide();
+            set_memory_target(window, true);
             let _ = lock(&app.state::<AppState>().store).set_reopen(id, false);
         }
         _ => {
@@ -1041,6 +1118,30 @@ pub fn web_url_for_path(server: &Server, path: &str) -> Option<Url> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn keeps_the_frame_off_until_the_page_has_had_its_time() {
+        // The web app said it draws the title bar.
+        assert_eq!(settled_chrome(true, true, true, false), Some(true));
+        assert_eq!(settled_chrome(true, true, false, false), Some(true));
+        // Not yet: no native frame flashing on and off again.
+        assert_eq!(settled_chrome(true, false, true, false), None);
+        // Never said it by the reveal timeout: an older server, native frame.
+        assert_eq!(settled_chrome(true, false, true, true), Some(false));
+        // Not the web app (an API page, the offline page): native frame now.
+        assert_eq!(settled_chrome(false, false, false, false), Some(false));
+        assert_eq!(settled_chrome(false, true, false, false), Some(false));
+    }
+
+    #[test]
+    fn trims_only_server_windows() {
+        let id = "8f14e45f-ceea-467f-a8ad-0e7b6b2b6b2b";
+        assert!(is_server_window(&format!("server-{id}")));
+        assert!(is_server_window(&format!("server-{id}-3")));
+        assert!(!is_server_window(&format!("popup-{id}-1")));
+        assert!(!is_server_window(LAUNCHER));
+        assert!(!is_server_window(QUICK_ADD));
+    }
 
     const AREA: Rect = Rect {
         x: 0,

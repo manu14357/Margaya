@@ -380,30 +380,38 @@ pub async fn mark_task_done(
 /// notifications that belong to none), and `GET /api/notification` lists the
 /// newest 50 across all of them. Both are lower bounds that never double-count,
 /// so the badge shows the larger of the list's unread count and the biggest
-/// workspace count.
+/// workspace count. The workspace list is the one search caches for a minute,
+/// and the requests run side by side.
 pub async fn unread_count(
     client: &reqwest::Client,
     server: &Server,
     token: &str,
 ) -> AppResult<u32> {
-    let list = get(client, server, token, "/api/notification").await?;
-    let mut best = crate::badge::count_unread(&list, &crate::badge::now_rfc3339());
-    let organizations = get(client, server, token, "/api/auth/organization/list").await?;
-    for id in organizations
-        .as_array()
-        .into_iter()
-        .flatten()
-        .filter_map(|organization| str_field(organization, "id"))
-    {
-        let mut url = urls::join_path(&api_base(server)?, "/api/notification/counts");
-        url.query_pairs_mut().append_pair("workspaceId", id);
-        if let Ok(counts) = send(client.get(url).bearer_auth(token)).await {
-            let unread = counts
-                .get("unread")
-                .and_then(Value::as_u64)
-                .unwrap_or_default();
-            best = best.max(u32::try_from(unread).unwrap_or(u32::MAX));
-        }
+    /// Workspace counts asked at once.
+    const PARALLEL_COUNTS: usize = 6;
+    use futures_util::StreamExt as _;
+    let base = api_base(server)?;
+    let (list, workspaces) = futures_util::future::join(
+        get(client, server, token, "/api/notification"),
+        crate::search_window::cached_workspaces(client, server, token),
+    )
+    .await;
+    let mut best = crate::badge::count_unread(&list?, &crate::badge::now_rfc3339());
+    let requests = workspaces?.into_iter().map(|(id, _)| {
+        let mut url = urls::join_path(&base, "/api/notification/counts");
+        url.query_pairs_mut().append_pair("workspaceId", &id);
+        async move { send(client.get(url).bearer_auth(token)).await.ok() }
+    });
+    let counts: Vec<Option<Value>> = futures_util::stream::iter(requests)
+        .buffer_unordered(PARALLEL_COUNTS)
+        .collect()
+        .await;
+    for counts in counts.into_iter().flatten() {
+        let unread = counts
+            .get("unread")
+            .and_then(Value::as_u64)
+            .unwrap_or_default();
+        best = best.max(u32::try_from(unread).unwrap_or(u32::MAX));
     }
     Ok(best)
 }

@@ -309,8 +309,14 @@ pub async fn today_open(
 #[tauri::command]
 pub fn close_today(app: AppHandle) {
     if let Some(window) = app.get_webview_window(LABEL) {
-        let _ = window.hide();
+        hide(&app, &window);
     }
+}
+
+/// Hides the window; its page stops refreshing until it shows again.
+fn hide(app: &AppHandle, window: &tauri::WebviewWindow) {
+    let _ = window.hide();
+    let _ = app.emit_to(LABEL, "today-hidden", ());
 }
 
 /// Shows the Today window, or hides it when it is visible. Safe to call
@@ -319,7 +325,7 @@ pub fn toggle(app: &AppHandle) {
     windows::spawn_ui(app, |app| {
         if let Some(window) = app.get_webview_window(LABEL) {
             if window.is_visible().unwrap_or(false) {
-                let _ = window.hide();
+                hide(app, &window);
             } else {
                 let _ = window.show();
                 let _ = window.set_focus();

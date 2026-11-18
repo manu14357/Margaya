@@ -91,8 +91,26 @@ function DragBar() {
   );
 }
 
-const press = (element: Element, init: MouseEventInit = {}) =>
-  fireEvent.mouseDown(element, { button: 0, detail: 1, ...init });
+/**
+ * A press as a person makes it: a single press drags once the pointer moves,
+ * a second click (detail 2) maximizes through the double-click.
+ */
+function pressInWindow(element: Element, init: MouseEventInit = {}) {
+  const event = { button: 0, detail: 1, ...init };
+  fireEvent.mouseDown(element, event);
+  if ((event.detail ?? 1) >= 2) {
+    fireEvent.doubleClick(element, event);
+  } else {
+    fireEvent.mouseMove(window, {
+      buttons: 1,
+      clientX: (event.clientX ?? 0) + 10,
+      clientY: (event.clientY ?? 0) + 10,
+    });
+  }
+  fireEvent.mouseUp(window);
+}
+
+const press = pressInWindow;
 
 describe("desktop title bar", () => {
   it("renders nothing in a browser", () => {
@@ -242,10 +260,10 @@ describe("desktop title bar", () => {
     }
     render(<Panel />);
     const panel = screen.getByTestId("panel");
-    fireEvent.mouseDown(panel, { button: 0, clientY: 47, detail: 1 });
+    pressInWindow(panel, { button: 0, clientY: 47, detail: 1 });
     expect(api.startDragging).toHaveBeenCalledOnce();
-    fireEvent.mouseDown(panel, { button: 0, clientY: 48, detail: 1 });
-    fireEvent.mouseDown(screen.getByRole("button"), {
+    pressInWindow(panel, { button: 0, clientY: 48, detail: 1 });
+    pressInWindow(screen.getByRole("button"), {
       button: 0,
       clientY: 10,
       detail: 1,
@@ -253,7 +271,7 @@ describe("desktop title bar", () => {
     expect(api.startDragging).toHaveBeenCalledOnce();
     // Slim-bar pages keep panels under the bar, which moves the window.
     document.documentElement.dataset.desktopSlimBar = "";
-    fireEvent.mouseDown(panel, { button: 0, clientY: 10, detail: 1 });
+    pressInWindow(panel, { button: 0, clientY: 10, detail: 1 });
     expect(api.startDragging).toHaveBeenCalledOnce();
   });
 

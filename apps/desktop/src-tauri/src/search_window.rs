@@ -7,7 +7,7 @@
 
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Mutex, OnceLock};
+use std::sync::{Arc, Mutex, OnceLock};
 use std::time::{Duration, Instant};
 
 use serde::Serialize;
@@ -428,25 +428,79 @@ where
     (lists, unavailable)
 }
 
+/// The global search running now, by the page's id for it. A newer search
+/// stops it, and so does `search_cancel` with its id; stopping drops its
+/// requests to the servers.
+#[derive(Default)]
+pub struct Running {
+    current: Option<(u32, Arc<tokio::sync::Notify>)>,
+}
+
+impl Running {
+    /// Starts search `id`, stopping the one before it.
+    pub fn start(&mut self, id: u32) -> Arc<tokio::sync::Notify> {
+        let stop = Arc::new(tokio::sync::Notify::new());
+        if let Some((_, older)) = self.current.replace((id, stop.clone())) {
+            older.notify_one();
+        }
+        stop
+    }
+
+    /// Stops search `id` if it is still the one running.
+    pub fn cancel(&mut self, id: u32) {
+        if self.current.as_ref().is_some_and(|(current, _)| *current == id) {
+            if let Some((_, stop)) = self.current.take() {
+                stop.notify_one();
+            }
+        }
+    }
+
+    /// A search ended on its own.
+    pub fn finish(&mut self, stop: &Arc<tokio::sync::Notify>) {
+        if self.current.as_ref().is_some_and(|(_, current)| Arc::ptr_eq(current, stop)) {
+            self.current = None;
+        }
+    }
+}
+
+static RUNNING: Mutex<Running> = Mutex::new(Running { current: None });
+
+/// A superseded or cancelled search answers with nothing; the page shows
+/// only its newest search anyway.
 #[tauri::command]
-pub async fn search_query(state: State<'_, AppState>, query: String) -> AppResult<SearchOutcome> {
+pub async fn search_query(
+    state: State<'_, AppState>,
+    query: String,
+    search_id: Option<u32>,
+) -> AppResult<SearchOutcome> {
+    let stop = lock(&RUNNING).start(search_id.unwrap_or_default());
     let Some(query) = clean_query(&query) else {
+        lock(&RUNNING).finish(&stop);
         return Ok(SearchOutcome::default());
     };
     let query = query.as_str();
-    let (lists, unavailable) = fan_out(&state, |client, server, token, workspace_id| async move {
+    let work = fan_out(&state, |client, server, token, workspace_id| async move {
         let value =
             api::search_workspace(&client, &server, &token, &workspace_id, query, PER_WORKSPACE).await?;
         Ok(read_search_results(&value, &workspace_id)
             .into_iter()
             .map(|item| (String::new(), item))
             .collect())
-    })
-    .await;
-    Ok(SearchOutcome {
-        groups: group_hits(interleave(lists), MAX_RESULTS),
-        unavailable,
-    })
+    });
+    let outcome = tokio::select! {
+        (lists, unavailable) = work => SearchOutcome {
+            groups: group_hits(interleave(lists), MAX_RESULTS),
+            unavailable,
+        },
+        () = stop.notified() => SearchOutcome::default(),
+    };
+    lock(&RUNNING).finish(&stop);
+    Ok(outcome)
+}
+
+#[tauri::command]
+pub fn search_cancel(search_id: u32) {
+    lock(&RUNNING).cancel(search_id);
 }
 
 #[tauri::command]
@@ -550,7 +604,35 @@ fn open(app: &AppHandle) -> AppResult<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use futures_util::FutureExt;
     use serde_json::json;
+
+    #[test]
+    fn a_newer_search_stops_the_older_one() {
+        let stopped = |stop: &Arc<tokio::sync::Notify>| stop.notified().now_or_never().is_some();
+        let mut running = Running::default();
+        let first = running.start(1);
+        let second = running.start(2);
+        assert!(stopped(&first));
+        assert!(!stopped(&second));
+        // Cancelling a search that was already replaced leaves the new one.
+        running.cancel(1);
+        assert!(!stopped(&second));
+        running.cancel(2);
+        assert!(stopped(&second));
+        assert!(running.current.is_none());
+
+        // One that ended on its own is no longer stopped by a later start.
+        let third = running.start(3);
+        running.finish(&third);
+        let _fourth = running.start(4);
+        assert!(!stopped(&third));
+        // An older search finishing late doesn't clear the newer one.
+        let fifth = running.start(5);
+        running.finish(&third);
+        running.cancel(5);
+        assert!(stopped(&fifth));
+    }
 
     fn hit(server: &str, workspace: &str, kind: &str, id: &str) -> Hit {
         Hit {

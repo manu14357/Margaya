@@ -46,7 +46,19 @@ export type TodayTask = {
 export type TodayOutcome = { tasks: TodayTask[]; unavailable: string[] };
 
 export const searchApi = {
-  query: (query: string) => invoke<SearchOutcome>("search_query", { query }),
+  /**
+   * Search `searchId`. Aborting `signal` stops it in the core, which drops
+   * its requests to the servers; a newer search stops it too.
+   */
+  query: (query: string, searchId: number, signal?: AbortSignal) => {
+    const cancel = () => {
+      invoke<void>("search_cancel", { searchId }).catch(() => undefined);
+    };
+    signal?.addEventListener("abort", cancel, { once: true });
+    return invoke<SearchOutcome>("search_query", { query, searchId }).finally(
+      () => signal?.removeEventListener("abort", cancel),
+    );
+  },
   recent: () => invoke<SearchOutcome>("search_recent"),
   open: (serverId: string, path: string) =>
     invoke<void>("search_open", { serverId, path }),
@@ -65,6 +77,14 @@ export const todayApi = {
 /** The Rust core showed the window again. */
 export function onShown(
   event: "search-shown" | "today-refresh",
+  handler: () => void,
+): Promise<UnlistenFn> {
+  return listen(event, () => handler());
+}
+
+/** The Rust core hid the window. */
+export function onHidden(
+  event: "today-hidden",
   handler: () => void,
 ): Promise<UnlistenFn> {
   return listen(event, () => handler());

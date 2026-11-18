@@ -20,6 +20,25 @@ import { Dialog, DialogPopup, DialogTitle, DialogTrigger } from "./dialog";
 import { OVERLAY_BACKDROP_CLASS, OVERLAY_VIEWPORT_CLASS } from "./overlay";
 import { Sheet, SheetHeader, SheetPopup, SheetTitle } from "./sheet";
 
+/**
+ * A press as a person makes it: a single press drags once the pointer moves,
+ * a second click (detail 2) maximizes through the double-click.
+ */
+function pressInWindow(element: Element, init: MouseEventInit = {}) {
+  const event = { button: 0, detail: 1, ...init };
+  fireEvent.mouseDown(element, event);
+  if ((event.detail ?? 1) >= 2) {
+    fireEvent.doubleClick(element, event);
+  } else {
+    fireEvent.mouseMove(window, {
+      buttons: 1,
+      clientX: (event.clientX ?? 0) + 10,
+      clientY: (event.clientY ?? 0) + 10,
+    });
+  }
+  fireEvent.mouseUp(window);
+}
+
 afterEach(cleanup);
 
 const css = (file: string) =>
@@ -302,13 +321,13 @@ describe("side panels in the desktop app", () => {
       document.querySelector('[data-slot="sheet-backdrop"]'),
     ).toHaveAttribute("data-side", "right");
 
-    fireEvent.mouseDown(popup, { button: 0, clientY: 20, detail: 1 });
+    pressInWindow(popup, { button: 0, clientY: 20, detail: 1 });
     expect(api.startDragging).toHaveBeenCalledOnce();
-    fireEvent.mouseDown(popup, { button: 0, clientY: 20, detail: 2 });
+    pressInWindow(popup, { button: 0, clientY: 20, detail: 2 });
     expect(api.toggleMaximize).toHaveBeenCalledOnce();
 
-    fireEvent.mouseDown(popup, { button: 0, clientY: 120, detail: 1 });
-    fireEvent.mouseDown(screen.getByRole("button", { name: "More" }), {
+    pressInWindow(popup, { button: 0, clientY: 120, detail: 1 });
+    pressInWindow(screen.getByRole("button", { name: "More" }), {
       button: 0,
       clientY: 20,
       detail: 1,
@@ -329,7 +348,7 @@ describe("side panels in the desktop app", () => {
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
     expect(gap).toHaveClass("h-(--desktop-frame-top)", "flex-1", "self-start");
-    fireEvent.mouseDown(gap, { button: 0, detail: 1 });
+    pressInWindow(gap, { button: 0, detail: 1 });
     expect(api.startDragging).toHaveBeenCalledOnce();
     cleanup();
 
@@ -356,7 +375,7 @@ describe("side panels in the desktop app", () => {
     expect(
       document.querySelector('[data-slot="sheet-title-bar-gap"]'),
     ).toBeNull();
-    fireEvent.mouseDown(popup, { button: 0, clientY: 10, detail: 1 });
+    pressInWindow(popup, { button: 0, clientY: 10, detail: 1 });
     // The header reserves the inset only where the desktop CSS sets it.
     expect(
       document.querySelector('[data-slot="sheet-header"]')?.className,

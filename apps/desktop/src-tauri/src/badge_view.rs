@@ -4,46 +4,112 @@
 //! Dock, KDE Plasma's task manager, Plank) and next to the tray icon, where
 //! the AppIndicator host shows it.
 
+use std::collections::HashMap;
+use std::sync::{LazyLock, Mutex};
+
 use tauri::{AppHandle, Manager};
 
-use crate::state::AppState;
+use crate::state::{lock, AppState};
+
+/// What the badge shows now: the total, and on Windows the server windows
+/// whose taskbar button has the overlay, by the scale it was drawn for.
+#[derive(Debug, Default)]
+struct Drawn {
+    total: Option<u32>,
+    windows: HashMap<String, f64>,
+}
+
+static DRAWN: LazyLock<Mutex<Drawn>> = LazyLock::new(Mutex::default);
+
+/// The windows whose overlay must be drawn: every one when the total
+/// changed, else only those that are new or now on a monitor of another
+/// scale.
+#[cfg_attr(not(windows), allow(dead_code))]
+fn windows_to_draw(drawn: &Drawn, total: u32, windows: &[(String, f64)]) -> Vec<String> {
+    let changed = drawn.total != Some(total);
+    windows
+        .iter()
+        .filter(|(label, scale)| changed || drawn.windows.get(label) != Some(scale))
+        .map(|(label, _)| label.clone())
+        .collect()
+}
+
+/// A destroyed window's label may come back on a new window, which then
+/// needs its own overlay.
+pub fn forget_window(label: &str) {
+    lock(&DRAWN).windows.remove(label);
+}
 
 pub fn apply(app: &AppHandle) {
     let Some(state) = app.try_state::<AppState>() else {
         return;
     };
-    let total = state.total_unread();
     // The tray lists each server's own count.
     crate::menus::unread_changed(app);
 
+    // Only server windows carry the count; hidden ones too, since showing a
+    // window doesn't redraw it. Their scales are read before taking the
+    // lock: a getter waits for the main thread, which may be waiting here.
+    #[cfg(windows)]
+    let windows: Vec<(String, tauri::WebviewWindow, f64)> = app
+        .webview_windows()
+        .into_iter()
+        .filter(|(label, _)| crate::servers::id_from_window_label(label).is_some())
+        .map(|(label, window)| {
+            let scale = window.scale_factor().unwrap_or(1.0);
+            (label, window, scale)
+        })
+        .collect();
+
+    // Held while drawing (the setters only post to the main thread), so a
+    // slower caller can't draw an older count over a newer one.
+    let mut drawn = lock(&DRAWN);
+    let total = state.total_unread();
+    let changed = drawn.total != Some(total);
+
     #[cfg(target_os = "macos")]
-    if let Some(window) = app.webview_windows().values().next() {
-        let _ = window.set_badge_count((total > 0).then_some(i64::from(total)));
+    if changed {
+        if let Some(window) = app.webview_windows().values().next() {
+            let _ = window.set_badge_count((total > 0).then_some(i64::from(total)));
+        }
     }
 
     #[cfg(windows)]
     {
+        let scales: Vec<(String, f64)> = windows
+            .iter()
+            .map(|(label, _, scale)| (label.clone(), *scale))
+            .collect();
+        let todo = windows_to_draw(&drawn, total, &scales);
         let text = crate::badge::badge_text(total);
-        for window in app.webview_windows().values() {
+        for (label, window, scale) in &windows {
+            if !todo.contains(label) {
+                continue;
+            }
             // Drawn for the window's own monitor scale, so it stays sharp.
             let icon = text.as_deref().map(|text| {
-                let size = crate::badge::overlay_size(window.scale_factor().unwrap_or(1.0));
+                let size = crate::badge::overlay_size(*scale);
                 tauri::image::Image::new_owned(crate::badge::overlay_rgba(text, size), size, size)
             });
             let _ = window.set_overlay_icon(icon);
         }
+        drawn.windows = scales.into_iter().collect();
     }
 
+    drawn.total = Some(total);
+    drop(drawn);
+
+    // The tray call waits for the main thread: outside the lock.
     #[cfg(target_os = "linux")]
-    {
+    if changed {
         if let Some(tray) = app.tray_by_id(crate::menus::TRAY_ID) {
             let _ = tray.set_title(crate::badge::badge_text(total));
         }
         launcher_entry::update(total);
     }
 
-    #[cfg(not(any(windows, target_os = "macos", target_os = "linux")))]
-    let _ = total;
+    #[cfg(not(any(target_os = "macos", target_os = "linux")))]
+    let _ = changed;
 }
 
 /// Linux: download progress (0 to 1) on the docks that show the count, or
@@ -56,6 +122,35 @@ pub fn show_progress(value: Option<f64>) {
 /// The `com.canonical.Unity.LauncherEntry` signal. Docks match it to the
 /// app by its .desktop file name, and drop the count when this connection
 /// closes, so one session-bus connection stays open for the app's life.
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn windows(list: &[(&str, f64)]) -> Vec<(String, f64)> {
+        list.iter().map(|(label, scale)| (label.to_string(), *scale)).collect()
+    }
+
+    #[test]
+    fn redraws_only_what_changed() {
+        let open = windows(&[("server-a", 1.0), ("server-b", 1.5)]);
+        let mut drawn = Drawn::default();
+        assert_eq!(windows_to_draw(&drawn, 0, &open), ["server-a", "server-b"]);
+
+        drawn.total = Some(3);
+        drawn.windows = open.iter().cloned().collect();
+        // Same count, same windows: nothing to touch.
+        assert!(windows_to_draw(&drawn, 3, &open).is_empty());
+        // A new count: every window.
+        assert_eq!(windows_to_draw(&drawn, 4, &open), ["server-a", "server-b"]);
+        // A new window, or one moved to another scale: only that one.
+        let moved = windows(&[("server-a", 2.0), ("server-b", 1.5), ("server-c", 1.0)]);
+        assert_eq!(windows_to_draw(&drawn, 3, &moved), ["server-a", "server-c"]);
+        // A destroyed window's label comes back on a new window.
+        drawn.windows.remove("server-b");
+        assert_eq!(windows_to_draw(&drawn, 3, &open), ["server-b"]);
+    }
+}
+
 #[cfg(target_os = "linux")]
 mod launcher_entry {
     use std::collections::HashMap;

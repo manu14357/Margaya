@@ -39,7 +39,9 @@ fn view(state: &AppState, server: Server) -> ServerView {
         .flatten()
         .any(|url| urls::is_insecure(&url));
     ServerView {
-        signed_in: tokens::get(&server.id).is_some(),
+        // The native session mirrors the keychain (set at start, sign-in;
+        // cleared at sign-out or a refused token), without reading it.
+        signed_in: state.session(&server.id).is_some(),
         unread: lock(&state.unread)
             .get(&server.id)
             .copied()
@@ -63,7 +65,6 @@ fn token_for(server_id: &str) -> AppResult<String> {
     tokens::get(server_id).ok_or_else(|| AppError::new(ErrorKind::NotSignedIn, "not signed in"))
 }
 
-// Async so the keychain reads run off the main thread.
 #[tauri::command]
 pub async fn list_servers(state: State<'_, AppState>) -> AppResult<Vec<ServerView>> {
     Ok(state
@@ -83,8 +84,10 @@ pub async fn discover_server(
     discovery::discover(&state.http, &input, &version).await
 }
 
+// Async: it writes servers.json, which a synchronous command would do on
+// the main thread.
 #[tauri::command]
-pub fn add_server(
+pub async fn add_server(
     app: AppHandle,
     state: State<'_, AppState>,
     discovery: Discovery,
@@ -265,11 +268,16 @@ pub fn set_autostart(app: AppHandle, enabled: bool) -> AppResult<()> {
     result.map_err(AppError::internal)
 }
 
+// Off the main thread: it reads the log file.
 #[tauri::command]
-pub fn copy_diagnostics(app: AppHandle) -> AppResult<()> {
-    app.clipboard()
-        .write_text(diagnostics::collect(&app))
-        .map_err(AppError::internal)
+pub async fn copy_diagnostics(app: AppHandle) -> AppResult<()> {
+    let text = {
+        let app = app.clone();
+        tauri::async_runtime::spawn_blocking(move || diagnostics::collect(&app))
+            .await
+            .map_err(AppError::internal)?
+    };
+    app.clipboard().write_text(text).map_err(AppError::internal)
 }
 
 #[tauri::command]
@@ -363,14 +371,22 @@ pub async fn bridge_message(
     message: BridgeMessage,
 ) -> AppResult<serde_json::Value> {
     use serde_json::Value;
-    let Ok(page) = webview.url() else {
-        return Ok(Value::Null);
-    };
-    let servers = state.servers();
-    let Some(server) = bridge::sender_server(&servers, webview.label(), &page).cloned() else {
+    // Window controls (a title-bar drag above all) must act while the
+    // pointer is still down, so the sender check stays small: the window
+    // label first (no round trip), then only its own server, then the page.
+    let server = crate::servers::id_from_window_label(webview.label())
+        .and_then(|id| state.server(id).ok());
+    let Some(server) = server else {
         log::warn!("ignored a bridge message from an unknown page");
         return Ok(Value::Null);
     };
+    let Ok(page) = webview.url() else {
+        return Ok(Value::Null);
+    };
+    if bridge::sender_server(std::slice::from_ref(&server), webview.label(), &page).is_none() {
+        log::warn!("ignored a bridge message from an unknown page");
+        return Ok(Value::Null);
+    }
     let window = app.get_webview_window(webview.label());
     match message {
         BridgeMessage::StartBrowserSignIn => {
@@ -384,9 +400,11 @@ pub async fn bridge_message(
             }
         }
         BridgeMessage::SetBadge { count } => {
-            lock(&state.unread).insert(server.id.clone(), count);
-            badge_view::apply(&app);
-            let _ = app.emit("servers-changed", ());
+            let previous = lock(&state.unread).insert(server.id.clone(), count);
+            if socket::unread_changed(previous, count) {
+                badge_view::apply(&app);
+                let _ = app.emit("servers-changed", ());
+            }
         }
         BridgeMessage::ShowQuickAdd => {
             let id = server.id.clone();

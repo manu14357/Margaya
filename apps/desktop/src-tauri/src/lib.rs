@@ -172,6 +172,7 @@ pub fn run() {
             quick_add::quick_add_prefs,
             commands::bridge_message,
             search_window::search_query,
+            search_window::search_cancel,
             search_window::search_recent,
             search_window::search_open,
             search_window::close_search,
@@ -295,11 +296,26 @@ pub fn run() {
 
             for server in app.state::<AppState>().servers() {
                 acl::grant_bridge(&handle, &server);
-                if tokens::get(&server.id).is_some() {
-                    app.state::<AppState>().mark_signed_in(&server.id);
-                    socket::start(&handle, &server.id);
-                }
             }
+            // Keychain reads can block (a locked keychain, a slow Secret
+            // Service), so the sessions are found off the main thread. A
+            // sign-in that finished first keeps its own session.
+            let sessions_app = handle.clone();
+            tauri::async_runtime::spawn_blocking(move || {
+                let state = sessions_app.state::<AppState>();
+                let mut found = false;
+                for server in state.servers() {
+                    if state.session(&server.id).is_none() && tokens::get(&server.id).is_some() {
+                        state.mark_signed_in(&server.id);
+                        socket::start(&sessions_app, &server.id);
+                        found = true;
+                    }
+                }
+                if found {
+                    let _ = tauri::Emitter::emit(&sessions_app, "servers-changed", ());
+                    menus::refresh_tray(&sessions_app);
+                }
+            });
 
             // Like a chat app: the server windows open last time come back;
             // the launcher shows only when there are none.
@@ -370,6 +386,7 @@ pub fn run() {
                         quick_add::discard();
                     }
                     if kind.is_some() {
+                        crate::badge_view::forget_window(window.label());
                         let state = app.state::<AppState>();
                         lock(&state.windows).remove(window.label());
                         let mut last = lock(&state.last_focused);

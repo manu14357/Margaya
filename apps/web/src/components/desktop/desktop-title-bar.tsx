@@ -188,13 +188,44 @@ export function useDesktopDragRegion() {
     "data-window-drag": "",
     onMouseDown: (event: MouseEvent<HTMLElement>) => {
       if (event.button !== 0 || !isWindowDragTarget(event.target)) return;
-      const api = getDesktopWindow();
       // Keep the press from starting a text selection in the bar.
       event.preventDefault();
-      if (event.detail >= 2) api?.toggleMaximize?.();
-      else api?.startDragging?.();
+      dragOnMove(event);
+    },
+    onDoubleClick: (event: MouseEvent<HTMLElement>) => {
+      if (event.button !== 0 || !isWindowDragTarget(event.target)) return;
+      getDesktopWindow()?.toggleMaximize?.();
     },
   };
+}
+
+/** How far a press must move before it becomes a window drag, in pixels. */
+const DRAG_THRESHOLD = 3;
+
+/**
+ * Starts the window drag on the first real move of a held press, not on the
+ * press itself: the system's move loop would swallow the second click of a
+ * double-click (maximize) and could keep the window on the cursor after a
+ * plain click.
+ */
+function dragOnMove(press: MouseEvent<HTMLElement>) {
+  const { clientX, clientY } = press;
+  const stop = () => {
+    window.removeEventListener("mousemove", move);
+    window.removeEventListener("mouseup", stop);
+  };
+  const move = (event: globalThis.MouseEvent) => {
+    if ((event.buttons & 1) === 0) return stop();
+    if (
+      Math.abs(event.clientX - clientX) < DRAG_THRESHOLD &&
+      Math.abs(event.clientY - clientY) < DRAG_THRESHOLD
+    )
+      return;
+    stop();
+    getDesktopWindow()?.startDragging?.();
+  };
+  window.addEventListener("mousemove", move);
+  window.addEventListener("mouseup", stop);
 }
 
 /**
@@ -206,20 +237,25 @@ export function useDesktopDragRegion() {
  */
 export function useDesktopTopRowDrag(): {
   onMouseDown?: (event: MouseEvent<HTMLElement>) => void;
+  onDoubleClick?: (event: MouseEvent<HTMLElement>) => void;
 } {
   const titleBar = useDesktopTitleBar();
   if (!titleBar) return {};
+  const inTopRow = (event: MouseEvent<HTMLElement>) => {
+    if (event.button !== 0 || !isWindowDragTarget(event.target)) return false;
+    if (document.documentElement.hasAttribute("data-desktop-slim-bar"))
+      return false;
+    const top = event.currentTarget.getBoundingClientRect().top;
+    return top <= 1 && event.clientY < SHELL_BAR_HEIGHT;
+  };
   return {
     onMouseDown: (event) => {
-      if (event.button !== 0 || !isWindowDragTarget(event.target)) return;
-      if (document.documentElement.hasAttribute("data-desktop-slim-bar"))
-        return;
-      const top = event.currentTarget.getBoundingClientRect().top;
-      if (top > 1 || event.clientY >= SHELL_BAR_HEIGHT) return;
-      const api = getDesktopWindow();
+      if (!inTopRow(event)) return;
       event.preventDefault();
-      if (event.detail >= 2) api?.toggleMaximize?.();
-      else api?.startDragging?.();
+      dragOnMove(event);
+    },
+    onDoubleClick: (event) => {
+      if (inTopRow(event)) getDesktopWindow()?.toggleMaximize?.();
     },
   };
 }

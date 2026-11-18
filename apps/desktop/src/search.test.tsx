@@ -105,7 +105,10 @@ describe("Search", () => {
     const queries = invoke.mock.calls.filter(
       ([name]) => name === "search_query",
     );
-    expect(queries).toEqual([["search_query", { query: "ship" }]]);
+    expect(queries).toEqual([
+      ["search_query", { query: "ship", searchId: expect.any(Number) }],
+    ]);
+    expect(invoke).not.toHaveBeenCalledWith("search_cancel", expect.anything());
     expect(
       screen.getByRole("group", { name: "search.kinds.task" }),
     ).toBeTruthy();
@@ -158,6 +161,42 @@ describe("Search", () => {
     expect(await screen.findByText("search.noServers")).toBeTruthy();
     expect((field() as HTMLInputElement).disabled).toBe(true);
     expect(invoke).not.toHaveBeenCalledWith("search_recent");
+  });
+
+  it("stops a search still running when the query changes", async () => {
+    invoke.mockImplementation(async (command: string, args?: unknown) => {
+      if (command === "list_servers") return [server("a", true)];
+      if (command === "search_recent") return recent;
+      if (command === "search_query") {
+        const { query } = args as { query: string };
+        // The first search never answers on its own.
+        return query === "slow" ? new Promise(() => {}) : found;
+      }
+      return undefined;
+    });
+    render(<Search />);
+    await screen.findByRole("option", { name: /Recent task/ });
+    fireEvent.change(field(), { target: { value: "slow" } });
+    await vi.waitFor(() =>
+      expect(invoke).toHaveBeenCalledWith("search_query", {
+        query: "slow",
+        searchId: expect.any(Number),
+      }),
+    );
+    const slow = invoke.mock.calls.find(
+      ([name, args]) =>
+        name === "search_query" && (args as { query: string }).query === "slow",
+    )?.[1] as { searchId: number };
+
+    fireEvent.change(field(), { target: { value: "ship" } });
+    expect(invoke).toHaveBeenCalledWith("search_cancel", {
+      searchId: slow.searchId,
+    });
+    expect(await screen.findByRole("option", { name: /Ship it/ })).toBeTruthy();
+    // Only the superseded search was stopped.
+    expect(
+      invoke.mock.calls.filter(([name]) => name === "search_cancel"),
+    ).toHaveLength(1);
   });
 
   it("closes on Escape", async () => {

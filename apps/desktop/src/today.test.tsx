@@ -12,8 +12,12 @@ const invoke = vi.fn();
 vi.mock("@tauri-apps/api/core", () => ({
   invoke: (...args: unknown[]) => invoke(...args),
 }));
+const listeners = new Map<string, () => void>();
 vi.mock("@tauri-apps/api/event", () => ({
-  listen: async () => () => {},
+  listen: async (event: string, handler: () => void) => {
+    listeners.set(event, handler);
+    return () => listeners.delete(event);
+  },
 }));
 
 const server = (id: string, signedIn: boolean) => ({
@@ -145,6 +149,30 @@ describe("Today", () => {
 
     fireEvent.keyDown(window, { key: "Escape" });
     expect(invoke).toHaveBeenCalledWith("close_today");
+  });
+
+  it("stops refreshing while hidden and refreshes once when shown", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    render(<Today />);
+    await screen.findByText("Late report");
+    await vi.waitFor(() => expect(listeners.has("today-hidden")).toBe(true));
+    expect(todayCalls()).toBe(1);
+
+    act(() => listeners.get("today-hidden")?.());
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(TODAY_REFRESH_MS * 3);
+    });
+    expect(todayCalls()).toBe(1);
+
+    await act(async () => {
+      listeners.get("today-refresh")?.();
+    });
+    await vi.waitFor(() => expect(todayCalls()).toBe(2));
+    // The timer runs again from the moment it showed.
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(TODAY_REFRESH_MS);
+    });
+    await vi.waitFor(() => expect(todayCalls()).toBe(3));
   });
 
   it("shows empty and signed-out states", async () => {

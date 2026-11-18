@@ -6,10 +6,10 @@ use std::fs;
 use tauri::{AppHandle, Manager};
 
 use crate::state::{lock, AppState};
-use crate::tokens;
 
 const LOG_LINES: usize = 200;
 
+/// Reads the log file: call it off the main thread.
 pub fn collect(app: &AppHandle) -> String {
     let mut text = String::new();
     let info = app.package_info();
@@ -37,7 +37,7 @@ pub fn collect(app: &AppHandle) -> String {
                 server.web_url,
                 server.api_url,
                 server.server_version.as_deref().unwrap_or("?"),
-                tokens::get(&server.id).is_some(),
+                state.session(&server.id).is_some(),
                 sockets.contains_key(&server.id),
             ));
         }

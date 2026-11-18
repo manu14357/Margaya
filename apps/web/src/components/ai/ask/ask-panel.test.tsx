@@ -15,6 +15,25 @@ import { AskButton } from "./ask-button";
 import AskPanel from "./ask-panel";
 import { openAsk, useAskPanel } from "./ask-store";
 
+/**
+ * A press as a person makes it: a single press drags once the pointer moves,
+ * a second click (detail 2) maximizes through the double-click.
+ */
+function pressInWindow(element: Element, init: MouseEventInit = {}) {
+  const event = { button: 0, detail: 1, ...init };
+  fireEvent.mouseDown(element, event);
+  if ((event.detail ?? 1) >= 2) {
+    fireEvent.doubleClick(element, event);
+  } else {
+    fireEvent.mouseMove(window, {
+      buttons: 1,
+      clientX: (event.clientX ?? 0) + 10,
+      clientY: (event.clientY ?? 0) + 10,
+    });
+  }
+  fireEvent.mouseUp(window);
+}
+
 type Handlers = {
   onMeta?: (meta: Record<string, unknown>) => void;
   onDelta?: (text: string) => void;
@@ -1219,9 +1238,9 @@ describe("Ask history: names, pins, search and the server", () => {
         "pe-[calc(var(--desktop-controls-width,0px)+0.75rem)]",
       );
       expect(header).toHaveAttribute("data-window-drag");
-      fireEvent.mouseDown(header as HTMLElement, { button: 0, detail: 1 });
+      pressInWindow(header as HTMLElement, { button: 0, detail: 1 });
       expect(startDragging).toHaveBeenCalledTimes(1);
-      fireEvent.mouseDown(
+      pressInWindow(
         screen.getByRole("button", { name: "common:actions.close" }),
         { button: 0, detail: 1 },
       );

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useT } from "./lib/i18n";
 import { api } from "./lib/ipc";
 import {
+  onHidden,
   onShown,
   type TodayOutcome,
   type TodayTask,
@@ -63,20 +64,45 @@ export function Today() {
   }, []);
 
   useEffect(() => {
+    // The timer runs only while the window shows; showing it again
+    // refreshes once and starts the timer over.
+    let timer: number | undefined;
+    const start = () => {
+      if (timer === undefined) {
+        timer = window.setInterval(() => void refresh(), TODAY_REFRESH_MS);
+      }
+    };
+    const pause = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+    };
+    const shown = () => {
+      pause();
+      start();
+      void refresh();
+    };
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") pause();
+      else shown();
+    };
     void refresh();
-    const timer = window.setInterval(() => void refresh(), TODAY_REFRESH_MS);
+    if (document.visibilityState !== "hidden") start();
     const onFocus = () => void refresh();
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") void todayApi.close();
     };
     window.addEventListener("focus", onFocus);
     window.addEventListener("keydown", onKey);
-    const unlisten = onShown("today-refresh", () => void refresh());
+    document.addEventListener("visibilitychange", onVisibility);
+    const unlistenShown = onShown("today-refresh", shown);
+    const unlistenHidden = onHidden("today-hidden", pause);
     return () => {
-      window.clearInterval(timer);
+      pause();
       window.removeEventListener("focus", onFocus);
       window.removeEventListener("keydown", onKey);
-      void unlisten.then((stop) => stop());
+      document.removeEventListener("visibilitychange", onVisibility);
+      void unlistenShown.then((stop) => stop());
+      void unlistenHidden.then((stop) => stop());
     };
   }, [refresh]);
 

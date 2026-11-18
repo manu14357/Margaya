@@ -119,6 +119,7 @@ function SheetPopup({
   side = "right",
   variant = "default",
   onMouseDown,
+  onDoubleClick,
   ...props
 }: SheetPrimitive.Popup.Props & {
   showCloseButton?: boolean;
@@ -163,6 +164,10 @@ function SheetPopup({
           onMouseDown={(event: MouseEvent<HTMLDivElement>) => {
             onMouseDown?.(event as never);
             if (sidePanel) topRowDrag.onMouseDown?.(event);
+          }}
+          onDoubleClick={(event: MouseEvent<HTMLDivElement>) => {
+            onDoubleClick?.(event as never);
+            if (sidePanel) topRowDrag.onDoubleClick?.(event);
           }}
           {...props}
         >

@@ -43,6 +43,7 @@ const COMMANDS: &[&str] = &[
     "quick_add_prefs",
     "bridge_message",
     "search_query",
+    "search_cancel",
     "search_recent",
     "search_open",
     "close_search",

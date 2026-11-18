@@ -4,7 +4,7 @@
 //! quiet hours or focus mode hold desktop alerts the server leaves the id
 //! out, and one summary alert follows when they end.
 
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 use futures_util::{SinkExt, StreamExt};
 use serde_json::Value;
@@ -22,6 +22,14 @@ use crate::{badge_view, i18n, notify, tokens, urls};
 
 const KEEPALIVE: Duration = Duration::from_secs(25);
 const PING: &str = r#"{"type":"ping"}"#;
+/// Unread refreshes wait until the hints pause this long, so a burst (a
+/// bulk read, many mentions at once) costs one refresh...
+const REFRESH_QUIET: Duration = Duration::from_millis(500);
+/// ...but no longer than this after the first hint of a burst.
+const REFRESH_MAX_WAIT: Duration = Duration::from_secs(3);
+/// A connection that stayed up this long starts the reconnect delays over;
+/// one that drops sooner keeps backing off.
+const STABLE_AFTER: Duration = Duration::from_secs(30);
 
 /// Reconnect delay: 1, 2, 4 ... seconds, capped at 60, plus up to a quarter
 /// of jitter so many clients don't return at once after an outage.
@@ -29,6 +37,26 @@ pub fn backoff(attempt: u32, jitter_fraction: f64) -> Duration {
     let base = 2u64.saturating_pow(attempt.min(6)).min(60);
     let jitter = (base as f64 * 0.25 * jitter_fraction.clamp(0.0, 1.0) * 1000.0) as u64;
     Duration::from_millis(base * 1000 + jitter)
+}
+
+/// The next reconnect attempt: back to the first delay after a connection
+/// that stayed up [`STABLE_AFTER`], else one step further.
+pub fn next_attempt(attempt: u32, stayed_up: Option<Duration>) -> u32 {
+    match stayed_up {
+        Some(up) if up >= STABLE_AFTER => 1,
+        _ => attempt.saturating_add(1),
+    }
+}
+
+/// When a burst of refresh requests is answered: once they pause for
+/// `quiet`, and no later than `max_wait` after the first.
+pub fn refresh_due(first: Instant, last: Instant, quiet: Duration, max_wait: Duration) -> Instant {
+    (last + quiet).min(first + max_wait)
+}
+
+/// The badge and the launcher change only when a count did.
+pub fn unread_changed(previous: Option<u32>, now: u32) -> bool {
+    previous != Some(now)
 }
 
 fn jitter() -> f64 {
@@ -97,7 +125,8 @@ pub fn stop(app: &AppHandle, server_id: &str) {
 enum Ended {
     /// The server refused the token: the user is signed out there.
     Unauthorized,
-    Closed,
+    /// With how long the connection was up, if it opened at all.
+    Closed(Option<Duration>),
 }
 
 async fn run(app: AppHandle, server_id: String) {
@@ -109,7 +138,7 @@ async fn run(app: AppHandle, server_id: String) {
         let Some(token) = tokens::get(&server_id) else {
             return;
         };
-        match connect(&app, &server, &token, &mut attempt).await {
+        match connect(&app, &server, &token).await {
             Ended::Unauthorized => {
                 log::info!("a server refused the stored token; signing out locally");
                 app.state::<AppState>().mark_signed_out(&server_id);
@@ -122,22 +151,21 @@ async fn run(app: AppHandle, server_id: String) {
                 crate::menus::refresh_tray(&app);
                 return;
             }
-            Ended::Closed => {}
+            Ended::Closed(stayed_up) => attempt = next_attempt(attempt, stayed_up),
         }
-        attempt = attempt.saturating_add(1);
         tokio::time::sleep(backoff(attempt, jitter())).await;
     }
 }
 
-async fn connect(app: &AppHandle, server: &Server, token: &str, attempt: &mut u32) -> Ended {
+async fn connect(app: &AppHandle, server: &Server, token: &str) -> Ended {
     let Some(url) = server.api().as_ref().and_then(socket_url) else {
-        return Ended::Closed;
+        return Ended::Closed(None);
     };
     let Ok(mut request) = url.as_str().into_client_request() else {
-        return Ended::Closed;
+        return Ended::Closed(None);
     };
     let Ok(header) = HeaderValue::from_str(&format!("Bearer {token}")) else {
-        return Ended::Closed;
+        return Ended::Closed(None);
     };
     // No Origin header: the API lets native clients in on the bearer token.
     request.headers_mut().insert(AUTHORIZATION, header);
@@ -149,12 +177,16 @@ async fn connect(app: &AppHandle, server: &Server, token: &str, attempt: &mut u3
         }
         Err(error) => {
             log::warn!("user socket connect failed: {error}");
-            return Ended::Closed;
+            return Ended::Closed(None);
         }
     };
-    *attempt = 0;
+    let opened = Instant::now();
     log::info!("user socket connected");
-    refresh_unread(app, server, token).await;
+    // Unread refreshes go to the refresher, so a slow API never holds up
+    // the next hint; it stops with this connection.
+    let refresher = Refresher::start(app, server, token);
+    refresher.request();
+    let up = || Ended::Closed(Some(opened.elapsed()));
 
     let (mut write, mut read) = stream.split();
     let mut keepalive = tokio::time::interval(KEEPALIVE);
@@ -167,30 +199,73 @@ async fn connect(app: &AppHandle, server: &Server, token: &str, attempt: &mut u3
                         if let Some(id) = id {
                             show_notification(app, server, token, &id).await;
                         }
-                        refresh_unread(app, server, token).await;
+                        refresher.request();
                     }
-                    Hint::NotificationsUpdated => refresh_unread(app, server, token).await,
+                    Hint::NotificationsUpdated => refresher.request(),
                     Hint::NotificationsReleased(count) => {
                         if count > 0 {
                             show_release_summary(app, server, count);
                         }
-                        refresh_unread(app, server, token).await;
+                        refresher.request();
                     }
                     Hint::Other => {}
                 },
-                Some(Ok(Message::Close(_))) | None => return Ended::Closed,
+                Some(Ok(Message::Close(_))) | None => return up(),
                 Some(Ok(_)) => {}
                 Some(Err(error)) => {
                     log::warn!("user socket error: {error}");
-                    return Ended::Closed;
+                    return up();
                 }
             },
             _ = keepalive.tick() => {
                 if write.send(Message::text(PING)).await.is_err() {
-                    return Ended::Closed;
+                    return up();
                 }
             }
         }
+    }
+}
+
+/// One connection's unread refreshes, with a trailing debounce: requests
+/// that come in while one waits (or runs) fold into the next refresh.
+/// Stops with the connection.
+struct Refresher {
+    requests: tokio::sync::mpsc::UnboundedSender<()>,
+    task: tauri::async_runtime::JoinHandle<()>,
+}
+
+impl Refresher {
+    fn start(app: &AppHandle, server: &Server, token: &str) -> Self {
+        let (requests, mut received) = tokio::sync::mpsc::unbounded_channel::<()>();
+        let (app, server, token) = (app.clone(), server.clone(), token.to_string());
+        let task = tauri::async_runtime::spawn(async move {
+            while received.recv().await.is_some() {
+                let first = Instant::now();
+                let mut last = first;
+                loop {
+                    let due = refresh_due(first, last, REFRESH_QUIET, REFRESH_MAX_WAIT);
+                    tokio::select! {
+                        more = received.recv() => match more {
+                            Some(()) => last = Instant::now(),
+                            None => return,
+                        },
+                        () = tokio::time::sleep_until(due.into()) => break,
+                    }
+                }
+                refresh_unread(&app, &server, &token).await;
+            }
+        });
+        Self { requests, task }
+    }
+
+    fn request(&self) {
+        let _ = self.requests.send(());
+    }
+}
+
+impl Drop for Refresher {
+    fn drop(&mut self) {
+        self.task.abort();
     }
 }
 
@@ -198,9 +273,11 @@ pub async fn refresh_unread(app: &AppHandle, server: &Server, token: &str) {
     let state = app.state::<AppState>();
     match api::unread_count(&state.http, server, token).await {
         Ok(count) => {
-            lock(&state.unread).insert(server.id.clone(), count);
-            badge_view::apply(app);
-            let _ = app.emit("servers-changed", ());
+            let previous = lock(&state.unread).insert(server.id.clone(), count);
+            if unread_changed(previous, count) {
+                badge_view::apply(app);
+                let _ = app.emit("servers-changed", ());
+            }
         }
         Err(error) if error.kind == ErrorKind::NotSignedIn => {}
         Err(error) => log::warn!("unread count unavailable: {}", error.message),
@@ -329,6 +406,42 @@ mod tests {
         assert_eq!(backoff(40, 0.0), Duration::from_secs(60));
         assert_eq!(backoff(1, 1.0), Duration::from_millis(2500));
         assert_eq!(backoff(40, 1.0), Duration::from_secs(75));
+    }
+
+    #[test]
+    fn starts_the_delays_over_only_after_a_connection_that_held() {
+        // Never connected, or dropped right after opening: keep backing off.
+        assert_eq!(next_attempt(0, None), 1);
+        assert_eq!(next_attempt(3, None), 4);
+        assert_eq!(next_attempt(3, Some(Duration::from_millis(200))), 4);
+        assert_eq!(next_attempt(5, Some(Duration::from_secs(29))), 6);
+        assert_eq!(next_attempt(u32::MAX, None), u32::MAX);
+        // Stayed up: the next try comes after the first delay again.
+        assert_eq!(next_attempt(5, Some(STABLE_AFTER)), 1);
+        assert_eq!(next_attempt(0, Some(Duration::from_secs(600))), 1);
+        assert_eq!(backoff(next_attempt(5, Some(STABLE_AFTER)), 0.0), Duration::from_secs(2));
+    }
+
+    #[test]
+    fn answers_a_burst_of_hints_once_it_pauses() {
+        let first = Instant::now();
+        let quiet = Duration::from_millis(500);
+        let max = Duration::from_secs(3);
+        assert_eq!(refresh_due(first, first, quiet, max), first + quiet);
+        // Each new hint pushes the refresh back...
+        let later = first + Duration::from_millis(400);
+        assert_eq!(refresh_due(first, later, quiet, max), later + quiet);
+        // ...but never past the longest wait.
+        let much_later = first + Duration::from_millis(2900);
+        assert_eq!(refresh_due(first, much_later, quiet, max), first + max);
+    }
+
+    #[test]
+    fn redraws_only_when_a_count_changed() {
+        assert!(unread_changed(None, 0));
+        assert!(unread_changed(Some(2), 3));
+        assert!(!unread_changed(Some(3), 3));
+        assert!(!unread_changed(Some(0), 0));
     }
 
     #[test]

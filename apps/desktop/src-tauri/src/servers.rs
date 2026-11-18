@@ -155,6 +155,19 @@ struct StoreFile {
 pub struct ServerStore {
     path: PathBuf,
     servers: Vec<Server>,
+    /// When the file was last written (ms), for [`touch_saves`].
+    saved_at: Option<u64>,
+}
+
+/// How stale "last used" may get on disk when nothing else changed.
+const TOUCH_SAVE_INTERVAL_MS: u64 = 60_000;
+
+/// Whether opening a server's window writes the list: when it becomes the
+/// most recently used server (the order startup and the launcher follow),
+/// or when the file is older than [`TOUCH_SAVE_INTERVAL_MS`]. Otherwise the
+/// new time waits in memory for the next write.
+pub fn touch_saves(was_latest: bool, saved_at: Option<u64>, now: u64) -> bool {
+    !was_latest || saved_at.is_none_or(|saved| now.saturating_sub(saved) >= TOUCH_SAVE_INTERVAL_MS)
 }
 
 pub fn now_millis() -> u64 {
@@ -179,10 +192,14 @@ impl ServerStore {
             },
             Err(_) => Vec::new(),
         };
-        Self { path, servers }
+        Self {
+            path,
+            servers,
+            saved_at: None,
+        }
     }
 
-    fn save(&self) -> AppResult<()> {
+    fn save(&mut self) -> AppResult<()> {
         if let Some(parent) = self.path.parent() {
             fs::create_dir_all(parent).map_err(AppError::internal)?;
         }
@@ -194,7 +211,9 @@ impl ServerStore {
         // Write then rename, so a crash never leaves half a file.
         let temp = self.path.with_extension("json.tmp");
         fs::write(&temp, text).map_err(AppError::internal)?;
-        fs::rename(&temp, &self.path).map_err(AppError::internal)
+        fs::rename(&temp, &self.path).map_err(AppError::internal)?;
+        self.saved_at = Some(now_millis());
+        Ok(())
     }
 
     pub fn list(&self) -> &[Server] {
@@ -286,14 +305,29 @@ impl ServerStore {
         self.save()
     }
 
-    pub fn touch(&mut self, id: &str) -> AppResult<()> {
+    /// A server's window opened: it was used now, and opens again at start.
+    /// Writes the list only when [`touch_saves`] says so, or `reopen`
+    /// changed.
+    pub fn touch_and_reopen(&mut self, id: &str) -> AppResult<()> {
+        let now = now_millis();
+        let latest = self
+            .servers
+            .iter()
+            .filter_map(|server| server.last_used_at.map(|at| (at, server.id.as_str())))
+            .max()
+            .map(|(_, latest)| latest == id);
         let server = self
             .servers
             .iter_mut()
             .find(|server| server.id == id)
             .ok_or_else(not_found)?;
-        server.last_used_at = Some(now_millis());
-        self.save()
+        server.last_used_at = Some(now);
+        let reopen_changed = !server.reopen;
+        server.reopen = true;
+        if reopen_changed || touch_saves(latest == Some(true), self.saved_at, now) {
+            self.save()?;
+        }
+        Ok(())
     }
 }
 
@@ -344,7 +378,7 @@ mod tests {
         assert_eq!(reloaded.list()[1].label, "example");
 
         store.rename(&server.id, "Office").unwrap();
-        store.touch(&server.id).unwrap();
+        store.touch_and_reopen(&server.id).unwrap();
         let reloaded = ServerStore::load(path.clone());
         assert_eq!(reloaded.get(&server.id).unwrap().label, "Office");
         assert!(reloaded.get(&server.id).unwrap().last_used_at.is_some());
@@ -520,5 +554,35 @@ mod tests {
         store.set_reopen(&server.id, false).unwrap();
         assert!(!ServerStore::load(path).get(&server.id).unwrap().reopen);
         assert!(store.set_reopen("missing", true).is_err());
+    }
+
+    #[test]
+    fn opening_a_window_writes_only_what_matters() {
+        let minute = TOUCH_SAVE_INTERVAL_MS;
+        assert!(touch_saves(false, Some(1_000), 1_001), "another server was the latest");
+        assert!(touch_saves(true, None, 5), "never written this run");
+        assert!(!touch_saves(true, Some(1_000), 1_000 + minute - 1));
+        assert!(touch_saves(true, Some(1_000), 1_000 + minute));
+
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("servers.json");
+        let mut store = ServerStore::load(path.clone());
+        let a = store.add(&discovery("https://a.example"), "A").unwrap();
+        let b = store.add(&discovery("https://b.example"), "B").unwrap();
+        let on_disk = |id: &str| ServerStore::load(path.clone()).get(id).cloned().unwrap();
+
+        store.touch_and_reopen(&a.id).unwrap();
+        assert!(on_disk(&a.id).reopen && on_disk(&a.id).last_used_at.is_some());
+        // Again right away: already the latest and just written.
+        let written = on_disk(&a.id).last_used_at;
+        std::thread::sleep(std::time::Duration::from_millis(5));
+        store.touch_and_reopen(&a.id).unwrap();
+        assert_eq!(on_disk(&a.id).last_used_at, written);
+        assert!(store.get(&a.id).unwrap().last_used_at > written, "kept in memory");
+        // Another server becomes the latest: written, with A's newer time.
+        store.touch_and_reopen(&b.id).unwrap();
+        assert!(on_disk(&b.id).last_used_at >= on_disk(&a.id).last_used_at);
+        assert!(on_disk(&a.id).last_used_at > written);
+        assert!(store.touch_and_reopen("missing").is_err());
     }
 }
