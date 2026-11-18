@@ -65,6 +65,14 @@ export function Launcher() {
       <header className="brand">
         <img src="./logo.svg" alt="" width={28} height={28} />
         <h1>Margaya</h1>
+        <button
+          type="button"
+          className="button ghost brand-action"
+          title={t("files.launcherHint")}
+          onClick={() => void api.showFiles().catch(setError)}
+        >
+          {t("files.title")}
+        </button>
       </header>
 
       <WhatsNew />

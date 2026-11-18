@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-files-stream-url"
+description = "Enables the files_stream_url command without any pre-configured scope."
+commands.allow = ["files_stream_url"]
+
+[[permission]]
+identifier = "deny-files-stream-url"
+description = "Denies the files_stream_url command without any pre-configured scope."
+commands.deny = ["files_stream_url"]

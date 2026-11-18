@@ -56735,6 +56735,9 @@
 								},
 								"pausedForever": {
 									"type": "string"
+								},
+								"shortcutFiles": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -56794,7 +56797,8 @@
 								"pauseTomorrow",
 								"pauseForever",
 								"pausedUntil",
-								"pausedForever"
+								"pausedForever",
+								"shortcutFiles"
 							]
 						},
 						"whatsNew": {
@@ -56840,9 +56844,12 @@
 								},
 								"myTasks": {
 									"type": "string"
+								},
+								"files": {
+									"type": "string"
 								}
 							},
-							"required": ["quickAdd", "search", "inbox", "myTasks"]
+							"required": ["quickAdd", "search", "inbox", "myTasks", "files"]
 						},
 						"search": {
 							"type": "object",
@@ -57458,6 +57465,9 @@
 								},
 								"pauseForever": {
 									"type": "string"
+								},
+								"files": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -57479,7 +57489,8 @@
 								"pauseOff",
 								"pauseHour",
 								"pauseTomorrow",
-								"pauseForever"
+								"pauseForever",
+								"files"
 							]
 						},
 						"offline": {
@@ -57587,6 +57598,579 @@
 								"noText",
 								"copyMissing"
 							]
+						},
+						"files": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"launcherHint": {
+									"type": "string"
+								},
+								"places": {
+									"type": "string"
+								},
+								"addFolder": {
+									"type": "string"
+								},
+								"addFolderTitle": {
+									"type": "string"
+								},
+								"saveCopyTitle": {
+									"type": "string"
+								},
+								"addFailed": {
+									"type": "string"
+								},
+								"tooManyPlaces": {
+									"type": "string"
+								},
+								"recent": {
+									"type": "string"
+								},
+								"recentEmpty": {
+									"type": "string"
+								},
+								"dropped": {
+									"type": "string"
+								},
+								"removeFolder": {
+									"type": "string"
+								},
+								"removeFolderNamed": {
+									"type": "string"
+								},
+								"unavailable": {
+									"type": "string"
+								},
+								"emptyTitle": {
+									"type": "string"
+								},
+								"emptyBody": {
+									"type": "string"
+								},
+								"emptyDrop": {
+									"type": "string"
+								},
+								"loading": {
+									"type": "string"
+								},
+								"folderEmpty": {
+									"type": "string"
+								},
+								"noMatches": {
+									"type": "string"
+								},
+								"deniedTitle": {
+									"type": "string"
+								},
+								"deniedBody": {
+									"type": "string"
+								},
+								"noAccessBody": {
+									"type": "string"
+								},
+								"missingTitle": {
+									"type": "string"
+								},
+								"missingBody": {
+									"type": "string"
+								},
+								"missingFile": {
+									"type": "string"
+								},
+								"failed": {
+									"type": "string"
+								},
+								"retry": {
+									"type": "string"
+								},
+								"breadcrumb": {
+									"type": "string"
+								},
+								"up": {
+									"type": "string"
+								},
+								"search": {
+									"type": "string"
+								},
+								"searchPlaceholder": {
+									"type": "string"
+								},
+								"searchSubfolders": {
+									"type": "string"
+								},
+								"searching": {
+									"type": "string"
+								},
+								"cancelSearch": {
+									"type": "string"
+								},
+								"searchTruncated": {
+									"type": "string"
+								},
+								"sortBy": {
+									"type": "string"
+								},
+								"sortName": {
+									"type": "string"
+								},
+								"sortModified": {
+									"type": "string"
+								},
+								"sortType": {
+									"type": "string"
+								},
+								"sortSize": {
+									"type": "string"
+								},
+								"sortAscending": {
+									"type": "string"
+								},
+								"sortDescending": {
+									"type": "string"
+								},
+								"showHidden": {
+									"type": "string"
+								},
+								"view": {
+									"type": "string"
+								},
+								"viewList": {
+									"type": "string"
+								},
+								"viewGrid": {
+									"type": "string"
+								},
+								"refresh": {
+									"type": "string"
+								},
+								"items_one": {
+									"type": "string"
+								},
+								"items_zero": {
+									"type": "string"
+								},
+								"items_two": {
+									"type": "string"
+								},
+								"items_few": {
+									"type": "string"
+								},
+								"items_many": {
+									"type": "string"
+								},
+								"items_other": {
+									"type": "string"
+								},
+								"omitted": {
+									"type": "string"
+								},
+								"columnName": {
+									"type": "string"
+								},
+								"columnFolder": {
+									"type": "string"
+								},
+								"columnModified": {
+									"type": "string"
+								},
+								"columnSize": {
+									"type": "string"
+								},
+								"menu": {
+									"type": "string"
+								},
+								"previewAction": {
+									"type": "string"
+								},
+								"open": {
+									"type": "string"
+								},
+								"openDefault": {
+									"type": "string"
+								},
+								"showInFolder": {
+									"type": "string"
+								},
+								"copyPath": {
+									"type": "string"
+								},
+								"pathCopied": {
+									"type": "string"
+								},
+								"addRecent": {
+									"type": "string"
+								},
+								"removeRecent": {
+									"type": "string"
+								},
+								"saveCopy": {
+									"type": "string"
+								},
+								"saved": {
+									"type": "string"
+								},
+								"saveFailed": {
+									"type": "string"
+								},
+								"sameFile": {
+									"type": "string"
+								},
+								"runsCode": {
+									"type": "string"
+								},
+								"openFailed": {
+									"type": "string"
+								},
+								"closePreview": {
+									"type": "string"
+								},
+								"expandPreview": {
+									"type": "string"
+								},
+								"collapsePreview": {
+									"type": "string"
+								},
+								"resizePreview": {
+									"type": "string"
+								},
+								"droppedRefused": {
+									"type": "string"
+								},
+								"placesAdded_one": {
+									"type": "string"
+								},
+								"placesAdded_zero": {
+									"type": "string"
+								},
+								"placesAdded_two": {
+									"type": "string"
+								},
+								"placesAdded_few": {
+									"type": "string"
+								},
+								"placesAdded_many": {
+									"type": "string"
+								},
+								"placesAdded_other": {
+									"type": "string"
+								},
+								"dragHint": {
+									"type": "string"
+								},
+								"dismiss": {
+									"type": "string"
+								},
+								"viewer": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"loading": {
+											"type": "string"
+										},
+										"errorTitle": {
+											"type": "string"
+										},
+										"errorBody": {
+											"type": "string"
+										},
+										"noPreview": {
+											"type": "string"
+										},
+										"tooLarge": {
+											"type": "string"
+										},
+										"truncated": {
+											"type": "string"
+										},
+										"download": {
+											"type": "string"
+										},
+										"openExternal": {
+											"type": "string"
+										},
+										"toolbar": {
+											"type": "string"
+										},
+										"zoomIn": {
+											"type": "string"
+										},
+										"zoomOut": {
+											"type": "string"
+										},
+										"zoomReset": {
+											"type": "string"
+										},
+										"fitWidth": {
+											"type": "string"
+										},
+										"fitPage": {
+											"type": "string"
+										},
+										"rotate": {
+											"type": "string"
+										},
+										"fullScreen": {
+											"type": "string"
+										},
+										"exitFullScreen": {
+											"type": "string"
+										},
+										"pageNumber": {
+											"type": "string"
+										},
+										"pageCount": {
+											"type": "string"
+										},
+										"pageLabel": {
+											"type": "string"
+										},
+										"thumbnails": {
+											"type": "string"
+										},
+										"passwordProtected": {
+											"type": "string"
+										},
+										"find": {
+											"type": "string"
+										},
+										"findPlaceholder": {
+											"type": "string"
+										},
+										"findNext": {
+											"type": "string"
+										},
+										"findPrevious": {
+											"type": "string"
+										},
+										"findCount": {
+											"type": "string"
+										},
+										"findNone": {
+											"type": "string"
+										},
+										"findClose": {
+											"type": "string"
+										},
+										"sheets": {
+											"type": "string"
+										},
+										"rowsTruncated": {
+											"type": "string"
+										},
+										"previousSlide": {
+											"type": "string"
+										},
+										"nextSlide": {
+											"type": "string"
+										},
+										"slideCount": {
+											"type": "string"
+										},
+										"slideLabel": {
+											"type": "string"
+										},
+										"present": {
+											"type": "string"
+										},
+										"exitPresent": {
+											"type": "string"
+										},
+										"plainText": {
+											"type": "string"
+										},
+										"viewSource": {
+											"type": "string"
+										},
+										"viewRendered": {
+											"type": "string"
+										},
+										"htmlNotice": {
+											"type": "string"
+										},
+										"archiveName": {
+											"type": "string"
+										},
+										"archiveSize": {
+											"type": "string"
+										},
+										"archiveModified": {
+											"type": "string"
+										},
+										"archiveItems": {
+											"type": "string"
+										},
+										"archiveBack": {
+											"type": "string"
+										},
+										"archiveUp": {
+											"type": "string"
+										},
+										"archiveRoot": {
+											"type": "string"
+										},
+										"archiveTooMany": {
+											"type": "string"
+										},
+										"archiveEntryTooLarge": {
+											"type": "string"
+										},
+										"archiveEncrypted": {
+											"type": "string"
+										},
+										"archiveTooDeep": {
+											"type": "string"
+										},
+										"wireframe": {
+											"type": "string"
+										},
+										"resetView": {
+											"type": "string"
+										},
+										"modelHint": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"loading",
+										"errorTitle",
+										"errorBody",
+										"noPreview",
+										"tooLarge",
+										"truncated",
+										"download",
+										"openExternal",
+										"toolbar",
+										"zoomIn",
+										"zoomOut",
+										"zoomReset",
+										"fitWidth",
+										"fitPage",
+										"rotate",
+										"fullScreen",
+										"exitFullScreen",
+										"pageNumber",
+										"pageCount",
+										"pageLabel",
+										"thumbnails",
+										"passwordProtected",
+										"find",
+										"findPlaceholder",
+										"findNext",
+										"findPrevious",
+										"findCount",
+										"findNone",
+										"findClose",
+										"sheets",
+										"rowsTruncated",
+										"previousSlide",
+										"nextSlide",
+										"slideCount",
+										"slideLabel",
+										"present",
+										"exitPresent",
+										"plainText",
+										"viewSource",
+										"viewRendered",
+										"htmlNotice",
+										"archiveName",
+										"archiveSize",
+										"archiveModified",
+										"archiveItems",
+										"archiveBack",
+										"archiveUp",
+										"archiveRoot",
+										"archiveTooMany",
+										"archiveEntryTooLarge",
+										"archiveEncrypted",
+										"archiveTooDeep",
+										"wireframe",
+										"resetView",
+										"modelHint"
+									]
+								}
+							},
+							"required": [
+								"title",
+								"launcherHint",
+								"places",
+								"addFolder",
+								"addFolderTitle",
+								"saveCopyTitle",
+								"addFailed",
+								"tooManyPlaces",
+								"recent",
+								"recentEmpty",
+								"dropped",
+								"removeFolder",
+								"removeFolderNamed",
+								"unavailable",
+								"emptyTitle",
+								"emptyBody",
+								"emptyDrop",
+								"loading",
+								"folderEmpty",
+								"noMatches",
+								"deniedTitle",
+								"deniedBody",
+								"noAccessBody",
+								"missingTitle",
+								"missingBody",
+								"missingFile",
+								"failed",
+								"retry",
+								"breadcrumb",
+								"up",
+								"search",
+								"searchPlaceholder",
+								"searchSubfolders",
+								"searching",
+								"cancelSearch",
+								"searchTruncated",
+								"sortBy",
+								"sortName",
+								"sortModified",
+								"sortType",
+								"sortSize",
+								"sortAscending",
+								"sortDescending",
+								"showHidden",
+								"view",
+								"viewList",
+								"viewGrid",
+								"refresh",
+								"omitted",
+								"columnName",
+								"columnFolder",
+								"columnModified",
+								"columnSize",
+								"menu",
+								"previewAction",
+								"open",
+								"openDefault",
+								"showInFolder",
+								"copyPath",
+								"pathCopied",
+								"addRecent",
+								"removeRecent",
+								"saveCopy",
+								"saved",
+								"saveFailed",
+								"sameFile",
+								"runsCode",
+								"openFailed",
+								"closePreview",
+								"expandPreview",
+								"collapsePreview",
+								"resizePreview",
+								"droppedRefused",
+								"dragHint",
+								"dismiss",
+								"viewer"
+							]
 						}
 					},
 					"required": [
@@ -57605,7 +58189,8 @@
 						"notifications",
 						"menu",
 						"tray",
-						"offline"
+						"offline",
+						"files"
 					]
 				}
 			},

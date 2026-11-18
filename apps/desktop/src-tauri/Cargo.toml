@@ -20,6 +20,7 @@ tauri = { version = "2.12", features = ["tray-icon", "dynamic-acl"] }
 tauri-plugin-autostart = "2.7"
 tauri-plugin-clipboard-manager = "2.5"
 tauri-plugin-deep-link = "2.6"
+tauri-plugin-dialog = "2.8"
 tauri-plugin-global-shortcut = "2.4"
 tauri-plugin-log = "2.10"
 tauri-plugin-notification = "2.8"
@@ -28,6 +29,11 @@ tauri-plugin-single-instance = { version = "2.5", features = ["deep-link"] }
 tauri-plugin-updater = "2.14"
 tauri-plugin-window-state = "2.5"
 base64 = "0.22"
+# Dragging a file out of the Files window as a native OS file drag (OLE on
+# Windows, AppKit, GTK). Apache-2.0 OR MIT.
+drag = "2.1"
+# Resolved Windows paths without the verbatim prefix where it isn't needed.
+dunce = "1"
 # Local time for "Pause notifications until tomorrow" (08:00 here) and the
 # snooze time. Already in the build through other crates; its Local reads
 # the zone itself, without libc's localtime.

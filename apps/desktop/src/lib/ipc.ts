@@ -41,7 +41,12 @@ export type Settings = {
 export type UpdateChannel = "stable" | "beta";
 
 /** A global shortcut's action (shortcuts.rs). */
-export type ShortcutAction = "quickAdd" | "search" | "screenshot" | "today";
+export type ShortcutAction =
+  | "quickAdd"
+  | "search"
+  | "screenshot"
+  | "today"
+  | "files";
 
 export type ShortcutView = {
   action: ShortcutAction;
@@ -180,6 +185,14 @@ export type ErrorKind =
   | "shortcutReserved"
   | "shortcutInUse"
   | "shortcutTaken"
+  | "fileOutside"
+  | "fileMissing"
+  | "fileNoAccess"
+  | "fileWrongKind"
+  | "fileTooLarge"
+  | "fileTooMany"
+  | "fileRunsCode"
+  | "fileSameFile"
   | "internal";
 
 export type CommandError = {
@@ -264,6 +277,8 @@ export const api = {
   quickAddOpen: (serverId: string, url: string) =>
     invoke<void>("quick_add_open", { serverId, url }),
   closeQuickAdd: () => invoke<void>("close_quick_add"),
+  // The launcher's "Files" button.
+  showFiles: () => invoke<void>("show_files"),
   // Only from the offline page inside a server window (capabilities/offline.json).
   offlineState: () => invoke<OfflineState>("offline_state"),
   offlineRetry: (manual: boolean) =>

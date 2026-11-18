@@ -14,6 +14,7 @@ const LABEL_KEYS: Record<ShortcutAction, string> = {
   search: "settings.shortcutSearch",
   screenshot: "settings.shortcutScreenshot",
   today: "settings.shortcutToday",
+  files: "settings.shortcutFiles",
 };
 
 type RowError = { action: ShortcutAction; error: unknown };

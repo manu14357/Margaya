@@ -136,6 +136,35 @@ pub fn open_system_tool(link: &'static str) {
     }
 }
 
+/// Opens a local file with its default app, on its own thread. Only the
+/// Files window asks, for a file inside its scope that doesn't run code
+/// (`files_scope::runs_code`). Test builds write `open-file <path>` to
+/// `MARGAYA_E2E_OPEN_LOG` instead.
+pub fn open_file(path: std::path::PathBuf) {
+    let spawned = std::thread::Builder::new()
+        .name("open-file".into())
+        .spawn(move || {
+            #[cfg(feature = "e2e")]
+            let result = platform_open(&format!("open-file {}", path.display()));
+            #[cfg(not(feature = "e2e"))]
+            let result = tauri_plugin_opener::open_path(&path, None::<&str>)
+                .map_err(|error| error.to_string());
+            if let Err(error) = result {
+                log::warn!("could not open a file: {error}");
+            }
+        });
+    if let Err(error) = spawned {
+        log::warn!("could not start a thread to open a file: {error}");
+    }
+}
+
+/// Test builds: writes a line to `MARGAYA_E2E_OPEN_LOG` (a would-be outside
+/// action, such as a native drag).
+#[cfg(feature = "e2e")]
+pub fn record(line: &str) -> Result<(), String> {
+    platform_open(line)
+}
+
 /// Test builds (`--features e2e`) never start a browser: they append the link
 /// to the file named by `MARGAYA_E2E_OPEN_LOG`, after an optional
 /// `MARGAYA_E2E_OPEN_DELAY_MS` pause that stands in for a slow shell.

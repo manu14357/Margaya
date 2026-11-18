@@ -32,6 +32,7 @@ const SERVERS: &str = "servers";
 const QUICK_ADD: &str = "quick-add";
 const SEARCH: &str = "search";
 const TODAY: &str = "today";
+const FILES: &str = "files";
 const CLIPBOARD_TASK: &str = "clipboard-task";
 const SCREENSHOT: &str = "screenshot";
 const SETTINGS: &str = "settings";
@@ -393,6 +394,12 @@ fn tray_menu(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
     )?));
     items.push(Box::new(item(
         app,
+        FILES,
+        t("tray.files"),
+        shortcuts::menu_accelerator(app, Action::Files),
+    )?));
+    items.push(Box::new(item(
+        app,
         CLIPBOARD_TASK,
         t("tray.clipboardTask"),
         None,
@@ -649,6 +656,7 @@ pub fn handle_menu_event(app: &AppHandle, event: &MenuEvent) {
         QUICK_ADD => shortcuts::run(app, Action::QuickAdd),
         SEARCH => shortcuts::run(app, Action::Search),
         TODAY => shortcuts::run(app, Action::Today),
+        FILES => shortcuts::run(app, Action::Files),
         SCREENSHOT => shortcuts::run(app, Action::Screenshot),
         CLIPBOARD_TASK => launch::run(app, LaunchAction::ClipboardTask),
         SETTINGS => show_settings(app),
@@ -814,6 +822,7 @@ mod tests {
         for key in [
             "tray.search",
             "tray.today",
+            "tray.files",
             "tray.clipboardTask",
             "tray.screenshot",
             "tray.recent",

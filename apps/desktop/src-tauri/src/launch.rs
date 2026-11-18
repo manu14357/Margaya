@@ -2,7 +2,7 @@
 //! and the login item pass on the command line. They arrive at startup, or
 //! through single-instance when Margaya already runs.
 //!
-//! - `--action=quick-add | search | today | screenshot | clipboard`
+//! - `--action=quick-add | search | today | files | screenshot | clipboard`
 //! - `--open=inbox | my-tasks`: that page in the last-used server's window
 //! - `--minimized` (and the older `--hidden`): started by the login item
 
@@ -62,6 +62,7 @@ pub fn parse<S: AsRef<str>>(args: &[S]) -> Option<LaunchAction> {
                 "quick-add" => Some(LaunchAction::Shortcut(Action::QuickAdd)),
                 "search" => Some(LaunchAction::Shortcut(Action::Search)),
                 "today" => Some(LaunchAction::Shortcut(Action::Today)),
+                "files" => Some(LaunchAction::Shortcut(Action::Files)),
                 "screenshot" => Some(LaunchAction::Shortcut(Action::Screenshot)),
                 "clipboard" => Some(LaunchAction::ClipboardTask),
                 _ => None,
@@ -217,6 +218,10 @@ mod tests {
         assert_eq!(
             parse(&["x", "--open=my-tasks"]),
             Some(LaunchAction::Open(Page::MyTasks))
+        );
+        assert_eq!(
+            parse(&["x", "--action=files"]),
+            Some(LaunchAction::Shortcut(Action::Files))
         );
         assert_eq!(
             parse(&["x", "--action=clipboard"]),

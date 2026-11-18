@@ -18,7 +18,7 @@ use tauri_plugin_global_shortcut::{
 
 use crate::error::{AppError, AppResult, ErrorKind};
 use crate::state::lock;
-use crate::{capture, menus, prefs, search_window, today_window, windows};
+use crate::{capture, files_window, menus, prefs, search_window, today_window, windows};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -27,14 +27,16 @@ pub enum Action {
     Search,
     Screenshot,
     Today,
+    Files,
 }
 
 impl Action {
-    pub const ALL: [Action; 4] = [
+    pub const ALL: [Action; 5] = [
         Action::QuickAdd,
         Action::Search,
         Action::Screenshot,
         Action::Today,
+        Action::Files,
     ];
 
     /// The key in preferences.json and in the launcher.
@@ -44,6 +46,7 @@ impl Action {
             Action::Search => "search",
             Action::Screenshot => "screenshot",
             Action::Today => "today",
+            Action::Files => "files",
         }
     }
 
@@ -56,7 +59,7 @@ impl Action {
             Action::QuickAdd => Some("CommandOrControl+Shift+Space"),
             Action::Search => Some("CommandOrControl+Shift+K"),
             Action::Screenshot => Some("CommandOrControl+Shift+Alt+S"),
-            Action::Today => None,
+            Action::Today | Action::Files => None,
         }
     }
 }
@@ -328,6 +331,7 @@ pub fn run(app: &AppHandle, action: Action) {
         Action::Search => windows::spawn_ui(app, search_window::show),
         Action::Screenshot => windows::spawn_ui(app, capture::start_screenshot),
         Action::Today => windows::spawn_ui(app, today_window::toggle),
+        Action::Files => files_window::show(app),
     }
 }
 

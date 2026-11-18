@@ -14,6 +14,8 @@ mod discovery;
 mod download_progress;
 mod downloads;
 mod error;
+mod files_scope;
+mod files_window;
 mod i18n;
 mod jumplist;
 mod launch;
@@ -98,6 +100,11 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_clipboard_manager::init())
+        // Used from Rust only (the Files window's folder picker and "Save a
+        // copy…"); no capability grants a page any `dialog:` command.
+        .plugin(tauri_plugin_dialog::init())
+        // Audio and video in the Files window, for that webview only.
+        .register_asynchronous_uri_scheme_protocol(files_window::PROTOCOL, files_window::serve)
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_autostart::init(
             tauri_plugin_autostart::MacosLauncher::LaunchAgent,
@@ -112,6 +119,7 @@ pub fn run() {
                 .with_filter(|label| {
                     label == windows::LAUNCHER
                         || label == today_window::LABEL
+                        || label == files_window::LABEL
                         || matches!(servers::parse_window_label(label), Some(WindowKind::Primary(_)))
                 })
                 // Visibility is the app's choice (the login item starts
@@ -183,6 +191,22 @@ pub fn run() {
             spellcheck::set_spellcheck,
             pause::get_notification_pause,
             pause::set_notification_pause,
+            files_window::show_files,
+            files_window::files_overview,
+            files_window::files_add_folder,
+            files_window::files_remove_folder,
+            files_window::files_list,
+            files_window::files_read,
+            files_window::files_stream_url,
+            files_window::files_search,
+            files_window::files_cancel_search,
+            files_window::files_open,
+            files_window::files_reveal,
+            files_window::files_copy_path,
+            files_window::files_save_copy,
+            files_window::files_recent_add,
+            files_window::files_recent_remove,
+            files_window::files_start_drag,
         ])
         .setup(|app| {
             let handle = app.handle().clone();
@@ -191,6 +215,7 @@ pub fn run() {
             let store = ServerStore::load(config_dir.join("servers.json"));
             let version = app.package_info().version.to_string();
             app.manage(AppState::new(store, &version));
+            app.manage(files_window::FilesState::load(&config_dir));
             log::info!("Margaya Desktop {version} starting");
             #[cfg(feature = "e2e")]
             log::warn!("test build: links are written to MARGAYA_E2E_OPEN_LOG, never opened");
@@ -329,6 +354,13 @@ pub fn run() {
                     if let Some(server_window) = server_window(app, kind, window.label()) {
                         windows::report_chrome(app, &server_window, None, false);
                     }
+                }
+                // Files and folders dropped on the Files window (server
+                // windows have the drop handler off and never get here).
+                WindowEvent::DragDrop(tauri::DragDropEvent::Drop { paths, .. })
+                    if window.label() == files_window::LABEL =>
+                {
+                    files_window::on_drop(app, paths.clone());
                 }
                 // Another monitor: redraw the taskbar badge at its scale.
                 WindowEvent::ScaleFactorChanged { .. } => crate::badge_view::apply(app),

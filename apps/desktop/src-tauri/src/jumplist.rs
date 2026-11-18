@@ -1,5 +1,5 @@
 //! The Windows taskbar's right-click menu (jump list): Quick add, Search,
-//! Inbox and My tasks. Each task starts Margaya with a launch argument
+//! Files, Inbox and My tasks. Each task starts Margaya with a launch argument
 //! (`launch.rs`); a running app gets it through single-instance.
 //!
 //! Linux .deb and .rpm installs get the same entries as `Actions=` in
@@ -7,9 +7,10 @@
 
 /// The jump list's tasks: (launch argument, copy key).
 #[cfg_attr(not(windows), allow(dead_code))]
-pub const TASKS: [(&str, &str); 4] = [
+pub const TASKS: [(&str, &str); 5] = [
     ("--action=quick-add", "jumpList.quickAdd"),
     ("--action=search", "jumpList.search"),
+    ("--action=files", "jumpList.files"),
     ("--open=inbox", "jumpList.inbox"),
     ("--open=my-tasks", "jumpList.myTasks"),
 ];

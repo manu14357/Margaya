@@ -29,6 +29,19 @@ pub enum ErrorKind {
     ShortcutReserved,
     ShortcutInUse,
     ShortcutTaken,
+    /// The Files window: outside its places and granted files (or a
+    /// network, device or malformed path); gone; refused by the system; a
+    /// file where a folder was expected or the other way round; too large
+    /// to preview; too many places; a file that runs code (never opened);
+    /// "Save a copy" onto the file itself.
+    FileOutside,
+    FileMissing,
+    FileNoAccess,
+    FileWrongKind,
+    FileTooLarge,
+    FileTooMany,
+    FileRunsCode,
+    FileSameFile,
     Internal,
 }
 

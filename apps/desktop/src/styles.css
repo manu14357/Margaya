@@ -97,6 +97,10 @@ h2 {
   gap: 10px;
 }
 
+.brand .brand-action {
+  margin-left: auto;
+}
+
 .brand img {
   border-radius: 7px;
 }

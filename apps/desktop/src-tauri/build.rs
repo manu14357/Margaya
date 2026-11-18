@@ -62,6 +62,22 @@ const COMMANDS: &[&str] = &[
     "set_spellcheck",
     "get_notification_pause",
     "set_notification_pause",
+    "show_files",
+    "files_overview",
+    "files_add_folder",
+    "files_remove_folder",
+    "files_list",
+    "files_read",
+    "files_stream_url",
+    "files_search",
+    "files_cancel_search",
+    "files_open",
+    "files_reveal",
+    "files_copy_path",
+    "files_save_copy",
+    "files_recent_add",
+    "files_recent_remove",
+    "files_start_drag",
 ];
 
 /// Copies `desktop.launcher` from every locale file in the repo's i18n folder

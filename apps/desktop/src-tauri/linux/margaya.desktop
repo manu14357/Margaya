@@ -12,7 +12,7 @@ StartupWMClass={{exec}}
 {{#if mime_type}}
 MimeType={{mime_type}};
 {{/if}}
-Actions=quick-add;search;inbox;my-tasks;
+Actions=quick-add;search;files;inbox;my-tasks;
 
 [Desktop Action quick-add]
 Name=Quick add
@@ -21,6 +21,10 @@ Exec={{exec}} --action=quick-add
 [Desktop Action search]
 Name=Search
 Exec={{exec}} --action=search
+
+[Desktop Action files]
+Name=Files
+Exec={{exec}} --action=files
 
 [Desktop Action inbox]
 Name=Inbox

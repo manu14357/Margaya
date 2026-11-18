@@ -1,0 +1,25 @@
+{
+	"$schema": "../gen/schemas/desktop-schema.json",
+	"identifier": "files",
+	"description": "The bundled Files window (index.html#files), local pages only: a read-only explorer over folders the person picked. Only its own commands, each of which checks the window label and every path in Rust (files_scope.rs). No fs:, dialog: or opener: permission: the folder picker, \"Save a copy…\", opening and revealing run in Rust after the scope check. Server windows never get any of these.",
+	"windows": ["files"],
+	"local": true,
+	"permissions": [
+		"core:event:default",
+		"allow-files-overview",
+		"allow-files-add-folder",
+		"allow-files-remove-folder",
+		"allow-files-list",
+		"allow-files-read",
+		"allow-files-stream-url",
+		"allow-files-search",
+		"allow-files-cancel-search",
+		"allow-files-open",
+		"allow-files-reveal",
+		"allow-files-copy-path",
+		"allow-files-save-copy",
+		"allow-files-recent-add",
+		"allow-files-recent-remove",
+		"allow-files-start-drag"
+	]
+}

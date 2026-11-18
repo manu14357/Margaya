@@ -37,6 +37,7 @@
 		"allow-get-spellcheck",
 		"allow-set-spellcheck",
 		"allow-get-notification-pause",
-		"allow-set-notification-pause"
+		"allow-set-notification-pause",
+		"allow-show-files"
 	]
 }

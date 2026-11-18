@@ -24,8 +24,15 @@
 			}
 		],
 		"security": {
-			"csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost",
-			"capabilities": ["launcher", "quick-add", "search", "today", "offline"]
+			"csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; img-src 'self' data: blob:; media-src 'self' blob: margaya-file: http://margaya-file.localhost; style-src 'self' 'unsafe-inline'; font-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; connect-src 'self' ipc: http://ipc.localhost blob: data:",
+			"capabilities": [
+				"launcher",
+				"quick-add",
+				"search",
+				"today",
+				"offline",
+				"files"
+			]
 		}
 	},
 	"bundle": {
