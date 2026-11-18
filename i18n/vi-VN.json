@@ -1954,7 +1954,8 @@
 				"importError": "Không thể nhập issue",
 				"commentOnEnabled": "Margaya sẽ bình luận kèm liên kết công việc trên các issue mới",
 				"commentOnDisabled": "Đã tắt bình luận liên kết công việc trên issue mới",
-				"settingsUpdateError": "Không thể cập nhật tích hợp GitHub"
+				"settingsUpdateError": "Không thể cập nhật tích hợp GitHub",
+				"linkError": "GitHub không kết nối được tài khoản của bạn (lỗi: {{code}}). Nếu lỗi tiếp tục xảy ra, hãy nhờ quản trị viên kiểm tra cài đặt đăng nhập bằng GitHub."
 			},
 			"connectionStatus": "Trạng thái kết nối",
 			"connectedActive": "Kho lưu trữ đã kết nối và đang hoạt động",
@@ -1993,6 +1994,12 @@
 			"importDisabledHint": "Hoàn tất cấu hình kho lưu trữ ở trên để bật tính năng nhập",
 			"accountVerificationHint": "Kết nối tài khoản GitHub để xác minh bạn có quyền quản trị kho lưu trữ này.",
 			"enableGithubSignInHint": "Yêu cầu quản trị viên hệ thống bật đăng nhập bằng GitHub.",
+			"appNotConfiguredHint": "Đồng bộ kho lưu trữ cần một GitHub App trên máy chủ này. Hãy nhờ quản trị viên phiên bản thiết lập một ứng dụng.",
+			"appNotConfiguredAdminHint": "Đồng bộ kho lưu trữ cần một GitHub App trên máy chủ này. Hãy thiết lập trong Cài đặt phiên bản.",
+			"setUpGithubApp": "Thiết lập GitHub App",
+			"copyLink": "Sao chép liên kết",
+			"linkCopied": "Đã sao chép liên kết. Hãy mở nó trong trình duyệt bạn đã đăng nhập Margaya và kết nối tài khoản GitHub tại đó.",
+			"copyLinkError": "Không thể sao chép liên kết.",
 			"reverifyHint": "Kết nối lại kho lưu trữ này để xác minh quyền truy cập và tiếp tục đồng bộ hóa.",
 			"resumeImport": "Tiếp tục nhập",
 			"importPaused": "Quá trình nhập này đã lưu tiến độ. Bạn có thể tiếp tục.",
@@ -3940,7 +3947,8 @@
 		"continueInBrowser": {
 			"title": "Tiếp tục trong trình duyệt",
 			"billing": "Hãy hoàn tất trong cửa sổ trình duyệt vừa mở, rồi quay lại Margaya. Gói của bạn sẽ được cập nhật khi bạn quay lại.",
-			"githubApp": "Hãy hoàn tất trên GitHub trong trình duyệt, rồi quay lại Margaya và kiểm tra lại cài đặt."
+			"githubApp": "Hãy hoàn tất trên GitHub trong trình duyệt, rồi quay lại Margaya và kiểm tra lại cài đặt.",
+			"githubAccount": "Hãy kết nối tài khoản GitHub trên trang vừa mở trong trình duyệt, rồi quay lại Margaya."
 		},
 		"save": "Lưu",
 		"unsavedChanges": "Thay đổi chưa lưu",
@@ -10690,6 +10698,7 @@
 			"publicBoards": "Bảng công khai",
 			"workspaces": "Không gian làm việc",
 			"ai": "AI",
+			"integrations": "Tích hợp",
 			"health": "Tình trạng"
 		},
 		"lockedCallout": "Các cài đặt này được quản lý bằng biến môi trường trên máy chủ này. Không thể thay đổi tại đây.",
@@ -10710,6 +10719,7 @@
 			"clear": "Xóa",
 			"cleared": "Đã xóa khóa bí mật",
 			"placeholder": "Nhập giá trị mới",
+			"loadFile": "Tải từ tệp…",
 			"replace": "Thay thế",
 			"saved": "Đã lưu",
 			"unreadable": "Không thể đọc khóa bí mật đã lưu (AUTH_SECRET của máy chủ đã thay đổi). Hãy nhập lại."
@@ -10852,6 +10862,45 @@
 			"subtitle": "Máy chủ SMTP mà Margaya dùng để gửi mã đăng nhập, lời mời và thông báo.",
 			"title": "Email",
 			"username": "Tên người dùng"
+		},
+		"integrations": {
+			"title": "Tích hợp",
+			"subtitle": "Các kết nối trên toàn máy chủ mà tích hợp dự án sử dụng."
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App đã được thiết lập",
+			"statusNotConfigured": "GitHub App chưa được thiết lập",
+			"intro": "Đồng bộ kho lưu trữ (issue, pull request và nhánh) chạy qua một GitHub App do bạn tạo trên GitHub. Tính năng này tách biệt với đăng nhập bằng GitHub, vốn được thiết lập trong “Xác thực”.",
+			"managedByEnv": "GitHub App được cấu hình bằng biến môi trường (GITHUB_APP_ID và các biến liên quan). Hãy gỡ chúng và khởi động lại để quản lý tại đây.",
+			"stepsTitle": "Cách thiết lập",
+			"step1": "Trên GitHub, tạo một GitHub App (Settings → Developer settings → GitHub Apps → New GitHub App). Dùng địa chỉ Margaya của bạn làm Homepage URL.",
+			"step2": "Trong mục Webhook, nhập URL webhook bên dưới và một khóa bí mật webhook (nút “Tạo” sẽ tạo sẵn một khóa). Nếu GitHub không thể kết nối tới máy chủ này, hãy bỏ chọn Active: khi đó các thay đổi trên GitHub sẽ không được đưa về Margaya.",
+			"step3": "Trong mục Repository permissions, cấp quyền đọc và ghi cho Issues, và quyền đọc cho Pull requests và Contents. Đăng ký các sự kiện Issues, Issue comment, Pull request và Push.",
+			"step4": "Tạo App, sau đó chọn Generate a private key. Nhập ID của App, tên App lấy từ địa chỉ của nó và tệp .pem đã tải xuống vào đây, rồi lưu.",
+			"step5": "Chọn “Cài đặt App” và cài App cho các tài khoản hoặc tổ chức có kho lưu trữ bạn muốn kết nối.",
+			"createOnGithub": "Tạo GitHub App",
+			"webhookUrl": "URL webhook",
+			"webhookUrlHint": "Nhập giá trị này làm Webhook URL trong cài đặt của App trên GitHub.",
+			"appId": "ID của App",
+			"appIdHint": "Hiển thị ở đầu trang cài đặt của App trên GitHub.",
+			"appIdInvalid": "Nhập ID dạng số của App",
+			"appName": "Tên App",
+			"appNameHint": "Tên trong địa chỉ của App, github.com/apps/<name>. Dùng cho liên kết cài đặt.",
+			"appNameInvalid": "Dùng tên trong địa chỉ của App: chữ cái, chữ số và dấu gạch ngang",
+			"privateKey": "Khóa riêng tư",
+			"privateKeyHint": "Dán tệp .pem mà GitHub tải xuống khi bạn tạo khóa riêng tư, hoặc tải tệp lên.",
+			"privateKeyInvalid": "Dán toàn bộ khóa, từ -----BEGIN đến -----END",
+			"webhookSecret": "Khóa bí mật webhook",
+			"webhookSecretHint": "Nhập cùng khóa bí mật này trong cài đặt webhook của App trên GitHub.",
+			"generateSecret": "Tạo",
+			"save": "Lưu thay đổi",
+			"install": "Cài đặt App",
+			"remove": "Xóa thiết lập GitHub App…",
+			"removeTitle": "Xóa thiết lập GitHub App?",
+			"removeDescription": "Đồng bộ kho lưu trữ sẽ dừng ở mọi dự án cho đến khi bạn thiết lập lại App.",
+			"removeConfirm": "Xóa",
+			"removed": "Đã xóa thiết lập GitHub App"
 		},
 		"testEmail": {
 			"codes": {

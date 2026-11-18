@@ -1599,7 +1599,8 @@
 				"importError": "이슈 가져오기에 실패했습니다",
 				"commentOnEnabled": "Margaya가 새 이슈에 작업 링크를 포함한 댓글을 게시합니다",
 				"commentOnDisabled": "새 이슈의 작업 링크 댓글이 꺼져 있습니다",
-				"settingsUpdateError": "GitHub 연동 업데이트에 실패했습니다"
+				"settingsUpdateError": "GitHub 연동 업데이트에 실패했습니다",
+				"linkError": "GitHub에서 계정을 연결하지 못했습니다(오류: {{code}}). 계속 발생하면 관리자에게 GitHub 로그인 설정을 확인해 달라고 요청하세요."
 			},
 			"connectionStatus": "연결 상태",
 			"connectedActive": "저장소가 연결되어 활성 상태입니다",
@@ -1638,6 +1639,12 @@
 			"importDisabledHint": "가져오기를 활성화하려면 위의 저장소 구성을 완료하세요",
 			"accountVerificationHint": "이 저장소의 관리자 권한을 확인하려면 GitHub 계정을 연결하세요.",
 			"enableGithubSignInHint": "인스턴스 관리자에게 GitHub 로그인을 활성화해 달라고 요청하세요.",
+			"appNotConfiguredHint": "저장소 동기화에는 이 서버의 GitHub App이 필요합니다. 인스턴스 관리자에게 설정을 요청하세요.",
+			"appNotConfiguredAdminHint": "저장소 동기화에는 이 서버의 GitHub App이 필요합니다. 인스턴스 설정에서 설정하세요.",
+			"setUpGithubApp": "GitHub App 설정하기",
+			"copyLink": "링크 복사",
+			"linkCopied": "링크를 복사했습니다. Margaya에 로그인된 브라우저에서 열고 그곳에서 GitHub 계정을 연결하세요.",
+			"copyLinkError": "링크를 복사하지 못했습니다.",
 			"reverifyHint": "접근 권한을 확인하고 동기화를 재개하려면 이 저장소를 다시 연결하세요.",
 			"resumeImport": "가져오기 재개",
 			"importPaused": "이 가져오기는 진행 상황이 저장되어 있습니다. 재개할 수 있습니다.",
@@ -3940,7 +3947,8 @@
 		"continueInBrowser": {
 			"title": "브라우저에서 계속하세요",
 			"billing": "방금 열린 브라우저 창에서 완료한 후 Margaya로 돌아오세요. 돌아오면 요금제가 업데이트됩니다.",
-			"githubApp": "브라우저에서 GitHub 작업을 마친 후 Margaya로 돌아와 설치를 다시 확인하세요."
+			"githubApp": "브라우저에서 GitHub 작업을 마친 후 Margaya로 돌아와 설치를 다시 확인하세요.",
+			"githubAccount": "브라우저에서 열린 페이지에서 GitHub 계정을 연결한 후 Margaya로 돌아오세요."
 		},
 		"save": "저장",
 		"unsavedChanges": "저장되지 않은 변경 사항",
@@ -10690,6 +10698,7 @@
 			"publicBoards": "공개 보드",
 			"workspaces": "워크스페이스",
 			"ai": "AI",
+			"integrations": "연동",
 			"health": "상태 점검"
 		},
 		"lockedCallout": "이 설정은 이 서버의 환경 변수로 관리됩니다. 여기에서는 변경할 수 없습니다.",
@@ -10710,6 +10719,7 @@
 			"clear": "지우기",
 			"cleared": "시크릿을 지웠습니다",
 			"placeholder": "새 값을 입력하세요",
+			"loadFile": "파일에서 불러오기…",
 			"replace": "교체",
 			"saved": "저장됨",
 			"unreadable": "저장된 시크릿을 읽을 수 없습니다(서버의 AUTH_SECRET이 변경됨). 다시 입력하세요."
@@ -10852,6 +10862,45 @@
 			"subtitle": "Margaya가 로그인 코드, 초대, 알림을 보내는 SMTP 서버입니다.",
 			"title": "이메일",
 			"username": "사용자 이름"
+		},
+		"integrations": {
+			"title": "연동",
+			"subtitle": "프로젝트 연동에서 사용하는 서버 전체 연결입니다."
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App이 설정되었습니다",
+			"statusNotConfigured": "GitHub App이 아직 설정되지 않았습니다",
+			"intro": "저장소 동기화(이슈, 풀 리퀘스트, 브랜치)는 GitHub에서 직접 만드는 GitHub App을 통해 실행됩니다. 이는 “인증”에서 설정하는 GitHub 로그인과는 별개입니다.",
+			"managedByEnv": "GitHub App은 환경 변수(GITHUB_APP_ID 등)로 설정되어 있습니다. 여기에서 관리하려면 환경 변수를 제거하고 다시 시작하세요.",
+			"stepsTitle": "설정 방법",
+			"step1": "GitHub에서 GitHub App을 만드세요(Settings → Developer settings → GitHub Apps → New GitHub App). Homepage URL에는 Margaya 주소를 입력하세요.",
+			"step2": "Webhook 아래에 아래의 웹훅 URL과 웹훅 시크릿을 입력하세요(“생성”을 누르면 만들어집니다). GitHub가 이 서버에 접근할 수 없다면 Active를 선택 해제하세요. 이 경우 GitHub에서 변경한 내용이 Margaya로 돌아오지 않습니다.",
+			"step3": "Repository permissions에서 Issues에 읽기 및 쓰기 권한을, Pull requests와 Contents에 읽기 권한을 부여하세요. Issues, Issue comment, Pull request, Push 이벤트를 구독하세요.",
+			"step4": "앱을 만든 다음 Generate a private key를 선택하세요. 앱 ID, 앱 주소에 있는 앱 이름, 다운로드한 .pem 파일을 여기에 입력하고 저장하세요.",
+			"step5": "“앱 설치”를 선택하고 연결할 저장소가 있는 계정 또는 조직에 설치하세요.",
+			"createOnGithub": "GitHub App 만들기",
+			"webhookUrl": "웹훅 URL",
+			"webhookUrlHint": "GitHub의 앱 설정에서 이 값을 Webhook URL로 입력하세요.",
+			"appId": "앱 ID",
+			"appIdHint": "GitHub의 앱 설정 페이지 상단에 표시됩니다.",
+			"appIdInvalid": "앱의 숫자 ID를 입력하세요",
+			"appName": "앱 이름",
+			"appNameHint": "앱 주소 github.com/apps/<name>에 있는 이름입니다. 설치 링크에 사용됩니다.",
+			"appNameInvalid": "앱 주소에 있는 이름을 사용하세요: 문자, 숫자, 하이픈",
+			"privateKey": "비공개 키",
+			"privateKeyHint": "비공개 키를 생성할 때 GitHub에서 다운로드되는 .pem 파일을 붙여넣거나 파일을 불러오세요.",
+			"privateKeyInvalid": "-----BEGIN부터 -----END까지 키 전체를 붙여넣으세요",
+			"webhookSecret": "웹훅 시크릿",
+			"webhookSecretHint": "GitHub의 앱 웹훅 설정에도 같은 시크릿을 입력하세요.",
+			"generateSecret": "생성",
+			"save": "변경사항 저장",
+			"install": "앱 설치",
+			"remove": "GitHub App 설정 제거…",
+			"removeTitle": "GitHub App 설정을 제거하시겠습니까?",
+			"removeDescription": "앱을 다시 설정할 때까지 모든 프로젝트의 저장소 동기화가 중지됩니다.",
+			"removeConfirm": "제거",
+			"removed": "GitHub App 설정을 제거했습니다"
 		},
 		"testEmail": {
 			"codes": {

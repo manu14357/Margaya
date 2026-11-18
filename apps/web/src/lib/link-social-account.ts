@@ -1,38 +1,45 @@
 import { authClient } from "@/lib/auth-client";
-import {
-  getDesktopSignInPopup,
-  isDesktopApp,
-  onNextWindowFocus,
-} from "@/lib/desktop";
+
+/** Query parameter marking a page the provider sent back after a failure. */
+export const LINK_ERROR_PARAM = "linkError";
 
 /**
- * Links a social account (GitHub, ...) to the signed-in user. In a browser,
- * Better Auth sends this page to the provider as usual. Inside the desktop
- * app, the provider's page opens in the app's sign-in popup instead, which
- * shares this window's session (the OAuth state cookie lives there) and
- * closes when the provider sends it back. An app version without the popup
- * keeps the redirect, which the app itself may catch. Either way, inside the
- * app `onReturn` runs when this window has the focus again.
+ * Links a social account (GitHub, ...) to the signed-in user: Better Auth
+ * sends this page to the provider and back to `callbackURL`. A failure comes
+ * back to the same page with `linkError=<provider>` and Better Auth's
+ * `error` code; without it Better Auth would land on the API's own origin,
+ * which has no page to show.
  */
 export async function linkSocialAccount(
   provider: string,
   callbackURL: string,
-  onReturn?: () => void,
 ): Promise<void> {
-  const popup = getDesktopSignInPopup();
+  const errorCallbackURL = new URL(callbackURL);
+  errorCallbackURL.searchParams.set(LINK_ERROR_PARAM, provider);
   const result = await authClient.linkSocial({
     provider,
     callbackURL,
-    ...(popup ? { disableRedirect: true } : {}),
+    errorCallbackURL: errorCallbackURL.href,
   });
   if (result.error) {
     throw new Error(result.error.message ?? "Could not link the account");
   }
-  if (popup) {
-    const url = result.data?.url;
-    if (typeof url !== "string" || !popup(url)) {
-      throw new Error("Could not open the sign-in window");
-    }
-  }
-  if (onReturn && isDesktopApp()) onNextWindowFocus(onReturn);
+}
+
+/**
+ * The error code of a failed link for `provider` on this page, removed from
+ * the address so a reload doesn't report it again; null when there is none.
+ */
+export function takeLinkError(
+  provider: string,
+  win: Window = window,
+): string | null {
+  const url = new URL(win.location.href);
+  if (url.searchParams.get(LINK_ERROR_PARAM) !== provider) return null;
+  const code = url.searchParams.get("error") || "unknown";
+  url.searchParams.delete(LINK_ERROR_PARAM);
+  url.searchParams.delete("error");
+  url.searchParams.delete("error_description");
+  win.history.replaceState(win.history.state, "", url.href);
+  return code;
 }

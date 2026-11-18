@@ -121,6 +121,11 @@
 			"height": 944,
 			"format": "webp"
 		},
+		"admin/github-app": {
+			"width": 768,
+			"height": 1099,
+			"format": "webp"
+		},
 		"admin/health": {
 			"width": 1128,
 			"height": 824,
@@ -793,7 +798,7 @@
 		},
 		"integrations/github": {
 			"width": 734,
-			"height": 518,
+			"height": 628,
 			"format": "webp"
 		},
 		"integrations/mattermost": {

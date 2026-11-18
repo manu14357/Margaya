@@ -42,6 +42,10 @@ export const githubAppInfoSchema = z
   .object({
     accountConnected: z.boolean(),
     accountLinkingAvailable: z.boolean(),
+    appConfigured: z.boolean().openapi({
+      description:
+        "Whether this instance has a GitHub App set up. Listing, verifying and connecting repositories need it.",
+    }),
     appName: z.string().nullable().openapi({
       description:
         "The configured GitHub App slug, or null when this instance has no App set up.",

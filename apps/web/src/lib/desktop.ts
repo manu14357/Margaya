@@ -167,28 +167,6 @@ export function notifyDesktopSignedOut(win: Window = window): void {
   callBridge("signedOut", win);
 }
 
-/**
- * Opens an http(s) URL in the desktop app's sign-in popup, or null when this
- * is a browser or an app version without one.
- */
-export function getDesktopSignInPopup(win: Window = window) {
-  const bridge = getDesktopBridge(win);
-  const open = bridge?.openSignInPopup;
-  if (typeof open !== "function") return null;
-  return (url: string) => {
-    let parsed: URL;
-    try {
-      parsed = new URL(url);
-    } catch {
-      return false;
-    }
-    if (parsed.protocol !== "https:" && parsed.protocol !== "http:")
-      return false;
-    open.call(bridge, parsed.href);
-    return true;
-  };
-}
-
 /** Opens the launcher's server list; null outside the desktop app. */
 export function getDesktopShowServers(win: Window = window) {
   const bridge = getDesktopBridge(win);

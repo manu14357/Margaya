@@ -1,8 +1,10 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link as RouterLink } from "@tanstack/react-router";
 import {
   AlertTriangle,
   CheckCircle,
+  Copy,
   ExternalLink,
   GitBranch,
   Import,
@@ -42,8 +44,14 @@ import { useUpdateGithubIntegration } from "@/hooks/mutations/github-integration
 import useGetGithubIntegration from "@/hooks/queries/github-integration/use-get-github-integration";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/cn";
-import { continueInSystemBrowser } from "@/lib/desktop";
-import { linkSocialAccount } from "@/lib/link-social-account";
+import { copyToClipboard } from "@/lib/copy-to-clipboard";
+import {
+  continueInSystemBrowser,
+  isDesktopApp,
+  onNextWindowFocus,
+  openInSystemBrowser,
+} from "@/lib/desktop";
+import { linkSocialAccount, takeLinkError } from "@/lib/link-social-account";
 import { toast } from "@/lib/toast";
 
 type GithubIntegrationFormValues = {
@@ -58,6 +66,8 @@ export function GitHubIntegrationSettings({
 }) {
   const { t } = useTranslation();
   const { data: session } = authClient.useSession();
+  // Instance admins can set up the GitHub App; the API re-checks the role.
+  const isInstanceAdmin = session?.user?.role === "admin";
   const { data: appInfo } = useQuery({
     queryKey: ["github-app-info", session?.user.id],
     queryFn: getGitHubAppInfo,
@@ -65,16 +75,40 @@ export function GitHubIntegrationSettings({
   });
   const queryClient = useQueryClient();
   const [isLinkingAccount, setIsLinkingAccount] = React.useState(false);
+  // A failed link comes back to this page with the provider's error code.
+  React.useEffect(() => {
+    const code = takeLinkError("github");
+    if (code) {
+      toast.error(t("settings:githubIntegration.toast.linkError", { code }));
+    }
+  }, [t]);
+  const refreshAppInfo = () => {
+    void queryClient.invalidateQueries({ queryKey: ["github-app-info"] });
+  };
+  const desktop = isDesktopApp();
+  // For a browser other than the default one: the same page, to open there.
+  const copyPageLink = async () => {
+    if (await copyToClipboard(window.location.href)) {
+      onNextWindowFocus(refreshAppInfo);
+      toast.success(t("settings:githubIntegration.linkCopied"));
+    } else {
+      toast.error(t("settings:githubIntegration.copyLinkError"));
+    }
+  };
   const linkAccount = async () => {
+    // The desktop app links in the browser: this same page opens there, the
+    // person connects GitHub with their browser session, and the app checks
+    // the linked account again when it has the focus back.
+    if (desktop && openInSystemBrowser(window.location.href)) {
+      onNextWindowFocus(refreshAppInfo);
+      toast.info(t("settings:continueInBrowser.title"), {
+        description: t("settings:continueInBrowser.githubAccount"),
+      });
+      return;
+    }
     setIsLinkingAccount(true);
     try {
-      // In the desktop app GitHub's page opens in the app's sign-in popup
-      // and this page stays put: refresh the linked account once it closes.
-      await linkSocialAccount("github", window.location.href, () => {
-        void queryClient.invalidateQueries({
-          queryKey: ["github-app-info"],
-        });
-      });
+      await linkSocialAccount("github", window.location.href);
     } catch (error) {
       toast.error(
         error instanceof Error
@@ -319,6 +353,10 @@ export function GitHubIntegrationSettings({
   // The saved binding is verified again by each import request. Resuming must
   // also work after refresh, without a new administrator-only account check.
   const canImport = isConnected && !integration.requiresVerification;
+  // Listing, verifying and connecting repositories go through the server's
+  // GitHub App; an API without the field predates the check.
+  const appMissing = appInfo?.appConfigured === false;
+  const canUseRepositories = Boolean(appInfo?.accountConnected) && !appMissing;
 
   return (
     <div className="space-y-4">
@@ -328,19 +366,51 @@ export function GitHubIntegrationSettings({
             {t("settings:githubIntegration.accountVerificationHint")}
           </p>
           {appInfo.accountLinkingAvailable ? (
-            <Button
-              type="button"
-              variant="outline"
-              loading={isLinkingAccount}
-              onClick={linkAccount}
-            >
-              <GithubIcon aria-hidden="true" />
-              {t("settings:githubIntegration.connect")} GitHub
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                loading={isLinkingAccount}
+                onClick={linkAccount}
+              >
+                <GithubIcon aria-hidden="true" />
+                {t("settings:githubIntegration.connect")} GitHub
+                {desktop && <ExternalLink aria-hidden="true" />}
+              </Button>
+              {desktop && (
+                <Button type="button" variant="ghost" onClick={copyPageLink}>
+                  <Copy aria-hidden="true" />
+                  {t("settings:githubIntegration.copyLink")}
+                </Button>
+              )}
+            </div>
           ) : (
             <p className="text-sm text-muted-foreground">
               {t("settings:githubIntegration.enableGithubSignInHint")}
             </p>
+          )}
+        </div>
+      )}
+      {appMissing && (
+        <div
+          role="status"
+          className="space-y-3 rounded-md border border-border bg-muted/40 p-4 text-sm"
+        >
+          <p>
+            {isInstanceAdmin
+              ? t("settings:githubIntegration.appNotConfiguredAdminHint")
+              : t("settings:githubIntegration.appNotConfiguredHint")}
+          </p>
+          {isInstanceAdmin && (
+            <Button
+              variant="outline"
+              size="sm"
+              render={
+                <RouterLink to="/dashboard/settings/instance/integrations" />
+              }
+            >
+              {t("settings:githubIntegration.setUpGithubApp")}
+            </Button>
           )}
         </div>
       )}
@@ -577,7 +647,7 @@ export function GitHubIntegrationSettings({
                   variant="outline"
                   size="sm"
                   onClick={() => setShowRepositoryBrowser(true)}
-                  disabled={!appInfo?.accountConnected}
+                  disabled={!canUseRepositories}
                   className="gap-2"
                 >
                   <GitBranch className="size-3" />
@@ -590,7 +660,7 @@ export function GitHubIntegrationSettings({
                   size="sm"
                   onClick={() => handleVerifyInstallation(form.getValues())}
                   disabled={
-                    !appInfo?.accountConnected ||
+                    !canUseRepositories ||
                     isVerifying ||
                     !form.formState.isValid
                   }
@@ -606,7 +676,7 @@ export function GitHubIntegrationSettings({
                   type="submit"
                   size="sm"
                   disabled={
-                    !appInfo?.accountConnected ||
+                    !canUseRepositories ||
                     isCreating ||
                     isDeleting ||
                     !form.formState.isValid ||

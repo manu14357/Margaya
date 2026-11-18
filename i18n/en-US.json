@@ -2866,7 +2866,8 @@
 				"importError": "Failed to import issues",
 				"commentOnEnabled": "Margaya will comment with a task link on new issues",
 				"commentOnDisabled": "Task link comments on new issues are turned off",
-				"settingsUpdateError": "Failed to update GitHub integration"
+				"settingsUpdateError": "Failed to update GitHub integration",
+				"linkError": "GitHub didn't connect your account (error: {{code}}). If this keeps happening, ask your administrator to check the GitHub sign-in settings."
 			},
 			"connectionStatus": "Connection status",
 			"connectedActive": "Repository connected and active",
@@ -2905,6 +2906,12 @@
 			"importDisabledHint": "Complete the repository configuration above to enable importing",
 			"accountVerificationHint": "Connect your GitHub account to verify that you administer this repository.",
 			"enableGithubSignInHint": "Ask your instance administrator to enable GitHub sign-in.",
+			"appNotConfiguredHint": "Repository sync needs a GitHub App on this server. Ask your instance administrator to set one up.",
+			"appNotConfiguredAdminHint": "Repository sync needs a GitHub App on this server. Set it up in Instance settings.",
+			"setUpGithubApp": "Set up the GitHub App",
+			"copyLink": "Copy link",
+			"linkCopied": "Link copied. Open it in a browser where you're signed in to Margaya and connect your GitHub account there.",
+			"copyLinkError": "Couldn't copy the link.",
 			"reverifyHint": "Reconnect this repository to verify access and resume synchronization.",
 			"resumeImport": "Resume import",
 			"importPaused": "This import has saved progress. You can resume it.",
@@ -4011,7 +4018,8 @@
 		"continueInBrowser": {
 			"title": "Continue in your browser",
 			"billing": "Finish in the browser window that just opened, then come back to Margaya. Your plan updates when you return.",
-			"githubApp": "Finish on GitHub in your browser, then come back to Margaya and check the installation again."
+			"githubApp": "Finish on GitHub in your browser, then come back to Margaya and check the installation again.",
+			"githubAccount": "Connect your GitHub account on the page that opened in your browser, then come back to Margaya."
 		},
 		"save": "Save",
 		"unsavedChanges": "Unsaved changes",
@@ -11010,6 +11018,7 @@
 			"publicBoards": "Public boards",
 			"admins": "Admins",
 			"ai": "AI",
+			"integrations": "Integrations",
 			"health": "Health"
 		},
 		"lockedCallout": "These settings are managed with environment variables on this server. Changes here are disabled.",
@@ -11031,6 +11040,7 @@
 			"clear": "Clear",
 			"cancel": "Cancel",
 			"placeholder": "Enter a new value",
+			"loadFile": "Load from file…",
 			"unreadable": "The saved secret can't be read (the server's AUTH_SECRET changed). Enter it again.",
 			"cleared": "Secret cleared"
 		},
@@ -11172,6 +11182,45 @@
 			"removeConfirm": "Remove",
 			"removed": "Email settings removed",
 			"managedByEnv": "Email is configured with environment variables (SMTP_HOST and related). Remove them and restart to manage email here."
+		},
+		"integrations": {
+			"title": "Integrations",
+			"subtitle": "Server-wide connections that project integrations use."
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App is set up",
+			"statusNotConfigured": "GitHub App isn't set up yet",
+			"intro": "Repository sync (issues, pull requests and branches) runs through a GitHub App that you create on GitHub. It's separate from GitHub sign-in, which you set up under Authentication.",
+			"managedByEnv": "The GitHub App is configured with environment variables (GITHUB_APP_ID and related). Remove them and restart to manage it here.",
+			"stepsTitle": "How to set it up",
+			"step1": "On GitHub, create a GitHub App (Settings → Developer settings → GitHub Apps → New GitHub App). Use your Margaya address as the Homepage URL.",
+			"step2": "Under Webhook, enter the Webhook URL below and a webhook secret (Generate makes one). If GitHub can't reach this server, untick Active: changes made on GitHub then don't come back to Margaya.",
+			"step3": "Under Repository permissions, give Issues read and write access, and Pull requests and Contents read access. Subscribe to the Issues, Issue comment, Pull request and Push events.",
+			"step4": "Create the App, then select Generate a private key. Enter the App ID, the App name from its address and the downloaded .pem file here, and save.",
+			"step5": "Select Install the App and install it on the accounts or organizations whose repositories you want to connect.",
+			"createOnGithub": "Create a GitHub App",
+			"webhookUrl": "Webhook URL",
+			"webhookUrlHint": "Enter this as the Webhook URL in the App's settings on GitHub.",
+			"appId": "App ID",
+			"appIdHint": "Shown at the top of the App's settings page on GitHub.",
+			"appIdInvalid": "Enter the App's numeric ID",
+			"appName": "App name",
+			"appNameHint": "The name in the App's address, github.com/apps/<name>. Used for install links.",
+			"appNameInvalid": "Use the name from the App's address: letters, digits and hyphens",
+			"privateKey": "Private key",
+			"privateKeyHint": "Paste the .pem file GitHub downloads when you generate a private key, or load the file.",
+			"privateKeyInvalid": "Paste the whole key, from -----BEGIN to -----END",
+			"webhookSecret": "Webhook secret",
+			"webhookSecretHint": "Enter the same secret in the App's webhook settings on GitHub.",
+			"generateSecret": "Generate",
+			"save": "Save changes",
+			"install": "Install the App",
+			"remove": "Remove GitHub App settings…",
+			"removeTitle": "Remove the GitHub App settings?",
+			"removeDescription": "Repository sync stops for every project until you set up the App again.",
+			"removeConfirm": "Remove",
+			"removed": "GitHub App settings removed"
 		},
 		"testEmail": {
 			"title": "Send a test email",

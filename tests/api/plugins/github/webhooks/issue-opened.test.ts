@@ -74,6 +74,8 @@ vi.mock("../../../../../apps/api/src/database", () => ({
 
 vi.mock("../../../../../apps/api/src/plugins/github/utils/github-app", () => ({
   getGithubApp: () => mocks.mockGetGithubApp(),
+  // The instance setting falls back to this variable.
+  githubAppName: () => process.env.GITHUB_APP_NAME || null,
 }));
 
 vi.mock(

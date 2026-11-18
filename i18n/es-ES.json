@@ -1445,7 +1445,8 @@
 				"importError": "Error al importar issues",
 				"commentOnEnabled": "Margaya añadirá un comentario con un enlace a la tarea en los nuevos issues",
 				"commentOnDisabled": "Los comentarios con enlaces a tareas en nuevos issues están desactivados",
-				"settingsUpdateError": "Error al actualizar la integración de GitHub"
+				"settingsUpdateError": "Error al actualizar la integración de GitHub",
+				"linkError": "GitHub no conectó tu cuenta (error: {{code}}). Si vuelve a ocurrir, pide a tu administrador que revise la configuración del inicio de sesión con GitHub."
 			},
 			"connectionStatus": "Estado de la conexión",
 			"connectedActive": "Repositorio conectado y activo",
@@ -1484,6 +1485,12 @@
 			"importDisabledHint": "Completa la configuración del repositorio para activar la importación",
 			"accountVerificationHint": "Conecta tu cuenta de GitHub para verificar que administras este repositorio.",
 			"enableGithubSignInHint": "Pide al administrador de tu instancia que habilite el inicio de sesión con GitHub.",
+			"appNotConfiguredHint": "La sincronización de repositorios necesita una GitHub App en este servidor. Pide al administrador de la instancia que configure una.",
+			"appNotConfiguredAdminHint": "La sincronización de repositorios necesita una GitHub App en este servidor. Configúrala en Ajustes de la instancia.",
+			"setUpGithubApp": "Configurar la GitHub App",
+			"copyLink": "Copiar enlace",
+			"linkCopied": "Enlace copiado. Ábrelo en un navegador en el que hayas iniciado sesión en Margaya y conecta allí tu cuenta de GitHub.",
+			"copyLinkError": "No se pudo copiar el enlace.",
 			"reverifyHint": "Vuelve a conectar este repositorio para verificar el acceso y reanudar la sincronización.",
 			"resumeImport": "Reanudar importación",
 			"importPaused": "Esta importación tiene progreso guardado. Puedes reanudarla.",
@@ -4084,7 +4091,8 @@
 		"continueInBrowser": {
 			"title": "Continúa en tu navegador",
 			"billing": "Termina en la ventana del navegador que se acaba de abrir y vuelve a Margaya. Tu plan se actualizará cuando vuelvas.",
-			"githubApp": "Termina en GitHub desde tu navegador, vuelve a Margaya y comprueba de nuevo la instalación."
+			"githubApp": "Termina en GitHub desde tu navegador, vuelve a Margaya y comprueba de nuevo la instalación.",
+			"githubAccount": "Conecta tu cuenta de GitHub en la página que se abrió en tu navegador y luego vuelve a Margaya."
 		},
 		"save": "Guardar",
 		"unsavedChanges": "Cambios sin guardar",
@@ -11016,6 +11024,7 @@
 			"publicBoards": "Tableros públicos",
 			"workspaces": "Espacios de trabajo",
 			"ai": "IA",
+			"integrations": "Integraciones",
 			"health": "Estado del sistema"
 		},
 		"lockedCallout": "Estos ajustes se gestionan con variables de entorno en este servidor. Los cambios aquí están desactivados.",
@@ -11036,6 +11045,7 @@
 			"clear": "Borrar",
 			"cleared": "Secreto borrado",
 			"placeholder": "Introduce un valor nuevo",
+			"loadFile": "Cargar desde archivo…",
 			"replace": "Reemplazar",
 			"saved": "Guardado",
 			"unreadable": "No se puede leer el secreto guardado (el AUTH_SECRET del servidor cambió). Introdúcelo de nuevo."
@@ -11178,6 +11188,45 @@
 			"subtitle": "El servidor SMTP por el que Margaya envía los códigos de inicio de sesión, las invitaciones y las notificaciones.",
 			"title": "Correo electrónico",
 			"username": "Nombre de usuario"
+		},
+		"integrations": {
+			"title": "Integraciones",
+			"subtitle": "Conexiones de todo el servidor que usan las integraciones de proyecto."
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "La GitHub App está configurada",
+			"statusNotConfigured": "La GitHub App aún no está configurada",
+			"intro": "La sincronización de repositorios (issues, pull requests y ramas) funciona mediante una GitHub App que creas en GitHub. Es independiente del inicio de sesión con GitHub, que se configura en «Autenticación».",
+			"managedByEnv": "La GitHub App está configurada con variables de entorno (GITHUB_APP_ID y relacionadas). Elimínalas y reinicia para gestionarla aquí.",
+			"stepsTitle": "Cómo configurarla",
+			"step1": "En GitHub, crea una GitHub App (Settings → Developer settings → GitHub Apps → New GitHub App). Usa la dirección de tu Margaya como Homepage URL.",
+			"step2": "En Webhook, introduce la URL del webhook de abajo y un secreto de webhook («Generar» crea uno). Si GitHub no puede acceder a este servidor, desmarca Active: los cambios hechos en GitHub no volverán a Margaya.",
+			"step3": "En Repository permissions, da acceso de lectura y escritura a Issues, y acceso de lectura a Pull requests y Contents. Suscríbete a los eventos Issues, Issue comment, Pull request y Push.",
+			"step4": "Crea la App y selecciona Generate a private key. Introduce aquí el ID de la App, el nombre de la App que aparece en su dirección y el archivo .pem descargado, y guarda.",
+			"step5": "Selecciona «Instalar la App» e instálala en las cuentas u organizaciones cuyos repositorios quieras conectar.",
+			"createOnGithub": "Crear una GitHub App",
+			"webhookUrl": "URL del webhook",
+			"webhookUrlHint": "Introdúcela como Webhook URL en la configuración de la App en GitHub.",
+			"appId": "ID de la App",
+			"appIdHint": "Aparece en la parte superior de la página de configuración de la App en GitHub.",
+			"appIdInvalid": "Introduce el ID numérico de la App",
+			"appName": "Nombre de la App",
+			"appNameHint": "El nombre que aparece en la dirección de la App, github.com/apps/<name>. Se usa para los enlaces de instalación.",
+			"appNameInvalid": "Usa el nombre de la dirección de la App: letras, dígitos y guiones",
+			"privateKey": "Clave privada",
+			"privateKeyHint": "Pega el archivo .pem que GitHub descarga al generar una clave privada, o carga el archivo.",
+			"privateKeyInvalid": "Pega la clave completa, desde -----BEGIN hasta -----END",
+			"webhookSecret": "Secreto del webhook",
+			"webhookSecretHint": "Introduce el mismo secreto en la configuración del webhook de la App en GitHub.",
+			"generateSecret": "Generar",
+			"save": "Guardar cambios",
+			"install": "Instalar la App",
+			"remove": "Eliminar ajustes de la GitHub App…",
+			"removeTitle": "¿Eliminar los ajustes de la GitHub App?",
+			"removeDescription": "La sincronización de repositorios se detiene en todos los proyectos hasta que vuelvas a configurar la App.",
+			"removeConfirm": "Eliminar",
+			"removed": "Ajustes de la GitHub App eliminados"
 		},
 		"testEmail": {
 			"codes": {

@@ -5696,6 +5696,10 @@
           "accountLinkingAvailable": {
             "type": "boolean"
           },
+          "appConfigured": {
+            "type": "boolean",
+            "description": "Whether this instance has a GitHub App set up. Listing, verifying and connecting repositories need it."
+          },
           "appName": {
             "type": [
               "string",
@@ -5707,6 +5711,7 @@
         "required": [
           "accountConnected",
           "accountLinkingAvailable",
+          "appConfigured",
           "appName"
         ]
       },
@@ -23447,6 +23452,9 @@
                   "discord",
                   "custom"
                 ]
+              },
+              "githubApp": {
+                "$ref": "#/components/schemas/InstanceGithubAppState"
               }
             },
             "required": [
@@ -23454,7 +23462,8 @@
               "guestAccessActive",
               "emailCodeActive",
               "signInMethodsActive",
-              "providers"
+              "providers",
+              "githubApp"
             ]
           }
         },
@@ -23590,6 +23599,34 @@
           "active",
           "managedByEnvironment",
           "callbackUrl",
+          "envVars"
+        ]
+      },
+      "InstanceGithubAppState": {
+        "type": "object",
+        "properties": {
+          "configured": {
+            "type": "boolean",
+            "description": "The App ID, private key and webhook secret are all set, so repository sync can use the App."
+          },
+          "managedByEnvironment": {
+            "type": "boolean"
+          },
+          "webhookUrl": {
+            "type": "string",
+            "description": "The Webhook URL to enter in the GitHub App's settings."
+          },
+          "envVars": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "configured",
+          "managedByEnvironment",
+          "webhookUrl",
           "envVars"
         ]
       },

@@ -5,12 +5,18 @@ import type {
   InstanceSettings,
 } from "@/types/instance-admin";
 import {
+  clearGithubAppPatch,
   clearSmtpPatch,
+  generateWebhookSecret,
+  githubAppPatch,
   indexSettings,
   isValidFromAddress,
+  isValidGithubAppId,
+  isValidGithubAppName,
   isValidOptionalUrl,
   isValidSmtpHost,
   isValidSmtpPort,
+  looksLikePrivateKey,
   oauthDraftOf,
   oauthPatch,
   secretFieldState,
@@ -76,6 +82,12 @@ function settingsWith(
         google: provider(),
         discord: provider(),
         custom: provider(),
+      },
+      githubApp: {
+        configured: false,
+        managedByEnvironment: false,
+        webhookUrl: "http://api.test/api/github-integration/webhook",
+        envVars: [],
       },
       ...derived,
     },
@@ -372,5 +384,56 @@ describe("OAuth provider form", () => {
     expect(isValidOptionalUrl("https://id.example.com/.well-known")).toBe(true);
     expect(isValidOptionalUrl("ftp://x")).toBe(false);
     expect(isValidOptionalUrl("example.com")).toBe(false);
+  });
+});
+
+describe("GitHub App helpers", () => {
+  const empty = { appId: "", appName: "" };
+
+  it("sends only what changed, and secrets only when typed", () => {
+    expect(githubAppPatch(empty, empty)).toEqual({});
+    expect(
+      githubAppPatch({ appId: " 123 ", appName: "" }, empty, "KEY", ""),
+    ).toEqual({ "githubApp.appId": "123", "githubApp.privateKey": "KEY" });
+    expect(
+      githubAppPatch(empty, { appId: "123", appName: "app" }, "", "secret"),
+    ).toEqual({
+      "githubApp.appId": null,
+      "githubApp.appName": null,
+      "githubApp.webhookSecret": "secret",
+    });
+  });
+
+  it("clears every saved value on remove", () => {
+    expect(clearGithubAppPatch()).toEqual({
+      "githubApp.appId": null,
+      "githubApp.appName": null,
+      "githubApp.privateKey": null,
+      "githubApp.webhookSecret": null,
+    });
+  });
+
+  it("checks the App ID, name and key shape", () => {
+    expect(isValidGithubAppId("123456")).toBe(true);
+    expect(isValidGithubAppId("Iv23li")).toBe(false);
+    expect(isValidGithubAppName("margaya-example")).toBe(true);
+    expect(isValidGithubAppName("Margaya example")).toBe(false);
+    expect(looksLikePrivateKey("")).toBe(true);
+    expect(
+      looksLikePrivateKey(
+        [
+          "-----BEGIN RSA PRIVATE KEY-----",
+          "abc",
+          "-----END RSA PRIVATE KEY-----",
+        ].join("\n"),
+      ),
+    ).toBe(true);
+    expect(looksLikePrivateKey("http://localhost/callback")).toBe(false);
+  });
+
+  it("generates a fresh 64-character hex webhook secret", () => {
+    const first = generateWebhookSecret();
+    expect(first).toMatch(/^[0-9a-f]{64}$/);
+    expect(generateWebhookSecret()).not.toBe(first);
   });
 });

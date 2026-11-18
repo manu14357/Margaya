@@ -463,6 +463,7 @@ export function useSettingsNav() {
           ),
           page("email", Mail, t("instanceAdmin:nav.email")),
           page("ai", Sparkles, t("instanceAdmin:nav.ai")),
+          page("integrations", Plug, t("instanceAdmin:nav.integrations")),
           page("health", Activity, t("instanceAdmin:nav.health")),
         ]),
       },

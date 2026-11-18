@@ -1,4 +1,5 @@
-import { getGithubApp } from "./utils/github-app";
+import type { App } from "octokit";
+import { getGithubApp, onGithubAppCreated } from "./utils/github-app";
 import { handleIssueClosed } from "./webhooks/issue-closed";
 import { handleIssueCommentCreated } from "./webhooks/issue-comment-created";
 import { handleIssueEdited } from "./webhooks/issue-edited";
@@ -54,14 +55,21 @@ export async function handleGitHubWebhook(
   }
 }
 
+/**
+ * Attaches the webhook handlers to every GitHub App this process builds: the
+ * one configured now and any built after an administrator changes the App
+ * in the instance settings.
+ */
 export function setupWebhookHandlers() {
-  const githubApp = getGithubApp();
-
-  if (!githubApp) {
-    console.log("GitHub App not configured, skipping webhook handlers");
-    return;
+  onGithubAppCreated(registerWebhookHandlers);
+  if (!getGithubApp()) {
+    console.log(
+      "GitHub App not configured yet; webhook handlers attach once it is",
+    );
   }
+}
 
+function registerWebhookHandlers(githubApp: App) {
   githubApp.webhooks.on("issues.opened", async ({ payload }) => {
     console.log("[GitHub Webhook] Handling issues.opened");
     try {

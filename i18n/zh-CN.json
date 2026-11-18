@@ -1954,7 +1954,8 @@
 				"importError": "导入 Issues 失败",
 				"commentOnEnabled": "Margaya 将在新 Issue 上评论任务链接",
 				"commentOnDisabled": "新 Issue 的任务链接评论已关闭",
-				"settingsUpdateError": "更新 GitHub 集成失败"
+				"settingsUpdateError": "更新 GitHub 集成失败",
+				"linkError": "GitHub 未能连接你的账户（错误：{{code}}）。如果问题持续出现，请让管理员检查 GitHub 登录设置。"
 			},
 			"connectionStatus": "连接状态",
 			"connectedActive": "仓库已连接并启用",
@@ -1993,6 +1994,12 @@
 			"importDisabledHint": "完成上方仓库配置后即可启用导入",
 			"accountVerificationHint": "连接你的 GitHub 账户，以验证你拥有此仓库的管理员权限。",
 			"enableGithubSignInHint": "请联系实例管理员启用 GitHub 登录。",
+			"appNotConfiguredHint": "仓库同步需要此服务器配置 GitHub App。请让实例管理员进行设置。",
+			"appNotConfiguredAdminHint": "仓库同步需要此服务器配置 GitHub App。请在实例设置中进行设置。",
+			"setUpGithubApp": "设置 GitHub App",
+			"copyLink": "复制链接",
+			"linkCopied": "链接已复制。请在已登录 Margaya 的浏览器中打开它，并在那里连接你的 GitHub 账户。",
+			"copyLinkError": "无法复制链接。",
 			"reverifyHint": "重新连接此仓库，以验证访问权限并恢复同步。",
 			"resumeImport": "继续导入",
 			"importPaused": "此次导入已保存进度，可以继续。",
@@ -3940,7 +3947,8 @@
 		"continueInBrowser": {
 			"title": "请在浏览器中继续",
 			"billing": "请在刚打开的浏览器窗口中完成操作，然后返回 Margaya。返回后，你的套餐会随之更新。",
-			"githubApp": "请在浏览器中完成 GitHub 上的操作，然后返回 Margaya 并重新检查安装。"
+			"githubApp": "请在浏览器中完成 GitHub 上的操作，然后返回 Margaya 并重新检查安装。",
+			"githubAccount": "请在浏览器中打开的页面上连接你的 GitHub 账户，然后返回 Margaya。"
 		},
 		"save": "保存",
 		"unsavedChanges": "未保存的更改",
@@ -10690,6 +10698,7 @@
 			"publicBoards": "公开看板",
 			"workspaces": "工作区",
 			"ai": "AI",
+			"integrations": "集成",
 			"health": "运行状况"
 		},
 		"lockedCallout": "这些设置由此服务器上的环境变量管理，无法在此更改。",
@@ -10710,6 +10719,7 @@
 			"clear": "清除",
 			"cleared": "密钥已清除",
 			"placeholder": "输入新值",
+			"loadFile": "从文件加载…",
 			"replace": "替换",
 			"saved": "已保存",
 			"unreadable": "无法读取已保存的密钥（服务器的 AUTH_SECRET 已更改）。请重新输入。"
@@ -10852,6 +10862,45 @@
 			"subtitle": "Margaya 用来发送登录验证码、邀请和通知的 SMTP 服务器。",
 			"title": "邮件",
 			"username": "用户名"
+		},
+		"integrations": {
+			"title": "集成",
+			"subtitle": "供项目集成使用的服务器级连接。"
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App 已设置",
+			"statusNotConfigured": "GitHub App 尚未设置",
+			"intro": "仓库同步（Issue、拉取请求和分支）通过你在 GitHub 上创建的 GitHub App 运行。它与 GitHub 登录相互独立，GitHub 登录在“身份验证”中设置。",
+			"managedByEnv": "GitHub App 通过环境变量（GITHUB_APP_ID 等）配置。移除这些变量并重启后，才能在此管理。",
+			"stepsTitle": "设置方法",
+			"step1": "在 GitHub 上创建一个 GitHub App（Settings → Developer settings → GitHub Apps → New GitHub App）。将你的 Margaya 地址用作 Homepage URL。",
+			"step2": "在 Webhook 下，填写下方的 Webhook 地址和一个 Webhook 密钥（点击“生成”即可创建）。如果 GitHub 无法访问此服务器，请取消勾选 Active：这样在 GitHub 上的更改将不会同步回 Margaya。",
+			"step3": "在 Repository permissions 下，为 Issues 授予读写权限，为 Pull requests 和 Contents 授予只读权限。订阅 Issues、Issue comment、Pull request 和 Push 事件。",
+			"step4": "创建该应用，然后选择 Generate a private key。在此填写应用 ID、应用地址中的应用名称以及下载的 .pem 文件，然后保存。",
+			"step5": "选择“安装应用”，并将其安装到你要连接其仓库的账号或组织上。",
+			"createOnGithub": "创建 GitHub App",
+			"webhookUrl": "Webhook 地址",
+			"webhookUrlHint": "在 GitHub 上该应用的设置中，将此值填写为 Webhook URL。",
+			"appId": "应用 ID",
+			"appIdHint": "显示在 GitHub 上该应用设置页面的顶部。",
+			"appIdInvalid": "请输入应用的数字 ID",
+			"appName": "应用名称",
+			"appNameHint": "应用地址 github.com/apps/<name> 中的名称。用于安装链接。",
+			"appNameInvalid": "请使用应用地址中的名称：字母、数字和连字符",
+			"privateKey": "私钥",
+			"privateKeyHint": "粘贴生成私钥时 GitHub 下载的 .pem 文件，或加载该文件。",
+			"privateKeyInvalid": "请粘贴完整的密钥，从 -----BEGIN 到 -----END",
+			"webhookSecret": "Webhook 密钥",
+			"webhookSecretHint": "在 GitHub 上该应用的 Webhook 设置中填写相同的密钥。",
+			"generateSecret": "生成",
+			"save": "保存更改",
+			"install": "安装应用",
+			"remove": "移除 GitHub App 设置…",
+			"removeTitle": "移除 GitHub App 设置？",
+			"removeDescription": "在重新设置该应用之前，所有项目的仓库同步都会停止。",
+			"removeConfirm": "移除",
+			"removed": "GitHub App 设置已移除"
 		},
 		"testEmail": {
 			"codes": {

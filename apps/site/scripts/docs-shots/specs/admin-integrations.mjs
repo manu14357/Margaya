@@ -548,6 +548,24 @@ const shots = [
     clip: { selector: "[data-slot=settings-page]" },
   },
   {
+    name: "admin/github-app",
+    account: "owner",
+    url: instance("integrations"),
+    ready: "GitHub App",
+    viewport: tall,
+    // Example values for the picture; the form is never saved. The webhook
+    // URL shows a public address instead of the capture server's.
+    prepare: async (page) => {
+      await page.getByLabel("App ID").fill("1234567");
+      await page.getByLabel("App name").fill("margaya-studio-north");
+      await page.locator("#github-app-webhook-url").evaluate((input) => {
+        input.value =
+          "https://api.studionorth.example/api/github-integration/webhook";
+      });
+    },
+    clip: { selector: "[data-slot=settings-page]" },
+  },
+  {
     name: "admin/workspaces",
     account: "owner",
     url: instance("workspaces"),

@@ -59,6 +59,7 @@ import { Route as LayoutAuthenticatedDashboardSettingsInstanceEmailRouteImport }
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceFeedbackRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/feedback'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceGeneralRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/general'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceHealthRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/health'
+import { Route as LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/integrations'
 import { Route as LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/public-boards'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceUsersRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/users'
 import { Route as LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRouteImport } from './routes/_layout/_authenticated/dashboard/settings/instance/workspaces'
@@ -397,6 +398,12 @@ const LayoutAuthenticatedDashboardSettingsInstanceHealthRoute =
   LayoutAuthenticatedDashboardSettingsInstanceHealthRouteImport.update({
     id: '/health',
     path: '/health',
+    getParentRoute: () => LayoutAuthenticatedDashboardSettingsInstanceRoute,
+  } as any)
+const LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRoute =
+  LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRouteImport.update({
+    id: '/integrations',
+    path: '/integrations',
     getParentRoute: () => LayoutAuthenticatedDashboardSettingsInstanceRoute,
   } as any)
 const LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute =
@@ -917,6 +924,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings/instance/feedback': typeof LayoutAuthenticatedDashboardSettingsInstanceFeedbackRoute
   '/dashboard/settings/instance/general': typeof LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute
   '/dashboard/settings/instance/health': typeof LayoutAuthenticatedDashboardSettingsInstanceHealthRoute
+  '/dashboard/settings/instance/integrations': typeof LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRoute
   '/dashboard/settings/instance/public-boards': typeof LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute
   '/dashboard/settings/instance/users': typeof LayoutAuthenticatedDashboardSettingsInstanceUsersRoute
   '/dashboard/settings/instance/workspaces': typeof LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute
@@ -1026,6 +1034,7 @@ export interface FileRoutesByTo {
   '/dashboard/settings/instance/feedback': typeof LayoutAuthenticatedDashboardSettingsInstanceFeedbackRoute
   '/dashboard/settings/instance/general': typeof LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute
   '/dashboard/settings/instance/health': typeof LayoutAuthenticatedDashboardSettingsInstanceHealthRoute
+  '/dashboard/settings/instance/integrations': typeof LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRoute
   '/dashboard/settings/instance/public-boards': typeof LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute
   '/dashboard/settings/instance/users': typeof LayoutAuthenticatedDashboardSettingsInstanceUsersRoute
   '/dashboard/settings/instance/workspaces': typeof LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute
@@ -1142,6 +1151,7 @@ export interface FileRoutesById {
   '/_layout/_authenticated/dashboard/settings/instance/feedback': typeof LayoutAuthenticatedDashboardSettingsInstanceFeedbackRoute
   '/_layout/_authenticated/dashboard/settings/instance/general': typeof LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute
   '/_layout/_authenticated/dashboard/settings/instance/health': typeof LayoutAuthenticatedDashboardSettingsInstanceHealthRoute
+  '/_layout/_authenticated/dashboard/settings/instance/integrations': typeof LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRoute
   '/_layout/_authenticated/dashboard/settings/instance/public-boards': typeof LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute
   '/_layout/_authenticated/dashboard/settings/instance/users': typeof LayoutAuthenticatedDashboardSettingsInstanceUsersRoute
   '/_layout/_authenticated/dashboard/settings/instance/workspaces': typeof LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute
@@ -1257,6 +1267,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings/instance/feedback'
     | '/dashboard/settings/instance/general'
     | '/dashboard/settings/instance/health'
+    | '/dashboard/settings/instance/integrations'
     | '/dashboard/settings/instance/public-boards'
     | '/dashboard/settings/instance/users'
     | '/dashboard/settings/instance/workspaces'
@@ -1366,6 +1377,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings/instance/feedback'
     | '/dashboard/settings/instance/general'
     | '/dashboard/settings/instance/health'
+    | '/dashboard/settings/instance/integrations'
     | '/dashboard/settings/instance/public-boards'
     | '/dashboard/settings/instance/users'
     | '/dashboard/settings/instance/workspaces'
@@ -1481,6 +1493,7 @@ export interface FileRouteTypes {
     | '/_layout/_authenticated/dashboard/settings/instance/feedback'
     | '/_layout/_authenticated/dashboard/settings/instance/general'
     | '/_layout/_authenticated/dashboard/settings/instance/health'
+    | '/_layout/_authenticated/dashboard/settings/instance/integrations'
     | '/_layout/_authenticated/dashboard/settings/instance/public-boards'
     | '/_layout/_authenticated/dashboard/settings/instance/users'
     | '/_layout/_authenticated/dashboard/settings/instance/workspaces'
@@ -1913,6 +1926,13 @@ declare module '@tanstack/react-router' {
       path: '/health'
       fullPath: '/dashboard/settings/instance/health'
       preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceHealthRouteImport
+      parentRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceRoute
+    }
+    '/_layout/_authenticated/dashboard/settings/instance/integrations': {
+      id: '/_layout/_authenticated/dashboard/settings/instance/integrations'
+      path: '/integrations'
+      fullPath: '/dashboard/settings/instance/integrations'
+      preLoaderRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRouteImport
       parentRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceRoute
     }
     '/_layout/_authenticated/dashboard/settings/instance/public-boards': {
@@ -2397,6 +2417,7 @@ interface LayoutAuthenticatedDashboardSettingsInstanceRouteChildren {
   LayoutAuthenticatedDashboardSettingsInstanceFeedbackRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceFeedbackRoute
   LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute
   LayoutAuthenticatedDashboardSettingsInstanceHealthRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceHealthRoute
+  LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRoute
   LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute: typeof LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute
   LayoutAuthenticatedDashboardSettingsInstanceUsersRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceUsersRoute
   LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute: typeof LayoutAuthenticatedDashboardSettingsInstanceWorkspacesRoute
@@ -2419,6 +2440,8 @@ const LayoutAuthenticatedDashboardSettingsInstanceRouteChildren: LayoutAuthentic
       LayoutAuthenticatedDashboardSettingsInstanceGeneralRoute,
     LayoutAuthenticatedDashboardSettingsInstanceHealthRoute:
       LayoutAuthenticatedDashboardSettingsInstanceHealthRoute,
+    LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRoute:
+      LayoutAuthenticatedDashboardSettingsInstanceIntegrationsRoute,
     LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute:
       LayoutAuthenticatedDashboardSettingsInstancePublicBoardsRoute,
     LayoutAuthenticatedDashboardSettingsInstanceUsersRoute:

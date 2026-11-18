@@ -1427,7 +1427,8 @@
 				"importError": "Importeren issues mislukt",
 				"commentOnEnabled": "Margaya zal reageren met een taaklink op nieuwe issues",
 				"commentOnDisabled": "Reacties met taaklinks op nieuwe issues staan uit",
-				"settingsUpdateError": "Bijwerken GitHub integratie mislukt"
+				"settingsUpdateError": "Bijwerken GitHub integratie mislukt",
+				"linkError": "GitHub heeft je account niet gekoppeld (fout: {{code}}). Blijft dit gebeuren, vraag dan je beheerder de instellingen voor inloggen met GitHub te controleren."
 			},
 			"connectionStatus": "Verbindingsstatus",
 			"connectedActive": "Repository verbonden en actief",
@@ -1466,6 +1467,12 @@
 			"importDisabledHint": "Voltooi de configuratie hierboven om importeren mogelijk te maken",
 			"accountVerificationHint": "Koppel je GitHub-account om te controleren of je deze repository beheert.",
 			"enableGithubSignInHint": "Vraag de beheerder van je instantie om aanmelden via GitHub in te schakelen.",
+			"appNotConfiguredHint": "Voor repository-synchronisatie heeft deze server een GitHub App nodig. Vraag de beheerder van de instantie er een in te stellen.",
+			"appNotConfiguredAdminHint": "Voor repository-synchronisatie heeft deze server een GitHub App nodig. Stel er een in via Instantie-instellingen.",
+			"setUpGithubApp": "GitHub App instellen",
+			"copyLink": "Link kopiëren",
+			"linkCopied": "Link gekopieerd. Open hem in een browser waarin je bij Margaya bent ingelogd en koppel daar je GitHub-account.",
+			"copyLinkError": "De link kon niet worden gekopieerd.",
 			"reverifyHint": "Koppel deze repository opnieuw om de toegang te controleren en de synchronisatie te hervatten.",
 			"resumeImport": "Import hervatten",
 			"importPaused": "Deze import heeft opgeslagen voortgang. Je kunt hem hervatten.",
@@ -4011,7 +4018,8 @@
 		"continueInBrowser": {
 			"title": "Ga verder in je browser",
 			"billing": "Rond het af in het browservenster dat net is geopend en kom daarna terug naar Margaya. Je abonnement wordt bijgewerkt zodra je terug bent.",
-			"githubApp": "Rond het af op GitHub in je browser, kom daarna terug naar Margaya en controleer de installatie opnieuw."
+			"githubApp": "Rond het af op GitHub in je browser, kom daarna terug naar Margaya en controleer de installatie opnieuw.",
+			"githubAccount": "Koppel je GitHub-account op de pagina die in je browser is geopend en kom daarna terug naar Margaya."
 		},
 		"save": "Opslaan",
 		"unsavedChanges": "Niet-opgeslagen wijzigingen",
@@ -10852,6 +10860,7 @@
 			"publicBoards": "Openbare borden",
 			"workspaces": "Werkruimtes",
 			"ai": "AI",
+			"integrations": "Integraties",
 			"health": "Serverstatus"
 		},
 		"lockedCallout": "Deze instellingen worden op deze server beheerd met omgevingsvariabelen. Wijzigingen hier zijn uitgeschakeld.",
@@ -10872,6 +10881,7 @@
 			"clear": "Wissen",
 			"cleared": "Geheim gewist",
 			"placeholder": "Voer een nieuwe waarde in",
+			"loadFile": "Laden uit bestand…",
 			"replace": "Vervangen",
 			"saved": "Opgeslagen",
 			"unreadable": "Het opgeslagen geheim kan niet worden gelezen (de AUTH_SECRET van de server is gewijzigd). Voer het opnieuw in."
@@ -11014,6 +11024,45 @@
 			"subtitle": "De SMTP-server waarmee Margaya inlogcodes, uitnodigingen en meldingen verstuurt.",
 			"title": "E-mail",
 			"username": "Gebruikersnaam"
+		},
+		"integrations": {
+			"title": "Integraties",
+			"subtitle": "Serverbrede verbindingen die projectintegraties gebruiken."
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App is ingesteld",
+			"statusNotConfigured": "GitHub App is nog niet ingesteld",
+			"intro": "Repository-synchronisatie (issues, pull requests en branches) loopt via een GitHub App die je op GitHub aanmaakt. Dit staat los van aanmelden via GitHub, dat je instelt onder ‘Authenticatie’.",
+			"managedByEnv": "De GitHub App is geconfigureerd met omgevingsvariabelen (GITHUB_APP_ID en gerelateerde). Verwijder ze en herstart om de app hier te beheren.",
+			"stepsTitle": "Zo stel je het in",
+			"step1": "Maak op GitHub een GitHub App aan (Settings → Developer settings → GitHub Apps → New GitHub App). Gebruik je Margaya-adres als Homepage URL.",
+			"step2": "Voer onder Webhook de webhook-URL hieronder en een webhook-geheim in (‘Genereren’ maakt er een). Als GitHub deze server niet kan bereiken, vink dan Active uit: wijzigingen op GitHub komen dan niet terug in Margaya.",
+			"step3": "Geef onder Repository permissions lees- en schrijftoegang tot Issues, en leestoegang tot Pull requests en Contents. Abonneer je op de events Issues, Issue comment, Pull request en Push.",
+			"step4": "Maak de app aan en kies daarna Generate a private key. Voer hier de app-ID, de app-naam uit het adres en het gedownloade .pem-bestand in, en sla op.",
+			"step5": "Kies ‘App installeren’ en installeer de app op de accounts of organisaties waarvan je de repository's wilt koppelen.",
+			"createOnGithub": "GitHub App aanmaken",
+			"webhookUrl": "Webhook-URL",
+			"webhookUrlHint": "Vul dit in als Webhook URL in de instellingen van de app op GitHub.",
+			"appId": "App-ID",
+			"appIdHint": "Staat bovenaan de instellingenpagina van de app op GitHub.",
+			"appIdInvalid": "Voer het numerieke ID van de app in",
+			"appName": "App-naam",
+			"appNameHint": "De naam in het adres van de app, github.com/apps/<name>. Wordt gebruikt voor installatielinks.",
+			"appNameInvalid": "Gebruik de naam uit het adres van de app: letters, cijfers en koppeltekens",
+			"privateKey": "Privésleutel",
+			"privateKeyHint": "Plak het .pem-bestand dat GitHub downloadt wanneer je een privésleutel genereert, of laad het bestand.",
+			"privateKeyInvalid": "Plak de hele sleutel, van -----BEGIN tot -----END",
+			"webhookSecret": "Webhook-geheim",
+			"webhookSecretHint": "Voer hetzelfde geheim in bij de webhookinstellingen van de app op GitHub.",
+			"generateSecret": "Genereren",
+			"save": "Wijzigingen opslaan",
+			"install": "App installeren",
+			"remove": "Instellingen van de GitHub App verwijderen…",
+			"removeTitle": "Instellingen van de GitHub App verwijderen?",
+			"removeDescription": "Repository-synchronisatie stopt voor alle projecten totdat je de app opnieuw instelt.",
+			"removeConfirm": "Verwijderen",
+			"removed": "Instellingen van de GitHub App verwijderd"
 		},
 		"testEmail": {
 			"codes": {

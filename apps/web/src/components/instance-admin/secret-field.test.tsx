@@ -79,3 +79,38 @@ describe("SecretField", () => {
     expect(screen.getByPlaceholderText(placeholder)).toHaveValue("");
   });
 });
+
+describe("SecretField with several lines", () => {
+  afterEach(cleanup);
+
+  it("keeps line breaks and loads a file", async () => {
+    const onChange = vi.fn();
+    render(
+      <SecretField
+        id="key"
+        entry={{ configured: false, unreadable: false }}
+        value=""
+        onChange={onChange}
+        onClear={vi.fn()}
+        multiline={{ accept: ".pem" }}
+      />,
+    );
+    const area = screen.getByPlaceholderText(placeholder);
+    expect(area.tagName).toBe("TEXTAREA");
+    const twoLines = ["line one", "line two"].join("\n");
+    fireEvent.change(area, { target: { value: twoLines } });
+    expect(onChange).toHaveBeenLastCalledWith(twoLines);
+
+    const pem = ["-----BEGIN KEY-----", "-----END KEY-----"].join("\n");
+    const file = new File([pem], "k.pem");
+    const input = document.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
+    expect(input.accept).toBe(".pem");
+    fireEvent.change(input, { target: { files: [file] } });
+    await vi.waitFor(() => expect(onChange).toHaveBeenLastCalledWith(pem));
+    expect(
+      screen.getByRole("button", { name: "instanceAdmin:secret.loadFile" }),
+    ).toBeInTheDocument();
+  });
+});

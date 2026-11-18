@@ -84,6 +84,24 @@ export type EffectiveSettings = {
     from: string;
   };
   publicBoards: { enabled: boolean; participation: boolean };
+  githubApp: GithubAppConfig;
+};
+
+/** The GitHub App repository sync uses; empty strings when not set up. */
+export type GithubAppConfig = {
+  appId: string;
+  /** The App's slug, for install links; optional. */
+  appName: string;
+  privateKey: string;
+  webhookSecret: string;
+};
+
+export type GithubAppState = {
+  configured: boolean;
+  managedByEnvironment: boolean;
+  /** Where GitHub sends webhook deliveries for this instance. */
+  webhookUrl: string;
+  envVars: string[];
 };
 
 /** What the Better Auth instance is built from. Changing it rebuilds. */
@@ -120,6 +138,7 @@ export type DerivedSettings = {
   guestAccessActive: boolean;
   signInMethodsActive: number;
   providers: Record<OAuthProviderId, ProviderState>;
+  githubApp: GithubAppState;
 };
 
 export type InstanceSettingsSnapshot = {
@@ -312,6 +331,26 @@ function deriveProviders(
   return states;
 }
 
+function deriveGithubApp(
+  settings: Record<string, ResolvedSetting>,
+  app: GithubAppConfig,
+  env: Env,
+): GithubAppState {
+  return {
+    configured: Boolean(app.appId && app.privateKey && app.webhookSecret),
+    managedByEnvironment: settings["githubApp.appId"]?.source === "environment",
+    webhookUrl: `${apiOrigin(env)}/api/github-integration/webhook`,
+    envVars: [
+      "GITHUB_APP_ID",
+      "GITHUB_APP_NAME",
+      isEnvSet(env, "GITHUB_PRIVATE_KEY_BASE64")
+        ? "GITHUB_PRIVATE_KEY_BASE64"
+        : "GITHUB_PRIVATE_KEY",
+      "GITHUB_WEBHOOK_SECRET",
+    ],
+  };
+}
+
 export function oauthFingerprintOf(oauth: OAuthBuildConfig): string {
   return createHash("sha256").update(JSON.stringify(oauth)).digest("hex");
 }
@@ -375,6 +414,12 @@ export function resolveInstanceSettings({
       enabled: flag(settings, "publicBoards.enabled"),
       participation: flag(settings, "publicBoards.participation"),
     },
+    githubApp: {
+      appId: str(settings, "githubApp.appId"),
+      appName: str(settings, "githubApp.appName"),
+      privateKey: str(settings, "githubApp.privateKey"),
+      webhookSecret: str(settings, "githubApp.webhookSecret"),
+    },
   };
 
   const oauth = buildOAuth(settings);
@@ -399,6 +444,7 @@ export function resolveInstanceSettings({
       (effective.emailSignIn ? 1 : 0) +
       OAUTH_PROVIDERS.filter((provider) => providers[provider].active).length,
     providers,
+    githubApp: deriveGithubApp(settings, effective.githubApp, env),
   };
 
   return {

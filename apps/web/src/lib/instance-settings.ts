@@ -18,6 +18,7 @@ export const INSTANCE_PAGES = [
   "users",
   "admins",
   "ai",
+  "integrations",
   "feedback",
   "health",
 ] as const;
@@ -32,6 +33,7 @@ export const INSTANCE_PAGE_PATHS = {
   users: "/dashboard/settings/instance/users",
   admins: "/dashboard/settings/instance/admins",
   ai: "/dashboard/settings/instance/ai",
+  integrations: "/dashboard/settings/instance/integrations",
   feedback: "/dashboard/settings/instance/feedback",
   health: "/dashboard/settings/instance/health",
 } as const satisfies Record<InstancePage, string>;
@@ -53,6 +55,7 @@ export const PAGE_GROUPS: Record<InstancePage, readonly string[]> = {
   users: [],
   admins: [],
   ai: ["ai"],
+  integrations: ["githubApp"],
   feedback: ["feedback"],
   // Only general.updateCheck, which the General page doesn't show.
   health: [],
@@ -384,6 +387,76 @@ export const SMTP_KEYS = [
 /** "Remove email settings": clear every saved SMTP value. */
 export function clearSmtpPatch(): InstanceSettingsPatch {
   return Object.fromEntries(SMTP_KEYS.map((key) => [key, null]));
+}
+
+export type GithubAppFormValues = { appId: string; appName: string };
+
+export function githubAppFormValues(index: SettingsIndex): GithubAppFormValues {
+  return {
+    appId: settingText(index, "githubApp.appId"),
+    appName: settingText(index, "githubApp.appName"),
+  };
+}
+
+/** Only the fields that changed; blanks clear, secrets only when typed. */
+export function githubAppPatch(
+  values: GithubAppFormValues,
+  initial: GithubAppFormValues,
+  privateKeyDraft = "",
+  webhookSecretDraft = "",
+): InstanceSettingsPatch {
+  const patch: InstanceSettingsPatch = {};
+  for (const key of ["appId", "appName"] as const) {
+    if (values[key].trim() !== initial[key].trim()) {
+      patch[`githubApp.${key}`] = textPatchValue(values[key]);
+    }
+  }
+  const privateKey = secretPatchValue(privateKeyDraft);
+  if (privateKey !== undefined) patch["githubApp.privateKey"] = privateKey;
+  const webhookSecret = secretPatchValue(webhookSecretDraft);
+  if (webhookSecret !== undefined) {
+    patch["githubApp.webhookSecret"] = webhookSecret;
+  }
+  return patch;
+}
+
+export const GITHUB_APP_KEYS = [
+  "githubApp.appId",
+  "githubApp.appName",
+  "githubApp.privateKey",
+  "githubApp.webhookSecret",
+] as const;
+
+/** "Remove GitHub App settings": clear every saved value. */
+export function clearGithubAppPatch(): InstanceSettingsPatch {
+  return Object.fromEntries(GITHUB_APP_KEYS.map((key) => [key, null]));
+}
+
+export function isValidGithubAppId(value: string): boolean {
+  return /^\d{0,20}$/.test(value.trim());
+}
+
+export function isValidGithubAppName(value: string): boolean {
+  return /^[A-Za-z0-9-]{0,100}$/.test(value.trim());
+}
+
+/** A pasted private key must at least look like a PEM block. */
+export function looksLikePrivateKey(value: string): boolean {
+  const trimmed = value.trim();
+  return (
+    !trimmed ||
+    (/-----BEGIN [A-Z ]*PRIVATE KEY-----/.test(trimmed) &&
+      /-----END [A-Z ]*PRIVATE KEY-----/.test(trimmed))
+  );
+}
+
+/** A random webhook secret: 32 bytes as hex. */
+export function generateWebhookSecret(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join(
+    "",
+  );
 }
 
 const SMTP_HOST =

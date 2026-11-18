@@ -382,6 +382,11 @@ function createAuthInstance(
         // email with a password account and retain access after the victim signs
         // in through a trusted OAuth/OIDC provider.
         requireLocalEmailVerified: true,
+        // Explicit linking only (a signed-in user selects Connect and signs
+        // in to the provider): a GitHub account often uses another email
+        // than the Margaya account. Sign-in linking above still needs the
+        // same, verified email.
+        allowDifferentEmails: true,
       },
     },
     emailAndPassword: {

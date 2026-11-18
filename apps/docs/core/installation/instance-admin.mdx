@@ -42,10 +42,11 @@ Nothing is copied from the environment into the database. If you remove a variab
 
 - **OAuth providers.** When a provider's client ID variable is set, the whole provider (client ID and secret, plus the endpoints, scopes and PKCE for custom OAuth) comes from the environment. The provider's on/off switch has no variable, so you can always turn a provider off in the app.
 - **SMTP.** When `SMTP_HOST` is set, host, port, security, username, password and From all come from the environment.
+- **GitHub App.** When `GITHUB_APP_ID`, `GITHUB_PRIVATE_KEY`, `GITHUB_PRIVATE_KEY_BASE64` or `GITHUB_WEBHOOK_SECRET` is set, the App ID, App name, private key and webhook secret all come from the environment.
 
 ### Secrets are write-only
 
-The SMTP password and OAuth client secrets are never shown again after saving. A secret field shows only that a value is **Saved**:
+The SMTP password, OAuth client secrets and the GitHub App's private key and webhook secret are never shown again after saving. A secret field shows only that a value is **Saved**:
 
 - **Replace** lets you type a new value.
 - **Clear** removes the saved value.
@@ -213,6 +214,24 @@ If it fails, the dialog shows one of these categories. Server error text is neve
 
 AI is off until you turn it on. Under **AI**, select **Allow AI**, choose a provider and models, optionally add a local model, and decide where each kind of data may go. The page also holds the **Chat**, **Web search**, **Speech to text** and **Embeddings** settings, and **Usage across workspaces** (counts and costs only). Each workspace must then turn AI on for itself. See [AI Setup](/core/functional/ai-setup) for every setting, and [Environment variables](/core/installation/environment-variables#ai) for the `MARGAYA_AI_*` variables that lock them.
 
+## Integrations
+
+**Integrations** holds the **GitHub App** that repository sync uses: importing issues, keeping issues and tasks in step, and linking pull requests and branches. It's separate from [GitHub sign-in](/core/social-providers/github), which members use to link their GitHub account. Until the App is set up, projects can't browse, verify or connect repositories, and their GitHub section says so (with a **Set up the GitHub App** link for instance admins).
+
+While nothing is set up, the page lists the steps and links to GitHub's **New GitHub App** form. The full walkthrough is in [GitHub App setup](/core/integrations/github/setup).
+
+| Field | Notes |
+| --- | --- |
+| **Webhook URL** | Read-only. Copy it into the App's webhook settings on GitHub. |
+| **App ID** | The number at the top of the App's settings page. |
+| **App name** | The name in the App's address, `github.com/apps/<name>`. Optional; Margaya uses it for install links. |
+| **Private key** | Paste the `.pem` file GitHub downloads, or select **Load from file…**. Margaya checks that it's a private key before saving. Write-only. |
+| **Webhook secret** | The same secret as in the App's webhook settings. **Generate** makes a random one to copy into GitHub. Write-only. |
+
+<Screenshot src="admin/github-app" alt="The Integrations page with the GitHub App section: the setup steps with a Create a GitHub App button, then the Webhook URL with a Copy button, App ID and App name filled in, the private key area with Load from file, and the webhook secret with Generate" caption="The page shows GitHub App is set up once the App ID, private key and webhook secret are saved." />
+
+Once it's set up, **Install the App** opens GitHub's install page for the App, if you entered its name. **Remove GitHub App settings** clears the saved values, and repository sync stops for every project until you set the App up again. Neither appears when the environment manages the App.
+
 ## Health
 
 The **Health** page checks the server's services and shows background jobs, recent failures and the opt-in update notice. See [Health page](/core/installation/health-page).
@@ -297,6 +316,7 @@ Setting one of these variables locks its setting in the app and shows it with an
 | Custom OAuth automatic sign-in | `CUSTOM_OAUTH_AUTO_LOGIN` | Locks only this switch. |
 | Custom OAuth logout URL | `CUSTOM_OAUTH_LOGOUT_URL` | Locks only this field. |
 | SMTP | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` | These lock as a group when `SMTP_HOST` is set. |
+| GitHub App | `GITHUB_APP_ID`, `GITHUB_APP_NAME`, `GITHUB_PRIVATE_KEY` or `GITHUB_PRIVATE_KEY_BASE64`, `GITHUB_WEBHOOK_SECRET` | These lock as a group when any of them except `GITHUB_APP_NAME` is set. |
 | Public boards | `DISABLE_PUBLIC_BOARDS` | `true` turns them off. |
 | Check for new versions | `MARGAYA_UPDATE_CHECK` | `true` turns the daily update check on; `false` keeps it off. |
 | AI | `MARGAYA_AI_ENABLED`, `ANTHROPIC_API_KEY` and the other `MARGAYA_AI_*` variables | See [AI](/core/installation/environment-variables#ai). |

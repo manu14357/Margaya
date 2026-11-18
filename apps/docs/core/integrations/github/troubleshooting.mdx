@@ -8,6 +8,12 @@ This guide helps you diagnose and fix common issues with the GitHub integration.
 
 ## Common Issues
 
+### "Repository sync needs a GitHub App on this server"
+
+**Problem**: The project's GitHub section shows this notice, and **Browse**, **Verify** and **Connect** are disabled.
+
+**Solution**: The instance has no GitHub App yet. An instance admin sets it up under **Settings → Instance → Integrations** (instance admins see a **Set up the GitHub App** button in the notice). See [App Setup](/core/integrations/github/setup). If the App comes from environment variables, `GITHUB_APP_ID`, the private key and `GITHUB_WEBHOOK_SECRET` must all be set.
+
 ### "GitHub App not installed" Error
 
 **Problem**: Verification shows the app isn't installed on the repository.
@@ -95,6 +101,8 @@ Use the "Browse Repositories" feature in Margaya to see which repositories your 
 
 ### Environment Variable Issues
 
+If you entered the App under **Settings → Instance → Integrations**, the page shows **GitHub App is set up** once the App ID, private key and webhook secret are saved, and there are no variables to check. The rest of this section is for environment variables.
+
 **Problem**: Integration doesn't work after configuration.
 
 **Symptoms**:
@@ -172,7 +180,7 @@ Make sure your private key doesn't have any extra characters or missing newlines
 
 2. **Check Secret Configuration**
    - In GitHub App settings, verify the webhook secret is set
-   - If you changed the secret, update the environment variable and restart
+   - If you changed the secret, replace it under **Settings → Instance → Integrations**, or update the environment variable and restart
    - Generate a new secret if there are persistent issues
 
 ### Automatic Status Transitions Not Working

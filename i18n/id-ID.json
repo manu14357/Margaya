@@ -1599,7 +1599,8 @@
 				"importError": "Gagal mengimpor issue",
 				"commentOnEnabled": "Margaya akan berkomentar dengan tautan tugas pada issue baru",
 				"commentOnDisabled": "Komentar tautan tugas pada issue baru dimatikan",
-				"settingsUpdateError": "Gagal memperbarui integrasi GitHub"
+				"settingsUpdateError": "Gagal memperbarui integrasi GitHub",
+				"linkError": "GitHub tidak menghubungkan akun Anda (galat: {{code}}). Jika terus terjadi, minta administrator Anda memeriksa pengaturan masuk dengan GitHub."
 			},
 			"connectionStatus": "Status koneksi",
 			"connectedActive": "Repositori terhubung dan aktif",
@@ -1638,6 +1639,12 @@
 			"importDisabledHint": "Lengkapi konfigurasi repositori di atas untuk mengaktifkan impor",
 			"accountVerificationHint": "Hubungkan akun GitHub Anda untuk memverifikasi bahwa Anda mengelola repositori ini.",
 			"enableGithubSignInHint": "Minta administrator instans Anda mengaktifkan masuk dengan GitHub.",
+			"appNotConfiguredHint": "Sinkronisasi repositori memerlukan GitHub App di server ini. Minta administrator instans Anda untuk menyiapkannya.",
+			"appNotConfiguredAdminHint": "Sinkronisasi repositori memerlukan GitHub App di server ini. Siapkan di Pengaturan instans.",
+			"setUpGithubApp": "Siapkan GitHub App",
+			"copyLink": "Salin tautan",
+			"linkCopied": "Tautan disalin. Buka di browser tempat Anda masuk ke Margaya, lalu hubungkan akun GitHub Anda di sana.",
+			"copyLinkError": "Tautan tidak dapat disalin.",
 			"reverifyHint": "Hubungkan kembali repositori ini untuk memverifikasi akses dan melanjutkan sinkronisasi.",
 			"resumeImport": "Lanjutkan impor",
 			"importPaused": "Impor ini memiliki progres tersimpan. Anda dapat melanjutkannya.",
@@ -3940,7 +3947,8 @@
 		"continueInBrowser": {
 			"title": "Lanjutkan di browser Anda",
 			"billing": "Selesaikan di jendela browser yang baru saja terbuka, lalu kembali ke Margaya. Paket Anda diperbarui saat Anda kembali.",
-			"githubApp": "Selesaikan di GitHub melalui browser Anda, lalu kembali ke Margaya dan periksa pemasangan lagi."
+			"githubApp": "Selesaikan di GitHub melalui browser Anda, lalu kembali ke Margaya dan periksa pemasangan lagi.",
+			"githubAccount": "Hubungkan akun GitHub Anda di halaman yang terbuka di browser, lalu kembali ke Margaya."
 		},
 		"save": "Simpan",
 		"unsavedChanges": "Perubahan belum disimpan",
@@ -10690,6 +10698,7 @@
 			"publicBoards": "Papan publik",
 			"workspaces": "Ruang kerja",
 			"ai": "AI",
+			"integrations": "Integrasi",
 			"health": "Kesehatan"
 		},
 		"lockedCallout": "Pengaturan ini dikelola dengan variabel lingkungan di server ini. Perubahan di sini dinonaktifkan.",
@@ -10710,6 +10719,7 @@
 			"clear": "Hapus",
 			"cleared": "Rahasia dihapus",
 			"placeholder": "Masukkan nilai baru",
+			"loadFile": "Muat dari file…",
 			"replace": "Ganti",
 			"saved": "Tersimpan",
 			"unreadable": "Rahasia yang tersimpan tidak dapat dibaca (AUTH_SECRET server berubah). Masukkan lagi."
@@ -10852,6 +10862,45 @@
 			"subtitle": "Server SMTP yang digunakan Margaya untuk mengirim kode masuk, undangan, dan notifikasi.",
 			"title": "Email",
 			"username": "Nama pengguna"
+		},
+		"integrations": {
+			"title": "Integrasi",
+			"subtitle": "Koneksi tingkat server yang digunakan integrasi proyek."
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App sudah disiapkan",
+			"statusNotConfigured": "GitHub App belum disiapkan",
+			"intro": "Sinkronisasi repositori (issue, pull request, dan branch) berjalan melalui GitHub App yang Anda buat di GitHub. Ini terpisah dari masuk dengan GitHub, yang Anda siapkan di “Autentikasi”.",
+			"managedByEnv": "GitHub App dikonfigurasi dengan variabel lingkungan (GITHUB_APP_ID dan terkait). Hapus variabel tersebut dan mulai ulang untuk mengelolanya di sini.",
+			"stepsTitle": "Cara menyiapkannya",
+			"step1": "Di GitHub, buat GitHub App (Settings → Developer settings → GitHub Apps → New GitHub App). Gunakan alamat Margaya Anda sebagai Homepage URL.",
+			"step2": "Di bagian Webhook, masukkan URL webhook di bawah dan rahasia webhook (tombol “Hasilkan” akan membuatkannya). Jika GitHub tidak dapat menjangkau server ini, hapus centang Active: perubahan yang dibuat di GitHub tidak akan kembali ke Margaya.",
+			"step3": "Di bagian Repository permissions, berikan akses baca dan tulis untuk Issues, serta akses baca untuk Pull requests dan Contents. Berlanggananlah ke event Issues, Issue comment, Pull request, dan Push.",
+			"step4": "Buat App, lalu pilih Generate a private key. Masukkan ID App, nama App dari alamatnya, dan file .pem yang diunduh di sini, lalu simpan.",
+			"step5": "Pilih “Pasang App” dan pasang di akun atau organisasi yang repositorinya ingin Anda hubungkan.",
+			"createOnGithub": "Buat GitHub App",
+			"webhookUrl": "URL webhook",
+			"webhookUrlHint": "Masukkan ini sebagai Webhook URL di pengaturan App di GitHub.",
+			"appId": "ID App",
+			"appIdHint": "Ditampilkan di bagian atas halaman pengaturan App di GitHub.",
+			"appIdInvalid": "Masukkan ID numerik App",
+			"appName": "Nama App",
+			"appNameHint": "Nama di alamat App, github.com/apps/<name>. Digunakan untuk tautan pemasangan.",
+			"appNameInvalid": "Gunakan nama dari alamat App: huruf, angka, dan tanda hubung",
+			"privateKey": "Kunci privat",
+			"privateKeyHint": "Tempel file .pem yang diunduh GitHub saat Anda membuat kunci privat, atau muat file-nya.",
+			"privateKeyInvalid": "Tempel seluruh kunci, dari -----BEGIN hingga -----END",
+			"webhookSecret": "Rahasia webhook",
+			"webhookSecretHint": "Masukkan rahasia yang sama di pengaturan webhook App di GitHub.",
+			"generateSecret": "Hasilkan",
+			"save": "Simpan perubahan",
+			"install": "Pasang App",
+			"remove": "Hapus pengaturan GitHub App…",
+			"removeTitle": "Hapus pengaturan GitHub App?",
+			"removeDescription": "Sinkronisasi repositori berhenti untuk semua proyek sampai Anda menyiapkan App lagi.",
+			"removeConfirm": "Hapus",
+			"removed": "Pengaturan GitHub App dihapus"
 		},
 		"testEmail": {
 			"codes": {

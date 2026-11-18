@@ -73,6 +73,19 @@ export const instanceProviderStateSchema = z
   })
   .openapi("InstanceSignInProvider");
 
+export const instanceGithubAppStateSchema = z
+  .object({
+    configured: yes(
+      "The App ID, private key and webhook secret are all set, so repository sync can use the App.",
+    ),
+    managedByEnvironment: z.boolean(),
+    webhookUrl: z.string().openapi({
+      description: "The Webhook URL to enter in the GitHub App's settings.",
+    }),
+    envVars: z.array(z.string()),
+  })
+  .openapi("InstanceGithubAppState");
+
 export const instanceSettingsSchema = z
   .object({
     locked: yes("The global lock: every setting is read-only."),
@@ -88,6 +101,7 @@ export const instanceSettingsSchema = z
         discord: instanceProviderStateSchema,
         custom: instanceProviderStateSchema,
       }),
+      githubApp: instanceGithubAppStateSchema,
     }),
   })
   .openapi("InstanceSettings");

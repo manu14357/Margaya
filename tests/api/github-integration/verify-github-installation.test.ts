@@ -25,6 +25,8 @@ const mockGetGithubApp = vi.fn(() => mockApp);
 
 vi.mock("../../../apps/api/src/plugins/github/utils/github-app", () => ({
   getGithubApp: () => mockGetGithubApp(),
+  // The instance setting falls back to this variable.
+  githubAppName: () => process.env.GITHUB_APP_NAME || null,
 }));
 
 import verifyGithubInstallation from "../../../apps/api/src/github-integration/controllers/verify-github-installation";

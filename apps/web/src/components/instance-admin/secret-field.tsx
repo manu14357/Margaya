@@ -1,8 +1,10 @@
-import { KeyRound, TriangleAlert } from "lucide-react";
-import { useState } from "react";
+import { FileUp, KeyRound, TriangleAlert } from "lucide-react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/cn";
 import { secretFieldState } from "@/lib/instance-settings";
 import type { InstanceSettingEntry } from "@/types/instance-admin";
 
@@ -16,6 +18,11 @@ type SecretFieldProps = {
   onClear: () => void;
   disabled?: boolean;
   clearing?: boolean;
+  /**
+   * A multi-line secret such as a PEM key: a text area (a password input
+   * would drop the line breaks) and a button that loads a file of `accept`.
+   */
+  multiline?: { accept: string; placeholder?: string };
 };
 
 /**
@@ -30,12 +37,56 @@ export function SecretField({
   onClear,
   disabled = false,
   clearing = false,
+  multiline,
 }: SecretFieldProps) {
   const { t } = useTranslation();
   const [replacing, setReplacing] = useState(false);
+  const fileInput = useRef<HTMLInputElement>(null);
   const state = secretFieldState(entry, replacing);
 
-  const input = (
+  const loadFile = async (file: File | undefined) => {
+    if (file) onChange(await file.text());
+  };
+
+  const input = multiline ? (
+    <div className="w-full min-w-0 space-y-2">
+      <Textarea
+        id={id}
+        rows={5}
+        autoComplete="off"
+        spellCheck={false}
+        className="font-mono text-xs"
+        placeholder={
+          multiline.placeholder ?? t("instanceAdmin:secret.placeholder")
+        }
+        value={value}
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.value)}
+      />
+      <input
+        ref={fileInput}
+        type="file"
+        accept={multiline.accept}
+        className="hidden"
+        tabIndex={-1}
+        aria-hidden
+        onChange={(event) => {
+          void loadFile(event.target.files?.[0]);
+          event.target.value = "";
+        }}
+      />
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        disabled={disabled}
+        onClick={() => fileInput.current?.click()}
+      >
+        <FileUp aria-hidden />
+        {t("instanceAdmin:secret.loadFile")}
+      </Button>
+    </div>
+  ) : (
     <Input
       id={id}
       type="password"
@@ -45,6 +96,11 @@ export function SecretField({
       disabled={disabled}
       onChange={(event) => onChange(event.target.value)}
     />
+  );
+  // A text area stacks its buttons below instead of beside it.
+  const row = cn(
+    "flex gap-2",
+    multiline ? "flex-col items-start" : "items-center",
   );
 
   if (state === "saved") {
@@ -91,7 +147,7 @@ export function SecretField({
           <TriangleAlert className="mt-px size-3.5 shrink-0" aria-hidden />
           {t("instanceAdmin:secret.unreadable")}
         </p>
-        <div className="flex items-center gap-2">
+        <div className={row}>
           {input}
           <Button
             type="button"
@@ -110,7 +166,7 @@ export function SecretField({
 
   if (state === "replacing") {
     return (
-      <div className="flex items-center gap-2">
+      <div className={row}>
         {input}
         <Button
           type="button"

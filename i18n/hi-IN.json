@@ -1973,7 +1973,8 @@
 				"importError": "Issues आयात करने में विफल",
 				"commentOnEnabled": "Margaya नई issues पर कार्य लिंक के साथ टिप्पणी करेगा",
 				"commentOnDisabled": "नई issues पर कार्य लिंक टिप्पणियाँ बंद हैं",
-				"settingsUpdateError": "GitHub एकीकरण अपडेट करने में विफल"
+				"settingsUpdateError": "GitHub एकीकरण अपडेट करने में विफल",
+				"linkError": "GitHub ने आपका खाता कनेक्ट नहीं किया (त्रुटि: {{code}})। अगर ऐसा बार-बार हो, तो अपने व्यवस्थापक से GitHub साइन-इन सेटिंग्स जाँचने को कहें।"
 			},
 			"connectionStatus": "कनेक्शन स्थिति",
 			"connectedActive": "रिपॉज़िटरी जुड़ी और सक्रिय",
@@ -2012,6 +2013,12 @@
 			"importDisabledHint": "आयात सक्षम करने के लिए ऊपर रिपॉज़िटरी कॉन्फ़िगरेशन पूरा करें",
 			"accountVerificationHint": "इस रिपॉज़िटरी पर अपने व्यवस्थापक अधिकार सत्यापित करने के लिए अपना GitHub खाता कनेक्ट करें।",
 			"enableGithubSignInHint": "अपने इंस्टेंस के व्यवस्थापक से GitHub साइन-इन सक्षम करने को कहें।",
+			"appNotConfiguredHint": "रिपॉज़िटरी सिंक के लिए इस सर्वर पर एक GitHub App चाहिए। अपने इंस्टेंस व्यवस्थापक से इसे सेट अप करने को कहें।",
+			"appNotConfiguredAdminHint": "रिपॉज़िटरी सिंक के लिए इस सर्वर पर एक GitHub App चाहिए। इसे इंस्टेंस सेटिंग में सेट अप करें।",
+			"setUpGithubApp": "GitHub App सेट अप करें",
+			"copyLink": "लिंक कॉपी करें",
+			"linkCopied": "लिंक कॉपी हो गया। इसे ऐसे ब्राउज़र में खोलें जहाँ आप Margaya में साइन इन हैं, और वहीं अपना GitHub खाता कनेक्ट करें।",
+			"copyLinkError": "लिंक कॉपी नहीं हो सका।",
 			"reverifyHint": "पहुँच सत्यापित करने और सिंक्रोनाइज़ेशन फिर से शुरू करने के लिए इस रिपॉज़िटरी को दोबारा कनेक्ट करें।",
 			"resumeImport": "इम्पोर्ट फिर से शुरू करें",
 			"importPaused": "इस इम्पोर्ट की प्रगति सहेजी गई है। आप इसे फिर से शुरू कर सकते हैं।",
@@ -4011,7 +4018,8 @@
 		"continueInBrowser": {
 			"title": "अपने ब्राउज़र में जारी रखें",
 			"billing": "अभी खुली ब्राउज़र विंडो में प्रक्रिया पूरी करें, फिर Margaya पर वापस आएँ। लौटने पर आपका प्लान अपडेट हो जाएगा।",
-			"githubApp": "अपने ब्राउज़र में GitHub पर प्रक्रिया पूरी करें, फिर Margaya पर लौटें और इंस्टॉलेशन दोबारा जाँचें।"
+			"githubApp": "अपने ब्राउज़र में GitHub पर प्रक्रिया पूरी करें, फिर Margaya पर लौटें और इंस्टॉलेशन दोबारा जाँचें।",
+			"githubAccount": "अपने ब्राउज़र में खुले पेज पर अपना GitHub खाता कनेक्ट करें, फिर Margaya पर लौटें।"
 		},
 		"save": "सहेजें",
 		"unsavedChanges": "बिना सहेजे बदलाव",
@@ -10852,6 +10860,7 @@
 			"publicBoards": "सार्वजनिक बोर्ड",
 			"workspaces": "वर्कस्पेस",
 			"ai": "AI",
+			"integrations": "इंटीग्रेशन",
 			"health": "स्वास्थ्य"
 		},
 		"lockedCallout": "ये सेटिंग इस सर्वर पर एनवायरनमेंट वेरिएबल से प्रबंधित होती हैं। यहाँ बदलाव अक्षम हैं।",
@@ -10872,6 +10881,7 @@
 			"clear": "साफ़ करें",
 			"cleared": "सीक्रेट साफ़ कर दिया गया",
 			"placeholder": "नया मान दर्ज करें",
+			"loadFile": "फ़ाइल से लोड करें…",
 			"replace": "बदलें",
 			"saved": "सहेजा गया",
 			"unreadable": "सहेजा गया सीक्रेट पढ़ा नहीं जा सकता (सर्वर का AUTH_SECRET बदल गया है)। इसे फिर से दर्ज करें।"
@@ -11014,6 +11024,45 @@
 			"subtitle": "वह SMTP सर्वर जिससे Margaya साइन-इन कोड, आमंत्रण और सूचनाएँ भेजता है।",
 			"title": "ईमेल",
 			"username": "उपयोगकर्ता नाम"
+		},
+		"integrations": {
+			"title": "इंटीग्रेशन",
+			"subtitle": "सर्वर-स्तर के कनेक्शन, जिनका उपयोग प्रोजेक्ट इंटीग्रेशन करते हैं।"
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App सेट अप है",
+			"statusNotConfigured": "GitHub App अभी सेट अप नहीं है",
+			"intro": "रिपॉज़िटरी सिंक (issues, pull requests और branches) एक GitHub App के ज़रिए चलता है, जिसे आप GitHub पर बनाते हैं। यह GitHub साइन-इन से अलग है, जिसे आप “प्रमाणीकरण” में सेट अप करते हैं।",
+			"managedByEnv": "GitHub App एनवायरनमेंट वेरिएबल (GITHUB_APP_ID और संबंधित) से कॉन्फ़िगर है। इसे यहाँ प्रबंधित करने के लिए उन्हें हटाएँ और रीस्टार्ट करें।",
+			"stepsTitle": "इसे कैसे सेट अप करें",
+			"step1": "GitHub पर एक GitHub App बनाएँ (Settings → Developer settings → GitHub Apps → New GitHub App)। Homepage URL के रूप में अपने Margaya का पता डालें।",
+			"step2": "Webhook के अंतर्गत नीचे दिया गया वेबहुक URL और एक वेबहुक सीक्रेट दर्ज करें (“जनरेट करें” से एक बन जाता है)। अगर GitHub इस सर्वर तक नहीं पहुँच सकता, तो Active से टिक हटा दें: तब GitHub पर किए गए बदलाव Margaya में वापस नहीं आएँगे।",
+			"step3": "Repository permissions के अंतर्गत Issues को पढ़ने और लिखने की अनुमति दें, और Pull requests तथा Contents को पढ़ने की अनुमति दें। Issues, Issue comment, Pull request और Push इवेंट की सदस्यता लें।",
+			"step4": "App बनाएँ, फिर Generate a private key चुनें। यहाँ App आईडी, उसके पते में मौजूद App का नाम और डाउनलोड की गई .pem फ़ाइल दर्ज करें, और सहेजें।",
+			"step5": "“App इंस्टॉल करें” चुनें और इसे उन खातों या संगठनों पर इंस्टॉल करें जिनकी रिपॉज़िटरी आप कनेक्ट करना चाहते हैं।",
+			"createOnGithub": "GitHub App बनाएँ",
+			"webhookUrl": "वेबहुक URL",
+			"webhookUrlHint": "इसे GitHub पर App की सेटिंग में Webhook URL के रूप में दर्ज करें।",
+			"appId": "App आईडी",
+			"appIdHint": "GitHub पर App के सेटिंग पेज में सबसे ऊपर दिखाई देता है।",
+			"appIdInvalid": "App की संख्यात्मक आईडी दर्ज करें",
+			"appName": "App का नाम",
+			"appNameHint": "App के पते में मौजूद नाम, github.com/apps/<name>। इंस्टॉल लिंक के लिए इसका उपयोग होता है।",
+			"appNameInvalid": "App के पते वाला नाम इस्तेमाल करें: अक्षर, अंक और हाइफ़न",
+			"privateKey": "निजी कुंजी",
+			"privateKeyHint": "निजी कुंजी जनरेट करने पर GitHub जो .pem फ़ाइल डाउनलोड करता है, उसे पेस्ट करें या फ़ाइल लोड करें।",
+			"privateKeyInvalid": "पूरी कुंजी पेस्ट करें, -----BEGIN से -----END तक",
+			"webhookSecret": "वेबहुक सीक्रेट",
+			"webhookSecretHint": "GitHub पर App की वेबहुक सेटिंग में वही सीक्रेट दर्ज करें।",
+			"generateSecret": "जनरेट करें",
+			"save": "बदलाव सहेजें",
+			"install": "App इंस्टॉल करें",
+			"remove": "GitHub App सेटिंग हटाएँ…",
+			"removeTitle": "GitHub App सेटिंग हटाएँ?",
+			"removeDescription": "जब तक आप App को दोबारा सेट अप नहीं करते, हर प्रोजेक्ट के लिए रिपॉज़िटरी सिंक रुका रहेगा।",
+			"removeConfirm": "हटाएँ",
+			"removed": "GitHub App सेटिंग हटा दी गईं"
 		},
 		"testEmail": {
 			"codes": {

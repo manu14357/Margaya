@@ -11424,6 +11424,9 @@
 								},
 								"settingsUpdateError": {
 									"type": "string"
+								},
+								"linkError": {
+									"type": "string"
 								}
 							},
 							"required": [
@@ -11442,7 +11445,8 @@
 								"importError",
 								"commentOnEnabled",
 								"commentOnDisabled",
-								"settingsUpdateError"
+								"settingsUpdateError",
+								"linkError"
 							]
 						},
 						"connectionStatus": {
@@ -11556,6 +11560,24 @@
 						"enableGithubSignInHint": {
 							"type": "string"
 						},
+						"appNotConfiguredHint": {
+							"type": "string"
+						},
+						"appNotConfiguredAdminHint": {
+							"type": "string"
+						},
+						"setUpGithubApp": {
+							"type": "string"
+						},
+						"copyLink": {
+							"type": "string"
+						},
+						"linkCopied": {
+							"type": "string"
+						},
+						"copyLinkError": {
+							"type": "string"
+						},
 						"reverifyHint": {
 							"type": "string"
 						},
@@ -11609,6 +11631,12 @@
 						"importDisabledHint",
 						"accountVerificationHint",
 						"enableGithubSignInHint",
+						"appNotConfiguredHint",
+						"appNotConfiguredAdminHint",
+						"setUpGithubApp",
+						"copyLink",
+						"linkCopied",
+						"copyLinkError",
 						"reverifyHint",
 						"resumeImport",
 						"importPaused",
@@ -16548,9 +16576,12 @@
 						},
 						"githubApp": {
 							"type": "string"
+						},
+						"githubAccount": {
+							"type": "string"
 						}
 					},
-					"required": ["title", "billing", "githubApp"]
+					"required": ["title", "billing", "githubApp", "githubAccount"]
 				},
 				"save": {
 					"type": "string"
@@ -45416,6 +45447,9 @@
 						"ai": {
 							"type": "string"
 						},
+						"integrations": {
+							"type": "string"
+						},
 						"health": {
 							"type": "string"
 						}
@@ -45428,6 +45462,7 @@
 						"publicBoards",
 						"admins",
 						"ai",
+						"integrations",
 						"health"
 					]
 				},
@@ -45496,6 +45531,9 @@
 						"placeholder": {
 							"type": "string"
 						},
+						"loadFile": {
+							"type": "string"
+						},
 						"unreadable": {
 							"type": "string"
 						},
@@ -45509,6 +45547,7 @@
 						"clear",
 						"cancel",
 						"placeholder",
+						"loadFile",
 						"unreadable",
 						"cleared"
 					]
@@ -46064,6 +46103,159 @@
 						"removeConfirm",
 						"removed",
 						"managedByEnv"
+					]
+				},
+				"integrations": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"subtitle": {
+							"type": "string"
+						}
+					},
+					"required": ["title", "subtitle"]
+				},
+				"githubApp": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"title": {
+							"type": "string"
+						},
+						"statusConfigured": {
+							"type": "string"
+						},
+						"statusNotConfigured": {
+							"type": "string"
+						},
+						"intro": {
+							"type": "string"
+						},
+						"managedByEnv": {
+							"type": "string"
+						},
+						"stepsTitle": {
+							"type": "string"
+						},
+						"step1": {
+							"type": "string"
+						},
+						"step2": {
+							"type": "string"
+						},
+						"step3": {
+							"type": "string"
+						},
+						"step4": {
+							"type": "string"
+						},
+						"step5": {
+							"type": "string"
+						},
+						"createOnGithub": {
+							"type": "string"
+						},
+						"webhookUrl": {
+							"type": "string"
+						},
+						"webhookUrlHint": {
+							"type": "string"
+						},
+						"appId": {
+							"type": "string"
+						},
+						"appIdHint": {
+							"type": "string"
+						},
+						"appIdInvalid": {
+							"type": "string"
+						},
+						"appName": {
+							"type": "string"
+						},
+						"appNameHint": {
+							"type": "string"
+						},
+						"appNameInvalid": {
+							"type": "string"
+						},
+						"privateKey": {
+							"type": "string"
+						},
+						"privateKeyHint": {
+							"type": "string"
+						},
+						"privateKeyInvalid": {
+							"type": "string"
+						},
+						"webhookSecret": {
+							"type": "string"
+						},
+						"webhookSecretHint": {
+							"type": "string"
+						},
+						"generateSecret": {
+							"type": "string"
+						},
+						"save": {
+							"type": "string"
+						},
+						"install": {
+							"type": "string"
+						},
+						"remove": {
+							"type": "string"
+						},
+						"removeTitle": {
+							"type": "string"
+						},
+						"removeDescription": {
+							"type": "string"
+						},
+						"removeConfirm": {
+							"type": "string"
+						},
+						"removed": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"title",
+						"statusConfigured",
+						"statusNotConfigured",
+						"intro",
+						"managedByEnv",
+						"stepsTitle",
+						"step1",
+						"step2",
+						"step3",
+						"step4",
+						"step5",
+						"createOnGithub",
+						"webhookUrl",
+						"webhookUrlHint",
+						"appId",
+						"appIdHint",
+						"appIdInvalid",
+						"appName",
+						"appNameHint",
+						"appNameInvalid",
+						"privateKey",
+						"privateKeyHint",
+						"privateKeyInvalid",
+						"webhookSecret",
+						"webhookSecretHint",
+						"generateSecret",
+						"save",
+						"install",
+						"remove",
+						"removeTitle",
+						"removeDescription",
+						"removeConfirm",
+						"removed"
 					]
 				},
 				"testEmail": {
@@ -46743,6 +46935,8 @@
 				"auth",
 				"oauth",
 				"email",
+				"integrations",
+				"githubApp",
 				"testEmail",
 				"workspaces",
 				"publicBoards",

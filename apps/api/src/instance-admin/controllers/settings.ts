@@ -48,6 +48,7 @@ export function serializeInstanceSettings(snapshot: InstanceSettingsSnapshot) {
       emailCodeActive: derived.emailCodeActive,
       signInMethodsActive: derived.signInMethodsActive,
       providers: derived.providers,
+      githubApp: derived.githubApp,
     },
   };
 }

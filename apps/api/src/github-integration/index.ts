@@ -3,6 +3,7 @@ import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db from "../database";
 import { accountTable, integrationTable } from "../database/schema";
+import { getInstanceSettings } from "../instance-settings/snapshot";
 import { scopeToProjectFromBody } from "../integrations/middleware";
 import { projectIdParam } from "../integrations/schema";
 import {
@@ -17,8 +18,11 @@ import {
   type GitHubConfig,
   validateGitHubConfig,
 } from "../plugins/github/config";
+import {
+  getGithubApp,
+  githubAppName,
+} from "../plugins/github/utils/github-app";
 import { handleGitHubWebhook } from "../plugins/github/webhook-handler";
-import { isGithubSsoConfigured } from "../utils/github-sso-env";
 import { requireUserSession } from "../utils/require-user-session";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
 import { workspaceAccess } from "../utils/workspace-access-middleware";
@@ -268,9 +272,13 @@ const githubIntegration = apiRouter<BaseVariables & { workspaceId: string }>()
     });
     return c.json(
       {
-        appName: process.env.GITHUB_APP_NAME || null,
+        appName: githubAppName(),
         accountConnected: Boolean(account),
-        accountLinkingAvailable: isGithubSsoConfigured(),
+        appConfigured: getGithubApp() !== null,
+        // The same state sign-in uses: credentials saved in the instance
+        // panel count, not only environment variables.
+        accountLinkingAvailable:
+          getInstanceSettings().derived.providers.github.active,
       },
       200,
     );

@@ -4,7 +4,7 @@ description: Configure Margaya with your GitHub App credentials and connect proj
 ---
 
 
-This guide covers configuring Margaya with your GitHub App credentials and connecting projects to repositories.
+This guide covers configuring Margaya with your GitHub App credentials and connecting projects to repositories. The simplest way to enter the App is **Settings → Instance → Integrations** (see [App Setup](/core/integrations/github/setup#step-3-enter-the-app-in-margaya)); environment variables are the alternative below.
 
 <Info>
 Make sure you've completed the [GitHub App setup](/core/integrations/github/setup) before proceeding.
@@ -12,7 +12,7 @@ Make sure you've completed the [GitHub App setup](/core/integrations/github/setu
 
 ## Environment Variables
 
-Add the following environment variables to your Margaya deployment:
+Instead of the Integrations page, you can set the App with environment variables. They take priority over values saved on the page and make it read-only. Add them to your Margaya deployment and restart the API:
 
 ```bash
 # GitHub App (integration only: repository sync, webhooks)
@@ -132,7 +132,7 @@ GITHUB_APP_NAME=margaya-mycompany
 
 ## Connecting Repositories
 
-Once your environment variables are configured and your backend is restarted, you can connect projects to GitHub repositories.
+Once the GitHub App is set up (on the Integrations page, or with environment variables and a restart), you can connect projects to GitHub repositories. Until then, the project's GitHub section says repository sync needs a GitHub App and disables **Browse**, **Verify** and **Connect**; instance admins also see **Set up the GitHub App**, which opens the Integrations page.
 
 <Steps>
 <Step>
@@ -146,7 +146,7 @@ Once your environment variables are configured and your backend is restarted, yo
 <Step>
 **Connect your GitHub account**
 
-Margaya checks that you administer the repository before it links it. If your Margaya account isn't linked to GitHub yet, the section asks you to select **Connect GitHub** and approve the link on GitHub. This needs [GitHub sign-in](/core/social-providers/github) to be set up on the instance; until it is, the section says *Ask your instance administrator to enable GitHub sign-in*.
+Margaya checks that you administer the repository before it links it. If your Margaya account isn't linked to GitHub yet, the section asks you to select **Connect GitHub** and approve the link on GitHub. The GitHub account doesn't need to use the same email as your Margaya account. This needs [GitHub sign-in](/core/social-providers/github) to be set up on the instance; until it is, the section says *Ask your instance administrator to enable GitHub sign-in*. GitHub sign-in counts as set up whether its client ID and secret come from environment variables or were saved under **Instance → Authentication**. If GitHub refuses the link, you come back to the same page with a message that names GitHub's error; *incorrect client credentials* in the server log means the saved client secret doesn't belong to the client ID.
 </Step>
 
 <Step>
@@ -163,7 +163,7 @@ You have two options:
 2. Enter the **Repository name**
 3. Select **Verify** to check that the GitHub App is installed on it
 
-<Screenshot src="integrations/github" alt="The GitHub integration expanded, with the account verification notice, the Not connected status, repository owner and name filled in, and Browse, Verify and Connect buttons" caption="Enter or browse for the repository, verify it, then connect." />
+<Screenshot src="integrations/github" alt="The GitHub integration expanded, with the account and GitHub App notices, the Not connected status, repository owner and name filled in, and Browse, Verify and Connect buttons" caption="Enter or browse for the repository, verify it, then connect. The buttons stay disabled until your account is linked and the GitHub App is set up." />
 </Step>
 
 <Step>

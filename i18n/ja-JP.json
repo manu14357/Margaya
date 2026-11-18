@@ -1954,7 +1954,8 @@
 				"importError": "Issue のインポートに失敗しました",
 				"commentOnEnabled": "新しい Issue に Margaya がタスクリンク付きのコメントを投稿します",
 				"commentOnDisabled": "新しい Issue へのタスクリンクのコメント投稿をオフにしました",
-				"settingsUpdateError": "GitHub 連携の更新に失敗しました"
+				"settingsUpdateError": "GitHub 連携の更新に失敗しました",
+				"linkError": "GitHub がアカウントを接続しませんでした (エラー: {{code}})。繰り返し発生する場合は、管理者に GitHub サインインの設定を確認するよう依頼してください。"
 			},
 			"connectionStatus": "接続ステータス",
 			"connectedActive": "リポジトリが接続され、アクティブです",
@@ -1993,6 +1994,12 @@
 			"importDisabledHint": "インポートを有効にするには、上記のリポジトリ設定を完了してください",
 			"accountVerificationHint": "GitHub アカウントを接続して、このリポジトリを管理していることを確認してください。",
 			"enableGithubSignInHint": "GitHub サインインを有効にするよう、インスタンス管理者に依頼してください。",
+			"appNotConfiguredHint": "リポジトリの同期には、このサーバーに GitHub App が必要です。インスタンスの管理者に設定を依頼してください。",
+			"appNotConfiguredAdminHint": "リポジトリの同期には、このサーバーに GitHub App が必要です。インスタンス設定で設定してください。",
+			"setUpGithubApp": "GitHub App を設定",
+			"copyLink": "リンクをコピー",
+			"linkCopied": "リンクをコピーしました。Margaya にサインインしているブラウザーで開き、そこで GitHub アカウントを接続してください。",
+			"copyLinkError": "リンクをコピーできませんでした。",
 			"reverifyHint": "このリポジトリを再接続して、アクセスを確認し同期を再開してください。",
 			"resumeImport": "インポートを再開",
 			"importPaused": "このインポートは進捗が保存されています。再開できます。",
@@ -3940,7 +3947,8 @@
 		"continueInBrowser": {
 			"title": "ブラウザーで続行してください",
 			"billing": "開いたブラウザーウインドウで手続きを完了してから、Margaya に戻ってください。戻るとプランが更新されます。",
-			"githubApp": "ブラウザーで GitHub での手続きを完了してから Margaya に戻り、インストールをもう一度確認してください。"
+			"githubApp": "ブラウザーで GitHub での手続きを完了してから Margaya に戻り、インストールをもう一度確認してください。",
+			"githubAccount": "ブラウザーで開いたページで GitHub アカウントを接続してから、Margaya に戻ってください。"
 		},
 		"save": "保存",
 		"unsavedChanges": "未保存の変更",
@@ -10690,6 +10698,7 @@
 			"publicBoards": "公開ボード",
 			"workspaces": "ワークスペース",
 			"ai": "AI",
+			"integrations": "連携",
 			"health": "稼働状況"
 		},
 		"lockedCallout": "これらの設定は、このサーバーの環境変数で管理されています。ここでの変更は無効です。",
@@ -10710,6 +10719,7 @@
 			"clear": "クリア",
 			"cleared": "シークレットをクリアしました",
 			"placeholder": "新しい値を入力",
+			"loadFile": "ファイルから読み込む…",
 			"replace": "置き換え",
 			"saved": "保存済み",
 			"unreadable": "保存されているシークレットを読み取れません(サーバーの AUTH_SECRET が変更されました)。もう一度入力してください。"
@@ -10852,6 +10862,45 @@
 			"subtitle": "Margayaがサインインコード、招待、通知を送信するSMTPサーバーです。",
 			"title": "メール",
 			"username": "ユーザー名"
+		},
+		"integrations": {
+			"title": "連携",
+			"subtitle": "プロジェクトの連携が利用する、サーバー全体の接続です。"
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App は設定済みです",
+			"statusNotConfigured": "GitHub App はまだ設定されていません",
+			"intro": "リポジトリの同期(Issue、プルリクエスト、ブランチ)は、GitHub で作成する GitHub App を通じて行われます。これは GitHub サインインとは別のもので、GitHub サインインは「認証」で設定します。",
+			"managedByEnv": "GitHub App は環境変数(GITHUB_APP_ID など)で設定されています。ここで管理するには、環境変数を削除して再起動してください。",
+			"stepsTitle": "設定方法",
+			"step1": "GitHub で GitHub App を作成します(Settings → Developer settings → GitHub Apps → New GitHub App)。Homepage URL には Margaya のアドレスを指定してください。",
+			"step2": "Webhook で、下の Webhook の URL と Webhook シークレットを入力します(「生成」で作成できます)。GitHub からこのサーバーにアクセスできない場合は、Active のチェックを外してください。その場合、GitHub での変更は Margaya に反映されません。",
+			"step3": "Repository permissions で、Issues に読み取りと書き込み、Pull requests と Contents に読み取りのアクセス権を付与します。Issues、Issue comment、Pull request、Push のイベントをサブスクライブします。",
+			"step4": "アプリを作成してから Generate a private key を選択します。アプリ ID、アドレスに含まれるアプリ名、ダウンロードした .pem ファイルをここに入力して保存します。",
+			"step5": "「アプリをインストール」を選択し、接続したいリポジトリがあるアカウントまたは組織にインストールします。",
+			"createOnGithub": "GitHub App を作成",
+			"webhookUrl": "Webhook の URL",
+			"webhookUrlHint": "GitHub のアプリ設定で、これを Webhook URL に入力してください。",
+			"appId": "アプリ ID",
+			"appIdHint": "GitHub のアプリ設定ページの上部に表示されます。",
+			"appIdInvalid": "アプリの数値 ID を入力してください",
+			"appName": "アプリ名",
+			"appNameHint": "アプリのアドレス github.com/apps/<name> に含まれる名前です。インストールリンクに使われます。",
+			"appNameInvalid": "アプリのアドレスにある名前を使用してください(英字、数字、ハイフン)",
+			"privateKey": "秘密鍵",
+			"privateKeyHint": "秘密鍵を生成したときに GitHub からダウンロードされる .pem ファイルを貼り付けるか、ファイルを読み込んでください。",
+			"privateKeyInvalid": "-----BEGIN から -----END まで、鍵全体を貼り付けてください",
+			"webhookSecret": "Webhook シークレット",
+			"webhookSecretHint": "GitHub のアプリの Webhook 設定にも同じシークレットを入力してください。",
+			"generateSecret": "生成",
+			"save": "変更を保存",
+			"install": "アプリをインストール",
+			"remove": "GitHub App 設定を削除…",
+			"removeTitle": "GitHub App 設定を削除しますか？",
+			"removeDescription": "アプリを再設定するまで、すべてのプロジェクトでリポジトリの同期が停止します。",
+			"removeConfirm": "削除",
+			"removed": "GitHub App 設定を削除しました"
 		},
 		"testEmail": {
 			"codes": {

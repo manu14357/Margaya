@@ -68,7 +68,7 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 vi.mock("@/lib/toast", () => ({
-  toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn() },
+  toast: { error: vi.fn(), info: vi.fn(), success: vi.fn(), warning: vi.fn() },
 }));
 
 import { toast } from "@/lib/toast";
@@ -85,7 +85,11 @@ function show() {
     </QueryClientProvider>,
   );
 }
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  Reflect.deleteProperty(window, "__MARGAYA_DESKTOP__");
+  window.history.replaceState(null, "", "/");
+});
 beforeEach(() => {
   vi.clearAllMocks();
   m.integration.current = null;
@@ -106,11 +110,107 @@ describe("GitHub account verification flow", () => {
       expect(m.link).toHaveBeenCalledWith({
         provider: "github",
         callbackURL: window.location.href,
+        errorCallbackURL: `${window.location.href}?linkError=github`,
       }),
     );
     expect(
       screen.getByRole("button", { name: "settings:githubIntegration.browse" }),
     ).toBeDisabled();
+  });
+  it("links in the browser from the desktop app, with a link to copy", async () => {
+    const openExternal = vi.fn();
+    Object.defineProperty(window, "__MARGAYA_DESKTOP__", {
+      configurable: true,
+      value: { openExternal },
+    });
+    m.appInfo.mockResolvedValue({
+      accountConnected: false,
+      accountLinkingAvailable: true,
+    });
+    show();
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "settings:githubIntegration.connect GitHub",
+      }),
+    );
+    expect(openExternal).toHaveBeenCalledWith(window.location.href);
+    expect(m.link).not.toHaveBeenCalled();
+    expect(toast.info).toHaveBeenCalledWith(
+      "settings:continueInBrowser.title",
+      { description: "settings:continueInBrowser.githubAccount" },
+    );
+    expect(
+      screen.getByRole("button", {
+        name: "settings:githubIntegration.copyLink",
+      }),
+    ).toBeInTheDocument();
+  });
+  it("offers no copy link in a browser", async () => {
+    m.appInfo.mockResolvedValue({
+      accountConnected: false,
+      accountLinkingAvailable: true,
+    });
+    show();
+    await screen.findByRole("button", {
+      name: "settings:githubIntegration.connect GitHub",
+    });
+    expect(
+      screen.queryByRole("button", {
+        name: "settings:githubIntegration.copyLink",
+      }),
+    ).not.toBeInTheDocument();
+  });
+  it("reports a failed link once when GitHub sends the page back", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/settings?linkError=github&error=invalid_code",
+    );
+    m.appInfo.mockResolvedValue({
+      accountConnected: false,
+      accountLinkingAvailable: true,
+    });
+    show();
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith(
+        "settings:githubIntegration.toast.linkError",
+      ),
+    );
+    expect(window.location.search).toBe("");
+  });
+  it("explains a missing GitHub App instead of failing to list repositories", async () => {
+    m.appInfo.mockResolvedValue({
+      accountConnected: true,
+      accountLinkingAvailable: true,
+      appConfigured: false,
+    });
+    show();
+    expect(
+      await screen.findByText(
+        "settings:githubIntegration.appNotConfiguredHint",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "settings:githubIntegration.browse" }),
+    ).toBeDisabled();
+  });
+  it("offers repository browsing once the account is linked and the App is set up", async () => {
+    m.appInfo.mockResolvedValue({
+      accountConnected: true,
+      accountLinkingAvailable: true,
+      appConfigured: true,
+    });
+    show();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", {
+          name: "settings:githubIntegration.browse",
+        }),
+      ).toBeEnabled(),
+    );
+    expect(
+      screen.queryByText("settings:githubIntegration.appNotConfiguredHint"),
+    ).not.toBeInTheDocument();
   });
   it("explains the administrator prerequisite when GitHub sign-in is disabled", async () => {
     m.appInfo.mockResolvedValue({

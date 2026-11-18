@@ -1973,7 +1973,8 @@
 				"importError": "Məsələləri idxal etmək alınmadı",
 				"commentOnEnabled": "Margaya yeni məsələlərə tapşırıq keçidi olan şərh yazacaq",
 				"commentOnDisabled": "Yeni məsələlərdə tapşırıq keçidi olan şərhlər söndürülüb",
-				"settingsUpdateError": "GitHub inteqrasiyasını yeniləmək alınmadı"
+				"settingsUpdateError": "GitHub inteqrasiyasını yeniləmək alınmadı",
+				"linkError": "GitHub hesabınızı qoşmadı (xəta: {{code}}). Bu təkrarlanarsa, administratordan GitHub ilə giriş ayarlarını yoxlamasını xahiş edin."
 			},
 			"connectionStatus": "Bağlantı vəziyyəti",
 			"connectedActive": "Repozitoriya qoşulub və aktivdir",
@@ -2012,6 +2013,12 @@
 			"importDisabledHint": "İdxalı aktivləşdirmək üçün yuxarıdakı repozitoriya parametrlərini tamamlayın",
 			"accountVerificationHint": "Bu repozitoriyanı idarə etdiyinizi təsdiqləmək üçün GitHub hesabınızı qoşun.",
 			"enableGithubSignInHint": "GitHub ilə girişi aktivləşdirmək üçün instansiya administratorunuzdan xahiş edin.",
+			"appNotConfiguredHint": "Repozitoriya sinxronizasiyası üçün bu serverdə GitHub App lazımdır. Instansiya administratorundan onu qurmasını xahiş edin.",
+			"appNotConfiguredAdminHint": "Repozitoriya sinxronizasiyası üçün bu serverdə GitHub App lazımdır. Onu “Quraşdırma parametrləri” bölməsində qurun.",
+			"setUpGithubApp": "GitHub App-i qur",
+			"copyLink": "Linki kopyala",
+			"linkCopied": "Link kopyalandı. Onu Margaya-ya daxil olduğunuz brauzerdə açın və GitHub hesabınızı orada qoşun.",
+			"copyLinkError": "Linki kopyalamaq alınmadı.",
 			"reverifyHint": "Girişi təsdiqləmək və sinxronizasiyanı davam etdirmək üçün bu repozitoriyanı yenidən qoşun.",
 			"resumeImport": "İdxalı davam etdir",
 			"importPaused": "Bu idxalın saxlanmış irəliləyişi var. Onu davam etdirə bilərsiniz.",
@@ -4011,7 +4018,8 @@
 		"continueInBrowser": {
 			"title": "Brauzerinizdə davam edin",
 			"billing": "Yenicə açılan brauzer pəncərəsində prosesi tamamlayın, sonra Margaya-ya qayıdın. Qayıtdığınızda planınız yenilənəcək.",
-			"githubApp": "Brauzerinizdə GitHub-da prosesi tamamlayın, sonra Margaya-ya qayıdın və quraşdırmanı yenidən yoxlayın."
+			"githubApp": "Brauzerinizdə GitHub-da prosesi tamamlayın, sonra Margaya-ya qayıdın və quraşdırmanı yenidən yoxlayın.",
+			"githubAccount": "Brauzerinizdə açılan səhifədə GitHub hesabınızı qoşun, sonra Margaya-ya qayıdın."
 		},
 		"save": "Yadda saxla",
 		"unsavedChanges": "Yadda saxlanmamış dəyişikliklər",
@@ -10852,6 +10860,7 @@
 			"publicBoards": "İctimai lövhələr",
 			"workspaces": "İş sahələri",
 			"ai": "Sİ",
+			"integrations": "İnteqrasiyalar",
 			"health": "Vəziyyət"
 		},
 		"lockedCallout": "Bu parametrlər bu serverdə mühit dəyişənləri ilə idarə olunur. Buradakı dəyişikliklər deaktivdir.",
@@ -10872,6 +10881,7 @@
 			"clear": "Təmizlə",
 			"cleared": "Sirr təmizləndi",
 			"placeholder": "Yeni dəyər daxil edin",
+			"loadFile": "Fayldan yüklə…",
 			"replace": "Əvəz et",
 			"saved": "Saxlanılıb",
 			"unreadable": "Saxlanılmış sirr oxuna bilmir (serverin AUTH_SECRET dəyəri dəyişib). Onu yenidən daxil edin."
@@ -11014,6 +11024,45 @@
 			"subtitle": "Margaya-nın giriş kodlarını, dəvətləri və bildirişləri göndərdiyi SMTP serveri.",
 			"title": "E-poçt",
 			"username": "İstifadəçi adı"
+		},
+		"integrations": {
+			"title": "İnteqrasiyalar",
+			"subtitle": "Layihə inteqrasiyalarının istifadə etdiyi server səviyyəli bağlantılar."
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App quraşdırılıb",
+			"statusNotConfigured": "GitHub App hələ quraşdırılmayıb",
+			"intro": "Repozitoriya sinxronizasiyası (issue-lar, pull request-lər və budaqlar) GitHub-da yaratdığınız GitHub App vasitəsilə işləyir. Bu, “Autentifikasiya” bölməsində qurduğunuz GitHub ilə girişdən ayrıdır.",
+			"managedByEnv": "GitHub App mühit dəyişənləri ilə konfiqurasiya edilib (GITHUB_APP_ID və əlaqəli olanlar). Onu burada idarə etmək üçün həmin dəyişənləri silin və yenidən başladın.",
+			"stepsTitle": "Necə quraşdırmaq olar",
+			"step1": "GitHub-da GitHub App yaradın (Settings → Developer settings → GitHub Apps → New GitHub App). Homepage URL kimi Margaya ünvanınızı istifadə edin.",
+			"step2": "Webhook bölməsində aşağıdakı Webhook-un URL-ini və webhook sirrini daxil edin (“Yarat” düyməsi onu yaradır). GitHub bu serverə çata bilmirsə, Active işarəsini götürün: bu halda GitHub-da edilən dəyişikliklər Margaya-ya qayıtmır.",
+			"step3": "Repository permissions bölməsində Issues üçün oxuma və yazma, Pull requests və Contents üçün isə oxuma icazəsi verin. Issues, Issue comment, Pull request və Push hadisələrinə abunə olun.",
+			"step4": "Tətbiqi yaradın, sonra Generate a private key seçin. Tətbiqin ID-sini, ünvanındakı tətbiq adını və endirilmiş .pem faylını bura daxil edib yadda saxlayın.",
+			"step5": "“Tətbiqi quraşdır” seçin və onu repozitoriyalarını qoşmaq istədiyiniz hesablara və ya təşkilatlara quraşdırın.",
+			"createOnGithub": "GitHub App yarat",
+			"webhookUrl": "Webhook-un URL-i",
+			"webhookUrlHint": "Bunu GitHub-da tətbiqin parametrlərində Webhook URL kimi daxil edin.",
+			"appId": "Tətbiq ID-si",
+			"appIdHint": "GitHub-da tətbiqin parametrlər səhifəsinin yuxarısında göstərilir.",
+			"appIdInvalid": "Tətbiqin rəqəmli ID-sini daxil edin",
+			"appName": "Tətbiq adı",
+			"appNameHint": "Tətbiqin ünvanındakı ad, github.com/apps/<name>. Quraşdırma linkləri üçün istifadə olunur.",
+			"appNameInvalid": "Tətbiqin ünvanındakı adı istifadə edin: hərflər, rəqəmlər və defislər",
+			"privateKey": "Məxfi açar",
+			"privateKeyHint": "Məxfi açar yaradanda GitHub-ın endirdiyi .pem faylını yapışdırın və ya faylı yükləyin.",
+			"privateKeyInvalid": "Açarı tam yapışdırın: -----BEGIN-dən -----END-ə qədər",
+			"webhookSecret": "Webhook sirri",
+			"webhookSecretHint": "Eyni sirri GitHub-da tətbiqin webhook parametrlərinə daxil edin.",
+			"generateSecret": "Yarat",
+			"save": "Dəyişiklikləri saxla",
+			"install": "Tətbiqi quraşdır",
+			"remove": "GitHub App parametrlərini sil…",
+			"removeTitle": "GitHub App parametrləri silinsin?",
+			"removeDescription": "Tətbiqi yenidən quraşdırana qədər bütün layihələrdə repozitoriya sinxronizasiyası dayanır.",
+			"removeConfirm": "Sil",
+			"removed": "GitHub App parametrləri silindi"
 		},
 		"testEmail": {
 			"codes": {

@@ -22,7 +22,7 @@ import {
   extractIssueStatus,
 } from "../utils/extract-priority";
 import { formatTaskDescriptionFromIssue } from "../utils/format";
-import { getGithubApp } from "../utils/github-app";
+import { getGithubApp, githubAppName } from "../utils/github-app";
 import { addLabelsToIssue } from "../utils/labels";
 import { resolveTargetStatus } from "../utils/resolve-column";
 
@@ -55,7 +55,7 @@ export async function handleIssueOpened(payload: IssueOpenedPayload) {
 
   if (isHandoffIssue(issue.body)) return;
 
-  const appName = process.env.GITHUB_APP_NAME;
+  const appName = githubAppName();
   if (appName && issue.user?.login === `${appName}[bot]`) {
     console.log(
       `Issue #${issue.number} was created by the configured GitHub App, skipping task creation`,

@@ -1,3 +1,4 @@
+import { createPrivateKey } from "node:crypto";
 import { z } from "zod";
 
 // Every DB-backed instance setting (B12 §2.6). Nothing outside this catalog
@@ -20,6 +21,7 @@ export const SETTING_GROUPS = [
   "publicBoards",
   "ai",
   "feedback",
+  "githubApp",
 ] as const;
 export type SettingGroup = (typeof SETTING_GROUPS)[number];
 
@@ -62,7 +64,7 @@ function enabledFlag(name: string) {
 }
 
 // GitHub sign-in prefers GITHUB_OAUTH_* and falls back to the legacy
-// GITHUB_CLIENT_* pair, as `getGithubSsoOAuthCredentials` does.
+// GITHUB_CLIENT_* pair.
 function githubCredential(part: "id" | "secret") {
   return (env: Env) => {
     const oauthId = env.GITHUB_OAUTH_CLIENT_ID?.trim();
@@ -602,6 +604,112 @@ const FEEDBACK_SETTINGS: SettingDefinition[] = [
 ];
 const SMTP_LOCK = ["SMTP_HOST"] as const;
 
+// Any of these set means the environment manages the GitHub App: its four
+// values then come from the environment together.
+const GITHUB_APP_LOCK = [
+  "GITHUB_APP_ID",
+  "GITHUB_PRIVATE_KEY",
+  "GITHUB_PRIVATE_KEY_BASE64",
+  "GITHUB_WEBHOOK_SECRET",
+] as const;
+
+/**
+ * The GitHub App private key from the environment, in whichever form the host
+ * can carry: a real multi-line PEM, a single line with literal `\n`
+ * separators (form-based env editors strip newlines), or a base64-encoded PEM
+ * in GITHUB_PRIVATE_KEY_BASE64, which wins when both are set.
+ */
+export function githubPrivateKeyFromEnv(env: Env): string {
+  const base64 = env.GITHUB_PRIVATE_KEY_BASE64?.trim();
+  if (base64) return Buffer.from(base64, "base64").toString("utf8");
+  const raw = env.GITHUB_PRIVATE_KEY ?? "";
+  if (raw.includes("\\n") && !raw.includes("\n")) {
+    return raw.replace(/\\n/g, "\n");
+  }
+  return raw;
+}
+
+function isPrivateKey(value: string): boolean {
+  try {
+    createPrivateKey(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** A pasted PEM: Windows line ends and literal `\n` become newlines. */
+const githubPrivateKey = z
+  .string()
+  .max(16_384, "at most 16384 characters")
+  .transform((value) =>
+    value.replace(/\r\n?/g, "\n").replace(/\\n/g, "\n").trim(),
+  )
+  .refine((value) => !value || isPrivateKey(value), {
+    message: "must be the PEM private key GitHub generated for the App",
+  });
+
+// The value column is JSON: a saved "123456" reads back as the number 123456.
+function digitsAsText(value: unknown) {
+  return typeof value === "number" ? String(value) : value;
+}
+
+const GITHUB_APP_SETTINGS: SettingDefinition[] = [
+  {
+    key: "githubApp.appId",
+    group: "githubApp",
+    secret: false,
+    default: "",
+    schema: z.preprocess(
+      digitsAsText,
+      text(20).refine((value) => /^\d*$/.test(value), {
+        message: "must be the App's numeric ID",
+      }),
+    ),
+    envVar: "GITHUB_APP_ID",
+    readEnv: trimmed("GITHUB_APP_ID"),
+    groupLock: GITHUB_APP_LOCK,
+  },
+  {
+    key: "githubApp.appName",
+    group: "githubApp",
+    secret: false,
+    default: "",
+    // The slug in the App's address, github.com/apps/<slug>.
+    schema: z.preprocess(
+      digitsAsText,
+      text(100)
+        .transform((value) => value.toLowerCase())
+        .refine((value) => /^[a-z0-9-]*$/.test(value), {
+          message: "must be the App's slug: letters, digits and hyphens",
+        }),
+    ),
+    envVar: "GITHUB_APP_NAME",
+    readEnv: trimmed("GITHUB_APP_NAME"),
+    groupLock: GITHUB_APP_LOCK,
+  },
+  {
+    key: "githubApp.privateKey",
+    group: "githubApp",
+    secret: true,
+    default: "",
+    schema: githubPrivateKey,
+    envVar: "GITHUB_PRIVATE_KEY",
+    readEnv: (env) => githubPrivateKeyFromEnv(env) || undefined,
+    groupLock: GITHUB_APP_LOCK,
+  },
+  {
+    key: "githubApp.webhookSecret",
+    group: "githubApp",
+    secret: true,
+    default: "",
+    schema: text(256),
+    envVar: "GITHUB_WEBHOOK_SECRET",
+    readEnv: raw("GITHUB_WEBHOOK_SECRET"),
+    groupLock: GITHUB_APP_LOCK,
+  },
+];
+
 export const SETTINGS_CATALOG: readonly SettingDefinition[] = [
   {
     key: "general.instanceName",
@@ -978,6 +1086,7 @@ export const SETTINGS_CATALOG: readonly SettingDefinition[] = [
   },
   ...AI_SETTINGS,
   ...FEEDBACK_SETTINGS,
+  ...GITHUB_APP_SETTINGS,
 ];
 
 export const LOCK_VARIABLE = "MARGAYA_LOCK_INSTANCE_SETTINGS";

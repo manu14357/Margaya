@@ -1,5 +1,8 @@
 import { HTTPException } from "hono/http-exception";
-import { getGithubApp } from "../../plugins/github/utils/github-app";
+import {
+  getGithubApp,
+  githubAppName,
+} from "../../plugins/github/utils/github-app";
 
 type VerificationResult = {
   isInstalled: boolean;
@@ -20,14 +23,14 @@ function isGithubNotFound(error: unknown): boolean {
 }
 
 function appInstallUrl(): string | undefined {
-  return process.env.GITHUB_APP_NAME
-    ? `https://github.com/apps/${process.env.GITHUB_APP_NAME}`
-    : undefined;
+  const appName = githubAppName();
+  return appName ? `https://github.com/apps/${appName}` : undefined;
 }
 
 function newInstallUrl(targetId?: number): string | undefined {
-  if (!process.env.GITHUB_APP_NAME) return undefined;
-  const base = `https://github.com/apps/${process.env.GITHUB_APP_NAME}/installations/new`;
+  const appName = githubAppName();
+  if (!appName) return undefined;
+  const base = `https://github.com/apps/${appName}/installations/new`;
   return typeof targetId === "number" && Number.isFinite(targetId)
     ? `${base}/permissions?target_id=${targetId}`
     : `${base}/permissions`;

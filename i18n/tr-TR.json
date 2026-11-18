@@ -1617,7 +1617,8 @@
 				"importError": "Sorunlar içe aktarılamadı",
 				"commentOnEnabled": "Margaya yeni sorunlara görev bağlantısıyla yorum yapacak",
 				"commentOnDisabled": "Yeni sorunlardaki görev bağlantısı yorumları kapatıldı",
-				"settingsUpdateError": "GitHub entegrasyonu güncellenemedi"
+				"settingsUpdateError": "GitHub entegrasyonu güncellenemedi",
+				"linkError": "GitHub hesabınızı bağlamadı (hata: {{code}}). Bu durum devam ederse yöneticinizden GitHub ile giriş ayarlarını kontrol etmesini isteyin."
 			},
 			"connectionStatus": "Bağlantı durumu",
 			"connectedActive": "Depo bağlı ve aktif",
@@ -1656,6 +1657,12 @@
 			"importDisabledHint": "İçe aktarmayı etkinleştirmek için yukarıdaki depo yapılandırmasını tamamlayın",
 			"accountVerificationHint": "Bu depoyu yönettiğinizi doğrulamak için GitHub hesabınızı bağlayın.",
 			"enableGithubSignInHint": "Örnek yöneticinizden GitHub ile oturum açmayı etkinleştirmesini isteyin.",
+			"appNotConfiguredHint": "Depo senkronizasyonu için bu sunucuda bir GitHub App gerekir. Örnek yöneticinizden bir tane kurmasını isteyin.",
+			"appNotConfiguredAdminHint": "Depo senkronizasyonu için bu sunucuda bir GitHub App gerekir. Bunu Örnek ayarları bölümünden kurun.",
+			"setUpGithubApp": "GitHub App'i kur",
+			"copyLink": "Bağlantıyı kopyala",
+			"linkCopied": "Bağlantı kopyalandı. Margaya'ya giriş yaptığınız bir tarayıcıda açın ve GitHub hesabınızı orada bağlayın.",
+			"copyLinkError": "Bağlantı kopyalanamadı.",
 			"reverifyHint": "Erişimi doğrulamak ve eşitlemeyi sürdürmek için bu depoyu yeniden bağlayın.",
 			"resumeImport": "İçe aktarmaya devam et",
 			"importPaused": "Bu içe aktarma kaydedilmiş bir ilerlemeye sahip. Devam ettirebilirsiniz.",
@@ -4011,7 +4018,8 @@
 		"continueInBrowser": {
 			"title": "Tarayıcınızda devam edin",
 			"billing": "Az önce açılan tarayıcı penceresinde işlemi tamamlayın, ardından Margaya'ya dönün. Döndüğünüzde planınız güncellenir.",
-			"githubApp": "Tarayıcınızda GitHub'daki işlemi tamamlayın, ardından Margaya'ya dönün ve kurulumu tekrar kontrol edin."
+			"githubApp": "Tarayıcınızda GitHub'daki işlemi tamamlayın, ardından Margaya'ya dönün ve kurulumu tekrar kontrol edin.",
+			"githubAccount": "Tarayıcınızda açılan sayfada GitHub hesabınızı bağlayın, ardından Margaya'ya dönün."
 		},
 		"save": "Kaydet",
 		"unsavedChanges": "Kaydedilmemiş değişiklikler",
@@ -10852,6 +10860,7 @@
 			"publicBoards": "Herkese açık panolar",
 			"workspaces": "Çalışma alanları",
 			"ai": "YZ",
+			"integrations": "Entegrasyonlar",
 			"health": "Sağlık"
 		},
 		"lockedCallout": "Bu ayarlar bu sunucuda ortam değişkenleriyle yönetiliyor. Buradaki değişiklikler devre dışı.",
@@ -10872,6 +10881,7 @@
 			"clear": "Temizle",
 			"cleared": "Gizli anahtar temizlendi",
 			"placeholder": "Yeni bir değer girin",
+			"loadFile": "Dosyadan yükle…",
 			"replace": "Değiştir",
 			"saved": "Kaydedildi",
 			"unreadable": "Kaydedilmiş gizli anahtar okunamıyor (sunucunun AUTH_SECRET değeri değişti). Yeniden girin."
@@ -11014,6 +11024,45 @@
 			"subtitle": "Margaya'nın giriş kodlarını, davetleri ve bildirimleri gönderdiği SMTP sunucusu.",
 			"title": "E-posta",
 			"username": "Kullanıcı adı"
+		},
+		"integrations": {
+			"title": "Entegrasyonlar",
+			"subtitle": "Proje entegrasyonlarının kullandığı, sunucu genelindeki bağlantılar."
+		},
+		"githubApp": {
+			"title": "GitHub App",
+			"statusConfigured": "GitHub App kuruldu",
+			"statusNotConfigured": "GitHub App henüz kurulmadı",
+			"intro": "Depo senkronizasyonu (issue'lar, pull request'ler ve dallar), GitHub'da oluşturduğunuz bir GitHub App üzerinden çalışır. Bu, “Kimlik doğrulama” altında kurduğunuz GitHub ile oturum açmadan ayrıdır.",
+			"managedByEnv": "GitHub App ortam değişkenleriyle yapılandırılmış (GITHUB_APP_ID ve ilgili olanlar). Burada yönetmek için bunları kaldırın ve yeniden başlatın.",
+			"stepsTitle": "Nasıl kurulur",
+			"step1": "GitHub'da bir GitHub App oluşturun (Settings → Developer settings → GitHub Apps → New GitHub App). Homepage URL olarak Margaya adresinizi kullanın.",
+			"step2": "Webhook bölümünde aşağıdaki webhook URL'sini ve bir webhook gizli anahtarı girin (“Oluştur” bir tane üretir). GitHub bu sunucuya ulaşamıyorsa Active işaretini kaldırın: bu durumda GitHub'da yapılan değişiklikler Margaya'ya geri gelmez.",
+			"step3": "Repository permissions altında Issues için okuma ve yazma, Pull requests ve Contents için okuma erişimi verin. Issues, Issue comment, Pull request ve Push olaylarına abone olun.",
+			"step4": "Uygulamayı oluşturun, ardından Generate a private key seçeneğini seçin. Uygulama kimliğini, adresindeki uygulama adını ve indirilen .pem dosyasını buraya girip kaydedin.",
+			"step5": "“Uygulamayı kur” seçeneğini seçin ve uygulamayı, bağlamak istediğiniz depoların bulunduğu hesaplara veya kuruluşlara kurun.",
+			"createOnGithub": "GitHub App oluştur",
+			"webhookUrl": "Webhook URL'si",
+			"webhookUrlHint": "Bunu GitHub'da uygulamanın ayarlarına Webhook URL olarak girin.",
+			"appId": "Uygulama kimliği",
+			"appIdHint": "GitHub'da uygulamanın ayarlar sayfasının üst kısmında gösterilir.",
+			"appIdInvalid": "Uygulamanın sayısal kimliğini girin",
+			"appName": "Uygulama adı",
+			"appNameHint": "Uygulamanın adresindeki ad, github.com/apps/<name>. Kurulum bağlantıları için kullanılır.",
+			"appNameInvalid": "Uygulamanın adresindeki adı kullanın: harfler, rakamlar ve kısa çizgiler",
+			"privateKey": "Özel anahtar",
+			"privateKeyHint": "Özel anahtar oluşturduğunuzda GitHub'ın indirdiği .pem dosyasını yapıştırın veya dosyayı yükleyin.",
+			"privateKeyInvalid": "Anahtarın tamamını, -----BEGIN satırından -----END satırına kadar yapıştırın",
+			"webhookSecret": "Webhook gizli anahtarı",
+			"webhookSecretHint": "Aynı gizli anahtarı GitHub'da uygulamanın webhook ayarlarına girin.",
+			"generateSecret": "Oluştur",
+			"save": "Değişiklikleri kaydet",
+			"install": "Uygulamayı kur",
+			"remove": "GitHub App ayarlarını kaldır…",
+			"removeTitle": "GitHub App ayarları kaldırılsın mı?",
+			"removeDescription": "Uygulamayı yeniden kurana kadar tüm projelerde depo senkronizasyonu durur.",
+			"removeConfirm": "Kaldır",
+			"removed": "GitHub App ayarları kaldırıldı"
 		},
 		"testEmail": {
 			"codes": {
