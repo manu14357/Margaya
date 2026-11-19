@@ -1,15 +1,16 @@
-import { Callout, MargayaImage, MargayaTable } from "@margaya/editor-schema";
+import { MargayaImage, MargayaTable } from "@margaya/editor-schema";
 import type { JSONContent } from "@tiptap/core";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
-import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import type { TFunction } from "i18next";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Callout } from "@/components/editor/extensions/callout";
+import { TaskItemWithCheckbox } from "@/components/task/extensions/task-item-with-checkbox";
 
 // The published page's body, read-only. The API sends an allowlisted
 // document in which people, tasks, files and unpublished pages are
@@ -70,6 +71,8 @@ function toEditorNode(node: Node, t: TFunction): JSONContent | null {
   };
 }
 
+// To-dos and callouts use the editor's own views, so they look as they do
+// in the app (the checkbox beside its text, the callout's box and icon).
 const extensions = [
   StarterKit.configure({
     heading: { levels: [1, 2, 3] },
@@ -82,7 +85,7 @@ const extensions = [
     },
   }),
   TaskList,
-  TaskItem.configure({ nested: true }),
+  TaskItemWithCheckbox.configure({ nested: true }),
   MargayaImage,
   MargayaTable,
   TableRow,
