@@ -1,5 +1,6 @@
+import { MargayaIssueLink as SchemaIssueLink } from "@margaya/editor-schema";
 import { useQuery } from "@tanstack/react-query";
-import { mergeAttributes, Node } from "@tiptap/core";
+import { mergeAttributes } from "@tiptap/core";
 import type { NodeViewProps } from "@tiptap/react";
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +12,7 @@ import {
 import getProject from "@/fetchers/project/get-project";
 import getTask from "@/fetchers/task/get-task";
 import { embeddedAssignees, formatAssigneeSummary } from "@/lib/task-assignees";
-import { escapeHtml, isValidUrl } from "./url-safety";
+import { isValidUrl } from "./url-safety";
 
 function parseTaskRouteFromUrl(url: string) {
   try {
@@ -124,18 +125,24 @@ function MargayaIssueLinkView({ node }: NodeViewProps) {
   );
 }
 
-export const MargayaIssueLink = Node.create({
-  name: "margayaIssueLink",
-  group: "inline",
-  inline: true,
-  atom: true,
-  selectable: false,
-
+// The headless node from @margaya/editor-schema (attributes and markdown, so
+// the server reads and writes task links exactly as the editor does) with
+// the web's HTML and chip view.
+export const MargayaIssueLink = SchemaIssueLink.extend({
+  // A tag on a line of its own reaches the editor as HTML, where the
+  // attribute names are the markdown's dashed ones.
   addAttributes() {
+    const read = (name: string) => ({
+      default: "",
+      parseHTML: (element: HTMLElement) =>
+        element.getAttribute(name) ??
+        element.getAttribute(`data-${name}`) ??
+        "",
+    });
     return {
-      url: { default: "" },
-      issueKey: { default: "" },
-      taskId: { default: "" },
+      url: read("url"),
+      issueKey: read("issue-key"),
+      taskId: read("task-id"),
     };
   },
 
@@ -163,17 +170,5 @@ export const MargayaIssueLink = Node.create({
 
   addNodeView() {
     return ReactNodeViewRenderer(MargayaIssueLinkView);
-  },
-
-  renderMarkdown(
-    node: { attrs?: { url?: string; issueKey?: string; taskId?: string } },
-    _helpers: unknown,
-    _context: unknown,
-  ) {
-    const url = String(node.attrs?.url || "");
-    const issueKey = String(node.attrs?.issueKey || "");
-    const taskId = String(node.attrs?.taskId || "");
-    if (!url) return "";
-    return `\n<margaya-issue-link url="${escapeHtml(url)}" issue-key="${escapeHtml(issueKey)}" task-id="${escapeHtml(taskId)}" />\n`;
   },
 });

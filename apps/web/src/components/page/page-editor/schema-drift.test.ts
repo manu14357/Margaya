@@ -131,6 +131,39 @@ describe("page editor schema", () => {
     expect(editor.getJSON()).toEqual(document);
   });
 
+  it("keeps a task link inside its sentence, as the server does", () => {
+    const link =
+      '<margaya-issue-link url="https://x.test/t" issue-key="WEB-1" task-id="t1" />';
+    const markdown = [`See ${link} now`, `- item ${link}`, link, "End."].join(
+      "\n\n",
+    );
+    const document = markdownToJson(markdown);
+    expect(document.content?.[0]?.content?.map((node) => node.type)).toEqual([
+      "text",
+      "margayaIssueLink",
+      "text",
+    ]);
+    editor = new Editor({
+      extensions: webExtensions(false),
+      content: document,
+    });
+    expect(editor.getMarkdown()).toBe(markdown);
+
+    editor.commands.setContent(markdown, { contentType: "markdown" });
+    expect(editor.getJSON()).toEqual(document);
+  });
+
+  it("reads a task link the old writer wrapped in newlines back inline", () => {
+    const legacy =
+      'See \n<margaya-issue-link url="https://x.test/t" issue-key="WEB-1" task-id="t1" />\n now';
+    editor = new Editor({ extensions: webExtensions(false) });
+    editor.commands.setContent(legacy, { contentType: "markdown" });
+    expect(editor.getJSON()).toEqual(markdownToJson(legacy));
+    expect(editor.getMarkdown()).toBe(
+      'See <margaya-issue-link url="https://x.test/t" issue-key="WEB-1" task-id="t1" /> now',
+    );
+  });
+
   it("writes page links exactly as the headless node does", () => {
     const document: PageDocument = {
       type: "doc",

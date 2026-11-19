@@ -28,7 +28,7 @@ describe("API integration: page content over REST", () => {
     const target = await s.create(s.ben, { title: "Target" });
     const markdown = [
       `Hi <margaya-mention id="${s.cara.id}" label="Cara"></margaya-mention>, see <margaya-page-link id="${target.id}" title="Target &amp; more"></margaya-page-link>.`,
-      '\n<margaya-issue-link url="https://margaya.test/t/1?a=1&amp;b=2" issue-key="WEB-1" task-id="task-1" />\n',
+      '<margaya-issue-link url="https://margaya.test/t/1?a=1&amp;b=2" issue-key="WEB-1" task-id="task-1" />',
       '\n<margaya-attachment url="https://margaya.test/api/asset/a1" filename="q &quot;3&quot;.pdf" mime-type="application/pdf" size="2048" />\n',
       '\n<margaya-embed url="https://www.youtube.com/watch?v=abc" mode="embed" />\n',
     ].join("\n\n");

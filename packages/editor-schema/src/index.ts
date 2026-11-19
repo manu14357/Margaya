@@ -40,6 +40,7 @@ export {
   AttachmentCard,
   CUSTOM_NODES,
   EmbedBlock,
+  issueLinkMarkdown,
   MargayaIssueLink,
   MargayaMention,
   MargayaPageLink,

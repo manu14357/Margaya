@@ -119,6 +119,111 @@ describe("markdown round trip", () => {
     });
   });
 
+  it("writes a task link in place and reads it back in place", () => {
+    const link = {
+      type: "margayaIssueLink",
+      attrs: { url: "https://x.test/t", issueKey: "WEB-1", taskId: "t1" },
+    };
+    const json = normalizeDocument({
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [
+            { type: "text", text: "See " },
+            link,
+            { type: "text", text: " now" },
+          ],
+        },
+        {
+          type: "bulletList",
+          content: [
+            {
+              type: "listItem",
+              content: [
+                {
+                  type: "paragraph",
+                  content: [{ type: "text", text: "item " }, link],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const markdown = jsonToMarkdown(json);
+    expect(markdown).toBe(
+      [
+        'See <margaya-issue-link url="https://x.test/t" issue-key="WEB-1" task-id="t1" /> now',
+        '- item <margaya-issue-link url="https://x.test/t" issue-key="WEB-1" task-id="t1" />',
+      ].join("\n\n"),
+    );
+    expect(markdownToJson(markdown)).toEqual(json);
+  });
+
+  it("leaves out a task link's empty attributes", () => {
+    const markdown = jsonToMarkdown({
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [
+            {
+              type: "margayaIssueLink",
+              attrs: { url: "https://x.test/t", issueKey: "", taskId: "" },
+            },
+          ],
+        },
+      ],
+    });
+    expect(markdown).toBe('<margaya-issue-link url="https://x.test/t" />');
+    expect(markdownToJson(markdown).content?.[0]?.content?.[0]?.attrs).toEqual({
+      url: "https://x.test/t",
+      issueKey: "",
+      taskId: "",
+    });
+  });
+
+  it("reads a task link the old writer wrapped in newlines back inline", () => {
+    const tag =
+      '<margaya-issue-link url="https://x.test/t" issue-key="WEB-1" task-id="t1" />';
+    const inline = (markdown: string) =>
+      (markdownToJson(markdown).content ?? []).map((block) =>
+        (block.content ?? []).map((node) =>
+          node.type === "text" ? node.text : node.type,
+        ),
+      );
+    expect(inline(`See \n${tag}\n now`)).toEqual([
+      ["See ", "margayaIssueLink", " now"],
+    ]);
+    expect(inline(`**Bold** \n${tag}\nnext`)).toEqual([
+      ["Bold", " ", "margayaIssueLink", "next"],
+    ]);
+    // A paragraph that started with the link keeps its text.
+    expect(inline(`\n${tag}\n is blocked\n\nNext`)).toEqual([
+      ["margayaIssueLink", " is blocked"],
+      ["Next"],
+    ]);
+    // Alone in its paragraph, it stays a paragraph of its own.
+    expect(inline(`A\n\n\n${tag}\n\n\nB`)).toEqual([
+      ["A"],
+      ["margayaIssueLink"],
+      ["B"],
+    ]);
+    expectStable(jsonToMarkdown(markdownToJson(`See \n${tag}\n now`)));
+  });
+
+  it("keeps a line break next to a task link", () => {
+    const tag = '<margaya-issue-link url="https://x.test/t" />';
+    for (const markdown of [`See  \n${tag}`, `${tag}  \nnext line`]) {
+      const json = markdownToJson(markdown);
+      expect(
+        json.content?.[0]?.content?.some((node) => node.type === "hardBreak"),
+      ).toBe(true);
+      expect(jsonToMarkdown(json)).toBe(markdown);
+    }
+  });
+
   it("keeps an empty paragraph between two standalone tags", () => {
     const attachment = (url: string) => ({
       type: "paragraph",

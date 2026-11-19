@@ -3,7 +3,9 @@ import { escapeHtml } from "./escape.js";
 import {
   blockTagTokenizer,
   inlineTagTokenizer,
+  issueLinkInlineTokenizer,
   parseCustomTag,
+  parseIssueLink,
   parseStandaloneInline,
   STANDALONE_INLINE_TOKEN,
   standaloneInlineTokenizer,
@@ -68,6 +70,21 @@ export const MargayaMention = Node.create({
   },
 });
 
+/**
+ * A task link is written in place, so a link inside a sentence stays in it.
+ * Empty attributes are left out; they read back as empty.
+ */
+export function issueLinkMarkdown(attrs: Attrs): string {
+  const url = stringAttr(attrs, "url");
+  if (!url) return "";
+  const issueKey = stringAttr(attrs, "issueKey");
+  const taskId = stringAttr(attrs, "taskId");
+  let tag = `<margaya-issue-link url="${escapeHtml(url)}"`;
+  if (issueKey) tag += ` issue-key="${escapeHtml(issueKey)}"`;
+  if (taskId) tag += ` task-id="${escapeHtml(taskId)}"`;
+  return `${tag} />`;
+}
+
 export const MargayaIssueLink = Node.create({
   name: "margayaIssueLink",
   group: "inline",
@@ -91,15 +108,11 @@ export const MargayaIssueLink = Node.create({
     return ["margaya-issue-link", HTMLAttributes];
   },
 
-  markdownTokenizer: inlineTagTokenizer("margayaIssueLink"),
-  parseMarkdown: parseCustomTag("margayaIssueLink"),
+  markdownTokenizer: issueLinkInlineTokenizer,
+  parseMarkdown: parseIssueLink,
 
   renderMarkdown(node: { attrs?: Attrs }) {
-    const url = stringAttr(node.attrs, "url");
-    const issueKey = stringAttr(node.attrs, "issueKey");
-    const taskId = stringAttr(node.attrs, "taskId");
-    if (!url) return "";
-    return `\n<margaya-issue-link url="${escapeHtml(url)}" issue-key="${escapeHtml(issueKey)}" task-id="${escapeHtml(taskId)}" />\n`;
+    return issueLinkMarkdown(node.attrs);
   },
 });
 
