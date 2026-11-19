@@ -171,12 +171,16 @@ function taskResult(task: TaskHit): SearchResult {
 
 function activityResult(activity: CommentHit): SearchResult {
   const isComment = activity.type === "comment";
+  const taskKey =
+    activity.projectSlug && activity.taskNumber
+      ? `${activity.projectSlug.toUpperCase()}-${activity.taskNumber}`
+      : "";
   return {
     id: activity.id,
     type: isComment ? "comment" : "activity",
-    title: isComment
-      ? `Comment on ${activity.taskTitle || "task"}`
-      : `${activity.type} on ${activity.taskTitle || "task"}`,
+    // The task's own title: clients label the kind (comment, activity) in
+    // their language, so no English or raw event key goes into the title.
+    title: activity.taskTitle || taskKey,
     content: getActivitySearchContent(
       activity.type,
       activity.content,

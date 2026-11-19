@@ -35,7 +35,10 @@ export const searchResultSchema = z
       "view",
       "intake",
     ]),
-    title: z.string(),
+    title: z.string().openapi({
+      description:
+        "The result's name. For comment and activity results, the title of the task they belong to; `type` says which kind it is.",
+    }),
     description: z.string().optional(),
     content: z.string().optional().openapi({
       description:
