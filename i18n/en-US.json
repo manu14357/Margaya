@@ -69,6 +69,10 @@
 				"title": "Margaya stopped responding",
 				"description": "Reloading usually fixes it. Your saved work is safe."
 			},
+			"loadFailed": {
+				"title": "Part of Margaya didn't load",
+				"description": "The connection dropped while the app was loading. Reload the page to finish loading. Your saved work is safe."
+			},
 			"notFound": {
 				"title": "This page wandered off",
 				"description": "The link may be old, or the page was moved or deleted."
@@ -474,7 +478,9 @@
 			"emailCodesOff": "Sign-in links and codes by email are off on this server. If you only ever used those, you don't have a password yet: select Forgot password? to set one.",
 			"emailCodesOffNoEmail": "Sign-in links and codes by email are off on this server. If you only ever used those, you don't have a password yet: ask an instance admin to set one for you.",
 			"desktopBrowserHint": "These options continue in your browser, then bring you back to the app.",
-			"desktopBrowserStarted": "Continue in your browser to finish signing in."
+			"desktopBrowserStarted": "Continue in your browser to finish signing in.",
+			"desktopBrowserButton": "Sign in with your browser",
+			"desktopBrowserButtonHint": "Use any sign-in method in your browser. You'll come back here, signed in, when you're done."
 		},
 		"providers": {
 			"google": "Google",
@@ -3013,6 +3019,7 @@
 			"webhookLabel": "Incoming webhook URL",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Create an Incoming Webhook in Slack and paste the generated URL here.",
+			"webhookHintConfigured": "A webhook URL is saved and kept hidden ({{masked}}). Paste a new one to replace it.",
 			"channelLabel": "Channel name",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Optional label for your reference. Slack controls the actual destination channel from the webhook setup.",
@@ -3153,6 +3160,7 @@
 			"webhookLabel": "Webhook URL",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Create a Discord channel webhook and paste the generated URL here.",
+			"webhookHintConfigured": "A webhook URL is saved and kept hidden ({{masked}}). Paste a new one to replace it.",
 			"channelLabel": "Channel name",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Optional label for your reference. Discord controls the actual destination channel from the webhook setup.",
@@ -3190,6 +3198,7 @@
 			"webhookLabel": "Incoming webhook URL",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/...",
 			"webhookHint": "Create an Incoming Webhook in Mattermost and paste the generated URL here.",
+			"webhookHintConfigured": "A webhook URL is saved and kept hidden ({{masked}}). Paste a new one to replace it.",
 			"channelLabel": "Channel name",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Optional label for your reference. Mattermost controls the actual destination channel from the webhook setup.",
@@ -3227,6 +3236,7 @@
 			"webhookLabel": "Endpoint URL",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya sends POST requests with a JSON payload for each enabled event.",
+			"webhookHintConfigured": "A webhook URL is saved and kept hidden ({{masked}}). Paste a new one to replace it.",
 			"secretLabel": "Signing secret",
 			"secretPlaceholder": "Optional shared secret",
 			"secretHint": "Optional. If provided, Margaya signs the request body and sends the hex digest in the X-Margaya-Signature header.",
@@ -3386,6 +3396,7 @@
 					"linear": "Choose Linear's .csv export.",
 					"asana": "Choose Asana's .csv export."
 				},
+				"selectJsonFile": "Select JSON file",
 				"itemCount_one": "{{count}} item",
 				"itemCount_other": "{{count}} items",
 				"alreadyImported_one": "{{count}} item was imported into this project before.",
@@ -4707,6 +4718,11 @@
 		"importedFromJira": "imported this task from Jira {{key}}",
 		"importedFromSource": "imported this task from {{source}} {{key}}",
 		"githubUser": "GitHub user",
+		"integrationActor": {
+			"viaGithub": "via GitHub",
+			"gitea": "Gitea",
+			"viaGitea": "via Gitea"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "View GitHub profile",
@@ -11469,6 +11485,7 @@
 			"open_one": "{{count}} open task",
 			"open_other": "{{count}} open tasks",
 			"complete": "All tasks are done",
+			"empty": "No tasks yet. Add tasks to see a forecast.",
 			"insufficient": {
 				"short_span": "Not enough history yet: a forecast needs at least 14 days of work in this project.",
 				"few_completions": "Not enough history yet: fewer than 5 tasks were completed in the last 8 weeks.",
@@ -11876,6 +11893,7 @@
 				"forecast": "Forecast",
 				"forecastValue": "85% likely by {{date}}",
 				"forecastDone": "Nothing left to do",
+				"forecastEmpty": "No tasks yet",
 				"forecastNone": "Not enough history yet",
 				"risks": "Risks",
 				"diff": "Change",
@@ -12218,7 +12236,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "AI is turned off here.",
-			"AI_NOT_CONFIGURED": "AI isn't set up correctly. Ask an admin to check the AI settings.",
+			"AI_NOT_CONFIGURED": "AI isn't set up correctly, or the AI provider account needs attention (for example, it's out of credit). Ask an admin to check the AI settings.",
 			"AI_ROUTE_BLOCKED": "This data can't be sent to an AI model under your privacy settings.",
 			"AI_BUDGET_EXCEEDED": "The AI limit has been reached. Try again later or ask an admin to raise it.",
 			"AI_RATE_LIMITED": "Too many AI requests at once. Wait a moment and try again.",
@@ -12246,7 +12264,8 @@
 			"retro": "Retrospectives",
 			"my_brief": "My brief",
 			"embedding": "Search indexing",
-			"coding_handoff": "Coding agent briefs"
+			"coding_handoff": "Coding agent briefs",
+			"whiteboard": "Whiteboard AI"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12328,6 +12347,9 @@
 			"testLocal": "Test local model",
 			"localTitle": "Local model",
 			"localDescription": "An OpenAI-compatible server on your own network, such as Ollama. Restricted data only ever goes here.",
+			"localDescriptionCloud": "An OpenAI-compatible server on your own network, such as Ollama. Restricted data may also go to the cloud provider, as set under Privacy.",
+			"localDescriptionBlocked": "An OpenAI-compatible server on your own network, such as Ollama. Restricted data isn't sent to any model, as set under Privacy.",
+			"localDescriptionLocalOnly": "An OpenAI-compatible server on your own network, such as Ollama. Local-only mode is on, so every AI call goes here.",
 			"localBaseUrl": "Base URL",
 			"localBaseUrlHint": "For example http://ollama:11434/v1. Private addresses are allowed here.",
 			"localModel": "Model",
@@ -12669,6 +12691,8 @@
 				"selectRun": "Select a run to see its steps and changes.",
 				"runMissing": "This run isn't available.",
 				"deletedAgent": "Deleted agent",
+				"deletedAgents": "Deleted agents",
+				"errorDetail": "Details: {{detail}}",
 				"onBehalfOf": "for {{name}}",
 				"cost": "Cost",
 				"tokensLabel": "Tokens",
@@ -14437,6 +14461,53 @@
 			"stone": "Stone",
 			"mist": "Mist",
 			"mint": "Mint"
+		},
+		"ai": {
+			"menu": "AI",
+			"brainstorm": "Brainstorm with AI",
+			"group": "Group notes with AI",
+			"summarizeBoard": "Summarize board with AI",
+			"summarizeSelection": "Summarize selection with AI",
+			"working": "Thinking…",
+			"tryAgain": "Try again",
+			"nothingToUse": "There's no text here for AI to work with.",
+			"discard": "Discard",
+			"brainstormTitle": "Brainstorm with AI",
+			"brainstormDescription": "Describe a topic and AI proposes sticky notes. Review and edit them; nothing is added until you accept.",
+			"topic": "Topic",
+			"topicPlaceholder": "For example: ways to make onboarding faster",
+			"ideaCount": "Ideas",
+			"generate": "Generate ideas",
+			"regenerate": "Generate again",
+			"putInFrame": "Put the notes in a frame",
+			"frameName": "Frame name",
+			"ideas": "Proposed notes",
+			"ideaLabel": "Note {{index}}",
+			"removeIdea": "Remove note {{index}}",
+			"addNotes_one": "Add {{count}} note",
+			"addNotes_other": "Add {{count}} notes",
+			"notesAdded_one": "Added {{count}} note",
+			"notesAdded_other": "Added {{count}} notes",
+			"groupTitle": "Group notes with AI",
+			"groupDescription_one": "AI sorts the selected note into themes. Rename the themes, then arrange the notes into frames.",
+			"groupDescription_other": "AI sorts the {{count}} selected notes into themes. Rename the themes, then arrange the notes into frames.",
+			"themes": "Themes",
+			"themeLabel": "Name of theme {{index}}",
+			"otherGroup": "Other",
+			"arrange_one": "Arrange into {{count}} frame",
+			"arrange_other": "Arrange into {{count}} frames",
+			"grouped_one": "Arranged the notes into {{count}} frame",
+			"grouped_other": "Arranged the notes into {{count}} frames",
+			"summarizeBoardTitle": "Summarize the board",
+			"summarizeSelectionTitle": "Summarize the selection",
+			"summarizeDescription": "Review and edit the summary, then copy it or add it to the board as text.",
+			"summaryTitle": "Title",
+			"summary": "Summary",
+			"madeFrom_one": "Made from {{count}} element with text.",
+			"madeFrom_other": "Made from {{count}} elements with text.",
+			"copy": "Copy",
+			"copied": "Summary copied",
+			"addSummary": "Add to board"
 		}
 	},
 	"projectTemplates": {

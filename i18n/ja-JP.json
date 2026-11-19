@@ -311,6 +311,10 @@
 				"description": "再読み込みすると直ることがほとんどです。保存済みの作業は安全です。",
 				"title": "Margaya が応答しなくなりました"
 			},
+			"loadFailed": {
+				"title": "Margaya の一部を読み込めませんでした",
+				"description": "アプリの読み込み中に接続が切れました。ページを再読み込みして読み込みを完了してください。保存済みの作業は安全です。"
+			},
 			"empty": {
 				"description": "追加されたものはここに表示されます。",
 				"title": "まだ何もありません"
@@ -468,7 +472,9 @@
 			"emailCodesOff": "このサーバーでは、メールによるサインインリンクとコードがオフになっています。これまでそれらだけを使っていた場合は、まだパスワードがありません。「パスワードをお忘れですか？」を選択してパスワードを設定してください。",
 			"emailCodesOffNoEmail": "このサーバーでは、メールによるサインインリンクとコードがオフになっています。これまでそれらだけを使っていた場合は、まだパスワードがありません。インスタンス管理者にパスワードの設定を依頼してください。",
 			"desktopBrowserHint": "これらの方法はブラウザーで続行し、完了するとアプリに戻ります。",
-			"desktopBrowserStarted": "ブラウザーで続行してサインインを完了してください。"
+			"desktopBrowserStarted": "ブラウザーで続行してサインインを完了してください。",
+			"desktopBrowserButton": "ブラウザーでサインイン",
+			"desktopBrowserButtonHint": "ブラウザーでお好きなサインイン方法を使えます。完了すると、サインインした状態でここに戻ります。"
 		},
 		"providers": {
 			"google": "Google",
@@ -2101,6 +2107,7 @@
 			"webhookLabel": "Incoming Webhook URL",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Slack で Incoming Webhook を作成し、生成された URL をここに貼り付けます。",
+			"webhookHintConfigured": "Webhook URL は保存済みで、非表示になっています（{{masked}}）。置き換えるには新しい URL を貼り付けてください。",
 			"channelLabel": "チャンネル名",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "参照用の任意のラベルです。実際の送信先チャンネルは Slack の Webhook 設定で制御されます。",
@@ -2241,6 +2248,7 @@
 			"webhookLabel": "Webhook URL",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Discord チャンネルの Webhook を作成し、生成された URL をここに貼り付けます。",
+			"webhookHintConfigured": "Webhook URL は保存済みで、非表示になっています（{{masked}}）。置き換えるには新しい URL を貼り付けてください。",
 			"channelLabel": "チャンネル名",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "参照用の任意のラベルです。実際の送信先チャンネルは Discord の Webhook 設定で制御されます。",
@@ -2278,6 +2286,7 @@
 			"webhookLabel": "エンドポイント URL",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya は有効になっているイベントごとに JSON ペイロードを含む POST リクエストを送信します。",
+			"webhookHintConfigured": "Webhook URL は保存済みで、非表示になっています（{{masked}}）。置き換えるには新しい URL を貼り付けてください。",
 			"secretLabel": "署名シークレット",
 			"secretPlaceholder": "共有シークレット（任意）",
 			"secretHint": "任意。指定した場合、Margaya はリクエスト本文に署名し、その 16 進ダイジェストを X-Margaya-Signature ヘッダーで送信します。",
@@ -2505,6 +2514,7 @@
 					"linear": "Linear の .csv エクスポートを選択してください。",
 					"asana": "Asana の .csv エクスポートを選択してください。"
 				},
+				"selectJsonFile": "JSON ファイルを選択",
 				"itemCount_other": "{{count}} 件の項目",
 				"alreadyImported_other": "{{count}} 件の項目はこのプロジェクトにインポート済みです。",
 				"contents": "コメント {{comments}} 件、チェックリスト {{checklists}} 件、サブタスク {{subtasks}} 件、リンク {{links}} 件",
@@ -2643,6 +2653,7 @@
 				"webhookInvalid": "有効な Mattermost Webhook URL を入力してください"
 			},
 			"webhookHint": "Mattermost で Incoming Webhook を作成し、生成された URL をここに貼り付けます。",
+			"webhookHintConfigured": "Webhook URL は保存済みで、非表示になっています（{{masked}}）。置き換えるには新しい URL を貼り付けてください。",
 			"webhookLabel": "Incoming Webhook URL",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4627,6 +4638,11 @@
 		"importedFromJira": "がこのタスクを Jira {{key}} からインポートしました",
 		"importedFromSource": "がこのタスクを {{source}} {{key}} からインポートしました",
 		"githubUser": "GitHub ユーザー",
+		"integrationActor": {
+			"viaGithub": "GitHub 経由",
+			"gitea": "Gitea",
+			"viaGitea": "Gitea 経由"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "GitHub プロフィールを表示",
@@ -11303,6 +11319,7 @@
 			"beyondHorizon": "現在のペースでは 2 年以上",
 			"open_other": "未完了のタスク {{count}}件",
 			"complete": "すべてのタスクが完了しています",
+			"empty": "タスクはまだありません。タスクを追加すると予測が表示されます。",
 			"insufficient": {
 				"short_span": "履歴がまだ足りません: 予測にはこのプロジェクトで少なくとも 14 日分の作業が必要です。",
 				"few_completions": "履歴がまだ足りません: 過去 8 週間に完了したタスクが 5 件未満です。",
@@ -11688,6 +11705,7 @@
 				"forecast": "予測",
 				"forecastValue": "85% の確率で {{date}} までに完了",
 				"forecastDone": "残りの作業はありません",
+				"forecastEmpty": "タスクはまだありません",
 				"forecastNone": "履歴がまだ足りません",
 				"risks": "リスク",
 				"diff": "変化",
@@ -12030,7 +12048,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "ここでは AI がオフになっています。",
-			"AI_NOT_CONFIGURED": "AI が正しく設定されていません。管理者に AI 設定の確認を依頼してください。",
+			"AI_NOT_CONFIGURED": "AI が正しく設定されていないか、AI プロバイダーのアカウントで対応が必要です（クレジット切れなど）。管理者に AI 設定の確認を依頼してください。",
 			"AI_ROUTE_BLOCKED": "プライバシー設定により、このデータは AI モデルに送信できません。",
 			"AI_BUDGET_EXCEEDED": "AI の上限に達しました。後でもう一度試すか、管理者に上限の引き上げを依頼してください。",
 			"AI_RATE_LIMITED": "AI へのリクエストが集中しています。少し待ってからもう一度お試しください。",
@@ -12058,7 +12076,8 @@
 			"retro": "振り返り",
 			"my_brief": "自分のブリーフ",
 			"embedding": "検索インデックス作成",
-			"coding_handoff": "コーディングエージェント向けブリーフ"
+			"coding_handoff": "コーディングエージェント向けブリーフ",
+			"whiteboard": "ホワイトボード AI"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12139,6 +12158,9 @@
 			"testLocal": "ローカルモデルをテスト",
 			"localTitle": "ローカルモデル",
 			"localDescription": "Ollama など、自社ネットワーク内の OpenAI 互換サーバー。制限付きデータはここにしか送信されません。",
+			"localDescriptionCloud": "Ollama など、自社ネットワーク内の OpenAI 互換サーバー。「プライバシー」の設定により、制限付きデータはクラウドプロバイダーにも送信される場合があります。",
+			"localDescriptionBlocked": "Ollama など、自社ネットワーク内の OpenAI 互換サーバー。「プライバシー」の設定により、制限付きデータはどのモデルにも送信されません。",
+			"localDescriptionLocalOnly": "Ollama など、自社ネットワーク内の OpenAI 互換サーバー。ローカル専用モードがオンのため、すべての AI 呼び出しがここに送られます。",
 			"localBaseUrl": "ベース URL",
 			"localBaseUrlHint": "例: http://ollama:11434/v1。ここではプライベートアドレスも使用できます。",
 			"localModel": "モデル",
@@ -12480,6 +12502,8 @@
 				"selectRun": "実行を選択すると、ステップと変更が表示されます。",
 				"runMissing": "この実行は利用できません。",
 				"deletedAgent": "削除されたエージェント",
+				"deletedAgents": "削除されたエージェント",
+				"errorDetail": "詳細: {{detail}}",
 				"onBehalfOf": "{{name}} の依頼",
 				"cost": "コスト",
 				"tokensLabel": "トークン",
@@ -14208,6 +14232,47 @@
 			"stone": "ストーン",
 			"mist": "ミスト",
 			"mint": "ミント"
+		},
+		"ai": {
+			"menu": "AI ツール",
+			"brainstorm": "AI でブレインストーミング",
+			"group": "AI で付箋をグループ化",
+			"summarizeBoard": "AI でボードを要約",
+			"summarizeSelection": "AI で選択範囲を要約",
+			"working": "考えています…",
+			"tryAgain": "もう一度試す",
+			"nothingToUse": "AI が扱えるテキストがここにはありません。",
+			"discard": "破棄",
+			"brainstormTitle": "AI でブレインストーミング",
+			"brainstormDescription": "トピックを入力すると、AI が付箋を提案します。内容を確認・編集できます。承認するまで何も追加されません。",
+			"topic": "トピック",
+			"topicPlaceholder": "例: オンボーディングを早める方法",
+			"ideaCount": "アイデア数",
+			"generate": "アイデアを生成",
+			"regenerate": "もう一度生成",
+			"putInFrame": "付箋をフレームにまとめる",
+			"frameName": "フレーム名",
+			"ideas": "提案された付箋",
+			"ideaLabel": "付箋 {{index}}",
+			"removeIdea": "付箋 {{index}} を削除",
+			"addNotes_other": "{{count}} 枚の付箋を追加",
+			"notesAdded_other": "{{count}} 枚の付箋を追加しました",
+			"groupTitle": "AI で付箋をグループ化",
+			"groupDescription_other": "選択した {{count}} 枚の付箋を AI がテーマ別に分類します。テーマ名を変更してから、付箋をフレームに配置してください。",
+			"themes": "テーマ",
+			"themeLabel": "テーマ {{index}} の名前",
+			"otherGroup": "その他",
+			"arrange_other": "{{count}} 個のフレームに配置",
+			"grouped_other": "付箋を {{count}} 個のフレームに配置しました",
+			"summarizeBoardTitle": "ボードを要約",
+			"summarizeSelectionTitle": "選択範囲を要約",
+			"summarizeDescription": "要約を確認・編集してから、コピーするか、テキストとしてボードに追加します。",
+			"summaryTitle": "タイトル",
+			"summary": "要約",
+			"madeFrom_other": "テキストを含む {{count}} 個の要素から作成しました。",
+			"copy": "コピー",
+			"copied": "要約をコピーしました",
+			"addSummary": "ボードに追加"
 		}
 	},
 	"projectTemplates": {

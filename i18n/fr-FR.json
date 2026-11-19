@@ -323,6 +323,10 @@
 				"description": "Un rechargement règle généralement le problème. Votre travail enregistré est en sécurité.",
 				"title": "Margaya ne répond plus"
 			},
+			"loadFailed": {
+				"title": "Une partie de Margaya ne s'est pas chargée",
+				"description": "La connexion a été interrompue pendant le chargement de l'application. Rechargez la page pour terminer le chargement. Votre travail enregistré est en sécurité."
+			},
 			"empty": {
 				"description": "Quand quelque chose sera ajouté, cela apparaîtra ici.",
 				"title": "Rien ici pour l'instant"
@@ -480,7 +484,9 @@
 			"emailCodesOff": "Les liens et codes de connexion par e-mail sont désactivés sur ce serveur. Si vous n'avez jamais utilisé que ceux-ci, vous n'avez pas encore de mot de passe : sélectionnez « Mot de passe oublié ? » pour en définir un.",
 			"emailCodesOffNoEmail": "Les liens et codes de connexion par e-mail sont désactivés sur ce serveur. Si vous n'avez jamais utilisé que ceux-ci, vous n'avez pas encore de mot de passe : demandez à un administrateur de l'instance d'en définir un pour vous.",
 			"desktopBrowserHint": "Ces options se poursuivent dans votre navigateur, puis vous ramènent à l'application.",
-			"desktopBrowserStarted": "Poursuivez dans votre navigateur pour terminer la connexion."
+			"desktopBrowserStarted": "Poursuivez dans votre navigateur pour terminer la connexion.",
+			"desktopBrowserButton": "Se connecter avec votre navigateur",
+			"desktopBrowserButtonHint": "Utilisez la méthode de connexion de votre choix dans votre navigateur. Une fois terminé, vous reviendrez ici, connecté."
 		},
 		"providers": {
 			"google": "Google",
@@ -1782,6 +1788,7 @@
 			"webhookLabel": "URL du webhook entrant",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Créez un webhook entrant dans Slack et collez l'URL générée ici.",
+			"webhookHintConfigured": "Une URL de webhook est enregistrée et masquée ({{masked}}). Collez-en une nouvelle pour la remplacer.",
 			"channelLabel": "Nom du canal",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Libellé facultatif pour votre référence. Slack contrôle le canal réel via la configuration du webhook.",
@@ -1922,6 +1929,7 @@
 			"webhookLabel": "URL du webhook",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Créez un webhook de canal dans Discord et collez l'URL générée ici.",
+			"webhookHintConfigured": "Une URL de webhook est enregistrée et masquée ({{masked}}). Collez-en une nouvelle pour la remplacer.",
 			"channelLabel": "Nom du canal",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Libellé facultatif pour votre référence. Discord contrôle le canal réel via la configuration du webhook.",
@@ -1959,6 +1967,7 @@
 			"webhookLabel": "URL du point de terminaison",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya envoie des requêtes POST avec une charge JSON pour chaque événement activé.",
+			"webhookHintConfigured": "Une URL de webhook est enregistrée et masquée ({{masked}}). Collez-en une nouvelle pour la remplacer.",
 			"secretLabel": "Secret de signature",
 			"secretPlaceholder": "Secret partagé facultatif",
 			"secretHint": "Facultatif. Si défini, Margaya signe le corps de la requête et envoie le digest hexadécimal dans l'en-tête X-Margaya-Signature.",
@@ -2210,6 +2219,7 @@
 					"linear": "Choisissez l'export .csv de Linear.",
 					"asana": "Choisissez l'export .csv d'Asana."
 				},
+				"selectJsonFile": "Sélectionner un fichier JSON",
 				"itemCount_many": "{{count}} éléments",
 				"itemCount_one": "{{count}} élément",
 				"itemCount_other": "{{count}} éléments",
@@ -2749,6 +2759,7 @@
 				"webhookInvalid": "Entrez une URL de webhook Mattermost valide"
 			},
 			"webhookHint": "Créez un webhook entrant dans Mattermost et collez l'URL générée ici.",
+			"webhookHintConfigured": "Une URL de webhook est enregistrée et masquée ({{masked}}). Collez-en une nouvelle pour la remplacer.",
 			"webhookLabel": "URL du webhook entrant",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4789,6 +4800,11 @@
 		"importedFromJira": "a importé cette tâche depuis Jira {{key}}",
 		"importedFromSource": "a importé cette tâche depuis {{source}} {{key}}",
 		"githubUser": "Utilisateur GitHub",
+		"integrationActor": {
+			"viaGithub": "depuis GitHub",
+			"gitea": "Gitea",
+			"viaGitea": "depuis Gitea"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "Voir le profil GitHub",
@@ -11637,6 +11653,7 @@
 			"open_many": "{{count}} tâches ouvertes",
 			"open_other": "{{count}} tâches ouvertes",
 			"complete": "Toutes les tâches sont terminées",
+			"empty": "Aucune tâche pour l'instant. Ajoutez des tâches pour voir une prévision.",
 			"insufficient": {
 				"short_span": "Pas encore assez d'historique : une prévision demande au moins 14 jours de travail dans ce projet.",
 				"few_completions": "Pas encore assez d'historique : moins de 5 tâches ont été terminées ces 8 dernières semaines.",
@@ -12066,6 +12083,7 @@
 				"forecast": "Prévision",
 				"forecastValue": "85 % de chances d'ici le {{date}}",
 				"forecastDone": "Plus rien à faire",
+				"forecastEmpty": "Aucune tâche pour l'instant",
 				"forecastNone": "Pas encore assez d'historique",
 				"risks": "Risques",
 				"diff": "Évolution",
@@ -12408,7 +12426,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "L'IA est désactivée ici.",
-			"AI_NOT_CONFIGURED": "L'IA n'est pas correctement configurée. Demandez à un administrateur de vérifier les paramètres d'IA.",
+			"AI_NOT_CONFIGURED": "L'IA n'est pas correctement configurée, ou le compte du fournisseur d'IA nécessite une intervention (par exemple, son crédit est épuisé). Demandez à un administrateur de vérifier les paramètres d'IA.",
 			"AI_ROUTE_BLOCKED": "Vos paramètres de confidentialité ne permettent pas d'envoyer ces données à un modèle d'IA.",
 			"AI_BUDGET_EXCEEDED": "La limite d'IA a été atteinte. Réessayez plus tard ou demandez à un administrateur de l'augmenter.",
 			"AI_RATE_LIMITED": "Trop de requêtes d'IA en même temps. Patientez un instant et réessayez.",
@@ -12436,7 +12454,8 @@
 			"retro": "Rétrospectives",
 			"my_brief": "Ma synthèse",
 			"embedding": "Indexation de la recherche",
-			"coding_handoff": "Briefs pour agents de code"
+			"coding_handoff": "Briefs pour agents de code",
+			"whiteboard": "IA du tableau blanc"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12519,6 +12538,9 @@
 			"testLocal": "Tester le modèle local",
 			"localTitle": "Modèle local",
 			"localDescription": "Un serveur compatible OpenAI sur votre propre réseau, comme Ollama. Les données restreintes ne vont jamais ailleurs.",
+			"localDescriptionCloud": "Un serveur compatible OpenAI sur votre propre réseau, comme Ollama. Les données restreintes peuvent aussi être envoyées au fournisseur cloud, selon les réglages de Confidentialité.",
+			"localDescriptionBlocked": "Un serveur compatible OpenAI sur votre propre réseau, comme Ollama. Les données restreintes ne sont envoyées à aucun modèle, selon les réglages de Confidentialité.",
+			"localDescriptionLocalOnly": "Un serveur compatible OpenAI sur votre propre réseau, comme Ollama. Le mode local uniquement est activé : tous les appels à l'IA passent par ici.",
 			"localBaseUrl": "URL de base",
 			"localBaseUrlHint": "Par exemple http://ollama:11434/v1. Les adresses privées sont autorisées ici.",
 			"localModel": "Modèle",
@@ -12861,6 +12883,8 @@
 				"selectRun": "Sélectionnez une exécution pour voir ses étapes et ses modifications.",
 				"runMissing": "Cette exécution n'est pas disponible.",
 				"deletedAgent": "Agent supprimé",
+				"deletedAgents": "Agents supprimés",
+				"errorDetail": "Détails : {{detail}}",
 				"onBehalfOf": "pour {{name}}",
 				"cost": "Coût",
 				"tokensLabel": "Jetons",
@@ -14669,6 +14693,59 @@
 			"stone": "Pierre",
 			"mist": "Brume",
 			"mint": "Menthe"
+		},
+		"ai": {
+			"menu": "IA",
+			"brainstorm": "Remue-méninges avec l'IA",
+			"group": "Regrouper les notes avec l'IA",
+			"summarizeBoard": "Résumer le tableau avec l'IA",
+			"summarizeSelection": "Résumer la sélection avec l'IA",
+			"working": "Réflexion…",
+			"tryAgain": "Réessayer",
+			"nothingToUse": "Il n'y a ici aucun texte que l'IA puisse exploiter.",
+			"discard": "Ignorer",
+			"brainstormTitle": "Remue-méninges avec l'IA",
+			"brainstormDescription": "Décrivez un sujet et l'IA propose des pense-bêtes. Relisez-les et modifiez-les ; rien n'est ajouté tant que vous n'avez pas accepté.",
+			"topic": "Sujet",
+			"topicPlaceholder": "Par exemple : des moyens d'accélérer l'intégration des nouveaux arrivants",
+			"ideaCount": "Idées",
+			"generate": "Générer des idées",
+			"regenerate": "Générer à nouveau",
+			"putInFrame": "Placer les notes dans un cadre",
+			"frameName": "Nom du cadre",
+			"ideas": "Notes proposées",
+			"ideaLabel": "Note n° {{index}}",
+			"removeIdea": "Retirer la note {{index}}",
+			"addNotes_one": "Ajouter {{count}} note",
+			"addNotes_many": "Ajouter {{count}} notes",
+			"addNotes_other": "Ajouter {{count}} notes",
+			"notesAdded_one": "{{count}} note ajoutée",
+			"notesAdded_many": "{{count}} notes ajoutées",
+			"notesAdded_other": "{{count}} notes ajoutées",
+			"groupTitle": "Regrouper les notes avec l'IA",
+			"groupDescription_one": "L'IA classe la note sélectionnée par thèmes. Renommez les thèmes, puis disposez les notes dans des cadres.",
+			"groupDescription_many": "L'IA classe les {{count}} notes sélectionnées par thèmes. Renommez les thèmes, puis disposez les notes dans des cadres.",
+			"groupDescription_other": "L'IA classe les {{count}} notes sélectionnées par thèmes. Renommez les thèmes, puis disposez les notes dans des cadres.",
+			"themes": "Thèmes",
+			"themeLabel": "Nom du thème {{index}}",
+			"otherGroup": "Autres",
+			"arrange_one": "Disposer dans {{count}} cadre",
+			"arrange_many": "Disposer dans {{count}} cadres",
+			"arrange_other": "Disposer dans {{count}} cadres",
+			"grouped_one": "Notes disposées dans {{count}} cadre",
+			"grouped_many": "Notes disposées dans {{count}} cadres",
+			"grouped_other": "Notes disposées dans {{count}} cadres",
+			"summarizeBoardTitle": "Résumer le tableau",
+			"summarizeSelectionTitle": "Résumer la sélection",
+			"summarizeDescription": "Relisez et modifiez le résumé, puis copiez-le ou ajoutez-le au tableau sous forme de texte.",
+			"summaryTitle": "Titre",
+			"summary": "Résumé",
+			"madeFrom_one": "Créé à partir de {{count}} élément contenant du texte.",
+			"madeFrom_many": "Créé à partir de {{count}} éléments contenant du texte.",
+			"madeFrom_other": "Créé à partir de {{count}} éléments contenant du texte.",
+			"copy": "Copier",
+			"copied": "Résumé copié",
+			"addSummary": "Ajouter au tableau"
 		}
 	},
 	"projectTemplates": {

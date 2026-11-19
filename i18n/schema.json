@@ -260,6 +260,19 @@
 							},
 							"required": ["title", "description"]
 						},
+						"loadFailed": {
+							"type": "object",
+							"additionalProperties": false,
+							"properties": {
+								"title": {
+									"type": "string"
+								},
+								"description": {
+									"type": "string"
+								}
+							},
+							"required": ["title", "description"]
+						},
 						"notFound": {
 							"type": "object",
 							"additionalProperties": false,
@@ -287,7 +300,14 @@
 							"required": ["title", "description"]
 						}
 					},
-					"required": ["empty", "error", "crash", "notFound", "offline"]
+					"required": [
+						"empty",
+						"error",
+						"crash",
+						"loadFailed",
+						"notFound",
+						"offline"
+					]
 				},
 				"error": {
 					"type": "object",
@@ -1896,6 +1916,12 @@
 						},
 						"desktopBrowserStarted": {
 							"type": "string"
+						},
+						"desktopBrowserButton": {
+							"type": "string"
+						},
+						"desktopBrowserButtonHint": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -1931,7 +1957,9 @@
 						"emailCodesOff",
 						"emailCodesOffNoEmail",
 						"desktopBrowserHint",
-						"desktopBrowserStarted"
+						"desktopBrowserStarted",
+						"desktopBrowserButton",
+						"desktopBrowserButtonHint"
 					]
 				},
 				"providers": {
@@ -12020,6 +12048,9 @@
 						"webhookHint": {
 							"type": "string"
 						},
+						"webhookHintConfigured": {
+							"type": "string"
+						},
 						"channelLabel": {
 							"type": "string"
 						},
@@ -12102,6 +12133,7 @@
 						"webhookLabel",
 						"webhookPlaceholder",
 						"webhookHint",
+						"webhookHintConfigured",
 						"channelLabel",
 						"channelPlaceholder",
 						"channelHint",
@@ -12584,6 +12616,9 @@
 						"webhookHint": {
 							"type": "string"
 						},
+						"webhookHintConfigured": {
+							"type": "string"
+						},
 						"channelLabel": {
 							"type": "string"
 						},
@@ -12651,6 +12686,7 @@
 						"webhookLabel",
 						"webhookPlaceholder",
 						"webhookHint",
+						"webhookHintConfigured",
 						"channelLabel",
 						"channelPlaceholder",
 						"channelHint",
@@ -12733,6 +12769,9 @@
 						"webhookHint": {
 							"type": "string"
 						},
+						"webhookHintConfigured": {
+							"type": "string"
+						},
 						"channelLabel": {
 							"type": "string"
 						},
@@ -12800,6 +12839,7 @@
 						"webhookLabel",
 						"webhookPlaceholder",
 						"webhookHint",
+						"webhookHintConfigured",
 						"channelLabel",
 						"channelPlaceholder",
 						"channelHint",
@@ -12880,6 +12920,9 @@
 							"type": "string"
 						},
 						"webhookHint": {
+							"type": "string"
+						},
+						"webhookHintConfigured": {
 							"type": "string"
 						},
 						"secretLabel": {
@@ -12979,6 +13022,7 @@
 						"webhookLabel",
 						"webhookPlaceholder",
 						"webhookHint",
+						"webhookHintConfigured",
 						"secretLabel",
 						"secretPlaceholder",
 						"secretHint",
@@ -13561,6 +13605,9 @@
 									},
 									"required": ["trello", "linear", "asana"]
 								},
+								"selectJsonFile": {
+									"type": "string"
+								},
 								"itemCount_one": {
 									"type": "string"
 								},
@@ -13734,6 +13781,7 @@
 								"limits",
 								"dropHint",
 								"wrongType",
+								"selectJsonFile",
 								"contents",
 								"sourceStatus",
 								"mode",
@@ -19386,6 +19434,22 @@
 				"githubUser": {
 					"type": "string"
 				},
+				"integrationActor": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"viaGithub": {
+							"type": "string"
+						},
+						"gitea": {
+							"type": "string"
+						},
+						"viaGitea": {
+							"type": "string"
+						}
+					},
+					"required": ["viaGithub", "gitea", "viaGitea"]
+				},
 				"comment": {
 					"type": "object",
 					"additionalProperties": false,
@@ -20458,6 +20522,7 @@
 				"importedFromJira",
 				"importedFromSource",
 				"githubUser",
+				"integrationActor",
 				"comment",
 				"addedToCycle",
 				"removedFromCycle",
@@ -47290,6 +47355,9 @@
 						"complete": {
 							"type": "string"
 						},
+						"empty": {
+							"type": "string"
+						},
 						"insufficient": {
 							"type": "object",
 							"additionalProperties": false,
@@ -47367,6 +47435,7 @@
 						"chanceByEnd",
 						"beyondHorizon",
 						"complete",
+						"empty",
 						"insufficient",
 						"howCalculated",
 						"method",
@@ -49153,6 +49222,9 @@
 								"forecastDone": {
 									"type": "string"
 								},
+								"forecastEmpty": {
+									"type": "string"
+								},
 								"forecastNone": {
 									"type": "string"
 								},
@@ -49180,6 +49252,7 @@
 								"forecast",
 								"forecastValue",
 								"forecastDone",
+								"forecastEmpty",
 								"forecastNone",
 								"risks",
 								"diff",
@@ -50632,6 +50705,9 @@
 						},
 						"coding_handoff": {
 							"type": "string"
+						},
+						"whiteboard": {
+							"type": "string"
 						}
 					},
 					"required": [
@@ -50653,7 +50729,8 @@
 						"retro",
 						"my_brief",
 						"embedding",
-						"coding_handoff"
+						"coding_handoff",
+						"whiteboard"
 					]
 				},
 				"providers": {
@@ -50949,6 +51026,15 @@
 						"localDescription": {
 							"type": "string"
 						},
+						"localDescriptionCloud": {
+							"type": "string"
+						},
+						"localDescriptionBlocked": {
+							"type": "string"
+						},
+						"localDescriptionLocalOnly": {
+							"type": "string"
+						},
 						"localBaseUrl": {
 							"type": "string"
 						},
@@ -51162,6 +51248,9 @@
 						"testLocal",
 						"localTitle",
 						"localDescription",
+						"localDescriptionCloud",
+						"localDescriptionBlocked",
+						"localDescriptionLocalOnly",
 						"localBaseUrl",
 						"localBaseUrlHint",
 						"localModel",
@@ -52293,6 +52382,12 @@
 								"deletedAgent": {
 									"type": "string"
 								},
+								"deletedAgents": {
+									"type": "string"
+								},
+								"errorDetail": {
+									"type": "string"
+								},
 								"onBehalfOf": {
 									"type": "string"
 								},
@@ -52431,6 +52526,8 @@
 								"selectRun",
 								"runMissing",
 								"deletedAgent",
+								"deletedAgents",
+								"errorDetail",
 								"onBehalfOf",
 								"cost",
 								"tokensLabel",
@@ -59843,6 +59940,254 @@
 						"mist",
 						"mint"
 					]
+				},
+				"ai": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"menu": {
+							"type": "string"
+						},
+						"brainstorm": {
+							"type": "string"
+						},
+						"group": {
+							"type": "string"
+						},
+						"summarizeBoard": {
+							"type": "string"
+						},
+						"summarizeSelection": {
+							"type": "string"
+						},
+						"working": {
+							"type": "string"
+						},
+						"tryAgain": {
+							"type": "string"
+						},
+						"nothingToUse": {
+							"type": "string"
+						},
+						"discard": {
+							"type": "string"
+						},
+						"brainstormTitle": {
+							"type": "string"
+						},
+						"brainstormDescription": {
+							"type": "string"
+						},
+						"topic": {
+							"type": "string"
+						},
+						"topicPlaceholder": {
+							"type": "string"
+						},
+						"ideaCount": {
+							"type": "string"
+						},
+						"generate": {
+							"type": "string"
+						},
+						"regenerate": {
+							"type": "string"
+						},
+						"putInFrame": {
+							"type": "string"
+						},
+						"frameName": {
+							"type": "string"
+						},
+						"ideas": {
+							"type": "string"
+						},
+						"ideaLabel": {
+							"type": "string"
+						},
+						"removeIdea": {
+							"type": "string"
+						},
+						"addNotes_one": {
+							"type": "string"
+						},
+						"addNotes_zero": {
+							"type": "string"
+						},
+						"addNotes_two": {
+							"type": "string"
+						},
+						"addNotes_few": {
+							"type": "string"
+						},
+						"addNotes_many": {
+							"type": "string"
+						},
+						"addNotes_other": {
+							"type": "string"
+						},
+						"notesAdded_one": {
+							"type": "string"
+						},
+						"notesAdded_zero": {
+							"type": "string"
+						},
+						"notesAdded_two": {
+							"type": "string"
+						},
+						"notesAdded_few": {
+							"type": "string"
+						},
+						"notesAdded_many": {
+							"type": "string"
+						},
+						"notesAdded_other": {
+							"type": "string"
+						},
+						"groupTitle": {
+							"type": "string"
+						},
+						"groupDescription_one": {
+							"type": "string"
+						},
+						"groupDescription_zero": {
+							"type": "string"
+						},
+						"groupDescription_two": {
+							"type": "string"
+						},
+						"groupDescription_few": {
+							"type": "string"
+						},
+						"groupDescription_many": {
+							"type": "string"
+						},
+						"groupDescription_other": {
+							"type": "string"
+						},
+						"themes": {
+							"type": "string"
+						},
+						"themeLabel": {
+							"type": "string"
+						},
+						"otherGroup": {
+							"type": "string"
+						},
+						"arrange_one": {
+							"type": "string"
+						},
+						"arrange_zero": {
+							"type": "string"
+						},
+						"arrange_two": {
+							"type": "string"
+						},
+						"arrange_few": {
+							"type": "string"
+						},
+						"arrange_many": {
+							"type": "string"
+						},
+						"arrange_other": {
+							"type": "string"
+						},
+						"grouped_one": {
+							"type": "string"
+						},
+						"grouped_zero": {
+							"type": "string"
+						},
+						"grouped_two": {
+							"type": "string"
+						},
+						"grouped_few": {
+							"type": "string"
+						},
+						"grouped_many": {
+							"type": "string"
+						},
+						"grouped_other": {
+							"type": "string"
+						},
+						"summarizeBoardTitle": {
+							"type": "string"
+						},
+						"summarizeSelectionTitle": {
+							"type": "string"
+						},
+						"summarizeDescription": {
+							"type": "string"
+						},
+						"summaryTitle": {
+							"type": "string"
+						},
+						"summary": {
+							"type": "string"
+						},
+						"madeFrom_one": {
+							"type": "string"
+						},
+						"madeFrom_zero": {
+							"type": "string"
+						},
+						"madeFrom_two": {
+							"type": "string"
+						},
+						"madeFrom_few": {
+							"type": "string"
+						},
+						"madeFrom_many": {
+							"type": "string"
+						},
+						"madeFrom_other": {
+							"type": "string"
+						},
+						"copy": {
+							"type": "string"
+						},
+						"copied": {
+							"type": "string"
+						},
+						"addSummary": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"menu",
+						"brainstorm",
+						"group",
+						"summarizeBoard",
+						"summarizeSelection",
+						"working",
+						"tryAgain",
+						"nothingToUse",
+						"discard",
+						"brainstormTitle",
+						"brainstormDescription",
+						"topic",
+						"topicPlaceholder",
+						"ideaCount",
+						"generate",
+						"regenerate",
+						"putInFrame",
+						"frameName",
+						"ideas",
+						"ideaLabel",
+						"removeIdea",
+						"groupTitle",
+						"themes",
+						"themeLabel",
+						"otherGroup",
+						"summarizeBoardTitle",
+						"summarizeSelectionTitle",
+						"summarizeDescription",
+						"summaryTitle",
+						"summary",
+						"copy",
+						"copied",
+						"addSummary"
+					]
 				}
 			},
 			"required": [
@@ -59866,7 +60211,8 @@
 				"shapes",
 				"pens",
 				"eraser",
-				"background"
+				"background",
+				"ai"
 			]
 		},
 		"projectTemplates": {

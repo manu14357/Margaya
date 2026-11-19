@@ -317,6 +317,10 @@
 				"description": "Opnieuw laden lost het meestal op. Je opgeslagen werk is veilig.",
 				"title": "Margaya reageert niet meer"
 			},
+			"loadFailed": {
+				"title": "Een deel van Margaya is niet geladen",
+				"description": "De verbinding viel weg terwijl de app werd geladen. Laad de pagina opnieuw om het laden af te ronden. Je opgeslagen werk is veilig."
+			},
 			"empty": {
 				"description": "Zodra er iets wordt toegevoegd, verschijnt het hier.",
 				"title": "Hier staat nog niets"
@@ -474,7 +478,9 @@
 			"emailCodesOff": "Inloglinks en -codes per e-mail staan uit op deze server. Heb je alleen die ooit gebruikt, dan heb je nog geen wachtwoord: kies “Wachtwoord vergeten?” om er een in te stellen.",
 			"emailCodesOffNoEmail": "Inloglinks en -codes per e-mail staan uit op deze server. Heb je alleen die ooit gebruikt, dan heb je nog geen wachtwoord: vraag een instantiebeheerder om er een voor je in te stellen.",
 			"desktopBrowserHint": "Deze opties gaan verder in je browser en brengen je daarna terug naar de app.",
-			"desktopBrowserStarted": "Ga verder in je browser om het inloggen af te ronden."
+			"desktopBrowserStarted": "Ga verder in je browser om het inloggen af te ronden.",
+			"desktopBrowserButton": "Inloggen met je browser",
+			"desktopBrowserButtonHint": "Gebruik in je browser een inlogmethode naar keuze. Als je klaar bent, kom je hier ingelogd terug."
 		},
 		"providers": {
 			"google": "Google",
@@ -1498,6 +1504,7 @@
 			"webhookLabel": "Incoming webhook-URL",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Maak een 'Incoming Webhook' aan in Slack en plak de gegenereerde URL hier.",
+			"webhookHintConfigured": "Er is een webhook-URL opgeslagen en verborgen ({{masked}}). Plak een nieuwe om deze te vervangen.",
 			"channelLabel": "Kanaalnaam",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Optioneel label voor eigen referentie. Slack bepaalt het daadwerkelijke doelkanaal via de webhook-instellingen.",
@@ -1638,6 +1645,7 @@
 			"webhookLabel": "Webhook-URL",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Maak een webhook aan in een Discord-kanaal en plak de gegenereerde URL hier.",
+			"webhookHintConfigured": "Er is een webhook-URL opgeslagen en verborgen ({{masked}}). Plak een nieuwe om deze te vervangen.",
 			"channelLabel": "Kanaalnaam",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Optioneel label voor eigen referentie. Discord bepaalt het daadwerkelijke doelkanaal via de webhook-instellingen.",
@@ -1675,6 +1683,7 @@
 			"webhookLabel": "Eindpunt-URL (Endpoint URL)",
 			"webhookPlaceholder": "https://voorbeeld.nl/webhooks/margaya",
 			"webhookHint": "Margaya verzendt POST-verzoeken met een JSON-payload voor elke ingeschakelde gebeurtenis.",
+			"webhookHintConfigured": "Er is een webhook-URL opgeslagen en verborgen ({{masked}}). Plak een nieuwe om deze te vervangen.",
 			"secretLabel": "Ondertekeningsgeheim (Signing secret)",
 			"secretPlaceholder": "Optioneel gedeeld geheim",
 			"secretHint": "Optioneel. Indien opgegeven, ondertekent Margaya de verzoektekst en verzendt de hex-digest in de 'X-Margaya-Signature' header.",
@@ -1868,6 +1877,7 @@
 					"linear": "Kies de .csv-export van Linear.",
 					"asana": "Kies de .csv-export van Asana."
 				},
+				"selectJsonFile": "JSON-bestand selecteren",
 				"itemCount_one": "{{count}} item",
 				"itemCount_other": "{{count}} items",
 				"alreadyImported_one": "{{count}} item is al eerder in dit project geïmporteerd.",
@@ -2696,6 +2706,7 @@
 				"webhookInvalid": "Voer een geldige Mattermost-webhook-URL in"
 			},
 			"webhookHint": "Maak een inkomende webhook aan in Mattermost en plak de gegenereerde URL hier.",
+			"webhookHintConfigured": "Er is een webhook-URL opgeslagen en verborgen ({{masked}}). Plak een nieuwe om deze te vervangen.",
 			"webhookLabel": "Inkomende webhook-URL",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4707,6 +4718,11 @@
 		"importedFromJira": "heeft deze taak geïmporteerd uit Jira {{key}}",
 		"importedFromSource": "heeft deze taak geïmporteerd uit {{source}} {{key}}",
 		"githubUser": "GitHub-gebruiker",
+		"integrationActor": {
+			"viaGithub": "vanuit GitHub",
+			"gitea": "Gitea",
+			"viaGitea": "vanuit Gitea"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "GitHub-profiel bekijken",
@@ -11469,6 +11485,7 @@
 			"open_one": "{{count}} open taak",
 			"open_other": "{{count}} open taken",
 			"complete": "Alle taken zijn klaar",
+			"empty": "Nog geen taken. Voeg taken toe om een prognose te zien.",
 			"insufficient": {
 				"short_span": "Nog niet genoeg geschiedenis: een prognose heeft minstens 14 dagen werk in dit project nodig.",
 				"few_completions": "Nog niet genoeg geschiedenis: de afgelopen 8 weken zijn minder dan 5 taken afgerond.",
@@ -11876,6 +11893,7 @@
 				"forecast": "Prognose",
 				"forecastValue": "85% kans vóór {{date}}",
 				"forecastDone": "Niets meer te doen",
+				"forecastEmpty": "Nog geen taken",
 				"forecastNone": "Nog niet genoeg geschiedenis",
 				"risks": "Risico's",
 				"diff": "Verandering",
@@ -12218,7 +12236,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "AI is hier uitgeschakeld.",
-			"AI_NOT_CONFIGURED": "AI is niet goed ingesteld. Vraag een beheerder om de AI-instellingen te controleren.",
+			"AI_NOT_CONFIGURED": "AI is niet goed ingesteld, of het account bij de AI-provider vraagt aandacht (het tegoed is bijvoorbeeld op). Vraag een beheerder om de AI-instellingen te controleren.",
 			"AI_ROUTE_BLOCKED": "Deze gegevens mogen volgens je privacyinstellingen niet naar een AI-model worden gestuurd.",
 			"AI_BUDGET_EXCEEDED": "De AI-limiet is bereikt. Probeer het later opnieuw of vraag een beheerder om de limiet te verhogen.",
 			"AI_RATE_LIMITED": "Te veel AI-verzoeken tegelijk. Wacht even en probeer het opnieuw.",
@@ -12246,7 +12264,8 @@
 			"retro": "Retrospectieven",
 			"my_brief": "Mijn briefing",
 			"embedding": "Zoekindexering",
-			"coding_handoff": "Briefings voor codeeragents"
+			"coding_handoff": "Briefings voor codeeragents",
+			"whiteboard": "AI voor tekenborden"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12328,6 +12347,9 @@
 			"testLocal": "Lokaal model testen",
 			"localTitle": "Lokaal model",
 			"localDescription": "Een OpenAI-compatibele server in je eigen netwerk, zoals Ollama. Beperkte gegevens gaan alleen hierheen.",
+			"localDescriptionCloud": "Een OpenAI-compatibele server in je eigen netwerk, zoals Ollama. Beperkte gegevens kunnen ook naar de cloudprovider gaan, zoals ingesteld onder Privacy.",
+			"localDescriptionBlocked": "Een OpenAI-compatibele server in je eigen netwerk, zoals Ollama. Beperkte gegevens worden naar geen enkel model gestuurd, zoals ingesteld onder Privacy.",
+			"localDescriptionLocalOnly": "Een OpenAI-compatibele server in je eigen netwerk, zoals Ollama. De alleen-lokaal-modus staat aan, dus elke AI-aanroep gaat hierheen.",
 			"localBaseUrl": "Basis-URL",
 			"localBaseUrlHint": "Bijvoorbeeld http://ollama:11434/v1. Privéadressen zijn hier toegestaan.",
 			"localModel": "Model",
@@ -12669,6 +12691,8 @@
 				"selectRun": "Selecteer een uitvoering om de stappen en wijzigingen te zien.",
 				"runMissing": "Deze uitvoering is niet beschikbaar.",
 				"deletedAgent": "Verwijderde agent",
+				"deletedAgents": "Verwijderde agents",
+				"errorDetail": "Meer informatie: {{detail}}",
 				"onBehalfOf": "voor {{name}}",
 				"cost": "Kosten",
 				"tokensLabel": "Tokens",
@@ -14437,6 +14461,53 @@
 			"stone": "Steen",
 			"mist": "Nevel",
 			"mint": "Munt"
+		},
+		"ai": {
+			"menu": "AI-hulpmiddelen",
+			"brainstorm": "Brainstormen met AI",
+			"group": "Notities groeperen met AI",
+			"summarizeBoard": "Bord samenvatten met AI",
+			"summarizeSelection": "Selectie samenvatten met AI",
+			"working": "Aan het nadenken…",
+			"tryAgain": "Opnieuw proberen",
+			"nothingToUse": "Hier staat geen tekst waarmee AI aan de slag kan.",
+			"discard": "Verwerpen",
+			"brainstormTitle": "Brainstormen met AI",
+			"brainstormDescription": "Beschrijf een onderwerp en AI stelt plaknotities voor. Bekijk en bewerk ze; er wordt niets toegevoegd totdat je akkoord gaat.",
+			"topic": "Onderwerp",
+			"topicPlaceholder": "Bijvoorbeeld: manieren om de onboarding te versnellen",
+			"ideaCount": "Ideeën",
+			"generate": "Ideeën genereren",
+			"regenerate": "Opnieuw genereren",
+			"putInFrame": "De notities in een kader plaatsen",
+			"frameName": "Naam van kader",
+			"ideas": "Voorgestelde notities",
+			"ideaLabel": "Notitie {{index}}",
+			"removeIdea": "Notitie {{index}} verwijderen",
+			"addNotes_one": "{{count}} notitie toevoegen",
+			"addNotes_other": "{{count}} notities toevoegen",
+			"notesAdded_one": "{{count}} notitie toegevoegd",
+			"notesAdded_other": "{{count}} notities toegevoegd",
+			"groupTitle": "Notities groeperen met AI",
+			"groupDescription_one": "AI deelt de geselecteerde notitie in op thema's. Geef de thema's een nieuwe naam en plaats de notities daarna in kaders.",
+			"groupDescription_other": "AI deelt de {{count}} geselecteerde notities in op thema's. Geef de thema's een nieuwe naam en plaats de notities daarna in kaders.",
+			"themes": "Thema's",
+			"themeLabel": "Naam van thema {{index}}",
+			"otherGroup": "Overig",
+			"arrange_one": "In {{count}} kader plaatsen",
+			"arrange_other": "In {{count}} kaders plaatsen",
+			"grouped_one": "Notities in {{count}} kader geplaatst",
+			"grouped_other": "Notities in {{count}} kaders geplaatst",
+			"summarizeBoardTitle": "Het bord samenvatten",
+			"summarizeSelectionTitle": "De selectie samenvatten",
+			"summarizeDescription": "Bekijk en bewerk de samenvatting en kopieer die daarna of voeg die als tekst toe aan het bord.",
+			"summaryTitle": "Titel",
+			"summary": "Samenvatting",
+			"madeFrom_one": "Gemaakt van {{count}} element met tekst.",
+			"madeFrom_other": "Gemaakt van {{count}} elementen met tekst.",
+			"copy": "Kopiëren",
+			"copied": "Samenvatting gekopieerd",
+			"addSummary": "Aan bord toevoegen"
 		}
 	},
 	"projectTemplates": {

@@ -317,6 +317,10 @@
 				"description": "Yeniden yüklemek genellikle sorunu çözer. Kaydedilmiş çalışmanız güvende.",
 				"title": "Margaya yanıt vermeyi bıraktı"
 			},
+			"loadFailed": {
+				"title": "Margaya'nın bir kısmı yüklenmedi",
+				"description": "Uygulama yüklenirken bağlantı koptu. Yüklemeyi tamamlamak için sayfayı yeniden yükleyin. Kaydedilmiş çalışmanız güvende."
+			},
 			"empty": {
 				"description": "Bir şey eklendiğinde burada görünür.",
 				"title": "Burada henüz bir şey yok"
@@ -474,7 +478,9 @@
 			"emailCodesOff": "Bu sunucuda e-postayla gönderilen giriş bağlantıları ve kodları kapalı. Yalnızca bunları kullandıysanız henüz bir parolanız yok: parola belirlemek için “Parolanızı mı unuttunuz?” seçeneğini seçin.",
 			"emailCodesOffNoEmail": "Bu sunucuda e-postayla gönderilen giriş bağlantıları ve kodları kapalı. Yalnızca bunları kullandıysanız henüz bir parolanız yok: bir örnek yöneticisinden sizin için parola belirlemesini isteyin.",
 			"desktopBrowserHint": "Bu seçenekler tarayıcınızda devam eder, ardından sizi uygulamaya geri getirir.",
-			"desktopBrowserStarted": "Girişi tamamlamak için tarayıcınızda devam edin."
+			"desktopBrowserStarted": "Girişi tamamlamak için tarayıcınızda devam edin.",
+			"desktopBrowserButton": "Tarayıcınızla giriş yapın",
+			"desktopBrowserButtonHint": "Tarayıcınızda istediğiniz giriş yöntemini kullanın. İşiniz bittiğinde giriş yapmış olarak buraya döneceksiniz."
 		},
 		"providers": {
 			"google": "Google",
@@ -1764,6 +1770,7 @@
 			"webhookLabel": "Gelen webhook URL'si",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Slack'te bir Gelen Webhook oluşturun ve oluşturulan URL'yi buraya yapıştırın.",
+			"webhookHintConfigured": "Bir webhook URL'si kayıtlı ve gizli tutuluyor ({{masked}}). Değiştirmek için yenisini yapıştırın.",
 			"channelLabel": "Kanal adı",
 			"channelPlaceholder": "#takim-guncellemeleri",
 			"channelHint": "Referansınız için isteğe bağlı etiket. Slack, gerçek hedef kanalı webhook kurulumundan kontrol eder.",
@@ -1904,6 +1911,7 @@
 			"webhookLabel": "Webhook URL'si",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Bir Discord kanal webhook'u oluşturun ve oluşturulan URL'yi buraya yapıştırın.",
+			"webhookHintConfigured": "Bir webhook URL'si kayıtlı ve gizli tutuluyor ({{masked}}). Değiştirmek için yenisini yapıştırın.",
 			"channelLabel": "Kanal adı",
 			"channelPlaceholder": "#takim-guncellemeleri",
 			"channelHint": "Referansınız için isteğe bağlı etiket. Discord, gerçek hedef kanalı webhook kurulumundan kontrol eder.",
@@ -1941,6 +1949,7 @@
 			"webhookLabel": "Uç nokta URL'si",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya, etkinleştirilen her olay için JSON yükü ile POST istekleri gönderir.",
+			"webhookHintConfigured": "Bir webhook URL'si kayıtlı ve gizli tutuluyor ({{masked}}). Değiştirmek için yenisini yapıştırın.",
 			"secretLabel": "İmzalama gizli anahtarı",
 			"secretPlaceholder": "İsteğe bağlı paylaşılan gizli anahtar",
 			"secretHint": "İsteğe bağlı. Sağlanırsa, Margaya istek gövdesini imzalar ve hex özetini X-Margaya-Signature başlığında gönderir.",
@@ -2180,6 +2189,7 @@
 					"linear": "Linear'ın .csv dışa aktarımını seçin.",
 					"asana": "Asana'nın .csv dışa aktarımını seçin."
 				},
+				"selectJsonFile": "JSON dosyası seç",
 				"itemCount_one": "{{count}} öğe",
 				"itemCount_other": "{{count}} öğe",
 				"alreadyImported_one": "{{count}} öğe daha önce bu projeye aktarıldı.",
@@ -2696,6 +2706,7 @@
 				"webhookInvalid": "Geçerli bir Mattermost webhook URL'si girin"
 			},
 			"webhookHint": "Mattermost'ta bir Gelen Webhook oluşturun ve oluşturulan URL'yi buraya yapıştırın.",
+			"webhookHintConfigured": "Bir webhook URL'si kayıtlı ve gizli tutuluyor ({{masked}}). Değiştirmek için yenisini yapıştırın.",
 			"webhookLabel": "Gelen webhook URL'si",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4707,6 +4718,11 @@
 		"importedFromJira": "bu görevi Jira'dan içe aktardı: {{key}}",
 		"importedFromSource": "bu görevi {{source}} üzerinden içe aktardı: {{key}}",
 		"githubUser": "GitHub kullanıcısı",
+		"integrationActor": {
+			"viaGithub": "GitHub üzerinden",
+			"gitea": "Gitea",
+			"viaGitea": "Gitea üzerinden"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "GitHub profilini görüntüle",
@@ -11469,6 +11485,7 @@
 			"open_one": "{{count}} açık görev",
 			"open_other": "{{count}} açık görev",
 			"complete": "Tüm görevler tamamlandı",
+			"empty": "Henüz görev yok. Tahmini görmek için görev ekleyin.",
 			"insufficient": {
 				"short_span": "Henüz yeterli geçmiş yok: tahmin için bu projede en az 14 günlük çalışma gerekir.",
 				"few_completions": "Henüz yeterli geçmiş yok: son 8 haftada 5'ten az görev tamamlandı.",
@@ -11876,6 +11893,7 @@
 				"forecast": "Tahmin",
 				"forecastValue": "%85 olasılıkla {{date}} tarihine kadar",
 				"forecastDone": "Yapılacak bir şey kalmadı",
+				"forecastEmpty": "Henüz görev yok",
 				"forecastNone": "Henüz yeterli geçmiş yok",
 				"risks": "Riskler",
 				"diff": "Değişim",
@@ -12218,7 +12236,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "YZ burada kapalı.",
-			"AI_NOT_CONFIGURED": "YZ doğru şekilde ayarlanmamış. Bir yöneticiden YZ ayarlarını kontrol etmesini isteyin.",
+			"AI_NOT_CONFIGURED": "YZ doğru şekilde ayarlanmamış ya da YZ sağlayıcı hesabıyla ilgilenilmesi gerekiyor (örneğin kredisi bitmiş). Bir yöneticiden YZ ayarlarını kontrol etmesini isteyin.",
 			"AI_ROUTE_BLOCKED": "Gizlilik ayarlarınız nedeniyle bu veriler bir YZ modeline gönderilemez.",
 			"AI_BUDGET_EXCEEDED": "YZ sınırına ulaşıldı. Daha sonra tekrar deneyin veya bir yöneticiden sınırı yükseltmesini isteyin.",
 			"AI_RATE_LIMITED": "Aynı anda çok fazla YZ isteği var. Biraz bekleyip tekrar deneyin.",
@@ -12246,7 +12264,8 @@
 			"retro": "Retrospektifler",
 			"my_brief": "Özetim",
 			"embedding": "Arama dizinleme",
-			"coding_handoff": "Kodlama ajanı brifingleri"
+			"coding_handoff": "Kodlama ajanı brifingleri",
+			"whiteboard": "Beyaz tahta YZ'si"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12328,6 +12347,9 @@
 			"testLocal": "Yerel modeli test et",
 			"localTitle": "Yerel model",
 			"localDescription": "Kendi ağınızda çalışan, Ollama gibi OpenAI uyumlu bir sunucu. Kısıtlı veriler yalnızca buraya gider.",
+			"localDescriptionCloud": "Kendi ağınızda çalışan, Ollama gibi OpenAI uyumlu bir sunucu. Gizlilik altındaki ayara göre kısıtlı veriler bulut sağlayıcıya da gidebilir.",
+			"localDescriptionBlocked": "Kendi ağınızda çalışan, Ollama gibi OpenAI uyumlu bir sunucu. Gizlilik altındaki ayara göre kısıtlı veriler hiçbir modele gönderilmez.",
+			"localDescriptionLocalOnly": "Kendi ağınızda çalışan, Ollama gibi OpenAI uyumlu bir sunucu. Yalnızca yerel mod açık olduğundan tüm YZ çağrıları buraya gider.",
 			"localBaseUrl": "Temel URL",
 			"localBaseUrlHint": "Örneğin http://ollama:11434/v1. Burada özel adreslere izin verilir.",
 			"localModel": "Model",
@@ -12669,6 +12691,8 @@
 				"selectRun": "Adımlarını ve değişikliklerini görmek için bir çalıştırma seçin.",
 				"runMissing": "Bu çalıştırma kullanılamıyor.",
 				"deletedAgent": "Silinmiş ajan",
+				"deletedAgents": "Silinmiş ajanlar",
+				"errorDetail": "Ayrıntılar: {{detail}}",
 				"onBehalfOf": "{{name}} için",
 				"cost": "Maliyet",
 				"tokensLabel": "Belirteçler",
@@ -14437,6 +14461,53 @@
 			"stone": "Taş",
 			"mist": "Sis",
 			"mint": "Nane"
+		},
+		"ai": {
+			"menu": "YZ",
+			"brainstorm": "YZ ile beyin fırtınası",
+			"group": "Notları YZ ile grupla",
+			"summarizeBoard": "Tahtayı YZ ile özetle",
+			"summarizeSelection": "Seçimi YZ ile özetle",
+			"working": "Düşünüyor…",
+			"tryAgain": "Tekrar dene",
+			"nothingToUse": "Burada YZ'nin üzerinde çalışabileceği bir metin yok.",
+			"discard": "Vazgeç",
+			"brainstormTitle": "YZ ile beyin fırtınası",
+			"brainstormDescription": "Bir konu tanımlayın, YZ yapışkan notlar önersin. Notları inceleyip düzenleyin; siz kabul edene kadar hiçbir şey eklenmez.",
+			"topic": "Konu",
+			"topicPlaceholder": "Örneğin: işe alıştırmayı hızlandırmanın yolları",
+			"ideaCount": "Fikirler",
+			"generate": "Fikir üret",
+			"regenerate": "Yeniden üret",
+			"putInFrame": "Notları bir çerçeveye koy",
+			"frameName": "Çerçeve adı",
+			"ideas": "Önerilen notlar",
+			"ideaLabel": "Not {{index}}",
+			"removeIdea": "{{index}} numaralı notu kaldır",
+			"addNotes_one": "{{count}} not ekle",
+			"addNotes_other": "{{count}} not ekle",
+			"notesAdded_one": "{{count}} not eklendi",
+			"notesAdded_other": "{{count}} not eklendi",
+			"groupTitle": "Notları YZ ile grupla",
+			"groupDescription_one": "YZ seçili notu temalara ayırır. Temaları yeniden adlandırın, ardından notları çerçevelere yerleştirin.",
+			"groupDescription_other": "YZ seçili {{count}} notu temalara ayırır. Temaları yeniden adlandırın, ardından notları çerçevelere yerleştirin.",
+			"themes": "Temalar",
+			"themeLabel": "{{index}}. temanın adı",
+			"otherGroup": "Diğer",
+			"arrange_one": "{{count}} çerçeveye yerleştir",
+			"arrange_other": "{{count}} çerçeveye yerleştir",
+			"grouped_one": "Notlar {{count}} çerçeveye yerleştirildi",
+			"grouped_other": "Notlar {{count}} çerçeveye yerleştirildi",
+			"summarizeBoardTitle": "Tahtayı özetle",
+			"summarizeSelectionTitle": "Seçimi özetle",
+			"summarizeDescription": "Özeti inceleyip düzenleyin, ardından kopyalayın ya da tahtaya metin olarak ekleyin.",
+			"summaryTitle": "Başlık",
+			"summary": "Özet",
+			"madeFrom_one": "Metin içeren {{count}} öğeden oluşturuldu.",
+			"madeFrom_other": "Metin içeren {{count}} öğeden oluşturuldu.",
+			"copy": "Kopyala",
+			"copied": "Özet kopyalandı",
+			"addSummary": "Tahtaya ekle"
 		}
 	},
 	"projectTemplates": {

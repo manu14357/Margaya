@@ -317,6 +317,10 @@
 				"description": "Yenidən yükləmək adətən kömək edir. Yadda saxlanmış işiniz təhlükəsizdir.",
 				"title": "Margaya cavab verməyi dayandırdı"
 			},
+			"loadFailed": {
+				"title": "Margaya-nın bir hissəsi yüklənmədi",
+				"description": "Tətbiq yüklənərkən bağlantı kəsildi. Yükləməni başa çatdırmaq üçün səhifəni yenidən yükləyin. Yadda saxlanmış işiniz təhlükəsizdir."
+			},
 			"empty": {
 				"description": "Nəsə əlavə olunanda burada görünəcək.",
 				"title": "Burada hələ heç nə yoxdur"
@@ -474,7 +478,9 @@
 			"emailCodesOff": "Bu serverdə e-poçtla göndərilən giriş keçidləri və kodları söndürülüb. Əgər yalnız onlardan istifadə etmisinizsə, hələ parolunuz yoxdur: parol təyin etmək üçün “Parolu unutmusunuz?” seçin.",
 			"emailCodesOffNoEmail": "Bu serverdə e-poçtla göndərilən giriş keçidləri və kodları söndürülüb. Əgər yalnız onlardan istifadə etmisinizsə, hələ parolunuz yoxdur: instans adminindən sizin üçün parol təyin etməsini xahiş edin.",
 			"desktopBrowserHint": "Bu seçimlər brauzerinizdə davam edir, sonra sizi tətbiqə qaytarır.",
-			"desktopBrowserStarted": "Girişi tamamlamaq üçün brauzerinizdə davam edin."
+			"desktopBrowserStarted": "Girişi tamamlamaq üçün brauzerinizdə davam edin.",
+			"desktopBrowserButton": "Brauzerinizlə daxil olun",
+			"desktopBrowserButtonHint": "Brauzerinizdə istənilən giriş üsulundan istifadə edin. Bitirdikdən sonra bura artıq daxil olmuş halda qayıdacaqsınız."
 		},
 		"providers": {
 			"google": "Google",
@@ -2120,6 +2126,7 @@
 			"webhookLabel": "Daxil olan Webhook-un URL-i",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Slack-də daxil olan Webhook yaradın və yaradılmış URL-i buraya yapışdırın.",
+			"webhookHintConfigured": "Webhook URL-i yadda saxlanılıb və gizli saxlanılır ({{masked}}). Onu əvəz etmək üçün yenisini yapışdırın.",
 			"channelLabel": "Kanalın adı",
 			"channelPlaceholder": "#komanda-yenilikleri",
 			"channelHint": "İstinad üçün istəyə bağlı etiket. Slack faktiki təyinat kanalını Webhook-un parametrlərindən idarə edir.",
@@ -2260,6 +2267,7 @@
 			"webhookLabel": "Webhook-un URL-i",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Discord kanalı üçün Webhook yaradın və yaradılmış URL-i buraya yapışdırın.",
+			"webhookHintConfigured": "Webhook URL-i yadda saxlanılıb və gizli saxlanılır ({{masked}}). Onu əvəz etmək üçün yenisini yapışdırın.",
 			"channelLabel": "Kanalın adı",
 			"channelPlaceholder": "#komanda-yenilikleri",
 			"channelHint": "İstinad üçün istəyə bağlı etiket. Discord faktiki təyinat kanalını Webhook-un parametrlərindən idarə edir.",
@@ -2297,6 +2305,7 @@
 			"webhookLabel": "Daxil olan Webhook-un URL-i",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/...",
 			"webhookHint": "Mattermost-da daxil olan Webhook yaradın və yaradılmış URL-i buraya yapışdırın.",
+			"webhookHintConfigured": "Webhook URL-i yadda saxlanılıb və gizli saxlanılır ({{masked}}). Onu əvəz etmək üçün yenisini yapışdırın.",
 			"channelLabel": "Kanalın adı",
 			"channelPlaceholder": "#komanda-yenilikleri",
 			"channelHint": "İstinad üçün istəyə bağlı etiket. Mattermost faktiki təyinat kanalını Webhook-un parametrlərindən idarə edir.",
@@ -2334,6 +2343,7 @@
 			"webhookLabel": "Son nöqtənin URL-i",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya hər aktiv hadisə üçün JSON məlumatları ilə POST sorğuları göndərir.",
+			"webhookHintConfigured": "Webhook URL-i yadda saxlanılıb və gizli saxlanılır ({{masked}}). Onu əvəz etmək üçün yenisini yapışdırın.",
 			"secretLabel": "İmzalama sirri",
 			"secretPlaceholder": "İstəyə bağlı ortaq sirr",
 			"secretHint": "İstəyə bağlıdır. Təyin edildikdə Margaya sorğunun gövdəsini imzalayır və onaltılıq heş dəyərini X-Margaya-Signature başlığında göndərir.",
@@ -2573,6 +2583,7 @@
 					"linear": "Linear-ın .csv ixracını seçin.",
 					"asana": "Asana-nın .csv ixracını seçin."
 				},
+				"selectJsonFile": "JSON faylını seçin",
 				"itemCount_one": "{{count}} element",
 				"itemCount_other": "{{count}} element",
 				"alreadyImported_one": "{{count}} element əvvəllər bu layihəyə idxal edilib.",
@@ -4707,6 +4718,11 @@
 		"importedFromJira": "bu tapşırığı Jira-dan idxal etdi: {{key}}",
 		"importedFromSource": "bu tapşırığı {{source}} xidmətindən idxal etdi: {{key}}",
 		"githubUser": "GitHub istifadəçisi",
+		"integrationActor": {
+			"viaGithub": "GitHub vasitəsilə",
+			"gitea": "Gitea",
+			"viaGitea": "Gitea vasitəsilə"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "GitHub profilinə bax",
@@ -11469,6 +11485,7 @@
 			"open_one": "{{count}} açıq tapşırıq",
 			"open_other": "{{count}} açıq tapşırıq",
 			"complete": "Bütün tapşırıqlar tamamlanıb",
+			"empty": "Hələ tapşırıq yoxdur. Proqnozu görmək üçün tapşırıq əlavə edin.",
 			"insufficient": {
 				"short_span": "Hələ kifayət qədər tarixçə yoxdur: proqnoz üçün bu layihədə ən azı 14 günlük iş lazımdır.",
 				"few_completions": "Hələ kifayət qədər tarixçə yoxdur: son 8 həftədə 5-dən az tapşırıq tamamlanıb.",
@@ -11876,6 +11893,7 @@
 				"forecast": "Proqnoz",
 				"forecastValue": "85% ehtimalla {{date}} tarixinədək",
 				"forecastDone": "Görüləsi iş qalmayıb",
+				"forecastEmpty": "Hələ tapşırıq yoxdur",
 				"forecastNone": "Hələ kifayət qədər tarixçə yoxdur",
 				"risks": "Risklər",
 				"diff": "Dəyişiklik",
@@ -12218,7 +12236,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "Sİ burada söndürülüb.",
-			"AI_NOT_CONFIGURED": "Sİ düzgün qurulmayıb. Admindən Sİ parametrlərini yoxlamasını xahiş edin.",
+			"AI_NOT_CONFIGURED": "Sİ düzgün qurulmayıb və ya Sİ provayderindəki hesab diqqət tələb edir (məsələn, krediti bitib). Admindən Sİ parametrlərini yoxlamasını xahiş edin.",
 			"AI_ROUTE_BLOCKED": "Məxfilik parametrlərinizə görə bu məlumatlar Sİ modelinə göndərilə bilməz.",
 			"AI_BUDGET_EXCEEDED": "Sİ limitinə çatılıb. Daha sonra yenidən cəhd edin və ya admindən limiti artırmasını xahiş edin.",
 			"AI_RATE_LIMITED": "Eyni anda həddən artıq Sİ sorğusu var. Bir az gözləyib yenidən cəhd edin.",
@@ -12246,7 +12264,8 @@
 			"retro": "Retrospektivlər",
 			"my_brief": "Mənim xülasəm",
 			"embedding": "Axtarış indeksləməsi",
-			"coding_handoff": "Kodlaşdırma agentləri üçün brifinqlər"
+			"coding_handoff": "Kodlaşdırma agentləri üçün brifinqlər",
+			"whiteboard": "Ağ lövhə üçün Sİ"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12328,6 +12347,9 @@
 			"testLocal": "Lokal modeli yoxla",
 			"localTitle": "Lokal model",
 			"localDescription": "Öz şəbəkənizdə işləyən, Ollama kimi OpenAI ilə uyğun server. Məhdud məlumatlar yalnız bura göndərilir.",
+			"localDescriptionCloud": "Öz şəbəkənizdə işləyən, Ollama kimi OpenAI ilə uyğun server. Məxfilik bölməsindəki ayara görə məhdud məlumatlar bulud provayderinə də göndərilə bilər.",
+			"localDescriptionBlocked": "Öz şəbəkənizdə işləyən, Ollama kimi OpenAI ilə uyğun server. Məxfilik bölməsindəki ayara görə məhdud məlumatlar heç bir modelə göndərilmir.",
+			"localDescriptionLocalOnly": "Öz şəbəkənizdə işləyən, Ollama kimi OpenAI ilə uyğun server. Yalnız lokal rejim aktivdir, buna görə bütün Sİ sorğuları bura göndərilir.",
 			"localBaseUrl": "Əsas URL",
 			"localBaseUrlHint": "Məsələn http://ollama:11434/v1. Burada özəl ünvanlara icazə verilir.",
 			"localModel": "Model",
@@ -12669,6 +12691,8 @@
 				"selectRun": "Addımlarını və dəyişikliklərini görmək üçün icra seçin.",
 				"runMissing": "Bu icra mövcud deyil.",
 				"deletedAgent": "Silinmiş agent",
+				"deletedAgents": "Silinmiş agentlər",
+				"errorDetail": "Təfərrüatlar: {{detail}}",
 				"onBehalfOf": "{{name}} üçün",
 				"cost": "Xərc",
 				"tokensLabel": "Tokenlər",
@@ -14437,6 +14461,53 @@
 			"stone": "Daş",
 			"mist": "Duman",
 			"mint": "Nanə"
+		},
+		"ai": {
+			"menu": "Sİ",
+			"brainstorm": "Sİ ilə beyin fırtınası",
+			"group": "Qeydləri Sİ ilə qruplaşdır",
+			"summarizeBoard": "Lövhəni Sİ ilə xülasə et",
+			"summarizeSelection": "Seçimi Sİ ilə xülasə et",
+			"working": "Düşünür…",
+			"tryAgain": "Yenidən cəhd edin",
+			"nothingToUse": "Burada Sİ-nin işləyə biləcəyi mətn yoxdur.",
+			"discard": "İmtina et",
+			"brainstormTitle": "Sİ ilə beyin fırtınası",
+			"brainstormDescription": "Mövzunu təsvir edin, Sİ yapışqan qeydlər təklif etsin. Onları nəzərdən keçirib redaktə edin; siz qəbul edənədək heç nə əlavə olunmur.",
+			"topic": "Mövzu",
+			"topicPlaceholder": "Məsələn: yeni istifadəçilərin uyğunlaşmasını sürətləndirmə yolları",
+			"ideaCount": "İdeyalar",
+			"generate": "İdeya yarat",
+			"regenerate": "Yenidən yarat",
+			"putInFrame": "Qeydləri çərçivəyə yerləşdir",
+			"frameName": "Çərçivənin adı",
+			"ideas": "Təklif olunan qeydlər",
+			"ideaLabel": "Qeyd {{index}}",
+			"removeIdea": "{{index}} nömrəli qeydi sil",
+			"addNotes_one": "{{count}} qeyd əlavə et",
+			"addNotes_other": "{{count}} qeyd əlavə et",
+			"notesAdded_one": "{{count}} qeyd əlavə edildi",
+			"notesAdded_other": "{{count}} qeyd əlavə edildi",
+			"groupTitle": "Qeydləri Sİ ilə qruplaşdır",
+			"groupDescription_one": "Sİ seçilmiş qeydi mövzulara ayırır. Mövzuların adını dəyişin, sonra qeydləri çərçivələrə yerləşdirin.",
+			"groupDescription_other": "Sİ seçilmiş {{count}} qeydi mövzulara ayırır. Mövzuların adını dəyişin, sonra qeydləri çərçivələrə yerləşdirin.",
+			"themes": "Mövzular",
+			"themeLabel": "{{index}} nömrəli mövzunun adı",
+			"otherGroup": "Digər",
+			"arrange_one": "{{count}} çərçivəyə yerləşdir",
+			"arrange_other": "{{count}} çərçivəyə yerləşdir",
+			"grouped_one": "Qeydlər {{count}} çərçivəyə yerləşdirildi",
+			"grouped_other": "Qeydlər {{count}} çərçivəyə yerləşdirildi",
+			"summarizeBoardTitle": "Lövhəni xülasə et",
+			"summarizeSelectionTitle": "Seçimi xülasə et",
+			"summarizeDescription": "Xülasəni nəzərdən keçirib redaktə edin, sonra onu kopyalayın və ya lövhəyə mətn kimi əlavə edin.",
+			"summaryTitle": "Başlıq",
+			"summary": "Xülasə",
+			"madeFrom_one": "Mətnli {{count}} elementdən hazırlanıb.",
+			"madeFrom_other": "Mətnli {{count}} elementdən hazırlanıb.",
+			"copy": "Kopyala",
+			"copied": "Xülasə kopyalandı",
+			"addSummary": "Lövhəyə əlavə et"
 		}
 	},
 	"projectTemplates": {

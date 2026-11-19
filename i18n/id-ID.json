@@ -311,6 +311,10 @@
 				"description": "Memuat ulang biasanya menyelesaikannya. Pekerjaan Anda yang tersimpan aman.",
 				"title": "Margaya berhenti merespons"
 			},
+			"loadFailed": {
+				"title": "Sebagian Margaya gagal dimuat",
+				"description": "Koneksi terputus saat aplikasi sedang dimuat. Muat ulang halaman untuk menyelesaikan pemuatan. Pekerjaan Anda yang tersimpan aman."
+			},
 			"empty": {
 				"description": "Saat ada yang ditambahkan, hasilnya muncul di sini.",
 				"title": "Belum ada apa pun di sini"
@@ -468,7 +472,9 @@
 			"emailCodesOff": "Tautan dan kode masuk lewat email dinonaktifkan di server ini. Jika selama ini Anda hanya menggunakannya, Anda belum punya kata sandi: pilih “Lupa kata sandi?” untuk membuatnya.",
 			"emailCodesOffNoEmail": "Tautan dan kode masuk lewat email dinonaktifkan di server ini. Jika selama ini Anda hanya menggunakannya, Anda belum punya kata sandi: minta admin instans untuk membuatkannya untuk Anda.",
 			"desktopBrowserHint": "Opsi ini dilanjutkan di browser Anda, lalu membawa Anda kembali ke aplikasi.",
-			"desktopBrowserStarted": "Lanjutkan di browser untuk menyelesaikan proses masuk."
+			"desktopBrowserStarted": "Lanjutkan di browser untuk menyelesaikan proses masuk.",
+			"desktopBrowserButton": "Masuk dengan browser Anda",
+			"desktopBrowserButtonHint": "Gunakan metode masuk apa pun di browser Anda. Setelah selesai, Anda akan kembali ke sini dalam keadaan sudah masuk."
 		},
 		"providers": {
 			"google": "Google",
@@ -1746,6 +1752,7 @@
 			"webhookLabel": "URL incoming webhook",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Buat Incoming Webhook di Slack dan tempel URL yang dihasilkan di sini.",
+			"webhookHintConfigured": "URL webhook sudah tersimpan dan disembunyikan ({{masked}}). Tempel URL baru untuk menggantinya.",
 			"channelLabel": "Nama kanal",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Label opsional untuk referensi Anda. Slack mengontrol kanal tujuan sebenarnya dari pengaturan webhook.",
@@ -1787,6 +1794,7 @@
 			"webhookLabel": "URL webhook",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Buat webhook kanal Discord dan tempel URL yang dihasilkan di sini.",
+			"webhookHintConfigured": "URL webhook sudah tersimpan dan disembunyikan ({{masked}}). Tempel URL baru untuk menggantinya.",
 			"channelLabel": "Nama kanal",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Label opsional untuk referensi Anda. Discord mengontrol kanal tujuan sebenarnya dari pengaturan webhook.",
@@ -1824,6 +1832,7 @@
 			"webhookLabel": "URL endpoint",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya mengirim request POST dengan payload JSON untuk setiap event yang diaktifkan.",
+			"webhookHintConfigured": "URL webhook sudah tersimpan dan disembunyikan ({{masked}}). Tempel URL baru untuk menggantinya.",
 			"secretLabel": "Rahasia penandatanganan",
 			"secretPlaceholder": "Rahasia bersama opsional",
 			"secretHint": "Opsional. Jika diberikan, Margaya menandatangani body request dan mengirim digest hex di header X-Margaya-Signature.",
@@ -2051,6 +2060,7 @@
 					"linear": "Pilih ekspor .csv dari Linear.",
 					"asana": "Pilih ekspor .csv dari Asana."
 				},
+				"selectJsonFile": "Pilih file JSON",
 				"itemCount_other": "{{count}} item",
 				"alreadyImported_other": "{{count}} item sudah pernah diimpor ke proyek ini.",
 				"contents": "{{comments}} komentar, {{checklists}} checklist, {{subtasks}} subtugas, {{links}} tautan",
@@ -2544,6 +2554,7 @@
 				"webhookInvalid": "Masukkan URL webhook Mattermost yang valid"
 			},
 			"webhookHint": "Buat Incoming Webhook di Mattermost dan tempel URL yang dihasilkan di sini.",
+			"webhookHintConfigured": "URL webhook sudah tersimpan dan disembunyikan ({{masked}}). Tempel URL baru untuk menggantinya.",
 			"webhookLabel": "URL incoming webhook",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4627,6 +4638,11 @@
 		"importedFromJira": "mengimpor tugas ini dari Jira {{key}}",
 		"importedFromSource": "mengimpor tugas ini dari {{source}} {{key}}",
 		"githubUser": "Pengguna GitHub",
+		"integrationActor": {
+			"viaGithub": "melalui GitHub",
+			"gitea": "Gitea",
+			"viaGitea": "melalui Gitea"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "Lihat profil GitHub",
@@ -11303,6 +11319,7 @@
 			"beyondHorizon": "Lebih dari dua tahun dengan laju saat ini",
 			"open_other": "{{count}} tugas terbuka",
 			"complete": "Semua tugas sudah selesai",
+			"empty": "Belum ada tugas. Tambahkan tugas untuk melihat prakiraan.",
 			"insufficient": {
 				"short_span": "Riwayat belum cukup: prakiraan butuh setidaknya 14 hari kerja di proyek ini.",
 				"few_completions": "Riwayat belum cukup: kurang dari 5 tugas selesai dalam 8 minggu terakhir.",
@@ -11688,6 +11705,7 @@
 				"forecast": "Prakiraan",
 				"forecastValue": "85% kemungkinan selesai pada {{date}}",
 				"forecastDone": "Tidak ada lagi yang perlu dikerjakan",
+				"forecastEmpty": "Belum ada tugas",
 				"forecastNone": "Riwayat belum cukup",
 				"risks": "Risiko",
 				"diff": "Perubahan",
@@ -12030,7 +12048,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "AI dinonaktifkan di sini.",
-			"AI_NOT_CONFIGURED": "AI belum disiapkan dengan benar. Minta admin untuk memeriksa pengaturan AI.",
+			"AI_NOT_CONFIGURED": "AI belum disiapkan dengan benar, atau akun penyedia AI perlu ditangani (misalnya, kreditnya habis). Minta admin untuk memeriksa pengaturan AI.",
 			"AI_ROUTE_BLOCKED": "Data ini tidak dapat dikirim ke model AI berdasarkan pengaturan privasi Anda.",
 			"AI_BUDGET_EXCEEDED": "Batas AI telah tercapai. Coba lagi nanti atau minta admin untuk menaikkannya.",
 			"AI_RATE_LIMITED": "Terlalu banyak permintaan AI sekaligus. Tunggu sebentar lalu coba lagi.",
@@ -12058,7 +12076,8 @@
 			"retro": "Retrospektif",
 			"my_brief": "Ringkasan saya",
 			"embedding": "Pengindeksan pencarian",
-			"coding_handoff": "Brief untuk agen koding"
+			"coding_handoff": "Brief untuk agen koding",
+			"whiteboard": "AI papan tulis"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12139,6 +12158,9 @@
 			"testLocal": "Uji model lokal",
 			"localTitle": "Model lokal",
 			"localDescription": "Server yang kompatibel dengan OpenAI di jaringan Anda sendiri, seperti Ollama. Data terbatas hanya dikirim ke sini.",
+			"localDescriptionCloud": "Server yang kompatibel dengan OpenAI di jaringan Anda sendiri, seperti Ollama. Data terbatas juga dapat dikirim ke penyedia cloud, sesuai pengaturan di Privasi.",
+			"localDescriptionBlocked": "Server yang kompatibel dengan OpenAI di jaringan Anda sendiri, seperti Ollama. Data terbatas tidak dikirim ke model mana pun, sesuai pengaturan di Privasi.",
+			"localDescriptionLocalOnly": "Server yang kompatibel dengan OpenAI di jaringan Anda sendiri, seperti Ollama. Mode khusus lokal aktif, jadi setiap panggilan AI dikirim ke sini.",
 			"localBaseUrl": "URL dasar",
 			"localBaseUrlHint": "Misalnya http://ollama:11434/v1. Alamat privat diizinkan di sini.",
 			"localModel": "Model",
@@ -12480,6 +12502,8 @@
 				"selectRun": "Pilih eksekusi untuk melihat langkah dan perubahannya.",
 				"runMissing": "Eksekusi ini tidak tersedia.",
 				"deletedAgent": "Agen yang dihapus",
+				"deletedAgents": "Agen yang dihapus",
+				"errorDetail": "Detail: {{detail}}",
 				"onBehalfOf": "untuk {{name}}",
 				"cost": "Biaya",
 				"tokensLabel": "Token",
@@ -14208,6 +14232,47 @@
 			"stone": "Batu",
 			"mist": "Kabut",
 			"mint": "Daun mint"
+		},
+		"ai": {
+			"menu": "Alat AI",
+			"brainstorm": "Curah gagasan dengan AI",
+			"group": "Kelompokkan catatan dengan AI",
+			"summarizeBoard": "Ringkas papan dengan AI",
+			"summarizeSelection": "Ringkas pilihan dengan AI",
+			"working": "Sedang berpikir…",
+			"tryAgain": "Coba lagi",
+			"nothingToUse": "Tidak ada teks di sini yang bisa diolah AI.",
+			"discard": "Buang",
+			"brainstormTitle": "Curah gagasan dengan AI",
+			"brainstormDescription": "Jelaskan sebuah topik dan AI akan mengusulkan catatan tempel. Tinjau dan edit catatan tersebut; tidak ada yang ditambahkan sampai Anda menyetujuinya.",
+			"topic": "Topik",
+			"topicPlaceholder": "Misalnya: cara mempercepat orientasi anggota baru",
+			"ideaCount": "Ide",
+			"generate": "Buat ide",
+			"regenerate": "Buat ulang",
+			"putInFrame": "Masukkan catatan ke dalam bingkai",
+			"frameName": "Nama bingkai",
+			"ideas": "Catatan yang diusulkan",
+			"ideaLabel": "Catatan {{index}}",
+			"removeIdea": "Hapus catatan {{index}}",
+			"addNotes_other": "Tambahkan {{count}} catatan",
+			"notesAdded_other": "{{count}} catatan ditambahkan",
+			"groupTitle": "Kelompokkan catatan dengan AI",
+			"groupDescription_other": "AI memilah {{count}} catatan yang dipilih ke dalam tema. Ganti nama tema, lalu susun catatan ke dalam bingkai.",
+			"themes": "Tema",
+			"themeLabel": "Nama tema {{index}}",
+			"otherGroup": "Lainnya",
+			"arrange_other": "Susun ke dalam {{count}} bingkai",
+			"grouped_other": "Catatan disusun ke dalam {{count}} bingkai",
+			"summarizeBoardTitle": "Ringkas papan",
+			"summarizeSelectionTitle": "Ringkas pilihan",
+			"summarizeDescription": "Tinjau dan edit ringkasan, lalu salin atau tambahkan ke papan sebagai teks.",
+			"summaryTitle": "Judul",
+			"summary": "Ringkasan",
+			"madeFrom_other": "Dibuat dari {{count}} elemen berisi teks.",
+			"copy": "Salin",
+			"copied": "Ringkasan disalin",
+			"addSummary": "Tambahkan ke papan"
 		}
 	},
 	"projectTemplates": {

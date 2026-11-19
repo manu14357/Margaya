@@ -317,6 +317,10 @@
 				"description": "Повторното вчитување обично помага. Зачуваната работа е безбедна.",
 				"title": "Margaya престана да одговара"
 			},
+			"loadFailed": {
+				"title": "Дел од Margaya не се вчита",
+				"description": "Врската се прекина додека се вчитуваше апликацијата. Повторно вчитај ја страницата за да заврши вчитувањето. Зачуваната работа е безбедна."
+			},
 			"empty": {
 				"description": "Кога ќе се додаде нешто, ќе се појави тука.",
 				"title": "Засега нема ништо"
@@ -474,7 +478,9 @@
 			"emailCodesOff": "Врските и кодовите за најава по е-пошта се исклучени на овој сервер. Ако досега се најавуваше само така, сè уште немаш лозинка: избери „Ја заборави лозинката?“ за да поставиш лозинка.",
 			"emailCodesOffNoEmail": "Врските и кодовите за најава по е-пошта се исклучени на овој сервер. Ако досега се најавуваше само така, сè уште немаш лозинка: побарај од администратор на инстанцата да ти постави лозинка.",
 			"desktopBrowserHint": "Овие опции продолжуваат во прелистувачот, а потоа те враќаат во апликацијата.",
-			"desktopBrowserStarted": "Продолжи во прелистувачот за да ја завршиш најавата."
+			"desktopBrowserStarted": "Продолжи во прелистувачот за да ја завршиш најавата.",
+			"desktopBrowserButton": "Најави се преку прелистувачот",
+			"desktopBrowserButtonHint": "Користи кој било начин за најава во прелистувачот. Кога ќе завршиш, ќе се вратиш тука веќе најавен."
 		},
 		"providers": {
 			"google": "Google",
@@ -1764,6 +1770,7 @@
 			"webhookLabel": "URL на влезен webhook",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Креирај Incoming Webhook во Slack и залепи ја генерираната URL тука.",
+			"webhookHintConfigured": "Зачувана е webhook URL и е скриена ({{masked}}). Залепи нова за да ја замениш.",
 			"channelLabel": "Име на канал",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Опционална ознака за тебе. Slack го одредува каналот преку webhook поставките.",
@@ -1805,6 +1812,7 @@
 			"webhookLabel": "URL на webhook",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Креирај webhook за канал во Discord и залепи ја генерираната URL тука.",
+			"webhookHintConfigured": "Зачувана е webhook URL и е скриена ({{masked}}). Залепи нова за да ја замениш.",
 			"channelLabel": "Име на канал",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Опционална ознака за тебе. Discord го одредува каналот преку webhook поставките.",
@@ -1842,6 +1850,7 @@
 			"webhookLabel": "URL на endpoint",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya испраќа POST барања со JSON за секој овозможен настан.",
+			"webhookHintConfigured": "Зачувана е webhook URL и е скриена ({{masked}}). Залепи нова за да ја замениш.",
 			"secretLabel": "Тајна за потпис",
 			"secretPlaceholder": "Опционална заедничка тајна",
 			"secretHint": "Опционално. Ако е поставена, Margaya го потпишува телото на барањето и го испраќа hex-от во X-Margaya-Signature.",
@@ -2081,6 +2090,7 @@
 					"linear": "Избери го .csv извозот од Linear.",
 					"asana": "Избери го .csv извозот од Asana."
 				},
+				"selectJsonFile": "Избери JSON-датотека",
 				"itemCount_one": "{{count}} ставка",
 				"itemCount_other": "{{count}} ставки",
 				"alreadyImported_one": "{{count}} ставка веќе е увезена во овој проект.",
@@ -2597,6 +2607,7 @@
 				"webhookInvalid": "Внеси валидно URL на webhook за Mattermost"
 			},
 			"webhookHint": "Креирај влезен webhook во Mattermost и вметни го генерираното URL тука.",
+			"webhookHintConfigured": "Зачувана е webhook URL и е скриена ({{masked}}). Залепи нова за да ја замениш.",
 			"webhookLabel": "URL на влезен webhook",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4707,6 +4718,11 @@
 		"importedFromJira": "ја увезе оваа задача од Jira {{key}}",
 		"importedFromSource": "ја увезе оваа задача од {{source}} {{key}}",
 		"githubUser": "GitHub корисник",
+		"integrationActor": {
+			"viaGithub": "преку GitHub",
+			"gitea": "Gitea",
+			"viaGitea": "преку Gitea"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "Види GitHub профил",
@@ -11469,6 +11485,7 @@
 			"open_one": "{{count}} отворена задача",
 			"open_other": "{{count}} отворени задачи",
 			"complete": "Сите задачи се завршени",
+			"empty": "Сè уште нема задачи. Додај задачи за да видиш прогноза.",
 			"insufficient": {
 				"short_span": "Сè уште нема доволно историја: за прогноза се потребни најмалку 14 дена работа во овој проект.",
 				"few_completions": "Сè уште нема доволно историја: во последните 8 недели се завршени помалку од 5 задачи.",
@@ -11876,6 +11893,7 @@
 				"forecast": "Прогноза",
 				"forecastValue": "Со 85% веројатност до {{date}}",
 				"forecastDone": "Ништо не останува",
+				"forecastEmpty": "Сè уште нема задачи",
 				"forecastNone": "Сè уште нема доволно историја",
 				"risks": "Ризици",
 				"diff": "Промена",
@@ -12218,7 +12236,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "AI е исклучена овде.",
-			"AI_NOT_CONFIGURED": "AI не е правилно поставена. Побарај од администратор да ги провери AI поставките.",
+			"AI_NOT_CONFIGURED": "AI не е правилно поставена или сметката кај AI провајдерот бара внимание (на пример, кредитот е потрошен). Побарај од администратор да ги провери AI поставките.",
 			"AI_ROUTE_BLOCKED": "Според твоите поставки за приватност, овие податоци не смеат да се испратат до AI модел.",
 			"AI_BUDGET_EXCEEDED": "Достигнато е ограничувањето за AI. Обиди се подоцна или побарај од администратор да го зголеми.",
 			"AI_RATE_LIMITED": "Премногу AI барања одеднаш. Почекај малку и обиди се повторно.",
@@ -12246,7 +12264,8 @@
 			"retro": "Ретроспективи",
 			"my_brief": "Мој извештај",
 			"embedding": "Индексирање за пребарување",
-			"coding_handoff": "Брифови за агенти за кодирање"
+			"coding_handoff": "Брифови за агенти за кодирање",
+			"whiteboard": "AI за табли"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12328,6 +12347,9 @@
 			"testLocal": "Тестирај го локалниот модел",
 			"localTitle": "Локален модел",
 			"localDescription": "Сервер компатибилен со OpenAI во твојата сопствена мрежа, како Ollama. Ограничените податоци одат само тука.",
+			"localDescriptionCloud": "Сервер компатибилен со OpenAI во твојата сопствена мрежа, како Ollama. Ограничените податоци може да одат и до облачниот провајдер, како што е поставено во Приватност.",
+			"localDescriptionBlocked": "Сервер компатибилен со OpenAI во твојата сопствена мрежа, како Ollama. Ограничените податоци не се испраќаат до ниеден модел, како што е поставено во Приватност.",
+			"localDescriptionLocalOnly": "Сервер компатибилен со OpenAI во твојата сопствена мрежа, како Ollama. Режимот само локално е вклучен, па секој AI повик оди тука.",
 			"localBaseUrl": "Основен URL",
 			"localBaseUrlHint": "На пример http://ollama:11434/v1. Приватни адреси се дозволени тука.",
 			"localModel": "Модел",
@@ -12669,6 +12691,8 @@
 				"selectRun": "Избери извршување за да ги видиш неговите чекори и промени.",
 				"runMissing": "Ова извршување не е достапно.",
 				"deletedAgent": "Избришан агент",
+				"deletedAgents": "Избришани агенти",
+				"errorDetail": "Детали: {{detail}}",
 				"onBehalfOf": "за {{name}}",
 				"cost": "Цена",
 				"tokensLabel": "Токени",
@@ -14437,6 +14461,53 @@
 			"stone": "Камена",
 			"mist": "Магла",
 			"mint": "Нане"
+		},
+		"ai": {
+			"menu": "AI алатки",
+			"brainstorm": "Бура на идеи со AI",
+			"group": "Групирај лепенки со AI",
+			"summarizeBoard": "Сумирај ја таблата со AI",
+			"summarizeSelection": "Сумирај го избраното со AI",
+			"working": "Размислува…",
+			"tryAgain": "Обиди се повторно",
+			"nothingToUse": "Тука нема текст со кој AI може да работи.",
+			"discard": "Отфрли",
+			"brainstormTitle": "Бура на идеи со AI",
+			"brainstormDescription": "Опиши тема и AI ќе предложи лепенки. Прегледај ги и уреди ги; ништо не се додава додека не прифатиш.",
+			"topic": "Тема",
+			"topicPlaceholder": "На пример: начини за побрзо воведување на нови членови",
+			"ideaCount": "Идеи",
+			"generate": "Генерирај идеи",
+			"regenerate": "Генерирај повторно",
+			"putInFrame": "Стави ги лепенките во рамка",
+			"frameName": "Име на рамката",
+			"ideas": "Предложени лепенки",
+			"ideaLabel": "Лепенка {{index}}",
+			"removeIdea": "Отстрани ја лепенката {{index}}",
+			"addNotes_one": "Додај {{count}} лепенка",
+			"addNotes_other": "Додај {{count}} лепенки",
+			"notesAdded_one": "Додадена е {{count}} лепенка",
+			"notesAdded_other": "Додадени се {{count}} лепенки",
+			"groupTitle": "Групирај лепенки со AI",
+			"groupDescription_one": "AI ја распоредува избраната лепенка по теми. Преименувај ги темите, а потоа распореди ги лепенките во рамки.",
+			"groupDescription_other": "AI ги распоредува {{count}} избрани лепенки по теми. Преименувај ги темите, а потоа распореди ги лепенките во рамки.",
+			"themes": "Теми",
+			"themeLabel": "Име на тема {{index}}",
+			"otherGroup": "Друго",
+			"arrange_one": "Распореди во {{count}} рамка",
+			"arrange_other": "Распореди во {{count}} рамки",
+			"grouped_one": "Лепенките се распоредени во {{count}} рамка",
+			"grouped_other": "Лепенките се распоредени во {{count}} рамки",
+			"summarizeBoardTitle": "Сумирај ја таблата",
+			"summarizeSelectionTitle": "Сумирај го избраното",
+			"summarizeDescription": "Прегледај го и уреди го резимето, а потоа копирај го или додај го на таблата како текст.",
+			"summaryTitle": "Наслов",
+			"summary": "Резиме",
+			"madeFrom_one": "Направено од {{count}} елемент со текст.",
+			"madeFrom_other": "Направено од {{count}} елементи со текст.",
+			"copy": "Копирај",
+			"copied": "Резимето е копирано",
+			"addSummary": "Додај на таблата"
 		}
 	},
 	"projectTemplates": {

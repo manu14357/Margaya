@@ -317,6 +317,10 @@
 				"description": "Meist hilft ein Neuladen. Deine gespeicherte Arbeit ist sicher.",
 				"title": "Margaya reagiert nicht mehr"
 			},
+			"loadFailed": {
+				"title": "Ein Teil von Margaya wurde nicht geladen",
+				"description": "Die Verbindung ist beim Laden der App abgebrochen. Lade die Seite neu, um das Laden abzuschließen. Deine gespeicherte Arbeit ist sicher."
+			},
 			"empty": {
 				"description": "Sobald etwas hinzugefügt wird, erscheint es hier.",
 				"title": "Noch nichts hier"
@@ -474,7 +478,9 @@
 			"emailCodesOff": "Anmeldelinks und -codes per E-Mail sind auf diesem Server deaktiviert. Wenn du dich bisher nur so angemeldet hast, hast du noch kein Passwort: Wähle „Passwort vergessen?“, um eins festzulegen.",
 			"emailCodesOffNoEmail": "Anmeldelinks und -codes per E-Mail sind auf diesem Server deaktiviert. Wenn du dich bisher nur so angemeldet hast, hast du noch kein Passwort: Bitte einen Instanz-Admin, eins für dich festzulegen.",
 			"desktopBrowserHint": "Diese Optionen werden in deinem Browser fortgesetzt und bringen dich danach zurück zur App.",
-			"desktopBrowserStarted": "Schließe die Anmeldung in deinem Browser ab."
+			"desktopBrowserStarted": "Schließe die Anmeldung in deinem Browser ab.",
+			"desktopBrowserButton": "Mit deinem Browser anmelden",
+			"desktopBrowserButtonHint": "Nutze im Browser eine beliebige Anmeldemethode. Danach kommst du angemeldet hierher zurück."
 		},
 		"providers": {
 			"google": "Google",
@@ -1764,6 +1770,7 @@
 			"webhookLabel": "Incoming-Webhook-URL",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Erstelle in Slack einen Incoming Webhook und füge die erzeugte URL hier ein.",
+			"webhookHintConfigured": "Eine Webhook-URL ist gespeichert und verborgen ({{masked}}). Füge eine neue ein, um sie zu ersetzen.",
 			"channelLabel": "Kanalname",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Optionales Label für dich. Der tatsächliche Zielkanal wird in Slack über den Webhook festgelegt.",
@@ -1904,6 +1911,7 @@
 			"webhookLabel": "Webhook-URL",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Erstelle in Discord einen Kanal-Webhook und füge die erzeugte URL hier ein.",
+			"webhookHintConfigured": "Eine Webhook-URL ist gespeichert und verborgen ({{masked}}). Füge eine neue ein, um sie zu ersetzen.",
 			"channelLabel": "Kanalname",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Optionales Label für dich. Der tatsächliche Zielkanal wird in Discord über den Webhook festgelegt.",
@@ -1941,6 +1949,7 @@
 			"webhookLabel": "Endpunkt-URL",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya sendet POST-Anfragen mit einer JSON-Nutzlast für jedes aktivierte Ereignis.",
+			"webhookHintConfigured": "Eine Webhook-URL ist gespeichert und verborgen ({{masked}}). Füge eine neue ein, um sie zu ersetzen.",
 			"secretLabel": "Signatur-Secret",
 			"secretPlaceholder": "Optionales gemeinsames Secret",
 			"secretHint": "Optional. Wenn gesetzt, signiert Margaya den Request-Body und sendet den Hex-Digest im Header X-Margaya-Signature.",
@@ -2180,6 +2189,7 @@
 					"linear": "Wähle den .csv-Export von Linear.",
 					"asana": "Wähle den .csv-Export von Asana."
 				},
+				"selectJsonFile": "JSON-Datei auswählen",
 				"itemCount_one": "{{count}} Eintrag",
 				"itemCount_other": "{{count}} Einträge",
 				"alreadyImported_one": "{{count}} Eintrag wurde bereits in dieses Projekt importiert.",
@@ -2696,6 +2706,7 @@
 				"webhookInvalid": "Gib eine gültige Mattermost-Webhook-URL ein"
 			},
 			"webhookHint": "Erstelle einen eingehenden Webhook in Mattermost und füge die generierte URL hier ein.",
+			"webhookHintConfigured": "Eine Webhook-URL ist gespeichert und verborgen ({{masked}}). Füge eine neue ein, um sie zu ersetzen.",
 			"webhookLabel": "URL des eingehenden Webhooks",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4707,6 +4718,11 @@
 		"importedFromJira": "hat diese Aufgabe aus Jira {{key}} importiert",
 		"importedFromSource": "hat diese Aufgabe aus {{source}} {{key}} importiert",
 		"githubUser": "GitHub-Nutzer",
+		"integrationActor": {
+			"viaGithub": "über GitHub",
+			"gitea": "Gitea",
+			"viaGitea": "über Gitea"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "GitHub-Profil ansehen",
@@ -11469,6 +11485,7 @@
 			"open_one": "{{count}} offene Aufgabe",
 			"open_other": "{{count}} offene Aufgaben",
 			"complete": "Alle Aufgaben sind erledigt",
+			"empty": "Noch keine Aufgaben. Füge Aufgaben hinzu, um eine Prognose zu sehen.",
 			"insufficient": {
 				"short_span": "Noch zu wenig Verlauf: Eine Prognose braucht mindestens 14 Tage Arbeit in diesem Projekt.",
 				"few_completions": "Noch zu wenig Verlauf: In den letzten 8 Wochen wurden weniger als 5 Aufgaben erledigt.",
@@ -11876,6 +11893,7 @@
 				"forecast": "Prognose",
 				"forecastValue": "Zu 85 % bis {{date}}",
 				"forecastDone": "Nichts mehr zu tun",
+				"forecastEmpty": "Noch keine Aufgaben",
 				"forecastNone": "Noch nicht genug Verlauf",
 				"risks": "Risiken",
 				"diff": "Veränderung",
@@ -12218,7 +12236,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "KI ist hier ausgeschaltet.",
-			"AI_NOT_CONFIGURED": "KI ist nicht richtig eingerichtet. Bitte einen Admin, die KI-Einstellungen zu prüfen.",
+			"AI_NOT_CONFIGURED": "KI ist nicht richtig eingerichtet, oder das Konto beim KI-Anbieter braucht Aufmerksamkeit (zum Beispiel, weil das Guthaben aufgebraucht ist). Bitte einen Admin, die KI-Einstellungen zu prüfen.",
 			"AI_ROUTE_BLOCKED": "Diese Daten dürfen laut deinen Datenschutzeinstellungen nicht an ein KI-Modell gesendet werden.",
 			"AI_BUDGET_EXCEEDED": "Das KI-Limit ist erreicht. Versuche es später erneut oder bitte einen Admin, es zu erhöhen.",
 			"AI_RATE_LIMITED": "Zu viele KI-Anfragen auf einmal. Warte kurz und versuche es erneut.",
@@ -12246,7 +12264,8 @@
 			"retro": "Retrospektiven",
 			"my_brief": "Mein Briefing",
 			"embedding": "Suchindizierung",
-			"coding_handoff": "Briefings für Coding-Agenten"
+			"coding_handoff": "Briefings für Coding-Agenten",
+			"whiteboard": "Whiteboard-KI"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12328,6 +12347,9 @@
 			"testLocal": "Lokales Modell testen",
 			"localTitle": "Lokales Modell",
 			"localDescription": "Ein OpenAI-kompatibler Server in deinem eigenen Netzwerk, etwa Ollama. Eingeschränkte Daten gehen ausschließlich hierhin.",
+			"localDescriptionCloud": "Ein OpenAI-kompatibler Server in deinem eigenen Netzwerk, etwa Ollama. Eingeschränkte Daten können laut den Einstellungen unter Datenschutz auch an den Cloud-Anbieter gehen.",
+			"localDescriptionBlocked": "Ein OpenAI-kompatibler Server in deinem eigenen Netzwerk, etwa Ollama. Eingeschränkte Daten werden laut den Einstellungen unter Datenschutz an kein Modell gesendet.",
+			"localDescriptionLocalOnly": "Ein OpenAI-kompatibler Server in deinem eigenen Netzwerk, etwa Ollama. Der Nur-lokal-Modus ist aktiv, daher gehen alle KI-Aufrufe hierhin.",
 			"localBaseUrl": "Basis-URL",
 			"localBaseUrlHint": "Zum Beispiel http://ollama:11434/v1. Private Adressen sind hier erlaubt.",
 			"localModel": "Modell",
@@ -12669,6 +12691,8 @@
 				"selectRun": "Wähle eine Ausführung, um ihre Schritte und Änderungen zu sehen.",
 				"runMissing": "Diese Ausführung ist nicht verfügbar.",
 				"deletedAgent": "Gelöschter Agent",
+				"deletedAgents": "Gelöschte Agenten",
+				"errorDetail": "Einzelheiten: {{detail}}",
 				"onBehalfOf": "für {{name}}",
 				"cost": "Kosten",
 				"tokensLabel": "Tokens",
@@ -14437,6 +14461,53 @@
 			"stone": "Stein",
 			"mist": "Nebel",
 			"mint": "Minze"
+		},
+		"ai": {
+			"menu": "KI",
+			"brainstorm": "Brainstorming mit KI",
+			"group": "Notizen mit KI gruppieren",
+			"summarizeBoard": "Board mit KI zusammenfassen",
+			"summarizeSelection": "Auswahl mit KI zusammenfassen",
+			"working": "Denkt nach…",
+			"tryAgain": "Erneut versuchen",
+			"nothingToUse": "Hier gibt es keinen Text, mit dem die KI arbeiten kann.",
+			"discard": "Verwerfen",
+			"brainstormTitle": "Brainstorming mit KI",
+			"brainstormDescription": "Beschreibe ein Thema, und die KI schlägt Haftnotizen vor. Prüfe und bearbeite sie; es wird erst etwas hinzugefügt, wenn du zustimmst.",
+			"topic": "Thema",
+			"topicPlaceholder": "Zum Beispiel: Wege, das Onboarding zu beschleunigen",
+			"ideaCount": "Ideen",
+			"generate": "Ideen erzeugen",
+			"regenerate": "Neu erzeugen",
+			"putInFrame": "Notizen in einen Rahmen legen",
+			"frameName": "Rahmenname",
+			"ideas": "Vorgeschlagene Notizen",
+			"ideaLabel": "Notiz {{index}}",
+			"removeIdea": "Notiz {{index}} entfernen",
+			"addNotes_one": "{{count}} Notiz hinzufügen",
+			"addNotes_other": "{{count}} Notizen hinzufügen",
+			"notesAdded_one": "{{count}} Notiz hinzugefügt",
+			"notesAdded_other": "{{count}} Notizen hinzugefügt",
+			"groupTitle": "Notizen mit KI gruppieren",
+			"groupDescription_one": "Die KI ordnet die ausgewählte Notiz Themen zu. Benenne die Themen um und ordne die Notizen dann in Rahmen an.",
+			"groupDescription_other": "Die KI ordnet die {{count}} ausgewählten Notizen Themen zu. Benenne die Themen um und ordne die Notizen dann in Rahmen an.",
+			"themes": "Themen",
+			"themeLabel": "Name von Thema {{index}}",
+			"otherGroup": "Sonstiges",
+			"arrange_one": "In {{count}} Rahmen anordnen",
+			"arrange_other": "In {{count}} Rahmen anordnen",
+			"grouped_one": "Notizen in {{count}} Rahmen angeordnet",
+			"grouped_other": "Notizen in {{count}} Rahmen angeordnet",
+			"summarizeBoardTitle": "Board zusammenfassen",
+			"summarizeSelectionTitle": "Auswahl zusammenfassen",
+			"summarizeDescription": "Prüfe und bearbeite die Zusammenfassung und kopiere sie dann oder füge sie als Text zum Board hinzu.",
+			"summaryTitle": "Titel",
+			"summary": "Zusammenfassung",
+			"madeFrom_one": "Erstellt aus {{count}} Element mit Text.",
+			"madeFrom_other": "Erstellt aus {{count}} Elementen mit Text.",
+			"copy": "Kopieren",
+			"copied": "Zusammenfassung kopiert",
+			"addSummary": "Zum Board hinzufügen"
 		}
 	},
 	"projectTemplates": {

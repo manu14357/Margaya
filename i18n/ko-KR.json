@@ -311,6 +311,10 @@
 				"description": "새로고침하면 대부분 해결됩니다. 저장된 작업은 안전합니다.",
 				"title": "Margaya가 응답하지 않습니다"
 			},
+			"loadFailed": {
+				"title": "Margaya 일부를 불러오지 못했습니다",
+				"description": "앱을 불러오는 중에 연결이 끊겼습니다. 페이지를 새로고침해 불러오기를 마치세요. 저장된 작업은 안전합니다."
+			},
 			"empty": {
 				"description": "항목이 추가되면 여기에 표시됩니다.",
 				"title": "아직 아무것도 없습니다"
@@ -468,7 +472,9 @@
 			"emailCodesOff": "이 서버에서는 이메일 로그인 링크와 코드가 꺼져 있습니다. 지금까지 이 방법만 사용했다면 아직 비밀번호가 없습니다. '비밀번호를 잊으셨나요?'를 선택해 비밀번호를 설정하세요.",
 			"emailCodesOffNoEmail": "이 서버에서는 이메일 로그인 링크와 코드가 꺼져 있습니다. 지금까지 이 방법만 사용했다면 아직 비밀번호가 없습니다. 인스턴스 관리자에게 비밀번호를 설정해 달라고 요청하세요.",
 			"desktopBrowserHint": "이 옵션은 브라우저에서 계속 진행된 후 앱으로 돌아옵니다.",
-			"desktopBrowserStarted": "브라우저에서 계속 진행해 로그인을 완료하세요."
+			"desktopBrowserStarted": "브라우저에서 계속 진행해 로그인을 완료하세요.",
+			"desktopBrowserButton": "브라우저로 로그인",
+			"desktopBrowserButtonHint": "브라우저에서 원하는 로그인 방법을 사용하세요. 완료되면 로그인된 상태로 이곳에 돌아옵니다."
 		},
 		"providers": {
 			"google": "Google",
@@ -1746,6 +1752,7 @@
 			"webhookLabel": "수신 웹훅 URL",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Slack에서 수신 웹훅을 만들고 생성된 URL을 여기에 붙여넣으세요.",
+			"webhookHintConfigured": "웹훅 URL이 저장되어 숨겨져 있습니다({{masked}}). 바꾸려면 새 URL을 붙여넣으세요.",
 			"channelLabel": "채널 이름",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "참고용 선택 라벨입니다. 실제 대상 채널은 Slack의 웹훅 설정에서 제어합니다.",
@@ -1886,6 +1893,7 @@
 			"webhookLabel": "웹훅 URL",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Discord 채널 웹훅을 만들고 생성된 URL을 여기에 붙여넣으세요.",
+			"webhookHintConfigured": "웹훅 URL이 저장되어 숨겨져 있습니다({{masked}}). 바꾸려면 새 URL을 붙여넣으세요.",
 			"channelLabel": "채널 이름",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "참고용 선택 라벨입니다. 실제 대상 채널은 Discord의 웹훅 설정에서 제어합니다.",
@@ -1923,6 +1931,7 @@
 			"webhookLabel": "엔드포인트 URL",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya는 활성화된 각 이벤트에 대해 JSON 페이로드와 함께 POST 요청을 전송합니다.",
+			"webhookHintConfigured": "웹훅 URL이 저장되어 숨겨져 있습니다({{masked}}). 바꾸려면 새 URL을 붙여넣으세요.",
 			"secretLabel": "서명 시크릿",
 			"secretPlaceholder": "선택 사항 - 공유 시크릿",
 			"secretHint": "선택 사항. 입력하면 Margaya가 요청 본문에 서명하고 16진수 다이제스트를 X-Margaya-Signature 헤더로 전송합니다.",
@@ -2150,6 +2159,7 @@
 					"linear": "Linear의 .csv 내보내기 파일을 선택하세요.",
 					"asana": "Asana의 .csv 내보내기 파일을 선택하세요."
 				},
+				"selectJsonFile": "JSON 파일 선택",
 				"itemCount_other": "항목 {{count}}개",
 				"alreadyImported_other": "항목 {{count}}개는 이미 이 프로젝트로 가져왔습니다.",
 				"contents": "댓글 {{comments}}개, 체크리스트 {{checklists}}개, 하위 작업 {{subtasks}}개, 링크 {{links}}개",
@@ -2643,6 +2653,7 @@
 				"webhookInvalid": "유효한 Mattermost 웹훅 URL을 입력하세요"
 			},
 			"webhookHint": "Mattermost에서 수신 웹훅을 만들고 생성된 URL을 여기에 붙여넣으세요.",
+			"webhookHintConfigured": "웹훅 URL이 저장되어 숨겨져 있습니다({{masked}}). 바꾸려면 새 URL을 붙여넣으세요.",
 			"webhookLabel": "수신 웹훅 URL",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4627,6 +4638,11 @@
 		"importedFromJira": "Jira {{key}}에서 이 작업을 가져옴",
 		"importedFromSource": "{{source}} {{key}}에서 이 작업을 가져옴",
 		"githubUser": "GitHub 사용자",
+		"integrationActor": {
+			"viaGithub": "GitHub를 통해",
+			"gitea": "Gitea",
+			"viaGitea": "Gitea를 통해"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "GitHub 프로필 보기",
@@ -11303,6 +11319,7 @@
 			"beyondHorizon": "현재 속도로는 2년 이상",
 			"open_other": "열린 작업 {{count}}개",
 			"complete": "모든 작업이 완료되었습니다",
+			"empty": "아직 작업이 없습니다. 작업을 추가하면 예측을 볼 수 있습니다.",
 			"insufficient": {
 				"short_span": "아직 기록이 부족합니다: 예측하려면 이 프로젝트에서 최소 14일의 작업이 필요합니다.",
 				"few_completions": "아직 기록이 부족합니다: 지난 8주 동안 완료된 작업이 5개 미만입니다.",
@@ -11688,6 +11705,7 @@
 				"forecast": "예측",
 				"forecastValue": "85% 확률로 {{date}}까지",
 				"forecastDone": "남은 작업 없음",
+				"forecastEmpty": "아직 작업이 없음",
 				"forecastNone": "아직 기록이 충분하지 않음",
 				"risks": "위험",
 				"diff": "변화",
@@ -12030,7 +12048,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "여기에서는 AI가 꺼져 있습니다.",
-			"AI_NOT_CONFIGURED": "AI가 올바르게 설정되지 않았습니다. 관리자에게 AI 설정을 확인해 달라고 요청하세요.",
+			"AI_NOT_CONFIGURED": "AI가 올바르게 설정되지 않았거나 AI 제공자 계정에 조치가 필요합니다(예: 크레딧 소진). 관리자에게 AI 설정을 확인해 달라고 요청하세요.",
 			"AI_ROUTE_BLOCKED": "개인정보 보호 설정에 따라 이 데이터는 AI 모델로 보낼 수 없습니다.",
 			"AI_BUDGET_EXCEEDED": "AI 한도에 도달했습니다. 나중에 다시 시도하거나 관리자에게 한도를 늘려 달라고 요청하세요.",
 			"AI_RATE_LIMITED": "AI 요청이 한꺼번에 너무 많습니다. 잠시 기다린 후 다시 시도하세요.",
@@ -12058,7 +12076,8 @@
 			"retro": "회고",
 			"my_brief": "내 브리핑",
 			"embedding": "검색 색인",
-			"coding_handoff": "코딩 에이전트 브리프"
+			"coding_handoff": "코딩 에이전트 브리프",
+			"whiteboard": "화이트보드 AI"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12139,6 +12158,9 @@
 			"testLocal": "로컬 모델 테스트",
 			"localTitle": "로컬 모델",
 			"localDescription": "Ollama처럼 자체 네트워크에 있는 OpenAI 호환 서버입니다. 제한된 데이터는 오직 이곳으로만 보내집니다.",
+			"localDescriptionCloud": "Ollama처럼 자체 네트워크에 있는 OpenAI 호환 서버입니다. 개인정보 보호 설정에 따라 제한된 데이터가 클라우드 제공자로도 전송될 수 있습니다.",
+			"localDescriptionBlocked": "Ollama처럼 자체 네트워크에 있는 OpenAI 호환 서버입니다. 개인정보 보호 설정에 따라 제한된 데이터는 어떤 모델로도 전송되지 않습니다.",
+			"localDescriptionLocalOnly": "Ollama처럼 자체 네트워크에 있는 OpenAI 호환 서버입니다. 로컬 전용 모드가 켜져 있어 모든 AI 호출이 이곳으로 보내집니다.",
 			"localBaseUrl": "기본 URL",
 			"localBaseUrlHint": "예: http://ollama:11434/v1. 여기서는 사설 주소도 사용할 수 있습니다.",
 			"localModel": "모델",
@@ -12480,6 +12502,8 @@
 				"selectRun": "실행을 선택하면 단계와 변경 사항을 볼 수 있습니다.",
 				"runMissing": "이 실행을 사용할 수 없습니다.",
 				"deletedAgent": "삭제된 에이전트",
+				"deletedAgents": "삭제된 에이전트",
+				"errorDetail": "세부 정보: {{detail}}",
 				"onBehalfOf": "{{name}} 님 요청",
 				"cost": "비용",
 				"tokensLabel": "토큰",
@@ -14208,6 +14232,47 @@
 			"stone": "돌색",
 			"mist": "안개색",
 			"mint": "민트색"
+		},
+		"ai": {
+			"menu": "AI 도구",
+			"brainstorm": "AI로 브레인스토밍",
+			"group": "AI로 메모 그룹화",
+			"summarizeBoard": "AI로 보드 요약",
+			"summarizeSelection": "AI로 선택 항목 요약",
+			"working": "생각하는 중…",
+			"tryAgain": "다시 시도",
+			"nothingToUse": "AI가 활용할 텍스트가 여기에 없습니다.",
+			"discard": "버리기",
+			"brainstormTitle": "AI로 브레인스토밍",
+			"brainstormDescription": "주제를 설명하면 AI가 스티커 메모를 제안합니다. 검토하고 수정하세요. 수락하기 전에는 아무것도 추가되지 않습니다.",
+			"topic": "주제",
+			"topicPlaceholder": "예: 온보딩을 더 빠르게 하는 방법",
+			"ideaCount": "아이디어 수",
+			"generate": "아이디어 생성",
+			"regenerate": "다시 생성",
+			"putInFrame": "메모를 프레임에 넣기",
+			"frameName": "프레임 이름",
+			"ideas": "제안된 메모",
+			"ideaLabel": "메모 {{index}}",
+			"removeIdea": "메모 {{index}} 삭제",
+			"addNotes_other": "메모 {{count}}개 추가",
+			"notesAdded_other": "메모 {{count}}개를 추가했습니다",
+			"groupTitle": "AI로 메모 그룹화",
+			"groupDescription_other": "AI가 선택한 메모 {{count}}개를 테마별로 분류합니다. 테마 이름을 바꾼 다음 메모를 프레임으로 정리하세요.",
+			"themes": "테마",
+			"themeLabel": "테마 {{index}} 이름",
+			"otherGroup": "기타",
+			"arrange_other": "프레임 {{count}}개로 정리",
+			"grouped_other": "메모를 프레임 {{count}}개로 정리했습니다",
+			"summarizeBoardTitle": "보드 요약",
+			"summarizeSelectionTitle": "선택 항목 요약",
+			"summarizeDescription": "요약을 검토하고 수정한 다음 복사하거나 보드에 텍스트로 추가하세요.",
+			"summaryTitle": "제목",
+			"summary": "요약",
+			"madeFrom_other": "텍스트가 있는 요소 {{count}}개로 만들었습니다.",
+			"copy": "복사",
+			"copied": "요약을 복사했습니다",
+			"addSummary": "보드에 추가"
 		}
 	},
 	"projectTemplates": {

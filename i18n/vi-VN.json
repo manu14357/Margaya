@@ -311,6 +311,10 @@
 				"description": "Tải lại thường sẽ khắc phục được. Những gì bạn đã lưu vẫn an toàn.",
 				"title": "Margaya đã ngừng phản hồi"
 			},
+			"loadFailed": {
+				"title": "Một phần của Margaya chưa tải được",
+				"description": "Kết nối bị gián đoạn trong khi ứng dụng đang tải. Hãy tải lại trang để hoàn tất việc tải. Những gì bạn đã lưu vẫn an toàn."
+			},
 			"empty": {
 				"description": "Khi có mục mới được thêm, chúng sẽ hiện ở đây.",
 				"title": "Chưa có gì ở đây"
@@ -468,7 +472,9 @@
 			"emailCodesOff": "Liên kết và mã đăng nhập qua email đã bị tắt trên máy chủ này. Nếu trước giờ bạn chỉ dùng những cách đó, bạn chưa có mật khẩu: hãy chọn “Quên mật khẩu?” để đặt mật khẩu.",
 			"emailCodesOffNoEmail": "Liên kết và mã đăng nhập qua email đã bị tắt trên máy chủ này. Nếu trước giờ bạn chỉ dùng những cách đó, bạn chưa có mật khẩu: hãy nhờ quản trị viên phiên bản đặt mật khẩu cho bạn.",
 			"desktopBrowserHint": "Các tùy chọn này sẽ tiếp tục trong trình duyệt, rồi đưa bạn trở lại ứng dụng.",
-			"desktopBrowserStarted": "Hãy tiếp tục trong trình duyệt để hoàn tất đăng nhập."
+			"desktopBrowserStarted": "Hãy tiếp tục trong trình duyệt để hoàn tất đăng nhập.",
+			"desktopBrowserButton": "Đăng nhập bằng trình duyệt",
+			"desktopBrowserButtonHint": "Dùng bất kỳ phương thức đăng nhập nào trong trình duyệt. Khi xong, bạn sẽ quay lại đây ở trạng thái đã đăng nhập."
 		},
 		"providers": {
 			"google": "Google",
@@ -2101,6 +2107,7 @@
 			"webhookLabel": "URL webhook đến",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Tạo một Incoming Webhook trong Slack và dán URL được tạo vào đây.",
+			"webhookHintConfigured": "Một URL webhook đã được lưu và đang được ẩn ({{masked}}). Dán URL mới để thay thế.",
 			"channelLabel": "Tên kênh",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Nhãn tùy chọn để bạn tham khảo. Slack kiểm soát kênh đích thực tế từ cấu hình webhook.",
@@ -2142,6 +2149,7 @@
 			"webhookLabel": "URL webhook",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Tạo một webhook kênh Discord và dán URL được tạo vào đây.",
+			"webhookHintConfigured": "Một URL webhook đã được lưu và đang được ẩn ({{masked}}). Dán URL mới để thay thế.",
 			"channelLabel": "Tên kênh",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "Nhãn tùy chọn để bạn tham khảo. Discord kiểm soát kênh đích thực tế từ cấu hình webhook.",
@@ -2179,6 +2187,7 @@
 			"webhookLabel": "URL điểm cuối",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya gửi yêu cầu POST với nội dung JSON cho mỗi sự kiện đã bật.",
+			"webhookHintConfigured": "Một URL webhook đã được lưu và đang được ẩn ({{masked}}). Dán URL mới để thay thế.",
 			"secretLabel": "Khóa bí mật ký",
 			"secretPlaceholder": "Khóa bí mật dùng chung (không bắt buộc)",
 			"secretHint": "Không bắt buộc. Nếu được cung cấp, Margaya sẽ ký nội dung yêu cầu và gửi mã băm hex trong tiêu đề X-Margaya-Signature.",
@@ -2406,6 +2415,7 @@
 					"linear": "Chọn bản xuất .csv của Linear.",
 					"asana": "Chọn bản xuất .csv của Asana."
 				},
+				"selectJsonFile": "Chọn tệp JSON",
 				"itemCount_other": "{{count}} mục",
 				"alreadyImported_other": "{{count}} mục đã được nhập vào dự án này trước đó.",
 				"contents": "{{comments}} bình luận, {{checklists}} danh sách kiểm tra, {{subtasks}} công việc con, {{links}} liên kết",
@@ -2544,6 +2554,7 @@
 				"webhookInvalid": "Nhập một URL webhook Mattermost hợp lệ"
 			},
 			"webhookHint": "Tạo một webhook đến trong Mattermost và dán URL được tạo vào đây.",
+			"webhookHintConfigured": "Một URL webhook đã được lưu và đang được ẩn ({{masked}}). Dán URL mới để thay thế.",
 			"webhookLabel": "URL webhook đến",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4627,6 +4638,11 @@
 		"importedFromJira": "đã nhập công việc này từ Jira {{key}}",
 		"importedFromSource": "đã nhập công việc này từ {{source}} {{key}}",
 		"githubUser": "Người dùng GitHub",
+		"integrationActor": {
+			"viaGithub": "qua GitHub",
+			"gitea": "Gitea",
+			"viaGitea": "qua Gitea"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "Xem hồ sơ GitHub",
@@ -11303,6 +11319,7 @@
 			"beyondHorizon": "Hơn hai năm với tốc độ hiện tại",
 			"open_other": "{{count}} công việc đang mở",
 			"complete": "Tất cả công việc đã hoàn thành",
+			"empty": "Chưa có công việc nào. Hãy thêm công việc để xem dự báo.",
 			"insufficient": {
 				"short_span": "Chưa đủ lịch sử: dự báo cần ít nhất 14 ngày làm việc trong dự án này.",
 				"few_completions": "Chưa đủ lịch sử: chưa đến 5 công việc được hoàn thành trong 8 tuần qua.",
@@ -11688,6 +11705,7 @@
 				"forecast": "Dự báo",
 				"forecastValue": "85% khả năng xong trước {{date}}",
 				"forecastDone": "Không còn việc gì",
+				"forecastEmpty": "Chưa có công việc nào",
 				"forecastNone": "Chưa đủ dữ liệu lịch sử",
 				"risks": "Rủi ro",
 				"diff": "Thay đổi",
@@ -12030,7 +12048,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "AI đang tắt ở đây.",
-			"AI_NOT_CONFIGURED": "AI chưa được thiết lập đúng. Hãy nhờ quản trị viên kiểm tra cài đặt AI.",
+			"AI_NOT_CONFIGURED": "AI chưa được thiết lập đúng, hoặc tài khoản nhà cung cấp AI cần được xử lý (ví dụ: đã hết tín dụng). Hãy nhờ quản trị viên kiểm tra cài đặt AI.",
 			"AI_ROUTE_BLOCKED": "Theo cài đặt quyền riêng tư của bạn, dữ liệu này không thể gửi đến mô hình AI.",
 			"AI_BUDGET_EXCEEDED": "Đã đạt giới hạn AI. Hãy thử lại sau hoặc nhờ quản trị viên tăng giới hạn.",
 			"AI_RATE_LIMITED": "Có quá nhiều yêu cầu AI cùng lúc. Hãy đợi một chút rồi thử lại.",
@@ -12058,7 +12076,8 @@
 			"retro": "Họp nhìn lại",
 			"my_brief": "Bản tóm lược của tôi",
 			"embedding": "Lập chỉ mục tìm kiếm",
-			"coding_handoff": "Bản giao việc cho tác tử lập trình"
+			"coding_handoff": "Bản giao việc cho tác tử lập trình",
+			"whiteboard": "AI cho bảng trắng"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12139,6 +12158,9 @@
 			"testLocal": "Kiểm tra mô hình cục bộ",
 			"localTitle": "Mô hình cục bộ",
 			"localDescription": "Một máy chủ tương thích OpenAI trong mạng của bạn, chẳng hạn Ollama. Dữ liệu hạn chế chỉ được gửi đến đây.",
+			"localDescriptionCloud": "Một máy chủ tương thích OpenAI trong mạng của bạn, chẳng hạn Ollama. Dữ liệu hạn chế cũng có thể được gửi đến nhà cung cấp đám mây, theo thiết lập trong Quyền riêng tư.",
+			"localDescriptionBlocked": "Một máy chủ tương thích OpenAI trong mạng của bạn, chẳng hạn Ollama. Dữ liệu hạn chế không được gửi đến bất kỳ mô hình nào, theo thiết lập trong Quyền riêng tư.",
+			"localDescriptionLocalOnly": "Một máy chủ tương thích OpenAI trong mạng của bạn, chẳng hạn Ollama. Chế độ chỉ cục bộ đang bật, nên mọi lệnh gọi AI đều được gửi đến đây.",
 			"localBaseUrl": "URL gốc",
 			"localBaseUrlHint": "Ví dụ http://ollama:11434/v1. Ở đây được phép dùng địa chỉ nội bộ.",
 			"localModel": "Mô hình",
@@ -12480,6 +12502,8 @@
 				"selectRun": "Chọn một lượt chạy để xem các bước và thay đổi.",
 				"runMissing": "Lượt chạy này không khả dụng.",
 				"deletedAgent": "Tác tử đã xóa",
+				"deletedAgents": "Tác tử đã xóa",
+				"errorDetail": "Chi tiết: {{detail}}",
 				"onBehalfOf": "cho {{name}}",
 				"cost": "Chi phí",
 				"tokensLabel": "Token",
@@ -14208,6 +14232,47 @@
 			"stone": "Đá",
 			"mist": "Sương mù",
 			"mint": "Bạc hà"
+		},
+		"ai": {
+			"menu": "Công cụ AI",
+			"brainstorm": "Động não cùng AI",
+			"group": "Nhóm ghi chú bằng AI",
+			"summarizeBoard": "Tóm tắt bảng bằng AI",
+			"summarizeSelection": "Tóm tắt vùng chọn bằng AI",
+			"working": "Đang suy nghĩ…",
+			"tryAgain": "Thử lại",
+			"nothingToUse": "Ở đây không có văn bản nào để AI xử lý.",
+			"discard": "Bỏ",
+			"brainstormTitle": "Động não cùng AI",
+			"brainstormDescription": "Mô tả một chủ đề và AI sẽ đề xuất các ghi chú dán. Xem lại và chỉnh sửa chúng; không có gì được thêm cho đến khi bạn chấp nhận.",
+			"topic": "Chủ đề",
+			"topicPlaceholder": "Ví dụ: cách giúp người mới bắt nhịp nhanh hơn",
+			"ideaCount": "Số ý tưởng",
+			"generate": "Tạo ý tưởng",
+			"regenerate": "Tạo lại",
+			"putInFrame": "Đặt các ghi chú vào một khung",
+			"frameName": "Tên khung",
+			"ideas": "Ghi chú đề xuất",
+			"ideaLabel": "Ghi chú {{index}}",
+			"removeIdea": "Xóa ghi chú {{index}}",
+			"addNotes_other": "Thêm {{count}} ghi chú",
+			"notesAdded_other": "Đã thêm {{count}} ghi chú",
+			"groupTitle": "Nhóm ghi chú bằng AI",
+			"groupDescription_other": "AI sắp xếp {{count}} ghi chú đã chọn theo nhóm chủ đề. Đổi tên các nhóm chủ đề, rồi xếp ghi chú vào các khung.",
+			"themes": "Nhóm chủ đề",
+			"themeLabel": "Tên nhóm chủ đề {{index}}",
+			"otherGroup": "Khác",
+			"arrange_other": "Xếp vào {{count}} khung",
+			"grouped_other": "Đã xếp ghi chú vào {{count}} khung",
+			"summarizeBoardTitle": "Tóm tắt bảng",
+			"summarizeSelectionTitle": "Tóm tắt vùng chọn",
+			"summarizeDescription": "Xem lại và chỉnh sửa bản tóm tắt, rồi sao chép hoặc thêm vào bảng dưới dạng văn bản.",
+			"summaryTitle": "Tiêu đề",
+			"summary": "Bản tóm tắt",
+			"madeFrom_other": "Tạo từ {{count}} phần tử có văn bản.",
+			"copy": "Sao chép",
+			"copied": "Đã sao chép bản tóm tắt",
+			"addSummary": "Thêm vào bảng"
 		}
 	},
 	"projectTemplates": {

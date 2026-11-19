@@ -311,6 +311,10 @@
 				"description": "重新加载通常就能解决。已保存的内容是安全的。",
 				"title": "Margaya 停止响应"
 			},
+			"loadFailed": {
+				"title": "Margaya 的部分内容未能加载",
+				"description": "应用加载时连接中断。请重新加载页面以完成加载。已保存的内容是安全的。"
+			},
 			"empty": {
 				"description": "添加内容后会显示在这里。",
 				"title": "这里还没有内容"
@@ -468,7 +472,9 @@
 			"emailCodesOff": "此服务器已关闭通过邮件发送的登录链接和验证码。如果你一直只用这些方式登录，你还没有密码：请选择“忘记密码？”来设置密码。",
 			"emailCodesOffNoEmail": "此服务器已关闭通过邮件发送的登录链接和验证码。如果你一直只用这些方式登录，你还没有密码：请让实例管理员为你设置一个。",
 			"desktopBrowserHint": "这些方式会在浏览器中继续，完成后再带你回到应用。",
-			"desktopBrowserStarted": "请在浏览器中继续以完成登录。"
+			"desktopBrowserStarted": "请在浏览器中继续以完成登录。",
+			"desktopBrowserButton": "使用浏览器登录",
+			"desktopBrowserButtonHint": "在浏览器中使用任意登录方式。完成后，你会以已登录状态回到这里。"
 		},
 		"providers": {
 			"google": "Google",
@@ -2101,6 +2107,7 @@
 			"webhookLabel": "Incoming Webhook URL",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "在 Slack 中创建 Incoming Webhook，然后粘贴生成的 URL。",
+			"webhookHintConfigured": "已保存一个 Webhook URL 并已隐藏（{{masked}}）。粘贴新的 URL 即可替换。",
 			"channelLabel": "频道名称",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "可选参考标签。实际的目标频道由 Slack 在 Webhook 设置中控制。",
@@ -2241,6 +2248,7 @@
 			"webhookLabel": "Webhook URL",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "在 Discord 中创建频道 Webhook，然后粘贴生成的 URL。",
+			"webhookHintConfigured": "已保存一个 Webhook URL 并已隐藏（{{masked}}）。粘贴新的 URL 即可替换。",
 			"channelLabel": "频道名称",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "可选参考标签。实际的目标频道由 Discord 在 Webhook 设置中控制。",
@@ -2278,6 +2286,7 @@
 			"webhookLabel": "Incoming Webhook URL",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/...",
 			"webhookHint": "先在 Mattermost 中创建 Incoming Webhook，再把生成的 URL 粘贴到此处。",
+			"webhookHintConfigured": "已保存一个 Webhook URL 并已隐藏（{{masked}}）。粘贴新的 URL 即可替换。",
 			"channelLabel": "频道名称",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "仅作参考的备注名称，消息实际发到哪个频道由 Mattermost 侧的 Webhook 设置决定。",
@@ -2315,6 +2324,7 @@
 			"webhookLabel": "端点 URL",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya 会为每个已启用的事件发送带 JSON 负载的 POST 请求。",
+			"webhookHintConfigured": "已保存一个 Webhook URL 并已隐藏（{{masked}}）。粘贴新的 URL 即可替换。",
 			"secretLabel": "签名密钥",
 			"secretPlaceholder": "可选的共享密钥",
 			"secretHint": "可选。提供后，Margaya 会对请求体进行签名，并通过 X-Margaya-Signature 头发送十六进制摘要。",
@@ -2542,6 +2552,7 @@
 					"linear": "请选择 Linear 的 .csv 导出文件。",
 					"asana": "请选择 Asana 的 .csv 导出文件。"
 				},
+				"selectJsonFile": "选择 JSON 文件",
 				"itemCount_other": "{{count}} 个条目",
 				"alreadyImported_other": "{{count}} 个条目之前已导入此项目。",
 				"contents": "{{comments}} 条评论、{{checklists}} 个清单、{{subtasks}} 个子任务、{{links}} 个关联",
@@ -4627,6 +4638,11 @@
 		"importedFromJira": "从 Jira {{key}} 导入了此任务",
 		"importedFromSource": "从 {{source}} {{key}} 导入了此任务",
 		"githubUser": "GitHub 用户",
+		"integrationActor": {
+			"viaGithub": "通过 GitHub",
+			"gitea": "Gitea",
+			"viaGitea": "通过 Gitea"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "查看 GitHub 资料",
@@ -11303,6 +11319,7 @@
 			"beyondHorizon": "按当前速度需要两年以上",
 			"open_other": "{{count}} 个未完成任务",
 			"complete": "所有任务均已完成",
+			"empty": "暂无任务。添加任务后即可查看预测。",
 			"insufficient": {
 				"short_span": "历史数据还不够：预测至少需要此项目 14 天的工作记录。",
 				"few_completions": "历史数据还不够：过去 8 周完成的任务少于 5 个。",
@@ -11688,6 +11705,7 @@
 				"forecast": "预测",
 				"forecastValue": "85% 的可能在 {{date}} 前完成",
 				"forecastDone": "没有剩余工作",
+				"forecastEmpty": "暂无任务",
 				"forecastNone": "历史数据尚不足",
 				"risks": "风险",
 				"diff": "变化",
@@ -12030,7 +12048,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "此处已关闭 AI。",
-			"AI_NOT_CONFIGURED": "AI 未正确设置。请让管理员检查 AI 设置。",
+			"AI_NOT_CONFIGURED": "AI 未正确设置，或 AI 服务商账户需要处理（例如余额不足）。请让管理员检查 AI 设置。",
 			"AI_ROUTE_BLOCKED": "根据你的隐私设置，此数据不能发送给 AI 模型。",
 			"AI_BUDGET_EXCEEDED": "已达到 AI 限额。请稍后再试，或让管理员提高限额。",
 			"AI_RATE_LIMITED": "同时发出的 AI 请求过多。请稍等片刻后重试。",
@@ -12058,7 +12076,8 @@
 			"retro": "回顾",
 			"my_brief": "我的简报",
 			"embedding": "搜索索引",
-			"coding_handoff": "编码智能体任务简报"
+			"coding_handoff": "编码智能体任务简报",
+			"whiteboard": "白板 AI"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12139,6 +12158,9 @@
 			"testLocal": "测试本地模型",
 			"localTitle": "本地模型",
 			"localDescription": "你自己网络中的 OpenAI 兼容服务器，例如 Ollama。受限数据只会发送到这里。",
+			"localDescriptionCloud": "你自己网络中的 OpenAI 兼容服务器，例如 Ollama。根据“隐私”中的设置，受限数据也可能发送给云服务商。",
+			"localDescriptionBlocked": "你自己网络中的 OpenAI 兼容服务器，例如 Ollama。根据“隐私”中的设置，受限数据不会发送给任何模型。",
+			"localDescriptionLocalOnly": "你自己网络中的 OpenAI 兼容服务器，例如 Ollama。已开启仅本地模式，因此所有 AI 调用都会发送到这里。",
 			"localBaseUrl": "基础 URL",
 			"localBaseUrlHint": "例如 http://ollama:11434/v1。此处允许使用内网地址。",
 			"localModel": "模型",
@@ -12480,6 +12502,8 @@
 				"selectRun": "选择一次运行以查看其步骤和更改。",
 				"runMissing": "此运行不可用。",
 				"deletedAgent": "已删除的智能体",
+				"deletedAgents": "已删除的智能体",
+				"errorDetail": "详情：{{detail}}",
 				"onBehalfOf": "为 {{name}}",
 				"cost": "费用",
 				"tokensLabel": "令牌",
@@ -14208,6 +14232,47 @@
 			"stone": "石色",
 			"mist": "雾色",
 			"mint": "薄荷色"
+		},
+		"ai": {
+			"menu": "AI 工具",
+			"brainstorm": "用 AI 头脑风暴",
+			"group": "用 AI 为便利贴分组",
+			"summarizeBoard": "用 AI 总结白板",
+			"summarizeSelection": "用 AI 总结所选内容",
+			"working": "正在思考…",
+			"tryAgain": "重试",
+			"nothingToUse": "这里没有可供 AI 处理的文本。",
+			"discard": "放弃",
+			"brainstormTitle": "用 AI 头脑风暴",
+			"brainstormDescription": "描述一个主题，AI 会建议一些便利贴。你可以检查并编辑它们；在你接受之前不会添加任何内容。",
+			"topic": "主题",
+			"topicPlaceholder": "例如：加快新成员上手的方法",
+			"ideaCount": "想法数量",
+			"generate": "生成想法",
+			"regenerate": "重新生成",
+			"putInFrame": "将便利贴放入框架",
+			"frameName": "框架名称",
+			"ideas": "建议的便利贴",
+			"ideaLabel": "便利贴 {{index}}",
+			"removeIdea": "移除便利贴 {{index}}",
+			"addNotes_other": "添加 {{count}} 张便利贴",
+			"notesAdded_other": "已添加 {{count}} 张便利贴",
+			"groupTitle": "用 AI 为便利贴分组",
+			"groupDescription_other": "AI 会将所选的 {{count}} 张便利贴按主题分类。重命名主题后，再将便利贴排列到框架中。",
+			"themes": "主题分组",
+			"themeLabel": "主题 {{index}} 的名称",
+			"otherGroup": "其他",
+			"arrange_other": "排列到 {{count}} 个框架中",
+			"grouped_other": "已将便利贴排列到 {{count}} 个框架中",
+			"summarizeBoardTitle": "总结白板",
+			"summarizeSelectionTitle": "总结所选内容",
+			"summarizeDescription": "检查并编辑摘要，然后复制，或作为文本添加到白板。",
+			"summaryTitle": "标题",
+			"summary": "摘要",
+			"madeFrom_other": "基于 {{count}} 个含文本的元素生成。",
+			"copy": "复制",
+			"copied": "摘要已复制",
+			"addSummary": "添加到白板"
 		}
 	},
 	"projectTemplates": {

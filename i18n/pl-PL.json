@@ -329,6 +329,10 @@
 				"description": "Zwykle pomaga ponowne wczytanie. Zapisana praca jest bezpieczna.",
 				"title": "Margaya przestała odpowiadać"
 			},
+			"loadFailed": {
+				"title": "Nie udało się wczytać części aplikacji Margaya",
+				"description": "Połączenie zostało przerwane podczas wczytywania aplikacji. Wczytaj stronę ponownie, aby dokończyć wczytywanie. Zapisana praca jest bezpieczna."
+			},
 			"empty": {
 				"description": "Gdy coś zostanie dodane, pojawi się tutaj.",
 				"title": "Na razie pusto"
@@ -486,7 +490,9 @@
 			"emailCodesOff": "Linki i kody logowania wysyłane e-mailem są na tym serwerze wyłączone. Jeśli do tej pory korzystasz tylko z nich, nie masz jeszcze hasła: wybierz „Nie pamiętasz hasła?”, aby je ustawić.",
 			"emailCodesOffNoEmail": "Linki i kody logowania wysyłane e-mailem są na tym serwerze wyłączone. Jeśli do tej pory korzystasz tylko z nich, nie masz jeszcze hasła: poproś administratora instancji, aby je dla Ciebie ustawił.",
 			"desktopBrowserHint": "Te opcje działają w przeglądarce, a potem przenoszą Cię z powrotem do aplikacji.",
-			"desktopBrowserStarted": "Dokończ logowanie w przeglądarce."
+			"desktopBrowserStarted": "Dokończ logowanie w przeglądarce.",
+			"desktopBrowserButton": "Zaloguj się przez przeglądarkę",
+			"desktopBrowserButtonHint": "Użyj w przeglądarce dowolnej metody logowania. Gdy skończysz, wrócisz tutaj już zalogowany."
 		},
 		"providers": {
 			"google": "Google",
@@ -1923,6 +1929,11 @@
 		"importedFromJira": "zaimportował(a) to zadanie z Jira {{key}}",
 		"importedFromSource": "zaimportował(a) to zadanie z {{source}} {{key}}",
 		"githubUser": "Użytkownik GitHub",
+		"integrationActor": {
+			"viaGithub": "przez GitHub",
+			"gitea": "Gitea",
+			"viaGitea": "przez Gitea"
+		},
 		"comment": {
 			"added": "Dodano komentarz",
 			"attachFile": "Dołącz plik",
@@ -2582,6 +2593,7 @@
 				"webhookInvalid": "Wpisz prawidłowy adres URL webhooka Discord"
 			},
 			"webhookHint": "Utwórz webhook kanału na Discordzie i wklej tutaj wygenerowany adres URL.",
+			"webhookHintConfigured": "Adres URL webhooka jest zapisany i ukryty ({{masked}}). Wklej nowy, aby go zastąpić.",
 			"webhookLabel": "Adres URL webhooka",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/..."
 		},
@@ -2635,6 +2647,7 @@
 				"webhookInvalid": "Wpisz prawidłowy adres URL webhooka"
 			},
 			"webhookHint": "Margaya wysyła żądania POST z ładunkiem JSON dla każdego włączonego zdarzenia.",
+			"webhookHintConfigured": "Adres URL webhooka jest zapisany i ukryty ({{masked}}). Wklej nowy, aby go zastąpić.",
 			"webhookLabel": "Adres URL punktu końcowego",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya"
 		},
@@ -3204,6 +3217,7 @@
 				"webhookInvalid": "Wpisz prawidłowy adres URL webhooka Slack"
 			},
 			"webhookHint": "Utwórz przychodzący webhook w Slacku i wklej tutaj wygenerowany adres URL.",
+			"webhookHintConfigured": "Adres URL webhooka jest zapisany i ukryty ({{masked}}). Wklej nowy, aby go zastąpić.",
 			"webhookLabel": "Adres URL przychodzącego webhooka",
 			"webhookPlaceholder": "https://hooks.slack.com/services/..."
 		},
@@ -3479,6 +3493,7 @@
 					"linear": "Wybierz eksport .csv z Linear.",
 					"asana": "Wybierz eksport .csv z Asany."
 				},
+				"selectJsonFile": "Wybierz plik JSON",
 				"itemCount_few": "{{count}} elementy",
 				"itemCount_many": "{{count}} elementów",
 				"itemCount_one": "{{count}} element",
@@ -4127,6 +4142,7 @@
 				"webhookInvalid": "Podaj prawidłowy URL webhooka Mattermost"
 			},
 			"webhookHint": "Utwórz webhook przychodzący w Mattermost i wklej tutaj wygenerowany URL.",
+			"webhookHintConfigured": "Adres URL webhooka jest zapisany i ukryty ({{masked}}). Wklej nowy, aby go zastąpić.",
 			"webhookLabel": "URL webhooka przychodzącego",
 			"webhookPlaceholder": "https://twoj-serwer-mattermost.com/hooks/..."
 		},
@@ -11805,6 +11821,7 @@
 			"open_many": "{{count}} otwartych zadań",
 			"open_other": "Otwartych zadań: {{count}}",
 			"complete": "Wszystkie zadania są ukończone",
+			"empty": "Brak zadań. Dodaj zadania, aby zobaczyć prognozę.",
 			"insufficient": {
 				"short_span": "Za mało historii: prognoza wymaga co najmniej 14 dni pracy w tym projekcie.",
 				"few_completions": "Za mało historii: w ciągu ostatnich 8 tygodni ukończono mniej niż 5 zadań.",
@@ -12256,6 +12273,7 @@
 				"forecast": "Prognoza",
 				"forecastValue": "85% szans do {{date}}",
 				"forecastDone": "Nic nie zostało do zrobienia",
+				"forecastEmpty": "Brak zadań",
 				"forecastNone": "Za mało historii",
 				"risks": "Ryzyka",
 				"diff": "Zmiana",
@@ -12598,7 +12616,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "AI jest tutaj wyłączona.",
-			"AI_NOT_CONFIGURED": "AI nie jest poprawnie skonfigurowana. Poproś administratora o sprawdzenie ustawień AI.",
+			"AI_NOT_CONFIGURED": "AI nie jest poprawnie skonfigurowana albo konto u dostawcy AI wymaga uwagi (na przykład skończyły się środki). Poproś administratora o sprawdzenie ustawień AI.",
 			"AI_ROUTE_BLOCKED": "Twoje ustawienia prywatności nie pozwalają wysłać tych danych do modelu AI.",
 			"AI_BUDGET_EXCEEDED": "Osiągnięto limit AI. Spróbuj ponownie później lub poproś administratora o jego zwiększenie.",
 			"AI_RATE_LIMITED": "Zbyt wiele żądań AI naraz. Odczekaj chwilę i spróbuj ponownie.",
@@ -12626,7 +12644,8 @@
 			"retro": "Retrospektywy",
 			"my_brief": "Moje podsumowanie",
 			"embedding": "Indeksowanie wyszukiwania",
-			"coding_handoff": "Briefy dla agentów kodujących"
+			"coding_handoff": "Briefy dla agentów kodujących",
+			"whiteboard": "AI na tablicy"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12710,6 +12729,9 @@
 			"testLocal": "Testuj model lokalny",
 			"localTitle": "Model lokalny",
 			"localDescription": "Serwer zgodny z OpenAI w Twojej własnej sieci, np. Ollama. Dane ograniczone trafiają wyłącznie tutaj.",
+			"localDescriptionCloud": "Serwer zgodny z OpenAI w Twojej własnej sieci, np. Ollama. Dane ograniczone mogą też trafiać do dostawcy chmurowego, zgodnie z ustawieniami w sekcji Prywatność.",
+			"localDescriptionBlocked": "Serwer zgodny z OpenAI w Twojej własnej sieci, np. Ollama. Dane ograniczone nie są wysyłane do żadnego modelu, zgodnie z ustawieniami w sekcji Prywatność.",
+			"localDescriptionLocalOnly": "Serwer zgodny z OpenAI w Twojej własnej sieci, np. Ollama. Tryb tylko lokalny jest włączony, więc każde wywołanie AI trafia tutaj.",
 			"localBaseUrl": "Bazowy URL",
 			"localBaseUrlHint": "Na przykład http://ollama:11434/v1. Adresy prywatne są tu dozwolone.",
 			"localModel": "Model",
@@ -13053,6 +13075,8 @@
 				"selectRun": "Wybierz uruchomienie, aby zobaczyć jego kroki i zmiany.",
 				"runMissing": "To uruchomienie jest niedostępne.",
 				"deletedAgent": "Usunięty agent",
+				"deletedAgents": "Usunięci agenci",
+				"errorDetail": "Szczegóły: {{detail}}",
 				"onBehalfOf": "dla {{name}}",
 				"cost": "Koszt",
 				"tokensLabel": "Tokeny",
@@ -14901,6 +14925,65 @@
 			"stone": "Kamienny",
 			"mist": "Mglisty",
 			"mint": "Miętowy"
+		},
+		"ai": {
+			"menu": "Narzędzia AI",
+			"brainstorm": "Burza mózgów z AI",
+			"group": "Grupuj notatki z AI",
+			"summarizeBoard": "Podsumuj tablicę z AI",
+			"summarizeSelection": "Podsumuj zaznaczenie z AI",
+			"working": "Myślę…",
+			"tryAgain": "Spróbuj ponownie",
+			"nothingToUse": "Nie ma tu tekstu, z którym AI mogłaby pracować.",
+			"discard": "Odrzuć",
+			"brainstormTitle": "Burza mózgów z AI",
+			"brainstormDescription": "Opisz temat, a AI zaproponuje karteczki. Przejrzyj je i edytuj; nic nie zostanie dodane, dopóki tego nie zaakceptujesz.",
+			"topic": "Temat",
+			"topicPlaceholder": "Na przykład: sposoby na szybsze wdrażanie nowych osób",
+			"ideaCount": "Pomysły",
+			"generate": "Generuj pomysły",
+			"regenerate": "Generuj ponownie",
+			"putInFrame": "Umieść notatki w ramce",
+			"frameName": "Nazwa ramki",
+			"ideas": "Proponowane notatki",
+			"ideaLabel": "Notatka {{index}}",
+			"removeIdea": "Usuń notatkę {{index}}",
+			"addNotes_one": "Dodaj {{count}} notatkę",
+			"addNotes_few": "Dodaj {{count}} notatki",
+			"addNotes_many": "Dodaj {{count}} notatek",
+			"addNotes_other": "Dodaj {{count}} notatki",
+			"notesAdded_one": "Dodano {{count}} notatkę",
+			"notesAdded_few": "Dodano {{count}} notatki",
+			"notesAdded_many": "Dodano {{count}} notatek",
+			"notesAdded_other": "Dodano {{count}} notatki",
+			"groupTitle": "Grupuj notatki z AI",
+			"groupDescription_one": "AI przypisze zaznaczoną notatkę do tematów. Zmień nazwy tematów, a potem rozmieść notatki w ramkach.",
+			"groupDescription_few": "AI przypisze {{count}} zaznaczone notatki do tematów. Zmień nazwy tematów, a potem rozmieść notatki w ramkach.",
+			"groupDescription_many": "AI przypisze {{count}} zaznaczonych notatek do tematów. Zmień nazwy tematów, a potem rozmieść notatki w ramkach.",
+			"groupDescription_other": "AI przypisze zaznaczone notatki ({{count}}) do tematów. Zmień nazwy tematów, a potem rozmieść notatki w ramkach.",
+			"themes": "Tematy",
+			"themeLabel": "Nazwa tematu {{index}}",
+			"otherGroup": "Inne",
+			"arrange_one": "Rozmieść w {{count}} ramce",
+			"arrange_few": "Rozmieść w {{count}} ramkach",
+			"arrange_many": "Rozmieść w {{count}} ramkach",
+			"arrange_other": "Rozmieść w {{count}} ramkach",
+			"grouped_one": "Rozmieszczono notatki w {{count}} ramce",
+			"grouped_few": "Rozmieszczono notatki w {{count}} ramkach",
+			"grouped_many": "Rozmieszczono notatki w {{count}} ramkach",
+			"grouped_other": "Rozmieszczono notatki w {{count}} ramkach",
+			"summarizeBoardTitle": "Podsumuj tablicę",
+			"summarizeSelectionTitle": "Podsumuj zaznaczenie",
+			"summarizeDescription": "Przejrzyj i edytuj podsumowanie, a potem je skopiuj lub dodaj do tablicy jako tekst.",
+			"summaryTitle": "Tytuł",
+			"summary": "Podsumowanie",
+			"madeFrom_one": "Utworzono z {{count}} elementu z tekstem.",
+			"madeFrom_few": "Utworzono z {{count}} elementów z tekstem.",
+			"madeFrom_many": "Utworzono z {{count}} elementów z tekstem.",
+			"madeFrom_other": "Utworzono z {{count}} elementu z tekstem.",
+			"copy": "Kopiuj",
+			"copied": "Skopiowano podsumowanie",
+			"addSummary": "Dodaj do tablicy"
 		}
 	},
 	"projectTemplates": {

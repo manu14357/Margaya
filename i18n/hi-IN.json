@@ -317,6 +317,10 @@
 				"description": "फिर से लोड करने से आमतौर पर समस्या ठीक हो जाती है। आपका सहेजा हुआ काम सुरक्षित है।",
 				"title": "Margaya ने जवाब देना बंद कर दिया"
 			},
+			"loadFailed": {
+				"title": "Margaya का एक हिस्सा लोड नहीं हुआ",
+				"description": "ऐप लोड होते समय कनेक्शन टूट गया। लोडिंग पूरी करने के लिए पेज फिर से लोड करें। आपका सहेजा हुआ काम सुरक्षित है।"
+			},
 			"empty": {
 				"description": "कुछ जोड़े जाने पर वह यहाँ दिखाई देगा।",
 				"title": "यहाँ अभी कुछ नहीं है"
@@ -474,7 +478,9 @@
 			"emailCodesOff": "इस सर्वर पर ईमेल से भेजे जाने वाले साइन-इन लिंक और कोड बंद हैं। अगर आपने अब तक सिर्फ़ इन्हीं का इस्तेमाल किया है, तो आपके पास अभी कोई पासवर्ड नहीं है: पासवर्ड सेट करने के लिए “पासवर्ड भूल गए?” चुनें।",
 			"emailCodesOffNoEmail": "इस सर्वर पर ईमेल से भेजे जाने वाले साइन-इन लिंक और कोड बंद हैं। अगर आपने अब तक सिर्फ़ इन्हीं का इस्तेमाल किया है, तो आपके पास अभी कोई पासवर्ड नहीं है: किसी इंस्टेंस एडमिन से अपने लिए पासवर्ड सेट करने को कहें।",
 			"desktopBrowserHint": "ये विकल्प आपके ब्राउज़र में आगे बढ़ते हैं, फिर आपको ऐप में वापस ले आते हैं।",
-			"desktopBrowserStarted": "साइन इन पूरा करने के लिए अपने ब्राउज़र में आगे बढ़ें।"
+			"desktopBrowserStarted": "साइन इन पूरा करने के लिए अपने ब्राउज़र में आगे बढ़ें।",
+			"desktopBrowserButton": "अपने ब्राउज़र से साइन इन करें",
+			"desktopBrowserButtonHint": "अपने ब्राउज़र में साइन इन का कोई भी तरीका इस्तेमाल करें। काम पूरा होने पर आप साइन इन होकर यहाँ लौट आएँगे।"
 		},
 		"providers": {
 			"google": "Google",
@@ -2120,6 +2126,7 @@
 			"webhookLabel": "इनकमिंग वेबहुक URL",
 			"webhookPlaceholder": "https://hooks.slack.com/services/...",
 			"webhookHint": "Slack में एक Incoming Webhook बनाएँ और जनरेट किया गया URL यहाँ चिपकाएँ।",
+			"webhookHintConfigured": "एक webhook URL सहेजा गया है और छिपाकर रखा गया है ({{masked}})। इसे बदलने के लिए नया URL चिपकाएँ।",
 			"channelLabel": "चैनल का नाम",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "आपके संदर्भ के लिए वैकल्पिक लेबल।",
@@ -2161,6 +2168,7 @@
 			"webhookLabel": "वेबहुक URL",
 			"webhookPlaceholder": "https://discord.com/api/webhooks/...",
 			"webhookHint": "Discord चैनल वेबहुक बनाएँ और जनरेट किया गया URL यहाँ चिपकाएँ।",
+			"webhookHintConfigured": "एक webhook URL सहेजा गया है और छिपाकर रखा गया है ({{masked}})। इसे बदलने के लिए नया URL चिपकाएँ।",
 			"channelLabel": "चैनल का नाम",
 			"channelPlaceholder": "#team-updates",
 			"channelHint": "आपके संदर्भ के लिए वैकल्पिक लेबल।",
@@ -2198,6 +2206,7 @@
 			"webhookLabel": "एंडपॉइंट URL",
 			"webhookPlaceholder": "https://example.com/webhooks/margaya",
 			"webhookHint": "Margaya प्रत्येक सक्षम इवेंट के लिए JSON पेलोड के साथ POST अनुरोध भेजता है।",
+			"webhookHintConfigured": "एक webhook URL सहेजा गया है और छिपाकर रखा गया है ({{masked}})। इसे बदलने के लिए नया URL चिपकाएँ।",
 			"secretLabel": "साइनिंग सीक्रेट",
 			"secretPlaceholder": "वैकल्पिक शेयर्ड सीक्रेट",
 			"secretHint": "वैकल्पिक। यदि प्रदान किया गया, तो Margaya अनुरोध बॉडी पर हस्ताक्षर करता है।",
@@ -2437,6 +2446,7 @@
 					"linear": "Linear का .csv निर्यात चुनें।",
 					"asana": "Asana का .csv निर्यात चुनें।"
 				},
+				"selectJsonFile": "JSON फ़ाइल चुनें",
 				"itemCount_one": "{{count}} आइटम",
 				"itemCount_other": "{{count}} आइटम",
 				"alreadyImported_one": "{{count}} आइटम पहले ही इस प्रोजेक्ट में आयात किया जा चुका है।",
@@ -2597,6 +2607,7 @@
 				"webhookInvalid": "एक मान्य Mattermost वेबहुक URL दर्ज करें"
 			},
 			"webhookHint": "Mattermost में एक इनकमिंग वेबहुक बनाएँ और जनरेट किया गया URL यहाँ पेस्ट करें।",
+			"webhookHintConfigured": "एक webhook URL सहेजा गया है और छिपाकर रखा गया है ({{masked}})। इसे बदलने के लिए नया URL चिपकाएँ।",
 			"webhookLabel": "इनकमिंग वेबहुक URL",
 			"webhookPlaceholder": "https://your-mattermost-server.com/hooks/..."
 		},
@@ -4707,6 +4718,11 @@
 		"importedFromJira": "ने यह कार्य Jira {{key}} से आयात किया",
 		"importedFromSource": "ने यह कार्य {{source}} {{key}} से आयात किया",
 		"githubUser": "GitHub उपयोगकर्ता",
+		"integrationActor": {
+			"viaGithub": "GitHub के ज़रिए",
+			"gitea": "Gitea",
+			"viaGitea": "Gitea के ज़रिए"
+		},
 		"comment": {
 			"github": "GitHub",
 			"viewGithubProfile": "GitHub प्रोफ़ाइल देखें",
@@ -11469,6 +11485,7 @@
 			"open_one": "{{count}} खुला कार्य",
 			"open_other": "{{count}} खुले कार्य",
 			"complete": "सभी कार्य पूरे हो गए हैं",
+			"empty": "अभी कोई कार्य नहीं है। पूर्वानुमान देखने के लिए कार्य जोड़ें।",
 			"insufficient": {
 				"short_span": "अभी पर्याप्त इतिहास नहीं है: पूर्वानुमान के लिए इस प्रोजेक्ट में कम से कम 14 दिनों का काम चाहिए।",
 				"few_completions": "अभी पर्याप्त इतिहास नहीं है: पिछले 8 हफ़्तों में 5 से कम कार्य पूरे हुए।",
@@ -11876,6 +11893,7 @@
 				"forecast": "पूर्वानुमान",
 				"forecastValue": "85% संभावना {{date}} तक",
 				"forecastDone": "कुछ भी बाकी नहीं",
+				"forecastEmpty": "अभी कोई कार्य नहीं",
 				"forecastNone": "अभी पर्याप्त इतिहास नहीं",
 				"risks": "जोखिम",
 				"diff": "बदलाव",
@@ -12218,7 +12236,7 @@
 		},
 		"errors": {
 			"AI_DISABLED": "यहाँ AI बंद है।",
-			"AI_NOT_CONFIGURED": "AI ठीक से सेट अप नहीं है। किसी एडमिन से AI सेटिंग जाँचने के लिए कहें।",
+			"AI_NOT_CONFIGURED": "AI ठीक से सेट अप नहीं है, या AI प्रदाता के खाते पर ध्यान देने की ज़रूरत है (उदाहरण के लिए, उसका क्रेडिट खत्म हो गया है)। किसी एडमिन से AI सेटिंग जाँचने के लिए कहें।",
 			"AI_ROUTE_BLOCKED": "आपकी गोपनीयता सेटिंग के कारण यह डेटा किसी AI मॉडल को नहीं भेजा जा सकता।",
 			"AI_BUDGET_EXCEEDED": "AI की सीमा पूरी हो गई है। बाद में फिर से प्रयास करें या किसी एडमिन से सीमा बढ़ाने के लिए कहें।",
 			"AI_RATE_LIMITED": "एक साथ बहुत सारे AI अनुरोध हैं। थोड़ा रुककर फिर से प्रयास करें।",
@@ -12246,7 +12264,8 @@
 			"retro": "रेट्रोस्पेक्टिव",
 			"my_brief": "मेरा ब्रीफ़",
 			"embedding": "खोज इंडेक्सिंग",
-			"coding_handoff": "कोडिंग एजेंट के लिए ब्रीफ़"
+			"coding_handoff": "कोडिंग एजेंट के लिए ब्रीफ़",
+			"whiteboard": "व्हाइटबोर्ड AI"
 		},
 		"providers": {
 			"anthropic": "Anthropic (Claude)",
@@ -12328,6 +12347,9 @@
 			"testLocal": "लोकल मॉडल जाँचें",
 			"localTitle": "लोकल मॉडल",
 			"localDescription": "आपके अपने नेटवर्क पर एक OpenAI-संगत सर्वर, जैसे Ollama। प्रतिबंधित डेटा केवल यहीं भेजा जाता है।",
+			"localDescriptionCloud": "आपके अपने नेटवर्क पर एक OpenAI-संगत सर्वर, जैसे Ollama। गोपनीयता में दी गई सेटिंग के अनुसार प्रतिबंधित डेटा क्लाउड प्रदाता को भी भेजा जा सकता है।",
+			"localDescriptionBlocked": "आपके अपने नेटवर्क पर एक OpenAI-संगत सर्वर, जैसे Ollama। गोपनीयता में दी गई सेटिंग के अनुसार प्रतिबंधित डेटा किसी भी मॉडल को नहीं भेजा जाता।",
+			"localDescriptionLocalOnly": "आपके अपने नेटवर्क पर एक OpenAI-संगत सर्वर, जैसे Ollama। केवल-लोकल मोड चालू है, इसलिए हर AI कॉल यहीं जाती है।",
 			"localBaseUrl": "बेस URL",
 			"localBaseUrlHint": "उदाहरण के लिए http://ollama:11434/v1। यहाँ निजी पते की अनुमति है।",
 			"localModel": "मॉडल",
@@ -12669,6 +12691,8 @@
 				"selectRun": "किसी रन के चरण और बदलाव देखने के लिए उसे चुनें।",
 				"runMissing": "यह रन उपलब्ध नहीं है।",
 				"deletedAgent": "हटाया गया एजेंट",
+				"deletedAgents": "हटाए गए एजेंट",
+				"errorDetail": "विवरण: {{detail}}",
 				"onBehalfOf": "{{name}} के लिए",
 				"cost": "लागत",
 				"tokensLabel": "टोकन",
@@ -14437,6 +14461,53 @@
 			"stone": "पत्थर",
 			"mist": "धुंध",
 			"mint": "पुदीना"
+		},
+		"ai": {
+			"menu": "AI टूल",
+			"brainstorm": "AI के साथ ब्रेनस्टॉर्म करें",
+			"group": "AI से नोट समूहित करें",
+			"summarizeBoard": "AI से बोर्ड का सारांश बनाएँ",
+			"summarizeSelection": "AI से चयन का सारांश बनाएँ",
+			"working": "सोच रहा है…",
+			"tryAgain": "फिर कोशिश करें",
+			"nothingToUse": "यहाँ ऐसा कोई टेक्स्ट नहीं है जिस पर AI काम कर सके।",
+			"discard": "छोड़ें",
+			"brainstormTitle": "AI के साथ ब्रेनस्टॉर्म",
+			"brainstormDescription": "कोई विषय बताएँ और AI स्टिकी नोट सुझाएगा। उन्हें देखें और संपादित करें; जब तक आप स्वीकार नहीं करते, कुछ भी नहीं जोड़ा जाता।",
+			"topic": "विषय",
+			"topicPlaceholder": "उदाहरण के लिए: ऑनबोर्डिंग को तेज़ बनाने के तरीके",
+			"ideaCount": "आइडिया",
+			"generate": "आइडिया बनाएँ",
+			"regenerate": "फिर से बनाएँ",
+			"putInFrame": "नोट को एक फ़्रेम में रखें",
+			"frameName": "फ़्रेम का नाम",
+			"ideas": "सुझाए गए नोट",
+			"ideaLabel": "नोट {{index}}",
+			"removeIdea": "नोट {{index}} हटाएँ",
+			"addNotes_one": "{{count}} नोट जोड़ें",
+			"addNotes_other": "{{count}} नोट जोड़ें",
+			"notesAdded_one": "{{count}} नोट जोड़ा गया",
+			"notesAdded_other": "{{count}} नोट जोड़े गए",
+			"groupTitle": "AI से नोट समूहित करें",
+			"groupDescription_one": "AI चुने गए नोट को थीम में बाँटता है। थीम के नाम बदलें, फिर नोट को फ़्रेम में व्यवस्थित करें।",
+			"groupDescription_other": "AI चुने गए {{count}} नोट को थीम में बाँटता है। थीम के नाम बदलें, फिर नोट को फ़्रेम में व्यवस्थित करें।",
+			"themes": "थीम",
+			"themeLabel": "थीम {{index}} का नाम",
+			"otherGroup": "अन्य",
+			"arrange_one": "{{count}} फ़्रेम में व्यवस्थित करें",
+			"arrange_other": "{{count}} फ़्रेम में व्यवस्थित करें",
+			"grouped_one": "नोट {{count}} फ़्रेम में व्यवस्थित किए गए",
+			"grouped_other": "नोट {{count}} फ़्रेम में व्यवस्थित किए गए",
+			"summarizeBoardTitle": "बोर्ड का सारांश",
+			"summarizeSelectionTitle": "चयन का सारांश",
+			"summarizeDescription": "सारांश देखें और संपादित करें, फिर उसे कॉपी करें या टेक्स्ट के रूप में बोर्ड पर जोड़ें।",
+			"summaryTitle": "शीर्षक",
+			"summary": "सारांश",
+			"madeFrom_one": "टेक्स्ट वाले {{count}} एलिमेंट से बनाया गया।",
+			"madeFrom_other": "टेक्स्ट वाले {{count}} एलिमेंट से बनाया गया।",
+			"copy": "कॉपी करें",
+			"copied": "सारांश कॉपी हो गया",
+			"addSummary": "बोर्ड पर जोड़ें"
 		}
 	},
 	"projectTemplates": {
