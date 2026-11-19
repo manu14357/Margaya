@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -231,24 +232,27 @@ export function FocusStatusButton({ compact = false }: { compact?: boolean }) {
         }
       />
       <DropdownMenuContent align="end" sideOffset={8} className="w-60">
-        <DropdownMenuLabel>{label}</DropdownMenuLabel>
-        {focusing ? (
-          <DropdownMenuItem onClick={end}>
-            <BellRing />
-            {t("navigation:focus.resume")}
-          </DropdownMenuItem>
-        ) : (
-          FOCUS_PRESETS.map((preset) => (
-            <DropdownMenuItem key={preset} onClick={() => start(preset)}>
-              {focusPresetLabel(t, preset)}
+        {/* Base UI throws when a group label renders outside a group. */}
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{label}</DropdownMenuLabel>
+          {focusing ? (
+            <DropdownMenuItem onClick={end}>
+              <BellRing />
+              {t("navigation:focus.resume")}
             </DropdownMenuItem>
-          ))
-        )}
-        {focusing && (
-          <DropdownMenuItem onClick={() => openCustom(true)}>
-            {t("navigation:focus.custom")}
-          </DropdownMenuItem>
-        )}
+          ) : (
+            FOCUS_PRESETS.map((preset) => (
+              <DropdownMenuItem key={preset} onClick={() => start(preset)}>
+                {focusPresetLabel(t, preset)}
+              </DropdownMenuItem>
+            ))
+          )}
+          {focusing && (
+            <DropdownMenuItem onClick={() => openCustom(true)}>
+              {t("navigation:focus.custom")}
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() =>
