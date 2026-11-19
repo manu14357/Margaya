@@ -14,9 +14,11 @@ import {
   parseStatusInput,
   taskGroupOf,
 } from "../../../task/scope";
+import { insertTaskActivity } from "../../../task-activity/insert-activity";
 import type { GitHubConfig } from "../config";
 import { createExternalLink, findExternalLink } from "../services/link-manager";
 import { findAllIntegrationsByRepo } from "../services/task-service";
+import { githubActor } from "../utils/actor";
 import {
   extractIssuePriority,
   extractIssueStatus,
@@ -142,6 +144,17 @@ export async function handleIssueOpened(payload: IssueOpenedPayload) {
             createdFrom: "github",
             author: issue.user?.login,
           },
+        },
+        tx,
+      );
+      // The task's "created" history row, signed with the issue's author
+      // (no task.created event runs the usual activity writer here).
+      await insertTaskActivity(
+        {
+          taskId: task.id,
+          type: "created",
+          userId: null,
+          eventData: { integration: githubActor(issue.user) },
         },
         tx,
       );

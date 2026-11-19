@@ -65,6 +65,8 @@ Example: `https://git.example.com/acme/my-app/settings/hooks`
 
 8. Save and use **Test Delivery** to confirm a `200` response from Margaya.
 
+Changes the webhooks make, such as a status change from a push or a merged pull request, or a task created from a new issue, are signed in the task's activity and in notifications with the Gitea account that caused them (marked **via Gitea**), or with **Gitea** when the event names no account.
+
 The webhook URL includes your integration id, for example:
 
 `https://your-margaya-host/api/gitea-integration/webhook/<integrationId>`

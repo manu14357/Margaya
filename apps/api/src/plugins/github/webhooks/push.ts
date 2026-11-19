@@ -7,10 +7,12 @@ import {
   isTaskInFinalState,
   updateTaskStatus,
 } from "../services/task-service";
+import { githubActor } from "../utils/actor";
 import { extractTaskNumberFromBranch } from "../utils/branch-matcher";
 import { resolveTargetStatus } from "../utils/resolve-column";
 
 type PushPayload = {
+  sender?: { login?: string } | null;
   ref: string;
   head_commit?: {
     id: string;
@@ -143,6 +145,7 @@ export async function handlePush(payload: PushPayload) {
           taskId: statusResult.after.id,
           projectId: statusResult.after.projectId,
           userId: null,
+          integration: githubActor(payload.sender),
           oldStatus: statusResult.before.status,
           newStatus: statusResult.after.status,
           title: statusResult.after.title,

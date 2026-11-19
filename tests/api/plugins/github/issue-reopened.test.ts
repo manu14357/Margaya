@@ -83,3 +83,28 @@ it("retains the Margaya-origin skip rule for valid metadata", async () => {
   expect(m.update).not.toHaveBeenCalled();
   expect(m.status).not.toHaveBeenCalled();
 });
+it("attributes the status change to the GitHub sender, not an anonymous user", async () => {
+  m.find.mockResolvedValue([{ id: "integration-1" }]);
+  m.links.mockResolvedValue({ id: "first", taskId: "task", metadata: null });
+  m.status.mockResolvedValue({
+    applied: true,
+    before: { status: "done" },
+    after: {
+      id: "task",
+      projectId: "project",
+      status: "to-do",
+      title: "Issue",
+      userId: null,
+    },
+  });
+  await handleIssueReopened({ ...payload, sender: { login: "octocat" } });
+  expect(m.publish).toHaveBeenCalledWith(
+    "task.status_changed",
+    expect.objectContaining({
+      userId: null,
+      integration: { source: "github", login: "octocat" },
+      oldStatus: "done",
+      newStatus: "to-do",
+    }),
+  );
+});

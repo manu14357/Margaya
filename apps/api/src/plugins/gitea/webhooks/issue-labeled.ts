@@ -8,6 +8,7 @@ import {
   extractIssuePriority,
   extractIssueStatus,
 } from "../../github/utils/extract-priority";
+import { integrationActor } from "../../integration-actor";
 import {
   findAllIntegrationsByGiteaRepo,
   repoOwnerLogin,
@@ -16,6 +17,7 @@ import { isSystemLabelName } from "../utils/system-labels";
 import { baseUrlFromRepositoryHtmlUrl } from "../utils/webhook-repo";
 
 type IssueLabeledPayload = {
+  sender?: { login?: string; username?: string } | null;
   action: string;
   issue: {
     number: number;
@@ -164,6 +166,7 @@ export async function handleGiteaIssueLabeled(
             taskId: statusResult.after.id,
             projectId: statusResult.after.projectId,
             userId: null,
+            integration: integrationActor("gitea", payload.sender),
             oldStatus: statusResult.before.status,
             newStatus: statusResult.after.status,
             title: statusResult.after.title,

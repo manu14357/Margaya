@@ -9,6 +9,7 @@ import {
   lookupNotFound,
   z,
 } from "../openapi";
+import { integrationActorOf } from "../plugins/integration-actor";
 import { hiddenForCurrentRequest } from "../project/visibility";
 import { insertTaskActivity } from "../task-activity/insert-activity";
 import { requireWorkspacePermission } from "../utils/require-workspace-permission";
@@ -364,10 +365,14 @@ subscribeToEvent<{
   title: string;
   assigneeId?: string;
   type: string;
+  /** Set by integration webhooks, which carry no user (plugins/integration-actor.ts). */
+  integration?: unknown;
 }>("task.status_changed", async (data) => {
+  const integration = data.userId ? null : integrationActorOf(data.integration);
   await createActivity(data.taskId, data.type, data.userId, null, {
     oldStatus: data.oldStatus,
     newStatus: data.newStatus,
+    ...(integration ? { integration } : {}),
   });
 });
 

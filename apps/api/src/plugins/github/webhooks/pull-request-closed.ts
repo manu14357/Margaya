@@ -10,10 +10,12 @@ import {
   findTaskById,
   updateTaskStatus,
 } from "../services/task-service";
+import { githubActor } from "../utils/actor";
 import { parseLinkMetadata } from "../utils/parse-link-metadata";
 import { resolveTargetStatus } from "../utils/resolve-column";
 
 type PRClosedPayload = {
+  sender?: { login?: string } | null;
   action: string;
   pull_request: {
     number: number;
@@ -119,6 +121,7 @@ export async function handlePullRequestClosed(payload: PRClosedPayload) {
             taskId: statusResult.after.id,
             projectId: statusResult.after.projectId,
             userId: null,
+            integration: githubActor(payload.sender),
             oldStatus: statusResult.before.status,
             newStatus: statusResult.after.status,
             title: statusResult.after.title,

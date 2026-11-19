@@ -274,6 +274,8 @@ Customize when tasks automatically change status:
 
 Configure these in your project's GitHub integration settings to match your workflow.
 
+In the task's activity, these changes are signed with the GitHub account that pushed, opened or merged (marked **via GitHub**), or with **GitHub** when the event names no account. Inbox notifications about them carry the same name, and a task created from a GitHub issue shows the issue's author as its creator. The task's **Resources** list picks up new branches and pull requests live, without a reload.
+
 <Warning>
 Status transitions only apply if the task is not already in "done" status. This prevents accidentally reopening completed tasks.
 </Warning>

@@ -7,12 +7,14 @@ import {
   findAllIntegrationsByRepo,
   updateTaskStatus,
 } from "../services/task-service";
+import { githubActor } from "../utils/actor";
 import {
   extractIssuePriority,
   extractIssueStatus,
 } from "../utils/extract-priority";
 
 type IssueLabeledPayload = {
+  sender?: { login?: string } | null;
   action: string;
   issue: {
     number: number;
@@ -66,6 +68,7 @@ export async function handleIssueLabeled(payload: IssueLabeledPayload) {
           taskId: statusResult.after.id,
           projectId: statusResult.after.projectId,
           userId: null,
+          integration: githubActor(payload.sender),
           oldStatus: statusResult.before.status,
           newStatus: statusResult.after.status,
           title: statusResult.after.title,

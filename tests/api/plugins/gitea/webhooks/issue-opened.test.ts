@@ -16,6 +16,7 @@ const mocks = vi.hoisted(() => {
     projectFindFirst: vi.fn(),
     createGiteaClient: vi.fn(),
     addLabelsToIssueGitea: vi.fn(),
+    insertTaskActivity: vi.fn(),
     db: {
       insert: () => ({
         values: (values: Record<string, unknown>) => {
@@ -36,6 +37,10 @@ const mocks = vi.hoisted(() => {
 });
 
 vi.mock("../../../../../apps/api/src/database", () => ({ default: mocks.db }));
+
+vi.mock("../../../../../apps/api/src/task-activity/insert-activity", () => ({
+  insertTaskActivity: (...args: unknown[]) => mocks.insertTaskActivity(...args),
+}));
 
 vi.mock("../../../../../apps/api/src/events", () => ({
   publishEvent: (...args: unknown[]) => mocks.publishEvent(...args),
@@ -145,5 +150,16 @@ describe("handleGiteaIssueOpened", () => {
 
     expect(mocks.insertedValues).toHaveLength(1);
     expect(mocks.insertedValues[0].priority).toBe("high");
+  });
+
+  it("writes the created history row signed with the issue's author", async () => {
+    await handleGiteaIssueOpened(issueOpenedPayload([]));
+
+    expect(mocks.insertTaskActivity).toHaveBeenCalledWith({
+      taskId: "task-1",
+      type: "created",
+      userId: null,
+      eventData: { integration: { source: "gitea", login: "octocat" } },
+    });
   });
 });

@@ -5,6 +5,7 @@ import {
   isTaskInFinalState,
   updateTaskStatus,
 } from "../../github/services/task-service";
+import { integrationActor } from "../../integration-actor";
 import type { GiteaConfig } from "../config";
 import {
   findAllIntegrationsByGiteaRepo,
@@ -15,6 +16,7 @@ import { resolveTargetStatus } from "../utils/resolve-column";
 import { baseUrlFromRepositoryHtmlUrl } from "../utils/webhook-repo";
 
 type PushPayload = {
+  sender?: { login?: string; username?: string } | null;
   ref: string;
   head_commit?: {
     id: string;
@@ -154,6 +156,7 @@ export async function handleGiteaPush(
           taskId: statusResult.after.id,
           projectId: statusResult.after.projectId,
           userId: null,
+          integration: integrationActor("gitea", payload.sender),
           oldStatus: statusResult.before.status,
           newStatus: statusResult.after.status,
           title: statusResult.after.title,

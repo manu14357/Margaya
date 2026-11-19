@@ -1,4 +1,8 @@
 import { subscribeToEvent } from "../events";
+import {
+  integrationActorName,
+  integrationActorOf,
+} from "../plugins/integration-actor";
 import createNotification from "./controllers/create-notification";
 import { notifyTaskEvent } from "./recipients";
 
@@ -53,13 +57,23 @@ subscribeToEvent<{
   userId: string | null;
   oldStatus: string;
   newStatus: string;
+  integration?: unknown;
 }>("task.status_changed", async (data) => {
-  // Integration-originated changes have no actor, so everyone hears.
+  // Integration-originated changes have no actor, so everyone hears. They
+  // are signed with the integration's account (actorName, which every
+  // client already reads) instead of reading as "Someone".
+  const integration = data.userId ? null : integrationActorOf(data.integration);
   await notifyTaskEvent({
     taskId: data.taskId,
     kind: "statusChanged",
     actorId: data.userId || null,
-    eventData: { oldStatus: data.oldStatus, newStatus: data.newStatus },
+    eventData: {
+      oldStatus: data.oldStatus,
+      newStatus: data.newStatus,
+      ...(integration
+        ? { integration, actorName: integrationActorName(integration) }
+        : {}),
+    },
   });
 });
 

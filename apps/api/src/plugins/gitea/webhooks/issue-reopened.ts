@@ -4,6 +4,7 @@ import { externalLinkTable, taskTable } from "../../../database/schema";
 import { publishEvent } from "../../../events";
 import { updateExternalLink } from "../../github/services/link-manager";
 import { updateTaskStatus } from "../../github/services/task-service";
+import { integrationActor } from "../../integration-actor";
 import {
   findAllIntegrationsByGiteaRepo,
   repoOwnerLogin,
@@ -16,6 +17,7 @@ import { resolveTargetStatus } from "../utils/resolve-column";
 import { baseUrlFromRepositoryHtmlUrl } from "../utils/webhook-repo";
 
 type IssueReopenedPayload = {
+  sender?: { login?: string; username?: string } | null;
   action: string;
   issue: {
     number: number;
@@ -119,6 +121,7 @@ export async function handleGiteaIssueReopened(
           taskId: statusResult.after.id,
           projectId: statusResult.after.projectId,
           userId: null,
+          integration: integrationActor("gitea", payload.sender),
           oldStatus: statusResult.before.status,
           newStatus: statusResult.after.status,
           title: statusResult.after.title,

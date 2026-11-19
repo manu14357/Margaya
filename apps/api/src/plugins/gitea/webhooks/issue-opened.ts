@@ -10,6 +10,7 @@ import {
   parseStatusInput,
   taskGroupOf,
 } from "../../../task/scope";
+import { insertTaskActivity } from "../../../task-activity/insert-activity";
 import {
   createExternalLink,
   findExternalLink,
@@ -19,6 +20,7 @@ import {
   extractIssueStatus,
 } from "../../github/utils/extract-priority";
 import { formatTaskDescriptionFromIssue } from "../../github/utils/format";
+import { integrationActor } from "../../integration-actor";
 import type { GiteaConfig } from "../config";
 import {
   findAllIntegrationsByGiteaRepo,
@@ -156,6 +158,15 @@ export async function handleGiteaIssueOpened(
         createdFrom: "gitea",
         author: issue.user?.login ?? issue.user?.username,
       },
+    });
+
+    // The task's "created" history row, signed with the issue's author:
+    // task.created has no Margaya user, so the usual writer skips it.
+    await insertTaskActivity({
+      taskId: createdTask.id,
+      type: "created",
+      userId: null,
+      eventData: { integration: integrationActor("gitea", issue.user) },
     });
 
     await publishEvent("task.created", {

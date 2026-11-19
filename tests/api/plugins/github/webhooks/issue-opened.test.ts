@@ -14,6 +14,7 @@ const mocks = vi.hoisted(() => {
   const mockColumnFindFirst = vi.fn();
   const mockProjectFindFirst = vi.fn();
   const mockLockedIntegration = vi.fn();
+  const mockInsertTaskActivity = vi.fn();
 
   const insertedValues: Array<Record<string, unknown>> = [];
 
@@ -62,6 +63,7 @@ const mocks = vi.hoisted(() => {
     mockProjectFindFirst,
     mockDb,
     mockLockedIntegration,
+    mockInsertTaskActivity,
     insertedValues,
     mockOctokit,
     mockGithubApp,
@@ -110,6 +112,11 @@ vi.mock(
       mocks.mockResolveTargetStatus(...args),
   }),
 );
+
+vi.mock("../../../../../apps/api/src/task-activity/insert-activity", () => ({
+  insertTaskActivity: (...args: unknown[]) =>
+    mocks.mockInsertTaskActivity(...args),
+}));
 
 vi.mock("../../../../../apps/api/src/plugins/github/utils/labels", () => ({
   addLabelsToIssue: (...args: unknown[]) => mocks.mockAddLabelsToIssue(...args),
@@ -191,5 +198,19 @@ describe("handleIssueOpened", () => {
 
     expect(mocks.insertedValues).toHaveLength(1);
     expect(mocks.insertedValues[0].priority).toBe("high");
+  });
+
+  it("writes the created history row signed with the issue's author", async () => {
+    await handleIssueOpened(issueOpenedPayload([]));
+
+    expect(mocks.mockInsertTaskActivity).toHaveBeenCalledWith(
+      {
+        taskId: "task-1",
+        type: "created",
+        userId: null,
+        eventData: { integration: { source: "github", login: "octocat" } },
+      },
+      mocks.mockDb,
+    );
   });
 });
