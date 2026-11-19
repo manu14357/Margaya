@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { CalendarTask } from "./calendar-task-bar";
-import MonthGrid from "./month-grid";
+import MonthGrid, { grabbedDayOf } from "./month-grid";
 import { buildMonthWeeks, buildWeekDays } from "./month-grid-model";
 
 afterEach(() => {
@@ -165,5 +165,43 @@ describe("MonthGrid display choices", () => {
     })) {
       expect(element).toHaveClass("cursor-grab");
     }
+  });
+});
+
+describe("grabbedDayOf", () => {
+  const days = [
+    new Date(2026, 9, 12),
+    new Date(2026, 9, 13),
+    new Date(2026, 9, 14),
+    new Date(2026, 9, 15),
+  ];
+
+  function grab(clientX: number) {
+    const bar = document.createElement("button");
+    bar.setAttribute("data-calendar-bar", "");
+    const label = document.createElement("span");
+    bar.append(label);
+    document.body.append(bar);
+    bar.getBoundingClientRect = () =>
+      ({ left: 100, width: 400, top: 0, height: 20 }) as DOMRect;
+    const event = new MouseEvent("mousedown", { clientX, bubbles: true });
+    label.dispatchEvent(event);
+    return event;
+  }
+
+  it("measures the grabbed bar when dnd-kit has no rect yet", () => {
+    // 100px into a 400px bar of four days is the second day.
+    expect(grabbedDayOf(days, grab(210), null)).toEqual(days[1]);
+    expect(grabbedDayOf(days, grab(120), null)).toEqual(days[0]);
+  });
+
+  it("prefers the rect dnd-kit measured", () => {
+    expect(grabbedDayOf(days, grab(210), { left: 200, width: 400 })).toEqual(
+      days[0],
+    );
+  });
+
+  it("falls back to the last day without a pointer position", () => {
+    expect(grabbedDayOf(days, new Event("keydown"), null)).toEqual(days[3]);
   });
 });

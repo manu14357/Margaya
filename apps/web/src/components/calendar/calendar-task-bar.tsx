@@ -154,6 +154,7 @@ export default function CalendarTaskBar({
       ]
         .filter(Boolean)
         .join(" · ")}
+      data-calendar-bar
       data-task-status={task.status}
       data-tone={toneInfo.tone}
       data-overdue={overdue || undefined}

@@ -59,6 +59,31 @@ function pointerClientX(event: Event): number | null {
   return null;
 }
 
+type BarRect = { left: number; width: number };
+
+/**
+ * The day under the pointer when a bar was grabbed. dnd-kit measures the
+ * active node only after onDragStart, so `active.rect` is still empty then;
+ * fall back to the grabbed bar element's own box.
+ */
+export function grabbedDayOf(
+  days: Date[],
+  activatorEvent: Event,
+  measured: BarRect | null,
+): Date | null {
+  const target = activatorEvent.target;
+  const rect =
+    measured ??
+    (target instanceof Element
+      ? (target.closest("[data-calendar-bar]")?.getBoundingClientRect() ?? null)
+      : null);
+  const clientX = pointerClientX(activatorEvent);
+  if (!rect || clientX === null) return days[days.length - 1] ?? null;
+  return (
+    days[dayIndexAtPointer(clientX, rect.left, rect.width, days.length)] ?? null
+  );
+}
+
 export default function MonthGrid({
   weeks,
   tasks,
@@ -104,15 +129,11 @@ export default function MonthGrid({
 
   const handleDragStart = ({ active, activatorEvent }: DragStartEvent) => {
     const data = active.data.current as CalendarDragData | undefined;
-    const rect = active.rect.current.initial;
-    const clientX = pointerClientX(activatorEvent);
-    const days = data?.days ?? [];
-    grabbedDayRef.current =
-      rect && clientX !== null
-        ? (days[
-            dayIndexAtPointer(clientX, rect.left, rect.width, days.length)
-          ] ?? null)
-        : (days[days.length - 1] ?? null);
+    grabbedDayRef.current = grabbedDayOf(
+      data?.days ?? [],
+      activatorEvent,
+      active.rect.current.initial,
+    );
     setDraggedTask(tasks.find((task) => task.id === data?.taskId) ?? null);
   };
 
