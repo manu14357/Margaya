@@ -20,6 +20,7 @@ import { getDesktopBrowserSignIn } from "@/lib/desktop";
 import { desktopAuthorizeRedirect } from "@/lib/desktop-authorize";
 import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
+import { getTurnstileSiteKey } from "@/lib/turnstile-site-key";
 import { AuthDivider } from "../../components/auth/divider";
 import { AuthLayout } from "../../components/auth/layout";
 import { OtpSignInForm } from "../../components/auth/otp-sign-in-form";
@@ -29,9 +30,7 @@ import { SignInFormSkeleton } from "../../components/auth/sign-in-form-skeleton"
 import { AuthToggle } from "../../components/auth/toggle";
 import { Turnstile } from "../../components/auth/turnstile";
 
-const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
-  | string
-  | undefined;
+const TURNSTILE_SITE_KEY = getTurnstileSiteKey();
 
 const signInSearchSchema = z.object({
   invitationId: z.string().optional(),

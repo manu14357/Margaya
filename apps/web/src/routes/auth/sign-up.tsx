@@ -22,10 +22,9 @@ import { customInstanceName, safeRedirectPath } from "@/lib/auth-branding";
 import { authClient } from "@/lib/auth-client";
 import { HttpError } from "@/lib/http-error";
 import { toast } from "@/lib/toast";
+import { getTurnstileSiteKey } from "@/lib/turnstile-site-key";
 
-const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
-  | string
-  | undefined;
+const TURNSTILE_SITE_KEY = getTurnstileSiteKey();
 
 const signUpSearchSchema = z.object({
   invitationId: z.string().optional(),

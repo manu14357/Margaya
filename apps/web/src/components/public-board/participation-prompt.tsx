@@ -8,10 +8,9 @@ import { usePublicBoardSession } from "@/hooks/mutations/public-board/use-public
 import { cn } from "@/lib/cn";
 import type { ParticipationState } from "@/lib/public-board/participation";
 import { toast } from "@/lib/toast";
+import { getTurnstileSiteKey } from "@/lib/turnstile-site-key";
 
-const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
-  | string
-  | undefined;
+const TURNSTILE_SITE_KEY = getTurnstileSiteKey();
 
 type ParticipationPromptProps = {
   token: string;

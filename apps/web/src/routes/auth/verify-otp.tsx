@@ -25,6 +25,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { signInErrorMessage } from "@/lib/sign-in-error";
 import { toast } from "@/lib/toast";
+import { getTurnstileSiteKey } from "@/lib/turnstile-site-key";
 import { AuthLayout } from "../../components/auth/layout";
 
 export const Route = createFileRoute("/auth/verify-otp")({
@@ -43,7 +44,7 @@ function VerifyOtp() {
     from: "/auth/verify-otp",
   });
   const [isPending, setIsPending] = useState(false);
-  const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
+  const siteKey = getTurnstileSiteKey();
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [captchaKey, setCaptchaKey] = useState(0);
   const captchaPending = Boolean(siteKey) && !turnstileToken;

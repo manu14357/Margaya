@@ -11,10 +11,9 @@ import PageTitle from "@/components/page-title";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import useGetConfig from "@/hooks/queries/config/use-get-config";
+import { getTurnstileSiteKey } from "@/lib/turnstile-site-key";
 
-const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as
-  | string
-  | undefined;
+const TURNSTILE_SITE_KEY = getTurnstileSiteKey();
 
 export const Route = createFileRoute("/auth/forgot-password")({
   component: ForgotPassword,
