@@ -68,6 +68,7 @@ describe("task-detail events on the project socket", () => {
     ["task.link_created", "TASK_LINKS_UPDATED"],
     ["task.link_updated", "TASK_LINKS_UPDATED"],
     ["task.link_deleted", "TASK_LINKS_UPDATED"],
+    ["task.external_link_changed", "TASK_LINKS_UPDATED"],
     ["task.attachment_added", "TASK_ATTACHMENTS_UPDATED"],
     ["task.attachment_removed", "TASK_ATTACHMENTS_UPDATED"],
     ["task.start_date_changed", "TASK_UPDATED"],

@@ -393,11 +393,15 @@ export function useProjectWebSocket(projectId: string) {
           }
           // Links and attachments are not part of the board payload, so the
           // board is not refetched for them; the task's panel and its
-          // history are.
+          // history are. Integration resources (issues, branches, pull
+          // requests from a webhook) share this hint.
           if (message.type === "TASK_LINKS_UPDATED") {
             if (message.taskId) {
               queryClient.invalidateQueries({
                 queryKey: ["task-links", message.taskId],
+              });
+              queryClient.invalidateQueries({
+                queryKey: ["external-links", message.taskId],
               });
               queryClient.invalidateQueries({
                 queryKey: ["activities", message.taskId],

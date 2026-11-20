@@ -1,8 +1,27 @@
 import { and, eq } from "drizzle-orm";
 import db from "../../../database";
-import { externalLinkTable } from "../../../database/schema";
+import { externalLinkTable, taskTable } from "../../../database/schema";
+import { publishEvent } from "../../../events";
 
 type DbOrTx = typeof db | Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+/**
+ * Tells open task panels that the task's issue, branch or pull request
+ * resources changed (a webhook arrived), so their Resources list refetches
+ * without a reload. A hint with ids only; see ws/index.ts.
+ */
+async function announceExternalLinkChange(taskId: string | undefined) {
+  if (!taskId) return;
+  const task = await db.query.taskTable.findFirst({
+    where: eq(taskTable.id, taskId),
+    columns: { projectId: true },
+  });
+  if (!task) return;
+  await publishEvent("task.external_link_changed", {
+    taskId,
+    projectId: task.projectId,
+  });
+}
 
 export type CreateExternalLinkParams = {
   taskId: string;
@@ -41,6 +60,10 @@ export async function createExternalLink(
   if (!link) {
     throw new Error("Failed to create external link");
   }
+
+  // Inside a caller's transaction (an import) the rows aren't committed yet,
+  // and the import announces its tasks itself.
+  if (database === db) await announceExternalLinkChange(params.taskId);
 
   return link;
 }
@@ -103,10 +126,12 @@ export async function updateExternalLink(
     return;
   }
 
-  await db
+  const [updated] = await db
     .update(externalLinkTable)
     .set(updateData)
-    .where(eq(externalLinkTable.id, id));
+    .where(eq(externalLinkTable.id, id))
+    .returning({ taskId: externalLinkTable.taskId });
+  await announceExternalLinkChange(updated?.taskId);
 }
 
 export async function createOrUpdateExternalLink(
@@ -132,7 +157,11 @@ export async function createOrUpdateExternalLink(
 }
 
 export async function deleteExternalLink(id: string) {
-  await db.delete(externalLinkTable).where(eq(externalLinkTable.id, id));
+  const [deleted] = await db
+    .delete(externalLinkTable)
+    .where(eq(externalLinkTable.id, id))
+    .returning({ taskId: externalLinkTable.taskId });
+  await announceExternalLinkChange(deleted?.taskId);
 }
 
 export async function getExternalLinksByIntegration(integrationId: string) {

@@ -408,6 +408,8 @@ const taskUpdateEvents = [
   "task.link_created",
   "task.link_updated",
   "task.link_deleted",
+  // An issue, branch or pull request resource changed (integration webhooks).
+  "task.external_link_changed",
   "task.attachment_added",
   "task.attachment_removed",
   "task.coding_handoff_updated",
@@ -1004,6 +1006,7 @@ for (const eventName of taskUpdateEvents) {
       case "task.link_created":
       case "task.link_updated":
       case "task.link_deleted":
+      case "task.external_link_changed":
         type = "TASK_LINKS_UPDATED";
         break;
       case "task.attachment_added":

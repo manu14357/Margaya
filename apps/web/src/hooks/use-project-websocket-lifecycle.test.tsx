@@ -492,10 +492,28 @@ describe("project WebSocket lifecycle", () => {
     unmount();
   });
 
-  it.each([
-    ["TASK_LINKS_UPDATED", "task-links"],
-    ["TASK_ATTACHMENTS_UPDATED", "task-attachments"],
-  ])(
+  it("refreshes the task's links, integration resources and history on TASK_LINKS_UPDATED", () => {
+    const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
+    const socket = TestSocket.instances[0];
+    act(() => {
+      socket.open();
+      socket.onmessage?.({
+        data: JSON.stringify({
+          type: "TASK_LINKS_UPDATED",
+          projectId: "project-a",
+          taskId: "t1",
+        }),
+      });
+    });
+    expect(client.invalidateQueries.mock.calls.map(([arg]) => arg)).toEqual([
+      { queryKey: ["task-links", "t1"] },
+      { queryKey: ["external-links", "t1"] },
+      { queryKey: ["activities", "t1"] },
+    ]);
+    unmount();
+  });
+
+  it.each([["TASK_ATTACHMENTS_UPDATED", "task-attachments"]])(
     "refreshes the task panel and history, not the board, on %s",
     (type, key) => {
       const { unmount } = renderHook(() => useProjectWebSocket("project-a"));
