@@ -48,7 +48,7 @@ import WorkspaceDeletionRow from "@/components/workspace/workspace-deletion-row"
 import useTransferWorkspaceOwnership from "@/hooks/mutations/workspace/use-transfer-workspace-ownership";
 import useUpdateWorkspace from "@/hooks/mutations/workspace/use-update-workspace";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
-import useGetFullWorkspace from "@/hooks/queries/workspace/use-get-full-workspace";
+import useGetWorkspaceUsers from "@/hooks/queries/workspace-users/use-get-workspace-users";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 import { createSaveEchoGuard, sameFormValues } from "@/lib/form-autosave";
 import { toast } from "@/lib/toast";
@@ -128,7 +128,8 @@ function RouteComponent() {
 
   const { user: currentUser } = useAuth();
   const { data: workspace } = useActiveWorkspace();
-  const { data: fullWorkspace } = useGetFullWorkspace({
+  // Every member (the full-organization read stops at 100).
+  const { data: workspaceMembers } = useGetWorkspaceUsers({
     workspaceId: workspace?.id,
   });
   const { mutateAsync: updateWorkspace } = useUpdateWorkspace();
@@ -146,7 +147,7 @@ function RouteComponent() {
 
   // Ownership transfer is owner-only. Eligible recipients are any current
   // member who isn't the owner themselves.
-  const members = fullWorkspace?.members ?? [];
+  const members = workspaceMembers ?? [];
   const currentOwnerMember = members.find((m) => m.role === "owner");
   const eligibleNewOwners = members.filter(
     (m) => m.role !== "owner" && m.userId !== currentUser?.id,

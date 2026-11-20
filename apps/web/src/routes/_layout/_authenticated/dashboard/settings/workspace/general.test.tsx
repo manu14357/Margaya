@@ -41,8 +41,8 @@ vi.mock("@/components/providers/auth-provider/hooks/use-auth", () => ({
 vi.mock("@/hooks/queries/workspace/use-active-workspace", () => ({
   default: () => ({ data: m.workspace }),
 }));
-vi.mock("@/hooks/queries/workspace/use-get-full-workspace", () => ({
-  default: () => ({ data: { members: [] } }),
+vi.mock("@/hooks/queries/workspace-users/use-get-workspace-users", () => ({
+  default: () => ({ data: [] }),
 }));
 vi.mock("@/hooks/use-workspace-permission", () => ({
   useWorkspacePermission: () => ({

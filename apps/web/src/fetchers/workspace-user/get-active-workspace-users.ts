@@ -1,4 +1,4 @@
-import { AUTH_READ, authClient } from "@/lib/auth-client";
+import { listAllWorkspaceMembers } from "./list-all-workspace-members";
 
 export type GetActiveWorkspaceUsersRequest = {
   workspaceId: string;
@@ -7,18 +7,8 @@ export type GetActiveWorkspaceUsersRequest = {
 async function getActiveWorkspaceUsers({
   workspaceId,
 }: GetActiveWorkspaceUsersRequest) {
-  const { data, error } = await authClient.organization.listMembers({
-    query: {
-      organizationId: workspaceId,
-    },
-    fetchOptions: AUTH_READ,
-  });
-
-  if (error) {
-    throw new Error(error.message || "Failed to fetch workspace users");
-  }
-
-  return data || [];
+  // All of them: the server's default page stops at 100.
+  return (await listAllWorkspaceMembers(workspaceId)) || [];
 }
 
 export default getActiveWorkspaceUsers;

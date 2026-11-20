@@ -8,6 +8,7 @@ import InviteTeamMemberModal from "@/components/team/invite-team-member-modal";
 import MembersTable from "@/components/team/members-table";
 import { Button } from "@/components/ui/button";
 import useGetFullWorkspace from "@/hooks/queries/workspace/use-get-full-workspace";
+import useGetWorkspaceUsers from "@/hooks/queries/workspace-users/use-get-workspace-users";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
 
 export const Route = createFileRoute(
@@ -21,7 +22,10 @@ export const Route = createFileRoute(
 function RouteComponent() {
   const { t } = useTranslation();
   const { workspaceId } = Route.useParams();
+  // Invitations come with the workspace; members from the whole list, as
+  // the full-organization read stops at 100.
   const { data: workspace } = useGetFullWorkspace({ workspaceId });
+  const { data: members } = useGetWorkspaceUsers({ workspaceId });
   const { canInviteUsers } = useWorkspacePermission();
   const canInvite = Boolean(canInviteUsers());
   const [isInviteOpen, setIsInviteOpen] = useState(false);
@@ -43,7 +47,7 @@ function RouteComponent() {
       >
         <MembersTable
           workspaceId={workspaceId}
-          users={workspace?.members ?? []}
+          users={members ?? []}
           invitations={workspace?.invitations ?? []}
         />
 
