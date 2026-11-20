@@ -62,7 +62,7 @@ function Entry({
           </span>
         </p>
       ) : (
-        <Activity activity={item} step={1} />
+        <Activity activity={item} step={1} workspaceId={workspaceId} />
       )}
     </li>
   );

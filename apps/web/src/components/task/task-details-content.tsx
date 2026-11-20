@@ -693,7 +693,9 @@ export default function TaskDetailsContent({
           <h2 id={activityHeadingId} className="font-semibold text-sm">
             {t("tasks:detail.activity")}
           </h2>
-          {allActivities.length > 0 && <ActivityFeedControls />}
+          {allActivities.length > 0 && (
+            <ActivityFeedControls workspaceId={workspaceId} />
+          )}
         </div>
 
         {taskId && (
@@ -726,6 +728,7 @@ export default function TaskDetailsContent({
                   commentReactions={commentReactions}
                   commentAuthors={commentAuthors}
                   publicBoard={publicBoard}
+                  workspaceId={workspaceId}
                   replies={
                     activity.parentId
                       ? undefined

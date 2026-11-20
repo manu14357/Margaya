@@ -44,13 +44,18 @@ function isSort(value: unknown): value is ActivitySort {
  * The activity feed's "Show" and "Order" choices, remembered per browser.
  * The trigger names the current filter when it is not "All".
  */
-export default function ActivityFeedControls() {
+export default function ActivityFeedControls({
+  workspaceId,
+}: {
+  /** The page's workspace; the active one when left out. */
+  workspaceId?: string;
+}) {
   const { t } = useTranslation();
   const filter = useUserPreferencesStore((state) => state.activityFilter);
   const sort = useUserPreferencesStore((state) => state.activitySort);
   const setFilter = useUserPreferencesStore((state) => state.setActivityFilter);
   const setSort = useUserPreferencesStore((state) => state.setActivitySort);
-  const hasAgents = useActiveWorkspaceAgentIds().size > 0;
+  const hasAgents = useActiveWorkspaceAgentIds(workspaceId).size > 0;
 
   return (
     <DropdownMenu>
@@ -83,7 +88,7 @@ export default function ActivityFeedControls() {
               // "Agents" only in workspaces that have agents.
               (value) => value !== "agents" || hasAgents || filter === value,
             ).map((value) => (
-              <DropdownMenuRadioItem key={value} value={value}>
+              <DropdownMenuRadioItem key={value} value={value} closeOnClick>
                 {t(FILTER_KEYS[value])}
               </DropdownMenuRadioItem>
             ))}
@@ -99,7 +104,7 @@ export default function ActivityFeedControls() {
             }}
           >
             {ACTIVITY_SORTS.map((value) => (
-              <DropdownMenuRadioItem key={value} value={value}>
+              <DropdownMenuRadioItem key={value} value={value} closeOnClick>
                 {t(SORT_KEYS[value])}
               </DropdownMenuRadioItem>
             ))}

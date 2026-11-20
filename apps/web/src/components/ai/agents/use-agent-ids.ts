@@ -1,10 +1,15 @@
 import { useAgentUserIds } from "@/hooks/queries/ai/use-agents";
 import useActiveWorkspace from "@/hooks/queries/workspace/use-active-workspace";
 
-/** The active workspace's agent user ids (empty until loaded). */
-export function useActiveWorkspaceAgentIds(): ReadonlySet<string> {
+/**
+ * The workspace's agent user ids (empty until loaded): `workspaceId` when
+ * the caller knows it from its route, else the active workspace's.
+ */
+export function useActiveWorkspaceAgentIds(
+  workspaceId?: string,
+): ReadonlySet<string> {
   const { data: workspace } = useActiveWorkspace();
-  return useAgentUserIds(workspace?.id);
+  return useAgentUserIds(workspaceId ?? workspace?.id);
 }
 
 /**

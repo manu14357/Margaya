@@ -5,6 +5,7 @@ import {
   Boxes,
   Calendar,
   CircleAlert,
+  GitBranch,
   History,
   IterationCw,
   MessageSquare,
@@ -17,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { AgentBadge } from "@/components/ai/agents/agent-badge";
 import { AiContentLabel } from "@/components/ai/ai-content-label";
 import EstimateActivityText from "@/components/estimate/estimate-activity-text";
+import { GithubIcon } from "@/components/icons/github-icon";
 import {
   getIntakeActivityIcon,
   INTAKE_SNOOZE_ENDED,
@@ -40,10 +42,12 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../ui/preview-card";
+import { Skeleton } from "../ui/skeleton";
 import { TimelineContent, TimelineItem } from "../ui/timeline";
 import { automationActivityText, automationOf } from "./automation-activity";
 import CommentCard from "./comment-card";
 import CommentThread, { useReplyComposer } from "./comment-thread";
+import { integrationActorOf } from "./integration-activity";
 import {
   getTaskDetailActivityIcon,
   renderTaskDetailActivity,
@@ -654,6 +658,12 @@ type CommentContext = {
   commentAuthors?: ReadonlyMap<string, CommentAuthor>;
   /** The project's public board, passed down once by the task view. */
   publicBoard?: CommentPublicBoard;
+  /**
+   * The feed's workspace, from the page's route. Members (and so actor
+   * names) load from it straight away; the active-workspace store can be
+   * empty when a task is opened directly.
+   */
+  workspaceId?: string;
 };
 
 /** "by Agent X on behalf of Y" (ai-agent attribution), or null. */
@@ -745,6 +755,7 @@ function CommentActivityCard({
   replyLabel,
   replyButtonRef,
   children,
+  workspaceId: feedWorkspaceId,
 }: CommentContext & {
   activity: ActivityItem;
   variant?: "card" | "reply";
@@ -757,9 +768,8 @@ function CommentActivityCard({
 }) {
   const { t } = useTranslation();
   const { data: workspace } = useActiveWorkspace();
-  const { data: workspaceUsers } = useGetWorkspaceUsers({
-    workspaceId: workspace?.id,
-  });
+  const workspaceId = feedWorkspaceId ?? workspace?.id;
+  const { data: workspaceUsers } = useGetWorkspaceUsers({ workspaceId });
 
   const user = activity.userId
     ? workspaceUsers?.find(
@@ -841,7 +851,7 @@ function CommentActivityCard({
       onReply={onReply}
       replyLabel={replyLabel}
       replyButtonRef={replyButtonRef}
-      workspaceId={workspace?.id}
+      workspaceId={workspaceId}
     >
       {children}
     </CommentCard>
@@ -885,7 +895,7 @@ function CommentActivity({
   const { t } = useTranslation();
   const { data: workspace } = useActiveWorkspace();
   const { data: workspaceUsers } = useGetWorkspaceUsers({
-    workspaceId: workspace?.id,
+    workspaceId: context.workspaceId ?? workspace?.id,
   });
   const composer = useReplyComposer();
 
@@ -959,6 +969,7 @@ function Activity(props: ActivityProps) {
       activity={props.activity}
       step={props.step}
       rail={props.rail}
+      workspaceId={props.workspaceId}
     />
   );
 }
@@ -968,22 +979,30 @@ function HistoryActivity({
   activity,
   step,
   rail = false,
+  workspaceId: feedWorkspaceId,
 }: {
   activity: ActivityItem;
   step: number;
   rail?: boolean;
+  workspaceId?: string;
 }) {
   const { t } = useTranslation();
-  const { data: workspace } = useActiveWorkspace();
-  const { data: workspaceUsers } = useGetWorkspaceUsers({
-    workspaceId: workspace?.id,
-  });
+  const { data: workspace, isLoading: isWorkspaceLoading } =
+    useActiveWorkspace();
+  const workspaceId = feedWorkspaceId ?? workspace?.id;
+  const { data: workspaceUsers, isLoading: isMembersLoading } =
+    useGetWorkspaceUsers({ workspaceId });
 
   const user = activity.userId
     ? workspaceUsers?.find(
         (workspaceUser) => workspaceUser.user?.id === activity.userId,
       )
     : null;
+  // Members still loading: a placeholder, not "Someone", for the actor.
+  const isActorLoading =
+    Boolean(activity.userId) &&
+    !user &&
+    (isMembersLoading || (!workspaceId && isWorkspaceLoading));
 
   const actorName = user?.user?.name || t("common:people.someone");
   const viaLine = agentViaOf(activity.eventData) ? (
@@ -999,6 +1018,9 @@ function HistoryActivity({
       (activity.type === "recurred_from" || activity.type === "recurred_to"));
   // Scheduled automations act as "Automation", with a bot for an avatar.
   const automation = automationOf(activity);
+  // An integration webhook (a push or a pull request moving the task) acts
+  // as the account on the other side, with the integration's mark.
+  const integration = automation ? null : integrationActorOf(activity);
 
   return (
     <FeedRow
@@ -1013,10 +1035,21 @@ function HistoryActivity({
           <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
             <Bot className="size-3.5" />
           </span>
+        ) : integration ? (
+          <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-foreground">
+            {integration.source === "github" ? (
+              <GithubIcon className="size-3.5" />
+            ) : (
+              <GitBranch className="size-3.5" aria-hidden />
+            )}
+          </span>
         ) : (
-          !isSystemRow && (
+          !isSystemRow &&
+          (isActorLoading ? (
+            <Skeleton className="size-6 shrink-0 rounded-full" />
+          ) : (
             <ActorAvatar user={user || null} fallbackName={actorName} />
-          )
+          ))
         )}
         <TimelineContent className="min-w-0 text-foreground text-sm leading-6">
           {automation ? (
@@ -1025,15 +1058,32 @@ function HistoryActivity({
                 {t("activity:automation.actor")}
               </span>{" "}
             </>
+          ) : integration ? (
+            <>
+              <span className="font-medium">
+                {integration.login ??
+                  (integration.source === "github"
+                    ? t("activity:comment.github")
+                    : t("activity:integrationActor.gitea"))}
+              </span>{" "}
+            </>
           ) : (
-            !isSystemRow && (
+            !isSystemRow &&
+            (isActorLoading ? (
+              <>
+                <Skeleton
+                  data-testid="activity-actor-loading"
+                  className="inline-block h-3.5 w-20 align-middle"
+                />{" "}
+              </>
+            ) : (
               <>
                 <UserHoverName
                   user={user || null}
                   fallbackName={actorName}
                 />{" "}
               </>
-            )
+            ))
           )}
           {automation && automation.rule !== "custom" ? (
             <span className="text-muted-foreground text-sm">
@@ -1043,11 +1093,18 @@ function HistoryActivity({
             renderActivityContent({
               activity,
               workspaceUsers: workspaceUsers as WorkspaceUser[] | undefined,
-              workspaceId: workspace?.id,
+              workspaceId,
               t,
             })
           )}{" "}
           {viaLine && <>{viaLine} </>}
+          {integration?.login && (
+            <span className="text-muted-foreground text-xs">
+              {integration.source === "github"
+                ? t("activity:integrationActor.viaGithub")
+                : t("activity:integrationActor.viaGitea")}{" "}
+            </span>
+          )}
           {automation?.rule === "custom" && automation.ruleName && (
             <span className="text-muted-foreground text-xs">
               {t("activity:automation.byRule", {
