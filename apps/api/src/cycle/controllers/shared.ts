@@ -125,6 +125,8 @@ export function toCycle(
     isFrozen: snapshot !== null,
     counts,
     pending: snapshot ? snapshot.pending : pendingOf(counts),
+    // Live even when frozen: what a transfer would move right now.
+    transferable: pendingOf(liveCounts ?? EMPTY_COUNTS),
     progress: snapshot ? snapshot.progress : progressOf(counts),
     rollover:
       row.rolledOverAt && row.rolloverResult

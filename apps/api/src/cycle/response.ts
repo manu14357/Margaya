@@ -42,7 +42,12 @@ export const cycleSchema = z
     }),
     counts: cycleCountsSchema,
     pending: z.number().openapi({
-      description: "Unfinished tasks: backlog + unstarted + started.",
+      description:
+        "Unfinished tasks: backlog + unstarted + started. Frozen with the report once tasks were transferred out.",
+    }),
+    transferable: z.number().int().openapi({
+      description:
+        "Unfinished tasks in the cycle right now, even when its report is frozen: what a transfer would move.",
     }),
     progress: z.number().openapi({
       description:

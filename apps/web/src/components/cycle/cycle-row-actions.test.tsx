@@ -92,13 +92,26 @@ describe("CycleRowActions", () => {
   it("offers transfer and archive, but no edit or delete, when completed", async () => {
     permissions.canDeleteCycles = true;
     const items = await openMenu(
-      makeCycle({ status: "completed", pending: 2 }),
+      makeCycle({ status: "completed", transferable: 2 }),
     );
     expect(items).toEqual([
       "cycles:actions.copyLink",
       "cycles:actions.transfer",
       "cycles:actions.archive",
     ]);
+  });
+
+  it("drops transfer once the unfinished tasks moved out", async () => {
+    // The frozen report still says 3 pending; none are left to move.
+    const items = await openMenu(
+      makeCycle({
+        status: "completed",
+        isFrozen: true,
+        pending: 3,
+        transferable: 0,
+      }),
+    );
+    expect(items).not.toContain("cycles:actions.transfer");
   });
 
   it("offers only restore for an archived cycle", async () => {

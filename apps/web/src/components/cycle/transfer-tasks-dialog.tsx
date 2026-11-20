@@ -16,7 +16,7 @@ import CycleFormDialog from "./cycle-form-dialog";
 import { CycleStatusBadge, CycleStatusIcon } from "./cycle-status";
 
 type TransferTasksDialogProps = {
-  cycle: Pick<Cycle, "id" | "projectId" | "pending">;
+  cycle: Pick<Cycle, "id" | "projectId" | "transferable">;
   workspaceId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -82,7 +82,7 @@ export default function TransferTasksDialog({
       <PlanningSearchDialog
         open={open && !isCreateOpen}
         onOpenChange={onOpenChange}
-        title={t("cycles:transfer.title", { count: cycle.pending })}
+        title={t("cycles:transfer.title", { count: cycle.transferable })}
         description={t("cycles:transfer.description")}
         query={query}
         onQueryChange={setQuery}

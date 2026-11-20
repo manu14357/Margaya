@@ -80,9 +80,12 @@ export function canArchiveCycle(cycle: CycleStateLike): boolean {
   return !cycle.archivedAt && cycle.status === "completed";
 }
 
-/** A completed, unarchived cycle with unfinished tasks offers a transfer. */
-export function canTransfer(cycle: CycleStateLike & { pending: number }) {
-  return canArchiveCycle(cycle) && cycle.pending > 0;
+/**
+ * A completed, unarchived cycle with unfinished tasks still in it offers a
+ * transfer. `transferable` is live, unlike the frozen report numbers.
+ */
+export function canTransfer(cycle: CycleStateLike & { transferable: number }) {
+  return canArchiveCycle(cycle) && cycle.transferable > 0;
 }
 
 /**

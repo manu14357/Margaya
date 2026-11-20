@@ -11,12 +11,12 @@ import {
 
 function cycle(
   status: CycleStatus,
-  { archived = false, pending = 0, ownerId = "owner" } = {},
+  { archived = false, transferable = 0, ownerId = "owner" } = {},
 ) {
   return {
     status,
     archivedAt: archived ? "2026-01-01T00:00:00.000Z" : null,
-    pending,
+    transferable,
     ownerId,
   };
 }
@@ -48,12 +48,18 @@ describe("cycle status rules", () => {
   });
 
   it("offers a transfer only with unfinished tasks in a completed cycle", () => {
-    expect(canTransfer(cycle("completed", { pending: 2 }))).toBe(true);
-    expect(canTransfer(cycle("completed", { pending: 0 }))).toBe(false);
-    expect(canTransfer(cycle("current", { pending: 2 }))).toBe(false);
+    expect(canTransfer(cycle("completed", { transferable: 2 }))).toBe(true);
+    expect(canTransfer(cycle("completed", { transferable: 0 }))).toBe(false);
+    expect(canTransfer(cycle("current", { transferable: 2 }))).toBe(false);
     expect(
-      canTransfer(cycle("completed", { pending: 2, archived: true })),
+      canTransfer(cycle("completed", { transferable: 2, archived: true })),
     ).toBe(false);
+  });
+
+  it("stops offering a transfer once the tasks moved, despite the frozen report", () => {
+    // After a transfer the report keeps pending: 3, but nothing is left.
+    const frozen = { ...cycle("completed"), pending: 3, transferable: 0 };
+    expect(canTransfer(frozen)).toBe(false);
   });
 
   it("lets admins or the owner delete open cycles", () => {

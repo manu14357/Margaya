@@ -111,7 +111,9 @@ export default function CycleBoardBody({
             <Alert variant="warning" className="m-3 mb-0 w-auto">
               <ArrowRightLeft />
               <AlertDescription>
-                {t("cycles:detail.transferBanner", { count: cycle.pending })}
+                {t("cycles:detail.transferBanner", {
+                  count: cycle.transferable,
+                })}
               </AlertDescription>
               <AlertAction>
                 <Button

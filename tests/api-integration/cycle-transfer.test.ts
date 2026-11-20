@@ -156,6 +156,8 @@ describe("API integration: cycle transfer", () => {
       counts: before.counts,
       pending: 3,
       progress: 25,
+      // Nothing unfinished is left, so the transfer offer goes away.
+      transferable: 0,
     });
     const listed = (
       (await (

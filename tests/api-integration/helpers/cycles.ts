@@ -33,6 +33,7 @@ export type CycleJson = {
     cancelled: number;
   };
   pending: number;
+  transferable: number;
   progress: number;
 };
 

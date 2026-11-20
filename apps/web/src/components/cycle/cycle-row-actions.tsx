@@ -167,7 +167,7 @@ export default function CycleRowActions({
           {showTransfer && (
             <DropdownMenuItem onClick={() => setDialog("transfer")}>
               <ArrowRightLeft />
-              {t("cycles:actions.transfer", { count: cycle.pending })}
+              {t("cycles:actions.transfer", { count: cycle.transferable })}
             </DropdownMenuItem>
           )}
           {canUpdate && !isArchived && (

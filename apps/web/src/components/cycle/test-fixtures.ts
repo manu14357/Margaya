@@ -25,6 +25,7 @@ export function makeCycle(overrides: Partial<Cycle> = {}): Cycle {
       cancelled: 0,
     },
     pending: 3,
+    transferable: 3,
     progress: 25,
     rollover: null,
     createdBy: "owner-1",
