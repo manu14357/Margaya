@@ -8,7 +8,7 @@ import {
   renderContext,
   resolveAiScopeFor,
 } from "../ai/context";
-import { isAiError } from "../ai/errors";
+import { type AiError, isAiError } from "../ai/errors";
 import { aiComplete } from "../ai/gateway";
 import { getAiInstanceConfig } from "../ai/instance-config";
 import { buildSystemPrompt, wrapUntrusted } from "../ai/prompt";
@@ -184,6 +184,14 @@ export function failureNote(code: string, error: unknown): string {
                   ? "I'm not set up to work in this project. An admin can add it to my projects in the agent settings."
                   : `The run stopped (${code}).`;
   return `I couldn't finish this. ${reason} Admins can check the run in the Agent Desk.`;
+}
+
+/**
+ * A failed model call in words: Margaya's fixed message plus the scrubbed
+ * excerpt of the provider's answer (AiError.detail), never prompt text.
+ */
+export function aiFailureReason(error: AiError): string {
+  return error.detail ? `${error.message}. ${error.detail}` : error.message;
 }
 
 async function addStep(step: Step) {
@@ -631,6 +639,20 @@ export async function executeRun(run: AiRunRow): Promise<void> {
         agentId: agent.id,
         runId: run.id,
         forceLocal: agent.providerOverride === "local",
+      }).catch(async (error: unknown) => {
+        // The run keeps only a code; the failed step says why, so the
+        // Agent Desk can show it.
+        if (isAiError(error)) {
+          seq += 1;
+          await addStep({
+            runId: run.id,
+            seq,
+            kind: "model",
+            resultStatus: "error",
+            resultRef: { code: error.code, reason: aiFailureReason(error) },
+          }).catch(() => {});
+        }
+        throw error;
       });
       seq += 1;
       await addStep({

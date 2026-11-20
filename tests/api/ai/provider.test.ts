@@ -9,6 +9,7 @@ import {
 } from "../../../apps/api/src/ai/provider/fake";
 import {
   createOpenAiCompatibleProvider,
+  forEndpoint,
   openAiBody,
 } from "../../../apps/api/src/ai/provider/openai-compatible";
 import type { ChatDelta, ChatRequest } from "../../../apps/api/src/ai/types";
@@ -162,6 +163,46 @@ describe("fake provider", () => {
     expect(a).toEqual(b);
     expect(Math.hypot(...(a ?? []))).toBeCloseTo(1, 6);
     expect(fakeEmbedding("x")).not.toEqual(fakeEmbedding("y"));
+  });
+});
+
+describe("OpenAI-compatible token limit", () => {
+  it("sends max_completion_tokens to OpenAI's own API", () => {
+    const body = forEndpoint(
+      openAiBody(request({ maxTokens: 300 })),
+      "https://api.openai.com/v1",
+    );
+    expect(body).not.toHaveProperty("max_tokens");
+    expect(body.max_completion_tokens).toBe(300);
+  });
+
+  it("keeps max_tokens for other compatible servers", () => {
+    const body = forEndpoint(
+      openAiBody(request({ maxTokens: 300 })),
+      "http://localhost:11434/v1",
+    );
+    expect(body.max_tokens).toBe(300);
+    expect(body).not.toHaveProperty("max_completion_tokens");
+  });
+
+  it("turns reasoning off for tool calls on OpenAI's own API only", () => {
+    const tools = [
+      {
+        name: "read_task",
+        description: "Read a task",
+        inputSchema: { properties: {} },
+      },
+    ];
+    const withTools = openAiBody(request({ tools }));
+    expect(
+      forEndpoint(withTools, "https://api.openai.com/v1").reasoning_effort,
+    ).toBe("none");
+    expect(
+      forEndpoint(withTools, "http://localhost:11434/v1"),
+    ).not.toHaveProperty("reasoning_effort");
+    expect(
+      forEndpoint(openAiBody(request()), "https://api.openai.com/v1"),
+    ).not.toHaveProperty("reasoning_effort");
   });
 });
 

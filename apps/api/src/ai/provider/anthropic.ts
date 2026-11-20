@@ -1,5 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { AiError } from "../errors";
+import {
+  AiError,
+  BILLING_MESSAGE,
+  isBillingFailure,
+  providerErrorDetail,
+} from "../errors";
 import type {
   AiProvider,
   ChatContent,
@@ -146,39 +151,65 @@ function stopReason(reason: string | null | undefined): StopReason {
   return "other";
 }
 
+/** The provider's own explanation, scrubbed, for logs and run history. */
+function apiErrorDetail(error: InstanceType<typeof Anthropic.APIError>) {
+  const body = error.error;
+  return providerErrorDetail(
+    typeof error.status === "number" ? error.status : null,
+    body && typeof body === "object" ? JSON.stringify(body) : error.message,
+  );
+}
+
 /** Maps SDK errors to AiErrors; provider text never leaves the server. */
 export function anthropicError(error: unknown): unknown {
   if (error instanceof Anthropic.APIUserAbortError) return error;
+  if (error instanceof Anthropic.APIConnectionError) {
+    return new AiError("AI_PROVIDER_ERROR", "The AI provider is unreachable", {
+      detail: error.name,
+    });
+  }
+  if (!(error instanceof Anthropic.APIError)) return error;
+  const detail = apiErrorDetail(error);
+  const status = typeof error.status === "number" ? error.status : 0;
+  // An account out of credit answers 400 with a billing message.
+  if (isBillingFailure(status, detail)) {
+    return new AiError("AI_NOT_CONFIGURED", BILLING_MESSAGE, { detail });
+  }
   if (error instanceof Anthropic.AuthenticationError) {
     return new AiError(
       "AI_NOT_CONFIGURED",
       "The AI provider rejected the API key",
+      { detail },
     );
   }
   if (error instanceof Anthropic.PermissionDeniedError) {
     return new AiError(
       "AI_NOT_CONFIGURED",
       "The API key may not use this model",
+      { detail },
     );
   }
   if (error instanceof Anthropic.NotFoundError) {
-    return new AiError("AI_NOT_CONFIGURED", "The AI model was not found");
+    return new AiError("AI_NOT_CONFIGURED", "The AI model was not found", {
+      detail,
+    });
   }
   if (error instanceof Anthropic.RateLimitError) {
     return new AiError("AI_RATE_LIMITED", "The AI provider is rate limiting", {
       retryAfterSeconds: 30,
+      detail,
     });
   }
   if (error instanceof Anthropic.BadRequestError) {
     return new AiError(
       "AI_PROVIDER_ERROR",
       "The AI provider refused the request",
+      { detail },
     );
   }
-  if (error instanceof Anthropic.APIError) {
-    return new AiError("AI_PROVIDER_ERROR", "The AI provider failed");
-  }
-  return error;
+  return new AiError("AI_PROVIDER_ERROR", "The AI provider failed", {
+    detail,
+  });
 }
 
 export function createAnthropicProvider(options: {

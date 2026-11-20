@@ -1,5 +1,10 @@
 import { assertPublicDestination } from "../../utils/assert-public-destination";
-import { AiError } from "../errors";
+import {
+  AiError,
+  BILLING_MESSAGE,
+  isBillingFailure,
+  providerErrorDetail,
+} from "../errors";
 import type {
   AiProvider,
   ChatContent,
@@ -169,37 +174,94 @@ export function openAiBody(request: ChatRequest) {
   };
 }
 
+/**
+ * OpenAI's own API refuses max_tokens on its newer models and wants
+ * max_completion_tokens, and its reasoning models only take function tools
+ * on chat completions with reasoning_effort "none". Other compatible servers
+ * (Ollama, older vLLM) know neither, so adjust the body for api.openai.com
+ * alone.
+ */
+export function forEndpoint<
+  T extends { max_tokens?: number; tools?: unknown[] },
+>(
+  body: T,
+  baseUrl: string,
+): Omit<T, "max_tokens"> & {
+  max_tokens?: number;
+  max_completion_tokens?: number;
+  reasoning_effort?: "none";
+} {
+  let host = "";
+  try {
+    host = new URL(baseUrl).hostname;
+  } catch {}
+  if (host !== "api.openai.com") return body;
+  const { max_tokens, ...rest } = body;
+  return {
+    ...rest,
+    ...(max_tokens === undefined ? {} : { max_completion_tokens: max_tokens }),
+    ...(body.tools?.length ? { reasoning_effort: "none" as const } : {}),
+  };
+}
+
 function endpoint(baseUrl: string, path: string): string {
   return `${baseUrl.replace(/\/+$/, "")}/${path}`;
 }
 
-function statusError(status: number, body = ""): AiError {
+/**
+ * The error for a non-2xx answer. The message is fixed text the client may
+ * see; what the server said goes only into `detail` (logs and run history).
+ * Exported for tests.
+ */
+export function statusError(status: number, body = ""): AiError {
+  const detail = providerErrorDetail(status, body);
+  // Checked before 429: some providers answer an empty account with 429.
+  if (isBillingFailure(status, body)) {
+    return new AiError("AI_NOT_CONFIGURED", BILLING_MESSAGE, { detail });
+  }
   // vLLM serves chat without tool calling unless started with a tool-call
   // parser; agents can't work then. A fixed message, never the body itself.
   if (status === 400 && /tool[ _-]?(choice|call)/i.test(body)) {
     return new AiError(
       "AI_NOT_CONFIGURED",
       "The AI server does not accept tool calls, which agents need. Start it with tool calling enabled (vLLM: --enable-auto-tool-choice --tool-call-parser <parser for the model>)",
+      { detail },
     );
   }
   if (status === 401 || status === 403) {
     return new AiError(
       "AI_NOT_CONFIGURED",
       "The AI endpoint rejected the API key",
+      { detail },
     );
   }
   if (status === 404) {
     return new AiError(
       "AI_NOT_CONFIGURED",
       "The AI endpoint or model was not found",
+      { detail },
     );
   }
   if (status === 429) {
     return new AiError("AI_RATE_LIMITED", "The AI endpoint is rate limiting", {
       retryAfterSeconds: 30,
+      detail,
     });
   }
-  return new AiError("AI_PROVIDER_ERROR", `The AI endpoint failed (${status})`);
+  return new AiError(
+    "AI_PROVIDER_ERROR",
+    status === 400
+      ? "The AI endpoint refused the request (400)"
+      : `The AI endpoint failed (${status})`,
+    { detail },
+  );
+}
+
+/** Why a request never got an answer: the network error's code only. */
+function unreachableDetail(error: unknown): string | undefined {
+  const cause = (error as { cause?: { code?: unknown } } | null)?.cause;
+  if (typeof cause?.code === "string") return cause.code;
+  return error instanceof Error ? error.name : undefined;
 }
 
 function finishReason(reason: string | null | undefined): StopReason {
@@ -368,10 +430,13 @@ export function createOpenAiCompatibleProvider(
       });
     } catch (error) {
       if (signal.aborted) throw error;
-      throw new AiError("AI_PROVIDER_ERROR", "The AI endpoint is unreachable");
+      throw new AiError("AI_PROVIDER_ERROR", "The AI endpoint is unreachable", {
+        detail: unreachableDetail(error),
+      });
     }
     if (!response.ok) {
-      // Drain a little so the connection can be reused; never surface it.
+      // Drain a little so the connection can be reused. Only a scrubbed
+      // excerpt is kept (AiError.detail), never sent to the client.
       const text = await response
         .text()
         .then((text) => text.slice(0, MAX_ERROR_BODY))
@@ -384,14 +449,12 @@ export function createOpenAiCompatibleProvider(
   return {
     id: "openai_compatible",
     async *stream(request, signal): AsyncIterable<ChatDelta> {
+      const body = forEndpoint(openAiBody(request), options.baseUrl);
       const response = await post(
         "chat/completions",
         options.disableThinking
-          ? {
-              ...openAiBody(request),
-              chat_template_kwargs: { enable_thinking: false },
-            }
-          : openAiBody(request),
+          ? { ...body, chat_template_kwargs: { enable_thinking: false } }
+          : body,
         signal,
       );
       const visible = thinkFilter();

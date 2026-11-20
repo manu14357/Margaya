@@ -511,6 +511,17 @@ export async function aiStream(input: AiCallInput): Promise<AiStream> {
           "The AI request was cancelled",
         );
       } else if (error instanceof AiError) {
+        // `detail` is a scrubbed excerpt of the provider's answer; the
+        // prompt and the answer text are never logged.
+        console.error("AI provider call failed", {
+          feature: input.feature,
+          provider: meta.provider,
+          model: meta.model,
+          destination: meta.destination,
+          code: error.code,
+          message: error.message,
+          detail: error.detail,
+        });
         failure = error;
       } else {
         // Provider errors may carry request details: log the kind only.
@@ -758,7 +769,16 @@ export async function aiEmbed(input: AiEmbedInput): Promise<AiEmbedResult> {
     };
   } catch (error) {
     if (input.signal?.aborted) status = "cancelled";
-    if (error instanceof AiError) throw error;
+    if (error instanceof AiError) {
+      console.error("AI embeddings call failed", {
+        provider: destination.provider,
+        model: destination.model,
+        code: error.code,
+        message: error.message,
+        detail: error.detail,
+      });
+      throw error;
+    }
     // Provider errors may carry request details: log the kind only.
     console.error("AI embeddings call failed", {
       provider: destination.provider,
