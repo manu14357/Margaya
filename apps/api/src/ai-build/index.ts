@@ -122,7 +122,7 @@ const applyRoute = createRoute({
   tags: TAGS,
   summary: "Create a reviewed plan",
   description:
-    "Creates a reviewed proposal item by item through the ordinary create routes (project, columns, cycles, modules, tasks, labels, sub-tasks), under the caller's own permissions and with their usual events. A failed item is reported and the rest kept. The report carries an undo token valid for an hour. Streams Server-Sent Events (progress {done, total, kind, name, ok}, then done with the report, or error); send Accept: application/json or ?stream=false for the report as one JSON body. Makes no model call.",
+    "Creates a reviewed proposal item by item through the ordinary create routes (project, columns, cycles, modules, tasks, labels, sub-tasks), under the caller's own permissions and with their usual events. A new project whose plan has estimates starts with the estimates feature on and an active Story points system, so the estimates land. A failed item is reported and the rest kept. The report carries an undo token valid for an hour. Streams Server-Sent Events (progress {done, total, kind, name, ok}, then done with the report, or error); send Accept: application/json or ?stream=false for the report as one JSON body. Makes no model call.",
   middleware: [
     workspaceAccess.fromBody(),
     requireAiUse,

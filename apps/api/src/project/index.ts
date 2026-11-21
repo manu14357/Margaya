@@ -1,5 +1,8 @@
 import { HTTPException } from "hono/http-exception";
 import { requireEntitlement } from "../billing/require-entitlement-middleware";
+import { invalidValues } from "../estimate/controllers/shared";
+import { estimateValidationErrorSchema } from "../estimate/response";
+import { validateEstimateValues } from "../estimate/validate-points";
 import {
   apiRouter,
   type BaseVariables,
@@ -67,7 +70,7 @@ const createProjectRoute = createRoute({
   tags: ["Projects"],
   summary: "Create project",
   description:
-    "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on. With fromProjectId the project starts from another project's setup instead (and optionally its task templates and open tasks); no tasks are copied unless copy.openTasks is true. With template it starts from a built-in template (GET /project-template): its statuses, labels, fields, views, rules, pages and more are created in the same step, in the creator's language. features sets switches on top of either. Creating from a template or with features needs only project:create: the setup a template writes (statuses, views, rules, pages, modules and feature switches) is part of creating the project, the same as starting from an existing project. New workspace labels need label:create (without it only existing labels are used), and example tasks need task:create.",
+    "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on. With fromProjectId the project starts from another project's setup instead (and optionally its task templates and open tasks); no tasks are copied unless copy.openTasks is true. With template it starts from a built-in template (GET /project-template): its statuses, labels, fields, views, rules, pages and more are created in the same step, in the creator's language. features sets switches on top of either. A blank project (no template or fromProjectId) can start with an estimate system: it becomes the active system and turns estimates on. Creating from a template, with features or with an estimate system needs only project:create: the setup a template writes (statuses, views, rules, pages, modules, estimates and feature switches) is part of creating the project, the same as starting from an existing project. New workspace labels need label:create (without it only existing labels are used), and example tasks need task:create.",
   middleware: [
     workspaceAccess.fromBody(),
     requireWorkspacePermission({ project: ["create"] }),
@@ -81,9 +84,14 @@ const createProjectRoute = createRoute({
   },
   responses: {
     200: jsonResponse("The created project", createdProjectSchema),
-    400: errorResponse(
-      "Invalid body, workspace ID could not be determined, copy without fromProjectId, template together with fromProjectId, or more than 500 open tasks to copy",
-    ),
+    400: {
+      description:
+        "Invalid body, workspace ID could not be determined, copy without fromProjectId, template together with fromProjectId, estimate together with template or fromProjectId, or more than 500 open tasks to copy (text); or invalid estimate values (JSON, one error per value)",
+      content: {
+        "application/json": { schema: estimateValidationErrorSchema },
+        "text/plain": { schema: z.string() },
+      },
+    },
     403: errorResponse(
       "No workspace access, missing project:create permission, or task:create when copying open tasks or adding a template's example tasks",
     ),
@@ -297,12 +305,25 @@ const project = apiRouter<BaseVariables & { workspaceId: string }>()
       visibility,
       template,
       features,
+      estimate,
     } = c.req.valid("json");
     const workspaceId = c.get("workspaceId");
     if (template && fromProjectId) {
       throw new HTTPException(400, {
         message: "Choose a template or a source project, not both",
       });
+    }
+    if (estimate && (template || fromProjectId)) {
+      throw new HTTPException(400, {
+        message:
+          "estimate: only for a blank project; a template or source project brings its own",
+      });
+    }
+    const estimateValues = estimate
+      ? validateEstimateValues(estimate.type, estimate.values)
+      : null;
+    if (estimateValues && !estimateValues.ok) {
+      throw invalidValues(estimateValues.errors);
     }
     // A restricted source the caller cannot see reads as missing.
     if (fromProjectId) {
@@ -338,6 +359,14 @@ const project = apiRouter<BaseVariables & { workspaceId: string }>()
         visibility,
         features,
         template: template ? await templateOptionsFor(c, template) : undefined,
+        estimate:
+          estimate && estimateValues?.ok
+            ? {
+                name: estimate.name,
+                type: estimate.type,
+                points: estimateValues.points,
+              }
+            : undefined,
       },
     );
     return c.json(newProject, 200);

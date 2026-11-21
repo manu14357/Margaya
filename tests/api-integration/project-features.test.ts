@@ -236,4 +236,73 @@ describe("API integration: project features", () => {
       200, 200, 200, 200,
     ]);
   });
+
+  it("starts a blank project with an active estimate system on project:create alone", async () => {
+    const owner = await createWorkspaceMember({ role: "owner" });
+    // Members may create projects but not manage estimates afterwards.
+    const member = await addWorkspaceMember(owner.workspace.id, "member");
+    mockAuthenticatedSession(member);
+    const { app } = createApp();
+    const create = (body: Record<string, unknown>) =>
+      app.request(
+        "/api/project",
+        json("POST", {
+          name: "Sized",
+          workspaceId: owner.workspace.id,
+          icon: "Layout",
+          ...body,
+        }),
+      );
+
+    const created = await create({
+      slug: "szd",
+      estimate: {
+        name: "Story points",
+        type: "points",
+        values: ["8", "1", "2", "3", "5", "13"],
+      },
+    });
+    expect(created.status, await created.clone().text()).toBe(200);
+    const project = (await created.json()) as {
+      id: string;
+      estimatesEnabled: boolean;
+    };
+    expect(project.estimatesEnabled).toBe(true);
+
+    const list = (await (
+      await app.request(`/api/estimate/${project.id}`)
+    ).json()) as {
+      activeEstimateId: string | null;
+      estimates: { id: string; name: string; points: { value: string }[] }[];
+    };
+    const [system] = list.estimates;
+    expect(list.activeEstimateId).toBe(system?.id);
+    expect(system?.name).toBe("Story points");
+    expect(system?.points.map((point) => point.value)).toEqual([
+      "1",
+      "2",
+      "3",
+      "5",
+      "8",
+      "13",
+    ]);
+
+    // Invalid values answer per value, and nothing is created.
+    const invalid = await create({
+      slug: "bad",
+      estimate: { name: "Points", type: "points", values: ["1", "x"] },
+    });
+    expect(invalid.status).toBe(400);
+    expect(await invalid.json()).toMatchObject({
+      errors: [{ index: 1, code: "not_numeric" }],
+    });
+
+    // A template or a source project brings its own setup.
+    const withSource = await create({
+      slug: "src",
+      fromProjectId: project.id,
+      estimate: { name: "Points", type: "points", values: ["1", "2"] },
+    });
+    expect(withSource.status).toBe(400);
+  });
 });

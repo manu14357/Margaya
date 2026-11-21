@@ -69,7 +69,7 @@ export const buildReportSchema = z
     }),
     estimatesSkipped: z.boolean().openapi({
       description:
-        "Estimates were left out: the project has no active points estimate system.",
+        "Estimates were left out: the project has no active points estimate system. A new project starts with one (Story points: 1, 2, 3, 5, 8, 13) when the plan has estimates.",
     }),
     failures: z.array(
       z.object({

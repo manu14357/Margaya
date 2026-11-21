@@ -1,6 +1,14 @@
 import { eq, max } from "drizzle-orm";
 import db from "../../database";
-import { columnTable, projectTable } from "../../database/schema";
+import {
+  columnTable,
+  estimatePointTable,
+  estimateTable,
+  projectTable,
+} from "../../database/schema";
+import { arrangePoints } from "../../estimate/positions";
+import type { EstimateType } from "../../estimate/types";
+import type { CanonicalValue } from "../../estimate/validate-points";
 import { publishEvent } from "../../events";
 import {
   type ApplyResult,
@@ -68,6 +76,11 @@ export type CreateProjectOptions = {
   /** Feature switches; they win over a template's or a source's. */
   features?: Partial<Record<ProjectFeature, boolean>>;
   template?: TemplateApplyOptions;
+  /**
+   * An active estimate system to start with, its values already validated.
+   * Only for a blank project: templates and sources bring their own.
+   */
+  estimate?: { name: string; type: EstimateType; points: CanonicalValue[] };
 };
 
 export type CreatedProject = typeof projectTable.$inferSelect & {
@@ -143,6 +156,8 @@ export async function createProjectInTransaction(
       position: maxPosition === null ? 0 : maxPosition + 1,
       ...(source ? await copiedProjectFields(tx, source) : {}),
       ...templateFields,
+      // A system sent along turns estimates on; an explicit switch wins.
+      ...(options.estimate ? { estimatesEnabled: true } : {}),
       ...requestedFeatures,
       visibility,
     })
@@ -208,7 +223,38 @@ export async function createProjectInTransaction(
       isFinal: column.isFinal,
     })),
   );
+  if (options.estimate) {
+    await insertActiveEstimate(tx, createdProject.id, options.estimate, userId);
+  }
   return { project: createdProject, labelsInserted: false };
+}
+
+/** The new project's first, active estimate system and its values. */
+async function insertActiveEstimate(
+  tx: Transaction,
+  projectId: string,
+  estimate: NonNullable<CreateProjectOptions["estimate"]>,
+  userId: string | undefined,
+) {
+  const [row] = await tx
+    .insert(estimateTable)
+    .values({
+      projectId,
+      name: estimate.name,
+      type: estimate.type,
+      isActive: true,
+      createdBy: userId ?? null,
+    })
+    .returning({ id: estimateTable.id });
+  if (!row) throw new Error("Estimate insert returned no row");
+  await tx.insert(estimatePointTable).values(
+    arrangePoints(estimate.type, estimate.points).map((point) => ({
+      estimateId: row.id,
+      value: point.value,
+      numericValue: point.numericValue,
+      position: point.position,
+    })),
+  );
 }
 
 /** The workspace's time zone and today's local date there. */

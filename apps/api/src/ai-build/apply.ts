@@ -26,14 +26,15 @@ type CreatedProject = {
   icon: string | null;
   isPublic?: boolean | null;
 };
+type EstimatePoints = { id: string; numericValue: number | null }[];
 type EstimateList = {
   activeEstimateId: string | null;
-  estimates: {
-    id: string;
-    type: string;
-    points: { id: string; numericValue: number | null }[];
-  }[];
+  estimates: { id: string; type: string; points: EstimatePoints }[];
 };
+
+/** The scale the planner estimates in (see proposal.ts). */
+export const BUILD_POINTS_SCALE = ["1", "2", "3", "5", "8", "13"];
+const BUILD_POINTS_NAME = "Story points";
 
 /** How many progress steps a proposal takes (project, columns, ...). */
 export function buildStepCount(
@@ -77,6 +78,7 @@ export async function applyBuild(input: {
 }): Promise<BuildReport> {
   const { call, workspaceId, proposal, ledger } = input;
   const newProject = !input.projectId;
+  const hasEstimates = proposal.tasks.some((task) => task.estimate !== null);
   const report: BuildReport = {
     projectId: input.projectId,
     total: buildStepCount(proposal, newProject),
@@ -137,6 +139,17 @@ export async function applyBuild(input: {
         workspaceId,
         icon: "Layout",
         slug: key,
+        // Estimates only land on an active points system: a new project
+        // starts with one (and the feature on), as part of creating it.
+        ...(hasEstimates
+          ? {
+              estimate: {
+                name: BUILD_POINTS_NAME,
+                type: "points",
+                values: BUILD_POINTS_SCALE,
+              },
+            }
+          : {}),
       });
       if (created.ok) {
         projectId = created.data.id;
@@ -253,9 +266,10 @@ export async function applyBuild(input: {
     await step("module", module.name, created.ok);
   }
 
-  // 5. Estimates map onto the active points system, when there is one.
-  let points: EstimateList["estimates"][number]["points"] | null = null;
-  if (proposal.tasks.some((task) => task.estimate !== null)) {
+  // 5. Estimates map onto the active points system, when there is one (a
+  // project created above started with the planner's scale).
+  let points: EstimatePoints | null = null;
+  if (hasEstimates) {
     const estimates = await call<EstimateList>("GET", `/estimate/${projectId}`);
     const active = estimates.ok
       ? estimates.data.estimates.find(

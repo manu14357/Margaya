@@ -1,3 +1,4 @@
+import { createEstimateBody } from "../estimate/schema";
 import { z } from "../openapi";
 import {
   createFromTemplateInput,
@@ -73,6 +74,10 @@ export const createProjectBody = z.object({
     .openapi({ description: "Only with fromProjectId." }),
   template: createFromTemplateInput.optional(),
   features: projectFeaturesInput.optional(),
+  estimate: createEstimateBody.optional().openapi({
+    description:
+      "An estimate system to start with, validated like POST /estimate/{projectId}. It becomes the project's active system and turns the estimates feature on (unless features.estimates says otherwise). Not with template or fromProjectId, which bring their own.",
+  }),
 });
 
 const projectMemberField = (description: string) =>

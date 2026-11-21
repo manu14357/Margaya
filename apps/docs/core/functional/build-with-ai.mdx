@@ -56,7 +56,7 @@ Margaya creates the plan item by item and shows the progress. Every item goes th
 - A new project needs the permission to create projects. Building into a project needs the permission to create tasks, and that project must be one you can see. A [restricted project](/core/functional/restricted-projects) you are not a member of can't be chosen.
 - New columns and the project description need the permission to update projects. Without it they are left out of the review.
 - Cycles and modules need their features turned on for the project, and the permission to create them. A cycle whose dates overlap an existing cycle is refused.
-- Estimates are applied when the project uses a points estimate system. The nearest value is used. Otherwise they are left out, and the summary says so.
+- Estimates are applied when the project uses a points estimate system. The nearest value is used. A new project gets a "Story points" system (1, 2, 3, 5, 8, 13) with estimates turned on. Otherwise they are left out, and the summary says so.
 
 If some items can't be created, the rest are kept. The summary lists what was created and each item that failed, with the reason. Created items appear for your teammates right away, with the usual notifications, activity and webhooks.
 
