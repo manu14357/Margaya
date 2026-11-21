@@ -212,6 +212,19 @@ describe("API integration: delivery forecast", () => {
       remaining: 1,
     });
 
+    // A cycle without tasks has nothing to finish, so it isn't "done".
+    const empty = await ok(
+      await s.get(s.member, `/cycle/${s.cycle.id}/forecast`),
+    );
+    expect(empty).toMatchObject({ status: "empty", remaining: 0 });
+    const emptyModule = await ok(
+      await s.get(s.member, `/module/${s.module.id}/forecast`),
+    );
+    expect(emptyModule).toMatchObject({ status: "empty", remaining: 0 });
+
+    await addToCycle(s, [
+      await s.createTask({ status: "done", completedAt: noon(-1) }),
+    ]);
     const done = await ok(
       await s.get(s.member, `/cycle/${s.cycle.id}/forecast`),
     );

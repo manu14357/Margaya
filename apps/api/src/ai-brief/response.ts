@@ -56,7 +56,7 @@ export const briefFactsSchema = z
     ),
     forecast: z
       .object({
-        status: z.enum(["ok", "complete", "insufficient_history"]),
+        status: z.enum(["ok", "complete", "insufficient_history", "empty"]),
         remaining: z.number().int(),
         p50: z.string().nullable(),
         p85: z.string().nullable(),

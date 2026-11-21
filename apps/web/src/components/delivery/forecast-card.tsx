@@ -94,6 +94,13 @@ function MethodPopover({ forecast }: { forecast: DeliveryForecast }) {
 
 function ForecastBody({ forecast }: { forecast: DeliveryForecast }) {
   const { t } = useTranslation();
+  if (forecast.status === "empty") {
+    return (
+      <p className="text-muted-foreground text-xs leading-relaxed">
+        {t("delivery:forecast.empty")}
+      </p>
+    );
+  }
   if (forecast.status === "complete") {
     return (
       <p className="flex items-center gap-1.5 text-sm">
@@ -173,7 +180,7 @@ export default function ForecastCard({
           {t("delivery:forecast.title")}
         </h3>
         <div className="flex items-center gap-1">
-          {data && data.status !== "complete" && (
+          {data && data.status !== "complete" && data.status !== "empty" && (
             <span className="text-muted-foreground text-xs tabular-nums">
               {t("delivery:forecast.open", { count: data.remaining })}
             </span>

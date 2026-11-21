@@ -289,6 +289,8 @@ async function deliveryLines(
       );
     } else if (f.status === "complete") {
       lines.push("Forecast: no open tasks left.");
+    } else if (f.status === "empty") {
+      lines.push("Forecast: no tasks in scope yet.");
     } else {
       lines.push("Forecast: not enough completion history to forecast yet.");
     }

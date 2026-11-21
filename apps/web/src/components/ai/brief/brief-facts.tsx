@@ -41,7 +41,9 @@ export default function BriefFactsSummary({ facts }: { facts: BriefFacts }) {
         ? t("ai:brief.facts.forecastValue", { date: formatDateMedium(p85) })
         : forecast?.status === "complete"
           ? t("ai:brief.facts.forecastDone")
-          : t("ai:brief.facts.forecastNone"),
+          : forecast?.status === "empty"
+            ? t("ai:brief.facts.forecastEmpty")
+            : t("ai:brief.facts.forecastNone"),
     ],
     [t("ai:brief.facts.risks"), String(risks)],
   ];

@@ -156,6 +156,14 @@ describe("ForecastCard", () => {
     ).toBeInTheDocument();
   });
 
+  it("doesn't call an empty scope done", () => {
+    m.query.data = forecast({ status: "empty", remaining: 0 });
+    renderCard();
+    expect(screen.getByText("delivery:forecast.empty")).toBeInTheDocument();
+    expect(screen.queryByText("delivery:forecast.complete")).toBeNull();
+    expect(screen.queryByText("delivery:forecast.open")).toBeNull();
+  });
+
   it("offers a retry when loading fails", () => {
     m.query = {
       data: undefined,

@@ -26,10 +26,12 @@ const forecastPoint = z
 export const deliveryForecastSchema = z
   .object({
     scope: scopeSchema,
-    status: z.enum(["ok", "insufficient_history", "complete"]).openapi({
-      description:
-        "ok: percentiles are set. insufficient_history: too little history to forecast (see reason). complete: no open tasks are left.",
-    }),
+    status: z
+      .enum(["ok", "insufficient_history", "complete", "empty"])
+      .openapi({
+        description:
+          "ok: percentiles are set. insufficient_history: too little history to forecast (see reason). complete: no open tasks are left. empty: the scope has no tasks at all.",
+      }),
     reason: z
       .enum(["short_span", "few_completions", "few_active_days"])
       .nullable()

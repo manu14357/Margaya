@@ -82,7 +82,9 @@ export function briefPrompt(
         ? `Forecast (Monte Carlo on past throughput): ${f.remaining} open tasks; 50% likely done by ${f.p50 ?? "beyond the horizon"}, 85% by ${f.p85 ?? "beyond the horizon"}, 95% by ${f.p95 ?? "beyond the horizon"}${f.probabilityByEnd === null ? "" : `; ${f.probabilityByEnd}% chance to finish by the end date`}.`
         : f.status === "complete"
           ? "Forecast: no open tasks remain."
-          : "Forecast: not enough completed work yet to forecast.",
+          : f.status === "empty"
+            ? "Forecast: no tasks in scope yet."
+            : "Forecast: not enough completed work yet to forecast.",
   );
   const riskText =
     facts.risks.length === 0

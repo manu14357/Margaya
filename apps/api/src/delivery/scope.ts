@@ -1,6 +1,6 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, type SQL, sql } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
-import { pendingScopeTaskIds } from "../cycle/queries";
+import { countsByCycle, pendingScopeTaskIds } from "../cycle/queries";
 import {
   columnTable,
   cycleTable,
@@ -107,6 +107,29 @@ export async function openScopeTaskIds(
   if (scope.type === "cycle") {
     return (await pendingScopeTaskIds(reader, scope.id)).slice(0, limit);
   }
+  return scopeTaskIds(reader, scope, limit, OPEN_GROUPS);
+}
+
+/** Whether the scope holds any visible task at all, open or finished. */
+export async function scopeHasTasks(
+  reader: Reader,
+  scope: DeliveryScope,
+): Promise<boolean> {
+  if (scope.type === "cycle") {
+    return (await countsByCycle(reader, eq(cycleTable.id, scope.id))).has(
+      scope.id,
+    );
+  }
+  return (await scopeTaskIds(reader, scope, 1)).length > 0;
+}
+
+/** Module or project task ids, optionally narrowed by `where`. */
+async function scopeTaskIds(
+  reader: Reader,
+  scope: DeliveryScope,
+  limit: number,
+  where?: SQL,
+): Promise<string[]> {
   if (scope.type === "module") {
     const rows = await reader
       .select({ id: taskTable.id })
@@ -118,7 +141,7 @@ export async function openScopeTaskIds(
         and(
           eq(moduleTaskTable.moduleId, scope.id),
           visibleTaskCondition,
-          OPEN_GROUPS,
+          where,
         ),
       )
       .limit(limit);
@@ -132,7 +155,7 @@ export async function openScopeTaskIds(
       and(
         eq(taskTable.projectId, scope.projectId),
         visibleTaskCondition,
-        OPEN_GROUPS,
+        where,
       ),
     )
     .limit(limit);

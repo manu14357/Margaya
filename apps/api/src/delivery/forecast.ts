@@ -21,6 +21,7 @@ import {
   openScopeTaskIds,
   resolveScope,
   type ScopeType,
+  scopeHasTasks,
 } from "./scope";
 
 // Delivery forecast (A2): Monte Carlo over the project team's daily
@@ -101,6 +102,10 @@ export async function computeForecast(
     probabilityByEnd: null,
     beyondHorizon: false,
   };
+  if (remaining === 0 && !(await scopeHasTasks(reader, scope))) {
+    // Nothing planned yet: neither done nor forecastable.
+    return { ...base, status: "empty" as const, reason: null, ...empty };
+  }
   if (remaining === 0) {
     return {
       ...base,

@@ -53,7 +53,7 @@ export type BriefFacts = {
     tasks: BriefTask[];
   }[];
   forecast: {
-    status: "ok" | "complete" | "insufficient_history";
+    status: "ok" | "complete" | "insufficient_history" | "empty";
     remaining: number;
     p50: string | null;
     p85: string | null;
