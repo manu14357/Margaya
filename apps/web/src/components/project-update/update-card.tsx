@@ -36,6 +36,7 @@ import {
   useToggleProjectUpdateReaction,
 } from "@/hooks/mutations/project-update/use-project-update-mutations";
 import { useProjectUpdate } from "@/hooks/queries/project-update/use-project-updates";
+import { formatCycleDate } from "@/lib/cycle/dates";
 import { formatDateTime, formatRelativeTime } from "@/lib/format";
 import { getInitials } from "@/lib/get-initials";
 import { toast } from "@/lib/toast";
@@ -116,7 +117,9 @@ function Facts({
         ))}
         {facts.forecastP85 && (
           <p>
-            {t("projectUpdates:facts.forecast", { date: facts.forecastP85 })}
+            {t("projectUpdates:facts.forecast", {
+              date: formatCycleDate(facts.forecastP85),
+            })}
           </p>
         )}
         {lists.map((entry) => (

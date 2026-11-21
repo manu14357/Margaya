@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { formatCycleDate } from "@/lib/cycle/dates";
 import { buildTemplateDraft, type TemplateFacts } from "./template";
 
 const t = (key: string, options?: Record<string, unknown>) =>
@@ -71,7 +72,10 @@ describe("buildTemplateDraft", () => {
       t,
     );
     expect(draft.summary).toContain("projectUpdates:template.changesLastWeek");
-    expect(draft.summary).toContain("2026-12-01");
+    // Dates read like everywhere else in the app, not as ISO days.
+    expect(draft.summary).toContain(formatCycleDate("2026-12-01"));
+    expect(draft.summary).not.toContain("2026-12-01");
+    expect(draft.highlights).toContain(formatCycleDate("2026-11-20"));
     expect(draft.highlights).toContain("Sprint 4");
   });
 });

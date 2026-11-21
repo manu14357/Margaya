@@ -2,6 +2,8 @@
 // from the facts the API computed. Used when AI is off or unavailable; the
 // API's own template (English) serves API and MCP clients.
 
+import { formatCycleDate } from "@/lib/cycle/dates";
+
 export type TemplateHealth = "on_track" | "at_risk" | "off_track";
 
 type TaskRef = { key: string; title: string };
@@ -69,7 +71,9 @@ export function buildTemplateDraft(
       { completed: facts.completed.total, moved: facts.moved.total },
     ),
     facts.forecastP85
-      ? t("projectUpdates:template.forecast", { date: facts.forecastP85 })
+      ? t("projectUpdates:template.forecast", {
+          date: formatCycleDate(facts.forecastP85),
+        })
       : null,
   ]
     .filter(Boolean)
@@ -84,7 +88,7 @@ export function buildTemplateDraft(
           percent: cycle.percent,
           completed: cycle.completed,
           total: cycle.total,
-          date: cycle.endDate,
+          date: formatCycleDate(cycle.endDate),
         })}`,
     ),
   ].join("\n");
