@@ -82,7 +82,7 @@ export default function ProjectProgressCard({
           return (
             <li key={row.projectId}>
               <Link
-                to="/dashboard/workspace/$workspaceId/project/$projectId/board"
+                to="/dashboard/workspace/$workspaceId/project/$projectId/analytics"
                 params={{ workspaceId, projectId: row.projectId }}
                 className="grid grid-cols-[minmax(0,10rem)_minmax(0,1fr)_auto] items-center gap-3 rounded-md px-1.5 py-1.5 text-xs hover:bg-accent/40 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_3rem_5rem]"
               >
