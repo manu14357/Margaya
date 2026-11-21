@@ -364,6 +364,9 @@ function CreateTaskModalContent({
       : null,
   );
   const [parentOpen, setParentOpen] = useState(false);
+  // Single-choice pickers close on a pick, so they don't cover the footer.
+  const [projectPickerOpen, setProjectPickerOpen] = useState(false);
+  const [priorityOpen, setPriorityOpen] = useState(false);
   const [labels, setLabels] = useState<Label[]>(() =>
     draft && initialValues
       ? initialValues.labels.map((label) => draftLabelState(label, draft))
@@ -1546,7 +1549,10 @@ function CreateTaskModalContent({
 
             <div className="flex flex-wrap items-center gap-2 py-2">
               {!explicitProjectId && (
-                <Popover>
+                <Popover
+                  open={projectPickerOpen}
+                  onOpenChange={setProjectPickerOpen}
+                >
                   <PopoverTrigger asChild>
                     <button
                       type="button"
@@ -1572,7 +1578,10 @@ function CreateTaskModalContent({
                           type="button"
                           className="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-muted-foreground hover:bg-accent/50 text-left transition-colors h-8"
                           disabled={isSubmitting}
-                          onClick={() => changeProject("")}
+                          onClick={() => {
+                            changeProject("");
+                            setProjectPickerOpen(false);
+                          }}
                         >
                           {t("tasks:drafts.noProject")}
                         </button>
@@ -1592,6 +1601,7 @@ function CreateTaskModalContent({
                               !submittingRef.current
                             ) {
                               changeProject(workspaceProject.id);
+                              setProjectPickerOpen(false);
                             }
                           }}
                         >
@@ -1739,7 +1749,7 @@ function CreateTaskModalContent({
                 </PopoverContent>
               </Popover>
 
-              <Popover>
+              <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
                 <PopoverTrigger asChild>
                   <button
                     type="button"
@@ -1765,7 +1775,10 @@ function CreateTaskModalContent({
                         key={option.value}
                         type="button"
                         className="w-full flex items-center gap-2 px-2 py-1.5 text-sm hover:bg-accent/50 text-left transition-colors h-8"
-                        onClick={() => setPriority(option.value as Priority)}
+                        onClick={() => {
+                          setPriority(option.value as Priority);
+                          setPriorityOpen(false);
+                        }}
                       >
                         {getPriorityIcon(option.value)}
                         <span className="text-sm">{option.label}</span>

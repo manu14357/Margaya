@@ -398,6 +398,27 @@ describe("CreateTaskModal", () => {
       screen.queryByText("common:modals.createTask.selectProject"),
     ).toBeNull();
   });
+
+  it("closes the priority and project lists after a pick", async () => {
+    useLocation.mockReturnValue({
+      pathname: "/dashboard/workspace/workspace-1",
+    });
+
+    render(<CreateTaskModal open onClose={vi.fn()} />, {
+      wrapper: createWrapper(),
+    });
+
+    fireEvent.click(screen.getByText("tasks:priority.no-priority"));
+    fireEvent.click(await screen.findByText("tasks:priority.high"));
+    await vi.waitFor(() =>
+      expect(screen.queryByText("tasks:priority.urgent")).toBeNull(),
+    );
+    expect(screen.getByText("tasks:priority.high")).toBeInTheDocument();
+
+    await chooseBeta();
+    await vi.waitFor(() => expect(screen.queryByText("Alpha")).toBeNull());
+    expect(screen.getByText("Beta")).toBeInTheDocument();
+  });
 });
 
 function enterTitle(title = "Private task") {
