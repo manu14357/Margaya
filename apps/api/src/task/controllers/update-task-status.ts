@@ -60,6 +60,15 @@ async function updateTaskStatus({
     ),
   });
 
+  // The status it already has (and the column it is in): nothing to do.
+  if (
+    !existingTask.archivedAt &&
+    existingTask.status === status &&
+    existingTask.columnId === (column?.id ?? null)
+  ) {
+    return withAssigneeIds(existingTask);
+  }
+
   const [updatedTask] = await db
     .update(taskTable)
     .set({

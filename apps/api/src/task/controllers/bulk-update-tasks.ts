@@ -67,6 +67,11 @@ function parseBulkDate(value: string | null | undefined): Date | null {
   return parsed;
 }
 
+/** A task that already has this date gets no history row. */
+function sameDate(a: Date | null, b: Date | null) {
+  return (a?.getTime() ?? null) === (b?.getTime() ?? null);
+}
+
 async function bulkUpdateTasks({
   taskIds,
   operation,
@@ -220,8 +225,9 @@ async function bulkUpdateTasks({
 
         for (const task of projectTasks) {
           const restored = task.archivedAt !== null;
-          // Restoring a task into its own column is not a status change.
-          if (!restored || task.status !== value) {
+          // Restoring a task into its own column, or a status it already
+          // has, is not a status change.
+          if (task.status !== value) {
             await publishEvent("task.status_changed", {
               taskId: task.id,
               projectId,
@@ -258,6 +264,8 @@ async function bulkUpdateTasks({
       updatedCount = result.rowCount ?? foundIds.length;
 
       for (const task of tasks) {
+        // A task that already had this priority gets no history row.
+        if (task.priority === value) continue;
         await publishEvent("task.priority_changed", {
           taskId: task.id,
           projectId: task.projectId,
@@ -432,6 +440,7 @@ async function bulkUpdateTasks({
       updatedCount = result.rowCount ?? foundIds.length;
 
       for (const task of tasks) {
+        if (sameDate(task.dueDate, parsedDate)) continue;
         await publishEvent("task.due_date_changed", {
           taskId: task.id,
           projectId: task.projectId,
@@ -469,6 +478,7 @@ async function bulkUpdateTasks({
       updatedCount = result.rowCount ?? foundIds.length;
 
       for (const task of tasks) {
+        if (sameDate(task.startDate, parsedDate)) continue;
         await publishEvent("task.start_date_changed", {
           taskId: task.id,
           projectId: task.projectId,

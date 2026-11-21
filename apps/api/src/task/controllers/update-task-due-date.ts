@@ -24,6 +24,14 @@ async function updateTaskDueDate({
     });
   }
 
+  // The same date changes nothing: no history row, and reminders already
+  // sent for it stay sent.
+  if (
+    (existingTask.dueDate?.getTime() ?? null) === (dueDate?.getTime() ?? null)
+  ) {
+    return withAssigneeIds(existingTask);
+  }
+
   // Clear sent reminders so new due date triggers fresh notifications
   await db
     .delete(taskReminderSentTable)

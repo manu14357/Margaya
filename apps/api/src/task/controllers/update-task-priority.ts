@@ -24,6 +24,9 @@ async function updateTaskPriority({
     });
   }
 
+  // Picking the current value changes nothing and records nothing.
+  if (existingTask.priority === priority) return withAssigneeIds(existingTask);
+
   const [updatedTask] = await db
     .update(taskTable)
     .set({ priority })
