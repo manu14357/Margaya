@@ -120,6 +120,22 @@ describe("AcceptIntakeDialog", () => {
     ]);
   });
 
+  it("lists Backlog once when the project has its own Backlog column", async () => {
+    // The mocked t() returns keys, so the column carries the key as its name.
+    api.getColumns.mockResolvedValue([
+      column("backlog", "intake:accept.backlog", "backlog", 0),
+      column("to-do", "To Do", "unstarted", 1),
+    ]);
+    renderDialog();
+    await waitFor(() => expect(trigger()).toHaveTextContent("To Do"));
+    fireEvent.click(trigger());
+    const options = await screen.findAllByRole("option");
+    expect(options.map((option) => option.textContent)).toEqual([
+      "intake:accept.backlog",
+      "To Do",
+    ]);
+  });
+
   it("accepts into the chosen column", async () => {
     api.getColumns.mockResolvedValue(COLUMNS);
     api.accept.mockResolvedValue(

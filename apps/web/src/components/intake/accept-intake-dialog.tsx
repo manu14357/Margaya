@@ -64,6 +64,14 @@ export default function AcceptIntakeDialog({
         .map(({ column }) => column),
     [data],
   );
+  const backlogLabel = t("intake:accept.backlog");
+  // A project with its own column named "Backlog" would list it twice:
+  // that column stands in for the off-board backlog.
+  const hasBacklogColumn = columns.some(
+    (column) =>
+      column.name.trim().toLocaleLowerCase() ===
+      backlogLabel.trim().toLocaleLowerCase(),
+  );
   const defaultStatus = getEntryColumn(columns)?.slug ?? BACKLOG;
   const [status, setStatus] = useState(defaultStatus);
 
@@ -140,17 +148,19 @@ export default function AcceptIntakeDialog({
                   ) : (
                     <SquircleDashed className="size-4 text-muted-foreground" />
                   )}
-                  {selected?.name ?? t("intake:accept.backlog")}
+                  {selected?.name ?? backlogLabel}
                 </span>
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={BACKLOG}>
-                <span className="flex items-center gap-2">
-                  <SquircleDashed className="size-4 text-muted-foreground" />
-                  {t("intake:accept.backlog")}
-                </span>
-              </SelectItem>
+              {!hasBacklogColumn && (
+                <SelectItem value={BACKLOG}>
+                  <span className="flex items-center gap-2">
+                    <SquircleDashed className="size-4 text-muted-foreground" />
+                    {backlogLabel}
+                  </span>
+                </SelectItem>
+              )}
               {columns.map((column) => (
                 <SelectItem key={column.id} value={column.slug}>
                   <span className="flex items-center gap-2">
