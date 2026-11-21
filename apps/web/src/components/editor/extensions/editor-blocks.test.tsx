@@ -159,6 +159,33 @@ describe("callout", () => {
     );
   });
 
+  it("closes the style menu after a pick and on Escape", async () => {
+    const { editor, container } = await mount("> [!NOTE]\n> Hello");
+    const trigger = container.querySelector(
+      ".margaya-callout-switch",
+    ) as HTMLElement;
+    const icon = trigger.querySelector("svg") as SVGElement;
+    const selection = editor.state.selection;
+
+    // A press on the icon is the menu's, not ProseMirror's: it must not
+    // select the callout or pull focus back into the text.
+    fireEvent.mouseDown(icon, { button: 0 });
+    fireEvent.mouseUp(icon, { button: 0 });
+    fireEvent.click(icon);
+    expect(editor.state.selection.eq(selection)).toBe(true);
+    const danger = await screen.findByRole("menuitemradio", {
+      name: "tasks:detail.editor.callout.variants.danger",
+    });
+    fireEvent.click(danger);
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+    expect(editor.getMarkdown()).toBe("> [!CAUTION]\n> Hello");
+
+    fireEvent.click(trigger);
+    const menu = await screen.findByRole("menu");
+    fireEvent.keyDown(menu, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+  });
+
   it("is a slash command that wraps the current block", async () => {
     const command = pageSlashCommands(t, {
       onFile: () => {},

@@ -79,7 +79,7 @@ function CalloutView({ node, updateAttributes }: NodeViewProps) {
               {CALLOUT_VARIANTS.map((value) => {
                 const ItemIcon = CALLOUT_ICONS[value];
                 return (
-                  <MenuRadioItem key={value} value={value}>
+                  <MenuRadioItem key={value} value={value} closeOnClick>
                     <span className="inline-flex items-center gap-2">
                       <ItemIcon
                         className="size-4"
@@ -103,6 +103,13 @@ function CalloutView({ node, updateAttributes }: NodeViewProps) {
 /** The schema's callout with the web node view. */
 export const Callout = CalloutNode.extend({
   addNodeView() {
-    return ReactNodeViewRenderer(CalloutView);
+    return ReactNodeViewRenderer(CalloutView, {
+      // The icon switcher owns its clicks and keys. Left to ProseMirror, a
+      // click on the icon selects the callout and moves focus back into the
+      // text while the style menu opens, so Escape no longer reaches it.
+      stopEvent: ({ event }) =>
+        event.target instanceof Element &&
+        event.target.closest(".margaya-callout-aside") !== null,
+    });
   },
 });
