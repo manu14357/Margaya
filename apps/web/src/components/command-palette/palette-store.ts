@@ -37,25 +37,10 @@ export function openCommandPalette(query?: string) {
   usePaletteRequests.getState().openPalette(query);
 }
 
-let taskCaptureHost: (() => void) | null = null;
-
 /**
- * A board or list with a capture bar takes "create task" requests (canopy
- * slice 5): the bar focuses instead of the dialog opening. Returns the
- * unregister function.
+ * Opens a create dialog the palette hosts. "New task" opens the full dialog
+ * on every page, boards included; a board's capture bar has `C` instead.
  */
-export function registerTaskCapture(open: () => void): () => void {
-  taskCaptureHost = open;
-  return () => {
-    if (taskCaptureHost === open) taskCaptureHost = null;
-  };
-}
-
-/** Opens a create dialog the palette hosts (or the page's capture bar). */
 export function requestCreate(kind: PaletteCreateKind) {
-  if (kind === "task" && taskCaptureHost) {
-    taskCaptureHost();
-    return;
-  }
   usePaletteRequests.getState().requestCreate(kind);
 }

@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { registerTaskCapture } from "@/components/command-palette/palette-store";
 import { shortcuts } from "@/constants/shortcuts";
 import { useRegisterShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { useWorkspacePermission } from "@/hooks/use-workspace-permission";
@@ -8,8 +6,8 @@ import type { ProjectWithTasks } from "@/types/project";
 import { focusCapture } from "./capture-store";
 
 /**
- * Makes a board or list the target of "create task": `c` and the shell's
- * Create button focus the capture bar of the project's entry column.
+ * Makes a board or list the target of `c`: it focuses the capture bar of the
+ * project's entry column. The shell's Create menu opens the full dialog.
  */
 export function useCaptureHost(project: ProjectWithTasks | undefined) {
   const { canCreateTasks } = useWorkspacePermission();
@@ -20,11 +18,6 @@ export function useCaptureHost(project: ProjectWithTasks | undefined) {
   const projectId = project?.id;
   const status = entry?.slug;
   const enabled = Boolean(canCreate && projectId && status);
-
-  useEffect(() => {
-    if (!enabled || !projectId || !status) return;
-    return registerTaskCapture(() => focusCapture(projectId, status));
-  }, [enabled, projectId, status]);
 
   useRegisterShortcuts({
     shortcuts:

@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 /**
- * Focus requests for the capture bars on a board or list. `C`, the shell's
- * Create button (requestCreate("task")) and a collapsed list group ask for a
- * project's column; the bar that matches focuses itself. Each request has a
+ * Focus requests for the capture bars on a board or list. `C` and a
+ * collapsed list group ask for a project's column; the bar that matches
+ * focuses itself. Each request has a
  * fresh id so repeating one re-focuses.
  */
 type CaptureFocusRequest = { id: number; projectId: string; status: string };
