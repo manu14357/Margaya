@@ -241,6 +241,25 @@ export function groundedReason(
   return reason;
 }
 
+const CANDIDATE_REF = /(?<![A-Za-z0-9_-])([LPR])(\d+)(?![A-Za-z0-9_-])/g;
+
+/**
+ * The reason with the prompt's candidate references (L1, P2, R3) replaced
+ * by the label, person or project they stand for: they are internal to the
+ * prompt and mean nothing to the reader. Task keys stay, they are real.
+ */
+export function namedReason(reason: string, tables: RefTables): string {
+  return reason.replace(CANDIDATE_REF, (match, kind: string) => {
+    const table =
+      kind === "L"
+        ? tables.labels
+        : kind === "P"
+          ? tables.people
+          : tables.projects;
+    return table.get(match)?.name ?? match;
+  });
+}
+
 /**
  * Keeps only suggestions that name a real, new option. An assignee also
  * needs work evidence: the person is assigned to one of the similar tasks,
@@ -260,8 +279,10 @@ export function resolveSuggestions(
     ...[...knownKeys].map((key) => key.replace(/-\d+$/, "")),
     ...candidates.projects.map((project) => project.slug.toUpperCase()),
   ]);
-  const reasonOf = (reason: string) =>
-    groundedReason(reason, knownKeys, knownPrefixes);
+  const reasonOf = (reason: string) => {
+    const grounded = groundedReason(reason, knownKeys, knownPrefixes);
+    return grounded === null ? null : namedReason(grounded, tables);
+  };
 
   const has = new Set(task.labelNames.map((name) => name.toLowerCase()));
   const labels: { label: CandidateLabel; reason: string | null }[] = [];

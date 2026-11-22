@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { TriageCandidates } from "../../../apps/api/src/ai-triage/candidates";
 import {
   groundedReason,
+  namedReason,
   parseTriageOutput,
   refTables,
   resolveSuggestions,
@@ -103,5 +104,35 @@ describe("triage grounding", () => {
     expect(result.labels).toEqual([
       { label: candidates.labels[0], reason: null },
     ]);
+  });
+});
+
+describe("triage reasons in words", () => {
+  it("names the person, label or project behind a prompt reference", () => {
+    const tables = refTables(candidates);
+    expect(
+      namedReason("P1 is listed as assignee on similar task WEB-3", tables),
+    ).toBe("Mia is listed as assignee on similar task WEB-3");
+    expect(namedReason("Similar tasks carry L1 (R1)", tables)).toBe(
+      "Similar tasks carry bug (Web)",
+    );
+    // Unknown references and look-alikes stay as written.
+    expect(namedReason("P9 and MP3 and P1-2", tables)).toBe(
+      "P9 and MP3 and P1-2",
+    );
+  });
+
+  it("never shows a candidate reference in a suggestion", () => {
+    const result = resolve({
+      ...empty,
+      assignee: [
+        { ref: "P1", reason: "P1 is the assignee of similar task WEB-3" },
+      ],
+      labels: [{ ref: "L1", reason: "WEB-3 carries L1" }],
+    });
+    expect(result.assignee?.reason).toBe(
+      "Mia is the assignee of similar task WEB-3",
+    );
+    expect(result.labels[0]?.reason).toBe("WEB-3 carries bug");
   });
 });
