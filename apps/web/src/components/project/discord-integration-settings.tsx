@@ -322,14 +322,22 @@ export function DiscordIntegrationSettings({
                     <Input
                       {...field}
                       autoComplete="off"
-                      placeholder={t(
-                        "settings:discordIntegration.webhookPlaceholder",
-                      )}
+                      placeholder={
+                        // The saved URL is never sent back: its masked form
+                        // shows that one is set.
+                        isConnected && integration?.maskedWebhookUrl
+                          ? integration.maskedWebhookUrl
+                          : t("settings:discordIntegration.webhookPlaceholder")
+                      }
                       type="url"
                     />
                   </FormControl>
                   <p className="text-xs text-muted-foreground">
-                    {t("settings:discordIntegration.webhookHint")}
+                    {isConnected
+                      ? t("settings:discordIntegration.webhookHintConfigured", {
+                          masked: integration?.maskedWebhookUrl || "••••",
+                        })
+                      : t("settings:discordIntegration.webhookHint")}
                   </p>
                   <FormMessage />
                 </FormItem>

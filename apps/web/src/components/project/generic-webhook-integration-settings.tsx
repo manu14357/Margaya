@@ -351,14 +351,27 @@ export function GenericWebhookIntegrationSettings({
                     <Input
                       {...field}
                       autoComplete="off"
-                      placeholder={t(
-                        "settings:genericWebhookIntegration.webhookPlaceholder",
-                      )}
+                      placeholder={
+                        // The saved URL is never sent back: its masked form
+                        // shows that one is set.
+                        isConnected && integration?.maskedWebhookUrl
+                          ? integration.maskedWebhookUrl
+                          : t(
+                              "settings:genericWebhookIntegration.webhookPlaceholder",
+                            )
+                      }
                       type="url"
                     />
                   </FormControl>
                   <p className="text-xs text-muted-foreground">
-                    {t("settings:genericWebhookIntegration.webhookHint")}
+                    {isConnected
+                      ? t(
+                          "settings:genericWebhookIntegration.webhookHintConfigured",
+                          {
+                            masked: integration?.maskedWebhookUrl || "••••",
+                          },
+                        )
+                      : t("settings:genericWebhookIntegration.webhookHint")}
                   </p>
                   <FormMessage />
                 </FormItem>

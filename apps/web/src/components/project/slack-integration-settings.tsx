@@ -336,14 +336,22 @@ export function SlackIntegrationSettings({ projectId }: { projectId: string }) {
                     <Input
                       {...field}
                       autoComplete="off"
-                      placeholder={t(
-                        "settings:slackIntegration.webhookPlaceholder",
-                      )}
+                      placeholder={
+                        // The saved URL is never sent back: its masked form
+                        // shows that one is set.
+                        isConnected && integration?.maskedWebhookUrl
+                          ? integration.maskedWebhookUrl
+                          : t("settings:slackIntegration.webhookPlaceholder")
+                      }
                       type="url"
                     />
                   </FormControl>
                   <p className="text-xs text-muted-foreground">
-                    {t("settings:slackIntegration.webhookHint")}
+                    {isConnected
+                      ? t("settings:slackIntegration.webhookHintConfigured", {
+                          masked: integration?.maskedWebhookUrl || "••••",
+                        })
+                      : t("settings:slackIntegration.webhookHint")}
                   </p>
                   <FormMessage />
                 </FormItem>

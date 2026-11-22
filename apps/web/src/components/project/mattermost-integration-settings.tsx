@@ -328,14 +328,27 @@ export function MattermostIntegrationSettings({
                     <Input
                       {...field}
                       autoComplete="off"
-                      placeholder={t(
-                        "settings:mattermostIntegration.webhookPlaceholder",
-                      )}
+                      placeholder={
+                        // The saved URL is never sent back: its masked form
+                        // shows that one is set.
+                        isConnected && integration?.maskedWebhookUrl
+                          ? integration.maskedWebhookUrl
+                          : t(
+                              "settings:mattermostIntegration.webhookPlaceholder",
+                            )
+                      }
                       type="url"
                     />
                   </FormControl>
                   <p className="text-xs text-muted-foreground">
-                    {t("settings:mattermostIntegration.webhookHint")}
+                    {isConnected
+                      ? t(
+                          "settings:mattermostIntegration.webhookHintConfigured",
+                          {
+                            masked: integration?.maskedWebhookUrl || "••••",
+                          },
+                        )
+                      : t("settings:mattermostIntegration.webhookHint")}
                   </p>
                   <FormMessage />
                 </FormItem>
