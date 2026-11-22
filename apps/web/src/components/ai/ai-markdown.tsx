@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import type { MouseEvent, ReactNode } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import { cn } from "@/lib/cn";
+import { remarkTaskListItems } from "@/lib/markdown-task-list";
 import { stripModelTokens } from "@/lib/model-tokens";
 import { resolveSafeLink } from "@/lib/safe-link";
 
@@ -44,6 +45,8 @@ function SafeLink({ href, children }: { href?: string; children: ReactNode }) {
   );
 }
 
+const REMARK_PLUGINS = [remarkTaskListItems];
+
 const SAFE_LINKS: Components = {
   a: ({ href, children }) => <SafeLink href={href}>{children}</SafeLink>,
   // No remote fetches from written text: an image is its description.
@@ -53,7 +56,8 @@ const SAFE_LINKS: Components = {
 /**
  * AI-written Markdown, rendered as plain formatting. Raw HTML in the answer
  * is never rendered (react-markdown's default), nor are a model's control
- * tokens, and links open in a new tab.
+ * tokens, and links open in a new tab. Checklist items ("- [ ] …") show
+ * as checkboxes, as they will once accepted into the editor.
  * With `safeLinks`, links into the app navigate in place, only http(s) links
  * leave it, any other link is plain text, and images show their alt text.
  */
@@ -69,11 +73,14 @@ export default function AiMarkdown({
   return (
     <div
       className={cn(
-        "break-words text-sm leading-relaxed [&_a]:underline [&_a]:underline-offset-2 [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:text-xs [&_h1]:mt-3 [&_h1]:mb-1 [&_h1]:font-semibold [&_h1]:text-base [&_h2]:mt-3 [&_h2]:mb-1 [&_h2]:font-semibold [&_h2]:text-sm [&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:font-medium [&_li]:my-0.5 [&_ol]:my-1.5 [&_ol]:list-decimal [&_ol]:ps-5 [&_p]:my-1.5 [&_strong]:font-semibold [&_ul]:my-1.5 [&_ul]:list-disc [&_ul]:ps-5 [&>*:first-child]:mt-0",
+        "break-words text-sm leading-relaxed [&_a]:underline [&_a]:underline-offset-2 [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:text-xs [&_h1]:mt-3 [&_h1]:mb-1 [&_h1]:font-semibold [&_h1]:text-base [&_h2]:mt-3 [&_h2]:mb-1 [&_h2]:font-semibold [&_h2]:text-sm [&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:font-medium [&_li]:my-0.5 [&_ol]:my-1.5 [&_ol]:list-decimal [&_ol]:ps-5 [&_p]:my-1.5 [&_strong]:font-semibold [&_ul]:my-1.5 [&_ul]:list-disc [&_ul]:ps-5 [&_.contains-task-list]:list-none [&_.contains-task-list]:ps-1 [&_.task-list-item_input]:me-1.5 [&_.task-list-item_input]:align-middle [&>*:first-child]:mt-0",
         className,
       )}
     >
-      <ReactMarkdown components={safeLinks ? SAFE_LINKS : NEW_TAB_LINKS}>
+      <ReactMarkdown
+        components={safeLinks ? SAFE_LINKS : NEW_TAB_LINKS}
+        remarkPlugins={REMARK_PLUGINS}
+      >
         {stripModelTokens(text)}
       </ReactMarkdown>
     </div>
