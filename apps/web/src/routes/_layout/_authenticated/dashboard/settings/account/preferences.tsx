@@ -160,7 +160,10 @@ function RouteComponent() {
                   {getLocaleLabel(selectedLocale)}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent>
+              {/* Opens below the trigger: aligned on the current language,
+                  the long list opened with its scroll arrow under the
+                  pointer and scrolled away from a quick click. */}
+              <SelectContent alignItemWithTrigger={false}>
                 {supportedLocales.map((supportedLocale) => (
                   <SelectItem key={supportedLocale} value={supportedLocale}>
                     {getLocaleLabel(supportedLocale)}
