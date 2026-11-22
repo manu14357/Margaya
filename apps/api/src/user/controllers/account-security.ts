@@ -2,6 +2,7 @@ import { and, desc, eq, gt } from "drizzle-orm";
 import { HTTPException } from "hono/http-exception";
 import db from "../../database";
 import { accountTable, sessionTable, userTable } from "../../database/schema";
+import { compactIpAddress } from "../../utils/client-ip";
 import { twoFactorApplies } from "../../utils/two-factor-policy";
 
 /**
@@ -60,7 +61,7 @@ export async function getAccountSecurity(
     sessions: sessions.map((session) => ({
       id: session.id,
       userAgent: session.userAgent,
-      ipAddress: session.ipAddress,
+      ipAddress: compactIpAddress(session.ipAddress),
       createdAt: session.createdAt.toISOString(),
       lastActiveAt: session.updatedAt.toISOString(),
       expiresAt: session.expiresAt.toISOString(),

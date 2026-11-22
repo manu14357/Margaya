@@ -73,3 +73,43 @@ export function clientIpMiddleware(config?: string): MiddlewareHandler {
     await next();
   };
 }
+
+/**
+ * The client IP the transport middleware resolved for this request. Better
+ * Auth records an IPv6 client by its /64 network (its rate-limit key), so a
+ * session would otherwise keep "2001:db8:1:2::" or, for a loopback peer, "::".
+ */
+export function clientIpFromHeaders(
+  headers: Headers | null | undefined,
+): string | null {
+  const ip = headers?.get(CLIENT_IP_HEADER)?.trim();
+  return ip && isIP(ip) ? ip : null;
+}
+
+/**
+ * An IP for people to read: IPv6 in its short form ("::1"), and an
+ * IPv4-mapped IPv6 address as plain IPv4. The unspecified address ("::",
+ * what Better Auth's /64 masking left of a loopback peer) says nothing and
+ * becomes null. Anything else that isn't an IP is returned as it was.
+ */
+export function compactIpAddress(
+  value: string | null | undefined,
+): string | null {
+  const ip = value?.trim();
+  if (!ip) return null;
+  if (isIP(ip) !== 6) return ip;
+  let host: string;
+  try {
+    host = new URL(`http://[${ip}]`).hostname.slice(1, -1);
+  } catch {
+    // Zone ids ("fe80::1%eth0") aren't valid in a URL; keep them as stored.
+    return ip;
+  }
+  const mapped = /^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/.exec(host);
+  if (mapped?.[1] && mapped[2]) {
+    const high = Number.parseInt(mapped[1], 16);
+    const low = Number.parseInt(mapped[2], 16);
+    return `${high >> 8}.${high & 255}.${low >> 8}.${low & 255}`;
+  }
+  return host === "::" ? null : host;
+}

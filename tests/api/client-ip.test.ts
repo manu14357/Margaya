@@ -4,7 +4,9 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { describe, expect, it } from "vitest";
 import {
+  clientIpFromHeaders,
   clientIpMiddleware,
+  compactIpAddress,
   createClientIpResolver,
 } from "../../apps/api/src/utils/client-ip";
 
@@ -98,4 +100,34 @@ describe("trusted client IP resolution", () => {
       }
     },
   );
+});
+
+describe("session IP display", () => {
+  it.each([
+    ["0000:0000:0000:0000:0000:0000:0000:0001", "::1"],
+    ["2001:0db8:85a3:0000:0000:0000:0000:0000", "2001:db8:85a3::"],
+    ["::ffff:192.0.2.1", "192.0.2.1"],
+    ["0000:0000:0000:0000:0000:ffff:c000:0201", "192.0.2.1"],
+    ["203.0.113.5", "203.0.113.5"],
+    ["fe80::1%eth0", "fe80::1%eth0"],
+  ])("shows %s as %s", (stored, shown) => {
+    expect(compactIpAddress(stored)).toBe(shown);
+  });
+
+  it("drops addresses that say nothing", () => {
+    expect(compactIpAddress("0000:0000:0000:0000:0000:0000:0000:0000")).toBe(
+      null,
+    );
+    expect(compactIpAddress("")).toBeNull();
+    expect(compactIpAddress(null)).toBeNull();
+  });
+
+  it("reads only a valid transport-resolved client IP", () => {
+    const headers = (value: string) =>
+      new Headers({ "x-margaya-client-ip": value });
+    expect(clientIpFromHeaders(headers("2001:db8::7"))).toBe("2001:db8::7");
+    expect(clientIpFromHeaders(headers("not-an-ip"))).toBeNull();
+    expect(clientIpFromHeaders(new Headers())).toBeNull();
+    expect(clientIpFromHeaders(undefined)).toBeNull();
+  });
 });

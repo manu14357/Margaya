@@ -102,6 +102,7 @@ import { authRateLimitConfig } from "./utils/auth-rate-limit";
 import { resolveAuthSecret } from "./utils/auth-secret";
 import { checkRegistrationAllowed } from "./utils/check-registration-allowed";
 import { checkWorkspaceName } from "./utils/check-workspace-name";
+import { clientIpFromHeaders } from "./utils/client-ip";
 import { mapCustomOAuthProfileToUser } from "./utils/custom-oauth-profile";
 import { desktopSignIn } from "./utils/desktop-sign-in";
 import { getDeviceAuthClientIds } from "./utils/device-auth-client-ids";
@@ -884,8 +885,14 @@ function createAuthInstance(
       // Agent users (ai-agent/) never get a session.
       session: {
         create: {
-          before: async (session) => {
+          before: async (session, ctx) => {
             await refuseAgentSession(session);
+            // Keep the address itself, not Better Auth's /64 IPv6 network,
+            // so people can recognise their sessions.
+            const ipAddress = clientIpFromHeaders(
+              ctx?.headers ?? ctx?.request?.headers,
+            );
+            if (ipAddress) return { data: { ...session, ipAddress } };
           },
         },
       },
