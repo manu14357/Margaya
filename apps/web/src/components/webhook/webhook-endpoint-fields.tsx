@@ -21,7 +21,7 @@ type WebhookEndpointFieldsProps = {
   onUrlEdited: () => void;
   showErrors: boolean;
   disabled?: boolean;
-  /** The settings tab toggles Active from the header instead. */
+  /** The settings tab has its own Active card, which saves at once. */
   showActive?: boolean;
 };
 

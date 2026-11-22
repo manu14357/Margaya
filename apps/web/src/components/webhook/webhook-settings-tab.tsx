@@ -1,5 +1,5 @@
-import { KeyRound, Link2, TriangleAlert } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { KeyRound, Link2, Power, TriangleAlert } from "lucide-react";
+import { type FormEvent, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +9,8 @@ import {
   CardPanel,
   CardTitle,
 } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { useUpdateWebhook } from "@/hooks/mutations/webhook/use-update-webhook";
 import { formatDateTime, formatRelativeTime } from "@/lib/format";
 import { HttpError } from "@/lib/http-error";
@@ -19,6 +21,7 @@ import {
   webhookChanges,
 } from "@/lib/webhook/webhook";
 import type { Webhook } from "@/types/webhook";
+import { useSetWebhookActive } from "./use-webhook-actions";
 import { WebhookEndpointFields } from "./webhook-endpoint-fields";
 
 type WebhookSettingsTabProps = {
@@ -43,7 +46,7 @@ function EndpointCard({ webhook }: { webhook: Webhook }) {
   const [submitted, setSubmitted] = useState(false);
   const [serverUrlError, setServerUrlError] = useState<string | null>(null);
 
-  // Active is toggled from the header, so only the endpoint fields compare.
+  // Active saves on its own (ActiveCard), so only the endpoint fields compare.
   const changes = webhookChanges(webhook, {
     ...values,
     isActive: webhook.isActive,
@@ -121,6 +124,39 @@ function EndpointCard({ webhook }: { webhook: Webhook }) {
   );
 }
 
+/** Pause or enable deliveries; saves at once, like the header menu. */
+function ActiveCard({ webhook }: { webhook: Webhook }) {
+  const { t } = useTranslation();
+  const activeId = useId();
+  const activation = useSetWebhookActive();
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="inline-flex items-center gap-2 text-base">
+          <Power className="size-4" />
+          {t("settings:workspaceWebhooks.form.activeLabel")}
+        </CardTitle>
+      </CardHeader>
+      <CardPanel className="flex items-start justify-between gap-4">
+        <Label
+          htmlFor={activeId}
+          className="font-normal text-muted-foreground text-sm"
+        >
+          {t("settings:workspaceWebhooks.form.activeHint")}
+        </Label>
+        <Switch
+          id={activeId}
+          checked={webhook.isActive}
+          disabled={activation.isPending}
+          onCheckedChange={(checked) =>
+            activation.setActive(webhook.id, checked)
+          }
+        />
+      </CardPanel>
+    </Card>
+  );
+}
+
 function SecretCard({
   webhook,
   onRotate,
@@ -185,6 +221,7 @@ export function WebhookSettingsTab({
   return (
     <div className="space-y-6">
       <EndpointCard key={webhook.id} webhook={webhook} />
+      <ActiveCard webhook={webhook} />
       <SecretCard webhook={webhook} onRotate={onRotate} />
       <Card className="border-destructive/32">
         <CardHeader>

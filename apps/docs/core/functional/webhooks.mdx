@@ -128,7 +128,7 @@ Open a delivery to see the request headers (with the signature masked), the body
 
 <Screenshot src="data/webhook-delivery" alt="A delivery's details panel with its event, status, attempts, request headers and request body" caption="One delivery, with every attempt." />
 
-The **Settings** tab changes the name, URL, events and **Active** switch, and holds the signing secret card.
+The **Settings** tab changes the name, URL and events, has an **Active** switch that pauses or enables deliveries straight away (like **Pause** in the **…** menu), and holds the signing secret card.
 
 <Screenshot src="data/webhook-settings" alt="The Settings tab of a webhook with its endpoint fields, events, the Active switch and the Signing secret card with Rotate secret" caption="Edit the endpoint or rotate its secret on the Settings tab." /> **Redeliver** sends a finished delivery again as a new delivery. The log is kept for 14 days (`WEBHOOK_DELIVERY_RETENTION_DAYS` on self-hosted instances, 1 to 90).
 
