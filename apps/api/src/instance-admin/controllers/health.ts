@@ -1,6 +1,7 @@
 import { verifySmtpConnection } from "@margaya/email";
 import { and, count, eq, gte, max, sql } from "drizzle-orm";
 import {
+  type AiInstanceConfig,
   getAiInstanceConfig,
   hasLocalEndpoint,
 } from "../../ai/instance-config";
@@ -112,12 +113,17 @@ async function emailCheck(): Promise<HealthCheck> {
   };
 }
 
-function aiProviderConfigured(): boolean {
-  const config = getAiInstanceConfig();
-  if (config.localOnly) return hasLocalEndpoint(config);
+/**
+ * Whether any model is set up: a local endpoint with a model (which serves
+ * restricted data, local-only mode and local agents), or the cloud provider.
+ * Exported for tests.
+ */
+export function aiProviderConfigured(config: AiInstanceConfig): boolean {
+  if (hasLocalEndpoint(config)) return true;
+  if (config.localOnly) return false;
   if (config.provider === "anthropic") return Boolean(config.anthropicApiKey);
   if (config.provider === "openai_compatible") {
-    return Boolean(config.openai.baseUrl) || hasLocalEndpoint(config);
+    return Boolean(config.openai.baseUrl);
   }
   return true;
 }
@@ -137,7 +143,7 @@ async function aiCheck(now: Date): Promise<HealthCheck> {
       count: null,
     };
   }
-  if (!aiProviderConfigured()) {
+  if (!aiProviderConfigured(config)) {
     return {
       id: "ai",
       status: "warning",

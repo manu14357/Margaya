@@ -24,7 +24,7 @@ Each check runs when you open the page, and again when you select **Check again*
 | **Redis** | Pings the realtime Redis when one is configured. **Off** means none is configured, which is fine for a single server. |
 | **File storage** | For S3-compatible storage, asks the bucket whether it is reachable. For the built-in local store, checks that its folder is writable. **Off** means uploads are turned off. |
 | **Email** | Connects and signs in to the SMTP server **without sending a message**. To send one, use **Send test email** on the [Email](/core/installation/instance-admin#email) page. |
-| **AI provider** | Checks that AI is on and a provider is set up, and counts failed AI calls in the last 24 hours. It doesn't call the model, so it costs nothing. Use **Test connection** on the AI page for a live call. |
+| **AI provider** | Checks that AI is on and a model is set up (a cloud provider or a local model), and counts failed AI calls in the last 24 hours. It doesn't call the model, so it costs nothing. Use **Test connection** on the AI page for a live call. |
 
 Each check shows **OK**, **Warning**, **Problem** or **Off**, with a short reason. The page never shows hosts, bucket names, paths, user names or server error text. Those stay in the server log.
 
