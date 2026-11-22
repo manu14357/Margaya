@@ -82,6 +82,12 @@ const updateBody = z
 
 const idParam = z.object({ id: z.string().min(1) });
 const workspaceQuery = z.object({ workspaceId: z.string().min(1) });
+// Changing or deleting one by id: its workspace comes from the id.
+const optionalWorkspaceQuery = z.object({
+  workspaceId: z.string().min(1).optional().openapi({
+    description: "Optional: the workspace is read from the id.",
+  }),
+});
 const forbidden = errorResponse(
   "No workspace access, missing ai:use, or not the skill's creator without ai:manage",
 );
@@ -183,12 +189,12 @@ const updateSkillRoute = createRoute({
     "Change a skill's name, description, prompt or sharing. Its creator or ai:manage.",
   middleware: [
     boundedRequestBody(32 * 1024),
-    workspaceAccess.fromQuery(),
+    workspaceAccess.fromAiSkill(),
     requireAiUse,
   ] as const,
   request: {
     params: idParam,
-    query: workspaceQuery,
+    query: optionalWorkspaceQuery,
     body: {
       required: true,
       content: { "application/json": { schema: updateBody } },
@@ -210,8 +216,8 @@ const deleteSkillRoute = createRoute({
   summary: "Delete an AI skill",
   description:
     "Delete a skill for good. Its creator or ai:manage. Agents that used it stop getting its prompt.",
-  middleware: [workspaceAccess.fromQuery(), requireAiUse] as const,
-  request: { params: idParam, query: workspaceQuery },
+  middleware: [workspaceAccess.fromAiSkill(), requireAiUse] as const,
+  request: { params: idParam, query: optionalWorkspaceQuery },
   responses: {
     200: jsonResponse(
       "The skill was deleted",

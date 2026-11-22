@@ -2,6 +2,7 @@ import { and, eq, inArray, isNull } from "drizzle-orm";
 import type { Context, Next } from "hono";
 import { HTTPException } from "hono/http-exception";
 import db, { schema } from "../database";
+import { aiMemoryNoteTable, aiSkillTable } from "../database/schema";
 import { canSeeProject } from "../project/visibility";
 import { validateWorkspaceAccess } from "./validate-workspace-access";
 
@@ -22,7 +23,9 @@ type WorkspaceIdSource =
         | "workflowRule"
         | "customField"
         | "trashedTask"
-        | "trashedProject";
+        | "trashedProject"
+        | "aiSkill"
+        | "aiMemoryNote";
       idKey: string;
     }
   | {
@@ -216,7 +219,9 @@ type LookupResource =
   | "workflowRule"
   | "customField"
   | "trashedTask"
-  | "trashedProject";
+  | "trashedProject"
+  | "aiSkill"
+  | "aiMemoryNote";
 
 const NOT_FOUND_MESSAGE: Record<LookupResource, string> = {
   project: "Project not found",
@@ -230,6 +235,8 @@ const NOT_FOUND_MESSAGE: Record<LookupResource, string> = {
   customField: "Custom field not found",
   trashedTask: "Task not found in the trash",
   trashedProject: "Project not found in the trash",
+  aiSkill: "Skill not found",
+  aiMemoryNote: "Memory note not found",
 };
 
 /** A looked-up resource's workspace, and its project when it has one. */
@@ -498,6 +505,26 @@ async function lookupWorkspaceId(
         );
       }
 
+      // Skills and memory notes: the workspace only. Who may see or change
+      // one (private, per person, a restricted project) is the route's check.
+      case "aiSkill": {
+        const [skill] = await db
+          .select({ workspaceId: aiSkillTable.workspaceId })
+          .from(aiSkillTable)
+          .where(eq(aiSkillTable.id, id))
+          .limit(1);
+        return liveWorkspace(skill);
+      }
+
+      case "aiMemoryNote": {
+        const [note] = await db
+          .select({ workspaceId: aiMemoryNoteTable.workspaceId })
+          .from(aiMemoryNoteTable)
+          .where(eq(aiMemoryNoteTable.id, id))
+          .limit(1);
+        return liveWorkspace(note);
+      }
+
       default:
         return NO_LOOKUP;
     }
@@ -611,6 +638,24 @@ export const workspaceAccess = {
     workspaceAccessMiddleware({
       sources: [{ type: "lookup", resource: "trashedProject", idKey }],
       notFoundMessage: "Project not found in the trash",
+    }),
+
+  /** An AI skill by id, else `?workspaceId=`. */
+  fromAiSkill: (idKey = "id") =>
+    workspaceAccessMiddleware({
+      sources: [
+        { type: "lookup", resource: "aiSkill", idKey },
+        { type: "query", key: "workspaceId" },
+      ],
+    }),
+
+  /** An AI memory note by id, else `?workspaceId=`. */
+  fromAiMemoryNote: (idKey = "id") =>
+    workspaceAccessMiddleware({
+      sources: [
+        { type: "lookup", resource: "aiMemoryNote", idKey },
+        { type: "query", key: "workspaceId" },
+      ],
     }),
 
   fromProjectId: (

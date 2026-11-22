@@ -74,7 +74,12 @@ const createBody = z
 
 const updateBody = z.strictObject({ content }).openapi("UpdateAiMemoryNote");
 const idParam = z.object({ id: z.string().min(1) });
-const workspaceQuery = z.object({ workspaceId: z.string().min(1) });
+// Changing or deleting one by id: its workspace comes from the id.
+const optionalWorkspaceQuery = z.object({
+  workspaceId: z.string().min(1).optional().openapi({
+    description: "Optional: the workspace is read from the id.",
+  }),
+});
 
 const forbidden = errorResponse(
   "No workspace access, missing ai:use, or ai:manage for workspace and project notes",
@@ -192,12 +197,12 @@ const updateNoteRoute = createRoute({
     "Change a note's text: the caller's own note, or (with ai:manage) a workspace or project note.",
   middleware: [
     boundedRequestBody(16 * 1024),
-    workspaceAccess.fromQuery(),
+    workspaceAccess.fromAiMemoryNote(),
     requireAiUse,
   ] as const,
   request: {
     params: idParam,
-    query: workspaceQuery,
+    query: optionalWorkspaceQuery,
     body: {
       required: true,
       content: { "application/json": { schema: updateBody } },
@@ -219,8 +224,8 @@ const deleteNoteRoute = createRoute({
   summary: "Delete an AI memory note",
   description:
     "Forget a note: the caller's own, or (with ai:manage) a workspace or project note.",
-  middleware: [workspaceAccess.fromQuery(), requireAiUse] as const,
-  request: { params: idParam, query: workspaceQuery },
+  middleware: [workspaceAccess.fromAiMemoryNote(), requireAiUse] as const,
+  request: { params: idParam, query: optionalWorkspaceQuery },
   responses: {
     200: jsonResponse(
       "The note was deleted",
