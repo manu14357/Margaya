@@ -44,7 +44,7 @@ When a template suggests a schedule, Margaya offers to create it right after the
 
 <Screenshot src="ai/new-agent" alt="The New agent dialog filled in for Sprint Helper, with a description, instructions, role, model, where it runs and a monthly budget of 10 US dollars" caption="An agent never gets more rights than its role and the person who asks." />
 
-The agent joins the workspace with that role and a bot avatar, so you can tell it apart everywhere. Use the switch to turn an agent off, the pencil to change it and the bin to delete it. Deleting an agent keeps its comments and history: its comments show as **Deleted agent** (a deleted person's as **Deleted user**), and its runs stay in the Agent Desk.
+The agent joins the workspace with that role and a bot avatar, so you can tell it apart everywhere. Use the switch to turn an agent off, the pencil to change it and the bin to delete it. Deleting an agent keeps its comments and history: its comments show as **Deleted agent** (a deleted person's as **Deleted user**), and its runs stay in the Agent Desk (finished ones under **Deleted agents** in the agent filter).
 
 <Screenshot src="ai/agents-settings" alt="The workspace's Agents settings with Triage Bot, on, and Release Notes, off, each with its spend this month, and New agent" caption="Turn an agent off with its switch; its history stays." />
 
@@ -116,6 +116,8 @@ If a mention or assignment ends without a comment on the task, for example becau
 | Ask | Ask the person a question and pause until they answer. |
 | Outside (web access only) | Search the web; read from and act in connected services. Actions in a connected service always wait for approval and can't be undone. |
 
+An agent is only offered the tools its rights allow (see below). Moving a task to the trash needs permission to delete tasks, which the built-in **Member** role doesn't have, so a Member agent can't propose it; it can still move several tasks' status at once.
+
 Without **Web access**, agents have no tools that reach outside Margaya. No agent has tools that touch members, roles, invitations, API keys, webhooks, sharing or publishing.
 
 ## Connectors (MCP servers)
@@ -152,7 +154,7 @@ Once nothing in a run waits any more, the run ends: it **succeeded** if it chang
 
 Only the person who asked can approve. That person, or anyone with **Manage AI**, can undo.
 
-<Screenshot src="ai/agent-desk" alt="The Agent Desk with a proposed change waiting for you: Triage Bot wants to move WEB-14 Update the legal pages to the trash, with Approve and Reject, above a list of three runs with their trigger, person, cost and time" caption="Destructive changes wait for the person who asked." />
+<Screenshot src="ai/agent-desk" alt="The Agent Desk with a proposed change waiting for you: Triage Bot wants to move two Website relaunch tasks from In Review to Done at once, with Approve and Reject, above a list of three runs with their trigger, person, cost and time" caption="Destructive changes wait for the person who asked." />
 
 ## The Agent Desk
 
@@ -163,14 +165,14 @@ Select a run to see:
 - who it ran for, how it started (mention, assignment, Run agent, schedule, automation, intake request or follow-up), how long it worked, its cost, tokens and number of tool calls;
 - for the person it worked for, the request it was given (while it works, and afterwards only when the server keeps prompts);
 - its question and a reply box while it needs input;
-- why it stopped, if it didn't finish (for example a used-up budget or a 10-minute limit);
+- why it stopped, if it didn't finish (for example a used-up budget or a 10-minute limit), and, when the AI service returned an error, a short excerpt of what it said (for example that the provider account is out of credit);
 - the agent's summary;
 - the change set, with **Undo**, **Approve** and **Reject**;
 - the steps: every model call and tool call in order, with its outcome, and what the model wrote when the server keeps prompts.
 
 <Screenshot src="ai/agent-run" alt="A Triage Bot run on MOB-3 Crash when rotating the task sheet: cost, tokens and tool calls, the summary, a change set of a priority change, two sub-tasks and a comment, each with Undo, and the eight steps" caption="Every change in a run can be undone on its own." />
 
-You see your own runs; people with **Manage AI** see every run in the workspace. Runs in projects you can't see are left out. **Stop run** ends a queued or running run, or one waiting for your answer; changes it already made stay until you undo them. Below a finished run, write in **Reply to the agent** and choose **Send** to give the agent a follow-up.
+You see your own runs; people with **Manage AI** see every run in the workspace. Runs in projects you can't see are left out. Finished runs of an agent that was deleted are hidden; choose **Deleted agents** in the agent filter to see them. **Stop run** ends a queued or running run, or one waiting for your answer; changes it already made stay until you undo them. Below a finished run, write in **Reply to the agent** and choose **Send** to give the agent a follow-up.
 
 ## Where agent work shows up
 

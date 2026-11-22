@@ -88,11 +88,14 @@ export async function getAgentRuns(input: {
   agentId?: string;
   taskId?: string;
   status?: AgentRunStatus;
+  /** Only runs of deleted agents (by default their finished runs are hidden). */
+  deletedAgents?: "only";
 }) {
   const query: Record<string, string> = { workspaceId: input.workspaceId };
   if (input.agentId) query.agentId = input.agentId;
   if (input.taskId) query.taskId = input.taskId;
   if (input.status) query.status = input.status;
+  if (input.deletedAgents) query.deletedAgents = input.deletedAgents;
   return ok(
     await client.ai.agents.runs.$get({
       query: query as { workspaceId: string },

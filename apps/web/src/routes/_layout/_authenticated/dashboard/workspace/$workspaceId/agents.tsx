@@ -7,6 +7,7 @@ type AgentDeskSearch = {
   runId?: string;
   agentId?: string;
   status?: AgentRunStatus;
+  deletedAgents?: boolean;
 };
 
 const text = (value: unknown) =>
@@ -19,6 +20,10 @@ export const Route = createFileRoute(
   validateSearch: (search: Record<string, unknown>): AgentDeskSearch => ({
     runId: text(search.runId),
     agentId: text(search.agentId),
+    deletedAgents:
+      search.deletedAgents === true || search.deletedAgents === "true"
+        ? true
+        : undefined,
     status: RUN_STATUSES.includes(search.status as AgentRunStatus)
       ? (search.status as AgentRunStatus)
       : undefined,
@@ -27,13 +32,14 @@ export const Route = createFileRoute(
 
 function RouteComponent() {
   const { workspaceId } = Route.useParams();
-  const { runId, agentId, status } = Route.useSearch();
+  const { runId, agentId, status, deletedAgents } = Route.useSearch();
   return (
     <AgentDesk
       workspaceId={workspaceId}
       runId={runId}
       agentId={agentId}
       status={status}
+      deletedAgents={deletedAgents}
     />
   );
 }

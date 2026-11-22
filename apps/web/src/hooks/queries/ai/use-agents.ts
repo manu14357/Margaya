@@ -9,14 +9,19 @@ import {
   getAgentTemplates,
 } from "@/fetchers/ai/agents";
 
+type AgentRunFilter = {
+  agentId?: string;
+  taskId?: string;
+  status?: AgentRunStatus;
+  deletedAgents?: "only";
+};
+
 export const agentKeys = {
   all: ["ai-agents"] as const,
   list: (workspaceId: string) => ["ai-agents", "list", workspaceId] as const,
   runs: (workspaceId: string) => ["ai-runs", workspaceId] as const,
-  runList: (
-    workspaceId: string,
-    filter: { agentId?: string; taskId?: string; status?: AgentRunStatus },
-  ) => ["ai-runs", workspaceId, "list", filter] as const,
+  runList: (workspaceId: string, filter: AgentRunFilter) =>
+    ["ai-runs", workspaceId, "list", filter] as const,
   run: (workspaceId: string, runId: string) =>
     ["ai-runs", workspaceId, "run", runId] as const,
   approvals: (workspaceId: string) =>
@@ -59,7 +64,7 @@ export function useAgentUserIds(workspaceId: string | undefined) {
 
 export function useAgentRuns(
   workspaceId: string,
-  filter: { agentId?: string; taskId?: string; status?: AgentRunStatus } = {},
+  filter: AgentRunFilter = {},
   enabled = true,
 ) {
   return useQuery({

@@ -61,12 +61,15 @@ import { ChangePreview } from "./change-preview";
 import { FollowUpBox, NeedsInputPanel } from "./run-reply";
 
 const ALL = "all";
+// The agent filter's entry for runs of agents that were deleted.
+const DELETED = "deleted";
 
 type DeskProps = {
   workspaceId: string;
   runId?: string;
   agentId?: string;
   status?: AgentRunStatus;
+  deletedAgents?: boolean;
 };
 
 /** Agent Desk: runs, their steps, cost and change sets, with undo. */
@@ -75,12 +78,18 @@ export default function AgentDesk({
   runId,
   agentId,
   status,
+  deletedAgents,
 }: DeskProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const ai = useAiAvailability();
   const agents = useAgents(workspaceId);
-  const runs = useAgentRuns(workspaceId, { agentId, status }, ai.canUse);
+  // Finished runs of deleted agents are hidden unless asked for.
+  const runs = useAgentRuns(
+    workspaceId,
+    deletedAgents ? { status, deletedAgents: "only" } : { agentId, status },
+    ai.canUse,
+  );
   const approvals = useAgentApprovals(workspaceId, ai.canUse);
 
   const setSearch = (patch: Partial<DeskProps>) =>
@@ -92,8 +101,9 @@ export default function AgentDesk({
       }),
     });
 
-  const agentLabel =
-    agentId && agents.data
+  const agentLabel = deletedAgents
+    ? t("ai:agents.desk.deletedAgents")
+    : agentId && agents.data
       ? (agents.data.find((agent) => agent.id === agentId)?.name ??
         t("ai:agents.desk.allAgents"))
       : t("ai:agents.desk.allAgents");
@@ -157,12 +167,19 @@ export default function AgentDesk({
               </p>
               <div className="flex items-center gap-1.5">
                 <Select
-                  value={agentId ?? ALL}
+                  value={deletedAgents ? DELETED : (agentId ?? ALL)}
                   onValueChange={(value) =>
-                    void setSearch({
-                      agentId:
-                        !value || value === ALL ? undefined : String(value),
-                    })
+                    void setSearch(
+                      value === DELETED
+                        ? { agentId: undefined, deletedAgents: true }
+                        : {
+                            agentId:
+                              !value || value === ALL
+                                ? undefined
+                                : String(value),
+                            deletedAgents: undefined,
+                          },
+                    )
                   }
                 >
                   <SelectTrigger
@@ -181,6 +198,9 @@ export default function AgentDesk({
                         {agent.name}
                       </SelectItem>
                     ))}
+                    <SelectItem value={DELETED}>
+                      {t("ai:agents.desk.deletedAgents")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <Select
@@ -377,6 +397,14 @@ function RunDetail({
   const data = run.data;
   const changes = data.steps.filter((step) => step.change);
   const errorKey = runErrorKey(data.error);
+  // Why the model call failed, as the server recorded it (scrubbed).
+  const errorDetail =
+    data.status === "failed"
+      ? ([...data.steps]
+          .reverse()
+          .find((step) => step.kind === "model" && step.status === "error")
+          ?.reason ?? null)
+      : null;
   const worked = workedFor(data.startedAt, data.finishedAt);
 
   const onCancel = async () => {
@@ -471,6 +499,11 @@ function RunDetail({
         {errorKey && (
           <p role="status" className="text-destructive-foreground text-xs">
             {t(errorKey)}
+          </p>
+        )}
+        {errorDetail && (
+          <p className="break-words text-muted-foreground text-xs">
+            {t("ai:agents.desk.errorDetail", { detail: errorDetail })}
           </p>
         )}
       </header>

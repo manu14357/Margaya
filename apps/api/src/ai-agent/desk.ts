@@ -5,9 +5,11 @@ import {
   desc,
   eq,
   inArray,
+  isNotNull,
   isNull,
   lt,
   notInArray,
+  or,
   type SQL,
   sql,
 } from "drizzle-orm";
@@ -77,6 +79,8 @@ export function changeLinks(
 }
 
 export type RunStatus = (typeof RUN_STATUSES)[number];
+
+const FINISHED_RUN_STATUSES: RunStatus[] = ["succeeded", "failed", "cancelled"];
 
 const runColumns = {
   id: aiRunTable.id,
@@ -236,8 +240,18 @@ export async function listRuns(input: {
   status?: RunStatus;
   before?: string;
   limit?: number;
+  deletedAgents?: "hide" | "only";
 }) {
   const hidden = await hiddenProjectIds(input.userId, input.workspaceId);
+  // A deleted agent's finished runs can't be followed up or re-run; they'd
+  // otherwise stay at the top of the desk for good.
+  const deletedAgents =
+    input.deletedAgents === "only"
+      ? isNull(aiRunTable.agentId)
+      : or(
+          isNotNull(aiRunTable.agentId),
+          notInArray(aiRunTable.status, FINISHED_RUN_STATUSES),
+        );
   const conditions: (SQL | undefined)[] = [
     eq(aiRunTable.workspaceId, input.workspaceId),
     input.canManage ? undefined : eq(aiRunTable.principalUserId, input.userId),
@@ -246,6 +260,7 @@ export async function listRuns(input: {
     input.status ? eq(aiRunTable.status, input.status) : undefined,
     input.before ? lt(aiRunTable.createdAt, new Date(input.before)) : undefined,
     hidden.length > 0 ? notInArray(aiRunTable.projectId, hidden) : undefined,
+    deletedAgents,
   ];
   const limit = Math.min(Math.max(input.limit ?? 50, 1), 100);
   const rows = (await runQuery()

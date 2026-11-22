@@ -134,6 +134,10 @@ export const listRunsQuery = z.object({
     description: "Runs created before this instant (paging).",
   }),
   limit: z.coerce.number().int().min(1).max(100).optional(),
+  deletedAgents: z.enum(["hide", "only"]).optional().openapi({
+    description:
+      "Runs of agents that were deleted. By default (hide) their finished runs (succeeded, failed or cancelled) are left out; runs still waiting for an approval or an answer stay. `only` lists just the runs of deleted agents, finished or not.",
+  }),
 });
 
 export const runReplyBody = z

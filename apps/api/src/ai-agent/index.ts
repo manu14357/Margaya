@@ -603,6 +603,7 @@ const aiAgent = apiRouter<BaseVariables & { workspaceId: string }>()
         status: query.status,
         before: query.before,
         limit: query.limit,
+        deletedAgents: query.deletedAgents,
       }),
       200,
     );
