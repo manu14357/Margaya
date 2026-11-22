@@ -153,6 +153,24 @@ describe("ExternalImportDialog", () => {
     ).toBeInTheDocument();
   });
 
+  it.each([
+    ["trello", "settings:tasksImportExport.external.selectJsonFile"],
+    ["linear", "settings:tasksImportExport.csv.selectFile"],
+    ["asana", "settings:tasksImportExport.csv.selectFile"],
+  ] as const)(
+    "names the file type %s takes on the upload button",
+    (source, label) => {
+      render(
+        <ExternalImportDialog
+          source={source}
+          onOpenChange={vi.fn()}
+          project={project}
+        />,
+      );
+      expect(screen.getByText(label)).toBeInTheDocument();
+    },
+  );
+
   it("refuses a file of the wrong type before uploading it", async () => {
     render(
       <ExternalImportDialog

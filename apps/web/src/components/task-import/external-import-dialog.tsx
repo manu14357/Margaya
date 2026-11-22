@@ -66,6 +66,7 @@ const COPY = {
     limits: "settings:tasksImportExport.external.limits.trello",
     dropHint: "settings:tasksImportExport.external.dropHint.trello",
     wrongType: "settings:tasksImportExport.external.wrongType.trello",
+    selectFile: "settings:tasksImportExport.external.selectJsonFile",
   },
   linear: {
     title: "settings:tasksImportExport.external.title.linear",
@@ -75,6 +76,7 @@ const COPY = {
     limits: "settings:tasksImportExport.external.limits.linear",
     dropHint: "settings:tasksImportExport.external.dropHint.linear",
     wrongType: "settings:tasksImportExport.external.wrongType.linear",
+    selectFile: "settings:tasksImportExport.csv.selectFile",
   },
   asana: {
     title: "settings:tasksImportExport.external.title.asana",
@@ -84,6 +86,7 @@ const COPY = {
     limits: "settings:tasksImportExport.external.limits.asana",
     dropHint: "settings:tasksImportExport.external.dropHint.asana",
     wrongType: "settings:tasksImportExport.external.wrongType.asana",
+    selectFile: "settings:tasksImportExport.csv.selectFile",
   },
 } as const;
 
@@ -274,7 +277,7 @@ export function ExternalImportDialog({
                 buttonLabel={
                   file
                     ? t("settings:tasksImportExport.csv.changeFile")
-                    : t("settings:tasksImportExport.csv.selectFile")
+                    : t(copy.selectFile)
                 }
                 onFile={(picked) => void loadFile(picked)}
                 isBusy={previewImport.isPending}
