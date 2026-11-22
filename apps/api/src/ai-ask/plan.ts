@@ -194,6 +194,29 @@ export function heuristicPlan(question: string): AskPlan {
   };
 }
 
+/**
+ * A saved skill says what kind of work the question is about ("Write
+ * release notes from the finished tasks" is about completed work) while the
+ * typed question often only names the subject ("for the website relaunch").
+ * The skill's keyword intents join the plan unless the question's own
+ * keywords already chose some. Its words never become search terms: they
+ * describe the answer, not the tasks.
+ */
+export function withSkillIntents(
+  plan: AskPlan,
+  skill: { name: string; prompt: string } | null,
+): AskPlan {
+  if (!skill || plan.ruleIntents) return plan;
+  const fromSkill = heuristicPlan(`${skill.name}\n${skill.prompt}`).intents;
+  if (fromSkill.size === 0) return plan;
+  const intents = new Set([...plan.intents, ...fromSkill]);
+  return {
+    ...plan,
+    intents,
+    terms: countsOnly(intents) ? withoutStatsWords(plan.terms) : plan.terms,
+  };
+}
+
 /** What the planner model answers (PLANNER_SCHEMA). */
 export type PlannerAnswer = {
   searchTerms?: unknown;
@@ -238,7 +261,8 @@ export const PLANNER_SCHEMA: Record<string, unknown> = {
 };
 
 export const PLANNER_INSTRUCTIONS = `Task: turn the user's question about their project-management workspace into a search plan. Do not answer the question.
-Return only JSON matching the schema. The question may be in any language; intents are fixed English values. Earlier questions and answers, when given, are only there to understand a follow-up question.`;
+Return only JSON matching the schema. The question may be in any language; intents are fixed English values. Earlier questions and answers, when given, are only there to understand a follow-up question.
+A saved skill, when given, is what the person wants made from the results (for example, release notes or a changelog come from completed work). Include the intents it implies, but take search terms only from the question's subject, never from the skill's wording.`;
 
 function cleanText(value: unknown, max: number): string | null {
   if (typeof value !== "string") return null;

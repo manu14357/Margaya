@@ -9,6 +9,7 @@ import {
   searchTermsOf,
   withEarlierTurn,
   withoutStatsWords,
+  withSkillIntents,
 } from "../../../apps/api/src/ai-ask/plan";
 import type { AskSource } from "../../../apps/api/src/ai-ask/response";
 import {
@@ -458,5 +459,45 @@ describe("Ask follow-ups", () => {
       question,
     );
     expect(withEarlierTurn(merged, last).earlier?.taskKeys).toEqual(["WEB-2"]);
+  });
+});
+
+describe("Ask with a saved skill", () => {
+  const releaseNotes = {
+    name: "Release notes",
+    prompt:
+      "Write customer-facing release notes from the finished tasks, under short headings.",
+  };
+
+  it("takes the kind of work from the skill when the question only names the subject", () => {
+    const plan = withSkillIntents(
+      heuristicPlan("for the website relaunch"),
+      releaseNotes,
+    );
+    expect([...plan.intents]).toEqual(["completed"]);
+    // The skill's words describe the answer, not the tasks.
+    expect(plan.terms).not.toContain("release");
+    expect(plan.terms).not.toContain("notes");
+    expect(structuredFilters(plan)?.conditions).toContainEqual({
+      key: "group",
+      operator: "in",
+      values: ["completed"],
+    });
+  });
+
+  it("keeps the question's own intents", () => {
+    const plan = withSkillIntents(
+      heuristicPlan("what's still open in the website relaunch"),
+      releaseNotes,
+    );
+    expect([...plan.intents]).toEqual(["open"]);
+  });
+
+  it("changes nothing without a skill or when the skill implies nothing", () => {
+    const base = heuristicPlan("for the website relaunch");
+    expect(withSkillIntents(base, null)).toBe(base);
+    expect(
+      withSkillIntents(base, { name: "Tone", prompt: "Answer politely." }),
+    ).toBe(base);
   });
 });

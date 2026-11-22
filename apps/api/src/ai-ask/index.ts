@@ -24,6 +24,7 @@ import {
 import type { ChatContent, ChatMessage } from "../ai/types";
 import { formatMemoryNotes, memoryNotesFor } from "../ai-memory-notes/load";
 import {
+  type LoadedSkill,
   loadSkillFor,
   SKILL_NOT_FOUND,
   skillInstructions,
@@ -59,6 +60,7 @@ import {
   PLANNER_SCHEMA,
   type PlannerAnswer,
   withEarlierTurn,
+  withSkillIntents,
 } from "./plan";
 import { askResponseExtra } from "./response";
 import {
@@ -136,6 +138,8 @@ const askRoute = createRoute({
 
 /** How much of the previous answer the planner sees. */
 const MAX_PLANNER_ANSWER_CHARS = 600;
+/** How much of a skill's prompt the planner sees. */
+const MAX_PLANNER_SKILL_CHARS = 1_000;
 /** Context characters for workspace items (attached files add theirs). */
 const CONTEXT_CHARS = 40_000;
 
@@ -158,8 +162,9 @@ async function planQuestion(
   userId: string,
   body: AskBody,
   signal: AbortSignal,
+  skill: LoadedSkill | null,
 ) {
-  const base = heuristicPlan(body.question);
+  const base = withSkillIntents(heuristicPlan(body.question), skill);
   const turns = (body.history ?? []).slice(-2);
   const last = turns.at(-1) ?? null;
   // The previous answer (shortened) tells the planner what "it" is.
@@ -181,7 +186,16 @@ async function planQuestion(
       messages: [
         {
           role: "user",
-          content: [...earlier, `Question: ${body.question}`].join("\n"),
+          content: [
+            ...earlier,
+            // The skill says what kind of work to look for.
+            ...(skill
+              ? [
+                  `Saved skill: ${skill.name}\nIts instructions: ${truncateText(skill.prompt, MAX_PLANNER_SKILL_CHARS)}`,
+                ]
+              : []),
+            `Question: ${body.question}`,
+          ].join("\n"),
         },
       ],
       jsonSchema: PLANNER_SCHEMA,
@@ -331,7 +345,13 @@ const aiAsk = apiRouter<BaseVariables & { workspaceId: string }>().openapi(
       body.projectId ??
       (mentioned.length === 1 ? mentioned[0]?.id : null) ??
       null;
-    const plan = await planQuestion(workspaceId, userId, body, abort.signal);
+    const plan = await planQuestion(
+      workspaceId,
+      userId,
+      body,
+      abort.signal,
+      skill,
+    );
     const [contextItems, retrieved, web, notes] = await Promise.all([
       body.context?.length
         ? loadAskContextRefs({

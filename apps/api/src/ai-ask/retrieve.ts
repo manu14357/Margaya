@@ -629,7 +629,9 @@ async function deliveryFacts(
         ? `Forecast finish: 50% by ${forecast.p50?.date ?? "beyond horizon"}, 85% by ${forecast.p85?.date ?? "beyond horizon"}, 95% by ${forecast.p95?.date ?? "beyond horizon"}; chance to finish by the end date: ${percent(forecast.probabilityByEnd)}.`
         : forecast.status === "complete"
           ? "Forecast: all work is done."
-          : "Forecast: not enough completed work yet to forecast.",
+          : forecast.status === "empty"
+            ? "Forecast: the cycle has no tasks yet."
+            : "Forecast: not enough completed work yet to forecast.",
       ...risks.signals.slice(0, 6).map((signal) => {
         const keys = signal.taskIds
           .map((id) => known.get(id) ?? keyOf(id))
