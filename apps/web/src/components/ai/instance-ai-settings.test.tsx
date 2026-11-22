@@ -11,7 +11,10 @@ import type {
   InstanceSettingEntry,
   InstanceSettings,
 } from "@/types/instance-admin";
-import { InstanceAiSettingsPage } from "./instance-ai-settings";
+import {
+  InstanceAiSettingsPage,
+  localDescriptionKey,
+} from "./instance-ai-settings";
 
 // Settings → Instance → AI: the "Keep prompts and answers" switch
 // (ai.retention.storePrompts), off by default.
@@ -118,8 +121,41 @@ describe("keep prompts and answers", () => {
       }),
     );
     expect(toggle).toHaveAttribute("aria-checked", "true");
-    expect(toggle).toHaveAttribute("aria-disabled", "true");
+    expect(toggle).toBeDisabled();
     fireEvent.click(toggle);
     expect(m.save).not.toHaveBeenCalled();
+  });
+});
+
+describe("local model description", () => {
+  const withRouting = (restricted: string, localOnly = false) =>
+    ({
+      locked: false,
+      settings: [
+        { key: "ai.route.restricted", value: restricted },
+        { key: "ai.localOnly", value: localOnly },
+      ],
+      derived: {},
+    }) as unknown as InstanceSettings;
+
+  it("follows where restricted data goes", () => {
+    expect(localDescriptionKey(withRouting("local"))).toBe(
+      "ai:instance.localDescription",
+    );
+    expect(localDescriptionKey(withRouting("cloud"))).toBe(
+      "ai:instance.localDescriptionCloud",
+    );
+    expect(localDescriptionKey(withRouting("blocked"))).toBe(
+      "ai:instance.localDescriptionBlocked",
+    );
+  });
+
+  it("says every call goes there in local-only mode", () => {
+    expect(localDescriptionKey(withRouting("cloud", true))).toBe(
+      "ai:instance.localDescriptionLocalOnly",
+    );
+    expect(localDescriptionKey(withRouting("blocked", true))).toBe(
+      "ai:instance.localDescriptionBlocked",
+    );
   });
 });

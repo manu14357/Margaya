@@ -41,11 +41,27 @@ import {
 import {
   indexSettings,
   isSettingLocked,
+  settingFlag,
   settingText,
 } from "@/lib/instance-settings";
 import type { InstanceSettings } from "@/types/instance-admin";
 import { AiTestButton } from "./ai-test-button";
 import { AiUsageDashboard, UsageRangeSelect } from "./ai-usage-dashboard";
+
+/**
+ * What the local model receives depends on the privacy routing, so its
+ * description follows the restricted-data route and local-only mode.
+ */
+export function localDescriptionKey(settings: InstanceSettings) {
+  const index = indexSettings(settings);
+  const restricted = settingText(index, "ai.route.restricted");
+  if (restricted === "blocked") return "ai:instance.localDescriptionBlocked";
+  if (settingFlag(index, "ai.localOnly")) {
+    return "ai:instance.localDescriptionLocalOnly";
+  }
+  if (restricted === "cloud") return "ai:instance.localDescriptionCloud";
+  return "ai:instance.localDescription";
+}
 
 /** Settings → Instance → AI. */
 export function InstanceAiSettingsPage() {
@@ -129,7 +145,7 @@ export function InstanceAiSettingsPage() {
 
           <InstanceSection
             title={t("ai:instance.localTitle")}
-            description={t("ai:instance.localDescription")}
+            description={t(localDescriptionKey(settings.data))}
           >
             <FieldsForm
               settings={settings.data}
