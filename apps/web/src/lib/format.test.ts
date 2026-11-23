@@ -32,6 +32,20 @@ describe("format helpers", () => {
     ).toBe("yesterday");
   });
 
+  it("reads a timestamp a few seconds ahead of this clock as now", () => {
+    const now = new Date("2026-08-10T12:00:00Z");
+    const ahead = (ms: number) => new Date(now.getTime() + ms);
+    expect(formatRelativeTime(ahead(1_000), "en-US", now)).toBe("now");
+    expect(formatRelativeTime(ahead(9_000), "en-US", now)).toBe("now");
+    // Real future times still read as such.
+    expect(formatRelativeTime(ahead(5 * 60_000), "en-US", now)).toBe(
+      "in 5 minutes",
+    );
+    expect(formatRelativeTime(ahead(-30_000), "en-US", now)).toBe(
+      "30 seconds ago",
+    );
+  });
+
   it("builds one date formatter per locale and options, not one per call", () => {
     let constructed = 0;
     const Original = Intl.DateTimeFormat;

@@ -96,6 +96,9 @@ export function formatDateTime(value: DateInput, locale?: string) {
   );
 }
 
+/** How far ahead of this clock a timestamp may be and still read "now". */
+const FUTURE_SKEW_MS = 10_000;
+
 export function formatRelativeTime(
   value: DateInput,
   locale?: string,
@@ -103,7 +106,10 @@ export function formatRelativeTime(
 ) {
   const target = toDate(value);
   const diffMs = target.getTime() - now.getTime();
-  const diffSeconds = Math.round(diffMs / 1000);
+  // A server clock a little ahead of this one makes a moment ago read
+  // "in 1 second": a few seconds ahead counts as now.
+  const diffSeconds =
+    diffMs > 0 && diffMs < FUTURE_SKEW_MS ? 0 : Math.round(diffMs / 1000);
   const absSeconds = Math.abs(diffSeconds);
 
   const units: Array<[Intl.RelativeTimeFormatUnit, number]> = [

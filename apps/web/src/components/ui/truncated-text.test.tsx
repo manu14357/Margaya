@@ -1,5 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { formatRelativeTime } from "@/lib/format";
 import { CompactDate } from "./compact-date";
 import { MiddleTruncate, TruncatedText } from "./truncated-text";
 
@@ -73,6 +74,14 @@ describe("CompactDate", () => {
       "Mar 2, 2024",
     );
     expect(time.querySelector(".sr-only")?.textContent).toMatch(/2024/);
+  });
+
+  it("never puts a just-created moment in the future", () => {
+    const value = new Date(Date.now() + 3_000);
+    const { container } = render(<CompactDate value={value} />);
+    const label = container.querySelector("time [aria-hidden]");
+    expect(label?.textContent).not.toMatch(/^in /);
+    expect(label?.textContent).toBe(formatRelativeTime(new Date()));
   });
 
   it("renders nothing for an invalid date", () => {

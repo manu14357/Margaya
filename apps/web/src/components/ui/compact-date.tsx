@@ -25,10 +25,13 @@ type CompactDateProps = {
 export function CompactDate({ value, className }: CompactDateProps) {
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return null;
-  const kind = compactDateKind(date, new Date());
+  const now = new Date();
+  const kind = compactDateKind(date, now);
+  // These are moments that already happened (created, failed, last active):
+  // one stamped by a server clock running ahead never reads "in 2 seconds".
   const label =
     kind === "relative"
-      ? formatRelativeTime(date)
+      ? formatRelativeTime(date > now ? now : date, undefined, now)
       : kind === "short"
         ? formatDateShort(date)
         : formatDateMedium(date);
