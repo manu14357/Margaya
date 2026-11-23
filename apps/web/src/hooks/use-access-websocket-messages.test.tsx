@@ -78,6 +78,22 @@ describe("access changes over WebSockets", () => {
     );
   });
 
+  it("reloads a board that lost access once access changes again", () => {
+    renderHook(useUserWebSocket);
+    deliver({
+      type: "PROJECT_ACCESS_CHANGED",
+      workspaceId: "ws-1",
+      projectId: "project-1",
+    });
+    const board = client.invalidateQueries.mock.calls
+      .map(([options]) => options)
+      .find((options) => options.queryKey?.[0] === "tasks");
+    expect(board?.queryKey).toEqual(["tasks", "project-1"]);
+    // Only an errored board reloads; a healthy one is left alone.
+    expect(board?.predicate({ state: { status: "error" } })).toBe(true);
+    expect(board?.predicate({ state: { status: "success" } })).toBe(false);
+  });
+
   it("refreshes a project's people and my roles from its own socket", () => {
     renderHook(() => useProjectWebSocket("project-1"));
     deliver({ type: "PROJECT_ACCESS_CHANGED", projectId: "project-1" });

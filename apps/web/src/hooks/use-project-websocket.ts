@@ -596,6 +596,12 @@ export function useProjectWebSocket(projectId: string) {
         // refused; the project lists refetch and drop it instead.
         if (event.code === PROJECT_ACCESS_REVOKED) {
           queryClient.invalidateQueries({ queryKey: ["projects"] });
+          // One reload tells an open board it is out of reach (404), which
+          // stops its polling instead of leaving it to poll forever.
+          queryClient.invalidateQueries({
+            queryKey: ["tasks", projectId],
+            exact: true,
+          });
           return;
         }
         retryTimeout = setTimeout(connect, reconnectDelay(retries));

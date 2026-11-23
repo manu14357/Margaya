@@ -11,10 +11,16 @@ import {
 // The real query client, socket hook and page loader against a fake board of
 // 50 pages at 45 ms a page: the sizes measured on a 5,000-task project.
 const PAGES = 50;
-const server = vi.hoisted(() => ({ version: 0, requests: 0, fail: false }));
+const server = vi.hoisted(() => ({
+  version: 0,
+  requests: 0,
+  fail: false,
+  failStatus: 0,
+}));
 
 vi.mock("@/fetchers/task/get-tasks", async () => {
   const { loadBoardPages } = await import("@/fetchers/task/load-board-pages");
+  const { HttpError } = await import("@/lib/http-error");
   return {
     default: (projectId: string, signal?: AbortSignal) =>
       loadBoardPages(async (page) => {
@@ -27,6 +33,9 @@ vi.mock("@/fetchers/task/get-tasks", async () => {
             reject(new DOMException("Aborted", "AbortError"));
           });
         });
+        if (server.failStatus) {
+          throw new HttpError(server.failStatus, "Failed to fetch tasks");
+        }
         if (server.fail) throw new Error("board failed");
         return {
           data: {
@@ -121,6 +130,7 @@ describe("board refresh load", () => {
     server.version = 0;
     server.requests = 0;
     server.fail = false;
+    server.failStatus = 0;
     forgetClosedProjectSockets();
   });
   afterEach(() => {
@@ -231,6 +241,19 @@ describe("board refresh load", () => {
     await advance(31_000);
     expect(result.current.error).toBeNull();
     expect(result.current.data?.name).toBe("v1");
+  });
+
+  it("stops polling a board whose project went out of reach", async () => {
+    const { result } = await openBoard();
+    // The project was restricted without me: the server closes my socket.
+    server.failStatus = 404;
+    await act(async () => latestSocket().onclose?.({ code: 4404 }));
+    await advance(1_000);
+    expect(result.current.error).toBeTruthy();
+    server.requests = 0;
+    await advance(10 * 60_000);
+    expect(server.requests).toBe(0);
+    expect(TestSocket.instances).toHaveLength(1);
   });
 
   it("holds a hidden tab's reloads until the tab is visible again", async () => {

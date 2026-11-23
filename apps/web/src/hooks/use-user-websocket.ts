@@ -104,6 +104,7 @@ export function useUserWebSocket() {
             type?: string;
             workspaceId?: string;
             userId?: string;
+            projectId?: string;
             taskId?: string;
             notificationType?: string | null;
             reply?: boolean;
@@ -157,6 +158,15 @@ export function useUserWebSocket() {
               queryClient.invalidateQueries({ queryKey });
             }
             void invalidateTaskQueries(queryClient);
+            // A board that stopped polling because the project was out of
+            // reach loads again once I may see it; healthy boards stay put.
+            if (message.projectId) {
+              queryClient.invalidateQueries({
+                queryKey: ["tasks", message.projectId],
+                exact: true,
+                predicate: (query) => query.state.status === "error",
+              });
+            }
           }
           if (message.type === "FAVORITES_UPDATED") {
             queryClient.invalidateQueries({
