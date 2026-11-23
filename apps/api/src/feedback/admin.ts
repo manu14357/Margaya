@@ -38,7 +38,7 @@ const TAGS = ["Instance admin"];
 const ADMIN_NOTE =
   " Instance admins only, with a signed-in session: API keys are refused.";
 const REAUTH_NOTE =
-  " Needs a recent sign-in (see POST /instance-admin/reauth); otherwise 403 with code REAUTH_REQUIRED.";
+  " Needs a recent sign-in: a session opened in the last 10 minutes, or a password confirmed through POST /instance-admin/reauth; otherwise 403 with code REAUTH_REQUIRED.";
 const forbidden = errorResponse(
   "Not an instance admin, or an API key instead of a user session",
 );
