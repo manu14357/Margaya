@@ -15,6 +15,7 @@ type Handlers = Record<string, Record<string, () => void>>;
 const m = vi.hoisted(() => ({
   navigate: vi.fn(),
   modifierShortcuts: {} as Handlers,
+  sequentialShortcuts: {} as Handlers,
   openView: vi.fn(),
   searchQueries: [] as Array<{ q: string; type?: string }>,
   setWeekStart: vi.fn(),
@@ -124,8 +125,12 @@ vi.mock("react-i18next", () => ({
   }),
 }));
 vi.mock("@/hooks/use-keyboard-shortcuts", () => ({
-  useRegisterShortcuts: (options: { modifierShortcuts?: Handlers }) => {
+  useRegisterShortcuts: (options: {
+    modifierShortcuts?: Handlers;
+    sequentialShortcuts?: Handlers;
+  }) => {
     m.modifierShortcuts = options.modifierShortcuts ?? {};
+    m.sequentialShortcuts = options.sequentialShortcuts ?? {};
   },
   getModifierKeyText: () => "Ctrl",
 }));
@@ -246,6 +251,30 @@ function typeQuery(value: string) {
 }
 
 describe("CommandPalette", () => {
+  it("registers the g sequences for workspace pages, without opening the palette", () => {
+    render(<CommandPalette />);
+    const go = m.sequentialShortcuts.g ?? {};
+    for (const key of ["h", "a", "y", "s"]) go[key]?.();
+    expect(m.navigate.mock.calls.map(([call]) => call)).toEqual([
+      {
+        to: "/dashboard/workspace/$workspaceId",
+        params: { workspaceId: "w1" },
+      },
+      {
+        to: "/dashboard/workspace/$workspaceId/views/$viewId",
+        params: { workspaceId: "w1", viewId: "all" },
+      },
+      {
+        to: "/dashboard/workspace/$workspaceId/my-work",
+        params: { workspaceId: "w1" },
+      },
+      {
+        to: "/dashboard/workspace/$workspaceId/stickies",
+        params: { workspaceId: "w1" },
+      },
+    ]);
+  });
+
   it("offers Ask AI, and asks AI about the typed text", async () => {
     render(<CommandPalette />);
     openPalette();

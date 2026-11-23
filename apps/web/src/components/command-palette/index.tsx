@@ -292,6 +292,38 @@ function CommandPalette() {
           setIsCreateWorkspaceOpen(true);
         },
       },
+      // Workspace pages from anywhere. Project sections add their own `g`
+      // keys (ProjectViewTabs); none of them reuse these.
+      [shortcuts.workspaceGo.prefix]: {
+        [shortcuts.workspaceGo.home]: () => {
+          if (!workspaceId) return;
+          navigate({
+            to: "/dashboard/workspace/$workspaceId",
+            params: { workspaceId },
+          });
+        },
+        [shortcuts.workspaceGo.allTasks]: () => {
+          if (!workspaceId) return;
+          navigate({
+            to: "/dashboard/workspace/$workspaceId/views/$viewId",
+            params: { workspaceId, viewId: "all" },
+          });
+        },
+        [shortcuts.workspaceGo.myWork]: () => {
+          if (!workspaceId) return;
+          navigate({
+            to: "/dashboard/workspace/$workspaceId/my-work",
+            params: { workspaceId },
+          });
+        },
+        [shortcuts.workspaceGo.stickies]: () => {
+          if (!workspaceId) return;
+          navigate({
+            to: "/dashboard/workspace/$workspaceId/stickies",
+            params: { workspaceId },
+          });
+        },
+      },
     },
   });
 
