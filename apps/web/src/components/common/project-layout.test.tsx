@@ -1,10 +1,17 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { HttpError } from "@/lib/http-error";
 import ProjectLayout from "./project-layout";
 
 const navigate = vi.hoisted(() => vi.fn());
 const setViewMode = vi.hoisted(() => vi.fn());
+const projectQuery = vi.hoisted(() => ({
+  current: { data: undefined, error: null } as {
+    data: unknown;
+    error: unknown;
+  },
+}));
 const projectSwitch = vi.hoisted(() => ({
   select: (_id: string) => {},
 }));
@@ -59,7 +66,7 @@ vi.mock("@/components/common/project-view-tabs", () => ({
 vi.mock("@/components/common/header/project-crumb-select", () => ({
   default: ({ onSelectProject }: { onSelectProject: (id: string) => void }) => {
     projectSwitch.select = onSelectProject;
-    return null;
+    return <span>project switcher</span>;
   },
 }));
 vi.mock("@/components/ai/ai-summary", () => ({ AiSummaryButton: () => null }));
@@ -89,7 +96,10 @@ vi.mock("@/hooks/mutations/recent-visit/use-record-visit", () => ({
   visitArchiveState: () => undefined,
 }));
 vi.mock("@/hooks/queries/project/use-get-project", () => ({
-  default: () => ({ data: undefined }),
+  default: () => projectQuery.current,
+}));
+vi.mock("@/components/ui/error-display", () => ({
+  ErrorDisplay: () => <div>not found</div>,
 }));
 vi.mock("@/hooks/use-project-features", () => ({
   useWorkspaceProjectFeatures: () => () => true,
@@ -110,6 +120,7 @@ function renderLayout(activeView: "board" | "list" = "board") {
 }
 
 beforeEach(() => {
+  projectQuery.current = { data: undefined, error: null };
   navigate.mockReset();
   setViewMode.mockReset();
 });
@@ -149,5 +160,27 @@ describe("ProjectLayout tabs", () => {
         params: { workspaceId: "w", projectId: "other" },
       }),
     );
+  });
+});
+
+describe("ProjectLayout for a project the caller can't open", () => {
+  it.each([404, 403])("shows only the not-found page on %s", (status) => {
+    projectQuery.current = {
+      data: undefined,
+      error: new HttpError(status, "Project not found"),
+    };
+    renderLayout();
+    expect(screen.getByText("not found")).toBeInTheDocument();
+    expect(screen.queryByTestId("tabs")).toBeNull();
+    expect(screen.queryByText("project switcher")).toBeNull();
+    expect(screen.queryByText("body")).toBeNull();
+  });
+
+  it("keeps the project chrome while the project loads or after other errors", () => {
+    projectQuery.current = { data: undefined, error: new HttpError(500, "") };
+    renderLayout();
+    expect(screen.getByTestId("tabs")).toBeInTheDocument();
+    expect(screen.getByText("project switcher")).toBeInTheDocument();
+    expect(screen.getByText("body")).toBeInTheDocument();
   });
 });

@@ -15,6 +15,7 @@ import FavoriteButton from "@/components/favorite/favorite-button";
 import ProjectLeadBadge from "@/components/project/project-lead-badge";
 import ProjectPublicBadge from "@/components/publication/project-public-badge";
 import CreateProjectModal from "@/components/shared/modals/create-project-modal";
+import { ErrorDisplay } from "@/components/ui/error-display";
 import {
   useRecordVisit,
   visitArchiveState,
@@ -23,6 +24,7 @@ import useGetProject from "@/hooks/queries/project/use-get-project";
 import { useWorkspaceProjectFeatures } from "@/hooks/use-project-features";
 import { useProjectSections } from "@/hooks/use-project-sections";
 import { useProjectWebSocket } from "@/hooks/use-project-websocket";
+import { HttpError } from "@/lib/http-error";
 import {
   type ProjectSection,
   type ProjectSectionId,
@@ -70,6 +72,12 @@ function viewFromPath(pathname: string): ProjectLayoutView {
   return "board";
 }
 
+function isInaccessible(error: unknown) {
+  return (
+    error instanceof HttpError && (error.status === 404 || error.status === 403)
+  );
+}
+
 /**
  * A project page: the top bar (project tile and switcher, favorite, public
  * badge, the page's place), the project's tab row, then the body.
@@ -88,7 +96,10 @@ export default function ProjectLayout({
   const navigate = useNavigate();
   const location = useLocation();
   const setViewMode = useUserPreferencesStore((state) => state.setViewMode);
-  const { data: project } = useGetProject({ id: projectId, workspaceId });
+  const { data: project, error: projectError } = useGetProject({
+    id: projectId,
+    workspaceId,
+  });
   const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] =
     useState(false);
   const { sections, activeSection } = useProjectSections({
@@ -153,6 +164,20 @@ export default function ProjectLayout({
 
     goToView(resolvedView, nextProjectId);
   };
+
+  // A project the caller can't see (another workspace's, a restricted one,
+  // or a guest's link to a project she isn't in) answers 404 or 403. Show
+  // only the not-found page, without this project's switcher and tabs.
+  if (!project && isInaccessible(projectError)) {
+    return (
+      <Layout>
+        <Layout.TopBar />
+        <Layout.Content>
+          <ErrorDisplay error={projectError} />
+        </Layout.Content>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
