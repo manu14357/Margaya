@@ -110,6 +110,21 @@ describe("inviting with a role is capped at the inviter's own", () => {
     const unknown = await s.invite(admin.cookie, "x@example.com", "ghost");
     expect(unknown.status).toBe(400);
   });
+
+  it("keeps a new invitation valid for seven days", async () => {
+    const s = await scene();
+    const sentAt = Date.now();
+    const invitation = (await (
+      await s.invite(s.owner.cookie, "later@example.com", "member")
+    ).json()) as Invitation;
+    const [row] = await db
+      .select({ expiresAt: schema.invitationTable.expiresAt })
+      .from(schema.invitationTable)
+      .where(eq(schema.invitationTable.id, invitation.id));
+    const days = ((row?.expiresAt.getTime() ?? 0) - sentAt) / 86_400_000;
+    expect(days).toBeGreaterThan(6.99);
+    expect(days).toBeLessThan(7.01);
+  });
 });
 
 describe("PATCH /api/invitation/:id/role", () => {

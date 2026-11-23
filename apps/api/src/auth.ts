@@ -177,6 +177,9 @@ const localSignUpDisabledAtStartup =
 const apiUrl = process.env.MARGAYA_API_URL || "http://localhost:1337";
 const clientUrl = process.env.MARGAYA_CLIENT_URL || "http://localhost:5173";
 
+// How long a workspace invitation link works (Better Auth's default is 48 hours).
+export const INVITATION_EXPIRES_IN_SECONDS = 7 * 24 * 60 * 60;
+
 const SCHEDULE_DELETION_MESSAGE =
   "Workspaces are deleted after a grace period. Schedule the deletion with POST /api/workspace/{workspaceId}/deletion instead.";
 
@@ -597,6 +600,9 @@ function createAuthInstance(
         // acceptance for everyone. The invitation link id is the actual secret
         // here, so gate on that rather than on email verification.
         requireEmailVerificationOnInvitation: false,
+        // Long enough for an email that waits over a weekend. Invitations
+        // already sent keep the expiry stored with them.
+        invitationExpiresIn: INVITATION_EXPIRES_IN_SECONDS,
         organizationHooks: {
           beforeCreateOrganization: async ({ organization }) => {
             const check = checkWorkspaceName(organization.name ?? "");
