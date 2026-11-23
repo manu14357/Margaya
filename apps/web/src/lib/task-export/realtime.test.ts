@@ -25,6 +25,7 @@ vi.mock("@/lib/toast", () => ({
 import {
   createTaskExportMessageHandler,
   handleTaskExportUserMessage,
+  rememberStartedExport,
 } from "./realtime";
 
 function setup() {
@@ -99,6 +100,7 @@ describe("handleTaskExportUserMessage toasts", () => {
       error: null,
     });
     m.saveTaskExport.mockResolvedValue("acme-tasks.csv");
+    rememberStartedExport("exp-ready");
 
     handleTaskExportUserMessage(queryClient, {
       type: "EXPORT_UPDATED",
@@ -128,6 +130,7 @@ describe("handleTaskExportUserMessage toasts", () => {
       fileName: null,
       error: "This export has more than 50,000 tasks",
     });
+    rememberStartedExport("exp-failed");
 
     handleTaskExportUserMessage(queryClient, {
       type: "EXPORT_UPDATED",
@@ -140,5 +143,46 @@ describe("handleTaskExportUserMessage toasts", () => {
     expect(m.error.mock.calls[0][0]).toContain(
       "This export has more than 50,000 tasks",
     );
+  });
+
+  it("toasts only in the tab that started the export", async () => {
+    m.getTaskExport.mockResolvedValue({
+      id: "exp-elsewhere",
+      fileName: "other.csv",
+      sizeBytes: 1,
+      error: null,
+    });
+    handleTaskExportUserMessage(queryClient, {
+      type: "EXPORT_UPDATED",
+      workspaceId: "ws-1",
+      exportId: "exp-elsewhere",
+      status: "completed",
+    });
+    // The history still refreshes in every session.
+    expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
+      queryKey: ["task-exports", "ws-1"],
+    });
+    await Promise.resolve();
+    expect(m.getTaskExport).not.toHaveBeenCalled();
+    expect(m.success).not.toHaveBeenCalled();
+  });
+
+  it("toasts an export that finished before its create response arrived", async () => {
+    m.getTaskExport.mockResolvedValue({
+      id: "exp-fast",
+      fileName: "fast.csv",
+      sizeBytes: 1,
+      error: null,
+    });
+    handleTaskExportUserMessage(queryClient, {
+      type: "EXPORT_UPDATED",
+      workspaceId: "ws-1",
+      exportId: "exp-fast",
+      status: "completed",
+    });
+    expect(m.getTaskExport).not.toHaveBeenCalled();
+    rememberStartedExport("exp-fast");
+    await vi.waitFor(() => expect(m.success).toHaveBeenCalledTimes(1));
+    expect(m.success.mock.calls[0][1].description).toBe("fast.csv");
   });
 });
