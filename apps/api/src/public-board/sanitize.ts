@@ -76,10 +76,31 @@ export function sanitizePublicComment(raw: string): string {
   return text;
 }
 
+// Markdown that would show as syntax in a plain-text title. Only the syntax
+// goes: punctuation people type ("Export (CSV)", "C# support", "Wow!") stays.
+const MARKDOWN_LINK = /\[([^\]]*)\]\([^)\s]*(?:\s+"[^"]*")?\)/g;
+const MARKDOWN_REFERENCE_LINK = /\[([^\]]+)\]\[[^\]]*\]/g;
+// Paired emphasis, strikethrough and code markers, not inside words
+// (snake_case_names keep their underscores).
+const MARKDOWN_EMPHASIS = /(?<!\w)(\*\*|__|~~|\*|_|`)(?=\S)(.*?\S)\1(?!\w)/g;
+// Heading and quote markers at the start of a line.
+const MARKDOWN_LINE_MARKER = /^[ \t]*(?:#{1,6}[ \t]+|>[ \t]?)+/gm;
+
+function markdownToPlainText(text: string): string {
+  let plain = text
+    .replace(MARKDOWN_LINE_MARKER, "")
+    .replace(MARKDOWN_LINK, (_link, label: string) => label)
+    .replace(MARKDOWN_REFERENCE_LINK, (_link, label: string) => label);
+  // Twice for nesting such as ***bold italic***.
+  for (let pass = 0; pass < 2; pass++) {
+    plain = plain.replace(MARKDOWN_EMPHASIS, (_match, _marker, inner) => inner);
+  }
+  return plain;
+}
+
 /** A request title: plain text, whitespace collapsed, 1-255 characters. */
 export function sanitizeRequestTitle(raw: string): string {
-  const title = stripPublicMarkup(raw)
-    .replace(/[*_`~#>[\]()!]/g, "")
+  const title = markdownToPlainText(stripPublicMarkup(raw))
     .replace(/\s+/g, " ")
     .trim();
   if (!title)

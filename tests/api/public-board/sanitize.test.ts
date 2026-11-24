@@ -108,6 +108,17 @@ describe("public board sanitizer", () => {
       message: SANITIZE_MESSAGES.longTitle,
     });
     expect(sanitizeRequestDescription(undefined)).toBe("");
+  });
+
+  it.each([
+    ["Probe request (delete me)", "Probe request (delete me)"],
+    ["C# support > 2 users!", "C# support > 2 users!"],
+    ["Rename snake_case_fields", "Rename snake_case_fields"],
+    ["[Docs](https://example.com) are ~~wrong~~ `old`", "Docs are wrong old"],
+    ["## ***Urgent*** fix", "Urgent fix"],
+    ["> quoted __idea__", "quoted idea"],
+  ])("keeps the punctuation people typed in %j", (raw, title) => {
+    expect(sanitizeRequestTitle(raw)).toBe(title);
     expect(
       refusal(() => sanitizeRequestDescription("d".repeat(10_001))),
     ).toMatchObject({ status: 400 });
