@@ -22,6 +22,7 @@ export {
   renderToSvg,
   sanitizeElements,
   settingsMap,
+  sortByOrder,
   type TaskCardData,
   taskIdsOf,
   writeElements,

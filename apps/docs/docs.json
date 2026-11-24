@@ -879,6 +879,9 @@
 							"api-reference/endpoints/ai/aiChatBuildApply",
 							"api-reference/endpoints/ai/aiChatBuildUndo",
 							"api-reference/endpoints/ai/aiParseTaskFilter",
+							"api-reference/endpoints/ai/aiWhiteboardBrainstorm",
+							"api-reference/endpoints/ai/aiWhiteboardGroup",
+							"api-reference/endpoints/ai/aiWhiteboardSummarize",
 							"api-reference/endpoints/ai/getAiBudgetStatus"
 						]
 					},

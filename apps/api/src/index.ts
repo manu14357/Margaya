@@ -157,6 +157,7 @@ import trash from "./trash";
 import whiteboard from "./whiteboard";
 import { shutdownWhiteboardRooms } from "./whiteboard/collab/rooms";
 import { whiteboardCollabWebSocket } from "./whiteboard/collab/ws-route";
+import whiteboardAi from "./whiteboard-ai";
 import "./recent-visit/subscribers";
 import "./workspace/members-realtime";
 import "./ws/workspace-hints";
@@ -1179,6 +1180,7 @@ export function createApp() {
   const aiChatBuildApi = api.route("/ai/chat", aiChatBuild);
   const aiFiltersApi = api.route("/ai/filters", aiFilters);
   const aiBudgetApi = api.route("/ai/budget-status", aiBudget);
+  const aiWhiteboardApi = api.route("/ai/whiteboard", whiteboardAi);
 
   app.route("/", a2aWellKnownRoutes());
   app.route(
@@ -1410,6 +1412,7 @@ export function createApp() {
     aiChatBuildApi,
     aiFiltersApi,
     aiBudgetApi,
+    aiWhiteboardApi,
     oauthApi,
     instanceStatusApi,
   };
@@ -1653,6 +1656,7 @@ const {
   aiChatBuildApi,
   aiFiltersApi,
   aiBudgetApi,
+  aiWhiteboardApi,
   oauthApi,
   instanceStatusApi,
 } = createdApp;
@@ -1757,6 +1761,7 @@ export type AppType =
   | typeof aiChatBuildApi
   | typeof aiFiltersApi
   | typeof aiBudgetApi
+  | typeof aiWhiteboardApi
   | typeof publicProjectApi
   | typeof publicBoardApi
   | typeof publicPageApi

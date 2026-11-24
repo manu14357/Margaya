@@ -16,6 +16,8 @@ import useCreateTaskRelation from "@/hooks/mutations/task-relation/use-create-ta
 import useGetTaskRelations from "@/hooks/queries/task-relation/use-get-task-relations";
 import { cn } from "@/lib/cn";
 import { toast } from "@/lib/toast";
+import { BoardAiDialog, type BoardAiMode } from "./board-ai-dialog";
+import { BoardAiMenu } from "./board-ai-menu";
 import { BottomBar, Collaborators, FollowFrame, Minimap } from "./chrome";
 import { readPasteEvent, writeClipboardText } from "./clipboard";
 import {
@@ -179,6 +181,7 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
     presenting = false,
     onExitPresent,
     synced = false,
+    aiEnabled = false,
   } = props;
   // Present mode shows the board read-only, whatever the viewer may do.
   const readOnly = boardReadOnly || presenting;
@@ -741,6 +744,28 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
     : null;
   const removeRelations = dependencies.removeRelations;
 
+  // AI proposals: the dialog previews them; nothing changes until accepted.
+  const [aiMode, setAiMode] = useState<BoardAiMode | null>(null);
+  const aiOn = aiEnabled && !isPublic && Boolean(projectId) && !presenting;
+  const openAi = (mode: BoardAiMode) => {
+    setAiMode(mode);
+    c.update((state) => openDialog(state, "ai"));
+  };
+  const closeAi = () => {
+    setAiMode(null);
+    c.update((state) =>
+      state.dialog === "ai" ? { ...state, dialog: null } : state,
+    );
+  };
+  // AI turned off meanwhile: the dialog is gone, so the board gets its keys back.
+  useEffect(() => {
+    if (aiOn) return;
+    setAiMode(null);
+    c.update((state) =>
+      state.dialog === "ai" ? { ...state, dialog: null } : state,
+    );
+  }, [c, aiOn]);
+
   const panelActions = {
     onTurnIntoTasks: () =>
       c.update((state) => openDialog(state, "turnIntoTasks")),
@@ -758,6 +783,8 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
     onEditLink: () => c.update((state) => openDialog(state, "link")),
     onEditText: (id: string) => editTextRef.current(id),
     tasksEnabled,
+    onAiGroup: aiOn ? () => openAi("group") : undefined,
+    onAiSummarize: aiOn ? () => openAi("summarize") : undefined,
   };
 
   // A collaborator deleting the element (or the board turning read-only)
@@ -851,6 +878,11 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
                     onPick={pickTool}
                     onPickShape={pickShapeTool}
                     onToggleLock={() => c.dispatchTool({ type: "toggleLock" })}
+                    extra={
+                      aiOn ? (
+                        <BoardAiMenu compact={compact} onOpen={openAi} />
+                      ) : null
+                    }
                   />
                 </div>
               </div>
@@ -954,6 +986,14 @@ export function WhiteboardEditor(props: WhiteboardEditorProps) {
             onOpenChange={setDialog("link")}
             controller={c}
           />
+          {aiOn && (
+            <BoardAiDialog
+              mode={dialog === "ai" ? aiMode : null}
+              onClose={closeAi}
+              controller={c}
+              whiteboardId={whiteboardId}
+            />
+          )}
           {tasksEnabled && (
             <>
               <TaskPickerDialog

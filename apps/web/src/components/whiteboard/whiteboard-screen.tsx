@@ -57,6 +57,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useAiAvailability } from "@/hooks/queries/ai/use-ai";
 import { useWhiteboard } from "@/hooks/queries/whiteboard/use-whiteboard";
 import { whiteboardQueryKeys } from "@/hooks/queries/whiteboard/whiteboard-query-keys";
 import { useProjectFeatures } from "@/hooks/use-project-features";
@@ -236,6 +237,7 @@ export default function WhiteboardScreen({
   const enabled = features.isEnabled("whiteboards");
   const boardQuery = useWhiteboard(enabled ? whiteboardId : "");
   const board = boardQuery.data;
+  const ai = useAiAvailability(board?.projectId ?? projectId);
   const { getMember } = usePageMembers(workspaceId);
   const theme = useBoardTheme();
   const [ready, setReady] = useState<{
@@ -507,6 +509,7 @@ export default function WhiteboardScreen({
         presenting={presenting}
         onExitPresent={stopPresenting}
         synced={collab.fallback || collab.hasSynced}
+        aiEnabled={ai.available}
       />
     );
   };

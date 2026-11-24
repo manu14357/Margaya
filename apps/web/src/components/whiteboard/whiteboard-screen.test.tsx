@@ -23,6 +23,7 @@ const m = vi.hoisted(() => ({
   lock: vi.fn(),
   archive: vi.fn(),
   saveAs: vi.fn(),
+  aiAvailable: false,
 }));
 
 vi.mock("file-saver", () => ({ saveAs: m.saveAs }));
@@ -88,6 +89,9 @@ vi.mock("@/hooks/queries/whiteboard/use-whiteboard", () => ({
 }));
 vi.mock("./use-whiteboard-collaboration", () => ({
   useWhiteboardCollaboration: () => m.collab,
+}));
+vi.mock("@/hooks/queries/ai/use-ai", () => ({
+  useAiAvailability: () => ({ available: m.aiAvailable }),
 }));
 vi.mock("./editor/whiteboard-editor", () => ({
   WhiteboardEditor: (props: Record<string, unknown>) => {
@@ -181,6 +185,7 @@ beforeEach(() => {
   m.refetch.mockReset();
   m.collab = liveCollab();
   m.editorProps = [];
+  m.aiAvailable = false;
   m.lock.mockReset();
   m.archive.mockReset();
 });
@@ -204,6 +209,15 @@ describe("WhiteboardScreen", () => {
     expect((lastEditor().imageUrl as (id: string) => string)("a1")).toMatch(
       /\/whiteboard\/wb1\/assets\/a1$/,
     );
+  });
+
+  it("turns on the board's AI menu only where AI is available", () => {
+    renderScreen();
+    expect(lastEditor().aiEnabled).toBe(false);
+    cleanup();
+    m.aiAvailable = true;
+    renderScreen();
+    expect(lastEditor().aiEnabled).toBe(true);
   });
 
   it("is read-only with a banner for people without whiteboard:update", () => {

@@ -27,7 +27,9 @@ afterEach(() => {
   for (const controller of controllers.splice(0)) controller.dispose();
 });
 
-function renderMenu() {
+function renderMenu(
+  extra: { onAiGroup?: () => void; onAiSummarize?: () => void } = {},
+) {
   const doc = new Y.Doc();
   const controller = new BoardController({
     doc,
@@ -56,6 +58,7 @@ function renderMenu() {
           onEditText: vi.fn(),
           tasksEnabled: false,
           pointer: () => null,
+          ...extra,
         }}
       />
     </EditorContext.Provider>,
@@ -128,5 +131,66 @@ describe("EditorContextMenu", () => {
         name: /^whiteboardEditor:commands\.copy(?!Style)/,
       }),
     ).toBeInTheDocument();
+  });
+
+  it("offers the AI actions for selected notes where AI is available", async () => {
+    const onAiGroup = vi.fn();
+    const onAiSummarize = vi.fn();
+    const { controller, doc } = renderMenu({ onAiGroup, onAiSummarize });
+    const a = createElement("sticky", { x: 0, y: 0, text: "One" });
+    const b = createElement("sticky", { x: 300, y: 0, text: "Two" });
+    writeElements(doc, [a, b], "seed");
+    act(() => {
+      controller.select([a.id, b.id]);
+      controller.update((state) => ({
+        ...state,
+        contextMenu: { clientX: 20, clientY: 20, targetId: a.id },
+      }));
+    });
+    fireEvent.click(
+      await screen.findByRole("menuitem", {
+        name: "whiteboardEditor:ai.group",
+      }),
+    );
+    expect(onAiGroup).toHaveBeenCalled();
+    expect(controller.state.contextMenu).toBeNull();
+
+    act(() => {
+      controller.select([a.id]);
+      controller.update((state) => ({
+        ...state,
+        contextMenu: { clientX: 20, clientY: 20, targetId: a.id },
+      }));
+    });
+    fireEvent.click(
+      await screen.findByRole("menuitem", {
+        name: "whiteboardEditor:ai.summarizeSelection",
+      }),
+    );
+    expect(onAiSummarize).toHaveBeenCalled();
+    // One note can't be grouped.
+    expect(
+      screen.queryByRole("menuitem", { name: "whiteboardEditor:ai.group" }),
+    ).toBeNull();
+  });
+
+  it("offers no AI actions where AI is not available", async () => {
+    const { controller, doc } = renderMenu();
+    const a = createElement("sticky", { text: "One" });
+    const b = createElement("sticky", { text: "Two" });
+    writeElements(doc, [a, b], "seed");
+    act(() => {
+      controller.select([a.id, b.id]);
+      controller.update((state) => ({
+        ...state,
+        contextMenu: { clientX: 20, clientY: 20, targetId: a.id },
+      }));
+    });
+    await screen.findByRole("menu", {
+      name: "whiteboardEditor:contextMenu.label",
+    });
+    expect(
+      screen.queryByRole("menuitem", { name: /^whiteboardEditor:ai/ }),
+    ).toBeNull();
   });
 });

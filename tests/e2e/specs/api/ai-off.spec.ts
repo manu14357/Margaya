@@ -708,6 +708,60 @@ test(
 );
 
 test(
+  "whiteboard AI routes answer AI_DISABLED, after board access and ai:use",
+  covers(
+    "aiWhiteboardBrainstorm",
+    "aiWhiteboardGroup",
+    "aiWhiteboardSummarize",
+  ),
+  async () => {
+    const board = await expectJson<{ id: string }>(
+      await world.as("member").post("/api/whiteboard", {
+        data: { projectId: project.id, title: uniqueName("AI board") },
+      }),
+      201,
+    );
+    const calls = [
+      { path: "brainstorm", data: { prompt: "Ways to onboard faster" } },
+      { path: "group", data: { elementIds: ["a", "b"] } },
+      { path: "summarize", data: {} },
+    ];
+    for (const { path, data } of calls) {
+      const url = `/api/ai/whiteboard/${board.id}/${path}`;
+      const text = await expectStatus(
+        await world.as("member").post(url, { data }),
+        403,
+      );
+      expect(JSON.parse(text), url).toEqual({
+        code: "AI_DISABLED",
+        message: "AI is turned off on this server",
+      });
+      // A board in another workspace reads as missing.
+      await expectStatus(await outsider.ctx.post(url, { data }), 404);
+      await expectStatus(await world.as("anonymous").post(url, { data }), 401);
+    }
+    // A viewer can't propose changes to a board (whiteboard:update).
+    expect(
+      await expectStatus(
+        await world
+          .as("viewer")
+          .post(`/api/ai/whiteboard/${board.id}/brainstorm`, {
+            data: { prompt: "Ideas" },
+          }),
+        403,
+      ),
+    ).not.toContain("AI_DISABLED");
+    // A missing board answers 404 before anything else.
+    await expectStatus(
+      await world
+        .as("member")
+        .post(`/api/ai/whiteboard/${MISSING}/summarize`, { data: {} }),
+      404,
+    );
+  },
+);
+
+test(
   "sharing a brief needs an existing brief",
   covers("aiShareBrief"),
   async () => {

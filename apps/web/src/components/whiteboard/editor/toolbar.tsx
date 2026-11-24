@@ -125,6 +125,8 @@ type ToolbarProps = {
   onPick: (tool: ToolId) => void;
   onPickShape: (shape: ShapeChoice) => void;
   onToggleLock: () => void;
+  /** Extra controls at the end of the bar (the AI menu). */
+  extra?: React.ReactNode;
 };
 
 export function EditorToolbar({
@@ -135,6 +137,7 @@ export function EditorToolbar({
   onPick,
   onPickShape,
   onToggleLock,
+  extra,
 }: ToolbarProps) {
   const { t } = useTranslation();
   const tool = useEditorState((state) => state.tool);
@@ -264,6 +267,7 @@ export function EditorToolbar({
             </MenuPopup>
           </Menu>
         )}
+        {extra}
       </Toolbar>
     );
   }
@@ -288,6 +292,12 @@ export function EditorToolbar({
         <>
           <ToolbarSeparator orientation="vertical" className="mx-0.5" />
           {lockButton}
+        </>
+      )}
+      {extra && (
+        <>
+          <ToolbarSeparator orientation="vertical" className="mx-0.5" />
+          {extra}
         </>
       )}
     </Toolbar>

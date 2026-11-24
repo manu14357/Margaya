@@ -83,4 +83,9 @@ export type WhiteboardEditorProps = {
    * collaborator draws later never moves this viewer's view.
    */
   synced?: boolean;
+  /**
+   * AI is available for the board's project (useAiAvailability): shows the
+   * AI menu. The API checks every switch and permission again.
+   */
+  aiEnabled?: boolean;
 };

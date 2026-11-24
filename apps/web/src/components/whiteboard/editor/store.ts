@@ -80,6 +80,8 @@ export type DialogId =
   | "search"
   | "taskPicker"
   | "turnIntoTasks"
+  /** The AI proposal dialog (brainstorm, group, summarize). */
+  | "ai"
   | "link"
   /** The shape picker popover of the toolbar. */
   | "shapes"

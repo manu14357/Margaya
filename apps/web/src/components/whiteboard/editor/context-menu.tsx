@@ -13,6 +13,7 @@ import {
   MenuSeparator,
   MenuShortcut,
 } from "@/components/ui/menu";
+import { groupableNotes } from "./board-ai";
 import { addShape, changeShape, resetCrop, runCommand } from "./commands";
 import type { BoardController } from "./controller";
 import { describeSelection } from "./selection-info";
@@ -35,6 +36,9 @@ export type ContextMenuActions = {
   onEditText: (elementId: string) => void;
   tasksEnabled: boolean;
   pointer: () => { x: number; y: number } | null;
+  /** Set only where AI is available for the board. */
+  onAiGroup?: () => void;
+  onAiSummarize?: () => void;
 };
 
 export function EditorContextMenu({
@@ -214,6 +218,27 @@ export function EditorContextMenu({
       );
     }
     if (special.length > 0) groups.push(special);
+
+    const ai: React.ReactNode[] = [];
+    const onAiGroup = actions.onAiGroup;
+    if (onAiGroup && !readOnly && groupableNotes(selected).length >= 2) {
+      ai.push(
+        item(t("whiteboardEditor:ai.group"), () => {
+          close();
+          onAiGroup();
+        }),
+      );
+    }
+    const onAiSummarize = actions.onAiSummarize;
+    if (onAiSummarize) {
+      ai.push(
+        item(t("whiteboardEditor:ai.summarizeSelection"), () => {
+          close();
+          onAiSummarize();
+        }),
+      );
+    }
+    if (ai.length > 0) groups.push(ai);
 
     if (!readOnly) {
       groups.push([

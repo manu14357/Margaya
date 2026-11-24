@@ -38,6 +38,8 @@ export const AI_FEATURES = [
   "embedding",
   // Server speech-to-text for the chat composer.
   "speech",
+  // Whiteboards: brainstorm notes, group notes into themes, summarize.
+  "whiteboard",
 ] as const;
 
 export type AiFeature = (typeof AI_FEATURES)[number];
