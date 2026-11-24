@@ -2625,6 +2625,52 @@
         ],
         "description": "Present when the project was created from a template."
       },
+      "EstimateValidationError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EstimateValueError"
+            }
+          }
+        },
+        "required": [
+          "message",
+          "errors"
+        ]
+      },
+      "EstimateValueError": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number",
+            "description": "The offending value's index in the request, or -1 for the count rules (too_few, too_many)."
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "empty",
+              "too_long",
+              "not_numeric",
+              "numeric_category",
+              "not_positive",
+              "too_large",
+              "too_precise",
+              "duplicate",
+              "too_few",
+              "too_many"
+            ]
+          }
+        },
+        "required": [
+          "index",
+          "code"
+        ]
+      },
       "CreateProjectTemplateInput": {
         "type": "object",
         "properties": {
@@ -3731,7 +3777,8 @@
               "nl_filter",
               "inbox_digest",
               "embedding",
-              "speech"
+              "speech",
+              "whiteboard"
             ],
             "description": "The AI feature that wrote the text, e.g. editor_assist, spec_draft, summarize, brief or retro."
           }
@@ -4339,7 +4386,7 @@
             ]
           },
           "eventData": {
-            "description": "Type-specific payload, e.g. { oldStatus, newStatus } for status_changed. Null for plain comments. A snapshot naming a project the caller can't see (or one that no longer exists in this workspace) is redacted when read: its fields are null and a flag says so, and search neither matches nor shows it. The flags are otherTaskHidden (relations and sub-tasks), sourceTaskHidden (copied_from, recurred_from), copyTaskHidden (copied_to), nextTaskHidden (recurred_to), fromProjectHidden and toProjectHidden (moved, which also blanks that side's status), hidden inside oldParent, newParent or automation (parent_changed, and the rule of a row a rule wrote), oldCycleHidden and newCycleHidden (cycle_changed), moduleHidden (module_added, module_removed), copiedFromHidden (create), and for rows written before the task left that project statusHidden (status_changed), columnHidden (intake_accepted) and duplicateHidden (intake_duplicate). A client should present these as another project, not as missing data."
+            "description": "Type-specific payload, e.g. { oldStatus, newStatus } for status_changed, plus integration { source, login } when an integration webhook (github or gitea) made the change with no user; a task created from a github or gitea issue has a created row with the same marker. Null for plain comments. A snapshot naming a project the caller can't see (or one that no longer exists in this workspace) is redacted when read: its fields are null and a flag says so, and search neither matches nor shows it. The flags are otherTaskHidden (relations and sub-tasks), sourceTaskHidden (copied_from, recurred_from), copyTaskHidden (copied_to), nextTaskHidden (recurred_to), fromProjectHidden and toProjectHidden (moved, which also blanks that side's status), hidden inside oldParent, newParent or automation (parent_changed, and the rule of a row a rule wrote), oldCycleHidden and newCycleHidden (cycle_changed), moduleHidden (module_added, module_removed), copiedFromHidden (create), and for rows written before the task left that project statusHidden (status_changed), columnHidden (intake_accepted) and duplicateHidden (intake_duplicate). A client should present these as another project, not as missing data."
           },
           "externalUserName": {
             "type": [
@@ -4919,7 +4966,7 @@
             "description": "One of: info, task_created, workspace_created, task_status_changed, task_assignee_changed, time_entry_created, due_date_reminder, task_overdue, task_mention, task_comment, task_updated, intake_accepted, intake_declined, intake_duplicate, page_mention, page_comment, page_updated, project_update_posted, project_update_comment, project_update_reminder (resourceType project), automation_notice (an automation rule's notify action; eventData.ruleName, eventData.message)."
           },
           "eventData": {
-            "description": "Type-specific payload. Task notifications carry { taskTitle, taskKey, projectId, workspaceId, actorName }, plus { oldStatus, newStatus } for status changes, { commenterName, commentId, commentPreview } for comments, { mentionerName, source, commentId, commentPreview } for mentions, { field, oldValue, newValue } for task_updated (field is priority, dueDate or title), { leadTimeMinutes, dueDate, dueDay } for reminders (dueDay is the due date's day in the recipient's time zone), { pageTitle, mentionerName, projectId, workspaceId } for page_mention, { pageTitle, commenterName, commentId, commentPreview, projectId, workspaceId } for page_comment, and { pageTitle, editorName, projectId, workspaceId } for page_updated (all resourceType page), { updateId, projectId, workspaceId, projectName, health, authorName, summaryPreview } for project_update_posted, { updateId, commentId, projectId, workspaceId, projectName, commenterName, commentPreview } for project_update_comment, and { projectId, workspaceId, projectName } for project_update_reminder (all resourceType project)."
+            "description": "Type-specific payload. Task notifications carry { taskTitle, taskKey, projectId, workspaceId, actorName }, plus { oldStatus, newStatus } for status changes (and integration { source, login } when an integration webhook made it, with actorName set to that account or the integration's name), { commenterName, commentId, commentPreview } for comments, { mentionerName, source, commentId, commentPreview } for mentions, { field, oldValue, newValue } for task_updated (field is priority, dueDate or title), { leadTimeMinutes, dueDate, dueDay } for reminders (dueDay is the due date's day in the recipient's time zone), { pageTitle, mentionerName, projectId, workspaceId } for page_mention, { pageTitle, commenterName, commentId, commentPreview, projectId, workspaceId } for page_comment, and { pageTitle, editorName, projectId, workspaceId } for page_updated (all resourceType page), { updateId, projectId, workspaceId, projectName, health, authorName, summaryPreview } for project_update_posted, { updateId, commentId, projectId, workspaceId, projectName, commenterName, commentPreview } for project_update_comment, and { projectId, workspaceId, projectName } for project_update_reminder (all resourceType project)."
           },
           "isRead": {
             "type": [
@@ -5587,7 +5634,8 @@
             ]
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "The result's name. For comment and activity results, the title of the task they belong to; `type` says which kind it is."
           },
           "description": {
             "type": "string"
@@ -10481,7 +10529,11 @@
           },
           "pending": {
             "type": "number",
-            "description": "Unfinished tasks: backlog + unstarted + started."
+            "description": "Unfinished tasks: backlog + unstarted + started. Frozen with the report once tasks were transferred out."
+          },
+          "transferable": {
+            "type": "integer",
+            "description": "Unfinished tasks in the cycle right now, even when its report is frozen: what a transfer would move."
           },
           "progress": {
             "type": "number",
@@ -10561,6 +10613,7 @@
           "isFrozen",
           "counts",
           "pending",
+          "transferable",
           "progress",
           "rollover",
           "createdBy",
@@ -12093,52 +12146,6 @@
           "numericValue",
           "position",
           "taskCount"
-        ]
-      },
-      "EstimateValidationError": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "errors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EstimateValueError"
-            }
-          }
-        },
-        "required": [
-          "message",
-          "errors"
-        ]
-      },
-      "EstimateValueError": {
-        "type": "object",
-        "properties": {
-          "index": {
-            "type": "number",
-            "description": "The offending value's index in the request, or -1 for the count rules (too_few, too_many)."
-          },
-          "code": {
-            "type": "string",
-            "enum": [
-              "empty",
-              "too_long",
-              "not_numeric",
-              "numeric_category",
-              "not_positive",
-              "too_large",
-              "too_precise",
-              "duplicate",
-              "too_few",
-              "too_many"
-            ]
-          }
-        },
-        "required": [
-          "index",
-          "code"
         ]
       },
       "EstimateDeleteResult": {
@@ -16884,9 +16891,10 @@
             "enum": [
               "ok",
               "insufficient_history",
-              "complete"
+              "complete",
+              "empty"
             ],
-            "description": "ok: percentiles are set. insufficient_history: too little history to forecast (see reason). complete: no open tasks are left."
+            "description": "ok: percentiles are set. insufficient_history: too little history to forecast (see reason). complete: no open tasks are left. empty: the scope has no tasks at all."
           },
           "reason": {
             "type": [
@@ -21085,7 +21093,8 @@
               "nl_filter",
               "inbox_digest",
               "embedding",
-              "speech"
+              "speech",
+              "whiteboard"
             ],
             "description": "The AI feature whose text was added, e.g. editor_assist or summarize."
           }
@@ -26958,7 +26967,8 @@
               "nl_filter",
               "inbox_digest",
               "embedding",
-              "speech"
+              "speech",
+              "whiteboard"
             ],
             "description": "The AI feature that answered, e.g. ask or editor_assist."
           },
@@ -27916,7 +27926,7 @@
           },
           "estimatesSkipped": {
             "type": "boolean",
-            "description": "Estimates were left out: the project has no active points estimate system."
+            "description": "Estimates were left out: the project has no active points estimate system. A new project starts with one (Story points: 1, 2, 3, 5, 8, 13) when the plan has estimates."
           },
           "failures": {
             "type": "array",
@@ -30938,7 +30948,8 @@
                 "enum": [
                   "ok",
                   "complete",
-                  "insufficient_history"
+                  "insufficient_history",
+                  "empty"
                 ]
               },
               "remaining": {
@@ -37205,6 +37216,158 @@
           "warning",
           "month"
         ]
+      },
+      "WhiteboardAiIdeas": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short title for the ideas (the frame's name); may be empty."
+          },
+          "ideas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The proposed sticky-note texts: distinct, one line each, at most the number asked for."
+          }
+        },
+        "required": [
+          "title",
+          "ideas"
+        ]
+      },
+      "WhiteboardAiBrainstormInput": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 500,
+            "description": "What to brainstorm, in the caller's words, e.g. \"ways to cut onboarding time\"."
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 3,
+            "maximum": 20,
+            "description": "How many ideas to propose (3 to 20, default 8)."
+          },
+          "locale": {
+            "type": "string",
+            "maxLength": 35,
+            "pattern": "^[A-Za-z]{2,3}(?:[-_][A-Za-z0-9]{2,8})*$",
+            "description": "The caller's UI language; the answer is written in it. Defaults to the language saved in the caller's profile."
+          }
+        },
+        "required": [
+          "prompt"
+        ],
+        "additionalProperties": false
+      },
+      "WhiteboardAiGroups": {
+        "type": "object",
+        "properties": {
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "The theme's title; null for the notes the model left out (shown as Other)."
+                },
+                "elementIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "The notes in this theme, by element id."
+                }
+              },
+              "required": [
+                "title",
+                "elementIds"
+              ]
+            },
+            "description": "Every requested note with text appears in exactly one group."
+          }
+        },
+        "required": [
+          "groups"
+        ]
+      },
+      "WhiteboardAiGroupInput": {
+        "type": "object",
+        "properties": {
+          "elementIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "minItems": 2,
+            "maxItems": 60,
+            "description": "The sticky notes to sort into themes (2 to 60). Other elements and notes without text are ignored."
+          },
+          "locale": {
+            "type": "string",
+            "maxLength": 35,
+            "pattern": "^[A-Za-z]{2,3}(?:[-_][A-Za-z0-9]{2,8})*$",
+            "description": "The caller's UI language; the answer is written in it. Defaults to the language saved in the caller's profile."
+          }
+        },
+        "required": [
+          "elementIds"
+        ],
+        "additionalProperties": false
+      },
+      "WhiteboardAiSummary": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short title; may be empty."
+          },
+          "summary": {
+            "type": "string",
+            "description": "Plain text, a few lines starting with \"- \"."
+          },
+          "elementCount": {
+            "type": "integer",
+            "description": "How many elements with text the summary was made from."
+          }
+        },
+        "required": [
+          "title",
+          "summary",
+          "elementCount"
+        ]
+      },
+      "WhiteboardAiSummarizeInput": {
+        "type": "object",
+        "properties": {
+          "elementIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "maxItems": 1000,
+            "description": "Summarize only these elements (a selected frame brings its contents). Without it, or empty, the whole board."
+          },
+          "locale": {
+            "type": "string",
+            "maxLength": 35,
+            "pattern": "^[A-Za-z]{2,3}(?:[-_][A-Za-z0-9]{2,8})*$",
+            "description": "The caller's UI language; the answer is written in it. Defaults to the language saved in the caller's profile."
+          }
+        },
+        "additionalProperties": false
       }
     },
     "parameters": {}
@@ -42385,7 +42548,7 @@
           "Projects"
         ],
         "summary": "Create project",
-        "description": "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on. With fromProjectId the project starts from another project's setup instead (and optionally its task templates and open tasks); no tasks are copied unless copy.openTasks is true. With template it starts from a built-in template (GET /project-template): its statuses, labels, fields, views, rules, pages and more are created in the same step, in the creator's language. features sets switches on top of either. Creating from a template or with features needs only project:create: the setup a template writes (statuses, views, rules, pages, modules and feature switches) is part of creating the project, the same as starting from an existing project. New workspace labels need label:create (without it only existing labels are used), and example tasks need task:create.",
+        "description": "Create a project in a workspace. The slug becomes the prefix of its task identifiers and must be unique in the workspace, ignoring case. New projects start with cycles, modules, views, pages and time tracking turned on. With fromProjectId the project starts from another project's setup instead (and optionally its task templates and open tasks); no tasks are copied unless copy.openTasks is true. With template it starts from a built-in template (GET /project-template): its statuses, labels, fields, views, rules, pages and more are created in the same step, in the creator's language. features sets switches on top of either. A blank project (no template or fromProjectId) can start with an estimate system: it becomes the active system and turns estimates on. Creating from a template, with features or with an estimate system needs only project:create: the setup a template writes (statuses, views, rules, pages, modules, estimates and feature switches) is part of creating the project, the same as starting from an existing project. New workspace labels need label:create (without it only existing labels are used), and example tasks need task:create.",
         "requestBody": {
           "required": true,
           "content": {
@@ -42438,6 +42601,42 @@
                   },
                   "features": {
                     "$ref": "#/components/schemas/ProjectFeaturesInput"
+                  },
+                  "estimate": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 60,
+                        "description": "1 to 60 characters after trimming; unique in the project, ignoring case."
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "points",
+                          "categories",
+                          "time"
+                        ],
+                        "description": "Fixed for the life of the system."
+                      },
+                      "values": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "maxLength": 200,
+                          "description": "Points: a number above 0, at most 999, with at most 2 decimals. Time: whole minutes above 0, at most 60000. Categories: text that is not a number. At most 20 characters after trimming."
+                        },
+                        "maxItems": 100,
+                        "description": "2 to 10 distinct values. Points and time are stored in ascending order; categories keep the order given."
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "type",
+                      "values"
+                    ],
+                    "description": "An estimate system to start with, validated like POST /estimate/{projectId}. It becomes the project's active system and turns the estimates feature on (unless features.estimates says otherwise). Not with template or fromProjectId, which bring their own."
                   }
                 },
                 "required": [
@@ -42462,8 +42661,13 @@
             }
           },
           "400": {
-            "description": "Invalid body, workspace ID could not be determined, copy without fromProjectId, template together with fromProjectId, or more than 500 open tasks to copy",
+            "description": "Invalid body, workspace ID could not be determined, copy without fromProjectId, template together with fromProjectId, estimate together with template or fromProjectId, or more than 500 open tasks to copy (text); or invalid estimate values (JSON, one error per value)",
             "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstimateValidationError"
+                }
+              },
               "text/plain": {
                 "schema": {
                   "type": "string"
@@ -80909,7 +81113,7 @@
           "Instance admin"
         ],
         "summary": "Delete old feedback",
-        "description": "Delete every answer older than olderThanDays (0 deletes all). Recorded in the instance audit trail. Instance admins only, with a signed-in session: API keys are refused. Needs a recent sign-in (see POST /instance-admin/reauth); otherwise 403 with code REAUTH_REQUIRED.",
+        "description": "Delete every answer older than olderThanDays (0 deletes all). Recorded in the instance audit trail. Instance admins only, with a signed-in session: API keys are refused. Needs a recent sign-in: a session opened in the last 10 minutes, or a password confirmed through POST /instance-admin/reauth; otherwise 403 with code REAUTH_REQUIRED.",
         "parameters": [
           {
             "schema": {
@@ -80986,7 +81190,7 @@
           "Instance admin"
         ],
         "summary": "Delete one answer",
-        "description": "Recorded in the instance audit trail. Instance admins only, with a signed-in session: API keys are refused. Needs a recent sign-in (see POST /instance-admin/reauth); otherwise 403 with code REAUTH_REQUIRED.",
+        "description": "Recorded in the instance audit trail. Instance admins only, with a signed-in session: API keys are refused. Needs a recent sign-in: a session opened in the last 10 minutes, or a password confirmed through POST /instance-admin/reauth; otherwise 403 with code REAUTH_REQUIRED.",
         "parameters": [
           {
             "schema": {
@@ -82698,9 +82902,11 @@
           {
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "description": "Optional: the workspace is read from the id."
             },
-            "required": true,
+            "required": false,
+            "description": "Optional: the workspace is read from the id.",
             "name": "workspaceId",
             "in": "query"
           }
@@ -82781,9 +82987,11 @@
           {
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "description": "Optional: the workspace is read from the id."
             },
-            "required": true,
+            "required": false,
+            "description": "Optional: the workspace is read from the id.",
             "name": "workspaceId",
             "in": "query"
           }
@@ -82955,9 +83163,11 @@
           {
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "description": "Optional: the workspace is read from the id."
             },
-            "required": true,
+            "required": false,
+            "description": "Optional: the workspace is read from the id.",
             "name": "workspaceId",
             "in": "query"
           }
@@ -83038,9 +83248,11 @@
           {
             "schema": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "description": "Optional: the workspace is read from the id."
             },
-            "required": true,
+            "required": false,
+            "description": "Optional: the workspace is read from the id.",
             "name": "workspaceId",
             "in": "query"
           }
@@ -83812,7 +84024,7 @@
           "AI"
         ],
         "summary": "Create a reviewed plan",
-        "description": "Creates a reviewed proposal item by item through the ordinary create routes (project, columns, cycles, modules, tasks, labels, sub-tasks), under the caller's own permissions and with their usual events. A failed item is reported and the rest kept. The report carries an undo token valid for an hour. Streams Server-Sent Events (progress {done, total, kind, name, ok}, then done with the report, or error); send Accept: application/json or ?stream=false for the report as one JSON body. Makes no model call.",
+        "description": "Creates a reviewed proposal item by item through the ordinary create routes (project, columns, cycles, modules, tasks, labels, sub-tasks), under the caller's own permissions and with their usual events. A new project whose plan has estimates starts with the estimates feature on and an active Story points system, so the estimates land. A failed item is reported and the rest kept. The report carries an undo token valid for an hour. Streams Server-Sent Events (progress {done, total, kind, name, ok}, then done with the report, or error); send Accept: application/json or ?stream=false for the report as one JSON body. Makes no model call.",
         "requestBody": {
           "required": true,
           "content": {
@@ -88065,6 +88277,20 @@
             "required": false,
             "name": "limit",
             "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "hide",
+                "only"
+              ],
+              "description": "Runs of agents that were deleted. By default (hide) their finished runs (succeeded, failed or cancelled) are left out; runs still waiting for an approval or an answer stay. `only` lists just the runs of deleted agents, finished or not."
+            },
+            "required": false,
+            "description": "Runs of agents that were deleted. By default (hide) their finished runs (succeeded, failed or cancelled) are left out; runs still waiting for an approval or an answer stay. `only` lists just the runs of deleted agents, finished or not.",
+            "name": "deletedAgents",
+            "in": "query"
           }
         ],
         "responses": {
@@ -89916,6 +90142,330 @@
               "text/plain": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/whiteboard/{id}/brainstorm": {
+      "post": {
+        "operationId": "aiWhiteboardBrainstorm",
+        "tags": [
+          "AI"
+        ],
+        "summary": "Brainstorm sticky notes on a whiteboard",
+        "description": "Proposes sticky-note ideas (and a title for them) for a topic, avoiding what is already on the board. Nothing is written; the editor shows the ideas and adds them when the person accepts. Needs whiteboard:update on a board that is not locked or archived, ai:use, and AI on for the workspace and the board's project. Feature whiteboard, fast tier.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WhiteboardAiBrainstormInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The proposed ideas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardAiIdeas"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "AI is off for the instance, workspace or project (AI_DISABLED), the data may not leave (AI_ROUTE_BLOCKED), missing ai:use or the whiteboard permission, or the Whiteboards feature is off",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "No AI provider is set up (AI_NOT_CONFIGURED), or the board is locked or archived",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "AI_BUDGET_EXCEEDED or AI_RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The AI provider failed (AI_PROVIDER_ERROR)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/whiteboard/{id}/group": {
+      "post": {
+        "operationId": "aiWhiteboardGroup",
+        "tags": [
+          "AI"
+        ],
+        "summary": "Group whiteboard notes into themes",
+        "description": "Proposes themes for the given sticky notes and which notes belong to each; every note is in exactly one group (notes the model left out come last, without a title). Nothing is written; the editor arranges the notes into titled frames when the person accepts. Needs whiteboard:update on a board that is not locked or archived, ai:use, and AI on for the workspace and the board's project. Feature whiteboard, balanced tier.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WhiteboardAiGroupInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The proposed groups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardAiGroups"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body, or fewer than two unlocked notes with text",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "AI is off for the instance, workspace or project (AI_DISABLED), the data may not leave (AI_ROUTE_BLOCKED), missing ai:use or the whiteboard permission, or the Whiteboards feature is off",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "No AI provider is set up (AI_NOT_CONFIGURED), or the board is locked or archived",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "AI_BUDGET_EXCEEDED or AI_RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The AI provider failed (AI_PROVIDER_ERROR)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/whiteboard/{id}/summarize": {
+      "post": {
+        "operationId": "aiWhiteboardSummarize",
+        "tags": [
+          "AI"
+        ],
+        "summary": "Summarize a whiteboard",
+        "description": "Summarizes the text on the board, or on the given elements (a frame brings its contents), into a title and a few lines. Task cards contribute their key and title when the caller may read tasks; drawings and images are not read. Nothing is written; the editor offers to copy the summary or place it on the board. Needs whiteboard:read, ai:use, and AI on for the workspace and the board's project. Feature whiteboard, fast tier.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The whiteboard's id."
+            },
+            "required": true,
+            "description": "The whiteboard's id.",
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WhiteboardAiSummarizeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The proposed summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhiteboardAiSummary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body, or there is no text to summarize",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid credentials"
+          },
+          "403": {
+            "description": "AI is off for the instance, workspace or project (AI_DISABLED), the data may not leave (AI_ROUTE_BLOCKED), missing ai:use or the whiteboard permission, or the Whiteboards feature is off",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown whiteboard, one in the trash, or one in a project the caller can't see",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "No AI provider is set up (AI_NOT_CONFIGURED), or the board is locked or archived",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "AI_BUDGET_EXCEEDED or AI_RATE_LIMITED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The AI provider failed (AI_PROVIDER_ERROR)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiError"
                 }
               }
             }
