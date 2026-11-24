@@ -65,6 +65,22 @@ These come from the workspace **Whiteboards** permissions in the role editor: **
 - People who can only view a board see the banner "You can view this board but not edit it." They can still move around, search, follow others and point with the laser.
 - Turning notes into tasks also needs permission to create tasks, and making a dependency needs permission to edit tasks.
 
+## AI on a board
+
+When AI is on for the workspace and the board's project and your role may use AI, the toolbar has an **AI** button (the sparkle) at its end. See [AI overview](/core/functional/ai-overview) for the switches. AI only ever proposes: you see the proposal first, can change it, and nothing on the board changes until you accept. What you accept is a normal edit: collaborators see it at once, and one **Undo** takes it all back.
+
+<Screenshot src="whiteboards/ai-menu" alt="The board toolbar with the AI button at its end open, showing Brainstorm with AI, Group notes with AI and Summarize selection with AI" caption="The AI menu with sticky notes selected. Group notes needs two or more selected notes." />
+
+- **Brainstorm with AI** (needs edit access): describe a topic, pick how many ideas (5, 8 or 12) and select **Generate ideas**. Edit or remove ideas, rename the frame or turn off **Put the notes in a frame**, then select **Add notes**. The notes go in free space near the middle of your view, and AI avoids ideas already on the board.
+- **Group notes with AI** (needs edit access, two or more selected sticky notes): AI sorts the selected notes into themes. Rename the themes, then select **Arrange into frames**: each theme becomes a titled frame next to where the notes were, with its notes inside. Notes AI couldn't place end up in **Other**. Locked notes and notes without text are left where they are. Also in the right-click menu of the selection.
+- **Summarize board with AI**, or **Summarize selection with AI** when something is selected (a selected frame brings everything in it): AI writes a title and a few lines. Edit them, then **Copy** the summary or **Add to board** it as a text element next to what it summarizes. People who can only view the board can still summarize and copy. Also in the right-click menu of the selection.
+
+<Screenshot src="whiteboards/ai-brainstorm" alt="The Brainstorm with AI dialog for the topic Ways to make onboarding faster, with 8 ideas chosen, Put the notes in a frame on, the frame name Faster onboarding and eight editable proposed notes, each with a remove button, above Discard and Add 8 notes" caption="Brainstorm proposes notes you can edit or remove before adding them." />
+
+<Screenshot src="whiteboards/ai-group" alt="The Group notes with AI dialog for 11 selected notes, sorted into four renamable themes (Quality and speed, Features testers use, Release logistics and Who gets the beta), each listing its notes, above Discard and Arrange into 4 frames" caption="Group sorts the selected notes into themes; each theme becomes a frame." />
+
+AI reads the text on the board: sticky notes, text, shape and arrow labels and frame names. Task cards add their key and title only when you may see tasks; drawings and images aren't read. Requests count toward the workspace's AI budget under **Whiteboard AI**. See [AI privacy and data](/core/functional/ai-privacy-and-data).
+
 ## API, agents and audit log
 
 - Boards are available through the [REST API](/api-reference/endpoints/whiteboards/listWhiteboards), with the same permissions and limits. A request can add up to 2,000 elements, and people with the board open see them at once. Published boards have their own [public routes](/api-reference/endpoints/public-whiteboards/getPublicWhiteboard).

@@ -16,6 +16,10 @@
  * board as a second Studio North person too, so a collaborator's cursor
  * shows.
  *
+ * The AI shots need no AI provider: the browser answers the whiteboard AI
+ * routes with scripted proposals (boardAiOn), and nothing is accepted, so
+ * the boards don't change.
+ *
  * Shots that change a board (the background pattern, deleting an arrow)
  * only touch boards no other shot depends on, and the next run restores the
  * elements.
@@ -813,7 +817,7 @@ async function ensureWhiteboardDemo() {
 
   // Oldest of all, so the lists keep their order from before it existed.
   const beta = await ensureBoard(press, mobile.id, BETA, betaElements());
-  await ensureBoard(press, mobile.id, IDEAS, ideaElements);
+  const ideas = await ensureBoard(press, mobile.id, IDEAS, ideaElements);
   // Oldest first, so the planning board is the most recently edited one.
   const empty = await ensureBoard(press, web.id, EMPTY, []);
   const sketches = await ensureBoard(press, web.id, SKETCHES, sketchElements);
@@ -858,6 +862,7 @@ async function ensureWhiteboardDemo() {
     webId: web.id,
     mobileId: mobile.id,
     betaId: beta.id,
+    ideasId: ideas.id,
     publicToken: live.publicToken,
     boards: {
       planning: planning.id,
@@ -996,6 +1001,83 @@ async function waitForCollaborator(page) {
 
 /** The board's own toolbar, not the header's. */
 const toolbar = (page) => page.getByRole("toolbar", { name: "Tools" });
+
+const mobileBoardPath = (seed, boardId) =>
+  `${boardsPath(seed, demo.mobileId)}/${boardId}`;
+
+/**
+ * AI on a board without an AI provider, as in ai.mjs: the browser answers
+ * the availability check and the whiteboard AI routes with scripted
+ * proposals. The server's AI settings are never changed.
+ */
+async function boardAiOn(page, answers = {}) {
+  await page.route(
+    (url) => url.pathname.startsWith("/api/ai/"),
+    async (route) => {
+      const request = route.request();
+      const path = new URL(request.url()).pathname.slice("/api".length);
+      if (request.method() === "GET" && path === "/ai/availability") {
+        return route.fulfill({
+          json: {
+            available: true,
+            instanceEnabled: true,
+            configured: true,
+            workspaceEnabled: true,
+            projectEnabled: true,
+            canUse: true,
+            canManage: true,
+            destination: "cloud",
+            provider: "anthropic",
+            zeroRetention: false,
+            requireApprovalForWrites: false,
+            autoTranslateComments: false,
+          },
+        });
+      }
+      const mode = path.match(/^\/ai\/whiteboard\/[^/]+\/(\w+)$/)?.[1];
+      if (request.method() === "POST" && answers[mode]) {
+        return route.fulfill({ json: answers[mode](request.postDataJSON()) });
+      }
+      return route.fallback();
+    },
+  );
+}
+
+const BRAINSTORM_TOPIC = "Ways to make onboarding faster";
+/** Ideas that don't repeat the three notes already on the board. */
+const BRAINSTORM_IDEAS = {
+  title: "Faster onboarding",
+  ideas: [
+    "Sign in with a magic link instead of a password",
+    "Suggest a workspace name from the email domain",
+    "Invite teammates later, not during signup",
+    "A three-step checklist on the home screen",
+    "Import tasks from a spreadsheet in one step",
+    "A short tip the first time each screen opens",
+    "Resume setup where people left off",
+    "A help link on every setup screen",
+  ],
+};
+
+/** Themes for the eleven notes of the beta review board, by element id. */
+const BETA_THEMES = [
+  ["Quality and speed", ["beta-note-1-2", "beta-note-2-3", "beta-note-3-2"]],
+  ["Features testers use", ["beta-note-2-1", "beta-note-2-2", "beta-note-3-1"]],
+  ["Release logistics", ["beta-note-4-1", "beta-note-4-2", "beta-note-5-2"]],
+  ["Who gets the beta", ["beta-note-1-1", "beta-note-5-1"]],
+];
+
+function betaGroups({ elementIds }) {
+  const asked = new Set(elementIds);
+  const groups = BETA_THEMES.map(([title, ids]) => ({
+    title,
+    elementIds: ids.filter((id) => asked.has(id)),
+  })).filter((group) => group.elementIds.length > 0);
+  const placed = new Set(groups.flatMap((group) => group.elementIds));
+  const rest = elementIds.filter((id) => !placed.has(id));
+  if (rest.length > 0) groups.push({ title: null, elementIds: rest });
+  return { groups };
+}
 
 export default [
   // Overview
@@ -1432,5 +1514,58 @@ export default [
       await page.getByRole("button", { name: "More tools" }).click();
       await page.locator('[data-slot="menu-popup"]').waitFor();
     },
+  },
+  // AI on a board
+  {
+    name: "whiteboards/ai-menu",
+    url: (seed) => mobileBoardPath(seed, demo.ideasId),
+    before: (page) => boardAiOn(page),
+    prepare: async (page) => {
+      const canvas = await openCanvas(page);
+      // Two or more selected notes add "Group notes with AI".
+      await canvas.focus();
+      await page.keyboard.press("Control+A");
+      await page.getByTestId("whiteboard-ai-menu").click();
+      const menu = page.locator('[data-slot="menu-popup"]');
+      await menu.getByText("Group notes with AI").waitFor();
+      await markClip(page, [menu, toolbar(page)]);
+    },
+    clip: MARKED,
+  },
+  {
+    name: "whiteboards/ai-brainstorm",
+    url: (seed) => mobileBoardPath(seed, demo.ideasId),
+    viewport: { width: 1440, height: 1000 },
+    before: (page) => boardAiOn(page, { brainstorm: () => BRAINSTORM_IDEAS }),
+    prepare: async (page) => {
+      await openCanvas(page);
+      await page.getByTestId("whiteboard-ai-menu").click();
+      await page.getByRole("menuitem", { name: "Brainstorm with AI" }).click();
+      const dialog = page.getByRole("dialog");
+      await dialog.getByLabel("Topic").fill(BRAINSTORM_TOPIC);
+      await dialog.getByTestId("whiteboard-ai-generate").click();
+      await dialog.getByRole("button", { name: "Add 8 notes" }).waitFor();
+      await page.waitForTimeout(400);
+    },
+    clip: { selector: "[role=dialog]", pad: 0 },
+  },
+  {
+    name: "whiteboards/ai-group",
+    url: (seed) => mobileBoardPath(seed, demo.betaId),
+    viewport: { width: 1440, height: 1000 },
+    before: (page) => boardAiOn(page, { group: betaGroups }),
+    prepare: async (page) => {
+      const canvas = await openCanvas(page);
+      await canvas.focus();
+      await page.keyboard.press("Control+A");
+      await page.getByTestId("whiteboard-ai-menu").click();
+      await page.getByRole("menuitem", { name: "Group notes with AI" }).click();
+      const dialog = page.getByRole("dialog");
+      await dialog
+        .getByRole("button", { name: /^Arrange into \d+ frames$/ })
+        .waitFor();
+      await page.waitForTimeout(400);
+    },
+    clip: { selector: "[role=dialog]", pad: 0 },
   },
 ];

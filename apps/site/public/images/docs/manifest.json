@@ -193,7 +193,7 @@
 		},
 		"ai/agent-desk": {
 			"width": 1128,
-			"height": 530,
+			"height": 700,
 			"format": "webp"
 		},
 		"ai/agent-run": {
@@ -482,8 +482,8 @@
 			"format": "webp"
 		},
 		"data/webhook-settings": {
-			"width": 768,
-			"height": 1237,
+			"width": 1128,
+			"height": 1380,
 			"format": "webp"
 		},
 		"data/webhooks-list": {
@@ -1194,6 +1194,21 @@
 		"views/workspace-timeline": {
 			"width": 1128,
 			"height": 1208,
+			"format": "webp"
+		},
+		"whiteboards/ai-brainstorm": {
+			"width": 512,
+			"height": 768,
+			"format": "webp"
+		},
+		"whiteboards/ai-group": {
+			"width": 512,
+			"height": 640,
+			"format": "webp"
+		},
+		"whiteboards/ai-menu": {
+			"width": 594,
+			"height": 159,
 			"format": "webp"
 		},
 		"whiteboards/arrows": {
