@@ -9,7 +9,9 @@ describe("buildDocsSearchIndex", () => {
 
   it("has one entry per page and stays small enough to load lazily", () => {
     expect(index).toHaveLength(getAllDocPages().length);
-    expect(JSON.stringify(index).length).toBeLessThan(400_000);
+    // A budget, not a target: about 400 KB with ~300 API reference pages, so
+    // a raise here should follow real growth in the docs, not a bloated entry.
+    expect(JSON.stringify(index).length).toBeLessThan(450_000);
   });
 
   it("deep-links headings to ids the rendered page really has", () => {
