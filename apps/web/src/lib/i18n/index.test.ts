@@ -16,6 +16,10 @@ vi.mock("virtual:margaya-i18n", () => ({
 const { i18n, preloadNamespaces } = await import("./index");
 const { loadLocalePart } = await import("virtual:margaya-i18n");
 const loadPart = loadLocalePart as ReturnType<typeof vi.fn>;
+const { hasChunkLoadFailed } = await import("@/lib/chunk-load");
+
+const fetchFailure = () =>
+  new TypeError("Failed to fetch dynamically imported module: /assets/x.js");
 
 describe("preloadNamespaces", () => {
   it("loads every core namespace so non-default keys resolve after async init", async () => {
@@ -46,5 +50,49 @@ describe("preloadNamespaces", () => {
 
     expect(loadPart).toHaveBeenCalledWith("en-US", "landing");
     expect(i18n.t("landing:testLanding")).toBe("landing-value");
+  });
+});
+
+describe("loading under load", () => {
+  it("tries a translation chunk again when it could not be fetched", async () => {
+    vi.useFakeTimers();
+    try {
+      let failed = false;
+      const original = loadPart.getMockImplementation() as
+        | ((locale: string, part: string) => Promise<unknown>)
+        | undefined;
+      loadPart.mockImplementation(async (locale: string, part: string) => {
+        if (part !== "whiteboardEditor") return original?.(locale, part);
+        if (!failed) {
+          failed = true;
+          throw fetchFailure();
+        }
+        return { probe: "loaded" };
+      });
+      const loading = i18n.loadNamespaces("whiteboardEditor");
+      await vi.advanceTimersByTimeAsync(600);
+      await loading;
+      expect(i18n.getResource("en-US", "whiteboardEditor", "probe")).toBe(
+        "loaded",
+      );
+      expect(hasChunkLoadFailed()).toBe(false);
+      if (original) loadPart.mockImplementation(original);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("asks for a reload when a translation chunk never loads", async () => {
+    vi.useFakeTimers();
+    try {
+      loadPart.mockRejectedValue(fetchFailure());
+      const loading = i18n.loadNamespaces("instanceAdmin");
+      await vi.advanceTimersByTimeAsync(10_000);
+      await loading;
+      expect(hasChunkLoadFailed()).toBe(true);
+    } finally {
+      loadPart.mockReset();
+      vi.useRealTimers();
+    }
   });
 });

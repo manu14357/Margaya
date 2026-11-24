@@ -7,6 +7,7 @@ import { RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DesktopTitleBar } from "@/components/desktop/desktop-title-bar";
 import { WanderingPathIllustration } from "@/components/illustrations/wandering-path";
+import { isChunkLoadFailure } from "@/lib/chunk-load";
 import { cn } from "@/lib/cn";
 import { Button } from "./button";
 import { EmptyState } from "./empty";
@@ -105,8 +106,21 @@ export function NotFoundPage({ className }: { className?: string }) {
 /** The router's error screen: retry re-runs the route's loaders. */
 export function RouteErrorPage({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
+  const { t } = useTranslation();
   if (isNotFound(error)) {
     return <NotFoundPage />;
+  }
+  // The page's code would not load, even after retries: a reload fetches it
+  // again (and a new release's file names, if one went out meanwhile).
+  if (isChunkLoadFailure(error)) {
+    return (
+      <ErrorDisplay
+        className="min-h-full w-full"
+        description={t("common:states.loadFailed.description")}
+        error={error}
+        title={t("common:states.loadFailed.title")}
+      />
+    );
   }
   return (
     <ErrorDisplay

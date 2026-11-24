@@ -10,6 +10,7 @@ import {
   DESKTOP_DISCOVERY_FILE,
   desktopDiscoveryDocument,
 } from "./src/lib/desktop-discovery";
+import { wrapRouteChunkImporters } from "./src/lib/route-chunk-retry";
 import { i18nSplit } from "./vite-i18n-split";
 
 const sentryAuthToken = process.env.SENTRY_AUTH_TOKEN;
@@ -49,6 +50,23 @@ function desktopDiscovery(): Plugin {
   };
 }
 
+/**
+ * Retries route chunks that fail to fetch (src/lib/route-chunk-retry.ts). It
+ * must come right after the router plugin, which writes the importers.
+ */
+function routeChunkRetry(): Plugin {
+  return {
+    name: "margaya-route-chunk-retry",
+    enforce: "pre",
+    transform(code, id) {
+      if (id.includes("/node_modules/") || id.includes("tsr-split")) return;
+      if (!code.includes("tsr-split")) return;
+      const wrapped = wrapRouteChunkImporters(code);
+      return wrapped === null ? undefined : { code: wrapped, map: null };
+    },
+  };
+}
+
 const dependency = (names: string) =>
   new RegExp(`[\\\\/]node_modules[\\\\/](?:${names})[\\\\/]`);
 
@@ -63,6 +81,7 @@ export default defineConfig({
       // Keep co-located route tests out of the generated route tree.
       routeFileIgnorePattern: "\\.test\\.tsx?$",
     }),
+    routeChunkRetry(),
     tailwindcss(),
     react(),
     babel({ presets: [reactCompilerPreset()] }),

@@ -8,6 +8,11 @@ import {
 import i18n from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
+import {
+  ChunkLoadError,
+  reportChunkLoadFailure,
+  retryChunk,
+} from "@/lib/chunk-load";
 import { LAZY_NAMESPACES } from "./lazy-namespaces";
 
 function getLanguageCode(locale: string) {
@@ -75,6 +80,18 @@ export function getPreferredGuestLocale(): string | null {
 // it again per namespace. A lazy namespace loads the first time i18next is
 // asked for it (`i18n.loadNamespaces`, or `useTranslation` naming it).
 const coreResources = new Map<AppLocale, Promise<Record<string, unknown>>>();
+
+/**
+ * One part of a locale, tried again when its chunk cannot be fetched. A part
+ * that never loads asks for a reload: without it, keys show instead of text.
+ */
+function loadPart(locale: AppLocale, part: string) {
+  const pending = retryChunk(() => loadLocalePart(locale, part));
+  pending.catch((error: unknown) => {
+    if (error instanceof ChunkLoadError) reportChunkLoadFailure();
+  });
+  return pending;
+}
 const lazyNamespaces: ReadonlySet<string> = new Set(LAZY_NAMESPACES);
 
 function loadCoreResources(
@@ -82,9 +99,7 @@ function loadCoreResources(
 ): Promise<Record<string, unknown>> {
   const cached = coreResources.get(locale);
   if (cached) return cached;
-  const pending = loadLocalePart(locale, "core").then(
-    (resources) => resources ?? {},
-  );
+  const pending = loadPart(locale, "core").then((resources) => resources ?? {});
   // A failed load (a dropped connection) may be retried later.
   pending.catch(() => coreResources.delete(locale));
   coreResources.set(locale, pending);
@@ -104,7 +119,7 @@ void i18n
     resourcesToBackend((language: string, namespace: string) => {
       const locale = isSupportedLocale(language) ? language : defaultLocale;
       if (lazyNamespaces.has(namespace)) {
-        return loadLocalePart(locale, namespace);
+        return loadPart(locale, namespace);
       }
       return loadCoreResources(locale).then(
         (resources) => resources[namespace],

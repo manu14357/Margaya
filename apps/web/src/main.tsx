@@ -17,6 +17,7 @@ import { useAuth } from "@/components/providers/auth-provider/hooks/use-auth";
 import { KeyboardShortcutsHelp } from "./components/keyboard-shortcuts-help";
 import AuthProvider from "./components/providers/auth-provider";
 import { ThemeProvider } from "./components/providers/theme-provider";
+import { ChunkLoadPrompt } from "./components/ui/chunk-load-prompt";
 import { ErrorBoundary } from "./components/ui/error-boundary";
 import {
   CrashFallback,
@@ -88,6 +89,7 @@ if (!rootElement.innerHTML) {
                 <KeyboardShortcutsProvider>
                   <App />
                   <KeyboardShortcutsHelp />
+                  <ChunkLoadPrompt />
                 </KeyboardShortcutsProvider>
               </AppI18nProvider>
             </AuthProvider>
