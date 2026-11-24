@@ -1201,7 +1201,7 @@ export default [
     ready: "Rotate secret",
     clip: { selector: PAGE, pad: 0 },
     // Ends below the signing secret card, before the danger zone.
-    viewport: { width: 1440, height: 1285 },
+    viewport: { width: 1440, height: 1428 },
   }),
 
   // --- Account --------------------------------------------------------

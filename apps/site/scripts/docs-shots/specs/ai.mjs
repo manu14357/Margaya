@@ -1502,6 +1502,7 @@ function agentFixtures(seed) {
   ];
   const rotate = ref(seed, "mobile", "rotate");
   const legal = ref(seed, "web", "legal");
+  const german = ref(seed, "web", "german");
   const push = ref(seed, "mobile", "push");
   const agent = {
     id: "agent-triage",
@@ -1539,7 +1540,9 @@ function agentFixtures(seed) {
     run("run-legal", legal, {
       trigger: "manual",
       status: "awaiting_approval",
-      outputSummary: `The legal page update was dropped from the relaunch, so I proposed moving ${legal.key} to the trash. It waits for your approval.`,
+      // A bulk status move: destructive, so it waits, and within a
+      // Member-role agent's rights (moving tasks to the trash isn't).
+      outputSummary: `${legal.key} and ${german.key} went live with the relaunch, so I proposed moving both to Done. It waits for your approval.`,
       tokenIn: 9_800,
       tokenOut: 420,
       costMicros: 36_000,
@@ -1647,10 +1650,15 @@ function agentFixtures(seed) {
     ],
   };
   const legalChange = {
-    op: "delete_task",
-    taskId: legal.id,
+    op: "bulk_set_status",
     projectId: legal.projectId,
-    taskLabel: `${legal.key} ${legal.title}`,
+    items: [legal, german].map((task) => ({
+      taskId: task.id,
+      projectId: task.projectId,
+      taskLabel: `${task.key} ${task.title}`,
+      before: "in-review",
+      after: "done",
+    })),
   };
   const expiresAt = new Date(now + 24 * 3_600_000 - 4 * 60_000).toISOString();
   const legalDetail = {
@@ -1669,7 +1677,7 @@ function agentFixtures(seed) {
         createdAt: at(4),
       }),
       step(3, "tool", {
-        toolName: "delete_task",
+        toolName: "bulk_move_status",
         risk: "destructive",
         status: "pending",
         change: legalChange,
@@ -1688,7 +1696,7 @@ function agentFixtures(seed) {
       id: "approval-legal",
       runId: "run-legal",
       stepId: "step-3",
-      toolName: "delete_task",
+      toolName: "bulk_move_status",
       change: legalChange,
       agent,
       createdAt: at(4),
@@ -1760,14 +1768,15 @@ const agentDesk = {
   name: "ai/agent-desk",
   url: (seed) => `${ws(seed)}/agents`,
   ready: "Triage Bot",
-  viewport: { width: 1440, height: 1000 },
+  // Short enough that the empty run pane's picture shows beside every run.
+  viewport: { width: 1440, height: 700 },
   before: agentsBefore,
   async prepare(page) {
     await page
       .getByRole("button", { name: /Approve/ })
       .first()
       .waitFor();
-    this.clip = { x: 312, y: 0, width: 1128, height: 530 };
+    this.clip = { x: 312, y: 0, width: 1128, height: 700 };
   },
 };
 
