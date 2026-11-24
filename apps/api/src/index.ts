@@ -222,6 +222,7 @@ import { migrateWorkspaceUserEmail } from "./utils/migrate-workspace-user-email"
 import { normalizeApiServerUrl } from "./utils/openapi-spec";
 import { securityHeaders } from "./utils/security-headers";
 import { seedDefaultWorkspaceRoles } from "./utils/seed-default-workspace-roles";
+import { applyServerTimeouts } from "./utils/server-timeouts";
 import { validateWorkspaceAccess } from "./utils/validate-workspace-access";
 import view from "./view";
 import webhook from "./webhook";
@@ -1510,6 +1511,7 @@ export async function startServer(
     },
   );
 
+  applyServerTimeouts(server);
   injectWebSocket(server);
   const metricsServer = startMetricsServer();
   startUpdateChecks();
