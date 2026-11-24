@@ -72,7 +72,7 @@ describe("PublishSettingsForm", () => {
       "content.assignees",
       "content.backlog",
     ]) {
-      expect(control(name)).toHaveAttribute("aria-disabled", "true");
+      expect(control(name)).toBeDisabled();
     }
     for (const checkbox of screen.getAllByRole("checkbox")) {
       expect(checkbox).toHaveAttribute("aria-disabled", "true");
@@ -85,10 +85,7 @@ describe("PublishSettingsForm", () => {
     renderForm({
       availability: { ...base.availability, requests: false },
     });
-    expect(control("participation.requests")).toHaveAttribute(
-      "aria-disabled",
-      "true",
-    );
+    expect(control("participation.requests")).toBeDisabled();
     expect(
       screen.getByText(
         "settings:projectPublish.participation.requestsNeedIntake",

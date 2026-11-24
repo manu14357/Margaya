@@ -60,7 +60,7 @@ describe("SignInMethodCard", () => {
     const { toggle } = renderCard(
       method({ id: "emailPassword", isProvider: false, isLastActive: true }),
     );
-    expect(toggle).toHaveAttribute("aria-disabled", "true");
+    expect(toggle).toBeDisabled();
   });
 
   it("asks before turning off a provider", async () => {
@@ -101,7 +101,7 @@ describe("SignInMethodCard", () => {
         envVar: "DISABLE_EMAIL_OTP_SIGN_IN",
       }),
     );
-    expect(toggle).toHaveAttribute("aria-disabled", "true");
+    expect(toggle).toBeDisabled();
     expect(
       screen.getByText("instanceAdmin:source.environment"),
     ).toBeInTheDocument();

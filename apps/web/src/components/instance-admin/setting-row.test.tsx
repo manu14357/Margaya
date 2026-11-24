@@ -107,7 +107,7 @@ describe("public landing toggle", () => {
         envVar: "MARGAYA_PUBLIC_LANDING",
       }),
     );
-    expect(toggle).toHaveAttribute("aria-disabled", "true");
+    expect(toggle).toBeDisabled();
     expect(
       screen.getByText("instanceAdmin:source.environment"),
     ).toBeInTheDocument();

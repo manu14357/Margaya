@@ -153,8 +153,8 @@ describe("ScheduledAutomations", () => {
   it("disables the switches without project:update", () => {
     m.canUpdate = false;
     render(<ScheduledAutomations projectId="p1" />);
-    expect(archiveSwitch()).toHaveAttribute("aria-disabled", "true");
-    expect(closeSwitch()).toHaveAttribute("aria-disabled", "true");
+    expect(archiveSwitch()).toBeDisabled();
+    expect(closeSwitch()).toBeDisabled();
     expect(
       screen.getByText("settings:projectAutomations.noPermission"),
     ).toBeTruthy();
@@ -163,7 +163,7 @@ describe("ScheduledAutomations", () => {
   it("needs a Cancelled column for auto-close", () => {
     m.columns = [];
     render(<ScheduledAutomations projectId="p1" />);
-    expect(closeSwitch()).toHaveAttribute("aria-disabled", "true");
+    expect(closeSwitch()).toBeDisabled();
     expect(
       screen.getByText(
         "settings:projectAutomations.autoClose.noCancelledColumn",
@@ -262,7 +262,7 @@ describe("ScheduledAutomations", () => {
 
     m.cyclesEnabled = false;
     render(<ScheduledAutomations projectId="p1" />);
-    expect(rolloverSwitch()).toHaveAttribute("aria-disabled", "true");
+    expect(rolloverSwitch()).toBeDisabled();
     expect(
       screen.getByText("settings:projectAutomations.cycleRollover.cyclesOff"),
     ).toBeTruthy();

@@ -49,14 +49,14 @@ describe("ExportFormDialog", () => {
     m.projects = [project("a"), project("b", "2026-09-01T00:00:00.000Z")];
     renderDialog();
 
-    expect(splitSwitch()).toHaveAttribute("aria-disabled", "true");
+    expect(splitSwitch()).toBeDisabled();
   });
 
   it("allows one file per project when All projects covers two", () => {
     m.projects = [project("a"), project("b")];
     renderDialog();
 
-    expect(splitSwitch()).not.toHaveAttribute("aria-disabled", "true");
+    expect(splitSwitch()).not.toBeDisabled();
   });
 
   it("starts an export of every project with the defaults", () => {

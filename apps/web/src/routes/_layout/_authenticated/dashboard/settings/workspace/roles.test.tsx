@@ -58,10 +58,7 @@ describe("workspace role permission editing", { timeout: 120_000 }, () => {
       "Invite members",
     ]) {
       expect(screen.getByRole("switch", { name: label })).toBeChecked();
-      expect(screen.getByRole("switch", { name: label })).toHaveAttribute(
-        "aria-disabled",
-        "true",
-      );
+      expect(screen.getByRole("switch", { name: label })).toBeDisabled();
     }
   });
   it("hides the rights of Teams, which are turned off", () => {

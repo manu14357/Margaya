@@ -4,9 +4,22 @@ import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 
 import { cn } from "@/lib/cn";
 
-function Switch({ className, ...props }: SwitchPrimitive.Root.Props) {
+/**
+ * A native button with role="switch", so `id` and a `<label htmlFor>` name
+ * the visible control. (Base UI's default span puts `id` on its hidden input
+ * instead, and the label then points at an element nobody can see.)
+ */
+function Switch({
+  className,
+  render,
+  nativeButton,
+  ...props
+}: SwitchPrimitive.Root.Props) {
+  const ownButton = render === undefined;
   return (
     <SwitchPrimitive.Root
+      render={ownButton ? <button type="button" /> : render}
+      nativeButton={ownButton ? true : nativeButton}
       className={cn(
         "relative inline-flex h-[calc(var(--thumb-size)+2px)] w-[calc(var(--thumb-size)*2-2px)] shrink-0 items-center rounded-full p-px outline-none transition-[background-color,box-shadow] duration-200 [--thumb-size:--spacing(5)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background data-checked:bg-primary data-unchecked:bg-input data-disabled:opacity-64 pointer-coarse:after:absolute pointer-coarse:after:-inset-3 sm:[--thumb-size:--spacing(4)] pointer-coarse:[--thumb-size:--spacing(5)]",
         className,
