@@ -109,6 +109,24 @@ describe("sign-in inside the desktop app", () => {
     expect(screen.getByText("auth:signIn.desktopBrowserStarted")).toBeTruthy();
   });
 
+  it("offers browser sign-in even when the server has only passwords", () => {
+    m.config = {};
+    enterDesktopApp();
+    render(<SignIn />);
+    expect(screen.getByRole("form", { name: "password sign-in" })).toBeTruthy();
+    expect(
+      screen.getByText("auth:signIn.desktopBrowserButtonHint"),
+    ).toBeTruthy();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "auth:signIn.desktopBrowserButton" }),
+    );
+
+    expect(startBrowserSignIn).toHaveBeenCalledOnce();
+    expect(screen.getByText("auth:signIn.desktopBrowserStarted")).toBeTruthy();
+    expect(screen.getByText("auth:forms.or")).toBeTruthy();
+  });
+
   it("keeps password and guest sign-in in the window", async () => {
     enterDesktopApp();
     render(<SignIn />);
@@ -136,6 +154,11 @@ describe("sign-in inside the desktop app", () => {
     enterDesktopApp({});
     render(<SignIn />);
     expect(screen.queryByText("auth:signIn.desktopBrowserHint")).toBeNull();
+    expect(
+      screen.queryByRole("button", {
+        name: "auth:signIn.desktopBrowserButton",
+      }),
+    ).toBeNull();
     fireEvent.click(
       screen.getByRole("button", { name: "auth:signIn.continueWithGithub" }),
     );
@@ -157,6 +180,11 @@ describe("sign-in in a browser", () => {
   it("is unchanged: providers sign in here and nothing mentions the app", async () => {
     render(<SignIn />);
     expect(screen.queryByText("auth:signIn.desktopBrowserHint")).toBeNull();
+    expect(
+      screen.queryByRole("button", {
+        name: "auth:signIn.desktopBrowserButton",
+      }),
+    ).toBeNull();
     fireEvent.click(
       screen.getByRole("button", { name: "auth:signIn.continueWithGithub" }),
     );

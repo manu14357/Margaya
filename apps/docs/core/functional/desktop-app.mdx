@@ -135,7 +135,12 @@ Click **Sign in with browser** next to the server. Your default browser opens th
 
 <Screenshot src="desktop/browser-sign-in" alt="The Sign in to the desktop app page in the browser, asking to sign in to the Margaya desktop app as Elena Marsh on margaya.studionorth.example, with a warning to continue only if you started this from the app, and Allow and Cancel buttons" caption="The browser asks you to confirm before it hands the sign-in to the app." />
 
-Signing in through the browser means your password manager, passkeys and your company's sign-in rules work as usual, and the app never sees your password. Inside a server's window you can also sign in with a password or an email code directly; single sign-on buttons there hand over to the browser.
+Signing in through the browser means your password manager, passkeys and your company's sign-in rules work as usual, and the app never sees your password.
+
+A server's window that isn't signed in always opens on the server's sign-in page, never on the product landing page that signed-out visitors may see in a browser. There you can:
+
+- Click **Sign in with your browser**, which starts the same browser sign-in as above and brings you back to the window, signed in.
+- Sign in right in the window with a password or an email code. Single sign-on buttons there hand over to the browser too.
 
 If the browser doesn't come back to the app, for example because a company policy blocks app links, choose **Show a code** in the app. The browser then shows a sign-in code instead: paste it into **Sign-in code** and click **Continue**. A code works once and expires after a minute.
 

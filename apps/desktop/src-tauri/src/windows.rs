@@ -336,6 +336,7 @@ pub fn open_server_window(app: &AppHandle, server: &Server, target: Target) -> A
         .url()
         .filter(|url| server.owns(url))
         .cloned()
+        .or_else(|| start_url(server))
         .unwrap_or(web);
     build_server_window(app, server, &label, url)?;
     Ok(())
@@ -1115,6 +1116,13 @@ pub fn web_url_for_path(server: &Server, path: &str) -> Option<Url> {
     routing::is_web_page(server, &url).then_some(url)
 }
 
+/// Where a server window opens without a page to show: the web app's
+/// dashboard, which sends a signed-out person to sign-in. The web root can be
+/// the server's public landing page, which has no place in the app.
+pub fn start_url(server: &Server) -> Option<Url> {
+    web_url_for_path(server, "/dashboard")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1287,5 +1295,33 @@ mod tests {
         assert!(web_url_for_path(&same, "/dashboard").is_some());
         assert!(web_url_for_path(&same, "/api/asset/a1?download=1").is_none());
         assert!(web_url_for_path(&same, "/api/auth/sign-out").is_none());
+    }
+
+    #[test]
+    fn opens_at_the_dashboard_not_the_web_root() {
+        let server = Server {
+            id: "00000000-0000-4000-8000-000000000000".into(),
+            label: "x".into(),
+            web_url: "https://app.example/margaya/".into(),
+            api_url: "https://api.example".into(),
+            server_version: None,
+            added_at: 0,
+            last_used_at: None,
+            reopen: false,
+            sound_muted: false,
+        };
+        assert_eq!(
+            start_url(&server).unwrap().as_str(),
+            "https://app.example/margaya/dashboard"
+        );
+        let same = Server {
+            web_url: "https://pm.example".into(),
+            api_url: "https://pm.example".into(),
+            ..server
+        };
+        assert_eq!(
+            start_url(&same).unwrap().as_str(),
+            "https://pm.example/dashboard"
+        );
     }
 }

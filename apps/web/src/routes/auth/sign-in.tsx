@@ -3,7 +3,7 @@ import {
   useNavigate,
   useSearch,
 } from "@tanstack/react-router";
-import { KeyRound, UserCheck } from "lucide-react";
+import { Globe, KeyRound, UserCheck } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod/v4";
@@ -424,6 +424,40 @@ function SignIn() {
             </Alert>
           )}
 
+          {/* The desktop app: signing in through the browser works with every
+              method the server offers, and the browser hands the session
+              back to the app (PKCE and the app's own link). */}
+          {desktopSignIn && (
+            <>
+              <div className="space-y-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={continueInBrowser}
+                  className="w-full"
+                >
+                  <Globe className="w-5 h-5 mr-2" />
+                  {t("auth:signIn.desktopBrowserButton")}
+                </Button>
+                <p
+                  aria-live="polite"
+                  className="text-center text-xs text-muted-foreground"
+                >
+                  {browserSignInStarted
+                    ? t("auth:signIn.desktopBrowserStarted")
+                    : t("auth:signIn.desktopBrowserButtonHint")}
+                </p>
+              </div>
+              {(!config?.disableLoginForm ||
+                config?.hasGoogleSignIn ||
+                config?.hasGithubSignIn ||
+                config?.hasDiscordSignIn ||
+                config?.hasCustomOAuth ||
+                config?.hasSamlSignIn ||
+                (config?.hasGuestAccess && !invitationId)) && <AuthDivider />}
+            </>
+          )}
+
           {(config?.hasGoogleSignIn ||
             config?.hasGithubSignIn ||
             config?.hasDiscordSignIn ||
@@ -584,13 +618,8 @@ function SignIn() {
                   config?.hasDiscordSignIn ||
                   config?.hasCustomOAuth ||
                   config?.hasSamlSignIn) && (
-                  <p
-                    aria-live="polite"
-                    className="mt-3 text-center text-xs text-muted-foreground"
-                  >
-                    {browserSignInStarted
-                      ? t("auth:signIn.desktopBrowserStarted")
-                      : t("auth:signIn.desktopBrowserHint")}
+                  <p className="mt-3 text-center text-xs text-muted-foreground">
+                    {t("auth:signIn.desktopBrowserHint")}
                   </p>
                 )}
 

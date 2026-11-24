@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import { cleanup, render, screen } from "@testing-library/react";
 import type { ComponentType } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const m = vi.hoisted(() => ({ getConfig: vi.fn() }));
 
@@ -64,5 +64,30 @@ describe("root route", () => {
   it("redirects as before when the config can't be read", async () => {
     m.getConfig.mockRejectedValue(new Error("offline"));
     await expect(run(null)).rejects.toEqual(toDashboard);
+  });
+});
+
+describe("root route inside the desktop app", () => {
+  beforeEach(() => {
+    m.getConfig.mockReset();
+    m.getConfig.mockResolvedValue({ publicLandingEnabled: true });
+    Object.defineProperty(window, "__MARGAYA_DESKTOP__", {
+      configurable: true,
+      value: { version: "0.1.0", platform: "windows" },
+    });
+  });
+  afterEach(() => {
+    Reflect.deleteProperty(window, "__MARGAYA_DESKTOP__");
+  });
+
+  it("sends signed-out people to sign-in, never the landing", async () => {
+    await expect(run(null)).rejects.toEqual({
+      redirect: { to: "/auth/sign-in" },
+    });
+    expect(m.getConfig).not.toHaveBeenCalled();
+  });
+
+  it("still sends signed-in people to the dashboard", async () => {
+    await expect(run({ id: "u1" })).rejects.toEqual(toDashboard);
   });
 });

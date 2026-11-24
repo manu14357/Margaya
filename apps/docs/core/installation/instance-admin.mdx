@@ -60,7 +60,7 @@ A saved change applies at once on the API instance that saved it, and within 10 
 ## General
 
 - **Instance name** is shown on the sign-in screen and on public boards. It takes 1 to 80 characters. The default is `Margaya`.
-- **Show the product landing page** decides what signed-out visitors see when they open the app's root address. When it is on (the default), they see the Margaya landing page with links to sign in and sign up. When it is off, they go straight to sign-in. Signed-in people always go to their dashboard.
+- **Show the product landing page** decides what signed-out visitors see when they open the app's root address. When it is on (the default), they see the Margaya landing page with links to sign in and sign up. When it is off, they go straight to sign-in. Signed-in people always go to their dashboard, and the [desktop app](/core/functional/desktop-app#sign-in) always opens on sign-in, whatever this setting says.
 - **Overview** shows the version, the number of accounts, guests, workspaces, projects and public boards, and which server services are set up: realtime (in memory or Redis), email, file storage (S3 or the built-in local store), captcha, error reporting, cloud mode and demo mode. It never shows their values.
 - **Recent delivery failures** lists workspace webhooks that used up their retries in the last 7 days, up to 20, with the workspace, webhook, event and response. The destination URL and the message body stay in the workspace's own delivery log. Failed background jobs and AI calls are on the [Health](/core/installation/health-page) page.
 
