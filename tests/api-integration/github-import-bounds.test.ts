@@ -20,6 +20,8 @@ const mocks = vi.hoisted(() => ({
 }));
 vi.mock("../../apps/api/src/plugins/github/utils/github-app", () => ({
   getVerifiedInstallationOctokit: mocks.verify,
+  // No app name: issues by any author become tasks.
+  githubAppName: () => null,
   getGithubApp: () => ({
     getInstallationOctokit: async () => ({
       rest: { issues: { createComment: mocks.comment } },

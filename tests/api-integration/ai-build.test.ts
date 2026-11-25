@@ -331,8 +331,9 @@ describe("talk to build: apply", () => {
       subtasks: 2,
       labels: 1,
     });
-    // No points system in a new project.
-    expect(report.estimatesSkipped).toBe(true);
+    // A new project starts with a Story points system, so the reviewed
+    // estimates land instead of being left out.
+    expect(report.estimatesSkipped).toBe(false);
 
     const projectId = report.projectId as string;
     const [project] = await db
@@ -356,6 +357,15 @@ describe("talk to build: apply", () => {
     expect(homepage?.priority).toBe("urgent");
 
     const audit = tasks.find((task) => task.title === "Audit current pages");
+    const pointValue = async (pointId: string | null | undefined) => {
+      const [point] = await db
+        .select({ value: schema.estimatePointTable.value })
+        .from(schema.estimatePointTable)
+        .where(eq(schema.estimatePointTable.id, pointId ?? ""));
+      return point?.value;
+    };
+    expect(await pointValue(audit?.estimatePointId)).toBe("3");
+    expect(await pointValue(homepage?.estimatePointId)).toBe("8");
     const subtasks = await db
       .select()
       .from(schema.taskRelationTable)
