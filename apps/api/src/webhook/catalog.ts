@@ -1010,6 +1010,8 @@ export const WEBHOOK_EXCLUDED_EVENTS: Readonly<Record<string, string>> = {
     "UI refresh hint; membership changes are in the audit log",
   "task.coding_handoff_updated":
     "UI refresh hint; the linked pull request and task changes carry the facts",
+  "task.external_link_changed":
+    "UI refresh hint for a task's issue, branch and pull request resources",
   "project.access_changed":
     "access control for restricted projects; recorded in the audit log",
   "task.recurrence_changed":
