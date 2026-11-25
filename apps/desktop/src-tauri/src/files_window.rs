@@ -167,8 +167,12 @@ fn bounded_all<T: Send + 'static>(jobs: Vec<(PathBuf, DiskJob<T>)>, limit: Durat
             std::thread::Builder::new()
                 .name("files-check".into())
                 .spawn(move || {
-                    let _guard = guard;
-                    let _ = sender.send(job());
+                    let result = job();
+                    // Free the path before answering: freed after, a check
+                    // made right after this one could still find it busy
+                    // and report the place unavailable.
+                    drop(guard);
+                    let _ = sender.send(result);
                 })
                 .ok()
                 .map(|_| receiver)
