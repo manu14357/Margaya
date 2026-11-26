@@ -67,12 +67,16 @@ pub fn apply(app: &AppHandle) {
     let total = state.total_unread();
     let changed = drawn.total != Some(total);
 
+    // The Dock badge is the app's, set through any window. With none open
+    // yet (the count arrived before the first window), it isn't marked as
+    // shown, so the next apply (a window opening calls it) sets it.
     #[cfg(target_os = "macos")]
-    if changed {
-        if let Some(window) = app.webview_windows().values().next() {
-            let _ = window.set_badge_count((total > 0).then_some(i64::from(total)));
-        }
-    }
+    let shown = !changed
+        || app.webview_windows().values().next().is_some_and(|window| {
+            window
+                .set_badge_count((total > 0).then_some(i64::from(total)))
+                .is_ok()
+        });
 
     #[cfg(windows)]
     {
@@ -96,7 +100,14 @@ pub fn apply(app: &AppHandle) {
         drawn.windows = scales.into_iter().collect();
     }
 
-    drawn.total = Some(total);
+    #[cfg(target_os = "macos")]
+    if shown {
+        drawn.total = Some(total);
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        drawn.total = Some(total);
+    }
     drop(drawn);
 
     // The tray call waits for the main thread: outside the lock.
