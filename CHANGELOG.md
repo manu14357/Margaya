@@ -1,3 +1,9 @@
+### Bug Fixes
+
+- **desktop:** set the Dock badge once a window exists: [6f84202](https://github.com/manu14357/Margaya/commit/6f84202e82c4573ef6ab8b428d116e6fd599cc23)
+- **desktop:** record shortcut keys on macOS: [6b5e029](https://github.com/manu14357/Margaya/commit/6b5e02963f88babca34b5dc95ccc456774528854)
+- **desktop:** sign the app in when its window signs in, so notifications and the badge work: [51664e6](https://github.com/manu14357/Margaya/commit/51664e680b3972e4bc3010a73f79263a004d4a6d)
+
 ### Features
 
 - **whiteboards:** brainstorm, group and summarize with AI: [e43469d](https://github.com/manu14357/Margaya/commit/e43469da26def4ce8d856edbcb52d3143ab4dc58)
