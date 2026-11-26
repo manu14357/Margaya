@@ -134,6 +134,51 @@ describe("ShortcutSettings", () => {
     expect(invoke).toHaveBeenCalledWith("pause_shortcuts", { paused: false });
   });
 
+  it("records keys that reach the page while the button isn't focused, as on macOS", async () => {
+    answer((args) =>
+      initial.map((item) =>
+        item.action === "search"
+          ? {
+              ...item,
+              accelerator: (args as { accelerator: string }).accelerator,
+              active: true,
+            }
+          : item,
+      ),
+    );
+    render(<ShortcutSettings platform="macos" />);
+    await screen.findByText("settings.shortcutsHeading");
+    const recorder = row("search").querySelector("button") as HTMLButtonElement;
+    fireEvent.click(recorder);
+    // WebKit on macOS never focuses a clicked button: the keys go to the body.
+    recorder.blur();
+    fireEvent.keyDown(document.body, {
+      code: "KeyK",
+      metaKey: true,
+      shiftKey: true,
+    });
+    await vi.waitFor(() =>
+      expect(invoke).toHaveBeenCalledWith("set_shortcut", {
+        action: "search",
+        accelerator: "Shift+Super+KeyK",
+      }),
+    );
+  });
+
+  it("stops recording on a click elsewhere", async () => {
+    answer(() => initial);
+    render(<ShortcutSettings platform="macos" />);
+    await screen.findByText("settings.shortcutsHeading");
+    const recorder = row("search").querySelector("button") as HTMLButtonElement;
+    fireEvent.click(recorder);
+    expect(recorder.textContent).toBe("settings.shortcutRecording");
+    fireEvent.pointerDown(document.body);
+    await vi.waitFor(() =>
+      expect(recorder.textContent).toBe("settings.shortcutChange"),
+    );
+    expect(invoke).toHaveBeenCalledWith("pause_shortcuts", { paused: false });
+  });
+
   it("cancels recording on Escape", async () => {
     answer(() => initial);
     render(<ShortcutSettings platform="windows" />);

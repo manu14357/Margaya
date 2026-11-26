@@ -1,4 +1,4 @@
-import { type KeyboardEvent, useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { errorMessage } from "../lib/errors";
 import { useT } from "../lib/i18n";
 import {
@@ -36,6 +36,46 @@ export function ShortcutSettings({
   const [error, setError] = useState<RowError | null>(null);
   const [saved, setSaved] = useState<ShortcutAction | null>(null);
   const recordingRef = useRef<ShortcutAction | null>(null);
+  // The latest stop/record handlers, for the listeners below.
+  const handlersRef = useRef<{
+    stop: () => Promise<void>;
+    record: (action: ShortcutAction, event: globalThis.KeyboardEvent) => void;
+  } | null>(null);
+
+  // While recording, keys are read on the whole window, not on the button:
+  // on macOS WebKit never focuses a clicked button, so its own keydown and
+  // blur never fire and the keys went nowhere. A click elsewhere or leaving
+  // the window ends the recording.
+  useEffect(() => {
+    if (!recording) return;
+    const action = recording;
+    const button = document.querySelector<HTMLButtonElement>(
+      `[data-recorder="${action}"]`,
+    );
+    button?.focus();
+    const onKey = (event: globalThis.KeyboardEvent) => {
+      handlersRef.current?.record(action, event);
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (
+        target instanceof Element &&
+        target.closest(`[data-recorder="${action}"]`)
+      ) {
+        return;
+      }
+      void handlersRef.current?.stop();
+    };
+    const onWindowBlur = () => void handlersRef.current?.stop();
+    window.addEventListener("keydown", onKey, true);
+    document.addEventListener("pointerdown", onPointerDown, true);
+    window.addEventListener("blur", onWindowBlur);
+    return () => {
+      window.removeEventListener("keydown", onKey, true);
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      window.removeEventListener("blur", onWindowBlur);
+    };
+  }, [recording]);
 
   useEffect(() => {
     api
@@ -89,18 +129,16 @@ export function ShortcutSettings({
     recordingRef.current = null;
   };
 
-  const onRecorderKey = (
-    action: ShortcutAction,
-    event: KeyboardEvent<HTMLButtonElement>,
-  ) => {
-    if (recording !== action) return;
+  const record = (action: ShortcutAction, event: globalThis.KeyboardEvent) => {
+    if (recordingRef.current !== action) return;
     event.preventDefault();
     event.stopPropagation();
-    const key = recordKey(event.nativeEvent);
+    const key = recordKey(event);
     if (key.kind === "cancel") void stop();
     else if (key.kind === "done")
       void apply(action, () => api.setShortcut(action, key.accelerator));
   };
+  handlersRef.current = { stop, record };
 
   return (
     <section aria-labelledby={headingId} className="shortcut-settings">
@@ -168,10 +206,7 @@ export function ShortcutSettings({
                   onClick={() => {
                     if (!isRecording) void begin(shortcut.action);
                   }}
-                  onKeyDown={(event) => onRecorderKey(shortcut.action, event)}
-                  onBlur={() => {
-                    if (isRecording) void stop();
-                  }}
+                  data-recorder={shortcut.action}
                 >
                   {isRecording
                     ? t("settings.shortcutRecording")
