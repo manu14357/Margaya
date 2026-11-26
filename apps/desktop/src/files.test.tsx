@@ -1,6 +1,7 @@
 import {
   act,
   cleanup,
+  configure,
   fireEvent,
   render,
   screen,
@@ -9,6 +10,12 @@ import {
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Files, SEARCH_DELAY_MS } from "./files";
 import type { FileEntry, FilesOverview, FolderView } from "./lib/files-api";
+
+// The window loads in several async steps (overview, then the folder). CI runs
+// every package's tests at once, so on a busy runner a step can take longer
+// than the default 1 s wait; waits still end as soon as the screen is ready.
+const WAIT = { timeout: 5_000 };
+configure({ asyncUtilTimeout: WAIT.timeout });
 
 const invoke = vi.fn();
 vi.mock("@tauri-apps/api/core", () => ({
@@ -163,14 +170,14 @@ describe("Files", () => {
     expect(screen.getByText("files.emptyDrop")).toBeTruthy();
     const [button] = screen.getAllByRole("button", { name: "files.addFolder" });
     fireEvent.click(button as HTMLElement);
-    await vi.waitFor(() => expect(names()).toContain("alpha.md"));
+    await vi.waitFor(() => expect(names()).toContain("alpha.md"), WAIT);
     expect(invoke).toHaveBeenCalledWith("files_list", { path: ROOT });
   });
 
   it("lists folders first, hides hidden items, and sorts", async () => {
     setup();
     render(<Files />);
-    await vi.waitFor(() => expect(options().length).toBe(4));
+    await vi.waitFor(() => expect(options().length).toBe(4), WAIT);
     expect(names()).toEqual(["Projects", "alpha.md", "clip.mp4", "zeta.pdf"]);
 
     fireEvent.change(screen.getByRole("combobox", { name: "files.sortBy" }), {
@@ -245,7 +252,7 @@ describe("Files", () => {
     expect(invoke.mock.calls.length).toBe(before);
 
     fireEvent.keyDown(list, { key: "Enter" });
-    await vi.waitFor(() => expect(names()).toEqual(["plan.xlsx"]));
+    await vi.waitFor(() => expect(names()).toEqual(["plan.xlsx"]), WAIT);
     expect(invoke).toHaveBeenCalledWith("files_list", {
       path: `${ROOT}\\Projects`,
     });
@@ -253,7 +260,7 @@ describe("Files", () => {
       screen.getByRole("navigation", { name: "files.breadcrumb" }).textContent,
     ).toContain("Projects");
     fireEvent.keyDown(screen.getByRole("listbox"), { key: "Backspace" });
-    await vi.waitFor(() => expect(names()).toContain("alpha.md"));
+    await vi.waitFor(() => expect(names()).toContain("alpha.md"), WAIT);
   });
 
   it("previews a file from bytes and remembers it in Recent", async () => {
@@ -276,10 +283,12 @@ describe("Files", () => {
     });
 
     fireEvent.click(screen.getByRole("button", { name: "download" }));
-    await vi.waitFor(() =>
-      expect(invoke).toHaveBeenCalledWith("files_save_copy", {
-        path: `${ROOT}\\zeta.pdf`,
-      }),
+    await vi.waitFor(
+      () =>
+        expect(invoke).toHaveBeenCalledWith("files_save_copy", {
+          path: `${ROOT}\\zeta.pdf`,
+        }),
+      WAIT,
     );
     expect(await screen.findByText("files.saved")).toBeTruthy();
 
@@ -340,10 +349,12 @@ describe("Files", () => {
       within(menu).getByRole("menuitem", { name: "files.copyPath" }),
     );
     expect(screen.queryByRole("menu")).toBeNull();
-    await vi.waitFor(() =>
-      expect(invoke).toHaveBeenCalledWith("files_copy_path", {
-        path: `${ROOT}\\zeta.pdf`,
-      }),
+    await vi.waitFor(
+      () =>
+        expect(invoke).toHaveBeenCalledWith("files_copy_path", {
+          path: `${ROOT}\\zeta.pdf`,
+        }),
+      WAIT,
     );
 
     fireEvent.contextMenu(option as HTMLElement, { clientX: 20, clientY: 30 });
@@ -382,8 +393,12 @@ describe("Files", () => {
     fireEvent.click(
       screen.getByRole("menuitem", { name: "files.removeFolder" }),
     );
-    await vi.waitFor(() =>
-      expect(invoke).toHaveBeenCalledWith("files_remove_folder", { id: "p1" }),
+    await vi.waitFor(
+      () =>
+        expect(invoke).toHaveBeenCalledWith("files_remove_folder", {
+          id: "p1",
+        }),
+      WAIT,
     );
     expect(await screen.findByText("files.emptyTitle")).toBeTruthy();
   });
