@@ -52,7 +52,7 @@ export function desktopSignInRoutes(registry: OpenAPIHono["openAPIRegistry"]) {
     operationId: "authorizeDesktopSignIn",
     summary: "Authorize desktop sign-in",
     description:
-      "Called by the web app's `/desktop/authorize` page with the person's session, after they confirm. Mints a one-time code (a minute, single use) bound to the PKCE challenge and state, and returns it with the desktop callback URL to open: `com.margaya.desktop://auth/callback?code=…&state=…&server=<API origin>`. API keys and impersonation sessions are refused. Its own origin's session works on every install, including ones where the API and web app are on different sites.",
+      "Called by the web app's `/desktop/authorize` page with the person's session, after they confirm. Mints a one-time code (a minute, single use) bound to the PKCE challenge and state, and returns it with the desktop callback URL to open: `com.margaya.desktop://auth/callback?code=…&state=…&server=<API origin>`. It needs the page's cookie session: a bearer token (401), an API key or an impersonation session is refused. Its own origin's session works on every install, including ones where the API and web app are on different sites.",
     request: {
       body: {
         required: true,

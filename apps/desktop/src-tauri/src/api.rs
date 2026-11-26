@@ -1147,6 +1147,7 @@ mod tests {
             last_used_at: None,
             reopen: false,
             sound_muted: false,
+            link_paused: false,
         };
         assert_eq!(
             task_url(&server, "w 1", "p1", "t1").unwrap().as_str(),

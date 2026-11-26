@@ -199,6 +199,11 @@ pub async fn sign_out_server(app: &AppHandle, state: &AppState, server: &Server)
 pub async fn sign_out(app: AppHandle, state: State<'_, AppState>, id: String) -> AppResult<()> {
     let server = state.server(&id)?;
     sign_out_server(&app, &state, &server).await;
+    // Signed out on purpose: the window's session doesn't sign the app back
+    // in until the person signs in again.
+    if let Err(error) = lock(&state.store).set_link_paused(&id, true) {
+        log::warn!("could not keep the sign-in setting: {}", error.message);
+    }
     changed(&app);
     Ok(())
 }
@@ -432,7 +437,38 @@ pub async fn bridge_message(
         BridgeMessage::SignedOut => {
             log::info!("the web app signed out; signing this server out natively");
             sign_out_server(&app, &state, &server).await;
+            // The window's session ended: its next sign-in is the person's
+            // own, which may sign the app in again.
+            if let Err(error) = lock(&state.store).set_link_paused(&server.id, false) {
+                log::warn!("could not keep the sign-in setting: {}", error.message);
+            }
             changed(&app);
+        }
+        BridgeMessage::StartSessionLink => {
+            // Nothing to do when the app is signed in already (an existing
+            // session is never replaced from a page), when the person signed
+            // the app out of this server, or while another sign-in or link
+            // of it is waiting or running.
+            if state.session(&server.id).is_some() || server.link_paused {
+                return Ok(Value::Null);
+            }
+            let Some((link_state, verifier)) = lock(&state.pending).start_link(&server.id)
+            else {
+                return Ok(Value::Null);
+            };
+            return Ok(serde_json::json!({
+                "state": link_state,
+                "codeChallenge": crate::auth::challenge(&verifier),
+            }));
+        }
+        BridgeMessage::FinishSessionLink { code, state: link_state } => {
+            // Only this server's own pending sign-in, used up here.
+            let pending = lock(&state.pending).take_for_link(&server.id, &link_state);
+            let Some(pending) = pending else {
+                log::warn!("ignored a session link with an unknown or used state");
+                return Ok(Value::Bool(false));
+            };
+            return Ok(Value::Bool(signin::link(&app, pending, &code).await.is_ok()));
         }
         BridgeMessage::Ready {
             navigate,

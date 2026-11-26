@@ -5,6 +5,7 @@ import {
   getDesktopBrowserSignIn,
   installDesktopExternalLinks,
   isDesktopApp,
+  linkDesktopSession,
 } from "./desktop";
 import { desktopDiscoveryDocument } from "./desktop-discovery";
 
@@ -150,5 +151,69 @@ describe("desktop discovery document", () => {
     "https://user:secret@api.example.com",
   ])("writes nothing for %s", (value) => {
     expect(desktopDiscoveryDocument(value)).toBeNull();
+  });
+});
+
+describe("linking the app to a session signed in inside its window", () => {
+  const challenge = "c".repeat(43);
+
+  it("does nothing in a browser or with an older app", async () => {
+    const authorize = vi.fn();
+    expect(await linkDesktopSession(authorize)).toBe(false);
+    enterDesktopApp({ version: "1.1.0", platform: "macos" });
+    expect(await linkDesktopSession(authorize)).toBe(false);
+    expect(authorize).not.toHaveBeenCalled();
+  });
+
+  it("mints no code when the app is signed in already", async () => {
+    const finishSessionLink = vi.fn();
+    enterDesktopApp({
+      version: "1.2.1",
+      platform: "macos",
+      startSessionLink: vi.fn().mockResolvedValue(null),
+      finishSessionLink,
+    });
+    const authorize = vi.fn();
+    expect(await linkDesktopSession(authorize)).toBe(false);
+    expect(authorize).not.toHaveBeenCalled();
+    expect(finishSessionLink).not.toHaveBeenCalled();
+  });
+
+  it("mints a code for the app's challenge and hands it back with the state", async () => {
+    const finishSessionLink = vi.fn().mockResolvedValue(true);
+    enterDesktopApp({
+      version: "1.2.1",
+      platform: "macos",
+      startSessionLink: vi
+        .fn()
+        .mockResolvedValue({ state: "state-123", codeChallenge: challenge }),
+      finishSessionLink,
+    });
+    const authorize = vi.fn().mockResolvedValue({ code: "one-time" });
+    expect(await linkDesktopSession(authorize)).toBe(true);
+    expect(authorize).toHaveBeenCalledWith({
+      state: "state-123",
+      code_challenge: challenge,
+      code_challenge_method: "S256",
+    });
+    expect(finishSessionLink).toHaveBeenCalledWith({
+      code: "one-time",
+      state: "state-123",
+    });
+  });
+
+  it("reports false, without throwing, when the code can't be minted", async () => {
+    const finishSessionLink = vi.fn();
+    enterDesktopApp({
+      version: "1.2.1",
+      platform: "macos",
+      startSessionLink: vi
+        .fn()
+        .mockResolvedValue({ state: "state-123", codeChallenge: challenge }),
+      finishSessionLink,
+    });
+    const authorize = vi.fn().mockRejectedValue(new Error("401"));
+    expect(await linkDesktopSession(authorize)).toBe(false);
+    expect(finishSessionLink).not.toHaveBeenCalled();
   });
 });

@@ -36,6 +36,18 @@ pub enum BridgeMessage {
     /// The web UI signed out: sign this server out natively too (revoke the
     /// bearer token, stop the socket).
     SignedOut,
+    /// The page is signed in (password or email code inside the window) but
+    /// the app isn't: start a sign-in whose code the page mints with its own
+    /// session. Answers `{ state, codeChallenge }`, or null when the app is
+    /// signed in already. The verifier never leaves Rust.
+    StartSessionLink,
+    /// The code the page minted for that sign-in: Rust trades it, with the
+    /// verifier only it holds, for the app's own token. Answers true on
+    /// success. The page never sees the token.
+    FinishSessionLink {
+        code: String,
+        state: String,
+    },
     /// The page is up. `navigate`: it listens for `margaya:navigate`;
     /// `titleBar`: it draws the window title bar.
     #[serde(rename_all = "camelCase")]
@@ -138,6 +150,23 @@ pub fn init_script(web: &Url, version: &str) -> String {
     showServers: function () {{ send({{ kind: "showServers" }}); }},
     openSignInPopup: function (url) {{ send({{ kind: "openSignInPopup", url: String(url) }}); }},
     signedOut: function () {{ send({{ kind: "signedOut" }}); }},
+    startSessionLink: function () {{
+      return call({{ kind: "startSessionLink" }}).then(
+        function (value) {{
+          return value && typeof value.state === "string" && typeof value.codeChallenge === "string"
+            ? {{ state: value.state, codeChallenge: value.codeChallenge }}
+            : null;
+        }},
+        function () {{ return null; }}
+      );
+    }},
+    finishSessionLink: function (link) {{
+      var value = link && typeof link === "object" ? link : {{}};
+      return call({{ kind: "finishSessionLink", code: String(value.code || ""), state: String(value.state || "") }}).then(
+        function (ok) {{ return ok === true; }},
+        function () {{ return false; }}
+      );
+    }},
     setSoundMuted: function (muted) {{ send({{ kind: "soundMuted", muted: muted === true }}); }},
     saveOfflineSnapshot: function (snapshot) {{
       if (snapshot && typeof snapshot === "object") send({{ kind: "offlineSnapshot", snapshot: snapshot }});
@@ -191,6 +220,7 @@ mod tests {
             last_used_at: None,
             reopen: false,
             sound_muted: false,
+            link_paused: false,
         }
     }
 
@@ -291,6 +321,14 @@ mod tests {
                 },
             ),
             (r#"{"kind":"signedOut"}"#, BridgeMessage::SignedOut),
+            (r#"{"kind":"startSessionLink"}"#, BridgeMessage::StartSessionLink),
+            (
+                r#"{"kind":"finishSessionLink","code":"c0de","state":"st4te"}"#,
+                BridgeMessage::FinishSessionLink {
+                    code: "c0de".into(),
+                    state: "st4te".into(),
+                },
+            ),
             (
                 r#"{"kind":"soundMuted","muted":true}"#,
                 BridgeMessage::SoundMuted { muted: true },
@@ -304,6 +342,8 @@ mod tests {
             assert_eq!(read(json), Some(message), "{json}");
         }
         assert_eq!(read(r#"{"kind":"soundMuted","muted":"yes"}"#), None);
+        // A link needs both the code and the state.
+        assert_eq!(read(r#"{"kind":"finishSessionLink","code":"c0de"}"#), None);
         assert_eq!(read(r#"{"kind":"readFile","path":"/etc/passwd"}"#), None);
         assert_eq!(read(r#"{"kind":"setPosition","x":0,"y":0}"#), None);
     }

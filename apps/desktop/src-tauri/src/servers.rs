@@ -35,6 +35,12 @@ pub struct Server {
     /// bridge (`setSoundMuted`).
     #[serde(default)]
     pub sound_muted: bool,
+    /// The person signed the app out of this server (Sign out in the server
+    /// list), or the server refused its token: a page signed in inside the
+    /// window doesn't sign it back in on its own (`startSessionLink`). Cleared
+    /// by a sign-in they start, or when the window's own session ends.
+    #[serde(default)]
+    pub link_paused: bool,
 }
 
 impl Server {
@@ -250,6 +256,7 @@ impl ServerStore {
             last_used_at: None,
             reopen: false,
             sound_muted: false,
+            link_paused: false,
         };
         self.servers.push(server.clone());
         self.save()?;
@@ -302,6 +309,21 @@ impl ServerStore {
             return Ok(());
         }
         server.sound_muted = muted;
+        self.save()
+    }
+
+    /// Keeps whether a window's session may sign the app in (see
+    /// [`Server::link_paused`]).
+    pub fn set_link_paused(&mut self, id: &str, paused: bool) -> AppResult<()> {
+        let server = self
+            .servers
+            .iter_mut()
+            .find(|server| server.id == id)
+            .ok_or_else(not_found)?;
+        if server.link_paused == paused {
+            return Ok(());
+        }
+        server.link_paused = paused;
         self.save()
     }
 
@@ -516,6 +538,7 @@ mod tests {
             last_used_at,
             reopen,
             sound_muted: false,
+            link_paused: false,
         }
     }
 

@@ -1,7 +1,7 @@
 //! Desktop sign-in (contract §2): PKCE S256 with a state value, the system
 //! browser, the com.margaya.desktop:// callback, and the token exchange.
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::time::{Duration, Instant};
 
 use base64::engine::general_purpose::URL_SAFE_NO_PAD;
@@ -41,6 +41,9 @@ pub struct PendingSignIn {
     pub server_id: String,
     pub state: String,
     pub verifier: String,
+    /// Started by a page signed in inside its window (`startSessionLink`),
+    /// not by the person in the launcher or the browser.
+    link: bool,
     started: Instant,
 }
 
@@ -48,6 +51,8 @@ pub struct PendingSignIn {
 #[derive(Debug, Default)]
 pub struct PendingSignIns {
     by_state: HashMap<String, PendingSignIn>,
+    /// Servers whose window link is trading its code right now.
+    linking: HashSet<String>,
 }
 
 impl PendingSignIns {
@@ -56,6 +61,26 @@ impl PendingSignIns {
     pub fn start(&mut self, server_id: &str) -> (String, String) {
         self.by_state
             .retain(|_, pending| pending.server_id != server_id);
+        self.insert(server_id, false)
+    }
+
+    /// Starts a window's link, unless any sign-in or link for the server is
+    /// waiting or running: a page never cancels a sign-in the person
+    /// started, and two windows never both sign the app in.
+    pub fn start_link(&mut self, server_id: &str) -> Option<(String, String)> {
+        self.prune();
+        if self.linking.contains(server_id)
+            || self
+                .by_state
+                .values()
+                .any(|pending| pending.server_id == server_id)
+        {
+            return None;
+        }
+        Some(self.insert(server_id, true))
+    }
+
+    fn insert(&mut self, server_id: &str, link: bool) -> (String, String) {
         self.prune();
         let state = new_state();
         let verifier = new_verifier();
@@ -65,6 +90,7 @@ impl PendingSignIns {
                 server_id: server_id.to_string(),
                 state: state.clone(),
                 verifier: verifier.clone(),
+                link,
                 started: Instant::now(),
             },
         );
@@ -77,19 +103,40 @@ impl PendingSignIns {
     }
 
     /// Takes the sign-in a callback's state names; unknown, used or expired
-    /// states get nothing.
+    /// states, and window links, get nothing.
     pub fn take_by_state(&mut self, state: &str) -> Option<PendingSignIn> {
         self.prune();
+        if self.by_state.get(state)?.link {
+            return None;
+        }
         self.by_state.remove(state)
     }
 
-    /// Takes a server's sign-in, for a code the user pasted.
+    /// Takes a window's link by its state, only for this server: a page can
+    /// finish its own server's link and never another server's, or a
+    /// sign-in the person started. The server counts as linking until
+    /// [`Self::link_done`].
+    pub fn take_for_link(&mut self, server_id: &str, state: &str) -> Option<PendingSignIn> {
+        self.prune();
+        let pending = self.by_state.get(state)?;
+        if pending.server_id != server_id || !pending.link {
+            return None;
+        }
+        self.linking.insert(server_id.to_string());
+        self.by_state.remove(state)
+    }
+
+    pub fn link_done(&mut self, server_id: &str) {
+        self.linking.remove(server_id);
+    }
+
+    /// Takes a server's sign-in, for a code the user pasted (never a link).
     pub fn take_for_server(&mut self, server_id: &str) -> Option<PendingSignIn> {
         self.prune();
         let state = self
             .by_state
             .iter()
-            .find(|(_, pending)| pending.server_id == server_id)
+            .find(|(_, pending)| pending.server_id == server_id && !pending.link)
             .map(|(state, _)| state.clone())?;
         self.by_state.remove(&state)
     }
@@ -281,6 +328,43 @@ mod tests {
         assert_eq!(taken.verifier, verifier);
         assert_eq!(taken.state, state);
         assert!(pending.take_by_state(&state).is_none());
+    }
+
+    #[test]
+    fn a_link_finishes_only_its_own_servers_link() {
+        let mut pending = PendingSignIns::default();
+        let (state_a, verifier_a) = pending.start_link("server-a").unwrap();
+        // Another server's page can't use it up, and it stays for its owner.
+        assert!(pending.take_for_link("server-b", &state_a).is_none());
+        assert!(pending.take_for_link("server-a", "forged").is_none());
+        // Nor can a browser callback or a pasted code.
+        assert!(pending.take_by_state(&state_a).is_none());
+        assert!(pending.take_for_server("server-a").is_none());
+        let taken = pending.take_for_link("server-a", &state_a).unwrap();
+        assert_eq!(taken.verifier, verifier_a);
+        assert!(pending.take_for_link("server-a", &state_a).is_none());
+    }
+
+    #[test]
+    fn a_link_waits_for_any_other_sign_in_of_its_server() {
+        let mut pending = PendingSignIns::default();
+        // The person's browser sign-in is waiting: no link, and theirs stays.
+        let (browser, _) = pending.start("server-a");
+        assert!(pending.start_link("server-a").is_none());
+        assert!(pending.take_for_link("server-a", &browser).is_none());
+        assert_eq!(pending.take_by_state(&browser).unwrap().server_id, "server-a");
+        // One link at a time, waiting or trading its code.
+        let (link, _) = pending.start_link("server-a").unwrap();
+        assert!(pending.start_link("server-a").is_none());
+        pending.take_for_link("server-a", &link).unwrap();
+        assert!(pending.start_link("server-a").is_none());
+        // Other servers are unaffected.
+        assert!(pending.start_link("server-b").is_some());
+        pending.link_done("server-a");
+        assert!(pending.start_link("server-a").is_some());
+        // A sign-in the person starts replaces a waiting link.
+        let (person, _) = pending.start("server-a");
+        assert!(pending.take_by_state(&person).is_some());
     }
 
     #[test]

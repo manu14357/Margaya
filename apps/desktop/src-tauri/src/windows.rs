@@ -1277,6 +1277,7 @@ mod tests {
             last_used_at: None,
             reopen: false,
             sound_muted: false,
+            link_paused: false,
         };
         assert_eq!(
             web_url_for_path(&server, "/dashboard?x=1")
@@ -1309,6 +1310,7 @@ mod tests {
             last_used_at: None,
             reopen: false,
             sound_muted: false,
+            link_paused: false,
         };
         assert_eq!(
             start_url(&server).unwrap().as_str(),

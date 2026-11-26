@@ -1,12 +1,14 @@
 import { windowId } from "@margaya/libs";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import authorizeDesktopSignIn from "@/fetchers/desktop/authorize-desktop-sign-in";
 import { getApiUrl } from "@/fetchers/get-api-url";
 import { agentKeys } from "@/hooks/queries/ai/use-agents";
 import { taskDraftQueryKeys } from "@/hooks/queries/task-draft/task-draft-query-keys";
 import { userPreferencesQueryKey } from "@/hooks/use-preferences-sync";
 import { handleAgentUserMessage } from "@/lib/ai/agent-realtime";
 import { authClient } from "@/lib/auth-client";
+import { linkDesktopSession } from "@/lib/desktop";
 import { handleFeedbackUserMessage } from "@/lib/feedback-realtime";
 import { handleHomeUserMessage } from "@/lib/home-realtime";
 import {
@@ -56,6 +58,9 @@ export function useUserWebSocket() {
     installAudioUnlock();
     // The desktop app plays the sound with its own notifications.
     const stopMuteSync = syncDesktopSoundMute();
+    // Signed in inside a desktop window: sign the app in too, or it shows no
+    // notifications and no badge (a no-op in a browser or once it is).
+    void linkDesktopSession(authorizeDesktopSignIn);
 
     // A previous session's delayed socket events must not control this session.
     let disposed = false;

@@ -171,6 +171,12 @@ export const desktopSignIn = () =>
         },
         async (ctx) => {
           if (!desktopSignInEnabled()) throw unavailable();
+          // The page's own cookie session only. A bearer token here would let
+          // a script on the page sign the desktop app in as whichever
+          // account the token belongs to, unseen in the window.
+          if (ctx.headers?.get("authorization")) {
+            throw new APIError("UNAUTHORIZED");
+          }
           const session = await signedInSession(ctx);
           if (!session) throw new APIError("UNAUTHORIZED");
           ctx.setHeader("Cache-Control", "no-store");

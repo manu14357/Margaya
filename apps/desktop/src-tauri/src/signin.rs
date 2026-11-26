@@ -37,39 +37,21 @@ pub fn start(app: &AppHandle, server_id: &str, show_code: bool) -> AppResult<()>
 /// server window in through the one-time webview URL.
 pub async fn finish(app: &AppHandle, pending: PendingSignIn, code: &str) -> AppResult<()> {
     let state = app.state::<AppState>();
-    let server = state.server(&pending.server_id)?;
-    let api = server
-        .api()
-        .ok_or_else(|| AppError::internal("invalid API URL"))?;
+    let (server, response) = establish(app, pending, code, true)
+        .await?
+        .ok_or_else(|| AppError::internal("sign-in replaced"))?;
+    // The person signed in: a window's session may sign the app in again
+    // after a later sign-out.
+    if let Err(error) = lock(&state.store).set_link_paused(&server.id, false) {
+        log::warn!("could not keep the sign-in setting: {}", error.message);
+    }
     let web = server
         .web()
         .ok_or_else(|| AppError::internal("invalid web URL"))?;
-    let response = auth::exchange_code(
-        &state.http,
-        &api,
-        code.trim(),
-        &pending.verifier,
-        &pending.state,
-    )
-    .await?;
-    if !tokens::set(&server.id, &response.token) {
-        return Err(AppError::new(
-            ErrorKind::KeychainUnavailable,
-            "could not store the token in the keychain",
-        ));
-    }
-    // A new session: work still running for an earlier one (offline
-    // snapshots on their way) is now stale.
-    state.mark_signed_in(&server.id);
-    // The token may be another account's than the one whose offline copies
-    // are kept: those go unless the server confirms it is the same person.
-    let user = api::session_user_id(&state.http, &server, &response.token).await;
-    crate::offline_cache::claim(app, &server.id, user.as_deref());
     match response.webview_secret {
         Some(secret) => lock(&state.handoff_secrets).insert(server.id.clone(), secret),
         None => lock(&state.handoff_secrets).remove(&server.id),
     };
-    socket::start(app, &server.id);
     let target = auth::checked_webview_url(&response.webview_url, &web)
         .map_or(windows::Target::None, windows::Target::Load);
     let window_app = app.clone();
@@ -82,6 +64,98 @@ pub async fn finish(app: &AppHandle, pending: PendingSignIn, code: &str) -> AppR
     menus::refresh_tray(app);
     log::info!("desktop sign-in finished");
     Ok(())
+}
+
+/// Signs the app in for a page that is signed in already (password or email
+/// code inside the window), with the code the page minted for the app's
+/// pending sign-in. The window keeps its own session, so nothing reloads;
+/// the app gets the token its notifications, badge and quick add need.
+pub async fn link(app: &AppHandle, pending: PendingSignIn, code: &str) -> AppResult<()> {
+    let state = app.state::<AppState>();
+    let server_id = pending.server_id.clone();
+    let result = establish(app, pending, code, false).await;
+    lock(&state.pending).link_done(&server_id);
+    let result = match result {
+        Ok(Some(_)) => {
+            menus::refresh_tray(app);
+            log::info!("desktop sign-in linked to the window's session");
+            Ok(())
+        }
+        // Signed in meanwhile (the person's own sign-in won): nothing to do.
+        Ok(None) => return Ok(()),
+        Err(error) => {
+            // No keychain: every page load would try again and fail the same
+            // way, so windows stop asking until the person signs in.
+            if error.kind == ErrorKind::KeychainUnavailable {
+                let _ = lock(&state.store).set_link_paused(&server_id, true);
+            }
+            Err(error)
+        }
+    };
+    report(app, &server_id, &result);
+    result
+}
+
+/// The part every sign-in shares: trade the code for the app's token, keep
+/// it in the keychain and start the user socket. With `replace` false (a
+/// window's link), a session the app got meanwhile wins: the new token is
+/// revoked and None comes back. A token the keychain refuses is revoked too,
+/// so no session is left behind on the server.
+async fn establish(
+    app: &AppHandle,
+    pending: PendingSignIn,
+    code: &str,
+    replace: bool,
+) -> AppResult<Option<(crate::servers::Server, auth::TokenResponse)>> {
+    let state = app.state::<AppState>();
+    let server = state.server(&pending.server_id)?;
+    let api = server
+        .api()
+        .ok_or_else(|| AppError::internal("invalid API URL"))?;
+    let response = auth::exchange_code(
+        &state.http,
+        &api,
+        code.trim(),
+        &pending.verifier,
+        &pending.state,
+    )
+    .await?;
+    if !replace && state.session(&server.id).is_some() {
+        revoke(app, &server, &response.token).await;
+        return Ok(None);
+    }
+    if !tokens::set(&server.id, &response.token) {
+        revoke(app, &server, &response.token).await;
+        return Err(AppError::new(
+            ErrorKind::KeychainUnavailable,
+            "could not store the token in the keychain",
+        ));
+    }
+    // A new session: work still running for an earlier one (offline
+    // snapshots on their way) is now stale.
+    state.mark_signed_in(&server.id);
+    // The token may be another account's than the one whose offline copies
+    // are kept: those go unless the server confirms it is the same person.
+    let user = api::session_user_id(&state.http, &server, &response.token).await;
+    crate::offline_cache::claim(app, &server.id, user.as_deref());
+    socket::start(app, &server.id);
+    Ok(Some((server, response)))
+}
+
+/// Ends a session the app just got but won't keep.
+async fn revoke(app: &AppHandle, server: &crate::servers::Server, token: &str) {
+    let state = app.state::<AppState>();
+    if let Err(error) = api::post(
+        &state.http,
+        server,
+        token,
+        "/api/auth/desktop/sign-out",
+        &serde_json::json!({}),
+    )
+    .await
+    {
+        log::warn!("could not end an unused desktop session: {}", error.message);
+    }
 }
 
 fn report(app: &AppHandle, server_id: &str, result: &AppResult<()>) {

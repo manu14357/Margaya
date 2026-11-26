@@ -1,4 +1,5 @@
 import { getApiUrl } from "@/fetchers/get-api-url";
+import type { DesktopAuthorizeRequest } from "@/lib/desktop-authorize";
 import type { DesktopOfflineSnapshot } from "@/lib/desktop-offline-snapshot";
 
 /**
@@ -38,6 +39,15 @@ export type MargayaDesktopBridge = {
   showServers(): void;
   /** The web session ended here; the app signs this server out too. */
   signedOut(): void;
+  /**
+   * Starts signing the app itself in for this page's session (signed in
+   * inside the window): the state and PKCE challenge of the app's pending
+   * sign-in, or null when the app is signed in already. Older apps don't
+   * have it.
+   */
+  startSessionLink(): Promise<{ state: string; codeChallenge: string } | null>;
+  /** Hands the app the code minted for that sign-in; true once it's in. */
+  finishSessionLink(link: { code: string; state: string }): Promise<boolean>;
   /**
    * Opens an identity provider's page (account linking) in a popup window
    * that shares this server's session and closes when it comes back here.
@@ -120,6 +130,41 @@ export async function takeDesktopHandoffSecret(
     return typeof secret === "string" && secret ? secret : null;
   } catch {
     return null;
+  }
+}
+
+/**
+ * Signs the desktop app itself in when this page signed in inside its window
+ * (password or email code). The app's notifications, Dock or taskbar badge and
+ * quick add run on its own token, which only a desktop sign-in gives it: the
+ * app makes the PKCE pair, this page mints the one-time code with its session
+ * (`authorize`, POST /api/auth/desktop/authorize), and the app trades the code
+ * with the verifier only it holds. The page never sees the token.
+ *
+ * False in a browser, with an older app, when the app is signed in already,
+ * or when any step fails; it never throws.
+ */
+export async function linkDesktopSession(
+  authorize: (request: DesktopAuthorizeRequest) => Promise<{ code: string }>,
+  win: Window = window,
+): Promise<boolean> {
+  const bridge = getDesktopBridge(win);
+  const start = bridge?.startSessionLink;
+  const finish = bridge?.finishSessionLink;
+  if (typeof start !== "function" || typeof finish !== "function") {
+    return false;
+  }
+  try {
+    const link = await start.call(bridge);
+    if (!link) return false;
+    const { code } = await authorize({
+      state: link.state,
+      code_challenge: link.codeChallenge,
+      code_challenge_method: "S256",
+    });
+    return (await finish.call(bridge, { code, state: link.state })) === true;
+  } catch {
+    return false;
   }
 }
 

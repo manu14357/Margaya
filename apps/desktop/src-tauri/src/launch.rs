@@ -198,6 +198,7 @@ mod tests {
             last_used_at,
             reopen: false,
             sound_muted: false,
+            link_paused: false,
         }
     }
 

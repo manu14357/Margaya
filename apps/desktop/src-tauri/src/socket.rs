@@ -142,6 +142,9 @@ async fn run(app: AppHandle, server_id: String) {
             Ended::Unauthorized => {
                 log::info!("a server refused the stored token; signing out locally");
                 app.state::<AppState>().mark_signed_out(&server_id);
+                // Revoked (by the person elsewhere or an admin): a window's
+                // session doesn't quietly sign the app back in.
+                let _ = lock(&app.state::<AppState>().store).set_link_paused(&server_id, true);
                 tokens::delete(&server_id);
                 crate::search_window::forget_server(&server_id);
                 crate::menus::forget_server(&app, &server_id);

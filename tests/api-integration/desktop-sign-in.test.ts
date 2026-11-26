@@ -393,6 +393,19 @@ describe("desktop sign-in", () => {
 
     // Signed out, or from a foreign page, it mints nothing.
     expect((await authPost(app, "/desktop/authorize", body)).status).toBe(401);
+    // Nor with a bearer token, even a valid desktop one: only the page's own
+    // cookie session counts, so a script can't sign the app in as another
+    // account.
+    const { token } = await signedInDesktop();
+    expect((await bearerSession(token))?.user).toBeTruthy();
+    const second = pkce();
+    expect(
+      (
+        await mint(second, {
+          authorization: `Bearer ${token}`,
+        })
+      ).status,
+    ).toBe(401);
     expect(
       (
         await authPost(app, "/desktop/authorize", body, {
